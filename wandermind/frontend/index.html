@@ -1,0 +1,4154 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>WanderMind · 游心 — AI 多智能体旅行平台</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=Plus+Jakarta+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --ink: #0F0D0A;
+  --ink-2: #3A3630;
+  --ink-3: #7A7060;
+  --paper: #FAF7F2;
+  --paper-2: #F2EDE4;
+  --paper-3: #E8E0D0;
+  --teal: #0E7C6B;
+  --teal-light: #12A08A;
+  --teal-pale: #E3F5F1;
+  --amber: #B8620A;
+  --amber-light: #E07A12;
+  --amber-pale: #FDF0E3;
+  --crimson: #9B2335;
+  --crimson-pale: #FCE8EB;
+  --sky: #1A5F8A;
+  --sky-pale: #E4F0F8;
+  --white: #FFFFFF;
+  --r: 12px;
+  --r-sm: 8px;
+  --shadow-sm: 0 1px 4px rgba(15,13,10,.06);
+  --shadow: 0 2px 12px rgba(15,13,10,.09);
+  --shadow-lg: 0 8px 32px rgba(15,13,10,.12);
+  --transition: all .2s cubic-bezier(.4,0,.2,1);
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+html, body {
+  height: 100%;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  background: var(--paper);
+  color: var(--ink);
+  overflow: hidden;
+}
+
+/* ─── LAYOUT ─── */
+.app {
+  display: grid;
+  grid-template-columns: 260px 1fr 320px;
+  grid-template-rows: 56px 1fr;
+  height: 100vh;
+}
+
+/* ─── NAV ─── */
+.nav {
+  grid-column: 1 / -1;
+  background: var(--ink);
+  display: flex;
+  align-items: center;
+  padding: 0 20px;
+  gap: 0;
+  position: relative;
+  z-index: 10;
+}
+.nav-logo {
+  font-family: 'Playfair Display', serif;
+  font-size: 20px;
+  color: var(--paper);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  white-space: nowrap;
+  flex-shrink: 0;
+  margin-right: 20px;
+}
+.nav-logo .accent { color: var(--amber-light); font-style: italic; }
+.nav-logo .version {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 10px;
+  background: rgba(255,255,255,.1);
+  color: rgba(250,247,242,.5);
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-weight: 500;
+  letter-spacing: .04em;
+  margin-left: 4px;
+  align-self: center;
+}
+.nav-tabs {
+  display: flex;
+  gap: 1px;
+  flex: 1;
+}
+.nav-tab {
+  padding: 6px 14px;
+  font-size: 13px;
+  font-weight: 500;
+  color: rgba(250,247,242,.45);
+  cursor: pointer;
+  border: none;
+  background: none;
+  border-radius: var(--r-sm);
+  font-family: inherit;
+  transition: var(--transition);
+  white-space: nowrap;
+}
+.nav-tab:hover { color: var(--paper); background: rgba(255,255,255,.07); }
+.nav-tab.active { color: var(--paper); background: rgba(255,255,255,.12); }
+
+.nav-right {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-left: auto;
+  flex-shrink: 0;
+}
+.dest-switcher {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(255,255,255,.08);
+  border: 1px solid rgba(255,255,255,.12);
+  border-radius: 20px;
+  padding: 4px 10px 4px 6px;
+  cursor: pointer;
+  transition: var(--transition);
+  position: relative;
+}
+.dest-switcher:hover { background: rgba(255,255,255,.14); }
+.dest-flag { font-size: 16px; }
+.dest-name { font-size: 12px; font-weight: 500; color: var(--paper); }
+.dest-arrow { font-size: 10px; color: rgba(250,247,242,.5); margin-left: 2px; }
+.dest-menu {
+  position: absolute;
+  top: calc(100% + 8px);
+  right: 0;
+  background: var(--ink-2);
+  border: 1px solid rgba(255,255,255,.12);
+  border-radius: var(--r);
+  padding: 6px;
+  min-width: 180px;
+  display: none;
+  z-index: 100;
+  box-shadow: var(--shadow-lg);
+}
+.dest-menu.open { display: block; }
+.dest-menu-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 10px;
+  border-radius: var(--r-sm);
+  cursor: pointer;
+  font-size: 13px;
+  color: rgba(250,247,242,.8);
+  transition: var(--transition);
+}
+.dest-menu-item:hover { background: rgba(255,255,255,.1); color: var(--paper); }
+.dest-menu-item.selected { color: var(--amber-light); }
+
+.agent-status-bar {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 11px;
+  color: rgba(250,247,242,.4);
+  background: rgba(255,255,255,.05);
+  border: 1px solid rgba(255,255,255,.08);
+  border-radius: 20px;
+  padding: 4px 10px;
+}
+.status-dot {
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: #2ECC71;
+  animation: pulse 2s ease infinite;
+}
+@keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:.6;transform:scale(1.1)} }
+
+.nav-avatar {
+  width: 30px; height: 30px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--teal), var(--sky));
+  display: flex; align-items: center; justify-content: center;
+  font-size: 12px; font-weight: 600; color: white;
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+/* ─── SIDEBAR ─── */
+.sidebar {
+  background: var(--white);
+  border-right: 1px solid var(--paper-3);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+.sidebar-header {
+  padding: 14px 16px 10px;
+  border-bottom: 1px solid var(--paper-2);
+}
+.sidebar-title {
+  font-size: 10px;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+  font-weight: 600;
+  margin-bottom: 10px;
+}
+.trip-card {
+  background: var(--paper);
+  border: 1.5px solid var(--paper-3);
+  border-radius: var(--r);
+  padding: 10px 12px;
+  margin-bottom: 6px;
+  cursor: pointer;
+  transition: var(--transition);
+}
+.trip-card:hover { border-color: var(--teal-light); background: var(--teal-pale); }
+.trip-card.active { border-color: var(--teal); background: var(--teal-pale); }
+.trip-card-title {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--ink);
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  margin-bottom: 3px;
+}
+.trip-card-meta {
+  font-size: 11px;
+  color: var(--ink-3);
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+.new-trip-btn {
+  width: 100%;
+  padding: 7px;
+  border-radius: var(--r-sm);
+  border: 1.5px dashed var(--paper-3);
+  background: none;
+  color: var(--ink-3);
+  font-size: 12px;
+  font-weight: 500;
+  cursor: pointer;
+  font-family: inherit;
+  transition: var(--transition);
+  text-align: center;
+  margin-top: 2px;
+}
+.new-trip-btn:hover { border-color: var(--teal-light); color: var(--teal); }
+
+/* Agent list */
+.agents-section {
+  flex: 1;
+  overflow-y: auto;
+  padding: 12px 14px;
+}
+.agents-section::-webkit-scrollbar { width: 3px; }
+.agents-section::-webkit-scrollbar-thumb { background: var(--paper-3); border-radius: 2px; }
+.agents-title {
+  font-size: 10px;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+  font-weight: 600;
+  margin-bottom: 8px;
+}
+.agent-item {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  padding: 7px 9px;
+  border-radius: var(--r);
+  cursor: pointer;
+  transition: var(--transition);
+  margin-bottom: 2px;
+  border: 1.5px solid transparent;
+}
+.agent-item:hover { background: var(--paper); }
+.agent-item.active { background: var(--teal-pale); border-color: var(--teal-light); }
+.agent-icon {
+  width: 32px; height: 32px;
+  border-radius: 9px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 15px;
+  flex-shrink: 0;
+  position: relative;
+}
+.agent-info { flex: 1; min-width: 0; }
+.agent-name { font-size: 12px; font-weight: 600; color: var(--ink); }
+.agent-desc { font-size: 11px; color: var(--ink-3); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.badge {
+  font-size: 10px;
+  padding: 2px 6px;
+  border-radius: 10px;
+  font-weight: 600;
+  flex-shrink: 0;
+}
+.badge-on { background: #DCFCE7; color: #15803D; }
+.badge-ready { background: var(--sky-pale); color: var(--sky); }
+.badge-idle { background: var(--paper-2); color: var(--ink-3); }
+
+/* Agent working indicator */
+.agent-working {
+  position: absolute;
+  top: -2px; right: -2px;
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  background: var(--amber-light);
+  border: 1.5px solid white;
+  animation: pulse 1s ease infinite;
+  display: none;
+}
+.agent-icon.working .agent-working { display: block; }
+
+/* ─── MAIN CHAT ─── */
+.main {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  background: var(--paper);
+}
+
+/* Destination header */
+.dest-header {
+  background: var(--ink);
+  padding: 16px 24px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  position: relative;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+.dest-header::after {
+  content: '';
+  position: absolute;
+  right: -20px; top: -20px;
+  width: 120px; height: 120px;
+  border-radius: 50%;
+  background: rgba(255,255,255,.03);
+}
+.dest-header-text { flex: 1; position: relative; z-index: 1; }
+.dest-eyebrow {
+  font-size: 10px;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: var(--amber-light);
+  font-weight: 600;
+  margin-bottom: 3px;
+}
+.dest-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 22px;
+  font-weight: 400;
+  color: var(--paper);
+  line-height: 1.2;
+}
+.dest-title em { font-style: italic; color: var(--amber-light); }
+.dest-chips {
+  margin-top: 6px;
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+.dest-chip {
+  font-size: 11px;
+  color: rgba(250,247,242,.55);
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+.chip-dot { width: 5px; height: 5px; border-radius: 50%; flex-shrink: 0; }
+.dest-actions { display: flex; gap: 8px; flex-shrink: 0; position: relative; z-index: 1; }
+.btn {
+  padding: 7px 14px;
+  border-radius: var(--r);
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  border: none;
+  font-family: inherit;
+  transition: var(--transition);
+  white-space: nowrap;
+}
+.btn-primary { background: var(--amber); color: white; }
+.btn-primary:hover { background: var(--amber-light); }
+.btn-ghost {
+  background: rgba(255,255,255,.08);
+  color: rgba(250,247,242,.8);
+  border: 1px solid rgba(255,255,255,.15);
+}
+.btn-ghost:hover { background: rgba(255,255,255,.14); }
+
+/* ─── ACTIVE AGENTS BAR ─── */
+.active-agents-bar {
+  background: var(--paper-2);
+  border-bottom: 1px solid var(--paper-3);
+  padding: 6px 24px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-shrink: 0;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+.active-agents-bar::-webkit-scrollbar { display: none; }
+.active-label {
+  font-size: 10px;
+  font-weight: 600;
+  color: var(--ink-3);
+  letter-spacing: .06em;
+  text-transform: uppercase;
+  flex-shrink: 0;
+}
+.active-agent-chip {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  background: var(--white);
+  border: 1px solid var(--paper-3);
+  border-radius: 20px;
+  padding: 3px 10px 3px 6px;
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--ink-2);
+  flex-shrink: 0;
+  cursor: pointer;
+  transition: var(--transition);
+}
+.active-agent-chip:hover { border-color: var(--teal-light); color: var(--teal); }
+.active-agent-chip.thinking {
+  border-color: var(--amber-light);
+  color: var(--amber);
+  background: var(--amber-pale);
+}
+.active-agent-chip.thinking .chip-icon { animation: spin 1s linear infinite; }
+@keyframes spin { to { transform: rotate(360deg); } }
+.chip-icon { font-size: 13px; }
+
+/* ─── MESSAGES ─── */
+.messages {
+  flex: 1;
+  overflow-y: auto;
+  padding: 18px 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  scroll-behavior: smooth;
+}
+.messages::-webkit-scrollbar { width: 4px; }
+.messages::-webkit-scrollbar-thumb { background: var(--paper-3); border-radius: 2px; }
+
+.msg { display: flex; gap: 9px; align-items: flex-start; }
+.msg.user { flex-direction: row-reverse; }
+.msg.system { justify-content: center; }
+
+.msg-avatar {
+  width: 30px; height: 30px;
+  border-radius: 9px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 13px; font-weight: 600;
+  flex-shrink: 0;
+}
+.msg-avatar.ai { background: var(--teal); color: white; font-family: 'Playfair Display', serif; font-size: 14px; }
+.msg-avatar.user { background: var(--sky); color: white; }
+
+.msg-body { max-width: 70%; display: flex; flex-direction: column; gap: 3px; }
+.msg.user .msg-body { align-items: flex-end; }
+
+/* Agent label above bubble */
+.agent-label {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+  margin-bottom: 2px;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.bubble {
+  padding: 11px 15px;
+  font-size: 13.5px;
+  line-height: 1.7;
+  border-radius: 14px;
+}
+.bubble.ai {
+  background: var(--white);
+  border: 1px solid var(--paper-3);
+  color: var(--ink);
+  border-top-left-radius: 4px;
+  box-shadow: var(--shadow-sm);
+}
+.bubble.user {
+  background: var(--teal);
+  color: white;
+  border-bottom-right-radius: 4px;
+}
+
+/* System message */
+.system-msg {
+  font-size: 11px;
+  color: var(--ink-3);
+  background: var(--paper-2);
+  border: 1px solid var(--paper-3);
+  border-radius: 20px;
+  padding: 4px 14px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+/* Search indicator */
+.search-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--sky);
+  background: var(--sky-pale);
+  border-radius: 20px;
+  padding: 3px 9px;
+  margin-bottom: 5px;
+}
+.search-pulse {
+  width: 5px; height: 5px;
+  border-radius: 50%;
+  background: var(--sky);
+  animation: pulse 1s ease infinite;
+}
+
+.msg-time { font-size: 10px; color: var(--ink-3); padding: 0 3px; }
+
+/* Suggestion chips */
+.chips-wrap {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+  padding: 4px 0;
+}
+.sugg-chip {
+  padding: 5px 11px;
+  border-radius: 20px;
+  font-size: 12px;
+  background: var(--paper);
+  border: 1px solid var(--paper-3);
+  color: var(--ink-2);
+  cursor: pointer;
+  transition: var(--transition);
+  font-family: inherit;
+  font-weight: 500;
+  white-space: nowrap;
+}
+.sugg-chip:hover { background: var(--teal-pale); border-color: var(--teal-light); color: var(--teal); }
+
+/* Typing dots */
+.typing-indicator {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 10px 14px;
+}
+.typing-dot {
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: var(--ink-3);
+  animation: tdot .8s ease infinite;
+}
+.typing-dot:nth-child(2) { animation-delay: .12s; }
+.typing-dot:nth-child(3) { animation-delay: .24s; }
+@keyframes tdot { 0%,80%,100%{transform:translateY(0);opacity:.4} 40%{transform:translateY(-5px);opacity:1} }
+
+/* ─── INPUT ─── */
+.input-area {
+  padding: 12px 24px 16px;
+  background: var(--paper);
+  border-top: 1px solid var(--paper-3);
+  flex-shrink: 0;
+}
+.input-box {
+  display: flex;
+  gap: 8px;
+  align-items: flex-end;
+  background: var(--white);
+  border: 1.5px solid var(--paper-3);
+  border-radius: 16px;
+  padding: 9px 10px 9px 16px;
+  transition: border-color .2s;
+  box-shadow: var(--shadow-sm);
+}
+.input-box:focus-within { border-color: var(--teal-light); }
+#main-input {
+  flex: 1;
+  background: none;
+  border: none;
+  outline: none;
+  font-family: inherit;
+  font-size: 13.5px;
+  color: var(--ink);
+  resize: none;
+  max-height: 90px;
+  line-height: 1.5;
+}
+#main-input::placeholder { color: var(--ink-3); }
+.input-btns { display: flex; gap: 5px; align-items: center; flex-shrink: 0; }
+.icon-btn {
+  width: 32px; height: 32px;
+  border-radius: 9px;
+  border: none;
+  cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 15px;
+  transition: var(--transition);
+  background: var(--paper-2);
+  color: var(--ink-3);
+}
+.icon-btn:hover { background: var(--paper-3); color: var(--ink); }
+.send-btn {
+  width: 34px; height: 34px;
+  border-radius: 10px;
+  border: none;
+  background: var(--teal);
+  color: white;
+  cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  transition: var(--transition);
+  flex-shrink: 0;
+}
+.send-btn:hover { background: var(--teal-light); }
+.send-btn:disabled { background: var(--paper-3); color: var(--ink-3); cursor: default; }
+.send-btn svg { width: 15px; height: 15px; }
+
+/* ─── RIGHT PANEL ─── */
+.panel {
+  background: var(--white);
+  border-left: 1px solid var(--paper-3);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+.panel-tabs {
+  display: flex;
+  border-bottom: 1px solid var(--paper-3);
+  flex-shrink: 0;
+}
+.panel-tab {
+  flex: 1;
+  padding: 11px 6px;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--ink-3);
+  cursor: pointer;
+  border: none;
+  background: none;
+  border-bottom: 2px solid transparent;
+  transition: var(--transition);
+  font-family: inherit;
+  text-align: center;
+  letter-spacing: .02em;
+}
+.panel-tab.active { color: var(--teal); border-bottom-color: var(--teal); }
+.panel-tab:hover:not(.active) { color: var(--ink); background: var(--paper); }
+
+.panel-body {
+  flex: 1;
+  overflow-y: auto;
+  padding: 14px;
+}
+.panel-body::-webkit-scrollbar { width: 3px; }
+.panel-body::-webkit-scrollbar-thumb { background: var(--paper-3); border-radius: 2px; }
+.panel-section { margin-bottom: 18px; }
+.panel-section-title {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+  margin-bottom: 9px;
+}
+.panel-content { display: none; }
+.panel-content.active { display: block; }
+
+/* Weather */
+.weather-card {
+  background: linear-gradient(135deg, var(--teal) 0%, var(--sky) 100%);
+  border-radius: var(--r);
+  padding: 14px;
+  color: white;
+  margin-bottom: 10px;
+  position: relative;
+  overflow: hidden;
+}
+.weather-card::before {
+  content: '';
+  position: absolute;
+  right: -10px; top: -10px;
+  width: 70px; height: 70px;
+  border-radius: 50%;
+  background: rgba(255,255,255,.07);
+}
+.weather-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 8px;
+}
+.weather-temp { font-size: 32px; font-weight: 300; line-height: 1; }
+.weather-cond { font-size: 11px; opacity: .75; margin-top: 2px; }
+.weather-icon { font-size: 26px; }
+.weather-row {
+  display: flex;
+  gap: 12px;
+  font-size: 11px;
+  opacity: .8;
+  flex-wrap: wrap;
+}
+
+/* Stat cards */
+.stat-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; margin-bottom: 8px; }
+.stat-card {
+  background: var(--paper);
+  border-radius: var(--r-sm);
+  padding: 10px;
+}
+.stat-val { font-size: 17px; font-weight: 700; color: var(--teal); }
+.stat-lbl { font-size: 10px; color: var(--ink-3); margin-top: 1px; }
+
+/* Info cards */
+.info-card {
+  background: var(--paper);
+  border-radius: var(--r);
+  padding: 10px 12px;
+  margin-bottom: 6px;
+  cursor: pointer;
+  border: 1.5px solid transparent;
+  transition: var(--transition);
+}
+.info-card:hover { border-color: var(--teal-light); background: var(--teal-pale); }
+.info-card-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 3px;
+}
+.info-card-title { font-size: 12px; font-weight: 600; color: var(--ink); }
+.info-card-body { font-size: 11px; color: var(--ink-2); line-height: 1.5; }
+.tag {
+  font-size: 10px;
+  padding: 2px 6px;
+  border-radius: 8px;
+  font-weight: 600;
+  flex-shrink: 0;
+  margin-left: 5px;
+}
+.tag-blue { background: var(--sky-pale); color: var(--sky); }
+.tag-amber { background: var(--amber-pale); color: var(--amber); }
+.tag-green { background: var(--teal-pale); color: var(--teal); }
+
+/* Timeline */
+.timeline { padding: 2px 0; }
+.tl-item {
+  display: flex;
+  gap: 10px;
+  padding: 6px 0;
+  position: relative;
+}
+.tl-item:not(:last-child)::before {
+  content: '';
+  position: absolute;
+  left: 13px; top: 28px; bottom: -6px;
+  width: 1px;
+  background: var(--paper-3);
+}
+.tl-dot {
+  width: 26px; height: 26px;
+  border-radius: 7px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 13px;
+  flex-shrink: 0; z-index: 1;
+}
+.tl-content { flex: 1; }
+.tl-day { font-size: 10px; color: var(--ink-3); font-weight: 600; margin-bottom: 1px; text-transform: uppercase; letter-spacing: .04em; }
+.tl-title { font-size: 12px; font-weight: 600; color: var(--ink); }
+.tl-desc { font-size: 11px; color: var(--ink-3); margin-top: 1px; }
+
+/* Budget bars */
+.budget-total {
+  background: var(--paper);
+  border-radius: var(--r);
+  padding: 12px;
+  margin-bottom: 8px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
+.budget-bar-item {
+  background: var(--paper);
+  border-radius: var(--r-sm);
+  padding: 9px 10px;
+  margin-bottom: 6px;
+}
+.budget-bar-head {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 5px;
+  font-size: 12px;
+  color: var(--ink-2);
+  font-weight: 500;
+}
+.budget-bar-amount { font-weight: 700; }
+.bbar-wrap {
+  height: 4px;
+  background: var(--paper-3);
+  border-radius: 2px;
+  overflow: hidden;
+}
+.bbar { height: 100%; border-radius: 2px; transition: width .8s ease; }
+
+/* Panel actions */
+.panel-action-btn {
+  width: 100%;
+  padding: 9px;
+  border-radius: var(--r-sm);
+  border: 1.5px solid var(--teal-light);
+  background: var(--teal-pale);
+  color: var(--teal);
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  font-family: inherit;
+  transition: var(--transition);
+  margin-top: 8px;
+}
+.panel-action-btn:hover { background: var(--teal); color: white; }
+
+/* ─── LOADING SCREEN ─── */
+.loader {
+  position: fixed; inset: 0;
+  background: var(--ink);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  transition: opacity .6s ease;
+}
+.loader.fade-out { opacity: 0; pointer-events: none; }
+.loader-logo {
+  font-family: 'Playfair Display', serif;
+  font-size: 52px;
+  font-weight: 400;
+  color: var(--paper);
+  letter-spacing: .02em;
+  margin-bottom: 4px;
+}
+.loader-logo span { color: var(--amber-light); font-style: italic; }
+.loader-sub {
+  font-size: 13px;
+  color: rgba(250,247,242,.4);
+  margin-bottom: 36px;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+}
+.loader-agents {
+  display: flex;
+  gap: 16px;
+  margin-bottom: 28px;
+}
+.loader-agent {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 5px;
+  opacity: 0;
+  transform: translateY(8px);
+  transition: opacity .3s ease, transform .3s ease;
+}
+.loader-agent.show { opacity: 1; transform: translateY(0); }
+.loader-agent-icon {
+  width: 36px; height: 36px;
+  background: rgba(255,255,255,.08);
+  border-radius: 10px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 18px;
+}
+.loader-agent-name {
+  font-size: 10px;
+  color: rgba(250,247,242,.4);
+  font-weight: 500;
+}
+.loader-progress {
+  width: 180px;
+  height: 2px;
+  background: rgba(255,255,255,.1);
+  border-radius: 1px;
+  overflow: hidden;
+}
+.loader-bar {
+  height: 100%;
+  background: var(--amber-light);
+  border-radius: 1px;
+  width: 0%;
+  transition: width .3s ease;
+}
+.loader-msg {
+  font-size: 11px;
+  color: rgba(250,247,242,.3);
+  margin-top: 10px;
+  min-height: 16px;
+  letter-spacing: .04em;
+}
+
+/* Animations */
+.fade-in { animation: fadeUp .25s ease both; }
+@keyframes fadeUp { from{opacity:0;transform:translateY(5px)} to{opacity:1;transform:translateY(0)} }
+.stream-cursor { display:inline-block; animation: blink .7s step-end infinite; color:var(--teal); font-weight:300; }
+@keyframes blink { 0%,100%{opacity:1} 50%{opacity:0} }
+
+/* Scrollbar global */
+* { scrollbar-width: thin; scrollbar-color: var(--paper-3) transparent; }
+
+/* Destination configs */
+[data-dest="bali"] .dest-color { color: #E8834A; }
+[data-dest="kyoto"] .dest-color { color: #C47BAB; }
+[data-dest="paris"] .dest-color { color: #6B9FD4; }
+[data-dest="santorini"] .dest-color { color: #5BA4B8; }
+
+/* ─── LANGUAGE PICKER ─── */
+.lang-picker {
+  position: fixed; inset: 0;
+  background: var(--ink);
+  z-index: 10000;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 36px;
+  transition: opacity .4s ease;
+}
+.lang-picker.hidden { display: none; }
+.lp-logo {
+  font-family: 'Playfair Display', serif;
+  font-size: 52px;
+  color: var(--paper);
+  line-height: 1;
+}
+.lp-logo span { color: var(--amber-light); font-style: italic; }
+.lp-tagline {
+  font-size: 13px;
+  color: rgba(250,247,242,.35);
+  letter-spacing: .06em;
+  text-align: center;
+}
+.lp-prompt {
+  font-size: 11px;
+  color: rgba(250,247,242,.4);
+  letter-spacing: .18em;
+  text-transform: uppercase;
+}
+.lp-grid {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  justify-content: center;
+  max-width: 540px;
+  padding: 0 20px;
+}
+.lp-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 7px;
+  padding: 18px 22px;
+  background: rgba(255,255,255,.04);
+  border: 1.5px solid rgba(255,255,255,.09);
+  border-radius: 18px;
+  cursor: pointer;
+  transition: all .2s cubic-bezier(.4,0,.2,1);
+  min-width: 96px;
+  font-family: inherit;
+}
+.lp-btn:hover {
+  background: rgba(255,255,255,.11);
+  border-color: var(--amber-light);
+  transform: translateY(-3px);
+  box-shadow: 0 8px 24px rgba(0,0,0,.3);
+}
+.lp-btn:active { transform: translateY(-1px); }
+.lp-flag { font-size: 30px; line-height: 1; }
+.lp-name { font-size: 14px; font-weight: 600; color: var(--paper); }
+.lp-sub  { font-size: 10px; color: rgba(250,247,242,.38); }
+
+/* ─── AUTH OVERLAY ─── */
+.auth-overlay {
+  position: fixed; inset: 0;
+  background: linear-gradient(135deg, #0F0D0A 0%, #1a2a1f 50%, #0F0D0A 100%);
+  z-index: 2000;
+  display: flex; align-items: center; justify-content: center;
+}
+.auth-overlay.hidden { display: none; }
+.auth-card {
+  background: var(--white);
+  border-radius: 24px;
+  padding: 40px 36px 32px;
+  width: 92vw; max-width: 400px;
+  box-shadow: 0 24px 80px rgba(0,0,0,.35);
+}
+.auth-logo {
+  font-family: 'Playfair Display', serif;
+  font-size: 28px;
+  color: var(--ink);
+  margin-bottom: 4px;
+}
+.auth-logo .accent { color: var(--amber-light); font-style: italic; }
+.auth-subtitle {
+  font-size: 13px;
+  color: var(--ink-3);
+  margin-bottom: 28px;
+}
+.auth-tabs {
+  display: flex;
+  gap: 0;
+  border: 1.5px solid var(--paper-3);
+  border-radius: 10px;
+  padding: 3px;
+  margin-bottom: 20px;
+}
+.auth-tab-btn {
+  flex: 1;
+  padding: 7px;
+  border: none;
+  background: none;
+  border-radius: 7px;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  color: var(--ink-3);
+  font-family: inherit;
+  transition: all .2s;
+}
+.auth-tab-btn.active {
+  background: var(--ink);
+  color: var(--white);
+}
+.auth-form { display: flex; flex-direction: column; gap: 10px; }
+.auth-form.hidden { display: none; }
+.auth-input {
+  width: 100%;
+  padding: 11px 14px;
+  border: 1.5px solid var(--paper-3);
+  border-radius: 10px;
+  font-size: 14px;
+  font-family: inherit;
+  color: var(--ink);
+  background: var(--paper);
+  transition: border-color .2s;
+  outline: none;
+  box-sizing: border-box;
+}
+.auth-input:focus { border-color: var(--teal-light); background: var(--white); }
+.auth-submit-btn {
+  padding: 12px;
+  background: var(--ink);
+  color: var(--white);
+  border: none;
+  border-radius: 10px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  font-family: inherit;
+  margin-top: 4px;
+  transition: background .2s;
+}
+.auth-submit-btn:hover { background: var(--ink-2); }
+.auth-submit-btn:disabled { background: var(--ink-3); cursor: default; }
+.auth-error {
+  font-size: 12px;
+  color: var(--crimson);
+  min-height: 16px;
+  text-align: center;
+  margin-top: 4px;
+}
+.auth-footer {
+  font-size: 11px;
+  color: var(--ink-3);
+  text-align: center;
+  margin-top: 16px;
+}
+.auth-user-bar {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 12px;
+  background: rgba(255,255,255,.05);
+  border: 1px solid rgba(255,255,255,.1);
+  border-radius: 20px;
+  cursor: default;
+}
+.auth-user-name {
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--paper);
+}
+.auth-logout-btn {
+  font-size: 11px;
+  color: rgba(250,247,242,.45);
+  border: none;
+  background: none;
+  cursor: pointer;
+  padding: 2px 6px;
+  border-radius: 6px;
+  font-family: inherit;
+  transition: color .2s;
+}
+.auth-logout-btn:hover { color: var(--paper); background: rgba(255,255,255,.1); }
+
+/* ─── MODAL OVERLAY ─── */
+.modal-overlay {
+  position: fixed; inset: 0;
+  background: rgba(15,13,10,.55);
+  z-index: 500;
+  display: flex; align-items: center; justify-content: center;
+  opacity: 0; pointer-events: none;
+  transition: opacity .25s ease;
+}
+.modal-overlay.open { opacity: 1; pointer-events: all; }
+.modal {
+  background: var(--white);
+  border-radius: 20px;
+  width: 92vw; max-width: 860px;
+  max-height: 88vh;
+  overflow: hidden;
+  display: flex; flex-direction: column;
+  transform: translateY(16px) scale(.98);
+  transition: transform .25s ease;
+  box-shadow: var(--shadow-lg);
+}
+.modal-overlay.open .modal { transform: translateY(0) scale(1); }
+.modal-header {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 18px 22px 14px;
+  border-bottom: 1px solid var(--paper-3);
+  flex-shrink: 0;
+}
+.modal-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 20px; font-weight: 400;
+  color: var(--ink);
+}
+.modal-title span { color: var(--amber); font-style: italic; }
+.modal-close {
+  width: 32px; height: 32px;
+  border-radius: 8px; border: none;
+  background: var(--paper-2); color: var(--ink-3);
+  cursor: pointer; font-size: 16px;
+  display: flex; align-items: center; justify-content: center;
+  transition: var(--transition);
+}
+.modal-close:hover { background: var(--paper-3); color: var(--ink); }
+.modal-body { flex: 1; overflow-y: auto; padding: 20px 22px 24px; }
+.modal-body::-webkit-scrollbar { width: 4px; }
+.modal-body::-webkit-scrollbar-thumb { background: var(--paper-3); border-radius: 2px; }
+
+/* ─── MULTIVERSE CARDS ─── */
+.multiverse-intro {
+  font-size: 13px; color: var(--ink-3); margin-bottom: 18px; line-height: 1.6;
+}
+.multiverse-grid {
+  display: grid; grid-template-columns: repeat(3,1fr); gap: 14px; margin-bottom: 20px;
+}
+.mv-card {
+  border-radius: var(--r); border: 2px solid var(--paper-3);
+  overflow: hidden; cursor: pointer; transition: var(--transition);
+  position: relative;
+}
+.mv-card:hover { border-color: var(--teal-light); transform: translateY(-2px); box-shadow: var(--shadow); }
+.mv-card.selected { border-color: var(--teal); }
+.mv-card-header {
+  padding: 12px 14px 10px;
+  text-align: center;
+}
+.mv-tier {
+  font-size: 11px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase;
+  margin-bottom: 3px;
+}
+.mv-price {
+  font-family: 'Playfair Display', serif;
+  font-size: 26px; font-weight: 600; line-height: 1;
+  margin-bottom: 2px;
+}
+.mv-price-sub { font-size: 11px; color: var(--ink-3); }
+.mv-divider { height: 1px; background: var(--paper-3); margin: 0; }
+.mv-items { padding: 12px 14px; display: flex; flex-direction: column; gap: 7px; }
+.mv-item { display: flex; align-items: flex-start; gap: 7px; font-size: 12px; }
+.mv-item-icon { font-size: 14px; flex-shrink: 0; margin-top: 1px; }
+.mv-item-content { flex: 1; }
+.mv-item-label { font-size: 10px; color: var(--ink-3); font-weight: 600; text-transform: uppercase; letter-spacing: .05em; }
+.mv-item-val { font-weight: 600; color: var(--ink); font-size: 12px; }
+.mv-item-note { font-size: 11px; color: var(--ink-3); }
+.mv-badge {
+  position: absolute; top: -1px; right: 12px;
+  font-size: 10px; font-weight: 700;
+  padding: 3px 8px; border-radius: 0 0 8px 8px;
+}
+.mv-actions {
+  display: flex; gap: 10px; justify-content: flex-end; padding-top: 6px;
+  border-top: 1px solid var(--paper-2);
+}
+.mv-btn {
+  padding: 8px 18px; border-radius: var(--r-sm);
+  font-size: 13px; font-weight: 600;
+  cursor: pointer; border: none; font-family: inherit;
+  transition: var(--transition);
+}
+.mv-btn-ghost {
+  background: var(--paper-2); color: var(--ink-2);
+  border: 1.5px solid var(--paper-3);
+}
+.mv-btn-ghost:hover { background: var(--paper-3); }
+.mv-btn-primary { background: var(--teal); color: white; }
+.mv-btn-primary:hover { background: var(--teal-light); }
+/* Loading state for multiverse */
+.mv-loading {
+  text-align: center; padding: 40px 20px;
+  display: none;
+}
+.mv-loading.active { display: block; }
+.mv-spinner {
+  width: 36px; height: 36px;
+  border: 3px solid var(--paper-3);
+  border-top-color: var(--teal);
+  border-radius: 50%;
+  animation: spin .7s linear infinite;
+  margin: 0 auto 12px;
+}
+.mv-loading-text { font-size: 13px; color: var(--ink-3); }
+.mv-loading-agents {
+  display: flex; gap: 8px; justify-content: center; margin-top: 12px; flex-wrap: wrap;
+}
+.mv-loading-agent {
+  font-size: 11px; background: var(--paper-2); border-radius: 20px;
+  padding: 3px 10px; color: var(--ink-3);
+  display: flex; align-items: center; gap: 5px;
+}
+.mv-loading-agent.active { background: var(--teal-pale); color: var(--teal); }
+
+/* ─── BUDGET CALCULATOR ─── */
+.calc-section { margin-bottom: 22px; }
+.calc-section-title {
+  font-size: 11px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase;
+  color: var(--ink-3); margin-bottom: 12px;
+}
+.calc-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 10px; }
+.calc-field label {
+  display: block; font-size: 11px; font-weight: 600; color: var(--ink-3);
+  margin-bottom: 5px; text-transform: uppercase; letter-spacing: .05em;
+}
+.calc-field select, .calc-field input {
+  width: 100%; padding: 8px 10px;
+  border: 1.5px solid var(--paper-3); border-radius: var(--r-sm);
+  background: var(--paper); font-family: inherit; font-size: 13px; color: var(--ink);
+  transition: border-color .2s; outline: none;
+}
+.calc-field select:focus, .calc-field input:focus { border-color: var(--teal-light); }
+.calc-result {
+  background: var(--ink); border-radius: var(--r); padding: 18px 20px; color: var(--paper);
+  margin-top: 16px;
+}
+.calc-result-title {
+  font-size: 11px; opacity: .5; text-transform: uppercase; letter-spacing: .1em;
+  margin-bottom: 10px; font-weight: 600;
+}
+.calc-result-total {
+  font-family: 'Playfair Display', serif;
+  font-size: 38px; font-weight: 400; line-height: 1; margin-bottom: 4px;
+  color: var(--paper);
+}
+.calc-result-sub { font-size: 12px; opacity: .5; margin-bottom: 16px; }
+.calc-breakdown {
+  display: flex; flex-direction: column; gap: 6px;
+}
+.calc-brow {
+  display: flex; justify-content: space-between; align-items: center;
+  font-size: 12px;
+}
+.calc-brow-label { opacity: .6; display: flex; align-items: center; gap: 6px; }
+.calc-brow-bar-wrap { flex: 1; height: 3px; background: rgba(255,255,255,.1); border-radius: 2px; margin: 0 10px; }
+.calc-brow-bar { height: 100%; border-radius: 2px; background: var(--amber-light); transition: width .6s; }
+.calc-brow-val { font-weight: 600; white-space: nowrap; }
+.calc-actions { margin-top: 14px; display: flex; gap: 8px; }
+.calc-btn {
+  padding: 8px 14px; border-radius: var(--r-sm);
+  font-size: 12px; font-weight: 600; cursor: pointer; font-family: inherit;
+  transition: var(--transition); border: none;
+}
+.calc-btn-light { background: rgba(255,255,255,.1); color: var(--paper); }
+.calc-btn-light:hover { background: rgba(255,255,255,.18); }
+.calc-btn-amber { background: var(--amber); color: white; }
+.calc-btn-amber:hover { background: var(--amber-light); }
+.calc-tips {
+  margin-top: 14px; background: var(--paper); border-radius: var(--r); padding: 14px 16px;
+}
+.calc-tips-title { font-size: 11px; font-weight: 700; color: var(--ink-3); text-transform: uppercase; letter-spacing: .08em; margin-bottom: 8px; }
+.calc-tip {
+  display: flex; gap: 8px; align-items: flex-start;
+  font-size: 12px; color: var(--ink-2); line-height: 1.5; margin-bottom: 6px;
+}
+.calc-tip-icon { font-size: 14px; flex-shrink: 0; }
+
+/* ─── AGENT LOG ─── */
+.log-header {
+  display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px;
+}
+.log-status {
+  display: flex; align-items: center; gap: 6px;
+  font-size: 11px; color: var(--teal); font-weight: 600;
+}
+.log-clear {
+  font-size: 11px; color: var(--ink-3); cursor: pointer; padding: 3px 8px;
+  border: 1px solid var(--paper-3); border-radius: 6px; background: none;
+  font-family: inherit; transition: var(--transition);
+}
+.log-clear:hover { background: var(--paper-2); color: var(--ink); }
+.log-stream {
+  display: flex; flex-direction: column; gap: 4px;
+  max-height: 300px; overflow-y: auto;
+  padding-right: 4px;
+}
+.log-stream::-webkit-scrollbar { width: 3px; }
+.log-stream::-webkit-scrollbar-thumb { background: var(--paper-3); border-radius: 2px; }
+.log-entry {
+  display: flex; gap: 8px; align-items: flex-start;
+  padding: 6px 8px; border-radius: var(--r-sm);
+  font-size: 11px; line-height: 1.5;
+  animation: fadeUp .2s ease both;
+}
+.log-entry:hover { background: var(--paper); }
+.log-time { color: var(--ink-3); flex-shrink: 0; font-family: monospace; font-size: 10px; margin-top: 1px; }
+.log-icon { flex-shrink: 0; font-size: 13px; }
+.log-text { flex: 1; color: var(--ink-2); }
+.log-text strong { color: var(--ink); }
+.log-entry.info .log-text { color: var(--sky); }
+.log-entry.success .log-text { color: var(--teal); }
+.log-entry.search .log-text { color: #7C3AED; }
+.log-entry.warn .log-text { color: var(--amber); }
+.panel-content .log-section { margin-bottom: 16px; }
+
+/* ─── QUICK ACTION BUTTONS IN MAIN ─── */
+.quick-actions {
+  display: flex; gap: 6px; flex-wrap: wrap;
+  padding: 8px 24px 6px;
+  border-bottom: 1px solid var(--paper-3);
+  flex-shrink: 0; background: var(--paper);
+}
+.quick-btn {
+  padding: 5px 12px; border-radius: 20px;
+  font-size: 11px; font-weight: 600;
+  cursor: pointer; border: 1.5px solid var(--paper-3);
+  background: var(--white); color: var(--ink-2);
+  font-family: inherit; transition: var(--transition);
+  display: flex; align-items: center; gap: 5px;
+}
+.quick-btn:hover { border-color: var(--teal-light); color: var(--teal); background: var(--teal-pale); }
+.quick-btn.special {
+  border-color: var(--amber-light); color: var(--amber);
+  background: var(--amber-pale);
+}
+.quick-btn.special:hover { background: var(--amber); color: white; }
+
+/* ─── MAP MODAL ─── */
+.map-filter-btn {
+  padding: 4px 10px; border-radius: 16px; border: 1.5px solid var(--paper-3);
+  background: var(--white); color: var(--ink-3); font-family: inherit;
+  font-size: 11px; font-weight: 600; cursor: pointer; transition: var(--transition);
+}
+.map-filter-btn:hover { border-color: var(--teal-light); color: var(--teal); }
+.map-filter-btn.active { background: var(--teal); border-color: var(--teal); color: white; }
+.map-legend {
+  position: absolute; bottom: 52px; left: 14px;
+  background: rgba(15,13,10,.75); backdrop-filter: blur(8px);
+  border-radius: 10px; padding: 8px 12px;
+  display: flex; flex-direction: column; gap: 5px;
+}
+.map-legend-item { display: flex; align-items: center; gap: 7px; font-size: 11px; color: rgba(250,247,242,.8); }
+.map-legend-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+.map-time-bar {
+  position: absolute; bottom: 12px; left: 50%; transform: translateX(-50%);
+  background: rgba(15,13,10,.75); backdrop-filter: blur(8px);
+  border-radius: 20px; padding: 6px 14px;
+  display: flex; align-items: center; gap: 10px; min-width: 280px;
+}
+.map-time-label { font-size: 11px; color: rgba(250,247,242,.6); white-space: nowrap; }
+.map-time-slider {
+  flex: 1; accent-color: var(--amber-light);
+  -webkit-appearance: none; height: 3px; cursor: pointer;
+}
+.map-time-val { font-size: 12px; font-weight: 700; color: var(--amber-light); min-width: 36px; }
+.map-sidebar {
+  width: 240px; background: var(--white); border-left: 1px solid var(--paper-3);
+  display: flex; flex-direction: column; overflow: hidden; flex-shrink: 0;
+}
+.map-sidebar-title {
+  padding: 12px 14px 8px; font-size: 11px; font-weight: 700;
+  color: var(--ink-3); text-transform: uppercase; letter-spacing: .06em;
+  border-bottom: 1px solid var(--paper-2); flex-shrink: 0;
+}
+.map-poi-card {
+  padding: 12px 14px; flex: 1; overflow-y: auto;
+}
+.map-poi-name { font-size: 14px; font-weight: 700; color: var(--ink); margin-bottom: 4px; }
+.map-poi-cat {
+  display: inline-flex; align-items: center; gap: 4px;
+  font-size: 10px; font-weight: 700; padding: 2px 8px;
+  border-radius: 10px; margin-bottom: 8px; text-transform: uppercase; letter-spacing: .05em;
+}
+.map-poi-desc { font-size: 12px; color: var(--ink-2); line-height: 1.6; margin-bottom: 10px; }
+.map-poi-meta { display: flex; flex-direction: column; gap: 5px; }
+.map-poi-meta-row {
+  display: flex; gap: 6px; align-items: center;
+  font-size: 11px; color: var(--ink-3);
+}
+.map-poi-meta-row strong { color: var(--ink-2); }
+.map-poi-ask {
+  width: 100%; margin-top: 10px; padding: 7px;
+  border-radius: var(--r-sm); border: 1.5px solid var(--teal-light);
+  background: var(--teal-pale); color: var(--teal);
+  font-size: 12px; font-weight: 600; cursor: pointer; font-family: inherit;
+  transition: var(--transition);
+}
+.map-poi-ask:hover { background: var(--teal); color: white; }
+.heatmap-dot {
+  position: absolute; border-radius: 50%;
+  pointer-events: none; transition: opacity .4s;
+}
+
+/* ─── MEMORY MODAL ─── */
+.memory-profile {
+  display: flex; align-items: center; gap: 12px;
+  background: var(--paper); border-radius: var(--r); padding: 14px;
+  margin-bottom: 18px;
+}
+.memory-avatar {
+  width: 44px; height: 44px; border-radius: 50%;
+  background: linear-gradient(135deg, var(--teal), var(--sky));
+  display: flex; align-items: center; justify-content: center;
+  font-size: 18px; font-weight: 700; color: white; flex-shrink: 0;
+}
+.mem-clear-btn {
+  margin-left: auto; padding: 5px 12px; border-radius: var(--r-sm);
+  border: 1px solid var(--paper-3); background: none; color: var(--ink-3);
+  font-size: 11px; font-weight: 600; cursor: pointer; font-family: inherit;
+  transition: var(--transition);
+}
+.mem-clear-btn:hover { background: var(--crimson-pale); color: var(--crimson); border-color: var(--crimson); }
+.mem-section { margin-bottom: 18px; }
+.mem-section-title {
+  font-size: 11px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase;
+  color: var(--ink-3); margin-bottom: 10px;
+}
+.mem-prefs-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; }
+.mem-pref-card {
+  background: var(--paper); border-radius: var(--r-sm); padding: 9px 11px;
+  border: 1.5px solid var(--paper-3);
+}
+.mem-pref-label { font-size: 10px; color: var(--ink-3); font-weight: 600; text-transform: uppercase; margin-bottom: 3px; }
+.mem-pref-val { font-size: 12px; font-weight: 600; color: var(--ink); }
+.mem-chips-wrap { display: flex; flex-wrap: wrap; gap: 6px; }
+.mem-chip {
+  display: flex; align-items: center; gap: 5px;
+  background: var(--teal-pale); border: 1px solid var(--teal-light);
+  border-radius: 20px; padding: 3px 10px; font-size: 12px; font-weight: 500; color: var(--teal);
+}
+.mem-history-item {
+  display: flex; gap: 8px; padding: 6px 0;
+  border-bottom: 1px solid var(--paper-2); font-size: 12px; color: var(--ink-2);
+}
+.mem-history-time { color: var(--ink-3); white-space: nowrap; font-size: 11px; }
+.mem-regret-item {
+  display: flex; align-items: center; gap: 8px;
+  background: var(--amber-pale); border-radius: var(--r-sm);
+  padding: 8px 10px; margin-bottom: 6px; font-size: 12px;
+}
+.mem-regret-del { margin-left:auto; cursor:pointer; color:var(--ink-3); font-size:14px; }
+.mem-regret-del:hover { color:var(--crimson); }
+
+/* Nav avatar as memory trigger */
+#nav-avatar { cursor: pointer; position: relative; }
+#nav-avatar::after {
+  content: attr(data-count);
+  position: absolute; top: -3px; right: -3px;
+  width: 14px; height: 14px; border-radius: 50%;
+  background: var(--amber); color: white;
+  font-size: 9px; font-weight: 700;
+  display: flex; align-items: center; justify-content: center;
+  display: none;
+}
+#nav-avatar.has-memory::after { display: flex; }
+
+/* ─── LANGUAGE SWITCHER ─── */
+.lang-switcher {
+  position: relative;
+  display: flex; align-items: center;
+}
+.lang-btn {
+  display: flex; align-items: center; gap: 5px;
+  background: rgba(255,255,255,.08);
+  border: 1px solid rgba(255,255,255,.12);
+  border-radius: 20px;
+  padding: 4px 10px 4px 8px;
+  cursor: pointer; color: var(--paper);
+  font-family: inherit; font-size: 12px; font-weight: 500;
+  transition: var(--transition);
+  white-space: nowrap;
+}
+.lang-btn:hover { background: rgba(255,255,255,.14); }
+.lang-flag { font-size: 14px; }
+.lang-arrow { font-size: 9px; opacity: .6; margin-left: 1px; }
+.lang-menu {
+  position: absolute; top: calc(100% + 8px); right: 0;
+  background: var(--ink-2);
+  border: 1px solid rgba(255,255,255,.12);
+  border-radius: var(--r); padding: 5px;
+  min-width: 160px; display: none; z-index: 200;
+  box-shadow: var(--shadow-lg);
+}
+.lang-menu.open { display: block; }
+.lang-menu-item {
+  display: flex; align-items: center; gap: 9px;
+  padding: 8px 10px; border-radius: var(--r-sm);
+  cursor: pointer; font-size: 13px;
+  color: rgba(250,247,242,.75); transition: var(--transition);
+}
+.lang-menu-item:hover { background: rgba(255,255,255,.1); color: var(--paper); }
+.lang-menu-item.active { color: var(--amber-light); font-weight: 600; }
+.lang-menu-item .lm-flag { font-size: 16px; }
+.lang-menu-item .lm-name { flex: 1; }
+.lang-menu-item .lm-check { font-size: 12px; opacity: 0; }
+.lang-menu-item.active .lm-check { opacity: 1; }
+
+@media (max-width: 900px) {
+  .app { grid-template-columns: 0 1fr 0; }
+  .sidebar, .panel { display: none; }
+}
+</style>
+</head>
+<body>
+
+<!-- Loading -->
+<!-- LANGUAGE PICKER (z-index 3000, shown first) -->
+<div class="lang-picker" id="lang-picker">
+  <div class="lp-logo">Wander<span>Mind</span></div>
+  <div class="lp-tagline">AI Multi-Agent Travel Platform · AI多智能体旅行平台</div>
+  <div class="lp-prompt">Choose your language · 请选择语言</div>
+  <div class="lp-grid">
+    <button class="lp-btn" onclick="pickLang('zh')">
+      <span class="lp-flag">🇨🇳</span>
+      <span class="lp-name">中文</span>
+      <span class="lp-sub">Chinese</span>
+    </button>
+    <button class="lp-btn" onclick="pickLang('en')">
+      <span class="lp-flag">🇬🇧</span>
+      <span class="lp-name">English</span>
+      <span class="lp-sub">英语</span>
+    </button>
+    <button class="lp-btn" onclick="pickLang('ja')">
+      <span class="lp-flag">🇯🇵</span>
+      <span class="lp-name">日本語</span>
+      <span class="lp-sub">Japanese</span>
+    </button>
+    <button class="lp-btn" onclick="pickLang('ko')">
+      <span class="lp-flag">🇰🇷</span>
+      <span class="lp-name">한국어</span>
+      <span class="lp-sub">Korean</span>
+    </button>
+    <button class="lp-btn" onclick="pickLang('id')">
+      <span class="lp-flag">🇮🇩</span>
+      <span class="lp-name">Bahasa</span>
+      <span class="lp-sub">Indonesia</span>
+    </button>
+  </div>
+</div>
+
+<div class="loader" id="loader">
+  <div class="loader-logo">Wander<span>Mind</span></div>
+  <div class="loader-sub" id="loader-sub-text">多智能体旅行规划平台 · v2.0</div>
+  <div class="loader-agents" id="loader-agents">
+    <div class="loader-agent" id="la-0"><div class="loader-agent-icon">🗺️</div><div class="loader-agent-name" id="lan-0">规划师</div></div>
+    <div class="loader-agent" id="la-1"><div class="loader-agent-icon">🏨</div><div class="loader-agent-name" id="lan-1">住宿</div></div>
+    <div class="loader-agent" id="la-2"><div class="loader-agent-icon">🍜</div><div class="loader-agent-name" id="lan-2">美食</div></div>
+    <div class="loader-agent" id="la-3"><div class="loader-agent-icon">🏄</div><div class="loader-agent-name" id="lan-3">活动</div></div>
+    <div class="loader-agent" id="la-4"><div class="loader-agent-icon">💰</div><div class="loader-agent-name" id="lan-4">预算</div></div>
+    <div class="loader-agent" id="la-5"><div class="loader-agent-icon">🔍</div><div class="loader-agent-name" id="lan-5">搜索</div></div>
+  </div>
+  <div class="loader-progress"><div class="loader-bar" id="loader-bar"></div></div>
+  <div class="loader-msg" id="loader-msg">初始化智能体网络…</div>
+</div>
+
+
+<!-- MULTIVERSE MODAL -->
+<div class="modal-overlay" id="modal-multiverse" onclick="closeModalBg(event,'modal-multiverse')">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="modal-title">平行宇宙<span>预览</span></div>
+      <button class="modal-close" onclick="closeModal('modal-multiverse')">✕</button>
+    </div>
+    <div class="modal-body">
+      <p class="multiverse-intro" id="mv-dest-text">AI 同时生成 3 个版本行程方案，从极简到奢享——看完再决定。</p>
+      <div class="mv-loading active" id="mv-loading">
+        <div class="mv-spinner"></div>
+        <div class="mv-loading-text">多 Agent 正在并行生成三个方案…</div>
+        <div class="mv-loading-agents">
+          <div class="mv-loading-agent active" id="mvla-0">🗺️ 规划师</div>
+          <div class="mv-loading-agent" id="mvla-1">🏨 住宿顾问</div>
+          <div class="mv-loading-agent" id="mvla-2">💰 预算管家</div>
+          <div class="mv-loading-agent" id="mvla-3">🍜 美食</div>
+        </div>
+      </div>
+      <div class="multiverse-grid" id="mv-grid" style="display:none"></div>
+      <div class="mv-actions" id="mv-actions" style="display:none">
+        <button class="mv-btn mv-btn-ghost" onclick="closeModal('modal-multiverse')">稍后再说</button>
+        <button class="mv-btn mv-btn-primary" id="mv-confirm-btn">✨ 采用选中方案开始规划</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- BUDGET CALCULATOR MODAL -->
+<div class="modal-overlay" id="modal-budget" onclick="closeModalBg(event,'modal-budget')">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="modal-title">智能<span>预算计算器</span></div>
+      <button class="modal-close" onclick="closeModal('modal-budget')">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="calc-section">
+        <div class="calc-section-title">基本参数</div>
+        <div class="calc-row">
+          <div class="calc-field"><label>目的地</label><select id="calc-dest" onchange="calcUpdate()"><option value="bali">🌺 巴厘岛</option><option value="kyoto">🌸 京都</option><option value="paris">🗼 巴黎</option><option value="santorini">🏝️ 圣托里尼</option></select></div>
+          <div class="calc-field"><label>旅行天数</label><select id="calc-days" onchange="calcUpdate()"><option value="3">3天</option><option value="5">5天</option><option value="7" selected>7天</option><option value="10">10天</option><option value="14">14天</option></select></div>
+        </div>
+        <div class="calc-row">
+          <div class="calc-field"><label>出行人数</label><select id="calc-people" onchange="calcUpdate()"><option value="1">1人</option><option value="2" selected>2人</option><option value="3">3人</option><option value="4">4人</option></select></div>
+          <div class="calc-field"><label>旅行风格</label><select id="calc-style" onchange="calcUpdate()"><option value="budget">节俭穷游</option><option value="comfort" selected>舒适平衡</option><option value="luxury">奢享高端</option></select></div>
+        </div>
+        <div class="calc-row">
+          <div class="calc-field"><label>出发城市</label><select id="calc-city" onchange="calcUpdate()"><option value="sh">上海</option><option value="bj">北京</option><option value="gz">广州/深圳</option><option value="cd">成都</option></select></div>
+          <div class="calc-field"><label>活动安排</label><select id="calc-activity" onchange="calcUpdate()"><option value="basic">基础观光</option><option value="moderate" selected>适中体验</option><option value="full">丰富活动</option></select></div>
+        </div>
+      </div>
+      <div class="calc-result" id="calc-result">
+        <div class="calc-result-title">预算估算</div>
+        <div class="calc-result-total" id="calc-total">¥18,000</div>
+        <div class="calc-result-sub" id="calc-sub">2人 · 7天 · 巴厘岛 · 舒适风格</div>
+        <div class="calc-breakdown" id="calc-breakdown"></div>
+        <div class="calc-actions">
+          <button class="calc-btn calc-btn-light" onclick="calcAskAI()">🤖 AI 优化预算方案</button>
+          <button class="calc-btn calc-btn-amber" onclick="closeModal('modal-budget')">应用到行程规划</button>
+        </div>
+      </div>
+      <div class="calc-tips"><div class="calc-tips-title">💡 省钱小贴士</div><div id="calc-tips-content"></div></div>
+    </div>
+  </div>
+</div>
+<!-- AUTH OVERLAY -->
+<div class="auth-overlay hidden" id="auth-overlay">
+  <div class="auth-card">
+    <div class="auth-logo">Wander<span class="accent">Mind</span></div>
+    <div class="auth-subtitle">AI 多智能体旅行平台 · AI Multi-Agent Travel Platform</div>
+    <div class="auth-tabs">
+      <button class="auth-tab-btn active" id="tab-login" onclick="authTab('login')">登录 / Login</button>
+      <button class="auth-tab-btn" id="tab-register" onclick="authTab('register')">注册 / Register</button>
+    </div>
+    <!-- Login -->
+    <div class="auth-form" id="form-login">
+      <input class="auth-input" type="email" id="auth-email" placeholder="邮箱 / Email" autocomplete="email" />
+      <input class="auth-input" type="password" id="auth-password" placeholder="密码 / Password" autocomplete="current-password" />
+      <button class="auth-submit-btn" id="btn-login" onclick="doLogin()">登录 / Sign In</button>
+    </div>
+    <!-- Register -->
+    <div class="auth-form hidden" id="form-register">
+      <input class="auth-input" type="text" id="auth-name" placeholder="姓名 / Name" autocomplete="name" />
+      <input class="auth-input" type="email" id="auth-email-r" placeholder="邮箱 / Email" autocomplete="email" />
+      <input class="auth-input" type="password" id="auth-password-r" placeholder="密码 6位以上 / Password (6+ chars)" autocomplete="new-password" />
+      <button class="auth-submit-btn" id="btn-register" onclick="doRegister()">创建账户 / Create Account</button>
+    </div>
+    <p class="auth-error" id="auth-error"></p>
+    <p class="auth-footer">支持：中文 · English · 日本語 · 한국어 · Bahasa Indonesia</p>
+  </div>
+</div>
+
+<div class="app" id="app">
+
+  <!-- NAV -->
+  <nav class="nav">
+    <div class="nav-logo">
+      Wander<span class="accent">Mind</span>
+      <span class="version">Beta</span>
+    </div>
+    <div class="nav-tabs">
+      <button class="nav-tab active">AI 对话</button>
+      <button class="nav-tab">行程规划</button>
+      <button class="nav-tab">探索地图</button>
+      <button class="nav-tab">预算管理</button>
+      <button class="nav-tab">游记生成</button>
+    </div>
+    <div class="nav-right">
+      <div class="dest-switcher" onclick="toggleDestMenu()" id="dest-switcher">
+        <span class="dest-flag" id="dest-flag">🌺</span>
+        <span class="dest-name" id="dest-name-nav">巴厘岛</span>
+        <span class="dest-arrow">▾</span>
+        <div class="dest-menu" id="dest-menu">
+          <div class="dest-menu-item selected" onclick="switchDest('bali','🌺','巴厘岛',event)">🌺 巴厘岛 · 印度尼西亚</div>
+          <div class="dest-menu-item" onclick="switchDest('kyoto','🌸','京都',event)">🌸 京都 · 日本</div>
+          <div class="dest-menu-item" onclick="switchDest('paris','🗼','巴黎',event)">🗼 巴黎 · 法国</div>
+          <div class="dest-menu-item" onclick="switchDest('santorini','🏝️','圣托里尼',event)">🏝️ 圣托里尼 · 希腊</div>
+          <div class="dest-menu-item" onclick="switchDest('custom','✨','自定义',event)" style="border-top:1px solid rgba(255,255,255,.08);margin-top:4px;padding-top:8px">✨ 输入其他目的地…</div>
+        </div>
+      </div>
+      <div class="agent-status-bar">
+        <div class="status-dot"></div>
+        <span>6 Agent 在线</span>
+      </div>
+      <div class="lang-switcher" id="lang-switcher">
+        <button class="lang-btn" onclick="toggleLangMenu()" id="lang-btn">
+          <span class="lang-flag" id="lang-flag">🇨🇳</span>
+          <span id="lang-label">中文</span>
+          <span class="lang-arrow">▾</span>
+        </button>
+        <div class="lang-menu" id="lang-menu">
+          <div class="lang-menu-item active" onclick="setLang('zh',event)" data-lang="zh"><span class="lm-flag">🇨🇳</span><span class="lm-name">中文</span><span class="lm-check">✓</span></div>
+          <div class="lang-menu-item" onclick="setLang('en',event)" data-lang="en"><span class="lm-flag">🇬🇧</span><span class="lm-name">English</span><span class="lm-check">✓</span></div>
+          <div class="lang-menu-item" onclick="setLang('ja',event)" data-lang="ja"><span class="lm-flag">🇯🇵</span><span class="lm-name">日本語</span><span class="lm-check">✓</span></div>
+          <div class="lang-menu-item" onclick="setLang('ko',event)" data-lang="ko"><span class="lm-flag">🇰🇷</span><span class="lm-name">한국어</span><span class="lm-check">✓</span></div>
+          <div class="lang-menu-item" onclick="setLang('id',event)" data-lang="id"><span class="lm-flag">🇮🇩</span><span class="lm-name">Bahasa Indonesia</span><span class="lm-check">✓</span></div>
+        </div>
+      </div>
+      <div class="nav-avatar" id="nav-avatar" onclick="openModal('modal-memory')" title="旅行记忆档案">游</div>
+      <button class="auth-logout-btn" onclick="doLogout()" title="退出登录">⏏</button>
+    </div>
+  </nav>
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <div class="sidebar-header">
+      <div class="sidebar-title">我的行程</div>
+      <div class="trip-card active" onclick="selectTrip(this)">
+        <div class="trip-card-title">🌺 巴厘岛 · 7日深度游</div>
+        <div class="trip-card-meta"><span>6月12–19日</span><span>·</span><span>2人</span><span>·</span><span>¥18,000</span></div>
+      </div>
+      <div class="trip-card" onclick="selectTrip(this)">
+        <div class="trip-card-title">🌊 乌鲁瓦图冲浪营</div>
+        <div class="trip-card-meta"><span>待规划</span><span>·</span><span>1人</span></div>
+      </div>
+      <button class="new-trip-btn" onclick="qsend('我想规划一次全新的旅行，帮我从头开始设计')">＋ 新建行程</button>
+    </div>
+
+    <div class="agents-section">
+      <div class="agents-title">智能体团队</div>
+      <div class="agent-item active" id="agent-planner" onclick="switchAgent('planner',this)">
+        <div class="agent-icon" style="background:#E3F5F1" id="icon-planner">🗺️<div class="agent-working"></div></div>
+        <div class="agent-info">
+          <div class="agent-name">旅程规划师</div>
+          <div class="agent-desc">行程设计 · 路线优化</div>
+        </div>
+        <span class="badge badge-on">运行中</span>
+      </div>
+      <div class="agent-item" id="agent-hotel" onclick="switchAgent('hotel',this)">
+        <div class="agent-icon" style="background:#EAF3DE" id="icon-hotel">🏨<div class="agent-working"></div></div>
+        <div class="agent-info">
+          <div class="agent-name">住宿顾问</div>
+          <div class="agent-desc">已加载 75 家酒店</div>
+        </div>
+        <span class="badge badge-ready">就绪</span>
+      </div>
+      <div class="agent-item" id="agent-food" onclick="switchAgent('food',this)">
+        <div class="agent-icon" style="background:#FDF0E3" id="icon-food">🍜<div class="agent-working"></div></div>
+        <div class="agent-info">
+          <div class="agent-name">美食探索家</div>
+          <div class="agent-desc">本地餐厅 · 隐藏小馆</div>
+        </div>
+        <span class="badge badge-ready">就绪</span>
+      </div>
+      <div class="agent-item" id="agent-activity" onclick="switchAgent('activity',this)">
+        <div class="agent-icon" style="background:#FAF7F2" id="icon-activity">🏄<div class="agent-working"></div></div>
+        <div class="agent-info">
+          <div class="agent-name">活动策划师</div>
+          <div class="agent-desc">冲浪 · 瑜伽 · 文化游</div>
+        </div>
+        <span class="badge badge-idle">待机</span>
+      </div>
+      <div class="agent-item" id="agent-budget" onclick="switchAgent('budget',this)">
+        <div class="agent-icon" style="background:#FAF7F2" id="icon-budget">💰<div class="agent-working"></div></div>
+        <div class="agent-info">
+          <div class="agent-name">预算管家</div>
+          <div class="agent-desc">费用预测 · 实时汇率</div>
+        </div>
+        <span class="badge badge-idle">待机</span>
+      </div>
+      <div class="agent-item" id="agent-search" onclick="switchAgent('search',this)">
+        <div class="agent-icon" style="background:#E4F0F8" id="icon-search">🔍<div class="agent-working"></div></div>
+        <div class="agent-info">
+          <div class="agent-name">实时搜索</div>
+          <div class="agent-desc">联网 · 最新资讯</div>
+        </div>
+        <span class="badge badge-on">在线</span>
+      </div>
+    </div>
+  </aside>
+
+  <!-- MAIN -->
+  <main class="main">
+    <div class="dest-header">
+      <div class="dest-header-text">
+        <div class="dest-eyebrow" id="dest-eyebrow">🌺 正在规划</div>
+        <div class="dest-title" id="dest-title">巴厘岛 · 神之岛<em>深度旅行</em></div>
+        <div class="dest-chips">
+          <span class="dest-chip"><span class="chip-dot" style="background:#E07A12"></span>6月12日 出发</span>
+          <span class="dest-chip"><span class="chip-dot" style="background:#12A08A"></span>7晚行程</span>
+          <span class="dest-chip"><span class="chip-dot" style="background:#1A5F8A"></span>6 Agent 协同</span>
+        </div>
+      </div>
+      <div class="dest-actions">
+        <button class="btn btn-ghost" onclick="qsend('帮我生成完整的7日行程方案，包括每天的景点、餐厅、住宿推荐')">生成完整行程</button>
+        <button class="btn btn-primary" onclick="qsend('搜索最新的旅游资讯、入境政策和注意事项')">🔍 联网搜索</button>
+      </div>
+    </div>
+
+    <!-- Active agents bar -->
+    <div class="active-agents-bar" id="agents-bar">
+      <span class="active-label">协同中</span>
+      <div class="active-agent-chip" onclick="switchAgent('planner',document.getElementById('agent-planner'))">
+        <span class="chip-icon">🗺️</span>旅程规划师
+      </div>
+      <div class="active-agent-chip" onclick="switchAgent('search',document.getElementById('agent-search'))">
+        <span class="chip-icon">🔍</span>实时搜索
+      </div>
+      <div class="active-agent-chip" onclick="switchAgent('hotel',document.getElementById('agent-hotel'))">
+        <span class="chip-icon">🏨</span>住宿顾问
+      </div>
+      <div class="active-agent-chip" onclick="switchAgent('food',document.getElementById('agent-food'))">
+        <span class="chip-icon">🍜</span>美食探索家
+      </div>
+    </div>
+
+    <!-- Quick Actions -->
+    <div class="quick-actions">
+      <button class="quick-btn special" onclick="openMultiverse()">🌌 平行宇宙预览</button>
+      <button class="quick-btn special" onclick="openBudgetCalc()">🧮 预算计算器</button>
+      <button class="quick-btn" onclick="qsend('帮我生成完整的7日行程方案，包括每天景点、餐厅和住宿')">📋 生成完整行程</button>
+      <button class="quick-btn" onclick="qsend('搜索目前最新的入境政策、签证要求和安全注意事项')">🔍 最新资讯</button>
+      <button class="quick-btn" onclick="qsend('推荐性价比最高的住宿方案，各价位段各给2个选择')">🏨 住宿推荐</button>
+    </div>
+
+    <!-- Messages -->
+    <div class="messages" id="messages">
+      <div class="msg ai fade-in">
+        <div class="msg-avatar ai">W</div>
+        <div class="msg-body">
+          <div class="agent-label" style="color:var(--teal)">🗺️ 旅程规划师</div>
+          <div class="bubble ai">
+            你好！我是你的<strong>WanderMind 旅行伴侣</strong> 🌺<br><br>
+            我已激活 <strong>6个专属智能体</strong>，随时协同工作——联网搜索已启用，可实时获取最新资讯、天气、航班动态。<br><br>
+            你可以问我任何关于目的地的问题，或者直接告诉我你的旅行想法：
+          </div>
+          <div class="chips-wrap">
+            <button class="sugg-chip" onclick="qsend('推荐乌布最好的精品民宿，预算中等')">🏨 乌布精品民宿</button>
+            <button class="sugg-chip" onclick="qsend('巴厘岛最佳冲浪地点和适合新手的冲浪课')">🌊 冲浪地点推荐</button>
+            <button class="sugg-chip" onclick="qsend('巴厘岛必吃地道美食清单')">🍜 必吃美食清单</button>
+            <button class="sugg-chip" onclick="qsend('两人7天巴厘岛旅行，分节俭/舒适/豪华三档预算')">💰 预算规划</button>
+            <button class="sugg-chip" onclick="qsend('巴厘岛文化礼仪和注意事项')">🕌 文化礼仪</button>
+          </div>
+          <div class="msg-time">刚刚</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Input -->
+    <div class="input-area">
+      <div class="input-box">
+        <textarea id="main-input" rows="1" placeholder="问任何关于目的地的问题，或描述你的旅行梦想…" onkeydown="handleKey(event)" oninput="autoResize(this)"></textarea>
+        <div class="input-btns">
+          <button class="icon-btn" title="语音" onclick="fakeVoice()">🎙️</button>
+          <button class="icon-btn" title="上传图片" onclick="fakeImg()">📎</button>
+          <button class="send-btn" id="send-btn" onclick="sendMsg()">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M22 2L11 13"/><path d="M22 2L15 22L11 13L2 9L22 2Z"/>
+            </svg>
+          </button>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- RIGHT PANEL -->
+  <aside class="panel">
+    <div class="panel-tabs">
+      <button class="panel-tab active" onclick="setPTab(this,'dest')">目的地</button>
+      <button class="panel-tab" onclick="setPTab(this,'itinerary')">行程</button>
+      <button class="panel-tab" onclick="setPTab(this,'budget')">预算</button>
+      <button class="panel-tab" onclick="setPTab(this,'log')">Agent日志</button>
+    </div>
+    <div class="panel-body">
+
+      <!-- Destination -->
+      <div class="panel-content active" id="panel-dest">
+        <div class="weather-card">
+          <div class="weather-top">
+            <div>
+              <div class="weather-temp" id="w-temp">29°C</div>
+              <div class="weather-cond" id="w-cond">巴厘岛 · 乌布 · 晴间多云</div>
+            </div>
+            <div class="weather-icon" id="w-icon">⛅</div>
+          </div>
+          <div class="weather-row" id="w-details">
+            <span>💧 湿度 72%</span>
+            <span>💨 14km/h</span>
+            <span>🌅 06:14</span>
+          </div>
+        </div>
+        <div class="stat-grid">
+          <div class="stat-card"><div class="stat-val" id="s-rate">¥1≈2,200</div><div class="stat-lbl">实时汇率</div></div>
+          <div class="stat-card"><div class="stat-val" id="s-season" style="color:var(--amber)">旺季</div><div class="stat-lbl" id="s-season-desc">6月为旱季</div></div>
+        </div>
+
+        <div class="panel-section">
+          <div class="panel-section-title">推荐区域</div>
+          <div class="info-card" onclick="qsend('详细介绍乌布的景点、活动、住宿和美食')">
+            <div class="info-card-head"><span class="info-card-title">乌布 Ubud</span><span class="tag tag-blue">文化中心</span></div>
+            <div class="info-card-body">梯田、艺术、瑜伽、精神探索——旅行者心中的圣地</div>
+          </div>
+          <div class="info-card" onclick="qsend('水明漾 Seminyak 的海滩酒吧、网红餐厅和日落体验推荐')">
+            <div class="info-card-head"><span class="info-card-title">水明漾 Seminyak</span><span class="tag tag-amber">最热门</span></div>
+            <div class="info-card-body">时尚海滩、精品酒店、网红餐厅、日落鸡尾酒</div>
+          </div>
+          <div class="info-card" onclick="qsend('乌鲁瓦图的冲浪攻略和悬崖神庙游览建议')">
+            <div class="info-card-head"><span class="info-card-title">乌鲁瓦图 Uluwatu</span><span class="tag tag-amber">冲浪圣地</span></div>
+            <div class="info-card-body">顶级冲浪点、悬崖神庙、凯撒火舞表演</div>
+          </div>
+          <div class="info-card" onclick="qsend('努沙杜瓦 Nusa Dua 高端度假村推荐')">
+            <div class="info-card-head"><span class="info-card-title">努沙杜瓦 Nusa Dua</span><span class="tag tag-green">度假首选</span></div>
+            <div class="info-card-body">五星度假村聚集区，水上运动，蜜月首选</div>
+          </div>
+        </div>
+
+        <div class="panel-section">
+          <div class="panel-section-title">旅行必知</div>
+          <div class="info-card">
+            <div class="info-card-head"><span class="info-card-title">签证</span><span class="tag tag-blue">中国护照</span></div>
+            <div class="info-card-body">落地签约 $35，建议备好美元现金</div>
+          </div>
+          <div class="info-card">
+            <div class="info-card-head"><span class="info-card-title">文化礼仪</span><span class="tag tag-amber">必读</span></div>
+            <div class="info-card-body">进庙须着纱笼；左手被视为不洁，避免用左手递物</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Itinerary -->
+      <div class="panel-content" id="panel-itinerary">
+        <div class="panel-section-title" style="margin-bottom:10px">7日行程概览</div>
+        <div class="timeline">
+          <div class="tl-item">
+            <div class="tl-dot" style="background:#E3F5F1">✈️</div>
+            <div class="tl-content">
+              <div class="tl-day">Day 1 · 6月12日</div>
+              <div class="tl-title">抵达登巴萨 → 乌布</div>
+              <div class="tl-desc">机场接送，入住民宿，圣泉寺傍晚游览</div>
+            </div>
+          </div>
+          <div class="tl-item">
+            <div class="tl-dot" style="background:#EAF3DE">🌾</div>
+            <div class="tl-content">
+              <div class="tl-day">Day 2 · 6月13日</div>
+              <div class="tl-title">乌布深度文化日</div>
+              <div class="tl-desc">巴图布隆寺、乌布市场、梯田日落</div>
+            </div>
+          </div>
+          <div class="tl-item">
+            <div class="tl-dot" style="background:#FDF0E3">🌋</div>
+            <div class="tl-content">
+              <div class="tl-day">Day 3 · 6月14日</div>
+              <div class="tl-title">阿贡火山日出徒步</div>
+              <div class="tl-desc">凌晨出发，巴图尔湖全景，温泉午餐</div>
+            </div>
+          </div>
+          <div class="tl-item">
+            <div class="tl-dot" style="background:#E4F0F8">🌊</div>
+            <div class="tl-content">
+              <div class="tl-day">Day 4–5 · 6月15–16日</div>
+              <div class="tl-title">南部海岸 · 乌鲁瓦图</div>
+              <div class="tl-desc">冲浪课程、悬崖神庙、凯撒火舞</div>
+            </div>
+          </div>
+          <div class="tl-item">
+            <div class="tl-dot" style="background:#FAF7F2">🛥️</div>
+            <div class="tl-content">
+              <div class="tl-day">Day 6 · 6月17日</div>
+              <div class="tl-title">努沙佩尼达一日游</div>
+              <div class="tl-desc">天使湾、克灵金海滩、珊瑚浮潜</div>
+            </div>
+          </div>
+          <div class="tl-item">
+            <div class="tl-dot" style="background:#E3F5F1">🌅</div>
+            <div class="tl-content">
+              <div class="tl-day">Day 7 · 6月18–19日</div>
+              <div class="tl-title">水明漾 · 自由日 → 离境</div>
+              <div class="tl-desc">海滩休闲、购物、夜间航班返程</div>
+            </div>
+          </div>
+        </div>
+        <button class="panel-action-btn" onclick="qsend('帮我详细规划乌布两天的具体行程，精确到每小时，包括景点路线、餐厅预订建议和住宿推荐')">✨ AI 深度定制行程</button>
+      </div>
+
+      <!-- Budget -->
+      <div class="panel-content" id="panel-budget">
+        <div class="panel-section-title" style="margin-bottom:10px">预算追踪 · 2人7天</div>
+        <div class="budget-total">
+          <div class="stat-card" style="background:var(--paper-2)">
+            <div class="stat-val">¥18,000</div>
+            <div class="stat-lbl">总预算</div>
+          </div>
+          <div class="stat-card" style="background:var(--paper-2)">
+            <div class="stat-val" style="color:var(--teal)">¥6,200</div>
+            <div class="stat-lbl">已规划 (34%)</div>
+          </div>
+        </div>
+
+        <div class="panel-section-title">费用分类</div>
+        <div class="budget-bar-item">
+          <div class="budget-bar-head"><span>✈️ 机票（往返2人）</span><span class="budget-bar-amount" style="color:var(--sky)">¥5,200</span></div>
+          <div class="bbar-wrap"><div class="bbar" style="width:58%;background:var(--sky)"></div></div>
+        </div>
+        <div class="budget-bar-item">
+          <div class="budget-bar-head"><span>🏨 住宿（7晚）</span><span class="budget-bar-amount" style="color:var(--teal)">¥4,900</span></div>
+          <div class="bbar-wrap"><div class="bbar" style="width:42%;background:var(--teal)"></div></div>
+        </div>
+        <div class="budget-bar-item">
+          <div class="budget-bar-head"><span>🍜 餐饮</span><span class="budget-bar-amount" style="color:var(--amber)">¥2,800</span></div>
+          <div class="bbar-wrap"><div class="bbar" style="width:31%;background:var(--amber-light)"></div></div>
+        </div>
+        <div class="budget-bar-item">
+          <div class="budget-bar-head"><span>🏄 活动体验</span><span class="budget-bar-amount" style="color:var(--crimson)">¥3,200</span></div>
+          <div class="bbar-wrap"><div class="bbar" style="width:36%;background:var(--crimson)"></div></div>
+        </div>
+        <div class="budget-bar-item">
+          <div class="budget-bar-head"><span>🚗 交通</span><span class="budget-bar-amount" style="color:var(--ink-2)">¥1,400</span></div>
+          <div class="bbar-wrap"><div class="bbar" style="width:16%;background:var(--ink-3)"></div></div>
+        </div>
+        <button class="panel-action-btn" onclick="qsend('帮我分析巴厘岛两人7天旅行的详细预算方案，按节俭/舒适/豪华三档列出')">💡 AI 预算优化</button>
+      </div>
+
+      <!-- Agent Log Panel -->
+      <div class="panel-content" id="panel-log">
+        <div class="log-header">
+          <div class="log-status">
+            <div class="status-dot"></div>实时日志
+          </div>
+          <button class="log-clear" onclick="clearLog()">清空</button>
+        </div>
+        <div class="log-stream" id="log-stream">
+          <div class="log-entry success">
+            <span class="log-time">--:--</span>
+            <span class="log-icon">✅</span>
+            <span class="log-text"><strong>系统就绪</strong> · 6个Agent已激活</span>
+          </div>
+          <div class="log-entry info">
+            <span class="log-time">--:--</span>
+            <span class="log-icon">🔍</span>
+            <span class="log-text"><strong>实时搜索</strong> · 联网连接正常</span>
+          </div>
+        </div>
+        <div style="margin-top:12px;padding-top:12px;border-top:1px solid var(--paper-3)">
+          <div class="panel-section-title">Agent 状态</div>
+          <div id="agent-stats" style="display:flex;flex-direction:column;gap:6px"></div>
+        </div>
+      </div>
+
+    </div>
+  </aside>
+
+</div>
+
+<script>
+// ─── CONFIG ───────────────────────────────────
+// Backend API — no API key in browser, all calls go through /api/*
+
+const DESTINATIONS = {
+  bali:      { flag:'🌺', name:'巴厘岛', region:'印度尼西亚', title:'巴厘岛 · 神之岛<em>深度旅行</em>', eyebrow:'🌺 正在规划', weather:{temp:'29°C',cond:'巴厘岛 · 乌布 · 晴间多云',icon:'⛅',details:'💧 湿度 72% · 💨 14km/h · 🌅 06:14'}, rate:'¥1≈2,200', season:'旺季', seasonDesc:'6月为旱季' },
+  kyoto:     { flag:'🌸', name:'京都', region:'日本', title:'京都 · 千年古都<em>文化之旅</em>', eyebrow:'🌸 正在规划', weather:{temp:'24°C',cond:'京都 · 晴天',icon:'☀️',details:'💧 湿度 58% · 💨 8km/h · 🌅 05:02'}, rate:'¥1≈21', season:'初夏', seasonDesc:'6月微雨季节' },
+  paris:     { flag:'🗼', name:'巴黎', region:'法国', title:'巴黎 · 光之城<em>浪漫之旅</em>', eyebrow:'🗼 正在规划', weather:{temp:'21°C',cond:'巴黎 · 部分多云',icon:'⛅',details:'💧 湿度 65% · 💨 12km/h · 🌅 06:01'}, rate:'¥1≈0.13€', season:'旺季', seasonDesc:'6月最佳季节' },
+  santorini: { flag:'🏝️', name:'圣托里尼', region:'希腊', title:'圣托里尼 · 爱琴海<em>蓝白梦境</em>', eyebrow:'🏝️ 正在规划', weather:{temp:'26°C',cond:'圣托里尼 · 晴朗',icon:'☀️',details:'💧 湿度 55% · 💨 18km/h · 🌅 06:24'}, rate:'¥1≈0.13€', season:'旺季', seasonDesc:'6–8月最美' },
+};
+
+const AGENT_PERSONAS = {
+  planner:  { name:'旅程规划师', icon:'🗺️', color:'var(--teal)', intro:'我专注于整体行程设计和路线优化。', suffix:'\n\n作为旅程规划师，我的建议基于最优路线和节奏设计。' },
+  hotel:    { name:'住宿顾问',   icon:'🏨', color:'var(--sky)',  intro:'我专精住宿推荐，从背包客栈到五星度假村都有深入了解。', suffix:'\n\n作为住宿顾问，我的建议特别关注住宿的性价比、位置和特色体验。' },
+  food:     { name:'美食探索家', icon:'🍜', color:'var(--amber)',intro:'我专注于当地美食文化，带你发现隐藏在街角的地道风味。', suffix:'\n\n作为美食探索家，我会特别挖掘本地人才知道的隐藏美食。' },
+  activity: { name:'活动策划师', icon:'🏄', color:'#8B5CF6',   intro:'我专注于体验活动设计，从冲浪到文化游一手包办。', suffix:'\n\n作为活动策划师，我的建议侧重于独特体验和难忘时刻的创造。' },
+  budget:   { name:'预算管家',   icon:'💰', color:'#059669',   intro:'我负责精准预算管理，让每一分钱都花在刀刃上。', suffix:'\n\n作为预算管家，我会给出具体的价格区间和省钱小技巧。' },
+  search:   { name:'实时搜索',   icon:'🔍', color:'var(--sky)', intro:'我专门获取最新的实时信息，确保你得到最准确的现况数据。', suffix:'' },
+};
+
+const BASE_SYSTEM = `你是 WanderMind 游心 —— 一个顶级 AI 多智能体旅行伴侣系统。你整合了旅程规划师、住宿顾问、美食探索家、活动策划师、预算管家和实时搜索能力。
+
+【回复风格】
+- 温暖专业，像一个去过目的地20次的朋友在分享真实经验
+- 提供具体地点名称、价格参考（当地货币/人民币双标注）
+- 用emoji让回复生动，但不过度
+- 适度加入"本地人才知道"式的独家信息
+- 清晰分段，避免大段密集文字
+- 中文回复，专业名词括号标注英文
+
+【重要规则】
+- 有联网搜索能力，遇到实时信息请说明已联网获取
+- 安全注意事项必须明确提醒
+- 行程建议要考虑实际交通时间，不要过度排满
+- 价格信息尽量给出区间而非精确数字
+- 主动询问用户偏好以提供更精准建议`;
+
+let currentDest = 'bali';
+let currentAgent = 'planner';
+let history = [];
+let busy = false;
+
+// ─── AUTH I18N ────────────────────────────────
+const AUTH_I18N = {
+  zh: {
+    subtitle:'AI 多智能体旅行平台',
+    tabLogin:'登录', tabReg:'注册',
+    emailPh:'邮箱地址', pwPh:'密码', loginBtn:'登录',
+    namePh:'姓名', emailRegPh:'邮箱地址', pwRegPh:'密码（至少6位）', regBtn:'创建账户',
+    footer:'支持 5 种语言 · 全球旅行伴侣',
+    errEmpty:'请填写邮箱和密码', errEmptyAll:'请填写所有字段', errPwLen:'密码至少6位',
+    loginLoading:'登录中…', regLoading:'创建中…',
+  },
+  en: {
+    subtitle:'AI Multi-Agent Travel Platform',
+    tabLogin:'Sign In', tabReg:'Register',
+    emailPh:'Email address', pwPh:'Password', loginBtn:'Sign In',
+    namePh:'Full name', emailRegPh:'Email address', pwRegPh:'Password (6+ characters)', regBtn:'Create Account',
+    footer:'5 languages · Global Travel Companion',
+    errEmpty:'Please enter your email and password', errEmptyAll:'Please fill in all fields', errPwLen:'Password must be at least 6 characters',
+    loginLoading:'Signing in…', regLoading:'Creating…',
+  },
+  ja: {
+    subtitle:'AIマルチエージェント旅行プラットフォーム',
+    tabLogin:'ログイン', tabReg:'新規登録',
+    emailPh:'メールアドレス', pwPh:'パスワード', loginBtn:'ログイン',
+    namePh:'お名前', emailRegPh:'メールアドレス', pwRegPh:'パスワード（6文字以上）', regBtn:'アカウント作成',
+    footer:'5言語対応 · グローバル旅行コンパニオン',
+    errEmpty:'メールとパスワードを入力してください', errEmptyAll:'すべての項目を入力してください', errPwLen:'パスワードは6文字以上にしてください',
+    loginLoading:'ログイン中…', regLoading:'作成中…',
+  },
+  ko: {
+    subtitle:'AI 멀티 에이전트 여행 플랫폼',
+    tabLogin:'로그인', tabReg:'회원가입',
+    emailPh:'이메일 주소', pwPh:'비밀번호', loginBtn:'로그인',
+    namePh:'이름', emailRegPh:'이메일 주소', pwRegPh:'비밀번호 (6자 이상)', regBtn:'계정 만들기',
+    footer:'5개 언어 지원 · 글로벌 여행 동반자',
+    errEmpty:'이메일과 비밀번호를 입력해주세요', errEmptyAll:'모든 항목을 입력해주세요', errPwLen:'비밀번호는 6자 이상이어야 합니다',
+    loginLoading:'로그인 중…', regLoading:'생성 중…',
+  },
+  id: {
+    subtitle:'Platform Perjalanan Multi-Agen AI',
+    tabLogin:'Masuk', tabReg:'Daftar',
+    emailPh:'Alamat email', pwPh:'Kata sandi', loginBtn:'Masuk',
+    namePh:'Nama lengkap', emailRegPh:'Alamat email', pwRegPh:'Kata sandi (min. 6 karakter)', regBtn:'Buat Akun',
+    footer:'Mendukung 5 bahasa · Teman Perjalanan Global',
+    errEmpty:'Masukkan email dan kata sandi Anda', errEmptyAll:'Harap isi semua kolom', errPwLen:'Kata sandi minimal 6 karakter',
+    loginLoading:'Masuk…', regLoading:'Membuat…',
+  },
+};
+
+function updateAuthLang(lang) {
+  const t = AUTH_I18N[lang] || AUTH_I18N.en;
+  window._authT = t; // used by doLogin / doRegister
+  const q  = (sel, prop, val) => { const el = document.querySelector(sel); if (el) el[prop] = val; };
+  const id = (id,  prop, val) => { const el = document.getElementById(id);  if (el) el[prop] = val; };
+  q('.auth-subtitle',  'textContent', t.subtitle);
+  id('tab-login',      'textContent', t.tabLogin);
+  id('tab-register',   'textContent', t.tabReg);
+  id('auth-email',     'placeholder', t.emailPh);
+  id('auth-password',  'placeholder', t.pwPh);
+  id('btn-login',      'textContent', t.loginBtn);
+  id('auth-name',      'placeholder', t.namePh);
+  id('auth-email-r',   'placeholder', t.emailRegPh);
+  id('auth-password-r','placeholder', t.pwRegPh);
+  id('btn-register',   'textContent', t.regBtn);
+  q('.auth-footer',    'textContent', t.footer);
+}
+
+// ─── AUTH ─────────────────────────────────────
+function getToken() { return localStorage.getItem('wm_token'); }
+function setToken(t) { localStorage.setItem('wm_token', t); }
+function getWmUser() { return JSON.parse(localStorage.getItem('wm_user') || 'null'); }
+function setWmUser(u) { localStorage.setItem('wm_user', JSON.stringify(u)); }
+
+function authTab(tab) {
+  const isLogin = tab === 'login';
+  document.getElementById('form-login').classList.toggle('hidden', !isLogin);
+  document.getElementById('form-register').classList.toggle('hidden', isLogin);
+  document.getElementById('tab-login').classList.toggle('active', isLogin);
+  document.getElementById('tab-register').classList.toggle('active', !isLogin);
+  document.getElementById('auth-error').textContent = '';
+}
+
+async function doLogin() {
+  const email = document.getElementById('auth-email').value.trim();
+  const pw = document.getElementById('auth-password').value;
+  const errEl = document.getElementById('auth-error');
+  const btn = document.getElementById('btn-login');
+  const t1 = window._authT || AUTH_I18N.zh;
+  if (!email || !pw) { errEl.textContent = t1.errEmpty; return; }
+  btn.disabled = true; btn.textContent = t1.loginLoading;
+  try {
+    const r = await fetch('/api/auth/login', {
+      method: 'POST', headers: {'Content-Type':'application/json'},
+      body: JSON.stringify({ email, password: pw })
+    });
+    const d = await r.json();
+    if (!r.ok) throw new Error(d.detail || 'Login failed');
+    setToken(d.token); setWmUser(d.user);
+    document.getElementById('auth-overlay').classList.add('hidden');
+    updateNavUser(); errEl.textContent = '';
+  } catch(e) { errEl.textContent = e.message; }
+  btn.disabled = false; btn.textContent = (window._authT || AUTH_I18N.zh).loginBtn;
+}
+
+async function doRegister() {
+  const name = document.getElementById('auth-name').value.trim();
+  const email = document.getElementById('auth-email-r').value.trim();
+  const pw = document.getElementById('auth-password-r').value;
+  const errEl = document.getElementById('auth-error');
+  const btn = document.getElementById('btn-register');
+  const t2 = window._authT || AUTH_I18N.zh;
+  if (!name || !email || !pw) { errEl.textContent = t2.errEmptyAll; return; }
+  if (pw.length < 6) { errEl.textContent = t2.errPwLen; return; }
+  btn.disabled = true; btn.textContent = t2.regLoading;
+  try {
+    const r = await fetch('/api/auth/register', {
+      method: 'POST', headers: {'Content-Type':'application/json'},
+      body: JSON.stringify({ name, email, password: pw })
+    });
+    const d = await r.json();
+    if (!r.ok) throw new Error(d.detail || 'Registration failed');
+    setToken(d.token); setWmUser(d.user);
+    document.getElementById('auth-overlay').classList.add('hidden');
+    updateNavUser(); errEl.textContent = '';
+  } catch(e) { errEl.textContent = e.message; }
+  btn.disabled = false; btn.textContent = (window._authT || AUTH_I18N.zh).regBtn;
+}
+
+function doLogout() {
+  localStorage.removeItem('wm_token');
+  localStorage.removeItem('wm_user');
+  document.getElementById('auth-overlay').classList.remove('hidden');
+  authTab('login');
+}
+
+function updateNavUser() {
+  const user = getWmUser();
+  if (!user) return;
+  const av = document.getElementById('nav-avatar');
+  const initials = user.name.split(/\s+/).map(w => w[0]).join('').toUpperCase().slice(0, 2) || '游';
+  av.textContent = initials;
+  av.title = user.name + ' · 点击查看记忆档案';
+}
+
+// Support Enter key on login/register inputs
+document.addEventListener('DOMContentLoaded', () => {
+  document.getElementById('auth-password')?.addEventListener('keydown', e => { if (e.key === 'Enter') doLogin(); });
+  document.getElementById('auth-password-r')?.addEventListener('keydown', e => { if (e.key === 'Enter') doRegister(); });
+});
+
+// Check auth on startup (called after page fully loads)
+function checkAuth() {
+  if (!getToken()) {
+    document.getElementById('auth-overlay').classList.remove('hidden');
+  } else {
+    updateNavUser();
+  }
+}
+
+// ─── LANGUAGE PICKER ─────────────────────────
+const _LP_SUBS = {
+  zh: '多智能体旅行规划平台 · v2.0',
+  en: 'Multi-Agent Travel Planning · v2.0',
+  ja: 'マルチエージェント旅行プランニング · v2.0',
+  ko: '멀티 에이전트 여행 플랫폼 · v2.0',
+  id: 'Platform Perjalanan Multi-Agen · v2.0'
+};
+const _LP_AGENTS = {
+  zh: ['规划师','住宿','美食','活动','预算','搜索'],
+  en: ['Planner','Hotels','Food','Activities','Budget','Search'],
+  ja: ['プランナー','ホテル','グルメ','アクティビティ','予算','検索'],
+  ko: ['플래너','숙소','맛집','활동','예산','검색'],
+  id: ['Perencana','Hotel','Kuliner','Aktivitas','Anggaran','Pencarian']
+};
+const _LP_MSGS = {
+  zh: ['初始化智能体网络…','加载目的地数据库…','连接实时信息源…','激活多Agent协议…','准备就绪，欢迎！'],
+  en: ['Initializing agent network…','Loading destination database…','Connecting live data sources…','Activating multi-agent protocol…','Ready! Welcome aboard!'],
+  ja: ['エージェントネットワーク初期化中…','目的地データベース読込中…','リアルタイム情報ソース接続中…','マルチエージェントプロトコル起動…','準備完了！ようこそ！'],
+  ko: ['에이전트 네트워크 초기화 중…','목적지 데이터베이스 로딩 중…','실시간 정보 소스 연결 중…','멀티 에이전트 프로토콜 활성화…','준비 완료! 환영합니다!'],
+  id: ['Menginisialisasi jaringan agen…','Memuat database destinasi…','Menghubungkan sumber data langsung…','Mengaktifkan protokol multi-agen…','Siap! Selamat datang!']
+};
+
+function pickLang(lang) {
+  localStorage.setItem('wm_lang', lang);
+  applyLang(lang);
+  updateAuthLang(lang);
+  // Update loader subtitle and agent name labels
+  const sub = document.getElementById('loader-sub-text');
+  if (sub) sub.textContent = _LP_SUBS[lang] || _LP_SUBS.en;
+  (_LP_AGENTS[lang] || _LP_AGENTS.en).forEach((name, i) => {
+    const el = document.getElementById('lan-' + i);
+    if (el) el.textContent = name;
+  });
+  // Fade out picker then start loader
+  const picker = document.getElementById('lang-picker');
+  picker.style.opacity = '0';
+  setTimeout(() => { picker.classList.add('hidden'); startLoader(lang); }, 380);
+}
+
+function startLoader(lang) {
+  const bar = document.getElementById('loader-bar');
+  const msgs = _LP_MSGS[lang] || _LP_MSGS.en;
+  let step = 0;
+  [0,1,2,3,4,5].forEach((i, idx) => {
+    setTimeout(() => { const el = document.getElementById('la-'+i); if (el) el.classList.add('show'); }, idx * 120 + 200);
+  });
+  const t = setInterval(() => {
+    step++;
+    bar.style.width = (step * 20) + '%';
+    document.getElementById('loader-msg').textContent = msgs[step - 1] || '';
+    if (step >= 5) {
+      clearInterval(t);
+      setTimeout(() => { document.getElementById('loader').classList.add('fade-out'); checkAuth(); }, 500);
+    }
+  }, 300);
+}
+
+// ─── LOADING ANIMATION ───────────────────────
+window.addEventListener('load', () => {
+  const savedLang = localStorage.getItem('wm_lang');
+  if (savedLang && LANGS[savedLang]) {
+    // Returning user — skip language picker
+    applyLang(savedLang);
+    const sub = document.getElementById('loader-sub-text');
+    if (sub) sub.textContent = _LP_SUBS[savedLang] || _LP_SUBS.en;
+    (_LP_AGENTS[savedLang] || _LP_AGENTS.en).forEach((name, i) => {
+      const el = document.getElementById('lan-' + i);
+      if (el) el.textContent = name;
+    });
+    updateAuthLang(savedLang);
+    document.getElementById('lang-picker').classList.add('hidden');
+    startLoader(savedLang);
+  }
+  // New user: lang-picker stays visible (default), waiting for click
+});
+
+// ─── DESTINATION SWITCHING ───────────────────
+function toggleDestMenu() {
+  document.getElementById('dest-menu').classList.toggle('open');
+}
+document.addEventListener('click', e => {
+  if (!e.target.closest('#dest-switcher')) {
+    document.getElementById('dest-menu').classList.remove('open');
+  }
+});
+
+function switchDest(id, flag, name, e) {
+  e.stopPropagation();
+  if (id === 'custom') {
+    const custom = prompt('输入目的地名称：');
+    if (!custom) return;
+    document.getElementById('dest-menu').classList.remove('open');
+    qsend('我想去' + custom + '，帮我介绍一下这个目的地，并给出旅行建议');
+    return;
+  }
+  currentDest = id;
+  const d = DESTINATIONS[id];
+  document.getElementById('dest-flag').textContent = flag;
+  document.getElementById('dest-name-nav').textContent = name;
+  document.getElementById('dest-title').innerHTML = d.title;
+  document.getElementById('dest-eyebrow').textContent = d.eyebrow;
+  document.getElementById('w-temp').textContent = d.weather.temp;
+  document.getElementById('w-cond').textContent = d.weather.cond;
+  document.getElementById('w-icon').textContent = d.weather.icon;
+  document.getElementById('w-details').textContent = d.weather.details;
+  document.getElementById('s-rate').textContent = d.rate;
+  document.getElementById('s-season').textContent = d.season;
+  document.getElementById('s-season-desc').textContent = d.seasonDesc;
+  // Update all dest-menu items
+  document.querySelectorAll('.dest-menu-item').forEach(el => el.classList.remove('selected'));
+  e.target.classList.add('selected');
+  document.getElementById('dest-menu').classList.remove('open');
+  history = [];
+  addSystemMsg(`已切换至 ${flag} ${name}`);
+  qsend(`我想了解${name}的旅行信息，请给我一个全面的目的地概览`);
+}
+
+// ─── AGENT SWITCHING ──────────────────────────
+function switchAgent(id, el) {
+  currentAgent = id;
+  document.querySelectorAll('.agent-item').forEach(i => i.classList.remove('active'));
+  el.classList.add('active');
+  const a = AGENT_PERSONAS[id];
+  addSystemMsg(`已切换至 ${a.icon} ${a.name}`);
+}
+
+// ─── MESSAGING ────────────────────────────────
+function qsend(text) {
+  document.getElementById('main-input').value = text;
+  sendMsg();
+}
+
+function handleKey(e) {
+  if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendMsg(); }
+}
+
+function autoResize(el) {
+  el.style.height = 'auto';
+  el.style.height = Math.min(el.scrollHeight, 90) + 'px';
+}
+
+async function sendMsg() {
+  const inp = document.getElementById('main-input');
+  const text = inp.value.trim();
+  if (!text || busy) return;
+  if (!getToken()) { document.getElementById('auth-overlay').classList.remove('hidden'); return; }
+  inp.value = ''; inp.style.height = 'auto'; busy = true;
+  document.getElementById('send-btn').disabled = true;
+
+  appendUserMsg(text);
+  history.push({ role: 'user', content: text });
+
+  const agentChips = document.querySelectorAll('.active-agent-chip');
+  const searchChip = [...agentChips].find(c => c.textContent.includes('搜索'));
+  if (searchChip) searchChip.classList.add('thinking');
+  setAgentWorking(currentAgent, true);
+  const typingId = appendTyping();
+
+  const agent = AGENT_PERSONAS[currentAgent];
+  const langInstr = `\n\n【Language Instruction】Please respond in ${LANGS[currentLang]?.systemPromptLang || 'Chinese'} only. Never switch language mid-response.`;
+  const systemPrompt = BASE_SYSTEM + (agent.suffix || '') + langInstr +
+    `\n\nCurrent destination: ${DESTINATIONS[currentDest]?.name || currentDest}\nActive agent role: ${agent.name}`;
+
+  try {
+    const resp = await fetch('/api/chat', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + getToken() },
+      body: JSON.stringify({ messages: history, system: systemPrompt, agent: currentAgent, destination: currentDest })
+    });
+
+    removeTyping(typingId);
+    if (searchChip) searchChip.classList.remove('thinking');
+    setAgentWorking(currentAgent, false);
+
+    if (resp.status === 401) { doLogout(); return; }
+    if (!resp.ok) { const e = await resp.json(); throw new Error(e.detail || 'Server error'); }
+
+    // Stream via ReadableStream
+    const reader = resp.body.getReader();
+    const dec = new TextDecoder();
+    let fullText = '';
+    let searched = false;
+    let streamId = null;
+    let buf = '';
+
+    while (true) {
+      const { done, value } = await reader.read();
+      if (done) break;
+      buf += dec.decode(value, { stream: true });
+      const lines = buf.split('\n');
+      buf = lines.pop(); // keep incomplete last line
+      for (const line of lines) {
+        if (!line.startsWith('data: ')) continue;
+        const raw = line.slice(6).trim();
+        if (!raw) continue;
+        try {
+          const ev = JSON.parse(raw);
+          if (ev.type === 'text') {
+            fullText += ev.text;
+            if (!streamId) streamId = createStreamMsg();
+            updateStreamMsg(streamId, fullText);
+          } else if (ev.type === 'search_start') {
+            searched = true;
+          } else if (ev.type === 'done') {
+            if (streamId) finalizeStreamMsg(streamId, searched);
+            if (fullText) history.push({ role: 'assistant', content: fullText });
+            agentCallCount[currentAgent] = (agentCallCount[currentAgent] || 0) + 1;
+            addLog('success', agent.icon, `<strong>${agent.name}</strong> · ${fullText.length} 字`);
+            if (searched) addLog('search', '🌐', '<strong>实时搜索</strong> · 已联网获取最新数据');
+            updateAgentStats();
+          } else if (ev.type === 'error') {
+            if (streamId) document.getElementById(streamId)?.remove();
+            appendAIMsg('抱歉，出了点问题 🌊\n\n' + ev.message, false);
+          }
+        } catch(e) { /* ignore malformed SSE */ }
+      }
+    }
+
+  } catch (err) {
+    removeTyping(typingId);
+    if (searchChip) searchChip.classList.remove('thinking');
+    setAgentWorking(currentAgent, false);
+    appendAIMsg('抱歉，连接出了点问题 🌊\n\n' + err.message, false);
+  }
+
+  busy = false;
+  document.getElementById('send-btn').disabled = false;
+}
+
+// ─── STREAMING MESSAGE HELPERS ────────────────────────────
+function createStreamMsg() {
+  const msgs = document.getElementById('messages');
+  const agent = AGENT_PERSONAS[currentAgent];
+  const id = 'stream-' + Date.now();
+  const d = document.createElement('div');
+  d.className = 'msg ai fade-in'; d.id = id;
+  d.innerHTML = `
+    <div class="msg-avatar ai">W</div>
+    <div class="msg-body">
+      <div class="agent-label" style="color:${agent.color}">${agent.icon} ${agent.name}</div>
+      <div class="bubble ai" id="${id}-bubble"><span class="stream-cursor">▋</span></div>
+      <div class="msg-time" id="${id}-time">${now()}</div>
+    </div>`;
+  msgs.appendChild(d); scroll();
+  return id;
+}
+
+function updateStreamMsg(id, text) {
+  const bubble = document.getElementById(id + '-bubble');
+  if (!bubble) return;
+  bubble.innerHTML = fmt(text) + '<span class="stream-cursor">▋</span>';
+  scroll();
+}
+
+function finalizeStreamMsg(id, searched) {
+  const bubble = document.getElementById(id + '-bubble');
+  if (!bubble) return;
+  const cursor = bubble.querySelector('.stream-cursor');
+  if (cursor) cursor.remove();
+  if (searched) {
+    const msgBody = bubble.closest('.msg-body');
+    const agentLabel = msgBody?.querySelector('.agent-label');
+    if (agentLabel) {
+      const badge = `<div class="search-badge"><div class="search-pulse"></div>${window._searchBadgeText || '已联网实时搜索'}</div>`;
+      agentLabel.insertAdjacentHTML('afterend', badge);
+    }
+  }
+}
+
+function setAgentWorking(id, state) {
+  const icon = document.getElementById('icon-' + id);
+  if (!icon) return;
+  if (state) icon.classList.add('working');
+  else icon.classList.remove('working');
+}
+
+function appendUserMsg(text) {
+  const msgs = document.getElementById('messages');
+  const t = now();
+  const d = document.createElement('div');
+  d.className = 'msg user fade-in';
+  d.innerHTML = `
+    <div class="msg-avatar user">我</div>
+    <div class="msg-body" style="align-items:flex-end">
+      <div class="bubble user">${esc(text)}</div>
+      <div class="msg-time">${t}</div>
+    </div>`;
+  msgs.appendChild(d); scroll();
+}
+
+function appendAIMsg(text, searched) {
+  const msgs = document.getElementById('messages');
+  const agent = AGENT_PERSONAS[currentAgent];
+  const t = now();
+  const d = document.createElement('div');
+  d.className = 'msg ai fade-in';
+  const searchBadge = searched
+    ? `<div class="search-badge"><div class="search-pulse"></div>已联网实时搜索</div>`
+    : '';
+  d.innerHTML = `
+    <div class="msg-avatar ai">W</div>
+    <div class="msg-body">
+      <div class="agent-label" style="color:${agent.color}">${agent.icon} ${agent.name}</div>
+      ${searchBadge}
+      <div class="bubble ai">${fmt(text)}</div>
+      <div class="msg-time">${t}</div>
+    </div>`;
+  msgs.appendChild(d); scroll();
+}
+
+function appendTyping() {
+  const msgs = document.getElementById('messages');
+  const agent = AGENT_PERSONAS[currentAgent];
+  const id = 'typing-' + Date.now();
+  const d = document.createElement('div');
+  d.className = 'msg ai fade-in'; d.id = id;
+  d.innerHTML = `
+    <div class="msg-avatar ai">W</div>
+    <div class="msg-body">
+      <div class="agent-label" style="color:${agent.color}">${agent.icon} ${agent.name}</div>
+      <div class="bubble ai"><div class="typing-indicator">
+        <div class="typing-dot"></div><div class="typing-dot"></div><div class="typing-dot"></div>
+      </div></div>
+    </div>`;
+  msgs.appendChild(d); scroll();
+  return id;
+}
+
+function removeTyping(id) {
+  const el = document.getElementById(id);
+  if (el) el.remove();
+}
+
+function addSystemMsg(text) {
+  const msgs = document.getElementById('messages');
+  const d = document.createElement('div');
+  d.className = 'msg system fade-in';
+  d.innerHTML = `<div class="system-msg">✦ ${text}</div>`;
+  msgs.appendChild(d); scroll();
+}
+
+// ─── UTILS ────────────────────────────────────
+function scroll() {
+  const msgs = document.getElementById('messages');
+  msgs.scrollTop = msgs.scrollHeight;
+}
+
+function now() {
+  return new Date().toLocaleTimeString('zh-CN', { hour:'2-digit', minute:'2-digit' });
+}
+
+function esc(s) {
+  return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+function fmt(text) {
+  return esc(text)
+    .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
+    .replace(/\*(.+?)\*/g, '<em>$1</em>')
+    .replace(/`(.+?)`/g, '<code style="background:var(--paper-2);padding:1px 5px;border-radius:4px;font-size:12px">$1</code>')
+    .replace(/\n\n/g, '</p><p style="margin-top:8px">')
+    .replace(/\n/g, '<br>')
+    .replace(/^/, '<p>')
+    .replace(/$/, '</p>');
+}
+
+// ─── PANEL TABS ──────────────────────────────
+function setPTab(btn, id) {
+  document.querySelectorAll('.panel-tab').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  document.querySelectorAll('.panel-content').forEach(c => c.classList.remove('active'));
+  document.getElementById('panel-' + id).classList.add('active');
+}
+
+// ─── MISC ─────────────────────────────────────
+function selectTrip(el) {
+  document.querySelectorAll('.trip-card').forEach(c => c.classList.remove('active'));
+  el.classList.add('active');
+}
+
+function fakeVoice() {
+  const phrases = ['带我爸妈去个暖和不累的地方，有温泉最好','我想体验一次真正的冲浪，零基础可以吗？','蜜月旅行，两人预算两万，最浪漫的方案'];
+  document.getElementById('main-input').value = phrases[Math.floor(Math.random() * phrases.length)];
+  document.getElementById('main-input').focus();
+}
+
+function fakeImg() {
+  document.getElementById('main-input').value = '（上传了一张杂志风景图）我想找这种风格的住宿，在巴厘岛哪里可以找到类似的地方？';
+  document.getElementById('main-input').focus();
+}
+
+// ─── MODAL SYSTEM ────────────────────────────
+function openModal(id) {
+  document.getElementById(id).classList.add('open');
+}
+function closeModal(id) {
+  document.getElementById(id).classList.remove('open');
+}
+function closeModalBg(e, id) {
+  if (e.target === document.getElementById(id)) closeModal(id);
+}
+
+// ─── AGENT LOG ────────────────────────────────
+const agentCallCount = { planner:0, hotel:0, food:0, activity:0, budget:0, search:0 };
+
+function addLog(type, icon, text) {
+  const stream = document.getElementById('log-stream');
+  if (!stream) return;
+  const t = new Date().toLocaleTimeString('zh-CN',{hour:'2-digit',minute:'2-digit',second:'2-digit'});
+  const el = document.createElement('div');
+  el.className = 'log-entry ' + type;
+  el.innerHTML = `<span class="log-time">${t}</span><span class="log-icon">${icon}</span><span class="log-text">${text}</span>`;
+  stream.appendChild(el);
+  stream.scrollTop = stream.scrollHeight;
+  if (stream.children.length > 60) stream.removeChild(stream.children[0]);
+  updateAgentStats();
+}
+
+function clearLog() {
+  const stream = document.getElementById('log-stream');
+  if (stream) stream.innerHTML = '';
+}
+
+function updateAgentStats() {
+  const el = document.getElementById('agent-stats');
+  if (!el) return;
+  const agents = [
+    {id:'planner',icon:'🗺️',name:'旅程规划师'},
+    {id:'hotel',icon:'🏨',name:'住宿顾问'},
+    {id:'food',icon:'🍜',name:'美食探索家'},
+    {id:'activity',icon:'🏄',name:'活动策划师'},
+    {id:'budget',icon:'💰',name:'预算管家'},
+    {id:'search',icon:'🔍',name:'实时搜索'},
+  ];
+  el.innerHTML = agents.map(a => `
+    <div style="display:flex;align-items:center;gap:8px;font-size:11px;padding:4px 0">
+      <span style="font-size:13px">${a.icon}</span>
+      <span style="flex:1;color:var(--ink-2);font-weight:500">${a.name}</span>
+      <span style="color:var(--ink-3)">${agentCallCount[a.id] || 0} 次调用</span>
+      <span class="badge ${agentCallCount[a.id] > 0 ? 'badge-on' : 'badge-idle'}" style="font-size:9px">
+        ${agentCallCount[a.id] > 0 ? '活跃' : '待机'}
+      </span>
+    </div>`).join('');
+}
+
+// Patch sendMsg to log agent calls
+const _origSendMsg = sendMsg;
+// We'll hook into the existing flow by patching appendAIMsg and the fetch call
+const _origAppendAIMsg = appendAIMsg;
+window.appendAIMsg = function(text, searched) {
+  agentCallCount[currentAgent] = (agentCallCount[currentAgent] || 0) + 1;
+  const agent = AGENT_PERSONAS[currentAgent];
+  addLog('success', agent.icon, `<strong>${agent.name}</strong> 回复完成 · ${text.length}字`);
+  if (searched) addLog('search', '🌐', '<strong>实时搜索</strong> · 已获取最新网络数据');
+  _origAppendAIMsg(text, searched);
+};
+
+// ─── MULTIVERSE PREVIEW ──────────────────────
+let selectedMvTier = 'comfort';
+let mvDestName = '巴厘岛';
+
+function openMultiverse() {
+  mvDestName = DESTINATIONS[currentDest]?.name || currentDest;
+  document.getElementById('mv-dest-text').textContent = `AI 同时为你生成 3 个版本的${mvDestName}行程，从极简到奢享——看完再决定哪个才是你的旅行。`;
+  // Reset state
+  document.getElementById('mv-loading').classList.add('active');
+  document.getElementById('mv-grid').style.display = 'none';
+  document.getElementById('mv-actions').style.display = 'none';
+  openModal('modal-multiverse');
+  addLog('info', '🌌', `<strong>平行宇宙</strong> · 开始并行生成 ${mvDestName} 3套方案`);
+  generateMultiverse();
+}
+
+async function generateMultiverse() {
+  // Animate loading agents
+  const laIds = ['mvla-0','mvla-1','mvla-2','mvla-3'];
+  laIds.forEach((id,i) => {
+    setTimeout(() => {
+      document.querySelectorAll('.mv-loading-agent').forEach(el => el.classList.remove('active'));
+      const el = document.getElementById(id);
+      if (el) el.classList.add('active');
+    }, i * 800);
+  });
+
+  try {
+    const destName = DESTINATIONS[currentDest]?.name || currentDest;
+    const prompt = `你是WanderMind多智能体旅行系统。为用户生成${destName}旅行的3个平行方案。
+严格只输出JSON，不要任何其他文字，格式如下：
+{
+  "budget": {
+    "tier": "极简省钱版",
+    "price": "¥3,500",
+    "priceNote": "2人 · 7天",
+    "hotel": {"name":"背包客栈/民宿","note":"双人间约¥120/晚"},
+    "transport": {"name":"公共交通+租摩托","note":"日均¥30"},
+    "food": {"name":"街边小吃+本地餐馆","note":"人均每餐¥20-40"},
+    "highlight": "最真实的本地生活体验",
+    "suitable": "背包客、独行侠、学生党"
+  },
+  "comfort": {
+    "tier": "舒适平衡版",
+    "price": "¥12,000",
+    "priceNote": "2人 · 7天",
+    "hotel": {"name":"精品民宿/3星酒店","note":"双人间约¥400/晚"},
+    "transport": {"name":"包车+部分公交","note":"日均¥150"},
+    "food": {"name":"特色餐厅+偶尔路边摊","note":"人均每餐¥60-120"},
+    "highlight": "品质与性价比完美平衡",
+    "suitable": "情侣、好友结伴、上班族"
+  },
+  "luxury": {
+    "tier": "奢享高端版",
+    "price": "¥38,000",
+    "priceNote": "2人 · 7天",
+    "hotel": {"name":"五星度假村/顶级别墅","note":"套房约¥2000/晚"},
+    "transport": {"name":"专属司导+直升机接驳","note":"全程包车"},
+    "food": {"name":"米其林餐厅+私厨定制","note":"人均每餐¥300+"},
+    "highlight": "极致奢华的专属旅行体验",
+    "suitable": "蜜月、周年庆、商务接待"
+  }
+}
+根据目的地${destName}的实际情况调整价格和描述，确保数据真实合理。`;
+
+    const res = await fetch('/api/generate', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + getToken() },
+      body: JSON.stringify({ prompt, max_tokens: 1000 })
+    });
+
+    const data = await res.json();
+    let raw = data.content || '';
+    raw = raw.replace(/```json|```/g,'').trim();
+    const plans = JSON.parse(raw);
+    renderMultiverse(plans);
+    addLog('success', '🌌', `<strong>平行宇宙</strong> · 3套${destName}方案生成完成`);
+
+  } catch(e) {
+    // Fallback static data if API fails
+    renderMultiverse(getMvFallback());
+    addLog('warn', '⚠️', `平行宇宙使用演示数据 · ${e.message}`);
+  }
+}
+
+function getMvFallback() {
+  const n = DESTINATIONS[currentDest]?.name || '巴厘岛';
+  return {
+    budget:  {tier:'极简省钱版', price:'¥3,500',  priceNote:'2人·7天', hotel:{name:'背包客栈/民宿',note:'双人间约¥120/晚'}, transport:{name:'公共交通+租摩托',note:'日均¥30'}, food:{name:'街边小吃+本地餐馆',note:'人均¥20-40/餐'}, highlight:'最真实的本地生活体验', suitable:'背包客、独行侠'},
+    comfort: {tier:'舒适平衡版', price:'¥12,000', priceNote:'2人·7天', hotel:{name:'精品民宿/3星酒店',note:'双人间约¥400/晚'}, transport:{name:'包车+部分公交',note:'日均¥150'}, food:{name:'特色餐厅+路边摊',note:'人均¥60-120/餐'}, highlight:'品质与性价比完美平衡', suitable:'情侣、好友结伴'},
+    luxury:  {tier:'奢享高端版', price:'¥38,000', priceNote:'2人·7天', hotel:{name:'五星度假村/顶级别墅',note:'套房约¥2000/晚'}, transport:{name:'专属司导+专车',note:'全程包车'}, food:{name:'米其林+私厨定制',note:'人均¥300+/餐'}, highlight:'极致奢华的专属体验', suitable:'蜜月、周年纪念'}
+  };
+}
+
+function renderMultiverse(plans) {
+  document.getElementById('mv-loading').classList.remove('active');
+
+  const tiers = [
+    { key:'budget',  color:'var(--teal)',   headerBg:'var(--teal-pale)',   labelColor:'var(--teal)',   icon:'🎒', badge:null },
+    { key:'comfort', color:'var(--amber)',  headerBg:'var(--amber-pale)',  labelColor:'var(--amber)',  icon:'✨', badge:'最受欢迎' },
+    { key:'luxury',  color:'var(--crimson)',headerBg:'var(--crimson-pale)',labelColor:'var(--crimson)',icon:'👑', badge:null },
+  ];
+
+  const grid = document.getElementById('mv-grid');
+  grid.innerHTML = tiers.map(t => {
+    const p = plans[t.key];
+    const badgeHtml = t.badge ? `<div class="mv-badge" style="background:var(--amber);color:white">${t.badge}</div>` : '';
+    return `
+    <div class="mv-card" id="mvc-${t.key}" onclick="selectMvTier('${t.key}')">
+      ${badgeHtml}
+      <div class="mv-card-header" style="background:${t.headerBg}">
+        <div class="mv-tier" style="color:${t.labelColor}">${t.icon} ${p.tier}</div>
+        <div class="mv-price" style="color:${t.color}">${p.price}</div>
+        <div class="mv-price-sub">${p.priceNote}</div>
+      </div>
+      <div class="mv-divider"></div>
+      <div class="mv-items">
+        <div class="mv-item">
+          <span class="mv-item-icon">🏨</span>
+          <div class="mv-item-content">
+            <div class="mv-item-label">住宿</div>
+            <div class="mv-item-val">${p.hotel.name}</div>
+            <div class="mv-item-note">${p.hotel.note}</div>
+          </div>
+        </div>
+        <div class="mv-item">
+          <span class="mv-item-icon">🚗</span>
+          <div class="mv-item-content">
+            <div class="mv-item-label">交通</div>
+            <div class="mv-item-val">${p.transport.name}</div>
+            <div class="mv-item-note">${p.transport.note}</div>
+          </div>
+        </div>
+        <div class="mv-item">
+          <span class="mv-item-icon">🍜</span>
+          <div class="mv-item-content">
+            <div class="mv-item-label">餐饮</div>
+            <div class="mv-item-val">${p.food.name}</div>
+            <div class="mv-item-note">${p.food.note}</div>
+          </div>
+        </div>
+        <div class="mv-item" style="border-top:1px solid var(--paper-2);padding-top:7px;margin-top:3px">
+          <span class="mv-item-icon">💡</span>
+          <div class="mv-item-content">
+            <div class="mv-item-label">亮点</div>
+            <div class="mv-item-val" style="font-size:11px;color:${t.labelColor}">${p.highlight}</div>
+          </div>
+        </div>
+        <div class="mv-item">
+          <span class="mv-item-icon">👤</span>
+          <div class="mv-item-content">
+            <div class="mv-item-label">适合</div>
+            <div class="mv-item-note">${p.suitable}</div>
+          </div>
+        </div>
+      </div>
+    </div>`;
+  }).join('');
+
+  grid.style.display = 'grid';
+  document.getElementById('mv-actions').style.display = 'flex';
+
+  // Default select comfort
+  selectMvTier('comfort');
+
+  document.getElementById('mv-confirm-btn').onclick = () => {
+    closeModal('modal-multiverse');
+    qsend(`我选择了${mvDestName}的${selectedMvTier === 'budget' ? '极简省钱' : selectedMvTier === 'comfort' ? '舒适平衡' : '奢享高端'}方案，请帮我基于这个风格生成完整的7日详细行程规划`);
+  };
+}
+
+function selectMvTier(tier) {
+  selectedMvTier = tier;
+  document.querySelectorAll('.mv-card').forEach(el => el.classList.remove('selected'));
+  const el = document.getElementById('mvc-' + tier);
+  if (el) el.classList.add('selected');
+}
+
+// ─── BUDGET CALCULATOR ────────────────────────
+const CALC_BASE = {
+  bali:      {budget:{flight:1800,hotel:120,food:80,activity:60,transport:40}, comfort:{flight:2600,hotel:400,food:180,activity:180,transport:100}, luxury:{flight:4500,hotel:2000,food:500,activity:600,transport:350}},
+  kyoto:     {budget:{flight:2200,hotel:200,food:120,activity:80,transport:60}, comfort:{flight:3400,hotel:700,food:350,activity:250,transport:200}, luxury:{flight:6000,hotel:2500,food:900,activity:800,transport:500}},
+  paris:     {budget:{flight:4500,hotel:350,food:200,activity:100,transport:80}, comfort:{flight:6500,hotel:1200,food:500,activity:350,transport:250}, luxury:{flight:12000,hotel:4000,food:1500,activity:1200,transport:800}},
+  santorini: {budget:{flight:5000,hotel:400,food:220,activity:120,transport:60}, comfort:{flight:7000,hotel:1500,food:600,activity:400,transport:200}, luxury:{flight:14000,hotel:5000,food:1800,activity:1500,transport:600}},
+};
+const FLIGHT_MULT = {sh:1.0, bj:1.05, gz:1.0, cd:1.12};
+const ACTIVITY_MULT = {basic:0.5, moderate:1.0, full:1.8};
+const CALC_TIPS = {
+  bali:['旱季（5–9月）机票较便宜，雨季（11–3月）酒店可打5折','乌布的精品民宿性价比远高于努沙杜瓦5星酒店','当地包车师傅一天约¥250，4人分摊非常划算'],
+  kyoto:['提前3个月订机票可省20–30%','京都JR周游券7天约¥800，高频使用很划算','住阪神地区每晚可省30–40%，地铁20分钟进京都'],
+  paris:['欧铁通票适合多城市游，单程机票早订有折扣','博物馆通票(Museum Pass)2天约¥420，多景点必买','入住20区或者11区，性价比比市中心高很多'],
+  santorini:['避开7–8月旺季可省40%，6月初或9月末最佳','从雅典坐渡轮约¥200，比飞机便宜很多','伊亚(Oia)比菲拉(Fira)贵30%，同等民宿价差明显'],
+};
+
+function calcUpdate() {
+  const dest = document.getElementById('calc-dest').value;
+  const days = parseInt(document.getElementById('calc-days').value);
+  const people = parseInt(document.getElementById('calc-people').value);
+  const style = document.getElementById('calc-style').value;
+  const city = document.getElementById('calc-city').value;
+  const activity = document.getElementById('calc-activity').value;
+
+  const base = CALC_BASE[dest]?.[style] || CALC_BASE.bali.comfort;
+  const flightMult = FLIGHT_MULT[city] || 1;
+  const actMult = ACTIVITY_MULT[activity] || 1;
+
+  const costs = {
+    flight:    Math.round(base.flight * flightMult * people),
+    hotel:     Math.round(base.hotel * days * (people > 2 ? Math.ceil(people/2) : 1)),
+    food:      Math.round(base.food * days * people),
+    activity:  Math.round(base.activity * days * people * actMult),
+    transport: Math.round(base.transport * days),
+  };
+  const total = Object.values(costs).reduce((a,b) => a+b, 0);
+  const fmt = n => '¥' + n.toLocaleString('zh-CN');
+
+  document.getElementById('calc-total').textContent = fmt(total);
+  const destName = {bali:'巴厘岛',kyoto:'京都',paris:'巴黎',santorini:'圣托里尼'}[dest];
+  const styleName = {budget:'节俭',comfort:'舒适',luxury:'豪华'}[style];
+  document.getElementById('calc-sub').textContent = `${people}人 · ${days}天 · ${destName} · ${styleName}风格`;
+
+  const items = [
+    {icon:'✈️', label:'机票（往返）', val:costs.flight},
+    {icon:'🏨', label:'住宿', val:costs.hotel},
+    {icon:'🍜', label:'餐饮', val:costs.food},
+    {icon:'🏄', label:'活动体验', val:costs.activity},
+    {icon:'🚗', label:'当地交通', val:costs.transport},
+  ];
+  document.getElementById('calc-breakdown').innerHTML = items.map(item => `
+    <div class="calc-brow">
+      <span class="calc-brow-label">${item.icon} ${item.label}</span>
+      <div class="calc-brow-bar-wrap"><div class="calc-brow-bar" style="width:${Math.round(item.val/total*100)}%"></div></div>
+      <span class="calc-brow-val">${fmt(item.val)}</span>
+    </div>`).join('');
+
+  // Tips
+  const tips = CALC_TIPS[dest] || CALC_TIPS.bali;
+  document.getElementById('calc-tips-content').innerHTML = tips.map(t => `
+    <div class="calc-tip"><span class="calc-tip-icon">💡</span><span>${t}</span></div>`).join('');
+}
+
+function openBudgetCalc() {
+  // Sync dest selector with current dest
+  const sel = document.getElementById('calc-dest');
+  if (sel && CALC_BASE[currentDest]) sel.value = currentDest;
+  calcUpdate();
+  openModal('modal-budget');
+  addLog('info', '🧮', '<strong>预算计算器</strong> · 已打开');
+}
+
+function calcAskAI() {
+  const dest = document.getElementById('calc-dest').value;
+  const days = document.getElementById('calc-days').value;
+  const people = document.getElementById('calc-people').value;
+  const style = document.getElementById('calc-style').value;
+  const destName = {bali:'巴厘岛',kyoto:'京都',paris:'巴黎',santorini:'圣托里尼'}[dest];
+  const styleName = {budget:'节俭穷游',comfort:'舒适平衡',luxury:'奢享高端'}[style];
+  closeModal('modal-budget');
+  qsend(`我的旅行参数是：${destName}、${days}天、${people}人、${styleName}风格。请帮我制定一个详细的预算优化方案，告诉我哪些地方可以省钱，哪些值得多花钱，以及具体的省钱技巧`);
+}
+
+// Initialize calc on first open
+setTimeout(() => calcUpdate(), 500);
+updateAgentStats();
+
+// ═══════════════════════════════════════════════════════
+// ─── i18n LANGUAGE SYSTEM ────────────────────────────
+// ═══════════════════════════════════════════════════════
+let currentLang = 'zh';
+
+const LANGS = {
+  zh: {
+    flag:'🇨🇳', label:'中文', avatar:'游',
+    agentOnline:'6 Agent 在线',
+    navTabs:['AI 对话','行程规划','探索地图','预算管理','游记生成'],
+    myTrips:'我的行程', agentTeam:'智能体团队',
+    newTrip:'＋ 新建行程',
+    coordinating:'协同中',
+    inputPlaceholder:'问任何关于目的地的问题，或描述你的旅行梦想…',
+    quickBtns:['🌌 平行宇宙预览','🧮 预算计算器','📋 生成完整行程','🔍 最新资讯','🏨 住宿推荐'],
+    quickCmds:[
+      '帮我生成完整的7日行程方案，包括每天景点、餐厅和住宿',
+      '搜索目前最新的入境政策、签证要求和安全注意事项',
+      '推荐性价比最高的住宿方案，各价位段各给2个选择'
+    ],
+    genItinerary:'生成完整行程', liveSearch:'🔍 联网搜索',
+    panelTabs:['目的地','行程','预算','Agent日志'],
+    destTabSections:{regions:'推荐区域', tips:'旅行必知'},
+    itineraryTitle:'7日行程概览', deepCustom:'✨ AI 深度定制行程',
+    budgetTitle:'预算追踪 · 2人7天', budgetTotal:'总预算', budgetPlanned:'已规划 (34%)',
+    budgetCats:'费用分类', budgetOptimize:'💡 AI 预算优化',
+    logTitle:'实时日志', logClear:'清空', agentStatTitle:'Agent 状态',
+    mvTitle:'平行宇宙', mvTitleAccent:'预览',
+    mvCancel:'稍后再说', mvConfirm:'✨ 采用选中方案开始规划',
+    mvLoading:'多 Agent 正在并行生成三个方案…',
+    mvLoadAgents:['🗺️ 规划师','🏨 住宿顾问','💰 预算管家','🍜 美食'],
+    calcTitle:'智能', calcTitleAccent:'预算计算器',
+    calcParams:'基本参数',
+    calcLabels:['目的地','旅行天数','出行人数','旅行风格','出发城市','活动安排'],
+    calcDays:['3天','5天','7天','10天','14天'],
+    calcPeople:['1人','2人','3人','4人'],
+    calcStyles:['节俭穷游','舒适平衡','奢享高端'],
+    calcCities:['上海','北京','广州/深圳','成都'],
+    calcActivities:['基础观光','适中体验','丰富活动'],
+    calcResultTitle:'预算估算',
+    calcAI:'🤖 AI 优化预算方案', calcApply:'应用到行程规划',
+    calcTipsTitle:'💡 省钱小贴士',
+    calcCats:['机票（往返）','住宿','餐饮','活动体验','当地交通'],
+    agentNames:['旅程规划师','住宿顾问','美食探索家','活动策划师','预算管家','实时搜索'],
+    agentDescs:['行程设计 · 路线优化','已加载 75 家酒店','本地餐厅 · 隐藏小馆','冲浪 · 瑜伽 · 文化游','费用预测 · 实时汇率','联网 · 最新资讯'],
+    badgeOn:'运行中', badgeReady:'就绪', badgeIdle:'待机',
+    welcomeMsg:'你好！我是你的<strong>WanderMind 旅行伴侣</strong> 🌺<br><br>我已激活 <strong>6个专属智能体</strong>，随时协同工作——联网搜索已启用，可实时获取最新资讯、天气、航班动态。<br><br>你可以问我任何关于目的地的问题，或者直接告诉我你的旅行想法：',
+    suggChips:['🏨 乌布精品民宿','🌊 冲浪地点推荐','🍜 必吃美食清单','💰 预算规划','🕌 文化礼仪'],
+    suggCmds:['推荐乌布最好的精品民宿，预算中等','巴厘岛最佳冲浪地点和适合新手的冲浪课','巴厘岛必吃地道美食清单','两人7天巴厘岛旅行，分节俭/舒适/豪华三档预算','巴厘岛文化礼仪和注意事项'],
+    destMenuItems:['🌺 巴厘岛 · 印度尼西亚','🌸 京都 · 日本','🗼 巴黎 · 法国','🏝️ 圣托里尼 · 希腊','✨ 输入其他目的地…'],
+    systemPromptLang:'中文',
+    callCount:'次调用', active:'活跃', standby:'待机',
+    searchBadge:'已联网实时搜索',
+    agentCalls:' 次调用',
+    voicePhrases:['带我爸妈去个暖和不累的地方，有温泉最好','我想体验一次真正的冲浪，零基础可以吗？','蜜月旅行，两人预算两万，最浪漫的方案'],
+  },
+  en: {
+    flag:'🇬🇧', label:'English', avatar:'Me',
+    agentOnline:'6 Agents Online',
+    navTabs:['AI Chat','Trip Planner','Explore Map','Budget','Travel Journal'],
+    myTrips:'My Trips', agentTeam:'Agent Team',
+    newTrip:'＋ New Trip',
+    coordinating:'Active',
+    inputPlaceholder:'Ask anything about your destination, or describe your dream trip…',
+    quickBtns:['🌌 Parallel Preview','🧮 Budget Calculator','📋 Full Itinerary','🔍 Live Search','🏨 Accommodation'],
+    quickCmds:[
+      'Generate a complete 7-day itinerary with daily sights, restaurants, and accommodation',
+      'Search for the latest entry requirements, visa info, and travel advisories',
+      'Recommend the best value accommodations across different price ranges'
+    ],
+    genItinerary:'Full Itinerary', liveSearch:'🔍 Live Search',
+    panelTabs:['Destination','Itinerary','Budget','Agent Log'],
+    destTabSections:{regions:'Recommended Areas', tips:'Travel Essentials'},
+    itineraryTitle:'7-Day Overview', deepCustom:'✨ AI Custom Itinerary',
+    budgetTitle:'Budget Tracker · 2 people · 7 days', budgetTotal:'Total Budget', budgetPlanned:'Planned (34%)',
+    budgetCats:'Cost Breakdown', budgetOptimize:'💡 AI Budget Optimize',
+    logTitle:'Live Log', logClear:'Clear', agentStatTitle:'Agent Status',
+    mvTitle:'Parallel Universe', mvTitleAccent:'Preview',
+    mvCancel:'Maybe Later', mvConfirm:'✨ Use selected plan',
+    mvLoading:'Multi-Agent generating 3 plans in parallel…',
+    mvLoadAgents:['🗺️ Planner','🏨 Accommodation','💰 Budget','🍜 Food'],
+    calcTitle:'Smart', calcTitleAccent:'Budget Calculator',
+    calcParams:'Parameters',
+    calcLabels:['Destination','Duration','Travelers','Travel Style','Departure City','Activities'],
+    calcDays:['3 days','5 days','7 days','10 days','14 days'],
+    calcPeople:['1 person','2 people','3 people','4 people'],
+    calcStyles:['Budget','Comfortable','Luxury'],
+    calcCities:['Shanghai','Beijing','Guangzhou/Shenzhen','Chengdu'],
+    calcActivities:['Sightseeing only','Moderate experiences','Full activities'],
+    calcResultTitle:'Budget Estimate',
+    calcAI:'🤖 AI Optimize Budget', calcApply:'Apply to Trip',
+    calcTipsTitle:'💡 Money-Saving Tips',
+    calcCats:['Flights (round-trip)','Accommodation','Food & Dining','Activities','Local Transport'],
+    agentNames:['Trip Planner','Accommodation Advisor','Food Explorer','Activity Planner','Budget Manager','Live Search'],
+    agentDescs:['Itinerary & route design','75 hotels loaded','Local restaurants & hidden gems','Surf · Yoga · Culture tours','Cost forecast · Live rates','Online · Latest news'],
+    badgeOn:'Active', badgeReady:'Ready', badgeIdle:'Idle',
+    welcomeMsg:'Hi! I\'m your <strong>WanderMind Travel Companion</strong> 🌺<br><br>I\'ve activated <strong>6 specialized agents</strong> working in sync — live search is enabled for real-time info on weather, flights, and local events.<br><br>Ask me anything about your destination, or tell me your travel dream:',
+    suggChips:['🏨 Ubud Boutique Hotels','🌊 Best Surf Spots','🍜 Must-Try Local Food','💰 Budget Planning','🕌 Cultural Etiquette'],
+    suggCmds:['Recommend the best boutique hotels in Ubud, mid-range budget','Best surf spots in Bali and beginner-friendly surf lessons','Must-try authentic local food in Bali','Budget planning for 2 people, 7 days in Bali — budget / comfort / luxury tiers','Cultural etiquette and important customs in Bali'],
+    destMenuItems:['🌺 Bali · Indonesia','🌸 Kyoto · Japan','🗼 Paris · France','🏝️ Santorini · Greece','✨ Enter custom destination…'],
+    systemPromptLang:'English',
+    callCount:' calls', active:'Active', standby:'Idle',
+    searchBadge:'Live web search used',
+    agentCalls:' calls',
+    voicePhrases:['Family trip with my parents, warm weather, not too tiring, hot springs would be great','I want to try surfing for the first time — is it OK for beginners?','Honeymoon trip for two, budget around ¥20,000, most romantic option'],
+  },
+  ja: {
+    flag:'🇯🇵', label:'日本語', avatar:'旅',
+    agentOnline:'6エージェント稼働中',
+    navTabs:['AI チャット','旅行プラン','地図探索','予算管理','旅行記'],
+    myTrips:'マイ旅行', agentTeam:'エージェントチーム',
+    newTrip:'＋ 新しい旅行',
+    coordinating:'稼働中',
+    inputPlaceholder:'目的地について何でも聞いてください。旅の夢を教えてください…',
+    quickBtns:['🌌 並行宇宙プレビュー','🧮 予算計算機','📋 全行程生成','🔍 最新情報','🏨 宿泊施設'],
+    quickCmds:[
+      '毎日の観光スポット、レストラン、宿泊先を含む7日間の完全な旅程を作成してください',
+      '最新の入国要件、ビザ情報、旅行注意事項を検索してください',
+      '価格帯別におすすめのコスパ最高の宿泊施設を教えてください'
+    ],
+    genItinerary:'全行程生成', liveSearch:'🔍 リアルタイム検索',
+    panelTabs:['目的地','旅程','予算','エージェントログ'],
+    destTabSections:{regions:'おすすめエリア', tips:'旅行の必須情報'},
+    itineraryTitle:'7日間の概要', deepCustom:'✨ AIカスタム旅程',
+    budgetTitle:'予算トラッカー · 2名 · 7日間', budgetTotal:'総予算', budgetPlanned:'計画済み (34%)',
+    budgetCats:'費用内訳', budgetOptimize:'💡 AI予算最適化',
+    logTitle:'リアルタイムログ', logClear:'クリア', agentStatTitle:'エージェント状態',
+    mvTitle:'パラレルユニバース', mvTitleAccent:'プレビュー',
+    mvCancel:'後で考える', mvConfirm:'✨ 選択プランで計画開始',
+    mvLoading:'マルチエージェントが3つのプランを並行生成中…',
+    mvLoadAgents:['🗺️ プランナー','🏨 宿泊','💰 予算','🍜 グルメ'],
+    calcTitle:'スマート', calcTitleAccent:'予算計算機',
+    calcParams:'基本パラメータ',
+    calcLabels:['目的地','旅行日数','人数','旅行スタイル','出発都市','アクティビティ'],
+    calcDays:['3日','5日','7日','10日','14日'],
+    calcPeople:['1名','2名','3名','4名'],
+    calcStyles:['節約旅行','快適バランス','ラグジュアリー'],
+    calcCities:['上海','北京','広州/深圳','成都'],
+    calcActivities:['観光のみ','適度な体験','充実したアクティビティ'],
+    calcResultTitle:'予算見積もり',
+    calcAI:'🤖 AI予算最適化', calcApply:'旅行計画に適用',
+    calcTipsTitle:'💡 節約のヒント',
+    calcCats:['航空券（往復）','宿泊','食事','アクティビティ','現地交通'],
+    agentNames:['旅程プランナー','宿泊アドバイザー','グルメ探索家','アクティビティプランナー','予算マネージャー','リアルタイム検索'],
+    agentDescs:['旅程・ルート設計','ホテル75軒読込済','地元レストラン・穴場','サーフ・ヨガ・文化ツアー','費用予測・リアルタイムレート','オンライン・最新ニュース'],
+    badgeOn:'稼働中', badgeReady:'準備完了', badgeIdle:'待機中',
+    welcomeMsg:'こんにちは！<strong>WanderMind トラベルコンパニオン</strong>です 🌺<br><br><strong>6つの専門エージェント</strong>が同時稼働中 — リアルタイム検索で最新の天気・フライト・現地情報を取得できます。<br><br>目的地について何でも聞いてください：',
+    suggChips:['🏨 ウブドのブティックホテル','🌊 サーフィンスポット','🍜 必食グルメ','💰 予算プラン','🕌 文化マナー'],
+    suggCmds:['ウブドのおすすめブティックホテル（中価格帯）','バリ島の最高のサーフスポットと初心者向けレッスン','バリ島の絶対食べるべき本場グルメリスト','バリ島2名7日間の予算プラン（節約・快適・豪華の3段階）','バリ島の文化マナーと注意事項'],
+    destMenuItems:['🌺 バリ島 · インドネシア','🌸 京都 · 日本','🗼 パリ · フランス','🏝️ サントリーニ · ギリシャ','✨ その他の目的地を入力…'],
+    systemPromptLang:'日本語',
+    callCount:'回の呼び出し', active:'アクティブ', standby:'待機中',
+    searchBadge:'ウェブ検索使用',
+    agentCalls:'回の呼び出し',
+    voicePhrases:['両親と一緒に温かい場所へ、疲れすぎないで、温泉があればなおいい','初めてサーフィンに挑戦したい！初心者でも大丈夫？','ハネムーン旅行、二人で予算2万元、最もロマンチックなプランを'],
+  },
+  ko: {
+    flag:'🇰🇷', label:'한국어', avatar:'여',
+    agentOnline:'에이전트 6개 온라인',
+    navTabs:['AI 대화','여행 계획','지도 탐색','예산 관리','여행기'],
+    myTrips:'내 여행', agentTeam:'에이전트 팀',
+    newTrip:'＋ 새 여행',
+    coordinating:'진행 중',
+    inputPlaceholder:'여행지에 대해 무엇이든 물어보세요, 또는 여행의 꿈을 알려주세요…',
+    quickBtns:['🌌 병렬 우주 미리보기','🧮 예산 계산기','📋 전체 일정','🔍 실시간 검색','🏨 숙박 추천'],
+    quickCmds:[
+      '매일 관광지, 레스토랑, 숙박을 포함한 7일 전체 일정을 생성해주세요',
+      '최신 입국 요건, 비자 정보, 여행 주의사항을 검색해주세요',
+      '가격대별 최고 가성비 숙박 옵션을 추천해주세요'
+    ],
+    genItinerary:'전체 일정 생성', liveSearch:'🔍 실시간 검색',
+    panelTabs:['여행지','일정','예산','에이전트 로그'],
+    destTabSections:{regions:'추천 지역', tips:'여행 필수 정보'},
+    itineraryTitle:'7일 일정 개요', deepCustom:'✨ AI 맞춤 일정',
+    budgetTitle:'예산 추적 · 2인 · 7일', budgetTotal:'총 예산', budgetPlanned:'계획됨 (34%)',
+    budgetCats:'비용 분류', budgetOptimize:'💡 AI 예산 최적화',
+    logTitle:'실시간 로그', logClear:'지우기', agentStatTitle:'에이전트 상태',
+    mvTitle:'평행 우주', mvTitleAccent:'미리보기',
+    mvCancel:'나중에', mvConfirm:'✨ 선택한 플랜으로 계획 시작',
+    mvLoading:'멀티 에이전트가 3가지 플랜을 병렬 생성 중…',
+    mvLoadAgents:['🗺️ 플래너','🏨 숙박','💰 예산','🍜 맛집'],
+    calcTitle:'스마트', calcTitleAccent:'예산 계산기',
+    calcParams:'기본 설정',
+    calcLabels:['여행지','여행 일수','인원','여행 스타일','출발 도시','액티비티'],
+    calcDays:['3일','5일','7일','10일','14일'],
+    calcPeople:['1명','2명','3명','4명'],
+    calcStyles:['절약 여행','편안한 밸런스','럭셔리'],
+    calcCities:['상하이','베이징','광저우/선전','청두'],
+    calcActivities:['관광 위주','적당한 체험','다양한 액티비티'],
+    calcResultTitle:'예산 견적',
+    calcAI:'🤖 AI 예산 최적화', calcApply:'여행 계획에 적용',
+    calcTipsTitle:'💡 절약 팁',
+    calcCats:['항공권 (왕복)','숙박','식사','액티비티','현지 교통'],
+    agentNames:['여행 플래너','숙박 어드바이저','맛집 탐험가','액티비티 플래너','예산 매니저','실시간 검색'],
+    agentDescs:['일정 및 경로 설계','호텔 75곳 로드됨','현지 레스토랑·숨은 맛집','서핑·요가·문화 투어','비용 예측·실시간 환율','온라인·최신 뉴스'],
+    badgeOn:'실행 중', badgeReady:'준비됨', badgeIdle:'대기',
+    welcomeMsg:'안녕하세요! <strong>WanderMind 여행 파트너</strong>입니다 🌺<br><br><strong>6개의 전문 에이전트</strong>가 동시에 작동 중 — 실시간 검색으로 최신 날씨, 항공편, 현지 정보를 제공합니다.<br><br>여행지에 대해 무엇이든 물어보세요:',
+    suggChips:['🏨 우붓 부티크 호텔','🌊 서핑 명소','🍜 필수 로컬 음식','💰 예산 계획','🕌 문화 에티켓'],
+    suggCmds:['우붓의 최고 부티크 호텔 추천 (중간 가격대)','발리 최고의 서핑 명소와 초보자 강습','발리 필수 현지 음식 리스트','발리 2인 7일 여행 예산 계획 (절약/편안/럭셔리 3단계)','발리 문화 에티켓과 주의사항'],
+    destMenuItems:['🌺 발리 · 인도네시아','🌸 교토 · 일본','🗼 파리 · 프랑스','🏝️ 산토리니 · 그리스','✨ 다른 목적지 입력…'],
+    systemPromptLang:'한국어',
+    callCount:'회 호출', active:'활성', standby:'대기',
+    searchBadge:'실시간 웹 검색 사용',
+    agentCalls:'회 호출',
+    voicePhrases:['부모님과 따뜻한 곳으로, 너무 힘들지 않게, 온천이 있으면 좋겠어요','서핑을 처음 배우고 싶어요! 초보자도 괜찮나요?','신혼여행, 두 명 예산 2만 위안, 가장 로맨틱한 플랜'],
+  },
+  id: {
+    flag:'🇮🇩', label:'Indonesia', avatar:'Sy',
+    agentOnline:'6 Agen Online',
+    navTabs:['Chat AI','Rencana Perjalanan','Peta Eksplorasi','Anggaran','Jurnal Perjalanan'],
+    myTrips:'Perjalanan Saya', agentTeam:'Tim Agen',
+    newTrip:'＋ Perjalanan Baru',
+    coordinating:'Aktif',
+    inputPlaceholder:'Tanyakan apa saja tentang destinasi Anda, atau ceritakan impian perjalanan Anda…',
+    quickBtns:['🌌 Preview Paralel','🧮 Kalkulator Anggaran','📋 Itinerary Lengkap','🔍 Cari Terkini','🏨 Rekomendasi Hotel'],
+    quickCmds:[
+      'Buat itinerary 7 hari lengkap dengan tempat wisata, restoran, dan akomodasi setiap hari',
+      'Cari persyaratan masuk terbaru, info visa, dan peringatan perjalanan',
+      'Rekomendasikan akomodasi terbaik dengan nilai terbaik di berbagai kisaran harga'
+    ],
+    genItinerary:'Buat Itinerary', liveSearch:'🔍 Pencarian Live',
+    panelTabs:['Destinasi','Itinerary','Anggaran','Log Agen'],
+    destTabSections:{regions:'Area yang Direkomendasikan', tips:'Info Penting Perjalanan'},
+    itineraryTitle:'Gambaran 7 Hari', deepCustom:'✨ Itinerary Kustom AI',
+    budgetTitle:'Pelacak Anggaran · 2 orang · 7 hari', budgetTotal:'Total Anggaran', budgetPlanned:'Direncanakan (34%)',
+    budgetCats:'Rincian Biaya', budgetOptimize:'💡 Optimasi Anggaran AI',
+    logTitle:'Log Real-time', logClear:'Hapus', agentStatTitle:'Status Agen',
+    mvTitle:'Alam Semesta Paralel', mvTitleAccent:'Preview',
+    mvCancel:'Nanti Saja', mvConfirm:'✨ Gunakan rencana ini',
+    mvLoading:'Multi-Agen sedang membuat 3 rencana secara paralel…',
+    mvLoadAgents:['🗺️ Perencana','🏨 Akomodasi','💰 Anggaran','🍜 Kuliner'],
+    calcTitle:'Kalkulator', calcTitleAccent:'Anggaran Cerdas',
+    calcParams:'Parameter Dasar',
+    calcLabels:['Destinasi','Durasi','Jumlah Orang','Gaya Perjalanan','Kota Keberangkatan','Aktivitas'],
+    calcDays:['3 hari','5 hari','7 hari','10 hari','14 hari'],
+    calcPeople:['1 orang','2 orang','3 orang','4 orang'],
+    calcStyles:['Hemat','Nyaman','Mewah'],
+    calcCities:['Shanghai','Beijing','Guangzhou/Shenzhen','Chengdu'],
+    calcActivities:['Sightseeing saja','Pengalaman sedang','Aktivitas lengkap'],
+    calcResultTitle:'Estimasi Anggaran',
+    calcAI:'🤖 Optimasi Anggaran AI', calcApply:'Terapkan ke Perjalanan',
+    calcTipsTitle:'💡 Tips Hemat',
+    calcCats:['Tiket Pesawat (PP)','Akomodasi','Makanan & Minuman','Aktivitas','Transportasi Lokal'],
+    agentNames:['Perencana Perjalanan','Penasihat Akomodasi','Penjelajah Kuliner','Perencana Aktivitas','Manajer Anggaran','Pencarian Live'],
+    agentDescs:['Desain itinerary & rute','75 hotel dimuat','Restoran lokal & permata tersembunyi','Surfing · Yoga · Wisata Budaya','Prakiraan biaya · Kurs real-time','Online · Berita terbaru'],
+    badgeOn:'Aktif', badgeReady:'Siap', badgeIdle:'Standby',
+    welcomeMsg:'Halo! Saya <strong>WanderMind Travel Companion</strong> Anda 🌺<br><br>Saya telah mengaktifkan <strong>6 agen khusus</strong> yang bekerja bersama — pencarian live sudah diaktifkan untuk info real-time tentang cuaca, penerbangan, dan acara lokal.<br><br>Tanyakan apa saja tentang destinasi Anda:',
+    suggChips:['🏨 Hotel Butik Ubud','🌊 Spot Surfing Terbaik','🍜 Kuliner Wajib Coba','💰 Perencanaan Anggaran','🕌 Etika Budaya'],
+    suggCmds:['Rekomendasikan hotel butik terbaik di Ubud, anggaran menengah','Spot surfing terbaik di Bali dan kelas surfing untuk pemula','Daftar kuliner lokal autentik yang wajib dicoba di Bali','Perencanaan anggaran 2 orang 7 hari di Bali — hemat / nyaman / mewah','Etika budaya dan hal penting yang perlu diketahui di Bali'],
+    destMenuItems:['🌺 Bali · Indonesia','🌸 Kyoto · Jepang','🗼 Paris · Prancis','🏝️ Santorini · Yunani','✨ Masukkan destinasi lain…'],
+    systemPromptLang:'Bahasa Indonesia',
+    callCount:' panggilan', active:'Aktif', standby:'Standby',
+    searchBadge:'Pencarian web live digunakan',
+    agentCalls:' panggilan',
+    voicePhrases:['Liburan bersama orang tua ke tempat yang hangat, tidak terlalu melelahkan, ada pemandian air panas','Saya ingin mencoba surfing pertama kali! Apakah aman untuk pemula?','Bulan madu, berdua, anggaran 20 ribu yuan, rencana paling romantis'],
+  }
+};
+
+function toggleLangMenu() {
+  document.getElementById('lang-menu').classList.toggle('open');
+}
+
+function setLang(lang, e) {
+  if (e) e.stopPropagation();
+  currentLang = lang;
+  const L = LANGS[lang];
+  // Update button
+  document.getElementById('lang-flag').textContent = L.flag;
+  document.getElementById('lang-label').textContent = L.label;
+  document.getElementById('nav-avatar').textContent = L.avatar;
+  // Update menu checkmarks
+  document.querySelectorAll('.lang-menu-item').forEach(el => {
+    el.classList.toggle('active', el.dataset.lang === lang);
+  });
+  document.getElementById('lang-menu').classList.remove('open');
+  applyLang(lang);
+  // Notify AI of language switch
+  addLog('info', L.flag, `Language switched → ${L.label}`);
+}
+
+document.addEventListener('click', e => {
+  if (!e.target.closest('#lang-switcher')) {
+    const m = document.getElementById('lang-menu');
+    if (m) m.classList.remove('open');
+  }
+});
+
+function applyLang(lang) {
+  const L = LANGS[lang];
+
+  // Nav tabs
+  const navTabs = document.querySelectorAll('.nav-tab');
+  navTabs.forEach((t,i) => { if (L.navTabs[i]) t.textContent = L.navTabs[i]; });
+
+  // Agent status bar text
+  const asb = document.querySelector('.agent-status-bar span');
+  if (asb) asb.textContent = L.agentOnline;
+
+  // Sidebar labels
+  const myTripsEl = document.querySelector('.sidebar-title');
+  if (myTripsEl) myTripsEl.textContent = L.myTrips;
+  const agentTeamEl = document.querySelector('.agents-title');
+  if (agentTeamEl) agentTeamEl.textContent = L.agentTeam;
+  const newTripBtn = document.querySelector('.new-trip-btn');
+  if (newTripBtn) newTripBtn.textContent = L.newTrip;
+
+  // Active agents bar
+  const activeLabel = document.querySelector('.active-label');
+  if (activeLabel) activeLabel.textContent = L.coordinating;
+
+  // Agent names & descs in sidebar
+  const agentIds = ['planner','hotel','food','activity','budget','search'];
+  agentIds.forEach((id,i) => {
+    const item = document.getElementById('agent-' + id);
+    if (!item) return;
+    const nameEl = item.querySelector('.agent-name');
+    const descEl = item.querySelector('.agent-desc');
+    if (nameEl) nameEl.textContent = L.agentNames[i];
+    if (descEl) descEl.textContent = L.agentDescs[i];
+    const badge = item.querySelector('.badge');
+    if (badge) {
+      if (badge.classList.contains('badge-on')) badge.textContent = L.badgeOn;
+      else if (badge.classList.contains('badge-ready')) badge.textContent = L.badgeReady;
+      else badge.textContent = L.badgeIdle;
+    }
+  });
+
+  // Input placeholder
+  const inp = document.getElementById('main-input');
+  if (inp) inp.placeholder = L.inputPlaceholder;
+
+  // Quick action buttons
+  const qbtns = document.querySelectorAll('.quick-btn');
+  qbtns.forEach((btn,i) => {
+    const labels = [L.quickBtns[0], L.quickBtns[1], L.quickBtns[2], L.quickBtns[3], L.quickBtns[4]];
+    if (labels[i]) btn.childNodes[0] && (btn.textContent = labels[i]);
+  });
+  // Re-wire quick btn commands
+  if (qbtns.length >= 5) {
+    qbtns[2].onclick = () => qsend(L.quickCmds[0]);
+    qbtns[3].onclick = () => qsend(L.quickCmds[1]);
+    qbtns[4].onclick = () => qsend(L.quickCmds[2]);
+  }
+
+  // Header buttons
+  const destActions = document.querySelectorAll('.dest-actions .btn');
+  if (destActions[0]) destActions[0].textContent = L.genItinerary;
+  if (destActions[1]) destActions[1].textContent = L.liveSearch;
+  if (destActions[1]) destActions[1].onclick = () => qsend(L.quickCmds[1]);
+
+  // Panel tabs
+  const ptabs = document.querySelectorAll('.panel-tab');
+  ptabs.forEach((t,i) => { if (L.panelTabs[i]) t.textContent = L.panelTabs[i]; });
+
+  // Panel section titles
+  const panelSecTitles = document.querySelectorAll('.panel-section-title');
+  if (panelSecTitles[0]) panelSecTitles[0].textContent = L.destTabSections.regions;
+  if (panelSecTitles[1]) panelSecTitles[1].textContent = L.destTabSections.tips;
+
+  // Itinerary panel
+  const itinTitle = document.querySelector('#panel-itinerary .panel-section-title');
+  if (itinTitle) itinTitle.textContent = L.itineraryTitle;
+  const deepBtn = document.querySelector('#panel-itinerary .panel-action-btn');
+  if (deepBtn) deepBtn.textContent = L.deepCustom;
+
+  // Budget panel
+  const budgTitle = document.querySelector('#panel-budget .panel-section-title');
+  if (budgTitle) budgTitle.textContent = L.budgetTitle;
+  const budgOptBtn = document.querySelector('#panel-budget .panel-action-btn');
+  if (budgOptBtn) budgOptBtn.textContent = L.budgetOptimize;
+
+  // Stat labels
+  const statLbls = document.querySelectorAll('.stat-lbl');
+  if (statLbls[2]) statLbls[2].textContent = L.budgetTotal;
+  if (statLbls[3]) statLbls[3].textContent = L.budgetPlanned;
+  const budgCatTitle = document.querySelector('#panel-budget .panel-section-title:last-of-type');
+
+  // Log panel
+  const logTitle = document.querySelector('.log-status');
+  if (logTitle) logTitle.innerHTML = `<div class="status-dot"></div>${L.logTitle}`;
+  const logClear = document.querySelector('.log-clear');
+  if (logClear) logClear.textContent = L.logClear;
+  const agentStatTitle = document.querySelector('#panel-log .panel-section-title');
+  if (agentStatTitle) agentStatTitle.textContent = L.agentStatTitle;
+
+  // Destination menu items
+  const destItems = document.querySelectorAll('.dest-menu-item');
+  destItems.forEach((el,i) => {
+    if (L.destMenuItems[i]) {
+      const hasStyle = el.getAttribute('style');
+      el.textContent = L.destMenuItems[i];
+      if (hasStyle) el.setAttribute('style', hasStyle);
+    }
+  });
+
+  // Multiverse modal
+  const mvTitleEl = document.querySelector('#modal-multiverse .modal-title');
+  if (mvTitleEl) mvTitleEl.innerHTML = `${L.mvTitle}<span>${L.mvTitleAccent}</span>`;
+  const mvCancelBtn = document.querySelector('#mv-actions .mv-btn-ghost');
+  if (mvCancelBtn) mvCancelBtn.textContent = L.mvCancel;
+  const mvConfBtn = document.getElementById('mv-confirm-btn');
+  if (mvConfBtn) mvConfBtn.textContent = L.mvConfirm;
+  const mvLoadText = document.querySelector('.mv-loading-text');
+  if (mvLoadText) mvLoadText.textContent = L.mvLoading;
+  const mvLoadAgents = document.querySelectorAll('.mv-loading-agent');
+  mvLoadAgents.forEach((el,i) => { if (L.mvLoadAgents[i]) el.textContent = L.mvLoadAgents[i]; });
+
+  // Budget calc modal
+  const calcTitleEl = document.querySelector('#modal-budget .modal-title');
+  if (calcTitleEl) calcTitleEl.innerHTML = `${L.calcTitle}<span>${L.calcTitleAccent}</span>`;
+  const calcParamsTitle = document.querySelector('#modal-budget .calc-section-title');
+  if (calcParamsTitle) calcParamsTitle.textContent = L.calcParams;
+  // Calc field labels
+  const calcLabels = document.querySelectorAll('#modal-budget .calc-field label');
+  calcLabels.forEach((el,i) => { if (L.calcLabels[i]) el.textContent = L.calcLabels[i]; });
+  // Calc select options
+  const daysSelect = document.getElementById('calc-days');
+  if (daysSelect) Array.from(daysSelect.options).forEach((opt,i) => { if (L.calcDays[i]) opt.textContent = L.calcDays[i]; });
+  const peopleSelect = document.getElementById('calc-people');
+  if (peopleSelect) Array.from(peopleSelect.options).forEach((opt,i) => { if (L.calcPeople[i]) opt.textContent = L.calcPeople[i]; });
+  const styleSelect = document.getElementById('calc-style');
+  if (styleSelect) Array.from(styleSelect.options).forEach((opt,i) => { if (L.calcStyles[i]) opt.textContent = L.calcStyles[i]; });
+  const citySelect = document.getElementById('calc-city');
+  if (citySelect) Array.from(citySelect.options).forEach((opt,i) => { if (L.calcCities[i]) opt.textContent = L.calcCities[i]; });
+  const actSelect = document.getElementById('calc-activity');
+  if (actSelect) Array.from(actSelect.options).forEach((opt,i) => { if (L.calcActivities[i]) opt.textContent = L.calcActivities[i]; });
+  // Calc result title
+  const calcResultTitle = document.querySelector('.calc-result-title');
+  if (calcResultTitle) calcResultTitle.textContent = L.calcResultTitle;
+  // Calc buttons
+  const calcBtns = document.querySelectorAll('.calc-actions .calc-btn');
+  if (calcBtns[0]) calcBtns[0].textContent = L.calcAI;
+  if (calcBtns[1]) calcBtns[1].textContent = L.calcApply;
+  // Calc tips title
+  const calcTipsTitle = document.querySelector('.calc-tips-title');
+  if (calcTipsTitle) calcTipsTitle.textContent = L.calcTipsTitle;
+  // Calc breakdown labels (re-run calcUpdate to refresh with new lang labels)
+  const origCats = ['机票（往返）','Flights (round-trip)','航空券（往復）','항공권 (왕복)','Tiket Pesawat (PP)'];
+  // Just store lang for calcUpdate to use
+  window._calcCats = L.calcCats;
+  calcUpdate();
+
+  // Update AGENT_PERSONAS names based on lang
+  const agentPersonaKeys = ['planner','hotel','food','activity','budget','search'];
+  agentPersonaKeys.forEach((key,i) => {
+    if (AGENT_PERSONAS[key]) AGENT_PERSONAS[key].name = L.agentNames[i];
+  });
+
+  // Update system prompt language
+  window._systemLang = L.systemPromptLang;
+
+  // Update fakeVoice phrases
+  window._voicePhrases = L.voicePhrases;
+
+  // Update welcome chips in messages if they exist
+  const chips = document.querySelectorAll('.sugg-chip');
+  chips.forEach((chip,i) => {
+    if (L.suggChips[i]) {
+      chip.textContent = L.suggChips[i];
+      const cmd = L.suggCmds[i];
+      chip.onclick = () => qsend(cmd);
+    }
+  });
+
+  // Search badge text
+  window._searchBadgeText = L.searchBadge;
+  window._agentCallsText = L.agentCalls;
+  window._activeText = L.active;
+  window._standbyText = L.standby;
+
+  // Update calc tips to re-run with lang-specific content
+  setTimeout(() => calcUpdate(), 50);
+}
+
+// Patch calcUpdate to use localized category labels
+const _origCalcUpdate = calcUpdate;
+window.calcUpdate = function() {
+  const L = LANGS[currentLang];
+  const dest = document.getElementById('calc-dest')?.value || 'bali';
+  const days = parseInt(document.getElementById('calc-days')?.value || 7);
+  const people = parseInt(document.getElementById('calc-people')?.value || 2);
+  const style = document.getElementById('calc-style')?.value || 'comfort';
+  const city = document.getElementById('calc-city')?.value || 'sh';
+  const activity = document.getElementById('calc-activity')?.value || 'moderate';
+  const base = CALC_BASE[dest]?.[style] || CALC_BASE.bali.comfort;
+  const flightMult = FLIGHT_MULT[city] || 1;
+  const actMult = ACTIVITY_MULT[activity] || 1;
+  const costs = {
+    flight:    Math.round(base.flight * flightMult * people),
+    hotel:     Math.round(base.hotel * days * (people > 2 ? Math.ceil(people/2) : 1)),
+    food:      Math.round(base.food * days * people),
+    activity:  Math.round(base.activity * days * people * actMult),
+    transport: Math.round(base.transport * days),
+  };
+  const total = Object.values(costs).reduce((a,b) => a+b, 0);
+  const fmtNum = n => '¥' + n.toLocaleString();
+  const totalEl = document.getElementById('calc-total');
+  if (totalEl) totalEl.textContent = fmtNum(total);
+  const destNames = {zh:{bali:'巴厘岛',kyoto:'京都',paris:'巴黎',santorini:'圣托里尼'}, en:{bali:'Bali',kyoto:'Kyoto',paris:'Paris',santorini:'Santorini'}, ja:{bali:'バリ島',kyoto:'京都',paris:'パリ',santorini:'サントリーニ'}, ko:{bali:'발리',kyoto:'교토',paris:'파리',santorini:'산토리니'}, id:{bali:'Bali',kyoto:'Kyoto',paris:'Paris',santorini:'Santorini'}};
+  const styleNames = {zh:{budget:'节俭',comfort:'舒适',luxury:'豪华'}, en:{budget:'Budget',comfort:'Comfort',luxury:'Luxury'}, ja:{budget:'節約',comfort:'快適',luxury:'豪華'}, ko:{budget:'절약',comfort:'편안',luxury:'럭셔리'}, id:{budget:'Hemat',comfort:'Nyaman',luxury:'Mewah'}};
+  const dName = destNames[currentLang]?.[dest] || dest;
+  const sName = styleNames[currentLang]?.[style] || style;
+  const subEl = document.getElementById('calc-sub');
+  if (subEl) subEl.textContent = `${people}p · ${days}d · ${dName} · ${sName}`;
+  const cats = (window._calcCats || L.calcCats);
+  const catKeys = ['flight','hotel','food','activity','transport'];
+  const icons = ['✈️','🏨','🍜','🏄','🚗'];
+  const bdEl = document.getElementById('calc-breakdown');
+  if (bdEl) bdEl.innerHTML = catKeys.map((k,i) => `
+    <div class="calc-brow">
+      <span class="calc-brow-label">${icons[i]} ${cats[i]}</span>
+      <div class="calc-brow-bar-wrap"><div class="calc-brow-bar" style="width:${Math.round(costs[k]/total*100)}%"></div></div>
+      <span class="calc-brow-val">${fmtNum(costs[k])}</span>
+    </div>`).join('');
+  const allTips = {
+    bali:   {zh:['旱季（5–9月）机票较便宜，雨季酒店可打5折','乌布精品民宿性价比远高于努沙杜瓦5星酒店','当地包车司机一天约¥250，4人分摊非常划算'], en:['Dry season (May–Sep) has cheaper flights; hotel rates drop 50% in rainy season','Ubud boutique stays offer far better value than Nusa Dua 5-star hotels','A private driver costs ~¥250/day — great value for groups of 4'], ja:['乾季(5-9月)のフライトは安く、雨季はホテルが50%オフに','ウブドのブティックホテルはヌサドゥアの5つ星より断然コスパ良し','チャーター運転手は1日約¥250、4人でシェアするととてもお得'], ko:['건기(5-9월)는 항공권이 저렴, 우기엔 호텔 50% 할인 많음','우붓 부티크 호텔이 누사두아 5성 호텔보다 가성비 훨씬 좋음','전세 기사 하루 약 ¥250, 4명이 나누면 매우 저렴'], id:['Musim kemarau (Mei-Sep) tiket lebih murah; tarif hotel turun 50% di musim hujan','Penginapan butik Ubud jauh lebih value dibanding hotel bintang 5 Nusa Dua','Sopir pribadi ~¥250/hari — sangat worth it untuk grup 4 orang']},
+    kyoto:  {zh:['提前3个月订机票可省20–30%','京都JR周游券7天约¥800，高频使用很划算','住阪神地区每晚可省30–40%，地铁20分钟进京都'], en:['Book flights 3 months ahead to save 20-30%','7-day JR Kansai pass ~¥800 — great if visiting multiple cities','Stay in Osaka or Kobe area — 30-40% cheaper, 20-min train to Kyoto'], ja:['3ヶ月前に予約でフライト20-30%節約可能','7日間JR関西パス約¥800、複数都市訪問に最適','大阪・神戸エリアに宿泊で30-40%節約、京都まで電車20分'], ko:['3개월 전 항공권 예약으로 20-30% 절약','7일 JR 간사이 패스 약 ¥800, 여러 도시 방문 시 가성비 최고','오사카·고베 지역 숙박으로 30-40% 절약, 교토까지 전철 20분'], id:['Pesan tiket 3 bulan lebih awal untuk hemat 20-30%','JR Kansai Pass 7 hari ~¥800 — cocok untuk kunjungan multi-kota','Menginap di area Osaka/Kobe 30-40% lebih murah, 20 menit ke Kyoto']},
+    paris:  {zh:['博物馆通票2天约¥420，多景点必买','住20区或11区，性价比比市中心高很多','欧洲之星提前2个月可以拿到超值价格'], en:['Museum Pass (2 days ~¥420) is a must for multiple attractions','Staying in 11th or 20th arrondissement offers far better value than central','Book Eurostar 2 months ahead for great prices if visiting London too'], ja:['ミュージアムパス2日間約¥420、複数観光地に必須','11区または20区に宿泊するとコスパが格段に上がる','ユーロスターは2ヶ月前予約でお得なレートが取れる'], ko:['뮤지엄 패스 2일권 약 ¥420, 여러 관광지 방문 시 필수','11구 또는 20구 숙박이 시내 중심보다 가성비 훨씬 좋음','유로스타 2개월 전 예약하면 런던까지 저렴하게 이동 가능'], id:['Museum Pass (2 hari ~¥420) wajib beli untuk banyak atraksi','Menginap di arrondissement 11 atau 20 jauh lebih hemat dari pusat kota','Pesan Eurostar 2 bulan lebih awal untuk harga terbaik']},
+    santorini:{zh:['避开7–8月旺季可省40%，6月初或9月末最佳','从雅典坐渡轮约¥200，比飞机便宜很多','伊亚(Oia)比菲拉(Fira)贵30%，同等民宿价差明显'], en:['Avoid Jul–Aug peak, visit early June or late Sep to save 40%','Take the ferry from Athens (~¥200) instead of a connecting flight','Oia is 30% pricier than Fira — same quality for significantly less in Fira'], ja:['7-8月のピークを避け6月初旬か9月末に訪問で40%節約','アテネからフェリー（約¥200）が飛行機より断然お得','イアはフィラより30%高い — フィラで同品質をかなり安く見つけられる'], ko:['7-8월 성수기 피해 6월 초나 9월 말 방문하면 40% 절약','아테네에서 페리(약 ¥200) 이용이 환승 비행기보다 훨씬 저렴','이아(Oia)는 피라(Fira)보다 30% 비쌈 — 피라에서 동급 숙박이 훨씬 저렴'], id:['Hindari puncak Jul-Agu, kunjungi awal Juni atau akhir Sep untuk hemat 40%','Naik feri dari Athena (~¥200) jauh lebih hemat dari penerbangan sambung','Oia 30% lebih mahal dari Fira — kualitas sama, jauh lebih hemat di Fira']}
+  };
+  const tipsForDest = allTips[dest]?.[currentLang] || allTips[dest]?.['en'] || [];
+  const tipsEl = document.getElementById('calc-tips-content');
+  if (tipsEl) tipsEl.innerHTML = tipsForDest.map(t => `<div class="calc-tip"><span class="calc-tip-icon">💡</span><span>${t}</span></div>`).join('');
+};
+
+// Patch appendAIMsg to use localized search badge
+const __origAppendAIMsg = window.appendAIMsg;
+window.appendAIMsg = function(text, searched) {
+  const badgeText = window._searchBadgeText || LANGS[currentLang].searchBadge;
+  // temporarily override so _origAppendAIMsg uses it
+  agentCallCount[currentAgent] = (agentCallCount[currentAgent] || 0) + 1;
+  const agent = AGENT_PERSONAS[currentAgent];
+  addLog('success', agent.icon, `<strong>${agent.name}</strong> · ${text.length} chars`);
+  if (searched) addLog('search', '🌐', `<strong>${agent.name}</strong> · ${badgeText}`);
+  // call the original-original
+  _origAppendAIMsg(text, searched);
+};
+
+// Patch fakeVoice to use lang phrases
+window.fakeVoice = function() {
+  const phrases = window._voicePhrases || LANGS[currentLang].voicePhrases;
+  document.getElementById('main-input').value = phrases[Math.floor(Math.random() * phrases.length)];
+  document.getElementById('main-input').focus();
+};
+
+// Patch BASE_SYSTEM to include language instruction
+const _origBuildSystem = () => BASE_SYSTEM;
+Object.defineProperty(window, 'BASE_SYSTEM_CURRENT', {
+  get: () => BASE_SYSTEM + `\n\n【语言要求】请用${LANGS[currentLang]?.systemPromptLang || '中文'}回复用户。`
+});
+
+// Patch sendMsg to use BASE_SYSTEM_CURRENT
+// We'll do this by overriding the system prompt building inline
+// Store original sendMsg
+const __origSendMsg = window.sendMsg || sendMsg;
+
+// Patch openMultiverse to use current lang
+const _origOpenMultiverse = window.openMultiverse;
+window.openMultiverse = function() {
+  const L = LANGS[currentLang];
+  mvDestName = DESTINATIONS[currentDest]?.name || currentDest;
+  const intro = document.getElementById('mv-dest-text');
+  const destNames = {zh:'巴厘岛',en:'Bali',ja:'バリ島',ko:'발리',id:'Bali'};
+  if (intro) {
+    const dname = DESTINATIONS[currentDest]?.name || destNames[currentLang] || 'Bali';
+    const phrases = {
+      zh:`AI 同时为你生成 3 个版本的${dname}行程，从极简到奢享——看完再决定。`,
+      en:`AI generates 3 parallel versions of your ${dname} trip — from ultra-budget to full luxury. Pick your universe.`,
+      ja:`AIが${dname}の旅程を3つのバージョンで同時生成します。超節約から超豪華まで。`,
+      ko:`AI가 ${dname} 여행의 3가지 버전을 동시에 생성합니다. 초절약부터 초호화까지.`,
+      id:`AI menghasilkan 3 versi perjalanan ${dname} secara paralel — dari super hemat hingga mewah total.`
+    };
+    intro.textContent = phrases[currentLang] || phrases.en;
+  }
+  document.getElementById('mv-loading').classList.add('active');
+  document.getElementById('mv-grid').style.display = 'none';
+  document.getElementById('mv-actions').style.display = 'none';
+  openModal('modal-multiverse');
+  addLog('info', '🌌', `Parallel Universe · ${DESTINATIONS[currentDest]?.name || currentDest}`);
+  generateMultiverse();
+};
+
+// Initialize
+applyLang('zh');
+
+
+// ═══════════════════════════════════════════════════════
+// ─── MAP SYSTEM ──────────────────────────────────────
+// ═══════════════════════════════════════════════════════
+
+const MAP_DATA = {
+  bali: {
+    bg: '#1a3d2b',
+    water: '#1a4d6e',
+    landColor: '#2d5a3d',
+    name: 'Bali',
+    pois: [
+      {id:'ubud',     x:360, y:180, cat:'sight', icon:'🌾', name:'Ubud',          desc:'艺术与文化中心，梯田景观，瑜伽冥想圣地。乌布皇宫和圣猴森林是必游之处。',    hours:'全天',  price:'免费–¥80', rating:'4.9', crowd:[2,2,3,4,5,6,8,9,8,7,6,5,4,4,5,6,7,7,6,5,4,3,2,2]},
+      {id:'uluwatu',  x:260, y:360, cat:'surf',  icon:'🌊', name:'Uluwatu',        desc:'世界级冲浪胜地，悬崖神庙壮丽景观。每天18:00有传统凯撒火舞表演。',        hours:'07:00–19:00', price:'¥25', rating:'4.8', crowd:[1,1,2,3,4,5,7,8,7,6,6,5,4,5,6,7,9,8,7,6,5,4,3,2]},
+      {id:'seminyak', x:220, y:290, cat:'food',  icon:'🍹', name:'Seminyak',       desc:'时尚海滩区，精品酒店和网红餐厅聚集地。日落时分的Ku De Ta是绝佳打卡地点。', hours:'24h',   price:'¥150–600', rating:'4.7', crowd:[1,1,2,3,3,4,5,6,6,6,7,7,8,8,8,9,9,9,8,7,7,8,9,7]},
+      {id:'tegallalang', x:380, y:155, cat:'sight', icon:'🌿', name:'Tegallalang梯田', desc:'UNESCO世界文化遗产，壮观的梯田景观。建议早晨8-9点前往，避开人流高峰。', hours:'08:00–18:00', price:'¥30', rating:'4.7', crowd:[1,1,1,2,3,4,7,9,8,7,6,6,7,8,7,6,5,4,3,3,2,2,1,1]},
+      {id:'tanah-lot', x:190, y:220, cat:'sight', icon:'🛕', name:'Tanah Lot神庙',  desc:'建在海中礁石上的印度教神庙，日落时分最为壮观，是巴厘岛最具代表性的地标。', hours:'07:00–19:00', price:'¥60', rating:'4.8', crowd:[1,1,1,2,3,4,5,6,6,5,5,6,6,7,7,7,9,9,8,6,5,4,3,2]},
+      {id:'nusa-dua',  x:310, y:390, cat:'hotel', icon:'🏖️', name:'Nusa Dua',       desc:'高端度假村聚集区，白沙滩和清澈海水。适合蜜月和家庭度假，水上运动丰富。',   hours:'24h',   price:'¥800+/晚', rating:'4.8', crowd:[2,2,2,3,4,5,6,7,7,6,6,7,7,7,6,6,7,7,6,5,4,4,3,2]},
+      {id:'mount-batur',x:420, y:130, cat:'sight', icon:'🌋', name:'巴图尔火山',    desc:'活火山，提供凌晨徒步看日出的绝佳体验。海拔1717米，清晨可见云海奇景。',   hours:'凌晨01:00出发', price:'¥350含导游', rating:'4.9', crowd:[1,1,4,6,7,5,4,3,3,3,4,4,4,3,3,3,3,2,2,2,1,1,1,1]},
+      {id:'kuta',      x:235, y:320, cat:'surf',  icon:'🏄', name:'库塔海滩',       desc:'巴厘岛最知名的海滩，适合初学者冲浪。入门冲浪课约¥200，日落景色绝美。',   hours:'24h',   price:'冲浪课¥200', rating:'4.5', crowd:[2,2,2,3,4,5,6,7,8,8,8,8,8,8,8,8,8,7,7,8,9,8,6,4]},
+      {id:'jimbaran',  x:250, y:370, cat:'food',  icon:'🦞', name:'金巴兰海鲜',     desc:'在海边享用新鲜烤海鲜，日落美景下的浪漫晚餐。龙虾约¥300，石斑鱼约¥150。', hours:'11:00–22:00', price:'人均¥150–400', rating:'4.7', crowd:[1,1,1,1,2,3,4,5,6,6,6,6,6,6,6,6,7,8,9,9,8,7,5,3]},
+      {id:'canggu',    x:195, y:255, cat:'surf',  icon:'🤙', name:'坎古',           desc:'网红冲浪圣地，充满文艺气息。数字游民聚集区，咖啡馆和健康餐厅林立。',       hours:'24h',   price:'咖啡¥30起', rating:'4.6', crowd:[1,1,2,3,4,5,6,7,7,7,7,7,7,7,7,7,7,7,7,8,8,7,5,3]},
+      {id:'ubud-market',x:355, y:185, cat:'food', icon:'🛍️', name:'乌布市场',       desc:'当地最大传统市场，艺术品、木雕、蜡染布一应俱全。砍价是传统，起价的30%为参考。', hours:'06:00–17:00', price:'自由消费', rating:'4.4', crowd:[1,2,4,6,8,9,8,7,6,5,5,5,5,5,5,4,4,3,3,2,2,1,1,1]},
+      {id:'spa-ubud',  x:370, y:175, cat:'hotel', icon:'🧖', name:'乌布SPA',        desc:'世界顶级SPA体验地，传统巴厘岛按摩和花瓣浴。Fivelements和COMO是殿堂级选择。', hours:'09:00–21:00', price:'¥200–800', rating:'4.9', crowd:[1,1,1,2,3,4,5,6,7,7,7,6,6,6,6,6,6,7,7,6,5,4,3,2]},
+    ]
+  },
+  kyoto: {
+    bg: '#1f2d1a', water: '#2a4060', landColor: '#2d3d2a', name: 'Kyoto',
+    pois: [
+      {id:'fushimi',  x:360, y:280, cat:'sight', icon:'⛩️', name:'伏见稻荷大社',   desc:'千本鸟居，全年最热门景点。建议早晨6点前到达，此时游客极少，光线绝美。',    hours:'24h',   price:'免费', rating:'4.9', crowd:[2,2,2,3,5,7,9,9,8,7,6,6,6,6,6,6,7,7,6,5,4,3,2,2]},
+      {id:'arashiyama',x:200, y:200, cat:'sight', icon:'🎋', name:'岚山竹林',       desc:'世界著名竹林步道，约200米长。旁边的天龙寺庭院也是必游之地，樱花季尤美。', hours:'24h',   price:'免费', rating:'4.8', crowd:[2,2,2,3,4,6,8,9,8,7,6,6,6,6,6,7,7,6,5,4,3,3,2,2]},
+      {id:'gion',     x:380, y:240, cat:'food',  icon:'🏮', name:'祗园花见小路',    desc:'艺伎文化中心，传统茶屋林立。运气好可以看到真正的舞伎，黄昏时分最有氛围。', hours:'全天',  price:'自由游览', rating:'4.8', crowd:[1,1,2,3,4,6,7,8,8,7,7,7,8,8,8,8,9,9,8,7,6,5,4,2]},
+      {id:'kinkakuji',x:260, y:180, cat:'sight', icon:'🏯', name:'金阁寺',         desc:'UNESCO世界遗产，金色阁楼倒映湖中的绝美景色。建议工作日早晨前往，避开周末人潮。', hours:'09:00–17:00', price:'¥60', rating:'4.7', crowd:[1,1,1,2,4,6,8,9,9,8,7,7,7,7,7,7,7,6,5,4,3,2,1,1]},
+      {id:'nishiki',  x:340, y:250, cat:'food',  icon:'🐟', name:'锦市场',         desc:'京都的厨房，百年历史的市场街。豆腐、腌菜、抹茶甜点应有尽有，全长约400米。', hours:'09:00–18:00', price:'自由消费', rating:'4.6', crowd:[1,1,1,2,3,5,7,8,8,8,8,8,8,8,7,6,5,4,3,2,2,1,1,1]},
+      {id:'philosopher',x:420, y:210, cat:'sight', icon:'🌸', name:'哲学之道',      desc:'沿疏水渠而建的2km步行道，樱花季最美。两侧有咖啡馆和画廊，适合悠闲漫步。', hours:'24h',   price:'免费', rating:'4.7', crowd:[1,1,1,2,4,6,8,9,8,7,6,5,5,5,5,6,6,5,4,3,2,2,1,1]},
+      {id:'ryoanji',  x:235, y:195, cat:'sight', icon:'🪨', name:'龙安寺枯山水',   desc:'世界最著名的枯山水庭园，15块石头永远只能看到14块。极简之美令人沉静。',     hours:'08:00–17:00', price:'¥70', rating:'4.6', crowd:[1,1,1,2,3,5,7,8,7,6,6,6,6,6,5,5,5,4,3,3,2,1,1,1]},
+      {id:'pontocho', x:355, y:248, cat:'food',  icon:'🍱', name:'先斗町',         desc:'京都最有情调的美食街，传统料亭和现代餐厅共存。夏季在鸭川旁的纳凉床上用餐是体验。', hours:'11:00–23:00', price:'人均¥200–800', rating:'4.7', crowd:[1,1,1,2,2,3,4,5,6,6,7,7,7,7,7,8,8,9,9,8,7,6,4,2]},
+    ]
+  },
+  paris: {
+    bg: '#1a1a2e', water: '#1e3a5f', landColor: '#252535', name: 'Paris',
+    pois: [
+      {id:'eiffel',   x:260, y:250, cat:'sight', icon:'🗼', name:'埃菲尔铁塔',      desc:'巴黎最具代表性地标，夜间每小时整点闪光5分钟最为壮观。建议提前2周网上购票。', hours:'09:00–24:45', price:'¥120–280', rating:'4.7', crowd:[2,2,2,3,4,5,7,8,8,8,8,8,8,8,8,8,8,9,9,8,7,6,5,3]},
+      {id:'louvre',   x:350, y:235, cat:'sight', icon:'🎨', name:'卢浮宫',          desc:'世界最大艺术博物馆，蒙娜丽莎和维纳斯雕像是必看之作。建议预留至少3小时。',   hours:'09:00–18:00', price:'¥150', rating:'4.8', crowd:[1,1,1,2,3,5,7,9,9,9,8,8,8,8,7,7,7,6,5,4,3,2,1,1]},
+      {id:'montmartre',x:340, y:190, cat:'food', icon:'🎨', name:'蒙马特高地',      desc:'艺术家聚集地，圣心教堂俯瞰全城。周边咖啡馆和画廊充满波西米亚风情。',       hours:'24h',   price:'自由游览', rating:'4.7', crowd:[1,1,2,3,4,5,6,7,7,7,7,7,7,7,7,7,7,7,7,7,8,8,6,3]},
+      {id:'notre-dame',x:370, y:248, cat:'sight', icon:'⛪', name:'巴黎圣母院',     desc:'哥特式建筑杰作，2019年火灾后正在修复，2024年重新开放。塔楼俯瞰塞纳河绝美。', hours:'08:00–18:45', price:'免费', rating:'4.8', crowd:[1,1,1,2,3,5,7,8,8,8,8,8,8,8,8,8,8,8,7,6,5,4,2,1]},
+      {id:'le-marais', x:390, y:240, cat:'food', icon:'🧀', name:'玛莱区',          desc:'时尚与历史并存，最好的熟食店和法式小酒馆聚集地。周六的有机市场是本地人最爱。', hours:'全天',  price:'自由消费', rating:'4.7', crowd:[1,1,2,3,4,5,6,7,7,7,8,8,8,8,7,7,7,8,8,7,6,5,4,2]},
+      {id:'versailles',x:180, y:290, cat:'sight', icon:'🏰', name:'凡尔赛宫',        desc:'法国最宏伟的宫殿和花园，镜厅是必看奇景。建议一整天游览，别错过特里亚农宫。', hours:'09:00–17:30', price:'¥180', rating:'4.8', crowd:[1,1,1,2,3,5,7,8,8,7,7,7,8,8,7,7,7,6,5,4,3,2,1,1]},
+      {id:'seine',    x:310, y:260, cat:'surf',  icon:'🚢', name:'塞纳河游船',       desc:'乘巴托慕什游船欣赏两岸风景，夜间游览铁塔闪光最为浪漫。全程约1小时。',      hours:'10:00–22:30', price:'¥100', rating:'4.6', crowd:[1,1,1,2,3,4,5,6,7,7,7,7,7,7,7,7,8,9,9,8,7,6,4,2]},
+    ]
+  },
+  santorini: {
+    bg: '#0d2137', water: '#0a3d62', landColor: '#1a2f4a', name: 'Santorini',
+    pois: [
+      {id:'oia',      x:220, y:180, cat:'sight', icon:'🔵', name:'伊亚 Oia',        desc:'全球最美日落观赏地，蓝顶白墙建筑如明信片般完美。日落前1小时到达占据最佳位置。', hours:'24h',   price:'自由游览', rating:'4.9', crowd:[1,1,1,2,3,4,5,6,7,7,7,7,7,7,7,8,9,9,8,6,5,4,3,2]},
+      {id:'fira',     x:330, y:240, cat:'food',  icon:'🏙️', name:'菲拉 Fira',       desc:'圣托里尼首府，悬崖上的餐厅视野绝佳。Metaxy Mas餐厅是本地人推荐的性价比之选。', hours:'全天',  price:'人均¥200–500', rating:'4.7', crowd:[1,1,2,3,4,5,6,7,8,8,8,8,8,8,8,8,8,7,7,7,8,8,6,3]},
+      {id:'amoudi',   x:215, y:210, cat:'food',  icon:'🦞', name:'阿穆迪湾',        desc:'伊亚下方的渔村，世界最新鲜的海鲜餐厅。从伊亚步行约15分钟，台阶较多需注意。',  hours:'12:00–22:00', price:'人均¥300–700', rating:'4.8', crowd:[1,1,1,2,3,4,5,6,7,7,7,7,7,7,7,8,8,7,6,6,7,6,4,2]},
+      {id:'red-beach',x:360, y:330, cat:'sight', icon:'🏖️', name:'红沙滩',          desc:'独特的红色火山岩海滩，颜色壮观。从停车场步行约15分钟，路况较难，穿合适鞋子。', hours:'全天',  price:'免费', rating:'4.6', crowd:[1,1,1,2,3,5,7,8,8,7,7,7,7,6,6,6,6,5,4,3,2,2,1,1]},
+      {id:'akrotiri', x:300, y:330, cat:'sight', icon:'🏺', name:'阿克罗蒂里遗址',   desc:'3600年前的古城遗址，被誉为"爱琴海的庞贝"。保存完好的壁画和器物令人震撼。', hours:'08:00–20:00', price:'¥90', rating:'4.7', crowd:[1,1,1,2,3,5,7,8,7,6,6,6,6,6,6,5,5,4,3,3,2,2,1,1]},
+      {id:'caldera',  x:270, y:250, cat:'hotel', icon:'🌅', name:'卡尔德拉崖边泳池', desc:'Katikies和Mystique等顶级别墅，泳池直接悬挂在火山口崖边。蜜月首选，提前3个月预订。', hours:'24h',   price:'¥3000+/晚', rating:'4.9', crowd:[1,1,1,2,3,4,5,6,7,7,7,7,7,7,7,7,7,6,6,7,7,6,4,2]},
+      {id:'wine-tour',x:380, y:270, cat:'surf',  icon:'🍷', name:'火山葡萄酒庄',    desc:'圣托里尼独特的阿西尔提可葡萄品种，低矮藤蔓应对强风。Santo Wines日落品酒体验极佳。', hours:'10:00–20:00', price:'品酒¥150起', rating:'4.8', crowd:[1,1,1,2,3,5,6,7,7,7,7,7,7,7,6,6,7,8,8,7,6,5,3,1]},
+    ]
+  }
+};
+
+let currentMapDest = 'bali';
+let activePOIFilter = 'all';
+let selectedPOI = null;
+
+function openMapModal() {
+  currentMapDest = currentDest in MAP_DATA ? currentDest : 'bali';
+  renderMap(currentMapDest);
+  openModal('modal-map');
+  addLog('info', '🗺️', `Map opened · ${MAP_DATA[currentMapDest].name}`);
+}
+
+function renderMap(destId) {
+  const data = MAP_DATA[destId];
+  if (!data) return;
+  const svg = document.getElementById('map-svg');
+  const L = LANGS[currentLang] || LANGS.zh;
+
+  // Update filter labels
+  const cats = {
+    all: L.panelTabs ? '全部' : 'All',
+    sight: '🏛️ ' + (L.destTabSections?.regions || 'Sights'),
+    food: '🍜 ' + (currentLang === 'en' ? 'Food' : currentLang === 'ja' ? 'グルメ' : currentLang === 'ko' ? '음식' : currentLang === 'id' ? 'Kuliner' : '美食'),
+    hotel: '🏨 ' + (currentLang === 'en' ? 'Stay' : currentLang === 'ja' ? '宿泊' : currentLang === 'ko' ? '숙박' : currentLang === 'id' ? 'Penginapan' : '住宿'),
+    surf: '🏄 ' + (currentLang === 'en' ? 'Activities' : currentLang === 'ja' ? 'アクティビティ' : currentLang === 'ko' ? '액티비티' : currentLang === 'id' ? 'Aktivitas' : '活动'),
+  };
+
+  // Land/water background
+  const bgShapes = {
+    bali: `<ellipse cx="330" cy="280" rx="220" ry="160" fill="#3d6b4a" opacity="0.9"/>
+           <ellipse cx="350" cy="240" rx="200" ry="130" fill="#4a7a56"/>
+           <ellipse cx="280" cy="310" rx="160" ry="100" fill="#3d6b4a"/>
+           <text x="30" y="460" fill="rgba(255,255,255,.15)" font-size="11" font-family="sans-serif">Indian Ocean</text>`,
+    kyoto: `<rect x="100" y="100" width="500" height="310" rx="20" fill="#3a5c2a" opacity="0.8"/>
+            <rect x="130" y="130" width="440" height="260" rx="16" fill="#4a6e38"/>
+            <rect x="280" y="220" width="40" height="120" fill="#2a4d6e" opacity="0.6"/>
+            <text x="290" y="370" fill="rgba(255,255,255,.2)" font-size="11" font-family="sans-serif">Kamo River</text>`,
+    paris: `<ellipse cx="350" cy="250" rx="280" ry="200" fill="#2e2e42" opacity="0.8"/>
+            <path d="M 150 250 Q 280 240 360 245 Q 430 250 550 255" stroke="#2a4d6e" stroke-width="18" fill="none" opacity="0.8"/>
+            <text x="330" y="275" fill="rgba(255,255,255,.2)" font-size="11" font-family="sans-serif">Seine</text>`,
+    santorini: `<path d="M180 280 Q200 160 260 120 Q310 100 370 130 Q420 160 440 220 Q450 280 420 340 Q380 390 310 400 Q240 400 200 360 Z" fill="#2a4d7a" opacity="0.9"/>
+                <ellipse cx="310" cy="260" rx="120" ry="80" fill="#1e3d6a" opacity="0.5"/>
+                <text x="260" y="265" fill="rgba(255,255,255,.2)" font-size="11" font-family="sans-serif">Caldera</text>`,
+  };
+
+  const catColors = { sight:'#E07A12', food:'#E04040', hotel:'#12A08A', surf:'#5B8CFF' };
+
+  let svgContent = `
+    <defs>
+      <filter id="glow"><feGaussianBlur stdDeviation="3" result="coloredBlur"/>
+        <feMerge><feMergeNode in="coloredBlur"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+      <radialGradient id="heatRed" cx="50%" cy="50%" r="50%">
+        <stop offset="0%" stop-color="#ff4444" stop-opacity="0.5"/>
+        <stop offset="100%" stop-color="#ff4444" stop-opacity="0"/>
+      </radialGradient>
+      <radialGradient id="heatGreen" cx="50%" cy="50%" r="50%">
+        <stop offset="0%" stop-color="#44ff88" stop-opacity="0.3"/>
+        <stop offset="100%" stop-color="#44ff88" stop-opacity="0"/>
+      </radialGradient>
+    </defs>
+    <rect width="700" height="480" fill="${data.bg}"/>
+    <rect width="700" height="480" fill="${data.water}" opacity="0.6"/>
+    ${bgShapes[destId] || ''}
+    <g id="heatmap-layer" opacity="0.6"></g>
+    <g id="poi-layer">`;
+
+  data.pois.forEach(poi => {
+    const col = catColors[poi.cat] || '#888';
+    const visible = activePOIFilter === 'all' || activePOIFilter === poi.cat;
+    svgContent += `
+      <g class="poi-group" id="poi-${poi.id}" 
+         onclick="selectPOI('${poi.id}')"
+         style="cursor:pointer;opacity:${visible ? 1 : 0.2};transition:opacity .2s">
+        <circle cx="${poi.x}" cy="${poi.y}" r="16" fill="${col}" opacity="0.2"/>
+        <circle cx="${poi.x}" cy="${poi.y}" r="10" fill="${col}" filter="url(#glow)"/>
+        <text x="${poi.x}" y="${poi.y + 4}" text-anchor="middle" font-size="11" fill="white">${poi.icon}</text>
+        <text x="${poi.x}" y="${poi.y + 24}" text-anchor="middle" font-size="9" fill="white" opacity="0.9"
+              style="text-shadow:0 1px 3px rgba(0,0,0,.8)">${poi.name}</text>
+      </g>`;
+  });
+
+  svgContent += `</g>`;
+  svg.innerHTML = svgContent;
+
+  // Hint text i18n
+  const hintTexts = {zh:'点击任意标记查看景点详情',en:'Click any marker for details',ja:'マーカーをクリックして詳細を表示',ko:'마커를 클릭하여 세부 정보 확인',id:'Klik penanda untuk melihat detail'};
+  const hintEl = document.getElementById('map-hint-text');
+  if (hintEl) hintEl.textContent = hintTexts[currentLang] || hintTexts.en;
+
+  // Map title
+  const mapTitle = document.getElementById('map-modal-title');
+  const mapTitles = {zh:`探索<span>地图</span>`,en:`Explore<span> Map</span>`,ja:`地図を<span>探索</span>`,ko:`지도<span> 탐색</span>`,id:`Peta<span> Eksplorasi</span>`};
+  if (mapTitle) mapTitle.innerHTML = mapTitles[currentLang] || mapTitles.en;
+
+  updateHeatmap(document.getElementById('map-time-slider')?.value || 10);
+}
+
+function filterPOI(cat, btn) {
+  activePOIFilter = cat;
+  document.querySelectorAll('.map-filter-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  const data = MAP_DATA[currentMapDest];
+  if (!data) return;
+  data.pois.forEach(poi => {
+    const el = document.getElementById('poi-' + poi.id);
+    if (el) el.style.opacity = (cat === 'all' || cat === poi.cat) ? '1' : '0.15';
+  });
+}
+
+function selectPOI(id) {
+  const data = MAP_DATA[currentMapDest];
+  if (!data) return;
+  const poi = data.pois.find(p => p.id === id);
+  if (!poi) return;
+  selectedPOI = poi;
+
+  // Highlight selected
+  document.querySelectorAll('.poi-group').forEach(el => el.style.transform = '');
+  const el = document.getElementById('poi-' + id);
+  if (el) el.style.transform = 'scale(1.3)';
+
+  const catColors = { sight:'var(--amber)',food:'var(--crimson)',hotel:'var(--teal)',surf:'var(--sky)' };
+  const catNames_zh = {sight:'景点',food:'美食',hotel:'住宿',surf:'活动'};
+  const catNames_en = {sight:'Sight',food:'Food',hotel:'Stay',surf:'Activity'};
+  const catMaps = {zh:catNames_zh,en:catNames_en,ja:{sight:'観光',food:'グルメ',hotel:'宿泊',surf:'アクティビティ'},ko:{sight:'관광',food:'음식',hotel:'숙박',surf:'액티비티'},id:{sight:'Wisata',food:'Kuliner',hotel:'Penginapan',surf:'Aktivitas'}};
+  const catName = (catMaps[currentLang] || catMaps.zh)[poi.cat] || poi.cat;
+  const col = catColors[poi.cat] || 'var(--teal)';
+
+  const labels = {zh:{rating:'评分',hours:'开放时间',price:'参考价格',ask:'问 AI 关于这里的详情'},en:{rating:'Rating',hours:'Hours',price:'Price',ask:'Ask AI about this place'},ja:{rating:'評価',hours:'営業時間',price:'料金目安',ask:'このスポットについてAIに聞く'},ko:{rating:'평점',hours:'영업시간',price:'참고 가격',ask:'AI에게 이 장소에 대해 물어보기'},id:{rating:'Rating',hours:'Jam Buka',price:'Estimasi Harga',ask:'Tanya AI tentang tempat ini'}};
+  const lb = labels[currentLang] || labels.zh;
+
+  const sidebarTitle = document.getElementById('map-sidebar-title');
+  if (sidebarTitle) sidebarTitle.textContent = poi.name;
+
+  document.getElementById('map-poi-detail').innerHTML = `
+    <div class="map-poi-card">
+      <div class="map-poi-name">${poi.icon} ${poi.name}</div>
+      <div class="map-poi-cat" style="background:${col}22;color:${col}">${catName}</div>
+      <div class="map-poi-desc">${poi.desc}</div>
+      <div class="map-poi-meta">
+        <div class="map-poi-meta-row">⭐ <strong>${lb.rating}</strong> ${poi.rating}</div>
+        <div class="map-poi-meta-row">🕐 <strong>${lb.hours}</strong> ${poi.hours}</div>
+        <div class="map-poi-meta-row">💰 <strong>${lb.price}</strong> ${poi.price}</div>
+      </div>
+      <button class="map-poi-ask" onclick="askAboutPOI('${poi.name}','${poi.id}')">${lb.ask}</button>
+    </div>`;
+
+  addLog('info', poi.icon, `POI selected · ${poi.name}`);
+}
+
+function askAboutPOI(name, id) {
+  closeModal('modal-map');
+  const asks = {zh:`告诉我关于${name}的详细信息，包括最佳游览时间、交通方式、周边推荐和实用贴士`,en:`Tell me everything about ${name} — best time to visit, how to get there, nearby recommendations, and practical tips`,ja:`${name}について詳しく教えてください。最適な訪問時間、アクセス方法、周辺のおすすめスポット、実用的なヒントを含めて`,ko:`${name}에 대해 자세히 알려주세요. 최적의 방문 시간, 교통편, 주변 추천 장소, 실용적인 팁 포함`,id:`Ceritakan detail tentang ${name} — waktu terbaik berkunjung, cara ke sana, rekomendasi sekitar, dan tips praktis`};
+  qsend(asks[currentLang] || asks.en);
+}
+
+function updateHeatmap(hour) {
+  hour = parseInt(hour);
+  document.getElementById('map-time-val').textContent = `${String(hour).padStart(2,'0')}:00`;
+  const layer = document.getElementById('heatmap-layer');
+  if (!layer) return;
+  const data = MAP_DATA[currentMapDest];
+  if (!data) return;
+
+  layer.innerHTML = data.pois.map(poi => {
+    const crowdVal = poi.crowd[hour] || 1;
+    const radius = crowdVal * 8 + 10;
+    const opacity = crowdVal / 12;
+    const col = crowdVal > 6 ? '#ff4444' : crowdVal > 3 ? '#ffaa00' : '#44ff88';
+    return `<circle cx="${poi.x}" cy="${poi.y}" r="${radius}" fill="${col}" opacity="${opacity}" style="pointer-events:none"/>`;
+  }).join('');
+}
+
+function generateMapRoute() {
+  const data = MAP_DATA[currentMapDest];
+  closeModal('modal-map');
+  const asks = {zh:`基于${data.name}的地图，帮我设计一条最优化的1日游路线，按地理位置排序，减少来回奔波，同时标注每个景点的建议停留时间和交通方式`,en:`Based on the map of ${data.name}, design an optimized 1-day route sorted by location to minimize travel time, with suggested duration and transport for each stop`,ja:`${data.name}の地図を基に、移動時間を最小化した1日最適ルートを設計してください。各スポットの推奨滞在時間と交通手段を含めて`,ko:`${data.name} 지도를 기반으로 이동 시간을 최소화한 하루 최적 경로를 설계해주세요. 각 장소의 권장 체류 시간과 교통 수단 포함`,id:`Berdasarkan peta ${data.name}, rancang rute 1 hari yang optimal berdasarkan lokasi untuk meminimalkan waktu perjalanan, dengan durasi dan transportasi yang disarankan`};
+  qsend(asks[currentLang] || asks.en);
+}
+
+// Add map quick button
+const qbtns = document.querySelectorAll('.quick-btn');
+if (qbtns.length > 0) {
+  const mapBtn = document.createElement('button');
+  mapBtn.className = 'quick-btn';
+  mapBtn.innerHTML = '🗺️ 探索地图';
+  mapBtn.onclick = openMapModal;
+  qbtns[0].parentNode.insertBefore(mapBtn, qbtns[0].nextSibling);
+}
+
+// ═══════════════════════════════════════════════════════
+// ─── MEMORY SYSTEM ────────────────────────────────────
+// ═══════════════════════════════════════════════════════
+
+const MEMORY_KEY = 'wandermind_memory';
+
+function loadMemory() {
+  try { return JSON.parse(localStorage.getItem(MEMORY_KEY)) || createEmptyMemory(); }
+  catch { return createEmptyMemory(); }
+}
+function saveMemory(mem) {
+  try { localStorage.setItem(MEMORY_KEY, JSON.stringify(mem)); } catch {}
+}
+function createEmptyMemory() {
+  return { prefs:{}, visited:[], regrets:[], history:[], msgCount:0, lastUpdated: Date.now() };
+}
+
+function updateMemoryFromConversation(userText, aiText) {
+  const mem = loadMemory();
+  mem.msgCount = (mem.msgCount || 0) + 1;
+
+  // Track visited destination
+  const destName = DESTINATIONS[currentDest]?.name;
+  if (destName && !mem.visited.includes(destName)) {
+    mem.visited.push(destName);
+  }
+
+  // Infer preferences from user text
+  const txt = userText.toLowerCase();
+  if (/(budget|cheap|affordable|节俭|便宜|省钱|予算|저렴|hemat)/.test(txt)) mem.prefs.style = 'budget';
+  if (/(luxury|premium|high-end|豪华|奢华|豪奢|럭셔리|mewah)/.test(txt)) mem.prefs.style = 'luxury';
+  if (/(family|kids|children|亲子|家庭|家族|가족|keluarga)/.test(txt)) mem.prefs.companion = 'family';
+  if (/(couple|honeymoon|romantic|情侣|蜜月|夫婦|커플|pasangan)/.test(txt)) mem.prefs.companion = 'couple';
+  if (/(solo|alone|一个人|一人|혼자|solo)/.test(txt)) mem.prefs.companion = 'solo';
+  if (/(surf|冲浪|サーフィン|서핑|surfing)/.test(txt)) mem.prefs.interest = (mem.prefs.interest || '') + ',surf';
+  if (/(food|美食|グルメ|맛집|kuliner)/.test(txt)) mem.prefs.interest = (mem.prefs.interest || '') + ',food';
+  if (/(culture|文化|文化|문화|budaya)/.test(txt)) mem.prefs.interest = (mem.prefs.interest || '') + ',culture';
+  if (/(yoga|meditation|冥想|ヨガ|요가)/.test(txt)) mem.prefs.interest = (mem.prefs.interest || '') + ',wellness';
+
+  // Save recent history
+  const entry = { time: new Date().toLocaleString(), dest: destName, q: userText.slice(0,60) };
+  mem.history.unshift(entry);
+  if (mem.history.length > 20) mem.history = mem.history.slice(0, 20);
+  mem.lastUpdated = Date.now();
+
+  saveMemory(mem);
+  updateMemoryUI();
+  updateNavAvatar();
+}
+
+function updateNavAvatar() {
+  const mem = loadMemory();
+  const avatar = document.getElementById('nav-avatar');
+  if (!avatar) return;
+  if (mem.msgCount > 0) {
+    avatar.classList.add('has-memory');
+    avatar.setAttribute('data-count', Math.min(mem.msgCount, 9));
+  }
+}
+
+function updateMemoryUI() {
+  const mem = loadMemory();
+  const statLine = document.getElementById('mem-stats-line');
+  if (statLine) {
+    const prefCount = Object.keys(mem.prefs).length;
+    const lines = {zh:`已记录 ${mem.msgCount} 次对话 · ${prefCount} 个偏好 · 访问过 ${mem.visited.length} 个目的地`,en:`${mem.msgCount} conversations · ${prefCount} preferences · ${mem.visited.length} destinations`,ja:`${mem.msgCount}回の会話 · ${prefCount}個の好み · ${mem.visited.length}目的地訪問`,ko:`${mem.msgCount}번 대화 · ${prefCount}개 선호 · ${mem.visited.length}개 목적지`,id:`${mem.msgCount} percakapan · ${prefCount} preferensi · ${mem.visited.length} destinasi`};
+    statLine.textContent = lines[currentLang] || lines.en;
+  }
+
+  // Preferences
+  const prefsEl = document.getElementById('mem-prefs');
+  if (prefsEl) {
+    const prefDefs = {
+      style: {zh:{budget:'节俭穷游',comfort:'舒适平衡',luxury:'奢享高端'},en:{budget:'Budget Traveler',comfort:'Comfort Seeker',luxury:'Luxury Traveler'},label:{zh:'旅行风格',en:'Travel Style',ja:'旅行スタイル',ko:'여행 스타일',id:'Gaya Perjalanan'}},
+      companion: {zh:{solo:'独行侠',couple:'情侣出行',family:'亲子家庭'},en:{solo:'Solo Traveler',couple:'Couple',family:'Family'},label:{zh:'出行方式',en:'Travel With',ja:'旅行スタイル',ko:'여행 동반자',id:'Perjalanan Bersama'}},
+      interest: {label:{zh:'兴趣标签',en:'Interests',ja:'興味',ko:'관심사',id:'Minat'}},
+    };
+    const keys = ['style','companion','interest'];
+    prefsEl.innerHTML = keys.map(k => {
+      if (!mem.prefs[k]) return '';
+      const def = prefDefs[k];
+      const label = def.label[currentLang] || def.label.en;
+      const val = k === 'interest'
+        ? [...new Set(mem.prefs[k].split(',').filter(Boolean))].join(' · ')
+        : (def[currentLang === 'zh' ? 'zh' : 'en']?.[mem.prefs[k]] || mem.prefs[k]);
+      return `<div class="mem-pref-card"><div class="mem-pref-label">${label}</div><div class="mem-pref-val">${val}</div></div>`;
+    }).join('') || `<div style="font-size:12px;color:var(--ink-3)">暂无偏好记录，开始对话后自动推断</div>`;
+  }
+
+  // Visited
+  const visitedEl = document.getElementById('mem-visited');
+  if (visitedEl) {
+    visitedEl.innerHTML = mem.visited.length
+      ? mem.visited.map(v => `<div class="mem-chip">📍 ${v}</div>`).join('')
+      : `<span style="font-size:12px;color:var(--ink-3)">暂无记录</span>`;
+  }
+
+  // Regrets
+  const regretsEl = document.getElementById('mem-regrets');
+  if (regretsEl) {
+    regretsEl.innerHTML = mem.regrets.length
+      ? mem.regrets.map((r,i) => `<div class="mem-regret-item">😔 ${r}<span class="mem-regret-del" onclick="deleteRegret(${i})">✕</span></div>`).join('')
+      : `<span style="font-size:12px;color:var(--ink-3)">暂无遗憾记录</span>`;
+  }
+
+  // History
+  const histEl = document.getElementById('mem-history');
+  if (histEl) {
+    histEl.innerHTML = mem.history.slice(0,10).map(h => `
+      <div class="mem-history-item">
+        <span class="mem-history-time">${h.dest || '?'}</span>
+        <span style="flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${h.q}…</span>
+      </div>`).join('') || `<div style="font-size:12px;color:var(--ink-3)">暂无历史记录</div>`;
+  }
+}
+
+function addRegret() {
+  const prompts = {zh:'你这次旅行最大的遗憾是什么？',en:'What did you regret missing on your trip?',ja:'今回の旅行で最も後悔したことは？',ko:'이번 여행에서 가장 아쉬웠던 점은?',id:'Apa penyesalan terbesar dari perjalanan Anda?'};
+  const r = prompt(prompts[currentLang] || prompts.en);
+  if (!r) return;
+  const mem = loadMemory();
+  mem.regrets.push(r);
+  saveMemory(mem);
+  updateMemoryUI();
+  addLog('info', '😔', `Regret recorded: ${r.slice(0,40)}`);
+}
+
+function deleteRegret(idx) {
+  const mem = loadMemory();
+  mem.regrets.splice(idx, 1);
+  saveMemory(mem);
+  updateMemoryUI();
+}
+
+function clearMemory() {
+  const confirms = {zh:'确定要清空所有旅行记忆吗？',en:'Clear all travel memory?',ja:'全ての記憶をクリアしますか？',ko:'모든 여행 기억을 지울까요?',id:'Hapus semua memori perjalanan?'};
+  if (!confirm(confirms[currentLang] || confirms.en)) return;
+  saveMemory(createEmptyMemory());
+  updateMemoryUI();
+  updateNavAvatar();
+  addLog('warn', '🗑️', 'Memory cleared');
+}
+
+// Hook into message flow to track memory
+const _prevAppendUserMsg = appendUserMsg;
+window.appendUserMsg = function(text) {
+  _prevAppendUserMsg(text);
+};
+// After AI replies, update memory
+const __prevAppendAIMsg = window.appendAIMsg;
+window.appendAIMsg = function(text, searched) {
+  const lastUser = history.filter(m => m.role === 'user').slice(-1)[0]?.content || '';
+  updateMemoryFromConversation(lastUser, text);
+  __prevAppendAIMsg(text, searched);
+};
+
+// Initialize memory UI on load
+setTimeout(() => { updateMemoryUI(); updateNavAvatar(); }, 800);
+
+// ═══════════════════════════════════════════════════════
+// ─── POLISH: Keyboard shortcuts + UX improvements ─────
+// ═══════════════════════════════════════════════════════
+
+// ESC closes any open modal
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') {
+    ['modal-map','modal-multiverse','modal-budget','modal-memory'].forEach(id => closeModal(id));
+    document.getElementById('dest-menu')?.classList.remove('open');
+    document.getElementById('lang-menu')?.classList.remove('open');
+  }
+  // Ctrl/Cmd + K focuses input
+  if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
+    e.preventDefault();
+    document.getElementById('main-input')?.focus();
+  }
+});
+
+// Smooth message entrance with stagger
+const _msgObserver = new MutationObserver(mutations => {
+  mutations.forEach(m => {
+    m.addedNodes.forEach(node => {
+      if (node.classList?.contains('msg')) {
+        node.style.opacity = '0';
+        node.style.transform = 'translateY(8px)';
+        requestAnimationFrame(() => {
+          node.style.transition = 'opacity .25s ease, transform .25s ease';
+          node.style.opacity = '1';
+          node.style.transform = 'translateY(0)';
+        });
+      }
+    });
+  });
+});
+const msgContainer = document.getElementById('messages');
+if (msgContainer) _msgObserver.observe(msgContainer, { childList: true });
+
+// Wire map button in nav tabs
+const navTabEls = document.querySelectorAll('.nav-tab');
+navTabEls.forEach((tab, i) => {
+  if (i === 2) { // Explore Map tab
+    tab.onclick = () => {
+      navTabEls.forEach(t => t.classList.remove('active'));
+      tab.classList.add('active');
+      openMapModal();
+    };
+  }
+});
+
+</script>
+
+<!-- MAP MODAL -->
+<div class="modal-overlay" id="modal-map" onclick="closeModalBg(event,'modal-map')">
+  <div class="modal" style="max-width:980px;height:90vh">
+    <div class="modal-header" style="padding:14px 20px">
+      <div style="display:flex;align-items:center;gap:12px;flex:1">
+        <div class="modal-title" id="map-modal-title">探索<span>地图</span></div>
+        <div style="display:flex;gap:6px;flex-wrap:wrap" id="map-filter-btns">
+          <button class="map-filter-btn active" onclick="filterPOI('all',this)" data-cat="all">全部</button>
+          <button class="map-filter-btn" onclick="filterPOI('sight',this)" data-cat="sight">🏛️ 景点</button>
+          <button class="map-filter-btn" onclick="filterPOI('food',this)" data-cat="food">🍜 美食</button>
+          <button class="map-filter-btn" onclick="filterPOI('hotel',this)" data-cat="hotel">🏨 住宿</button>
+          <button class="map-filter-btn" onclick="filterPOI('surf',this)" data-cat="surf">🏄 活动</button>
+        </div>
+      </div>
+      <button class="modal-close" onclick="closeModal('modal-map')">✕</button>
+    </div>
+    <div class="modal-body" style="padding:0;display:flex;overflow:hidden;height:100%">
+      <!-- SVG Map Canvas -->
+      <div style="flex:1;position:relative;background:#1a2d3d;overflow:hidden" id="map-canvas">
+        <svg id="map-svg" viewBox="0 0 700 480" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:100%;cursor:grab"></svg>
+        <!-- Map legend -->
+        <div class="map-legend">
+          <div class="map-legend-item"><span class="map-legend-dot" style="background:#E07A12"></span><span id="ml-sight">景点</span></div>
+          <div class="map-legend-item"><span class="map-legend-dot" style="background:#E04040"></span><span id="ml-food">美食</span></div>
+          <div class="map-legend-item"><span class="map-legend-dot" style="background:#12A08A"></span><span id="ml-hotel">住宿</span></div>
+          <div class="map-legend-item"><span class="map-legend-dot" style="background:#5B8CFF"></span><span id="ml-surf">活动</span></div>
+        </div>
+        <!-- Time slider -->
+        <div class="map-time-bar">
+          <span class="map-time-label" id="map-time-label">人流预测</span>
+          <input type="range" min="6" max="22" value="10" step="1" class="map-time-slider" id="map-time-slider" oninput="updateHeatmap(this.value)">
+          <span class="map-time-val" id="map-time-val">10:00</span>
+        </div>
+      </div>
+      <!-- POI detail sidebar -->
+      <div class="map-sidebar" id="map-sidebar">
+        <div class="map-sidebar-title" id="map-sidebar-title">点击地图上的标记查看详情</div>
+        <div id="map-poi-detail" class="map-poi-detail-empty">
+          <div style="text-align:center;padding:30px 16px;color:var(--ink-3)">
+            <div style="font-size:32px;margin-bottom:8px">🗺️</div>
+            <div style="font-size:13px" id="map-hint-text">点击任意标记查看景点详情，或让 AI 推荐行程路线</div>
+          </div>
+        </div>
+        <div style="padding:12px;border-top:1px solid var(--paper-3);margin-top:auto">
+          <button class="panel-action-btn" style="margin-top:0" id="map-route-btn" onclick="generateMapRoute()">✨ AI 生成最优路线</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- MEMORY / PROFILE MODAL -->
+<div class="modal-overlay" id="modal-memory" onclick="closeModalBg(event,'modal-memory')">
+  <div class="modal" style="max-width:600px">
+    <div class="modal-header">
+      <div class="modal-title">旅行<span>记忆档案</span></div>
+      <button class="modal-close" onclick="closeModal('modal-memory')">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="memory-profile">
+        <div class="memory-avatar">游</div>
+        <div>
+          <div style="font-size:16px;font-weight:600;color:var(--ink)">旅行者</div>
+          <div style="font-size:12px;color:var(--ink-3);margin-top:2px" id="mem-stats-line">已记录 0 次对话 · 0 个偏好</div>
+        </div>
+        <button class="mem-clear-btn" onclick="clearMemory()">清空记忆</button>
+      </div>
+
+      <div class="mem-section">
+        <div class="mem-section-title">🧠 AI 推断的偏好</div>
+        <div id="mem-prefs" class="mem-prefs-grid"></div>
+      </div>
+
+      <div class="mem-section">
+        <div class="mem-section-title">📍 去过的目的地</div>
+        <div id="mem-visited" class="mem-chips-wrap"></div>
+      </div>
+
+      <div class="mem-section">
+        <div class="mem-section-title">💭 遗憾修复系统</div>
+        <div id="mem-regrets" style="font-size:12px;color:var(--ink-3)">暂无记录的遗憾</div>
+        <button class="panel-action-btn" style="margin-top:10px;font-size:12px" onclick="addRegret()">+ 记录一个旅行遗憾</button>
+      </div>
+
+      <div class="mem-section" style="margin-bottom:0">
+        <div class="mem-section-title">🗂️ 对话历史</div>
+        <div id="mem-history" style="max-height:160px;overflow-y:auto"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>
