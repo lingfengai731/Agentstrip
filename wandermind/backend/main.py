@@ -255,7 +255,10 @@ async def chat(req: ChatReq, user=Depends(current_user)):
                         except json.JSONDecodeError:
                             continue
                         # OpenAI streaming: choices[0].delta.content
-                        delta = ev.get("choices", [{}])[0].get("delta", {})
+                        choices = ev.get("choices") or []
+                        if not choices:
+                            continue
+                        delta = choices[0].get("delta", {})
                         text = delta.get("content", "")
                         if text:
                             yield f"data: {json.dumps({'type':'text','text':text})}\n\n"
@@ -290,7 +293,8 @@ async def generate(req: GenerateReq, user=Depends(current_user)):
     if resp.status_code != 200:
         raise HTTPException(resp.status_code, resp.text)
     data = resp.json()
-    text = data.get("choices", [{}])[0].get("message", {}).get("content", "")
+    choices = data.get("choices") or []
+    text = choices[0].get("message", {}).get("content", "") if choices else ""
     return {"content": text}
 
 

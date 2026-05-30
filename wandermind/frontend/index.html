@@ -1666,6 +1666,65 @@ html, body {
     </div>
   </div>
 </div>
+<!-- NEW TRIP MODAL -->
+<div class="modal-overlay" id="modal-newtrip" onclick="closeModalBg(event,'modal-newtrip')">
+  <div class="modal" style="max-width:480px">
+    <div class="modal-header">
+      <div class="modal-title">新建<span>行程</span></div>
+      <button class="modal-close" onclick="closeModal('modal-newtrip')">✕</button>
+    </div>
+    <div class="modal-body" style="display:flex;flex-direction:column;gap:16px;padding:24px">
+      <div class="calc-row">
+        <div class="calc-field" style="flex:1">
+          <label>目的地</label>
+          <select id="nt-dest" style="width:100%">
+            <option value="bali">🌺 巴厘岛</option>
+            <option value="kyoto">🌸 京都</option>
+            <option value="paris">🗼 巴黎</option>
+            <option value="santorini">🏝️ 圣托里尼</option>
+          </select>
+        </div>
+        <div class="calc-field" style="flex:1">
+          <label>出行人数</label>
+          <select id="nt-people" style="width:100%">
+            <option value="1">1人</option>
+            <option value="2" selected>2人</option>
+            <option value="3">3人</option>
+            <option value="4">4人</option>
+            <option value="5">5人以上</option>
+          </select>
+        </div>
+      </div>
+      <div class="calc-row">
+        <div class="calc-field" style="flex:1">
+          <label>出发日期</label>
+          <input type="date" id="nt-start" style="width:100%;padding:8px 10px;border:1.5px solid var(--paper-3);border-radius:8px;font-family:inherit;font-size:13px;background:var(--paper)">
+        </div>
+        <div class="calc-field" style="flex:1">
+          <label>返回日期</label>
+          <input type="date" id="nt-end" style="width:100%;padding:8px 10px;border:1.5px solid var(--paper-3);border-radius:8px;font-family:inherit;font-size:13px;background:var(--paper)">
+        </div>
+      </div>
+      <div class="calc-field">
+        <label>总预算（人民币）</label>
+        <input type="number" id="nt-budget" placeholder="例：20000" min="1000" step="500"
+          style="width:100%;padding:8px 10px;border:1.5px solid var(--paper-3);border-radius:8px;font-family:inherit;font-size:13px;background:var(--paper)">
+      </div>
+      <div class="calc-field">
+        <label>旅行风格</label>
+        <select id="nt-style" style="width:100%">
+          <option value="budget">🎒 节俭穷游</option>
+          <option value="comfort" selected>✨ 舒适平衡</option>
+          <option value="luxury">👑 奢享高端</option>
+        </select>
+      </div>
+      <button onclick="submitNewTrip()" style="padding:13px;background:var(--teal);color:white;border:none;border-radius:10px;font-size:14px;font-weight:600;cursor:pointer;font-family:inherit;margin-top:4px">
+        🚀 开始规划行程
+      </button>
+    </div>
+  </div>
+</div>
+
 <!-- AUTH OVERLAY -->
 <div class="auth-overlay hidden" id="auth-overlay">
   <div class="auth-card">
@@ -1756,7 +1815,7 @@ html, body {
         <div class="trip-card-title">🌊 乌鲁瓦图冲浪营</div>
         <div class="trip-card-meta"><span>待规划</span><span>·</span><span>1人</span></div>
       </div>
-      <button class="new-trip-btn" onclick="qsend('我想规划一次全新的旅行，帮我从头开始设计')">＋ 新建行程</button>
+      <button class="new-trip-btn" onclick="openNewTrip()">＋ 新建行程</button>
     </div>
 
     <div class="agents-section">
@@ -4044,16 +4103,111 @@ const _msgObserver = new MutationObserver(mutations => {
 const msgContainer = document.getElementById('messages');
 if (msgContainer) _msgObserver.observe(msgContainer, { childList: true });
 
-// Wire map button in nav tabs
-const navTabEls = document.querySelectorAll('.nav-tab');
-navTabEls.forEach((tab, i) => {
-  if (i === 2) { // Explore Map tab
-    tab.onclick = () => {
-      navTabEls.forEach(t => t.classList.remove('active'));
-      tab.classList.add('active');
-      openMapModal();
-    };
+// ─── REAL CURRENT TIME in weather card ───────
+(function updateWeatherTime() {
+  const DEST_TZ = {
+    bali: 'Asia/Makassar', kyoto: 'Asia/Tokyo',
+    paris: 'Europe/Paris', santorini: 'Europe/Athens'
+  };
+  function tick() {
+    const tz = DEST_TZ[currentDest] || 'Asia/Makassar';
+    const now = new Date().toLocaleTimeString('en-GB', { timeZone: tz, hour: '2-digit', minute: '2-digit' });
+    const dateStr = new Date().toLocaleDateString('zh-CN', { timeZone: tz, month: 'long', day: 'numeric', weekday: 'short' });
+    const el = document.getElementById('w-details');
+    if (el) {
+      const base = el.textContent.replace(/⏰.*/, '').trim();
+      el.textContent = base + (base ? ' · ' : '') + '⏰ ' + now + ' (' + dateStr + ')';
+    }
   }
+  setTimeout(() => { tick(); setInterval(tick, 60000); }, 500);
+})();
+
+// ─── TRAVEL DIARY GENERATOR ──────────────────
+function generateDiary() {
+  setNavTab(4);
+  if (history.length < 2) {
+    addSystemMsg('请先和 AI 对话规划行程，再生成游记 ✨');
+    setNavTab(0);
+    return;
+  }
+  const L = LANGS[currentLang] || LANGS.zh;
+  const destName = DESTINATIONS[currentDest]?.name || currentDest;
+  const diaryPrompt = `根据我们刚才的对话，请为我生成一篇关于${destName}的精美旅行游记。
+要求：
+- 第一人称叙述，有代入感
+- 包含具体景点、美食、住宿推荐
+- 分段落，有小标题
+- 结尾有一段感悟
+- 用${L.systemPromptLang || '中文'}写作`;
+  setNavTab(0);
+  qsend(diaryPrompt);
+}
+
+// ─── NEW TRIP MODAL ───────────────────────────
+function openNewTrip() {
+  // Fill today's date as default start
+  const today = new Date().toISOString().split('T')[0];
+  const weekLater = new Date(Date.now() + 7*86400000).toISOString().split('T')[0];
+  document.getElementById('nt-start').value = today;
+  document.getElementById('nt-end').value = weekLater;
+  openModal('modal-newtrip');
+}
+
+function submitNewTrip() {
+  const dest   = document.getElementById('nt-dest').value;
+  const start  = document.getElementById('nt-start').value;
+  const end    = document.getElementById('nt-end').value;
+  const budget = document.getElementById('nt-budget').value;
+  const people = document.getElementById('nt-people').value;
+  const style  = document.getElementById('nt-style').value;
+  if (!start || !end) { alert('请选择出行日期'); return; }
+
+  const destData = DESTINATIONS[dest];
+  if (destData) switchDest(dest, destData.flag, destData.name, new Event('click'));
+
+  // Update sidebar trip card
+  const fmt = d => d.replace(/-/g,'/').slice(5); // MM/DD
+  document.querySelector('.trip-card.active .trip-card-title').innerHTML =
+    `${destData?.flag||'✈️'} ${destData?.name||dest} · ${calcDays(start,end)}日游`;
+  document.querySelector('.trip-card.active .trip-card-meta').innerHTML =
+    `<span>${fmt(start)}–${fmt(end)}</span><span>·</span><span>${people}人</span><span>·</span><span>¥${Number(budget).toLocaleString()}</span>`;
+
+  closeModal('modal-newtrip');
+  history = []; // fresh conversation
+
+  const styleMap = {budget:'节俭穷游',comfort:'舒适平衡',luxury:'奢享高端'};
+  qsend(`我要规划一次${destData?.name||dest}旅行：
+📅 出行时间：${start} 至 ${end}（共${calcDays(start,end)}天）
+👥 人数：${people}人
+💰 总预算：¥${Number(budget).toLocaleString()}
+🎯 旅行风格：${styleMap[style]||style}
+请帮我制定完整的行程方案，包括每天的景点安排、住宿推荐和餐饮建议。`);
+}
+
+function calcDays(s, e) {
+  return Math.round((new Date(e)-new Date(s))/86400000) || 7;
+}
+
+// ─── NAV TABS (all 5 wired) ──────────────────
+const navTabEls = document.querySelectorAll('.nav-tab');
+function setNavTab(i) {
+  navTabEls.forEach(t => t.classList.remove('active'));
+  navTabEls[i]?.classList.add('active');
+}
+navTabEls.forEach((tab, i) => {
+  tab.onclick = () => {
+    setNavTab(i);
+    switch(i) {
+      case 0: break; // AI对话 — already default
+      case 1: // 行程规划 — highlight itinerary in right panel
+        setPTab(document.querySelectorAll('.panel-tab')[1], 'itinerary');
+        document.querySelector('.panel-tab:nth-child(2)')?.click();
+        break;
+      case 2: openMapModal(); break; // 探索地图
+      case 3: openBudgetCalc(); break; // 预算管理
+      case 4: generateDiary(); break; // 游记生成
+    }
+  };
 });
 
 </script>

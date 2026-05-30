@@ -1,0 +1,18 @@
+{
+  "permissions": {
+    "allow": [
+      "PowerShell(\\(Get-Content \"C:/Users/吴凌峰/Downloads/wandermind-v2 \\(1\\).html\" | Measure-Object -Line\\).Lines)",
+      "PowerShell(python --version 2>&1)",
+      "PowerShell(pip --version 2>&1)",
+      "Bash(python3 -c \"import ast; ast.parse\\(open\\('main.py'\\).read\\(\\)\\); print\\('Syntax OK'\\)\")",
+      "Bash(python3 -c \"print\\('hello'\\)\")",
+      "Bash(python3 main.py)",
+      "Bash(python main.py)",
+      "Bash(echo \"exit: $?\")",
+      "PowerShell($python = \\(Get-Command python\\).Source; Write-Host \"Python: $python\"; & $python -c \"print\\(1+1\\)\")",
+      "Bash(gh api *)",
+      "Bash(python3 -c \"import json,sys; d=json.load\\(sys.stdin\\); [print\\(i['path']\\) for i in d.get\\('tree',[]\\) if not i['path'].startswith\\('.git'\\)]\")",
+      "WebFetch(domain:github.com)"
+    ]
+  }
+}

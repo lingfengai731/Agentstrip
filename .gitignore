@@ -1,0 +1,19 @@
+# ── 绝对不能上传 ──────────────────────────────
+.env
+*.db
+*.db-journal
+
+# ── Python ────────────────────────────────────
+__pycache__/
+*.py[cod]
+*.pyo
+.venv/
+venv/
+*.egg-info/
+dist/
+build/
+
+# ── 系统文件 ──────────────────────────────────
+.DS_Store
+Thumbs.db
+desktop.ini
