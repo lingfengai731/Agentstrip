@@ -2771,10 +2771,19 @@ function switchDest(id, flag, name, e) {
   // Render right panel for new destination
   renderDestPanel(id);
   renderItinerary(id, currentTripStart);
-  // Clear chat and show destination-specific welcome (no auto-send — user decides)
+  // Clear chat and show destination-specific welcome
   history = [];
   document.getElementById('messages').innerHTML = '';
   renderWelcomeMsg(id);
+  // Pre-fill input with intro question (translated) — user can edit or send as-is
+  const _L = LANGS[currentLang] || LANGS.zh;
+  const _destName = DESTINATIONS[id]?.name || id;
+  const _tpl = _L.destIntroQ || '请给我一个{dest}的全面旅行目的地介绍，包括最佳游览时间、必看景点、特色美食和实用旅行建议';
+  const _inp = document.getElementById('main-input');
+  _inp.value = _tpl.replace('{dest}', _destName);
+  autoResize(_inp);
+  _inp.focus();
+  _inp.setSelectionRange(0, 0); // cursor at start so user can see full text
 }
 
 // ─── AGENT SWITCHING ──────────────────────────
@@ -3515,6 +3524,7 @@ const LANGS = {
     searchBadge:'已联网实时搜索',
     agentCalls:' 次调用',
     voicePhrases:['带我爸妈去个暖和不累的地方，有温泉最好','我想体验一次真正的冲浪，零基础可以吗？','蜜月旅行，两人预算两万，最浪漫的方案'],
+    destIntroQ:'请给我一个{dest}的全面旅行目的地介绍，包括最佳游览时间、必看景点、特色美食和实用旅行建议',
   },
   en: {
     flag:'🇬🇧', label:'English', avatar:'Me',
@@ -3565,6 +3575,7 @@ const LANGS = {
     searchBadge:'Live web search used',
     agentCalls:' calls',
     voicePhrases:['Family trip with my parents, warm weather, not too tiring, hot springs would be great','I want to try surfing for the first time — is it OK for beginners?','Honeymoon trip for two, budget around ¥20,000, most romantic option'],
+    destIntroQ:'Give me a comprehensive travel guide for {dest}, including the best time to visit, must-see attractions, local cuisine and practical travel tips',
   },
   ja: {
     flag:'🇯🇵', label:'日本語', avatar:'旅',
@@ -3615,6 +3626,7 @@ const LANGS = {
     searchBadge:'ウェブ検索使用',
     agentCalls:'回の呼び出し',
     voicePhrases:['両親と一緒に温かい場所へ、疲れすぎないで、温泉があればなおいい','初めてサーフィンに挑戦したい！初心者でも大丈夫？','ハネムーン旅行、二人で予算2万元、最もロマンチックなプランを'],
+    destIntroQ:'{dest}の旅行ガイドを教えてください。最適な訪問時期、必見スポット、地元グルメ、実用的な旅行情報を含めてください',
   },
   ko: {
     flag:'🇰🇷', label:'한국어', avatar:'여',
@@ -3665,6 +3677,7 @@ const LANGS = {
     searchBadge:'실시간 웹 검색 사용',
     agentCalls:'회 호출',
     voicePhrases:['부모님과 따뜻한 곳으로, 너무 힘들지 않게, 온천이 있으면 좋겠어요','서핑을 처음 배우고 싶어요! 초보자도 괜찮나요?','신혼여행, 두 명 예산 2만 위안, 가장 로맨틱한 플랜'],
+    destIntroQ:'{dest} 종합 여행 가이드를 알려주세요. 최적의 여행 시기, 필수 명소, 현지 음식, 실용적인 여행 팁을 포함해 주세요',
   },
   id: {
     flag:'🇮🇩', label:'Indonesia', avatar:'Sy',
@@ -3715,6 +3728,7 @@ const LANGS = {
     searchBadge:'Pencarian web live digunakan',
     agentCalls:' panggilan',
     voicePhrases:['Liburan bersama orang tua ke tempat yang hangat, tidak terlalu melelahkan, ada pemandian air panas','Saya ingin mencoba surfing pertama kali! Apakah aman untuk pemula?','Bulan madu, berdua, anggaran 20 ribu yuan, rencana paling romantis'],
+    destIntroQ:'Berikan panduan perjalanan lengkap untuk {dest}, termasuk waktu terbaik berkunjung, tempat wisata wajib, kuliner lokal, dan tips perjalanan praktis',
   }
 };
 
