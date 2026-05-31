@@ -2556,26 +2556,44 @@ function renderDestPanel(id) {
 
   // Recommended regions
   const regEl = document.getElementById('panel-regions');
-  if (regEl && d.regions) {
-    regEl.innerHTML = `<div class="panel-section-title">${L.destTabSections?.regions || '推荐区域'}</div>` +
-      d.regions.map(r =>
-        `<div class="info-card" onclick="qsend('${r.q.replace(/'/g, "\\'")}')">
-          <div class="info-card-head"><span class="info-card-title">${r.name}</span><span class="tag ${r.cls}">${r.tag}</span></div>
-          <div class="info-card-body">${r.desc}</div>
-        </div>`
-      ).join('');
+  if (regEl) {
+    if (d.regions && d.regions.length > 0) {
+      regEl.innerHTML = `<div class="panel-section-title">${L.destTabSections?.regions || '推荐区域'}</div>` +
+        d.regions.map(r =>
+          `<div class="info-card" onclick="qsend('${r.q.replace(/'/g, "\\'")}')">
+            <div class="info-card-head"><span class="info-card-title">${r.name}</span><span class="tag ${r.cls}">${r.tag}</span></div>
+            <div class="info-card-body">${r.desc}</div>
+          </div>`
+        ).join('');
+    } else {
+      regEl.innerHTML = `<div class="panel-section-title">${L.destTabSections?.regions || '推荐区域'}</div>
+        <div class="trip-empty" style="padding:18px 0">
+          <div class="trip-empty-icon">🔍</div>
+          <div class="trip-empty-text">探索 ${d.name}</div>
+          <div class="trip-empty-sub">向 AI 询问当地区域特色和推荐地点</div>
+        </div>`;
+    }
   }
 
   // Travel tips
   const tipsEl = document.getElementById('panel-tips');
-  if (tipsEl && d.tips) {
-    tipsEl.innerHTML = `<div class="panel-section-title">${L.destTabSections?.tips || '旅行必知'}</div>` +
-      d.tips.map(t =>
-        `<div class="info-card">
-          <div class="info-card-head"><span class="info-card-title">${t.title}</span><span class="tag ${t.cls}">${t.tag}</span></div>
-          <div class="info-card-body">${t.desc}</div>
-        </div>`
-      ).join('');
+  if (tipsEl) {
+    if (d.tips && d.tips.length > 0) {
+      tipsEl.innerHTML = `<div class="panel-section-title">${L.destTabSections?.tips || '旅行必知'}</div>` +
+        d.tips.map(t =>
+          `<div class="info-card">
+            <div class="info-card-head"><span class="info-card-title">${t.title}</span><span class="tag ${t.cls}">${t.tag}</span></div>
+            <div class="info-card-body">${t.desc}</div>
+          </div>`
+        ).join('');
+    } else {
+      tipsEl.innerHTML = `<div class="panel-section-title">${L.destTabSections?.tips || '旅行必知'}</div>
+        <div class="trip-empty" style="padding:18px 0">
+          <div class="trip-empty-icon">💡</div>
+          <div class="trip-empty-text">旅行贴士待加载</div>
+          <div class="trip-empty-sub">与 AI 对话后可获取目的地实用建议</div>
+        </div>`;
+    }
   }
 }
 
@@ -2710,53 +2728,27 @@ function switchDest(id, flag, name, e) {
     const custom = prompt('输入目的地名称（如：首尔、东京、纽约、迪拜…）：');
     if (!custom || !custom.trim()) return;
     const city = custom.trim();
+    // Build a proper DESTINATIONS entry so ALL code works correctly
+    DESTINATIONS.custom = {
+      name: city, flag: '🌍',
+      title: `${city} <em>探索中</em>`,
+      eyebrow: '🌍 自定义目的地',
+      weather: { temp: '--°', cond: '获取中…', icon: '🌍', details: '向 AI 询问当地天气和气候' },
+      rate: '--', season: '待了解', seasonDesc: '通过 AI 对话了解最佳旅行时间',
+      regions: [],   // empty → renderDestPanel will show placeholder
+      tips: [],
+      itinerary: [],
+      suggestions: [
+        { label: '📍 目的地介绍', q: `给我介绍${city}，包括最佳游览时间、必看景点和特色美食` },
+        { label: '🛂 签证信息',   q: `中国护照去${city}需要签证吗？入境要求是什么？` },
+        { label: '💰 费用参考',   q: `去${city}旅游大概需要多少预算？机票住宿各多少？` },
+        { label: '🏨 住宿区域',   q: `${city}最值得住的区域有哪些，各有什么特点？` }
+      ]
+    };
+    // From here use the SAME path as regular destinations
+    id = 'custom'; flag = '🌍'; name = city;
     document.getElementById('dest-menu').classList.remove('open');
-    // Update nav
-    document.getElementById('dest-flag').textContent = '🌍';
-    document.getElementById('dest-name-nav').textContent = city;
-    document.getElementById('dest-title').innerHTML = `${city} <em>探索中</em>`;
-    document.getElementById('dest-eyebrow').textContent = '✈️ 自定义目的地';
-    // Clear weather / suitability with placeholder
-    document.getElementById('w-temp').textContent = '--';
-    document.getElementById('w-cond').textContent = '获取中';
-    document.getElementById('w-icon').textContent = '🌍';
-    document.getElementById('w-details').textContent = '向 AI 询问当地天气';
-    document.getElementById('s-rate').textContent = '--';
-    document.getElementById('s-season').textContent = '待了解';
-    document.getElementById('s-season-desc').textContent = '对话后可获取更多旅行建议';
-    // Clear dest-menu highlights
-    document.querySelectorAll('.dest-menu-item').forEach(el => el.classList.remove('selected'));
-    // Clear panels with placeholder
-    const regEl = document.getElementById('panel-regions');
-    if (regEl) regEl.innerHTML = `<div class="panel-section-title">推荐区域</div>
-      <div class="trip-empty" style="padding:20px 0">
-        <div class="trip-empty-icon">🔍</div>
-        <div class="trip-empty-text">探索 ${city}</div>
-        <div class="trip-empty-sub">AI 会在对话中为你介绍当地区域特色</div>
-      </div>`;
-    const tipsEl = document.getElementById('panel-tips');
-    if (tipsEl) tipsEl.innerHTML = '';
-    renderItinerary('bali', null); // show empty itinerary state
-    // Reset chat with custom welcome
-    currentDest = 'custom';
-    history = [];
-    document.getElementById('messages').innerHTML = '';
-    document.getElementById('messages').innerHTML = `
-      <div class="msg ai fade-in">
-        <div class="msg-avatar ai">W</div>
-        <div class="msg-body">
-          <div class="agent-label" style="color:var(--teal)">🗺️ 旅程规划师</div>
-          <div class="bubble ai">已切换至 🌍 <strong>${city}</strong>！<br><br>6个智能体已就绪，开始探索这个目的地。你可以问我：</div>
-          <div class="chips-wrap">
-            <button class="sugg-chip" onclick="qsend('给我介绍${city.replace(/'/g,"\\'")}，包括最佳游览时间、必看景点和特色美食')">📍 目的地介绍</button>
-            <button class="sugg-chip" onclick="qsend('${city.replace(/'/g,"\\'")}的签证政策和入境要求是什么？')">🛂 签证信息</button>
-            <button class="sugg-chip" onclick="qsend('去${city.replace(/'/g,"\\'")}旅游大概需要多少预算？')">💰 费用参考</button>
-            <button class="sugg-chip" onclick="qsend('${city.replace(/'/g,"\\'")}最值得住的区域推荐')">🏨 住宿区域</button>
-          </div>
-          <div class="msg-time">刚刚</div>
-        </div>
-      </div>`;
-    return;
+    // falls through to main switchDest code below
   }
   currentDest = id;
   const d = DESTINATIONS[id];
