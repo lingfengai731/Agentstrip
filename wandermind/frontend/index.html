@@ -2303,6 +2303,7 @@ let currentAgent = 'planner';
 let history = [];
 let busy = false;
 let abortCtrl = null;
+let _prefilledText = ''; // tracks last auto-filled intro text so lang-switch can replace it
 let currentTripStart  = null;   // ISO date string e.g. "2026-05-31"
 let currentTripDays   = 7;
 let currentTripPeople = 2;
@@ -2780,7 +2781,8 @@ function switchDest(id, flag, name, e) {
   const _destName = DESTINATIONS[id]?.name || id;
   const _tpl = _L.destIntroQ || '请给我一个{dest}的全面旅行目的地介绍，包括最佳游览时间、必看景点、特色美食和实用旅行建议';
   const _inp = document.getElementById('main-input');
-  _inp.value = _tpl.replace('{dest}', _destName);
+  _prefilledText = _tpl.replace('{dest}', _destName);
+  _inp.value = _prefilledText;
   autoResize(_inp);
   _inp.focus();
   _inp.setSelectionRange(0, 0); // cursor at start so user can see full text
@@ -3525,6 +3527,13 @@ const LANGS = {
     agentCalls:' 次调用',
     voicePhrases:['带我爸妈去个暖和不累的地方，有温泉最好','我想体验一次真正的冲浪，零基础可以吗？','蜜月旅行，两人预算两万，最浪漫的方案'],
     destIntroQ:'请给我一个{dest}的全面旅行目的地介绍，包括最佳游览时间、必看景点、特色美食和实用旅行建议',
+    agentBarNames:['旅程规划师','实时搜索','住宿顾问','美食探索家'],
+    ntTitle:'新建行程',
+    ntLabels:['目的地','出行人数','出发日期','返回日期','总预算（人民币）','旅行风格'],
+    ntDestOpts:['🌺 巴厘岛','🌸 京都','🗼 巴黎','🏝️ 圣托里尼'],
+    ntPeopleOpts:['1人','2人','3人','4人','5人以上'],
+    ntStyleOpts:['🎒 节俭穷游','✨ 舒适平衡','👑 奢享高端'],
+    ntSubmit:'🚀 开始规划行程',
   },
   en: {
     flag:'🇬🇧', label:'English', avatar:'Me',
@@ -3576,6 +3585,13 @@ const LANGS = {
     agentCalls:' calls',
     voicePhrases:['Family trip with my parents, warm weather, not too tiring, hot springs would be great','I want to try surfing for the first time — is it OK for beginners?','Honeymoon trip for two, budget around ¥20,000, most romantic option'],
     destIntroQ:'Give me a comprehensive travel guide for {dest}, including the best time to visit, must-see attractions, local cuisine and practical travel tips',
+    agentBarNames:['Trip Planner','Live Search','Accommodation','Food Explorer'],
+    ntTitle:'New Trip',
+    ntLabels:['Destination','Travelers','Departure Date','Return Date','Total Budget (CNY)','Travel Style'],
+    ntDestOpts:['🌺 Bali','🌸 Kyoto','🗼 Paris','🏝️ Santorini'],
+    ntPeopleOpts:['1 person','2 people','3 people','4 people','5+ people'],
+    ntStyleOpts:['🎒 Budget','✨ Comfortable','👑 Luxury'],
+    ntSubmit:'🚀 Start Planning',
   },
   ja: {
     flag:'🇯🇵', label:'日本語', avatar:'旅',
@@ -3627,6 +3643,13 @@ const LANGS = {
     agentCalls:'回の呼び出し',
     voicePhrases:['両親と一緒に温かい場所へ、疲れすぎないで、温泉があればなおいい','初めてサーフィンに挑戦したい！初心者でも大丈夫？','ハネムーン旅行、二人で予算2万元、最もロマンチックなプランを'],
     destIntroQ:'{dest}の旅行ガイドを教えてください。最適な訪問時期、必見スポット、地元グルメ、実用的な旅行情報を含めてください',
+    agentBarNames:['旅行プランナー','リアルタイム検索','宿泊アドバイザー','グルメ探検家'],
+    ntTitle:'新しい旅行',
+    ntLabels:['目的地','人数','出発日','帰国日','総予算（人民元）','旅行スタイル'],
+    ntDestOpts:['🌺 バリ島','🌸 京都','🗼 パリ','🏝️ サントリーニ'],
+    ntPeopleOpts:['1名','2名','3名','4名','5名以上'],
+    ntStyleOpts:['🎒 節約旅行','✨ 快適バランス','👑 ラグジュアリー'],
+    ntSubmit:'🚀 旅行を計画する',
   },
   ko: {
     flag:'🇰🇷', label:'한국어', avatar:'여',
@@ -3678,6 +3701,13 @@ const LANGS = {
     agentCalls:'회 호출',
     voicePhrases:['부모님과 따뜻한 곳으로, 너무 힘들지 않게, 온천이 있으면 좋겠어요','서핑을 처음 배우고 싶어요! 초보자도 괜찮나요?','신혼여행, 두 명 예산 2만 위안, 가장 로맨틱한 플랜'],
     destIntroQ:'{dest} 종합 여행 가이드를 알려주세요. 최적의 여행 시기, 필수 명소, 현지 음식, 실용적인 여행 팁을 포함해 주세요',
+    agentBarNames:['여행 플래너','실시간 검색','숙박 어드바이저','맛집 탐험가'],
+    ntTitle:'새 여행',
+    ntLabels:['목적지','인원수','출발 날짜','귀국 날짜','총 예산 (위안)','여행 스타일'],
+    ntDestOpts:['🌺 발리','🌸 교토','🗼 파리','🏝️ 산토리니'],
+    ntPeopleOpts:['1명','2명','3명','4명','5명 이상'],
+    ntStyleOpts:['🎒 알뜰 여행','✨ 편안한 여행','👑 럭셔리'],
+    ntSubmit:'🚀 여행 계획 시작',
   },
   id: {
     flag:'🇮🇩', label:'Indonesia', avatar:'Sy',
@@ -3729,6 +3759,13 @@ const LANGS = {
     agentCalls:' panggilan',
     voicePhrases:['Liburan bersama orang tua ke tempat yang hangat, tidak terlalu melelahkan, ada pemandian air panas','Saya ingin mencoba surfing pertama kali! Apakah aman untuk pemula?','Bulan madu, berdua, anggaran 20 ribu yuan, rencana paling romantis'],
     destIntroQ:'Berikan panduan perjalanan lengkap untuk {dest}, termasuk waktu terbaik berkunjung, tempat wisata wajib, kuliner lokal, dan tips perjalanan praktis',
+    agentBarNames:['Perencana Perjalanan','Pencarian Real-time','Penasihat Akomodasi','Penjelajah Kuliner'],
+    ntTitle:'Perjalanan Baru',
+    ntLabels:['Destinasi','Jumlah Orang','Tanggal Berangkat','Tanggal Kembali','Total Anggaran (CNY)','Gaya Perjalanan'],
+    ntDestOpts:['🌺 Bali','🌸 Kyoto','🗼 Paris','🏝️ Santorini'],
+    ntPeopleOpts:['1 orang','2 orang','3 orang','4 orang','5+ orang'],
+    ntStyleOpts:['🎒 Hemat','✨ Nyaman','👑 Mewah'],
+    ntSubmit:'🚀 Mulai Merencanakan',
   }
 };
 
@@ -3943,6 +3980,38 @@ function applyLang(lang) {
   window._agentCallsText = L.agentCalls;
   window._activeText = L.active;
   window._standbyText = L.standby;
+
+  // Active-agents-bar chip labels (planner, search, hotel, food)
+  const agentBarChips = document.querySelectorAll('.active-agent-chip');
+  const barOrder = L.agentBarNames || ['旅程规划师','实时搜索','住宿顾问','美食探索家'];
+  agentBarChips.forEach((chip, i) => {
+    if (!barOrder[i]) return;
+    const icon = chip.querySelector('.chip-icon');
+    const iconHtml = icon ? icon.outerHTML : '';
+    chip.innerHTML = iconHtml + barOrder[i];
+  });
+
+  // New trip modal labels
+  const ntTitleEl = document.querySelector('#modal-newtrip .modal-title');
+  if (ntTitleEl) ntTitleEl.innerHTML = L.ntTitle || '新建<span>行程</span>';
+  const ntLabels = document.querySelectorAll('#modal-newtrip .calc-field label');
+  (L.ntLabels || []).forEach((txt, i) => { if (ntLabels[i]) ntLabels[i].textContent = txt; });
+  const ntDestSel = document.getElementById('nt-dest');
+  if (ntDestSel && L.ntDestOpts) Array.from(ntDestSel.options).forEach((o, i) => { if (L.ntDestOpts[i]) o.textContent = L.ntDestOpts[i]; });
+  const ntPeopleSel = document.getElementById('nt-people');
+  if (ntPeopleSel && L.ntPeopleOpts) Array.from(ntPeopleSel.options).forEach((o, i) => { if (L.ntPeopleOpts[i]) o.textContent = L.ntPeopleOpts[i]; });
+  const ntStyleSel = document.getElementById('nt-style');
+  if (ntStyleSel && L.ntStyleOpts) Array.from(ntStyleSel.options).forEach((o, i) => { if (L.ntStyleOpts[i]) o.textContent = L.ntStyleOpts[i]; });
+  const ntSubmitBtn = document.querySelector('#modal-newtrip button[onclick="submitNewTrip()"]');
+  if (ntSubmitBtn) ntSubmitBtn.textContent = L.ntSubmit || '🚀 开始规划行程';
+
+  // Pre-filled intro text in input box (only replace if user hasn't modified it)
+  const mainInp = document.getElementById('main-input');
+  if (mainInp && _prefilledText && mainInp.value === _prefilledText) {
+    const destName = DESTINATIONS[currentDest]?.name || currentDest;
+    const newQ = (L.destIntroQ || '').replace('{dest}', destName);
+    if (newQ) { mainInp.value = newQ; _prefilledText = newQ; autoResize(mainInp); }
+  }
 
   // Update calc tips to re-run with lang-specific content
   setTimeout(() => calcUpdate(), 50);
