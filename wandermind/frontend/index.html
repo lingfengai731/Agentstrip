@@ -1930,14 +1930,14 @@ html, body {
       <div class="dest-header-text">
         <div class="dest-eyebrow" id="dest-eyebrow">🌺 正在规划</div>
         <div class="dest-title" id="dest-title">巴厘岛 · 神之岛<em>深度旅行</em></div>
-        <div class="dest-chips">
-          <span class="dest-chip"><span class="chip-dot" style="background:#E07A12"></span>6月12日 出发</span>
-          <span class="dest-chip"><span class="chip-dot" style="background:#12A08A"></span>7晚行程</span>
+        <div class="dest-chips" id="dest-chips">
+          <span class="dest-chip" id="chip-date"><span class="chip-dot" style="background:#E07A12"></span>出发日期待定</span>
+          <span class="dest-chip" id="chip-nights"><span class="chip-dot" style="background:#12A08A"></span>7晚行程</span>
           <span class="dest-chip"><span class="chip-dot" style="background:#1A5F8A"></span>6 Agent 协同</span>
         </div>
       </div>
       <div class="dest-actions">
-        <button class="btn btn-ghost" onclick="qsend('帮我生成完整的7日行程方案，包括每天的景点、餐厅、住宿推荐')">生成完整行程</button>
+        <button class="btn btn-ghost" id="btn-gen-itinerary" onclick="qsend('帮我生成完整的'+currentTripDays+'日行程方案，包括每天的景点、餐厅、住宿推荐')">生成完整行程</button>
         <button class="btn btn-primary" onclick="qsend('搜索最新的旅游资讯、入境政策和注意事项')">🔍 联网搜索</button>
       </div>
     </div>
@@ -1968,28 +1968,8 @@ html, body {
       <button class="quick-btn" onclick="qsend('推荐性价比最高的住宿方案，各价位段各给2个选择')">🏨 住宿推荐</button>
     </div>
 
-    <!-- Messages -->
-    <div class="messages" id="messages">
-      <div class="msg ai fade-in">
-        <div class="msg-avatar ai">W</div>
-        <div class="msg-body">
-          <div class="agent-label" style="color:var(--teal)">🗺️ 旅程规划师</div>
-          <div class="bubble ai">
-            你好！我是你的<strong>WanderMind 旅行伴侣</strong> 🌺<br><br>
-            我已激活 <strong>6个专属智能体</strong>，随时协同工作——联网搜索已启用，可实时获取最新资讯、天气、航班动态。<br><br>
-            你可以问我任何关于目的地的问题，或者直接告诉我你的旅行想法：
-          </div>
-          <div class="chips-wrap">
-            <button class="sugg-chip" onclick="qsend('推荐乌布最好的精品民宿，预算中等')">🏨 乌布精品民宿</button>
-            <button class="sugg-chip" onclick="qsend('巴厘岛最佳冲浪地点和适合新手的冲浪课')">🌊 冲浪地点推荐</button>
-            <button class="sugg-chip" onclick="qsend('巴厘岛必吃地道美食清单')">🍜 必吃美食清单</button>
-            <button class="sugg-chip" onclick="qsend('两人7天巴厘岛旅行，分节俭/舒适/豪华三档预算')">💰 预算规划</button>
-            <button class="sugg-chip" onclick="qsend('巴厘岛文化礼仪和注意事项')">🕌 文化礼仪</button>
-          </div>
-          <div class="msg-time">刚刚</div>
-        </div>
-      </div>
-    </div>
+    <!-- Messages — populated dynamically by renderWelcomeMsg() on load -->
+    <div class="messages" id="messages"></div>
 
     <!-- Input -->
     <div class="input-area">
@@ -2039,106 +2019,35 @@ html, body {
           <div class="stat-card"><div class="stat-val" id="s-season" style="color:var(--amber)">旺季</div><div class="stat-lbl" id="s-season-desc">6月为旱季</div></div>
         </div>
 
-        <div class="panel-section">
-          <div class="panel-section-title">推荐区域</div>
-          <div class="info-card" onclick="qsend('详细介绍乌布的景点、活动、住宿和美食')">
-            <div class="info-card-head"><span class="info-card-title">乌布 Ubud</span><span class="tag tag-blue">文化中心</span></div>
-            <div class="info-card-body">梯田、艺术、瑜伽、精神探索——旅行者心中的圣地</div>
-          </div>
-          <div class="info-card" onclick="qsend('水明漾 Seminyak 的海滩酒吧、网红餐厅和日落体验推荐')">
-            <div class="info-card-head"><span class="info-card-title">水明漾 Seminyak</span><span class="tag tag-amber">最热门</span></div>
-            <div class="info-card-body">时尚海滩、精品酒店、网红餐厅、日落鸡尾酒</div>
-          </div>
-          <div class="info-card" onclick="qsend('乌鲁瓦图的冲浪攻略和悬崖神庙游览建议')">
-            <div class="info-card-head"><span class="info-card-title">乌鲁瓦图 Uluwatu</span><span class="tag tag-amber">冲浪圣地</span></div>
-            <div class="info-card-body">顶级冲浪点、悬崖神庙、凯撒火舞表演</div>
-          </div>
-          <div class="info-card" onclick="qsend('努沙杜瓦 Nusa Dua 高端度假村推荐')">
-            <div class="info-card-head"><span class="info-card-title">努沙杜瓦 Nusa Dua</span><span class="tag tag-green">度假首选</span></div>
-            <div class="info-card-body">五星度假村聚集区，水上运动，蜜月首选</div>
-          </div>
+        <div class="panel-section" id="panel-regions">
+          <!-- dynamically rendered by renderDestPanel() -->
         </div>
 
-        <div class="panel-section">
-          <div class="panel-section-title">旅行必知</div>
-          <div class="info-card">
-            <div class="info-card-head"><span class="info-card-title">签证</span><span class="tag tag-blue">中国护照</span></div>
-            <div class="info-card-body">落地签约 $35，建议备好美元现金</div>
-          </div>
-          <div class="info-card">
-            <div class="info-card-head"><span class="info-card-title">文化礼仪</span><span class="tag tag-amber">必读</span></div>
-            <div class="info-card-body">进庙须着纱笼；左手被视为不洁，避免用左手递物</div>
-          </div>
+        <div class="panel-section" id="panel-tips">
+          <!-- dynamically rendered by renderDestPanel() -->
         </div>
       </div>
 
       <!-- Itinerary -->
       <div class="panel-content" id="panel-itinerary">
-        <div class="panel-section-title" style="margin-bottom:10px">7日行程概览</div>
-        <div class="timeline">
-          <div class="tl-item">
-            <div class="tl-dot" style="background:#E3F5F1">✈️</div>
-            <div class="tl-content">
-              <div class="tl-day">Day 1 · 6月12日</div>
-              <div class="tl-title">抵达登巴萨 → 乌布</div>
-              <div class="tl-desc">机场接送，入住民宿，圣泉寺傍晚游览</div>
-            </div>
-          </div>
-          <div class="tl-item">
-            <div class="tl-dot" style="background:#EAF3DE">🌾</div>
-            <div class="tl-content">
-              <div class="tl-day">Day 2 · 6月13日</div>
-              <div class="tl-title">乌布深度文化日</div>
-              <div class="tl-desc">巴图布隆寺、乌布市场、梯田日落</div>
-            </div>
-          </div>
-          <div class="tl-item">
-            <div class="tl-dot" style="background:#FDF0E3">🌋</div>
-            <div class="tl-content">
-              <div class="tl-day">Day 3 · 6月14日</div>
-              <div class="tl-title">阿贡火山日出徒步</div>
-              <div class="tl-desc">凌晨出发，巴图尔湖全景，温泉午餐</div>
-            </div>
-          </div>
-          <div class="tl-item">
-            <div class="tl-dot" style="background:#E4F0F8">🌊</div>
-            <div class="tl-content">
-              <div class="tl-day">Day 4–5 · 6月15–16日</div>
-              <div class="tl-title">南部海岸 · 乌鲁瓦图</div>
-              <div class="tl-desc">冲浪课程、悬崖神庙、凯撒火舞</div>
-            </div>
-          </div>
-          <div class="tl-item">
-            <div class="tl-dot" style="background:#FAF7F2">🛥️</div>
-            <div class="tl-content">
-              <div class="tl-day">Day 6 · 6月17日</div>
-              <div class="tl-title">努沙佩尼达一日游</div>
-              <div class="tl-desc">天使湾、克灵金海滩、珊瑚浮潜</div>
-            </div>
-          </div>
-          <div class="tl-item">
-            <div class="tl-dot" style="background:#E3F5F1">🌅</div>
-            <div class="tl-content">
-              <div class="tl-day">Day 7 · 6月18–19日</div>
-              <div class="tl-title">水明漾 · 自由日 → 离境</div>
-              <div class="tl-desc">海滩休闲、购物、夜间航班返程</div>
-            </div>
-          </div>
+        <div class="panel-section-title" id="panel-itinerary-title" style="margin-bottom:10px">7日行程概览</div>
+        <div class="timeline" id="panel-timeline">
+          <!-- dynamically rendered by renderItinerary() -->
         </div>
-        <button class="panel-action-btn" onclick="qsend('帮我详细规划乌布两天的具体行程，精确到每小时，包括景点路线、餐厅预订建议和住宿推荐')">✨ AI 深度定制行程</button>
+        <button class="panel-action-btn" id="panel-itinerary-ai-btn" onclick="qsend('帮我为'+currentTripDays+'天行程生成详细的每日计划，精确到每半天，包括景点路线、餐厅预订建议和住宿推荐')">✨ AI 深度定制行程</button>
       </div>
 
       <!-- Budget -->
       <div class="panel-content" id="panel-budget">
-        <div class="panel-section-title" style="margin-bottom:10px">预算追踪 · 2人7天</div>
+        <div class="panel-section-title" id="panel-budget-header" style="margin-bottom:10px">预算追踪 · 2人7天</div>
         <div class="budget-total">
           <div class="stat-card" style="background:var(--paper-2)">
-            <div class="stat-val">¥18,000</div>
+            <div class="stat-val" id="budget-total-val">¥18,000</div>
             <div class="stat-lbl">总预算</div>
           </div>
           <div class="stat-card" style="background:var(--paper-2)">
-            <div class="stat-val" style="color:var(--teal)">¥6,200</div>
-            <div class="stat-lbl">已规划 (34%)</div>
+            <div class="stat-val" style="color:var(--teal)" id="budget-planned-val">待规划</div>
+            <div class="stat-lbl">已规划</div>
           </div>
         </div>
 
@@ -2163,7 +2072,7 @@ html, body {
           <div class="budget-bar-head"><span>🚗 交通</span><span class="budget-bar-amount" style="color:var(--ink-2)">¥1,400</span></div>
           <div class="bbar-wrap"><div class="bbar" style="width:16%;background:var(--ink-3)"></div></div>
         </div>
-        <button class="panel-action-btn" onclick="qsend('帮我分析巴厘岛两人7天旅行的详细预算方案，按节俭/舒适/豪华三档列出')">💡 AI 预算优化</button>
+        <button class="panel-action-btn" id="panel-budget-ai-btn" onclick="qsend('帮我分析'+DESTINATIONS[currentDest].name+currentTripPeople+'人'+currentTripDays+'天旅行的详细预算方案，总预算¥'+currentTripBudget+'，按节俭/舒适/豪华三档列出')">💡 AI 预算优化</button>
       </div>
 
       <!-- Agent Log Panel -->
@@ -2202,10 +2111,130 @@ html, body {
 // Backend API — no API key in browser, all calls go through /api/*
 
 const DESTINATIONS = {
-  bali:      { flag:'🌺', name:'巴厘岛', region:'印度尼西亚', title:'巴厘岛 · 神之岛<em>深度旅行</em>', eyebrow:'🌺 正在规划', weather:{temp:'29°C',cond:'巴厘岛 · 乌布 · 晴间多云',icon:'⛅',details:'💧 湿度 72% · 💨 14km/h · 🌅 06:14'}, rate:'¥1≈2,200', season:'旺季', seasonDesc:'6月为旱季' },
-  kyoto:     { flag:'🌸', name:'京都', region:'日本', title:'京都 · 千年古都<em>文化之旅</em>', eyebrow:'🌸 正在规划', weather:{temp:'24°C',cond:'京都 · 晴天',icon:'☀️',details:'💧 湿度 58% · 💨 8km/h · 🌅 05:02'}, rate:'¥1≈21', season:'初夏', seasonDesc:'6月微雨季节' },
-  paris:     { flag:'🗼', name:'巴黎', region:'法国', title:'巴黎 · 光之城<em>浪漫之旅</em>', eyebrow:'🗼 正在规划', weather:{temp:'21°C',cond:'巴黎 · 部分多云',icon:'⛅',details:'💧 湿度 65% · 💨 12km/h · 🌅 06:01'}, rate:'¥1≈0.13€', season:'旺季', seasonDesc:'6月最佳季节' },
-  santorini: { flag:'🏝️', name:'圣托里尼', region:'希腊', title:'圣托里尼 · 爱琴海<em>蓝白梦境</em>', eyebrow:'🏝️ 正在规划', weather:{temp:'26°C',cond:'圣托里尼 · 晴朗',icon:'☀️',details:'💧 湿度 55% · 💨 18km/h · 🌅 06:24'}, rate:'¥1≈0.13€', season:'旺季', seasonDesc:'6–8月最美' },
+  bali: {
+    flag:'🌺', name:'巴厘岛', region:'印度尼西亚',
+    title:'巴厘岛 · 神之岛<em>深度旅行</em>', eyebrow:'🌺 正在规划',
+    weather:{temp:'29°C',cond:'巴厘岛 · 乌布 · 晴间多云',icon:'⛅',details:'💧 湿度 72% · 💨 14km/h · 🌅 06:14'},
+    rate:'¥1≈2,200', season:'旺季', seasonDesc:'6月为旱季',
+    regions:[
+      {name:'乌布 Ubud',         tag:'文化中心', cls:'tag-blue',  desc:'梯田、艺术、瑜伽、精神探索——旅行者心中的圣地',        q:'详细介绍乌布的景点、活动、住宿和美食'},
+      {name:'水明漾 Seminyak',   tag:'最热门',   cls:'tag-amber', desc:'时尚海滩、精品酒店、网红餐厅、日落鸡尾酒',            q:'水明漾 Seminyak 的海滩酒吧、网红餐厅和日落体验推荐'},
+      {name:'乌鲁瓦图 Uluwatu', tag:'冲浪圣地', cls:'tag-amber', desc:'顶级冲浪点、悬崖神庙、凯撒火舞表演',                   q:'乌鲁瓦图的冲浪攻略和悬崖神庙游览建议'},
+      {name:'努沙杜瓦 Nusa Dua', tag:'度假首选', cls:'tag-green', desc:'五星度假村聚集区，水上运动丰富，蜜月首选',            q:'努沙杜瓦 Nusa Dua 高端度假村推荐'},
+    ],
+    tips:[
+      {title:'签证',   tag:'中国护照', cls:'tag-blue',  desc:'落地签约 $35，建议备好美元现金'},
+      {title:'文化礼仪', tag:'必读',  cls:'tag-amber', desc:'进庙须着纱笼；左手被视为不洁，避免用左手递物'},
+    ],
+    itinerary:[
+      {icon:'✈️',color:'#E3F5F1',dayLabel:'Day 1',dayStart:0,         title:'抵达登巴萨 → 乌布',        desc:'机场接送，入住民宿，圣泉寺傍晚游览'},
+      {icon:'🌾',color:'#EAF3DE',dayLabel:'Day 2',dayStart:1,         title:'乌布深度文化日',           desc:'巴图布隆寺、乌布市场、梯田日落'},
+      {icon:'🌋',color:'#FDF0E3',dayLabel:'Day 3',dayStart:2,         title:'阿贡火山日出徒步',         desc:'凌晨出发，巴图尔湖全景，温泉午餐'},
+      {icon:'🌊',color:'#E4F0F8',dayLabel:'Day 4–5',dayStart:3,dayEnd:4,title:'南部海岸 · 乌鲁瓦图',  desc:'冲浪课程、悬崖神庙、凯撒火舞'},
+      {icon:'🛥️',color:'#FAF7F2',dayLabel:'Day 6',dayStart:5,         title:'努沙佩尼达一日游',         desc:'天使湾、克灵金海滩、珊瑚浮潜'},
+      {icon:'🌅',color:'#E3F5F1',dayLabel:'Day 7',dayStart:6,         title:'水明漾 · 自由日 → 离境',  desc:'海滩休闲、购物、夜间航班返程'},
+    ],
+    suggestions:[
+      {label:'🏨 乌布精品民宿', q:'推荐乌布最好的精品民宿，预算中等'},
+      {label:'🌊 冲浪地点推荐', q:'巴厘岛最佳冲浪地点和适合新手的冲浪课'},
+      {label:'🍜 必吃美食清单', q:'巴厘岛必吃地道美食清单'},
+      {label:'💰 预算规划',     q:'两人7天巴厘岛旅行，分节俭/舒适/豪华三档预算'},
+      {label:'🕌 文化礼仪',     q:'巴厘岛文化礼仪和注意事项'},
+    ],
+  },
+  kyoto: {
+    flag:'🌸', name:'京都', region:'日本',
+    title:'京都 · 千年古都<em>文化之旅</em>', eyebrow:'🌸 正在规划',
+    weather:{temp:'24°C',cond:'京都 · 晴天',icon:'☀️',details:'💧 湿度 58% · 💨 8km/h · 🌅 05:02'},
+    rate:'¥1≈21', season:'初夏', seasonDesc:'6月微雨季节',
+    regions:[
+      {name:'岚山 Arashiyama',  tag:'自然胜地', cls:'tag-green', desc:'竹林小道、渡月桥、嵐山温泉，最具京都意境',    q:'岚山竹林和渡月桥的游览攻略及最佳拍摄时间'},
+      {name:'祇園 Gion',        tag:'最热门',   cls:'tag-amber', desc:'艺伎文化、花见小路、日式茶屋，古风情调',      q:'祇园花见小路和艺伎文化深度体验推荐'},
+      {name:'金阁寺周边',       tag:'必游',     cls:'tag-blue',  desc:'金阁寺、银阁寺、哲学之道，禅意漫步半日',    q:'金阁寺和银阁寺的游览建议和购票攻略'},
+      {name:'伏见稻荷',         tag:'网红打卡', cls:'tag-amber', desc:'千本鸟居、稻荷山徒步，日出早游人少最美',    q:'伏见稻荷大社游览攻略和最佳游览时间'},
+    ],
+    tips:[
+      {title:'签证',  tag:'需提前办', cls:'tag-blue',  desc:'中国公民需提前申请日本旅游签证，建议出发前1个月办理'},
+      {title:'交通',  tag:'实用',     cls:'tag-green', desc:'购买IC卡（ICOCA），公交地铁通用；可考虑京阪神乘车券'},
+    ],
+    itinerary:[
+      {icon:'✈️',color:'#E3F5F1',dayLabel:'Day 1',dayStart:0, title:'抵达关西机场 → 京都',        desc:'乘特快列车入城，入住京町家民宿，晚游祇园'},
+      {icon:'⛩️',color:'#FDF0E3',dayLabel:'Day 2',dayStart:1, title:'岚山 · 嵯峨野一日',          desc:'竹林漫步、天龙寺庭园、渡月桥、保津川游览'},
+      {icon:'🏯',color:'#E4F0F8',dayLabel:'Day 3',dayStart:2, title:'金阁寺 · 哲学之道',          desc:'金阁寺、仁和寺、银阁寺、哲学之道、南禅寺'},
+      {icon:'🦊',color:'#EAF3DE',dayLabel:'Day 4',dayStart:3, title:'伏见稻荷 · 奈良一日游',      desc:'千本鸟居晨游、奈良鹿苑、东大寺、春日大社'},
+      {icon:'🌸',color:'#FCE8EB',dayLabel:'Day 5',dayStart:4, title:'祇园 · 清水寺 · 自由日',     desc:'二年坂、三年坂、清水寺、锦市场美食漫游'},
+      {icon:'🚄',color:'#FAF7F2',dayLabel:'Day 6',dayStart:5, title:'大阪 · 道顿堀 → 返程',       desc:'新干线赴大阪，道顿堀美食，夜间航班回国'},
+    ],
+    suggestions:[
+      {label:'⛩️ 神社寺庙推荐', q:'京都最值得游览的神社和寺庙完整推荐'},
+      {label:'🍱 怀石料理',     q:'京都怀石料理和传统美食餐厅推荐'},
+      {label:'🏯 历史文化',     q:'京都历史文化景点完整攻略和游览顺序'},
+      {label:'💰 预算规划',     q:'两人7天京都旅行，分节俭/舒适/豪华三档预算'},
+      {label:'🌸 最佳季节',     q:'京都各季节最佳体验和旅游旺季注意事项'},
+    ],
+  },
+  paris: {
+    flag:'🗼', name:'巴黎', region:'法国',
+    title:'巴黎 · 光之城<em>浪漫之旅</em>', eyebrow:'🗼 正在规划',
+    weather:{temp:'21°C',cond:'巴黎 · 部分多云',icon:'⛅',details:'💧 湿度 65% · 💨 12km/h · 🌅 06:01'},
+    rate:'¥1≈0.13€', season:'旺季', seasonDesc:'6月最佳季节',
+    regions:[
+      {name:'玛黑区 Le Marais',      tag:'文艺潮流', cls:'tag-blue',  desc:'历史建筑、设计师精品店、画廊，LGBT文化聚集地',    q:'巴黎玛黑区的艺术画廊、精品咖啡馆和购物推荐'},
+      {name:'蒙马特 Montmartre',     tag:'艺术圣地', cls:'tag-amber', desc:'圣心堂、艺术家广场、巴黎全景鸟瞰最佳位置',       q:'蒙马特圣心堂和艺术家广场游览攻略'},
+      {name:'香榭丽舍大道',          tag:'必游',     cls:'tag-green', desc:'凯旋门、奢侈品购物街、露天咖啡馆',               q:'香榭丽舍大道和凯旋门游览建议及购物攻略'},
+      {name:'左岸 Saint-Germain',   tag:'文学气息', cls:'tag-blue',  desc:'双叟咖啡馆、古旧书摊、塞纳河游船码头',           q:'巴黎左岸文学咖啡馆和人文景点推荐'},
+    ],
+    tips:[
+      {title:'签证',   tag:'申根签证', cls:'tag-blue',  desc:'中国公民需提前申请申根签证，建议提前2个月办理，约¥600手续费'},
+      {title:'安全提示', tag:'注意',   cls:'tag-amber', desc:'埃菲尔铁塔、卢浮宫周边注意扒手；夜间避免单独前往偏僻区域'},
+    ],
+    itinerary:[
+      {icon:'✈️',color:'#E3F5F1',dayLabel:'Day 1',dayStart:0, title:'抵达戴高乐 → 入住',         desc:'RER B线进城，入住酒店，塞纳河夜游眺望铁塔'},
+      {icon:'🗼',color:'#EAF3DE',dayLabel:'Day 2',dayStart:1, title:'埃菲尔铁塔 · 奥赛博物馆',   desc:'铁塔顶层观景、奥赛印象派馆、战神广场野餐'},
+      {icon:'🎨',color:'#E4F0F8',dayLabel:'Day 3',dayStart:2, title:'卢浮宫 · 杜乐丽花园',       desc:'蒙娜丽莎、胜利女神、玻璃金字塔、协和广场'},
+      {icon:'⛪',color:'#FCE8EB',dayLabel:'Day 4',dayStart:3, title:'圣母院 · 玛黑区',           desc:'圣礼拜堂彩窗、玛黑区漫步、萨拉·贝尔纳咖啡'},
+      {icon:'🏰',color:'#FDF0E3',dayLabel:'Day 5',dayStart:4, title:'凡尔赛宫一日游',            desc:'镜厅奢华全景、法式皇家园林、小特里亚农宫'},
+      {icon:'🛍️',color:'#FAF7F2',dayLabel:'Day 6',dayStart:5, title:'蒙马特 · 购物 → 返程',     desc:'圣心堂、艺术家广场，香榭购物，夜航回国'},
+    ],
+    suggestions:[
+      {label:'🗼 景点攻略',  q:'巴黎主要景点参观顺序、购票攻略和避开人流技巧'},
+      {label:'🥐 法式美食',  q:'巴黎必吃法式美食和米其林推荐餐厅'},
+      {label:'🛍️ 购物指南', q:'巴黎购物攻略：奢侈品、纪念品、跳蚤市场'},
+      {label:'💰 预算规划',  q:'两人7天巴黎旅行，分节俭/舒适/豪华三档预算'},
+      {label:'🚇 交通攻略',  q:'巴黎地铁和公交使用攻略，RER和Navigo卡推荐'},
+    ],
+  },
+  santorini: {
+    flag:'🏝️', name:'圣托里尼', region:'希腊',
+    title:'圣托里尼 · 爱琴海<em>蓝白梦境</em>', eyebrow:'🏝️ 正在规划',
+    weather:{temp:'26°C',cond:'圣托里尼 · 晴朗',icon:'☀️',details:'💧 湿度 55% · 💨 18km/h · 🌅 06:24'},
+    rate:'¥1≈0.13€', season:'旺季', seasonDesc:'6–8月最美',
+    regions:[
+      {name:'菲拉 Fira',      tag:'主要城镇', cls:'tag-blue',  desc:'悬崖首府，精品店、酒吧、全景餐厅汇聚于此',        q:'菲拉的观景餐厅、购物和夜生活推荐'},
+      {name:'伊亚 Oia',       tag:'最美日落', cls:'tag-amber', desc:'世界最美日落圣地，蓝顶教堂，白墙蜿蜒小道',       q:'伊亚最佳日落观赏地点和蓝顶教堂拍摄攻略'},
+      {name:'佩里萨 Perissa', tag:'黑沙滩',   cls:'tag-green', desc:'独特火山黑沙滩，水上活动丰富，价格实惠',         q:'佩里萨黑沙滩水上活动和周边住宿推荐'},
+      {name:'阿克罗蒂里',     tag:'历史遗址', cls:'tag-blue',  desc:'米诺斯文明遗址，3600年前火山灰保存的城市',      q:'阿克罗蒂里考古遗址参观攻略和历史背景'},
+    ],
+    tips:[
+      {title:'签证',   tag:'申根签证', cls:'tag-blue',  desc:'中国公民需提前申请申根签证，建议提前2个月办理'},
+      {title:'岛内交通', tag:'实用',   cls:'tag-green', desc:'岛内巴士连接主要景点；租ATV摩托车最灵活，约€20/天'},
+    ],
+    itinerary:[
+      {icon:'✈️',color:'#E3F5F1',dayLabel:'Day 1',dayStart:0, title:'抵达圣托里尼 → 菲拉',       desc:'办理入住，悬崖步道傍晚漫步，菲拉夜景'},
+      {icon:'🌅',color:'#FDF0E3',dayLabel:'Day 2',dayStart:1, title:'伊亚 · 蓝顶日落',           desc:'沿悬崖步行道前往伊亚，蓝顶教堂拍摄，守候日落'},
+      {icon:'🏖️',color:'#E4F0F8',dayLabel:'Day 3',dayStart:2, title:'黑沙滩 · 卡马里',           desc:'佩里萨黑沙滩、水上运动体验、新鲜海鲜午餐'},
+      {icon:'⛵',color:'#EAF3DE',dayLabel:'Day 4',dayStart:3, title:'火山岛出海一日游',           desc:'活火山徒步、爱琴海天然温泉浮泡、船游礁石'},
+      {icon:'🏛️',color:'#FCE8EB',dayLabel:'Day 5',dayStart:4, title:'阿克罗蒂里 · 红沙滩',      desc:'史前遗址探秘，全球唯一红色沙滩，悬崖酒庄'},
+      {icon:'🍷',color:'#FAF7F2',dayLabel:'Day 6',dayStart:5, title:'品酒 · 最后日落 → 离岛',   desc:'圣托里尼葡萄酒庄，伊亚最后日落，返回菲拉港'},
+    ],
+    suggestions:[
+      {label:'🌅 日落攻略',  q:'圣托里尼最佳日落观赏地点、时间和拍摄技巧'},
+      {label:'⛵ 出海游览',  q:'圣托里尼火山岛出海一日游详细攻略和预订建议'},
+      {label:'🍷 希腊美食',  q:'圣托里尼特色希腊美食和性价比最高的餐厅'},
+      {label:'💰 预算规划',  q:'两人7天圣托里尼旅行，分节俭/舒适/豪华三档预算'},
+      {label:'📸 拍照打卡',  q:'圣托里尼最佳拍照地点、最佳时间和构图技巧'},
+    ],
+  },
 };
 
 const AGENT_PERSONAS = {
@@ -2238,6 +2267,10 @@ let currentDest = 'bali';
 let currentAgent = 'planner';
 let history = [];
 let busy = false;
+let currentTripStart  = null;   // ISO date string e.g. "2026-05-31"
+let currentTripDays   = 7;
+let currentTripPeople = 2;
+let currentTripBudget = 18000;
 
 // ─── AUTH I18N ────────────────────────────────
 const AUTH_I18N = {
@@ -2458,6 +2491,11 @@ function startLoader(lang) {
 
 // ─── LOADING ANIMATION ───────────────────────
 window.addEventListener('load', () => {
+  // Initialise destination panels and welcome message with default Bali data
+  renderDestPanel('bali');
+  renderItinerary('bali', null);
+  renderWelcomeMsg('bali');
+
   const savedLang = localStorage.getItem('wm_lang');
   if (savedLang && LANGS[savedLang]) {
     // Returning user — skip language picker
@@ -2475,6 +2513,98 @@ window.addEventListener('load', () => {
   // New user: lang-picker stays visible (default), waiting for click
 });
 
+// ─── DESTINATION PANEL RENDERERS ─────────────
+function renderDestPanel(id) {
+  const d = DESTINATIONS[id] || DESTINATIONS.bali;
+  const L = LANGS[currentLang] || LANGS.zh;
+
+  // Recommended regions
+  const regEl = document.getElementById('panel-regions');
+  if (regEl && d.regions) {
+    regEl.innerHTML = `<div class="panel-section-title">${L.destTabSections?.regions || '推荐区域'}</div>` +
+      d.regions.map(r =>
+        `<div class="info-card" onclick="qsend('${r.q.replace(/'/g, "\\'")}')">
+          <div class="info-card-head"><span class="info-card-title">${r.name}</span><span class="tag ${r.cls}">${r.tag}</span></div>
+          <div class="info-card-body">${r.desc}</div>
+        </div>`
+      ).join('');
+  }
+
+  // Travel tips
+  const tipsEl = document.getElementById('panel-tips');
+  if (tipsEl && d.tips) {
+    tipsEl.innerHTML = `<div class="panel-section-title">${L.destTabSections?.tips || '旅行必知'}</div>` +
+      d.tips.map(t =>
+        `<div class="info-card">
+          <div class="info-card-head"><span class="info-card-title">${t.title}</span><span class="tag ${t.cls}">${t.tag}</span></div>
+          <div class="info-card-body">${t.desc}</div>
+        </div>`
+      ).join('');
+  }
+}
+
+function renderItinerary(id, startDate) {
+  const d = DESTINATIONS[id] || DESTINATIONS.bali;
+  const days = currentTripDays;
+
+  const titleEl = document.getElementById('panel-itinerary-title');
+  if (titleEl) titleEl.textContent = `${days}日行程概览`;
+
+  const tlEl = document.getElementById('panel-timeline');
+  if (!tlEl || !d.itinerary) return;
+
+  tlEl.innerHTML = d.itinerary.map(item => {
+    let dateStr = '';
+    if (startDate) {
+      const d1 = new Date(startDate + 'T00:00:00');
+      d1.setDate(d1.getDate() + (item.dayStart || 0));
+      const m1 = d1.getMonth() + 1, n1 = d1.getDate();
+      if (item.dayEnd !== undefined) {
+        const d2 = new Date(startDate + 'T00:00:00');
+        d2.setDate(d2.getDate() + item.dayEnd);
+        dateStr = ` · ${m1}月${n1}–${d2.getDate()}日`;
+      } else {
+        dateStr = ` · ${m1}月${n1}日`;
+      }
+    }
+    return `<div class="tl-item">
+      <div class="tl-dot" style="background:${item.color}">${item.icon}</div>
+      <div class="tl-content">
+        <div class="tl-day">${item.dayLabel}${dateStr}</div>
+        <div class="tl-title">${item.title}</div>
+        <div class="tl-desc">${item.desc}</div>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function renderWelcomeMsg(id) {
+  const d = DESTINATIONS[id] || DESTINATIONS.bali;
+  const msgEl = document.getElementById('messages');
+  if (!msgEl) return;
+
+  const suggs = d.suggestions || [];
+  const chipsHtml = suggs.map(s =>
+    `<button class="sugg-chip" onclick="qsend('${s.q.replace(/'/g, "\\'")}')">${s.label}</button>`
+  ).join('');
+
+  const isFirst = (id === 'bali' && !currentTripStart);
+  const bodyTxt = isFirst
+    ? `你好！我是你的<strong>WanderMind 旅行伴侣</strong> ${d.flag}<br><br>我已激活 <strong>6个专属智能体</strong>，随时协同工作——联网搜索已启用，可实时获取最新资讯、天气、航班动态。<br><br>你可以问我任何关于目的地的问题，或者直接告诉我你的旅行想法：`
+    : `已切换至 <strong>${d.flag} ${d.name}</strong>。6个智能体已就绪，为您加载${d.name}专属旅行数据。<br><br>请告诉我您想了解什么：`;
+
+  msgEl.innerHTML = `
+    <div class="msg ai fade-in">
+      <div class="msg-avatar ai">W</div>
+      <div class="msg-body">
+        <div class="agent-label" style="color:var(--teal)">🗺️ 旅程规划师</div>
+        <div class="bubble ai">${bodyTxt}</div>
+        <div class="chips-wrap">${chipsHtml}</div>
+        <div class="msg-time">刚刚</div>
+      </div>
+    </div>`;
+}
+
 // ─── DESTINATION SWITCHING ───────────────────
 function toggleDestMenu() {
   document.getElementById('dest-menu').classList.toggle('open');
@@ -2491,29 +2621,36 @@ function switchDest(id, flag, name, e) {
     const custom = prompt('输入目的地名称：');
     if (!custom) return;
     document.getElementById('dest-menu').classList.remove('open');
-    qsend('我想去' + custom + '，帮我介绍一下这个目的地，并给出旅行建议');
+    history = [];
+    document.getElementById('messages').innerHTML = '';
+    qsend('我想去' + custom + '，帮我介绍一下这个目的地，包括最佳游览时间、必看景点、特色美食和实用旅行建议');
     return;
   }
   currentDest = id;
   const d = DESTINATIONS[id];
-  document.getElementById('dest-flag').textContent = flag;
+  document.getElementById('dest-flag').textContent    = flag;
   document.getElementById('dest-name-nav').textContent = name;
-  document.getElementById('dest-title').innerHTML = d.title;
-  document.getElementById('dest-eyebrow').textContent = d.eyebrow;
-  document.getElementById('w-temp').textContent = d.weather.temp;
-  document.getElementById('w-cond').textContent = d.weather.cond;
-  document.getElementById('w-icon').textContent = d.weather.icon;
-  document.getElementById('w-details').textContent = d.weather.details;
-  document.getElementById('s-rate').textContent = d.rate;
-  document.getElementById('s-season').textContent = d.season;
+  document.getElementById('dest-title').innerHTML      = d.title;
+  document.getElementById('dest-eyebrow').textContent  = d.eyebrow;
+  document.getElementById('w-temp').textContent        = d.weather.temp;
+  document.getElementById('w-cond').textContent        = d.weather.cond;
+  document.getElementById('w-icon').textContent        = d.weather.icon;
+  document.getElementById('w-details').textContent     = d.weather.details;
+  document.getElementById('s-rate').textContent        = d.rate;
+  document.getElementById('s-season').textContent      = d.season;
   document.getElementById('s-season-desc').textContent = d.seasonDesc;
-  // Update all dest-menu items
+  // Update destination menu selection highlight
   document.querySelectorAll('.dest-menu-item').forEach(el => el.classList.remove('selected'));
   e.target.classList.add('selected');
   document.getElementById('dest-menu').classList.remove('open');
+  // Render right panel for new destination
+  renderDestPanel(id);
+  renderItinerary(id, currentTripStart);
+  // Clear chat and show destination-specific welcome
   history = [];
-  addSystemMsg(`已切换至 ${flag} ${name}`);
-  qsend(`我想了解${name}的旅行信息，请给我一个全面的目的地概览`);
+  document.getElementById('messages').innerHTML = '';
+  renderWelcomeMsg(id);
+  qsend(`请给我一个${name}的全面旅行目的地介绍，包括最佳游览时间、必看景点、特色美食和实用旅行建议`);
 }
 
 // ─── AGENT SWITCHING ──────────────────────────
@@ -3475,20 +3612,20 @@ function applyLang(lang) {
   const ptabs = document.querySelectorAll('.panel-tab');
   ptabs.forEach((t,i) => { if (L.panelTabs[i]) t.textContent = L.panelTabs[i]; });
 
-  // Panel section titles
-  const panelSecTitles = document.querySelectorAll('.panel-section-title');
-  if (panelSecTitles[0]) panelSecTitles[0].textContent = L.destTabSections.regions;
-  if (panelSecTitles[1]) panelSecTitles[1].textContent = L.destTabSections.tips;
+  // Re-render destination panel (updates section titles in correct language)
+  renderDestPanel(currentDest);
 
-  // Itinerary panel
-  const itinTitle = document.querySelector('#panel-itinerary .panel-section-title');
-  if (itinTitle) itinTitle.textContent = L.itineraryTitle;
+  // Itinerary panel title (replace leading number with actual trip days)
+  const itinTitle = document.getElementById('panel-itinerary-title');
+  if (itinTitle) itinTitle.textContent = (L.itineraryTitle || '7日行程概览').replace(/^\d+/, String(currentTripDays));
   const deepBtn = document.querySelector('#panel-itinerary .panel-action-btn');
   if (deepBtn) deepBtn.textContent = L.deepCustom;
 
-  // Budget panel
-  const budgTitle = document.querySelector('#panel-budget .panel-section-title');
-  if (budgTitle) budgTitle.textContent = L.budgetTitle;
+  // Budget panel (respect actual trip data if available)
+  const budgTitle = document.getElementById('panel-budget-header');
+  if (budgTitle) budgTitle.textContent = currentTripStart
+    ? (L.budgetTitle || '预算追踪').replace(/\d+人/, currentTripPeople+'人').replace(/\d+天/, currentTripDays+'天')
+    : (L.budgetTitle || '预算追踪');
   const budgOptBtn = document.querySelector('#panel-budget .panel-action-btn');
   if (budgOptBtn) budgOptBtn.textContent = L.budgetOptimize;
 
@@ -3575,13 +3712,13 @@ function applyLang(lang) {
   // Update fakeVoice phrases
   window._voicePhrases = L.voicePhrases;
 
-  // Update welcome chips in messages if they exist
+  // Update welcome chips with current-destination suggestions
   const chips = document.querySelectorAll('.sugg-chip');
-  chips.forEach((chip,i) => {
-    if (L.suggChips[i]) {
-      chip.textContent = L.suggChips[i];
-      const cmd = L.suggCmds[i];
-      chip.onclick = () => qsend(cmd);
+  const destSuggs = DESTINATIONS[currentDest]?.suggestions || DESTINATIONS.bali.suggestions;
+  chips.forEach((chip, i) => {
+    if (destSuggs[i]) {
+      chip.textContent = destSuggs[i].label;
+      chip.onclick = () => qsend(destSuggs[i].q);
     }
   });
 
@@ -4230,7 +4367,14 @@ function submitNewTrip() {
   const days = calcDays(start, end);
   const fmt  = d => d.replace(/-/g, '/').slice(5);
 
-  // Update sidebar trip card safely
+  // ── Update state ──────────────────────────
+  currentDest        = dest;
+  currentTripStart   = start;
+  currentTripDays    = days;
+  currentTripPeople  = Number(people);
+  currentTripBudget  = Number(budget);
+
+  // ── Update sidebar trip card ──────────────
   try {
     const card = document.querySelector('.trip-card.active');
     if (card) {
@@ -4241,21 +4385,50 @@ function submitNewTrip() {
     }
   } catch(e) {}
 
-  // Switch destination without event issues
-  currentDest = dest;
+  // ── Update main header ────────────────────
   const d = destData;
-  document.getElementById('dest-flag').textContent = d.flag;
+  document.getElementById('dest-flag').textContent     = d.flag;
   document.getElementById('dest-name-nav').textContent = d.name;
   document.getElementById('dest-eyebrow').textContent  = d.eyebrow;
   document.getElementById('dest-title').innerHTML      = d.title;
   document.getElementById('w-temp').textContent        = d.weather.temp;
   document.getElementById('w-cond').textContent        = d.weather.cond;
   document.getElementById('w-icon').textContent        = d.weather.icon;
+  document.getElementById('w-details').textContent     = d.weather.details;
   document.getElementById('s-rate').textContent        = d.rate;
+  document.getElementById('s-season').textContent      = d.season;
+  document.getElementById('s-season-desc').textContent = d.seasonDesc;
+
+  // ── Update date / nights chips ────────────
+  const sd = new Date(start + 'T00:00:00');
+  const chipDate   = document.getElementById('chip-date');
+  const chipNights = document.getElementById('chip-nights');
+  if (chipDate)
+    chipDate.innerHTML   = `<span class="chip-dot" style="background:#E07A12"></span>${sd.getMonth()+1}月${sd.getDate()}日 出发`;
+  if (chipNights)
+    chipNights.innerHTML = `<span class="chip-dot" style="background:#12A08A"></span>${days}晚行程`;
+
+  // ── Update budget panel ───────────────────
+  const budgHeader = document.getElementById('panel-budget-header');
+  if (budgHeader) budgHeader.textContent = `预算追踪 · ${people}人${days}天`;
+  const budgTotalEl = document.getElementById('budget-total-val');
+  if (budgTotalEl) budgTotalEl.textContent = `¥${Number(budget).toLocaleString()}`;
+  const budgPlannedEl = document.getElementById('budget-planned-val');
+  if (budgPlannedEl) budgPlannedEl.textContent = '待规划';
+
+  // ── Update dest-menu highlight ────────────
+  document.querySelectorAll('.dest-menu-item').forEach(el => el.classList.remove('selected'));
+  document.querySelectorAll('.dest-menu-item').forEach(el => {
+    if (el.getAttribute('onclick')?.includes(`'${dest}'`)) el.classList.add('selected');
+  });
+
+  // ── Render panels for new destination ─────
+  renderDestPanel(dest);
+  renderItinerary(dest, start);
 
   closeModal('modal-newtrip');
-  history.length = 0; // reset conversation
-  busy = false;       // reset any stuck state
+  history.length = 0;
+  busy = false;
 
   const styleMap = { budget:'节俭穷游', comfort:'舒适平衡', luxury:'奢享高端' };
   setTimeout(() => {
