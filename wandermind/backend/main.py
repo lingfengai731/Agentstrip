@@ -558,7 +558,14 @@ _FRONTEND = Path(__file__).parent.parent / "frontend" / "index.html"
 async def frontend():
     if not _FRONTEND.exists():
         return HTMLResponse("<h1>frontend/index.html not found</h1>", status_code=404)
-    return HTMLResponse(_FRONTEND.read_text(encoding="utf-8"))
+    return HTMLResponse(
+        _FRONTEND.read_text(encoding="utf-8"),
+        headers={
+            "Cache-Control": "no-cache, no-store, must-revalidate",
+            "Pragma": "no-cache",
+            "Expires": "0",
+        }
+    )
 
 
 if __name__ == "__main__":
