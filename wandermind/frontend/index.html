@@ -2104,42 +2104,9 @@ html, body {
         <button class="panel-action-btn" id="panel-itinerary-ai-btn" onclick="qsend('帮我为'+currentTripDays+'天行程生成详细的每日计划，精确到每半天，包括景点路线、餐厅预订建议和住宿推荐')">✨ AI 深度定制行程</button>
       </div>
 
-      <!-- Budget -->
+      <!-- Budget — rendered dynamically by renderBudgetPanel() -->
       <div class="panel-content" id="panel-budget">
-        <div class="panel-section-title" id="panel-budget-header" style="margin-bottom:10px">预算追踪 · 2人7天</div>
-        <div class="budget-total">
-          <div class="stat-card" style="background:var(--paper-2)">
-            <div class="stat-val" id="budget-total-val">¥18,000</div>
-            <div class="stat-lbl">总预算</div>
-          </div>
-          <div class="stat-card" style="background:var(--paper-2)">
-            <div class="stat-val" style="color:var(--teal)" id="budget-planned-val">待规划</div>
-            <div class="stat-lbl">已规划</div>
-          </div>
-        </div>
-
-        <div class="panel-section-title">费用分类</div>
-        <div class="budget-bar-item">
-          <div class="budget-bar-head"><span>✈️ 机票（往返2人）</span><span class="budget-bar-amount" style="color:var(--sky)">¥5,200</span></div>
-          <div class="bbar-wrap"><div class="bbar" style="width:58%;background:var(--sky)"></div></div>
-        </div>
-        <div class="budget-bar-item">
-          <div class="budget-bar-head"><span>🏨 住宿（7晚）</span><span class="budget-bar-amount" style="color:var(--teal)">¥4,900</span></div>
-          <div class="bbar-wrap"><div class="bbar" style="width:42%;background:var(--teal)"></div></div>
-        </div>
-        <div class="budget-bar-item">
-          <div class="budget-bar-head"><span>🍜 餐饮</span><span class="budget-bar-amount" style="color:var(--amber)">¥2,800</span></div>
-          <div class="bbar-wrap"><div class="bbar" style="width:31%;background:var(--amber-light)"></div></div>
-        </div>
-        <div class="budget-bar-item">
-          <div class="budget-bar-head"><span>🏄 活动体验</span><span class="budget-bar-amount" style="color:var(--crimson)">¥3,200</span></div>
-          <div class="bbar-wrap"><div class="bbar" style="width:36%;background:var(--crimson)"></div></div>
-        </div>
-        <div class="budget-bar-item">
-          <div class="budget-bar-head"><span>🚗 交通</span><span class="budget-bar-amount" style="color:var(--ink-2)">¥1,400</span></div>
-          <div class="bbar-wrap"><div class="bbar" style="width:16%;background:var(--ink-3)"></div></div>
-        </div>
-        <button class="panel-action-btn" id="panel-budget-ai-btn" onclick="qsend('帮我分析'+DESTINATIONS[currentDest].name+currentTripPeople+'人'+currentTripDays+'天旅行的详细预算方案，总预算¥'+currentTripBudget+'，按节俭/舒适/豪华三档列出')">💡 AI 预算优化</button>
+        <!-- populated on load / after trip creation -->
       </div>
 
       <!-- Agent Log Panel -->
@@ -2334,6 +2301,7 @@ let currentDest = 'bali';
 let currentAgent = 'planner';
 let history = [];
 let busy = false;
+let abortCtrl = null;
 let currentTripStart  = null;   // ISO date string e.g. "2026-05-31"
 let currentTripDays   = 7;
 let currentTripPeople = 2;
@@ -2561,6 +2529,7 @@ window.addEventListener('load', () => {
   // Initialise destination panels and welcome message with default Bali data
   renderDestPanel('bali');
   renderItinerary('bali', null);
+  renderBudgetPanel();
   renderWelcomeMsg('bali');
 
   const savedLang = localStorage.getItem('wm_lang');
@@ -2615,10 +2584,23 @@ function renderItinerary(id, startDate) {
   const days = currentTripDays;
 
   const titleEl = document.getElementById('panel-itinerary-title');
-  if (titleEl) titleEl.textContent = `${days}日行程概览`;
+  if (titleEl) titleEl.textContent = startDate ? `${days}日行程概览` : '行程规划';
 
   const tlEl = document.getElementById('panel-timeline');
-  if (!tlEl || !d.itinerary) return;
+  if (!tlEl) return;
+
+  // No trip yet — show empty state
+  if (!startDate) {
+    tlEl.innerHTML = `<div class="trip-empty" style="padding:24px 0 16px">
+      <div class="trip-empty-icon">🗓️</div>
+      <div class="trip-empty-text">还没有行程安排</div>
+      <div class="trip-empty-sub">新建行程并选择日期后，这里将显示完整行程时间轴</div>
+      <button onclick="openNewTrip()" style="margin-top:14px;padding:8px 16px;background:var(--teal);color:white;border:none;border-radius:8px;font-size:12px;cursor:pointer;font-family:inherit">＋ 新建行程</button>
+    </div>`;
+    return;
+  }
+
+  if (!d.itinerary) return;
 
   tlEl.innerHTML = d.itinerary.map(item => {
     let dateStr = '';
@@ -2643,6 +2625,46 @@ function renderItinerary(id, startDate) {
       </div>
     </div>`;
   }).join('');
+}
+
+function renderBudgetPanel() {
+  const panel = document.getElementById('panel-budget');
+  if (!panel) return;
+  if (!currentTripStart) {
+    panel.innerHTML = `
+      <div class="trip-empty" style="padding:40px 0">
+        <div class="trip-empty-icon">💰</div>
+        <div class="trip-empty-text">暂无预算数据</div>
+        <div class="trip-empty-sub">新建行程并填写预算后，<br>这里将显示费用追踪</div>
+        <button onclick="openNewTrip()" style="margin-top:14px;padding:8px 18px;background:var(--teal);color:white;border:none;border-radius:8px;font-size:12px;cursor:pointer;font-family:inherit">＋ 新建行程</button>
+      </div>`;
+    return;
+  }
+  const destName = DESTINATIONS[currentDest]?.name || currentDest;
+  const nights = currentTripDays;
+  panel.innerHTML = `
+    <div class="panel-section-title" id="panel-budget-header" style="margin-bottom:10px">预算追踪 · ${currentTripPeople}人${nights}天</div>
+    <div class="budget-total">
+      <div class="stat-card" style="background:var(--paper-2)">
+        <div class="stat-val" id="budget-total-val">¥${Number(currentTripBudget).toLocaleString()}</div>
+        <div class="stat-lbl">总预算</div>
+      </div>
+      <div class="stat-card" style="background:var(--paper-2)">
+        <div class="stat-val" style="color:var(--teal)" id="budget-planned-val">待规划</div>
+        <div class="stat-lbl">已规划</div>
+      </div>
+    </div>
+    <div class="panel-section-title" style="margin-top:12px">费用分类</div>
+    <div style="background:var(--paper-2);border-radius:10px;padding:14px 16px;font-size:12px;color:var(--ink-3);line-height:1.7;margin-bottom:10px">
+      💡 <strong style="color:var(--ink-2)">AI 预算分析就绪</strong><br>
+      向 AI 询问预算方案后，可在此追踪机票、住宿、餐饮、活动各项支出
+    </div>
+    <button class="panel-action-btn" id="panel-budget-ai-btn" onclick="askBudgetAI()">💡 AI 生成预算分析</button>`;
+}
+
+function askBudgetAI() {
+  const destName = DESTINATIONS[currentDest]?.name || currentDest;
+  qsend(`帮我分析${destName} ${currentTripPeople}人${currentTripDays}天旅行的详细预算方案，总预算¥${currentTripBudget}，按节俭/舒适/豪华三档分别列出各项费用明细`);
 }
 
 function renderWelcomeMsg(id) {
@@ -2685,12 +2707,55 @@ document.addEventListener('click', e => {
 function switchDest(id, flag, name, e) {
   e.stopPropagation();
   if (id === 'custom') {
-    const custom = prompt('输入目的地名称：');
-    if (!custom) return;
+    const custom = prompt('输入目的地名称（如：首尔、东京、纽约、迪拜…）：');
+    if (!custom || !custom.trim()) return;
+    const city = custom.trim();
     document.getElementById('dest-menu').classList.remove('open');
+    // Update nav
+    document.getElementById('dest-flag').textContent = '🌍';
+    document.getElementById('dest-name-nav').textContent = city;
+    document.getElementById('dest-title').innerHTML = `${city} <em>探索中</em>`;
+    document.getElementById('dest-eyebrow').textContent = '✈️ 自定义目的地';
+    // Clear weather / suitability with placeholder
+    document.getElementById('w-temp').textContent = '--';
+    document.getElementById('w-cond').textContent = '获取中';
+    document.getElementById('w-icon').textContent = '🌍';
+    document.getElementById('w-details').textContent = '向 AI 询问当地天气';
+    document.getElementById('s-rate').textContent = '--';
+    document.getElementById('s-season').textContent = '待了解';
+    document.getElementById('s-season-desc').textContent = '对话后可获取更多旅行建议';
+    // Clear dest-menu highlights
+    document.querySelectorAll('.dest-menu-item').forEach(el => el.classList.remove('selected'));
+    // Clear panels with placeholder
+    const regEl = document.getElementById('panel-regions');
+    if (regEl) regEl.innerHTML = `<div class="panel-section-title">推荐区域</div>
+      <div class="trip-empty" style="padding:20px 0">
+        <div class="trip-empty-icon">🔍</div>
+        <div class="trip-empty-text">探索 ${city}</div>
+        <div class="trip-empty-sub">AI 会在对话中为你介绍当地区域特色</div>
+      </div>`;
+    const tipsEl = document.getElementById('panel-tips');
+    if (tipsEl) tipsEl.innerHTML = '';
+    renderItinerary('bali', null); // show empty itinerary state
+    // Reset chat with custom welcome
+    currentDest = 'custom';
     history = [];
     document.getElementById('messages').innerHTML = '';
-    qsend('我想去' + custom + '，帮我介绍一下这个目的地，包括最佳游览时间、必看景点、特色美食和实用旅行建议');
+    document.getElementById('messages').innerHTML = `
+      <div class="msg ai fade-in">
+        <div class="msg-avatar ai">W</div>
+        <div class="msg-body">
+          <div class="agent-label" style="color:var(--teal)">🗺️ 旅程规划师</div>
+          <div class="bubble ai">已切换至 🌍 <strong>${city}</strong>！<br><br>6个智能体已就绪，开始探索这个目的地。你可以问我：</div>
+          <div class="chips-wrap">
+            <button class="sugg-chip" onclick="qsend('给我介绍${city.replace(/'/g,"\\'")}，包括最佳游览时间、必看景点和特色美食')">📍 目的地介绍</button>
+            <button class="sugg-chip" onclick="qsend('${city.replace(/'/g,"\\'")}的签证政策和入境要求是什么？')">🛂 签证信息</button>
+            <button class="sugg-chip" onclick="qsend('去${city.replace(/'/g,"\\'")}旅游大概需要多少预算？')">💰 费用参考</button>
+            <button class="sugg-chip" onclick="qsend('${city.replace(/'/g,"\\'")}最值得住的区域推荐')">🏨 住宿区域</button>
+          </div>
+          <div class="msg-time">刚刚</div>
+        </div>
+      </div>`;
     return;
   }
   currentDest = id;
@@ -2713,11 +2778,10 @@ function switchDest(id, flag, name, e) {
   // Render right panel for new destination
   renderDestPanel(id);
   renderItinerary(id, currentTripStart);
-  // Clear chat and show destination-specific welcome
+  // Clear chat and show destination-specific welcome (no auto-send — user decides)
   history = [];
   document.getElementById('messages').innerHTML = '';
   renderWelcomeMsg(id);
-  qsend(`请给我一个${name}的全面旅行目的地介绍，包括最佳游览时间、必看景点、特色美食和实用旅行建议`);
 }
 
 // ─── AGENT SWITCHING ──────────────────────────
@@ -2750,7 +2814,12 @@ async function sendMsg() {
   if (!text || busy) return;
   if (!getToken()) { document.getElementById('auth-overlay').classList.remove('hidden'); return; }
   inp.value = ''; inp.style.height = 'auto'; busy = true;
-  document.getElementById('send-btn').disabled = true;
+  abortCtrl = new AbortController();
+  // Switch send button → stop button
+  const _sb = document.getElementById('send-btn');
+  _sb.title = '停止生成'; _sb.style.background = 'var(--crimson)'; _sb.style.borderRadius = '8px';
+  _sb.innerHTML = '<svg viewBox="0 0 24 24" fill="currentColor" width="16" height="16"><rect x="5" y="5" width="14" height="14" rx="2"/></svg>';
+  _sb.onclick = stopGeneration;
 
   appendUserMsg(text);
   history.push({ role: 'user', content: text });
@@ -2770,7 +2839,8 @@ async function sendMsg() {
     const resp = await fetch('/api/chat', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + getToken() },
-      body: JSON.stringify({ messages: history, system: systemPrompt, agent: currentAgent, destination: currentDest })
+      body: JSON.stringify({ messages: history, system: systemPrompt, agent: currentAgent, destination: currentDest }),
+      signal: abortCtrl.signal
     });
 
     // Don't removeTyping here — thinking steps stay visible until AI text starts streaming
@@ -2834,14 +2904,31 @@ async function sendMsg() {
     }
 
   } catch (err) {
-    removeTyping(typingId);
-    if (searchChip) searchChip.classList.remove('thinking');
-    setAgentWorking(currentAgent, false);
-    appendAIMsg('抱歉，连接出了点问题 🌊\n\n' + err.message, false);
+    if (err.name === 'AbortError') {
+      removeThinkingSteps(typingId);
+      addSystemMsg('⏹ 已停止生成');
+    } else {
+      removeThinkingSteps(typingId);
+      if (searchChip) searchChip.classList.remove('thinking');
+      setAgentWorking(currentAgent, false);
+      appendAIMsg('抱歉，连接出了点问题 🌊\n\n' + err.message, false);
+    }
+  } finally {
+    busy = false;
+    resetSendBtn();
   }
+}
 
-  busy = false;
-  document.getElementById('send-btn').disabled = false;
+function resetSendBtn() {
+  const sb = document.getElementById('send-btn');
+  if (!sb) return;
+  sb.title = '发送'; sb.style.background = ''; sb.style.borderRadius = '';
+  sb.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 2L11 13"/><path d="M22 2L15 22L11 13L2 9L22 2Z"/></svg>';
+  sb.onclick = sendMsg; sb.disabled = false;
+}
+
+function stopGeneration() {
+  if (abortCtrl) { abortCtrl.abort(); abortCtrl = null; }
 }
 
 // ─── STREAMING MESSAGE HELPERS ────────────────────────────
@@ -4538,14 +4625,6 @@ function submitNewTrip() {
   if (chipNights)
     chipNights.innerHTML = `<span class="chip-dot" style="background:#12A08A"></span>${days}晚行程`;
 
-  // ── Update budget panel ───────────────────
-  const budgHeader = document.getElementById('panel-budget-header');
-  if (budgHeader) budgHeader.textContent = `预算追踪 · ${people}人${days}天`;
-  const budgTotalEl = document.getElementById('budget-total-val');
-  if (budgTotalEl) budgTotalEl.textContent = `¥${Number(budget).toLocaleString()}`;
-  const budgPlannedEl = document.getElementById('budget-planned-val');
-  if (budgPlannedEl) budgPlannedEl.textContent = '待规划';
-
   // ── Update dest-menu highlight ────────────
   document.querySelectorAll('.dest-menu-item').forEach(el => el.classList.remove('selected'));
   document.querySelectorAll('.dest-menu-item').forEach(el => {
@@ -4555,6 +4634,7 @@ function submitNewTrip() {
   // ── Render panels for new destination ─────
   renderDestPanel(dest);
   renderItinerary(dest, start);
+  renderBudgetPanel();
 
   closeModal('modal-newtrip');
   history.length = 0;
