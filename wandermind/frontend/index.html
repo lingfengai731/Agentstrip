@@ -915,6 +915,47 @@ html, body {
   letter-spacing: .04em;
 }
 
+/* ─── MOBILE RESPONSIVE ─── */
+@media (max-width: 768px) {
+  html, body { overflow: auto; }
+  .app {
+    grid-template-columns: 1fr !important;
+    grid-template-rows: 56px 1fr !important;
+    height: auto; min-height: 100vh;
+  }
+  .sidebar { display: none !important; }
+  .panel   { display: none !important; }
+  .main {
+    grid-column: 1 !important;
+    height: calc(100dvh - 56px);
+    display: flex; flex-direction: column;
+  }
+  .nav { padding: 0 10px; gap: 0; }
+  .nav-logo { font-size: 16px; margin-right: 8px; }
+  .nav-logo .version { display: none; }
+  .nav-tabs { overflow-x: auto; -webkit-overflow-scrolling: touch; gap: 0; flex-shrink: 1; }
+  .nav-tabs::-webkit-scrollbar { display: none; }
+  .nav-tab { padding: 5px 10px; font-size: 11px; white-space: nowrap; }
+  .agent-status-bar { display: none; }
+  .auth-logout-btn { display: none; }
+  .dest-header { padding: 12px 14px 6px; }
+  .dest-header-text .dest-title { font-size: 18px; }
+  .dest-actions { display: none; }
+  .dest-chips { flex-wrap: wrap; gap: 4px; }
+  .active-agents-bar { overflow-x: auto; }
+  .quick-actions { overflow-x: auto; padding: 8px 14px; gap: 6px; }
+  .quick-btn { font-size: 11px; padding: 6px 10px; white-space: nowrap; }
+  .messages { flex: 1; padding: 10px 12px; }
+  .bubble { font-size: 13px; }
+  .input-area { padding: 8px 10px 12px; }
+  .modal { width: 96vw !important; max-width: 96vw !important; margin: 0 auto; }
+  .lang-picker { padding: 20px; }
+  .lp-logo { font-size: 36px; }
+  .lp-grid { gap: 8px; }
+  .lp-btn { min-width: 80px; padding: 14px 14px; }
+  .auth-card { padding: 28px 20px 24px; }
+}
+
 /* Animations */
 .fade-in { animation: fadeUp .25s ease both; }
 @keyframes fadeUp { from{opacity:0;transform:translateY(5px)} to{opacity:1;transform:translateY(0)} }
@@ -1666,6 +1707,13 @@ html, body {
     </div>
   </div>
 </div>
+<!-- TRIP RIGHT-CLICK CONTEXT MENU -->
+<div id="trip-ctx" style="display:none;position:fixed;background:white;border:1px solid var(--paper-3);border-radius:10px;padding:5px;box-shadow:var(--shadow-lg);z-index:5000;min-width:150px">
+  <div id="trip-ctx-title" style="padding:6px 12px 4px;font-size:11px;color:var(--ink-3);font-weight:600;letter-spacing:.05em"></div>
+  <div onclick="deleteTrip()" style="display:flex;align-items:center;gap:8px;padding:8px 12px;cursor:pointer;font-size:13px;color:var(--crimson);border-radius:7px" onmouseenter="this.style.background='var(--crimson-pale)'" onmouseleave="this.style.background=''">🗑️ 删除行程</div>
+  <div onclick="hideTripCtx()" style="display:flex;align-items:center;gap:8px;padding:8px 12px;cursor:pointer;font-size:13px;color:var(--ink-3);border-radius:7px" onmouseenter="this.style.background='var(--paper)'" onmouseleave="this.style.background=''">✕ 取消</div>
+</div>
+
 <!-- NEW TRIP MODAL -->
 <div class="modal-overlay" id="modal-newtrip" onclick="closeModalBg(event,'modal-newtrip')">
   <div class="modal" style="max-width:480px">
@@ -1718,7 +1766,8 @@ html, body {
           <option value="luxury">👑 奢享高端</option>
         </select>
       </div>
-      <button onclick="submitNewTrip()" style="padding:13px;background:var(--teal);color:white;border:none;border-radius:10px;font-size:14px;font-weight:600;cursor:pointer;font-family:inherit;margin-top:4px">
+      <p id="nt-err" style="color:var(--crimson);font-size:12px;min-height:16px;text-align:center"></p>
+      <button onclick="submitNewTrip()" style="padding:13px;background:var(--teal);color:white;border:none;border-radius:10px;font-size:14px;font-weight:600;cursor:pointer;font-family:inherit">
         🚀 开始规划行程
       </button>
     </div>
@@ -1749,6 +1798,10 @@ html, body {
     </div>
     <p class="auth-error" id="auth-error"></p>
     <p class="auth-footer">支持：中文 · English · 日本語 · 한국어 · Bahasa Indonesia</p>
+    <button onclick="document.getElementById('auth-overlay').classList.add('hidden')"
+      style="width:100%;margin-top:10px;padding:9px;background:none;border:1px solid var(--paper-3);border-radius:10px;font-size:12px;color:var(--ink-3);cursor:pointer;font-family:inherit;transition:all .2s">
+      先浏览界面 →
+    </button>
   </div>
 </div>
 
@@ -1807,11 +1860,11 @@ html, body {
   <aside class="sidebar">
     <div class="sidebar-header">
       <div class="sidebar-title">我的行程</div>
-      <div class="trip-card active" onclick="selectTrip(this)">
+      <div class="trip-card active" onclick="selectTrip(this)" oncontextmenu="showTripMenu(event,this)">
         <div class="trip-card-title">🌺 巴厘岛 · 7日深度游</div>
         <div class="trip-card-meta"><span>6月12–19日</span><span>·</span><span>2人</span><span>·</span><span>¥18,000</span></div>
       </div>
-      <div class="trip-card" onclick="selectTrip(this)">
+      <div class="trip-card" onclick="selectTrip(this)" oncontextmenu="showTripMenu(event,this)">
         <div class="trip-card-title">🌊 乌鲁瓦图冲浪营</div>
         <div class="trip-card-meta"><span>待规划</span><span>·</span><span>1人</span></div>
       </div>
@@ -2336,13 +2389,13 @@ document.addEventListener('DOMContentLoaded', () => {
   document.getElementById('auth-password-r')?.addEventListener('keydown', e => { if (e.key === 'Enter') doRegister(); });
 });
 
-// Check auth on startup (called after page fully loads)
+// Auth check — non-blocking: user can preview the app freely,
+// login is only required when actually sending a message.
 function checkAuth() {
-  if (!getToken()) {
-    document.getElementById('auth-overlay').classList.remove('hidden');
-  } else {
+  if (getToken()) {
     updateNavUser();
   }
+  // No forced redirect — sendMsg() will prompt if token missing
 }
 
 // ─── LANGUAGE PICKER ─────────────────────────
@@ -4160,32 +4213,86 @@ function submitNewTrip() {
   const budget = document.getElementById('nt-budget').value;
   const people = document.getElementById('nt-people').value;
   const style  = document.getElementById('nt-style').value;
-  if (!start || !end) { alert('请选择出行日期'); return; }
+  const errEl  = document.getElementById('nt-err');
 
-  const destData = DESTINATIONS[dest];
-  if (destData) switchDest(dest, destData.flag, destData.name, new Event('click'));
+  if (!start || !end) { errEl.textContent = '请选择出行日期'; return; }
+  if (!budget || budget <= 0) { errEl.textContent = '请填写预算金额'; return; }
+  errEl.textContent = '';
 
-  // Update sidebar trip card
-  const fmt = d => d.replace(/-/g,'/').slice(5); // MM/DD
-  document.querySelector('.trip-card.active .trip-card-title').innerHTML =
-    `${destData?.flag||'✈️'} ${destData?.name||dest} · ${calcDays(start,end)}日游`;
-  document.querySelector('.trip-card.active .trip-card-meta').innerHTML =
-    `<span>${fmt(start)}–${fmt(end)}</span><span>·</span><span>${people}人</span><span>·</span><span>¥${Number(budget).toLocaleString()}</span>`;
+  // Auth check — show login if not logged in
+  if (!getToken()) {
+    closeModal('modal-newtrip');
+    document.getElementById('auth-overlay').classList.remove('hidden');
+    return;
+  }
+
+  const destData = DESTINATIONS[dest] || DESTINATIONS.bali;
+  const days = calcDays(start, end);
+  const fmt  = d => d.replace(/-/g, '/').slice(5);
+
+  // Update sidebar trip card safely
+  try {
+    const card = document.querySelector('.trip-card.active');
+    if (card) {
+      card.querySelector('.trip-card-title').innerHTML =
+        `${destData.flag} ${destData.name} · ${days}日游`;
+      card.querySelector('.trip-card-meta').innerHTML =
+        `<span>${fmt(start)}–${fmt(end)}</span><span>·</span><span>${people}人</span><span>·</span><span>¥${Number(budget).toLocaleString()}</span>`;
+    }
+  } catch(e) {}
+
+  // Switch destination without event issues
+  currentDest = dest;
+  const d = destData;
+  document.getElementById('dest-flag').textContent = d.flag;
+  document.getElementById('dest-name-nav').textContent = d.name;
+  document.getElementById('dest-eyebrow').textContent  = d.eyebrow;
+  document.getElementById('dest-title').innerHTML      = d.title;
+  document.getElementById('w-temp').textContent        = d.weather.temp;
+  document.getElementById('w-cond').textContent        = d.weather.cond;
+  document.getElementById('w-icon').textContent        = d.weather.icon;
+  document.getElementById('s-rate').textContent        = d.rate;
 
   closeModal('modal-newtrip');
-  history = []; // fresh conversation
+  history.length = 0; // reset conversation
+  busy = false;       // reset any stuck state
 
-  const styleMap = {budget:'节俭穷游',comfort:'舒适平衡',luxury:'奢享高端'};
-  qsend(`我要规划一次${destData?.name||dest}旅行：
-📅 出行时间：${start} 至 ${end}（共${calcDays(start,end)}天）
-👥 人数：${people}人
-💰 总预算：¥${Number(budget).toLocaleString()}
-🎯 旅行风格：${styleMap[style]||style}
-请帮我制定完整的行程方案，包括每天的景点安排、住宿推荐和餐饮建议。`);
+  const styleMap = { budget:'节俭穷游', comfort:'舒适平衡', luxury:'奢享高端' };
+  setTimeout(() => {
+    document.getElementById('messages').innerHTML = '';
+    qsend(`我要规划一次${destData.name}旅行：\n📅 ${start} 至 ${end}（共${days}天）\n👥 ${people}人\n💰 总预算 ¥${Number(budget).toLocaleString()}\n🎯 风格：${styleMap[style]||style}\n请制定完整行程，包括每天景点、住宿和餐饮建议。`);
+  }, 350);
 }
 
 function calcDays(s, e) {
   return Math.round((new Date(e)-new Date(s))/86400000) || 7;
+}
+
+// ─── TRIP RIGHT-CLICK MENU ────────────────────
+let _tripCtxTarget = null;
+function showTripMenu(e, el) {
+  e.preventDefault();
+  _tripCtxTarget = el;
+  const menu = document.getElementById('trip-ctx');
+  const title = el.querySelector('.trip-card-title')?.textContent || '行程';
+  document.getElementById('trip-ctx-title').textContent = title;
+  menu.style.display = 'block';
+  menu.style.left = Math.min(e.clientX, window.innerWidth - 170) + 'px';
+  menu.style.top  = Math.min(e.clientY, window.innerHeight - 100) + 'px';
+  setTimeout(() => document.addEventListener('click', hideTripCtx, {once:true}), 10);
+}
+function hideTripCtx() {
+  document.getElementById('trip-ctx').style.display = 'none';
+  _tripCtxTarget = null;
+}
+function deleteTrip() {
+  if (!_tripCtxTarget) return;
+  const name = _tripCtxTarget.querySelector('.trip-card-title')?.textContent || '此行程';
+  if (confirm(`确定删除「${name}」吗？`)) {
+    _tripCtxTarget.remove();
+    addSystemMsg('行程已删除');
+  }
+  hideTripCtx();
 }
 
 // ─── NAV TABS (all 5 wired) ──────────────────
