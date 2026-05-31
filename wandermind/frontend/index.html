@@ -4,6 +4,13 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>WanderMind · 游心 — AI 多智能体旅行平台</title>
+<!-- PWA -->
+<link rel="manifest" href="/manifest.json">
+<meta name="theme-color" content="#0E7C6B">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="WanderMind">
+<link rel="apple-touch-icon" href="/icon.svg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=Plus+Jakarta+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
@@ -914,6 +921,66 @@ html, body {
   min-height: 16px;
   letter-spacing: .04em;
 }
+
+/* ─── AGENT THINKING STEPS ─── */
+.thinking-container .msg-body { padding: 6px 10px; }
+.thinking-steps { display: flex; flex-direction: column; gap: 5px; }
+.thinking-step {
+  display: flex; align-items: center; gap: 8px;
+  font-size: 12px; color: var(--ink-3);
+  animation: stepIn .3s ease both;
+}
+@keyframes stepIn {
+  from { opacity:0; transform:translateX(-8px); }
+  to   { opacity:1; transform:translateX(0); }
+}
+.thinking-icon { font-size: 14px; flex-shrink: 0; }
+.thinking-text { color: var(--ink-2); }
+.thinking-pulse {
+  display: inline-block; width: 5px; height: 5px;
+  border-radius: 50%; background: var(--teal);
+  animation: pulse 1s ease infinite;
+  margin-left: 4px;
+}
+
+/* ─── SEARCH INDICATOR ─── */
+.search-badge {
+  display: inline-flex; align-items: center; gap: 5px;
+  font-size: 11px; color: var(--sky); font-weight: 500;
+  background: var(--sky-pale); border: 1px solid rgba(26,95,138,.15);
+  border-radius: 20px; padding: 3px 9px; margin-top: 6px;
+}
+.search-spinner {
+  width: 10px; height: 10px; border: 1.5px solid var(--sky);
+  border-top-color: transparent; border-radius: 50%;
+  animation: spin .7s linear infinite;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+.search-results-bar {
+  font-size: 11px; color: var(--ink-3);
+  display: flex; align-items: center; gap: 5px; margin-top: 4px;
+}
+
+/* ─── MAP PLACEHOLDER ─── */
+.map-coming-soon {
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  height: 100%; min-height: 400px; text-align: center; gap: 12px;
+}
+.map-coming-icon { font-size: 48px; opacity: .35; }
+.map-coming-title { font-size: 16px; font-weight: 600; color: var(--ink-2); }
+.map-coming-sub   { font-size: 13px; color: var(--ink-3); max-width: 240px; line-height: 1.5; }
+.map-coming-badge {
+  font-size: 11px; font-weight: 600; padding: 4px 12px;
+  background: var(--teal-pale); color: var(--teal); border-radius: 20px;
+}
+
+/* ─── SIDEBAR EMPTY STATE ─── */
+.trip-empty {
+  text-align: center; padding: 24px 16px; color: var(--ink-3);
+}
+.trip-empty-icon { font-size: 32px; margin-bottom: 8px; opacity: .5; }
+.trip-empty-text { font-size: 13px; font-weight: 600; color: var(--ink-2); margin-bottom: 4px; }
+.trip-empty-sub  { font-size: 11px; line-height: 1.5; }
 
 /* ─── MOBILE RESPONSIVE ─── */
 @media (max-width: 768px) {
@@ -1860,13 +1927,13 @@ html, body {
   <aside class="sidebar">
     <div class="sidebar-header">
       <div class="sidebar-title">我的行程</div>
-      <div class="trip-card active" onclick="selectTrip(this)" oncontextmenu="showTripMenu(event,this)">
-        <div class="trip-card-title">🌺 巴厘岛 · 7日深度游</div>
-        <div class="trip-card-meta"><span>6月12–19日</span><span>·</span><span>2人</span><span>·</span><span>¥18,000</span></div>
-      </div>
-      <div class="trip-card" onclick="selectTrip(this)" oncontextmenu="showTripMenu(event,this)">
-        <div class="trip-card-title">🌊 乌鲁瓦图冲浪营</div>
-        <div class="trip-card-meta"><span>待规划</span><span>·</span><span>1人</span></div>
+      <div id="trip-list">
+        <!-- Trip cards inserted by JS when user creates trips -->
+        <div class="trip-empty" id="trip-empty-state">
+          <div class="trip-empty-icon">🗺️</div>
+          <div class="trip-empty-text">还没有行程</div>
+          <div class="trip-empty-sub">点击下方按钮新建第一个旅行计划</div>
+        </div>
       </div>
       <button class="new-trip-btn" onclick="openNewTrip()">＋ 新建行程</button>
     </div>
@@ -1932,7 +1999,7 @@ html, body {
         <div class="dest-title" id="dest-title">巴厘岛 · 神之岛<em>深度旅行</em></div>
         <div class="dest-chips" id="dest-chips">
           <span class="dest-chip" id="chip-date"><span class="chip-dot" style="background:#E07A12"></span>出发日期待定</span>
-          <span class="dest-chip" id="chip-nights"><span class="chip-dot" style="background:#12A08A"></span>7晚行程</span>
+          <span class="dest-chip" id="chip-nights"><span class="chip-dot" style="background:#12A08A"></span>行程待定</span>
           <span class="dest-chip"><span class="chip-dot" style="background:#1A5F8A"></span>6 Agent 协同</span>
         </div>
       </div>
@@ -2706,12 +2773,15 @@ async function sendMsg() {
       body: JSON.stringify({ messages: history, system: systemPrompt, agent: currentAgent, destination: currentDest })
     });
 
-    removeTyping(typingId);
+    // Don't removeTyping here — thinking steps stay visible until AI text starts streaming
     if (searchChip) searchChip.classList.remove('thinking');
     setAgentWorking(currentAgent, false);
 
     if (resp.status === 401) { doLogout(); return; }
-    if (!resp.ok) { const e = await resp.json(); throw new Error(e.detail || 'Server error'); }
+    if (!resp.ok) {
+      removeThinkingSteps(typingId);
+      const e = await resp.json(); throw new Error(e.detail || 'Server error');
+    }
 
     // Stream via ReadableStream
     const reader = resp.body.getReader();
@@ -2726,27 +2796,36 @@ async function sendMsg() {
       if (done) break;
       buf += dec.decode(value, { stream: true });
       const lines = buf.split('\n');
-      buf = lines.pop(); // keep incomplete last line
+      buf = lines.pop();
       for (const line of lines) {
         if (!line.startsWith('data: ')) continue;
         const raw = line.slice(6).trim();
         if (!raw) continue;
         try {
           const ev = JSON.parse(raw);
-          if (ev.type === 'text') {
-            fullText += ev.text;
-            if (!streamId) streamId = createStreamMsg();
-            updateStreamMsg(streamId, fullText);
-          } else if (ev.type === 'search_start') {
+          if (ev.type === 'search_start') {
+            // Show live search step in thinking container
+            addThinkingStep(typingId, '🌐', '联网搜索最新资讯…');
+          } else if (ev.type === 'search_done') {
             searched = true;
+            addThinkingStep(typingId, '✅', `搜索完成 · 找到 ${ev.count || 0} 条相关内容`);
+          } else if (ev.type === 'text') {
+            // First text chunk — remove thinking, start stream bubble
+            if (!streamId) {
+              removeThinkingSteps(typingId);
+              streamId = createStreamMsg();
+            }
+            fullText += ev.text;
+            updateStreamMsg(streamId, fullText);
           } else if (ev.type === 'done') {
             if (streamId) finalizeStreamMsg(streamId, searched);
             if (fullText) history.push({ role: 'assistant', content: fullText });
             agentCallCount[currentAgent] = (agentCallCount[currentAgent] || 0) + 1;
             addLog('success', agent.icon, `<strong>${agent.name}</strong> · ${fullText.length} 字`);
-            if (searched) addLog('search', '🌐', '<strong>实时搜索</strong> · 已联网获取最新数据');
+            if (searched) addLog('search', '🌐', '<strong>实时联网搜索</strong> · 已获取最新数据');
             updateAgentStats();
           } else if (ev.type === 'error') {
+            removeThinkingSteps(typingId);
             if (streamId) document.getElementById(streamId)?.remove();
             appendAIMsg('抱歉，出了点问题 🌊\n\n' + ev.message, false);
           }
@@ -2846,28 +2925,71 @@ function appendAIMsg(text, searched) {
   msgs.appendChild(d); scroll();
 }
 
-function appendTyping() {
+// ─── AGENT THINKING STEPS ────────────────────
+const THINKING_STEPS = {
+  planner:  ['🗺️ 规划师分析目的地特征…','📍 筛选最优景点路线…','✨ 优化行程节奏…'],
+  hotel:    ['🏨 扫描住宿数据库…','⭐ 对比评分与性价比…','📍 确认位置与交通…'],
+  food:     ['🍜 整理当地餐厅数据…','🌟 发现隐藏美食宝藏…','💰 计算人均价格区间…'],
+  activity: ['🏄 搜索体验项目…','📅 检查时间与预订要求…','🎯 匹配偏好与预算…'],
+  budget:   ['💰 测算旅行费用…','📊 分析最优消费分配…','💡 生成省钱建议…'],
+  search:   ['🔍 启动实时联网搜索…','📡 获取签证与入境政策…','🌐 汇总多方信息源…'],
+};
+
+function showThinkingSteps(agentId) {
+  const agent = AGENT_PERSONAS[agentId];
+  const steps = THINKING_STEPS[agentId] || THINKING_STEPS.planner;
   const msgs = document.getElementById('messages');
-  const agent = AGENT_PERSONAS[currentAgent];
-  const id = 'typing-' + Date.now();
+  const id = 'thinking-' + Date.now();
+
   const d = document.createElement('div');
-  d.className = 'msg ai fade-in'; d.id = id;
+  d.className = 'msg ai fade-in thinking-container'; d.id = id;
   d.innerHTML = `
     <div class="msg-avatar ai">W</div>
     <div class="msg-body">
       <div class="agent-label" style="color:${agent.color}">${agent.icon} ${agent.name}</div>
-      <div class="bubble ai"><div class="typing-indicator">
-        <div class="typing-dot"></div><div class="typing-dot"></div><div class="typing-dot"></div>
-      </div></div>
+      <div class="thinking-steps" id="ts-${id}"></div>
     </div>`;
   msgs.appendChild(d); scroll();
+
+  steps.forEach((text, i) => {
+    setTimeout(() => {
+      const tsEl = document.getElementById('ts-' + id);
+      if (!tsEl) return;
+      const icon = text.split(' ')[0];
+      const label = text.slice(icon.length + 1);
+      const s = document.createElement('div');
+      s.className = 'thinking-step';
+      s.innerHTML = `<span class="thinking-icon">${icon}</span><span class="thinking-text">${label}</span>${i === steps.length-1 ? '<span class="thinking-pulse"></span>' : ''}`;
+      tsEl.appendChild(s); scroll();
+    }, i * 500);
+  });
   return id;
 }
 
-function removeTyping(id) {
-  const el = document.getElementById(id);
-  if (el) el.remove();
+function addThinkingStep(id, icon, text) {
+  const tsEl = document.getElementById('ts-' + id);
+  if (!tsEl) return;
+  // remove pulse from last item
+  tsEl.querySelectorAll('.thinking-pulse').forEach(el => el.remove());
+  const s = document.createElement('div');
+  s.className = 'thinking-step';
+  s.innerHTML = `<span class="thinking-icon">${icon}</span><span class="thinking-text">${text}</span><span class="thinking-pulse"></span>`;
+  tsEl.appendChild(s); scroll();
 }
+
+function removeThinkingSteps(id) {
+  const el = document.getElementById(id);
+  if (!el) return;
+  el.style.opacity = '0';
+  el.style.transition = 'opacity .15s ease';
+  setTimeout(() => el.remove(), 150);
+}
+
+function appendTyping() {
+  // Legacy compatibility — just use thinking steps now
+  return showThinkingSteps(currentAgent);
+}
+function removeTyping(id) { removeThinkingSteps(id); }
 
 function addSystemMsg(text) {
   const msgs = document.getElementById('messages');
@@ -4374,16 +4496,24 @@ function submitNewTrip() {
   currentTripPeople  = Number(people);
   currentTripBudget  = Number(budget);
 
-  // ── Update sidebar trip card ──────────────
-  try {
-    const card = document.querySelector('.trip-card.active');
-    if (card) {
-      card.querySelector('.trip-card-title').innerHTML =
-        `${destData.flag} ${destData.name} · ${days}日游`;
-      card.querySelector('.trip-card-meta').innerHTML =
-        `<span>${fmt(start)}–${fmt(end)}</span><span>·</span><span>${people}人</span><span>·</span><span>¥${Number(budget).toLocaleString()}</span>`;
-    }
-  } catch(e) {}
+  // ── Add / update sidebar trip card ──────────
+  const tripList  = document.getElementById('trip-list');
+  const emptyState = document.getElementById('trip-empty-state');
+  if (emptyState) emptyState.style.display = 'none';
+
+  // Deactivate existing active cards
+  document.querySelectorAll('.trip-card.active').forEach(c => c.classList.remove('active'));
+
+  const tripId = 'trip-' + Date.now();
+  const newCard = document.createElement('div');
+  newCard.className = 'trip-card active';
+  newCard.id = tripId;
+  newCard.setAttribute('oncontextmenu', `showTripMenu(event,this)`);
+  newCard.innerHTML = `
+    <div class="trip-card-title">${destData.flag} ${destData.name} · ${days}日游</div>
+    <div class="trip-card-meta"><span>${fmt(start)}–${fmt(end)}</span><span>·</span><span>${people}人</span><span>·</span><span>¥${Number(budget).toLocaleString()}</span></div>`;
+  newCard.onclick = () => selectTrip(newCard);
+  if (tripList) tripList.insertBefore(newCard, tripList.firstChild);
 
   // ── Update main header ────────────────────
   const d = destData;
@@ -4464,6 +4594,10 @@ function deleteTrip() {
   if (confirm(`确定删除「${name}」吗？`)) {
     _tripCtxTarget.remove();
     addSystemMsg('行程已删除');
+    // Show empty state if no trip cards remain
+    const remaining = document.querySelectorAll('#trip-list .trip-card');
+    const emptyState = document.getElementById('trip-empty-state');
+    if (emptyState && remaining.length === 0) emptyState.style.display = '';
   }
   hideTripCtx();
 }
@@ -4584,5 +4718,13 @@ navTabEls.forEach((tab, i) => {
   </div>
 </div>
 
+<script>
+// ─── PWA Service Worker Registration ────────
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('/sw.js').catch(() => {});
+  });
+}
+</script>
 </body>
 </html>
