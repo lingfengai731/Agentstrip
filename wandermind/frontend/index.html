@@ -1215,6 +1215,42 @@ html, body {
   .panel-tab { white-space: nowrap; font-size: 12px; padding: 10px 12px; }
   .panel-body { overflow-y: auto; flex: 1; }
   .weather-card { margin: 10px; }
+
+  /* ── Modify-chips row (after-AI itinerary) — wrap nicely ── */
+  .modify-row { padding-top: 8px; margin-top: 8px; }
+  .modify-row-title { font-size: 10px; }
+  .modify-row-title-hint { display: block; margin-left: 0; margin-top: 2px; }
+  .modify-chip { font-size: 10px; padding: 4px 9px; }
+
+  /* ── Hotel cards — stack book button below on narrow screens ── */
+  .hotel-card { flex-wrap: wrap; padding: 8px; gap: 7px; }
+  .hotel-card-thumb, .hotel-thumb-placeholder { width: 44px; height: 44px; font-size: 18px; }
+  .hotel-card-info { min-width: 0; flex: 1 1 calc(100% - 60px); }
+  .hotel-card-name { font-size: 11px; }
+  .hotel-card-meta { gap: 5px; }
+  .hotel-card-rating, .hotel-card-price { font-size: 11px; }
+  .hotel-card-amenities { font-size: 9px; }
+  .hotel-card-book { padding: 4px 6px; font-size: 10px; }
+
+  /* ── Flight cards — compact layout, route on its own line ── */
+  .flight-card { padding: 8px; gap: 7px; flex-wrap: wrap; }
+  .flight-card-logo, .flight-airline-placeholder { width: 24px; height: 24px; font-size: 14px; }
+  .flight-card-info { min-width: 0; flex: 1 1 calc(100% - 90px); }
+  .flight-card-route { font-size: 11px; gap: 3px; }
+  .flight-arrow { font-size: 10px; }
+  .flight-card-meta, .flight-card-stops { font-size: 9px; }
+  .flight-card-price { font-size: 12px; }
+
+  /* ── Flight & hotel search forms ── */
+  .price-date-row { gap: 4px; }
+  .price-date-group label { font-size: 9px; }
+  .price-date-input { font-size: 10px; padding: 5px 5px; }
+  .price-adults-select { width: 40px; font-size: 10px; padding: 5px 3px; }
+  .price-search-btn { padding: 7px 10px; font-size: 11px; }
+  .flight-trip-btn { padding: 5px 6px; font-size: 10px; }
+  .flight-from-select { font-size: 10px; padding: 5px 6px; }
+  .flight-from-input { font-size: 10px; padding: 5px 6px; }
+  .flight-book-all { padding: 7px; font-size: 10px; }
 }
 
 /* Animations */
