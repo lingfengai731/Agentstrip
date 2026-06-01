@@ -164,6 +164,7 @@ class ChatReq(BaseModel):
     agent: str = "planner"
     destination: str = "bali"
     search: bool = True        # allow frontend to opt-out
+    mode: str = "pro"          # "fast" (SiliconFlow Qwen2.5-7B) | "pro" (MiMo)
 
 
 class GenerateReq(BaseModel):
@@ -636,12 +637,32 @@ _API_KEY  = os.getenv("API_KEY", "")
 _MODEL    = os.getenv("MODEL", "mimo-v2.5-pro")
 _CHAT_URL = os.getenv("CHAT_URL", "https://api.xiaomimimo.com/v1/chat/completions")
 
+# ⚡ Fast lane: SiliconFlow free-tier (Qwen2.5-7B-Instruct by default)
+_FAST_KEY   = os.getenv("SILICONFLOW_KEY", "")
+_FAST_MODEL = os.getenv("SILICONFLOW_MODEL", "Qwen/Qwen2.5-7B-Instruct")
+_FAST_URL   = os.getenv("SILICONFLOW_URL", "https://api.siliconflow.cn/v1/chat/completions")
+
 
 def _ai_headers() -> dict:
     return {
         "Authorization": f"Bearer {_API_KEY}",
         "Content-Type": "application/json",
     }
+
+
+def _fast_headers() -> dict:
+    return {
+        "Authorization": f"Bearer {_FAST_KEY}",
+        "Content-Type": "application/json",
+    }
+
+
+def _route(mode: str) -> tuple:
+    """Return (url, headers, model, label) for the requested mode.
+    Falls back to MiMo if mode=fast but SiliconFlow key is missing."""
+    if mode == "fast" and _FAST_KEY:
+        return _FAST_URL, _fast_headers(), _FAST_MODEL, "fast"
+    return _CHAT_URL, _ai_headers(), _MODEL, "pro"
 
 
 # ─── Tavily Web Search ────────────────────────────────────────
@@ -723,11 +744,15 @@ async def chat(req: ChatReq, user=Depends(current_user)):
         raise HTTPException(500, "API_KEY not set")
 
     raw_messages = [{"role": m.role, "content": m.content} for m in req.messages]
+    chat_url, chat_headers, chat_model, mode_label = _route(req.mode)
 
     async def stream():
         search_context = ""
         search_results: list = []
         searched = False
+
+        # ── Announce which model lane we're using ─────────────
+        yield f"data: {json.dumps({'type':'mode','mode':mode_label,'model':chat_model})}\n\n"
 
         # ── Step 1: web search if triggered ──────────────────
         if req.search and _should_search(raw_messages):
@@ -755,15 +780,17 @@ async def chat(req: ChatReq, user=Depends(current_user)):
         messages += raw_messages
 
         # ── Step 3: stream AI response ────────────────────────
+        # Fast lane uses fewer tokens for snappier output
+        max_tok = 1200 if mode_label == "fast" else 2000
         try:
             async with httpx.AsyncClient(timeout=120.0) as client:
                 async with client.stream(
                     "POST",
-                    _CHAT_URL,
-                    headers=_ai_headers(),
+                    chat_url,
+                    headers=chat_headers,
                     json={
-                        "model": _MODEL,
-                        "max_tokens": 2000,
+                        "model": chat_model,
+                        "max_tokens": max_tok,
                         "stream": True,
                         "messages": messages,
                     },

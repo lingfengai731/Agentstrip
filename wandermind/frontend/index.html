@@ -656,6 +656,14 @@ html, body {
 .ask-all-btn:hover { background: rgba(14,124,107,.1); border-color: var(--teal); }
 .ask-all-btn:disabled { opacity: .4; cursor: default; }
 .ask-all-hint { font-size: 10px; color: var(--ink-3); flex: 1; }
+/* ─── MODE TOGGLE (⚡ Fast / 🎯 Pro) ─── */
+.mode-toggle { display: inline-flex; background: var(--paper-2); border-radius: 16px; padding: 2px; gap: 1px; border: 1px solid var(--paper-3); }
+.mode-btn { padding: 3px 9px; border: none; background: transparent; color: var(--ink-2); font-size: 10px; font-weight: 700; border-radius: 14px; cursor: pointer; transition: all .15s; white-space: nowrap; }
+.mode-btn.active { background: var(--teal); color: #fff; box-shadow: 0 1px 3px rgba(14,124,107,.25); }
+.mode-btn:hover:not(.active) { color: var(--ink); }
+.mode-badge { display: inline-flex; align-items: center; gap: 3px; padding: 1px 7px; border-radius: 10px; font-size: 9px; font-weight: 700; letter-spacing: .02em; margin-left: 6px; vertical-align: middle; }
+.mode-badge-fast { background: rgba(232,131,74,.12); color: var(--amber); border: 1px solid rgba(232,131,74,.3); }
+.mode-badge-pro  { background: var(--teal-pale); color: var(--teal); border: 1px solid var(--teal-light); }
 
 /* ─── RIGHT PANEL ─── */
 .panel {
@@ -1215,6 +1223,14 @@ html, body {
   .panel-tab { white-space: nowrap; font-size: 12px; padding: 10px 12px; }
   .panel-body { overflow-y: auto; flex: 1; }
   .weather-card { margin: 10px; }
+
+  /* ── Mode toggle row — compact on mobile, hint hides ── */
+  .input-actions { flex-wrap: wrap; gap: 5px; padding: 4px 0 0; }
+  .ask-all-btn { font-size: 10px; padding: 3px 8px; }
+  .ask-all-hint { display: none; }
+  .mode-toggle { margin-left: auto; }
+  .mode-btn { font-size: 9px; padding: 3px 7px; }
+  .mode-badge { font-size: 8px; padding: 1px 5px; margin-left: 4px; }
 
   /* ── Modify-chips row (after-AI itinerary) — wrap nicely ── */
   .modify-row { padding-top: 8px; margin-top: 8px; }
@@ -2314,6 +2330,10 @@ html, body {
       <div class="input-actions">
         <button class="ask-all-btn" id="ask-all-btn" onclick="askAllAgents()" title="向规划师、活动策划师、预算管家 3 位专家同时发问">⚡ 问全队</button>
         <span class="ask-all-hint" id="ask-all-hint">3位专家并行作答</span>
+        <div class="mode-toggle" id="mode-toggle" title="切换 AI 模型速度档位">
+          <button class="mode-btn active" id="mode-btn-fast" onclick="setChatMode('fast')">⚡ <span id="mode-btn-fast-label">极速</span></button>
+          <button class="mode-btn"        id="mode-btn-pro"  onclick="setChatMode('pro')">🎯 <span id="mode-btn-pro-label">精细</span></button>
+        </div>
       </div>
     </div>
   </main>
@@ -3779,7 +3799,7 @@ The user is requesting a LOCAL modification to a previously generated itinerary 
     const resp = await fetch('/api/chat', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + getToken() },
-      body: JSON.stringify({ messages: history, system: systemPrompt, agent: currentAgent, destination: currentDest }),
+      body: JSON.stringify({ messages: history, system: systemPrompt, agent: currentAgent, destination: currentDest, mode: chatMode }),
       signal: abortCtrl.signal
     });
 
@@ -3813,7 +3833,10 @@ The user is requesting a LOCAL modification to a previously generated itinerary 
         if (!raw) continue;
         try {
           const ev = JSON.parse(raw);
-          if (ev.type === 'search_start') {
+          if (ev.type === 'mode') {
+            // Remember which lane the backend actually used (may differ from request if fast key missing)
+            window._lastChatMode = ev.mode;
+          } else if (ev.type === 'search_start') {
             // Show live search step in thinking container
             addThinkingStep(typingId, '🌐', '联网搜索最新资讯…');
           } else if (ev.type === 'search_done') {
@@ -4020,6 +4043,19 @@ function finalizeStreamMsg(id, searched) {
     if (agentLabel) {
       const badge = `<div class="search-badge"><div class="search-pulse"></div>${window._searchBadgeText || '已联网实时搜索'}</div>`;
       agentLabel.insertAdjacentHTML('afterend', badge);
+    }
+  }
+  // ── Show mode badge (fast/pro) inline with agent label ──
+  const mode = window._lastChatMode;
+  if (mode) {
+    const msgBody = bubble.closest('.msg-body');
+    const agentLabel = msgBody?.querySelector('.agent-label');
+    if (agentLabel && !agentLabel.querySelector('.mode-badge')) {
+      const L = LANGS[currentLang] || LANGS.zh;
+      const cls   = mode === 'fast' ? 'mode-badge-fast' : 'mode-badge-pro';
+      const icon  = mode === 'fast' ? '⚡' : '🎯';
+      const label = mode === 'fast' ? (L.modeFastLabel || '极速') : (L.modeProLabel || '精细');
+      agentLabel.insertAdjacentHTML('beforeend', ` <span class="mode-badge ${cls}">${icon} ${label}</span>`);
     }
   }
   // ── If the AI response contains a full itinerary, attach modify chips ──
@@ -4685,6 +4721,8 @@ const LANGS = {
       {icon:'💰', label:'调整预算',      q:'预算需要降低/提高，请重新分配各项支出，给出更经济/更高级的替代方案'},
       {icon:'🔄', label:'换景点/餐厅',  q:'我对某些景点或餐厅不感兴趣，请推荐风格类似但更符合我偏好的替代项'},
     ],
+    modeFastLabel:'极速', modeProLabel:'精细', modeToggleHint:'切换 AI 模型档位：极速回答快，精细回答深度高',
+    modeFastSwitched:'已切换 ⚡ 极速模式（首字更快）', modeProSwitched:'已切换 🎯 精细模式（回答更深入）',
     flightTitle:'✈️ 机票比价', flightRound:'往返', flightOneway:'单程',
     flightFromLabel:'出发', flightDepartLabel:'起飞', flightReturnLabel:'返回', flightAdultsLabel:'人数',
     flightCustomOpt:'✈️ 其他城市…', flightCustomPh:'输入城市名或 IATA 代码',
@@ -4796,6 +4834,8 @@ const LANGS = {
       {icon:'💰', label:'Adjust budget',        q:'I need to lower/raise the budget — please reallocate expenses with cheaper/more premium alternatives'},
       {icon:'🔄', label:'Swap spots',           q:'I am not interested in some attractions or restaurants — recommend similar-style alternatives that match my preferences better'},
     ],
+    modeFastLabel:'Fast', modeProLabel:'Pro', modeToggleHint:'Toggle AI model: Fast for quick replies, Pro for deeper answers',
+    modeFastSwitched:'Switched to ⚡ Fast mode (snappier replies)', modeProSwitched:'Switched to 🎯 Pro mode (deeper answers)',
     flightTitle:'✈️ Flight Prices', flightRound:'Round trip', flightOneway:'One way',
     flightFromLabel:'From', flightDepartLabel:'Depart', flightReturnLabel:'Return', flightAdultsLabel:'Pax',
     flightCustomOpt:'✈️ Other city…', flightCustomPh:'Enter city name or IATA code',
@@ -4907,6 +4947,8 @@ const LANGS = {
       {icon:'💰', label:'予算調整',       q:'予算を下げ/上げたいです。各項目を再配分し、より経済的/高級な代替案を提案してください'},
       {icon:'🔄', label:'スポット変更',   q:'一部のスポットや飲食店が好みではありません。似た雰囲気で好みに合う代替案を提案してください'},
     ],
+    modeFastLabel:'高速', modeProLabel:'精細', modeToggleHint:'AI モデル切替：高速は素早く、精細は深く',
+    modeFastSwitched:'⚡ 高速モードに切替（応答が速い）', modeProSwitched:'🎯 精細モードに切替（より深い回答）',
     flightTitle:'✈️ 航空券料金', flightRound:'往復', flightOneway:'片道',
     flightFromLabel:'出発', flightDepartLabel:'出発日', flightReturnLabel:'帰国日', flightAdultsLabel:'人数',
     flightCustomOpt:'✈️ その他の都市…', flightCustomPh:'都市名または IATA コードを入力',
@@ -5018,6 +5060,8 @@ const LANGS = {
       {icon:'💰', label:'예산 조정',       q:'예산을 낮추/높이고 싶습니다. 각 항목을 재배분하고 더 저렴한/고급 대안을 제안해 주세요'},
       {icon:'🔄', label:'장소 교체',       q:'일부 장소나 식당에 관심이 없습니다. 비슷한 스타일이면서 제 취향에 맞는 대안을 추천해 주세요'},
     ],
+    modeFastLabel:'고속', modeProLabel:'정밀', modeToggleHint:'AI 모델 전환: 고속은 빠르게, 정밀은 깊이 있게',
+    modeFastSwitched:'⚡ 고속 모드로 전환 (응답 빠름)', modeProSwitched:'🎯 정밀 모드로 전환 (더 깊은 답변)',
     flightTitle:'✈️ 항공권 가격', flightRound:'왕복', flightOneway:'편도',
     flightFromLabel:'출발', flightDepartLabel:'출발일', flightReturnLabel:'귀국일', flightAdultsLabel:'인원',
     flightCustomOpt:'✈️ 다른 도시…', flightCustomPh:'도시명 또는 IATA 코드 입력',
@@ -5129,6 +5173,8 @@ const LANGS = {
       {icon:'💰', label:'Atur anggaran',      q:'Saya perlu menurunkan/menaikkan anggaran — atur ulang pengeluaran dengan alternatif lebih murah/premium'},
       {icon:'🔄', label:'Tukar tempat',       q:'Saya tidak tertarik pada beberapa tempat atau restoran — sarankan alternatif sejenis yang sesuai preferensi saya'},
     ],
+    modeFastLabel:'Cepat', modeProLabel:'Pro', modeToggleHint:'Ganti model AI: Cepat untuk balasan singkat, Pro untuk jawaban mendalam',
+    modeFastSwitched:'Beralih ke ⚡ mode Cepat (balasan lebih cepat)', modeProSwitched:'Beralih ke 🎯 mode Pro (jawaban lebih dalam)',
     flightTitle:'✈️ Harga Tiket Pesawat', flightRound:'PP', flightOneway:'Sekali jalan',
     flightFromLabel:'Dari', flightDepartLabel:'Berangkat', flightReturnLabel:'Pulang', flightAdultsLabel:'Penumpang',
     flightCustomOpt:'✈️ Kota lain…', flightCustomPh:'Masukkan nama kota atau kode IATA',
@@ -5338,6 +5384,9 @@ function applyLang(lang) {
 
   // ── Memory modal — preference section ───────────────────────────────────────
   applyPrefI18n(L);
+
+  // ── Mode toggle labels (⚡ Fast / 🎯 Pro) ────────────────────────────────────
+  if (typeof applyModeI18n === 'function') applyModeI18n();
 
   // ── Re-render budget panel ───────────────────────────────────────────────────
   renderBudgetPanel();
@@ -5936,10 +5985,37 @@ function renderFlightCards(flights, bookingUrl) {
   resultsEl.innerHTML = cards + bookAll;
 }
 
+// ─── CHAT MODE (⚡ Fast / 🎯 Pro) ─────────────────────────────
+let chatMode = localStorage.getItem('wm_chat_mode') || 'fast';
+
+function setChatMode(mode) {
+  chatMode = (mode === 'pro') ? 'pro' : 'fast';
+  localStorage.setItem('wm_chat_mode', chatMode);
+  const fastBtn = document.getElementById('mode-btn-fast');
+  const proBtn  = document.getElementById('mode-btn-pro');
+  if (fastBtn) fastBtn.classList.toggle('active', chatMode === 'fast');
+  if (proBtn)  proBtn.classList.toggle('active',  chatMode === 'pro');
+  const L = LANGS[currentLang] || LANGS.zh;
+  const msg = (chatMode === 'fast') ? (L.modeFastSwitched || '已切换 ⚡ 极速') : (L.modeProSwitched || '已切换 🎯 精细');
+  addLog('info', (chatMode === 'fast') ? '⚡' : '🎯', msg);
+}
+
+function applyModeI18n() {
+  const L = LANGS[currentLang] || LANGS.zh;
+  const fastLbl = document.getElementById('mode-btn-fast-label');
+  const proLbl  = document.getElementById('mode-btn-pro-label');
+  if (fastLbl) fastLbl.textContent = L.modeFastLabel || '极速';
+  if (proLbl)  proLbl.textContent  = L.modeProLabel  || '精细';
+  const toggle = document.getElementById('mode-toggle');
+  if (toggle) toggle.title = L.modeToggleHint || '切换 AI 模型速度档位';
+}
+
 // Initialize
 applyLang('zh');
 initPriceDates();
 initFlightDates();
+setChatMode(chatMode);   // restore from localStorage
+applyModeI18n();
 
 
 // ═══════════════════════════════════════════════════════
