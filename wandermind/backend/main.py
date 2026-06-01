@@ -62,6 +62,12 @@ def init_db():
             FOREIGN KEY(user_id) REFERENCES users(id)
         )
     """)
+    # Migration: add preferences column if it doesn't exist yet
+    try:
+        conn.execute("ALTER TABLE users ADD COLUMN preferences TEXT DEFAULT '{}'")
+        conn.commit()
+    except Exception:
+        pass  # column already exists
     conn.commit()
     conn.close()
 
@@ -171,6 +177,10 @@ class SaveConvReq(BaseModel):
     messages: list = []
 
 
+class PrefsReq(BaseModel):
+    preferences: dict = {}
+
+
 # ─── Auth routes ─────────────────────────────────────────────
 @app.post("/api/auth/register")
 async def register(data: RegisterReq):
@@ -213,6 +223,33 @@ async def me(user=Depends(current_user)):
         if not row:
             raise HTTPException(404, "User not found")
         return dict(row)
+    finally:
+        conn.close()
+
+
+# ─── User Preferences ────────────────────────────────────────
+@app.get("/api/user/preferences")
+async def get_preferences(user=Depends(current_user)):
+    conn = get_db()
+    try:
+        row = conn.execute("SELECT preferences FROM users WHERE id=?", (user["sub"],)).fetchone()
+        if not row:
+            raise HTTPException(404, "User not found")
+        return json.loads(row["preferences"] or "{}")
+    finally:
+        conn.close()
+
+
+@app.post("/api/user/preferences")
+async def save_preferences(data: PrefsReq, user=Depends(current_user)):
+    conn = get_db()
+    try:
+        conn.execute(
+            "UPDATE users SET preferences=? WHERE id=?",
+            (json.dumps(data.preferences, ensure_ascii=False), user["sub"])
+        )
+        conn.commit()
+        return {"ok": True}
     finally:
         conn.close()
 

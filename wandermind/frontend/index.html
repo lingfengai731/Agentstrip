@@ -1722,6 +1722,35 @@ html, body {
 }
 .mem-regret-del { margin-left:auto; cursor:pointer; color:var(--ink-3); font-size:14px; }
 .mem-regret-del:hover { color:var(--crimson); }
+/* ─── EXPLICIT PREFERENCE PICKERS ─── */
+.pref-row { margin-bottom: 13px; }
+.pref-row-label { font-size: 12px; font-weight: 600; color: var(--ink-2); margin-bottom: 6px; }
+.pref-choices { display: flex; flex-wrap: wrap; gap: 6px; }
+.pref-choice {
+  padding: 4px 12px; border-radius: 20px; font-size: 12px; font-weight: 500;
+  border: 1.5px solid var(--paper-3); background: none; color: var(--ink-2);
+  cursor: pointer; transition: all .15s; user-select: none;
+}
+.pref-choice:hover { border-color: var(--teal-light); color: var(--teal); }
+.pref-choice.selected { background: var(--teal-pale); border-color: var(--teal); color: var(--teal); font-weight: 700; }
+.pref-notes-input {
+  width: 100%; box-sizing: border-box; padding: 8px 10px;
+  border-radius: var(--r-sm); border: 1.5px solid var(--paper-3);
+  background: var(--paper); color: var(--ink); font-family: inherit;
+  font-size: 12px; resize: none; min-height: 54px;
+}
+.pref-notes-input:focus { outline: none; border-color: var(--teal-light); }
+.pref-save-btn {
+  width: 100%; padding: 9px; margin-top: 8px;
+  background: var(--teal); color: white; border: none; border-radius: var(--r);
+  font-family: inherit; font-size: 13px; font-weight: 700; cursor: pointer; transition: var(--transition);
+}
+.pref-save-btn:hover { filter: brightness(1.1); }
+.pref-active-badge {
+  display: inline-flex; align-items: center; gap: 4px; margin-left: 6px;
+  background: var(--teal-pale); border: 1px solid var(--teal-light); border-radius: 20px;
+  padding: 1px 7px; font-size: 10px; font-weight: 600; color: var(--teal); vertical-align: middle;
+}
 
 /* Nav avatar as memory trigger */
 #nav-avatar { cursor: pointer; position: relative; }
@@ -2651,6 +2680,7 @@ async function doLogin() {
     setToken(d.token); setWmUser(d.user);
     document.getElementById('auth-overlay').classList.add('hidden');
     updateNavUser(); errEl.textContent = '';
+    loadPrefsFromDB(); loadConvHistory();
   } catch(e) { errEl.textContent = e.message; }
   btn.disabled = false; btn.textContent = (window._authT || AUTH_I18N.zh).loginBtn;
 }
@@ -2675,6 +2705,7 @@ async function doRegister() {
     setToken(d.token); setWmUser(d.user);
     document.getElementById('auth-overlay').classList.add('hidden');
     updateNavUser(); errEl.textContent = '';
+    loadPrefsFromDB(); loadConvHistory();
   } catch(e) { errEl.textContent = e.message; }
   btn.disabled = false; btn.textContent = (window._authT || AUTH_I18N.zh).regBtn;
 }
@@ -2707,6 +2738,7 @@ function checkAuth() {
   if (getToken()) {
     updateNavUser();
     loadConvHistory();   // pull past conversations into sidebar
+    loadPrefsFromDB();   // sync travel preferences from DB
   }
   // No forced redirect — sendMsg() will prompt if token missing
 }
@@ -3468,7 +3500,8 @@ async function sendMsg() {
 
   const agent = AGENT_PERSONAS[currentAgent];
   const langInstr = `\n\n【Language Instruction】Please respond in ${LANGS[currentLang]?.systemPromptLang || 'Chinese'} only. Never switch language mid-response.`;
-  const systemPrompt = BASE_SYSTEM + (agent.suffix || '') + langInstr +
+  const memPrompt = getMemorySystemPrompt();
+  const systemPrompt = BASE_SYSTEM + memPrompt + (agent.suffix || '') + langInstr +
     `\n\nCurrent destination: ${DESTINATIONS[currentDest]?.name || currentDest}\nActive agent role: ${agent.name}`;
 
   try {
@@ -3589,7 +3622,8 @@ async function askAllAgents() {
   addThinkingStep(typingId, '⚡', (LANGS[currentLang]?.teamThinking || '问全队模式 · 3位专家并行思考中…'));
 
   const langInstr = `\n\n【Language Instruction】Please respond in ${LANGS[currentLang]?.systemPromptLang || 'Chinese'} only. Never switch language mid-response.`;
-  const systemPrompt = BASE_SYSTEM + langInstr + `\n\nCurrent destination: ${DESTINATIONS[currentDest]?.name || currentDest}`;
+  const memPrompt = getMemorySystemPrompt();
+  const systemPrompt = BASE_SYSTEM + memPrompt + langInstr + `\n\nCurrent destination: ${DESTINATIONS[currentDest]?.name || currentDest}`;
 
   let fullText = '';
   let streamId = null;
@@ -3887,6 +3921,7 @@ function fakeImg() {
 // ─── MODAL SYSTEM ────────────────────────────
 function openModal(id) {
   document.getElementById(id).classList.add('open');
+  if (id === 'modal-memory') { renderExplicitPrefs(); updateMemoryUI(); }
 }
 function closeModal(id) {
   document.getElementById(id).classList.remove('open');
@@ -5402,7 +5437,146 @@ function generateMapRoute() {
 // ─── MEMORY SYSTEM ────────────────────────────────────
 // ═══════════════════════════════════════════════════════
 
+// ═══════════════════════════════════════════════════════
+// ─── TRAVEL PREFERENCE MEMORY ─────────────────────────
+// ═══════════════════════════════════════════════════════
 const MEMORY_KEY = 'wandermind_memory';
+
+// ── Build system-prompt injection from stored prefs ───
+function getMemorySystemPrompt() {
+  const mem = loadMemory();
+  const prefs = mem.prefs || {};
+  const parts = [];
+
+  const budgetMap = { budget:'经济实惠 (人均/天 ¥200-400)', midrange:'标准舒适 (人均/天 ¥400-800)', luxury:'豪华享受 (人均/天 ¥1200+)' };
+  if (prefs.budgetLevel) parts.push(`预算档次：${budgetMap[prefs.budgetLevel]}`);
+  else if (prefs.style === 'budget') parts.push('旅行偏好：节省型');
+  else if (prefs.style === 'luxury') parts.push('旅行偏好：豪华型');
+
+  const styleNameMap = { culture:'文化历史', food:'美食探索', adventure:'冒险户外', relax:'悠闲放松', nature:'自然风光', wellness:'养生健康' };
+  if (prefs.styleList?.length) {
+    parts.push(`旅行风格：${prefs.styleList.map(s => styleNameMap[s] || s).join(' · ')}`);
+  } else if (prefs.interest) {
+    const interests = [...new Set(prefs.interest.split(',').filter(Boolean))];
+    if (interests.length) parts.push(`兴趣标签：${interests.join(' · ')}`);
+  }
+
+  const partyMap = { solo:'独自旅行', couple:'情侣出行', family:'家庭亲子', group:'朋友/团体' };
+  if (prefs.party) parts.push(`同行方式：${partyMap[prefs.party]}`);
+  else if (prefs.companion) parts.push(`同行方式：${partyMap[prefs.companion] || prefs.companion}`);
+
+  if (prefs.notes) parts.push(`特殊偏好：${prefs.notes}`);
+  if (mem.visited?.length) parts.push(`曾到访目的地：${mem.visited.join('、')}`);
+
+  if (parts.length === 0) return '';
+  return '\n\n【用户旅行偏好档案】\n' + parts.map(p => `- ${p}`).join('\n') +
+    '\n（请自然融入以上偏好，个性化你的回答，无需提及档案本身）';
+}
+
+// ── Explicit preference chip pickers ─────────────────
+function pickPref(group, el) {
+  document.querySelectorAll(`#pref-${group} .pref-choice`).forEach(c => c.classList.remove('selected'));
+  el.classList.toggle('selected');   // clicking same again deselects
+  const wasSelected = el.classList.contains('selected');
+  if (!wasSelected) el.classList.remove('selected'); // noop — toggle handled above
+}
+
+function pickPrefMulti(group, el) {
+  el.classList.toggle('selected');
+}
+
+// ── Save explicit prefs to localStorage + DB ─────────
+function saveExplicitPrefs() {
+  const mem = loadMemory();
+  const budgetEl = document.querySelector('#pref-budget .pref-choice.selected');
+  const partyEl  = document.querySelector('#pref-party .pref-choice.selected');
+  const styleEls = document.querySelectorAll('#pref-styles .pref-choice.selected');
+  const notesVal = document.getElementById('pref-notes')?.value.trim() || '';
+
+  mem.prefs = mem.prefs || {};
+  if (budgetEl) mem.prefs.budgetLevel = budgetEl.dataset.val;
+  else delete mem.prefs.budgetLevel;
+  if (partyEl)  mem.prefs.party = partyEl.dataset.val;
+  else delete mem.prefs.party;
+  mem.prefs.styleList = [...styleEls].map(e => e.dataset.val);
+  if (notesVal) mem.prefs.notes = notesVal;
+  else delete mem.prefs.notes;
+
+  saveMemory(mem);
+  updateMemoryUI();
+  updateNavAvatar();
+  syncPrefsToDb(mem.prefs);
+
+  // Visual feedback
+  const btn = document.querySelector('.pref-save-btn');
+  if (btn) { btn.textContent = '✓ 已保存！AI 下次对话将自动参考'; btn.style.background = '#059669';
+    setTimeout(() => { btn.textContent = '💾 保存偏好，让 AI 记住我'; btn.style.background = ''; }, 2500); }
+  showPrefsBadge(true);
+  addLog('success', '🧠', '旅行偏好已保存 · AI 将个性化回答');
+}
+
+// ── Sync explicit prefs to backend DB ────────────────
+async function syncPrefsToDb(prefs) {
+  if (!getToken()) return;
+  try {
+    await fetch('/api/user/preferences', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + getToken() },
+      body: JSON.stringify({ preferences: prefs })
+    });
+  } catch(e) { /* silent fail — localStorage is source of truth */ }
+}
+
+// ── Load prefs from DB (on login) and merge ───────────
+async function loadPrefsFromDB() {
+  if (!getToken()) return;
+  try {
+    const r = await fetch('/api/user/preferences', { headers: { 'Authorization': 'Bearer ' + getToken() } });
+    if (!r.ok) return;
+    const dbPrefs = await r.json();
+    if (dbPrefs && Object.keys(dbPrefs).length > 0) {
+      const mem = loadMemory();
+      // DB prefs win (they were explicitly saved; merge on top of inferred ones)
+      mem.prefs = { ...mem.prefs, ...dbPrefs };
+      saveMemory(mem);
+      updateMemoryUI();
+      updateNavAvatar();
+      showPrefsBadge(Object.keys(dbPrefs).some(k => ['budgetLevel','party','styleList'].includes(k)));
+    }
+  } catch(e) { /* silent fail */ }
+}
+
+// ── Render explicit prefs UI when modal opens ────────
+function renderExplicitPrefs() {
+  const mem = loadMemory();
+  const prefs = mem.prefs || {};
+
+  // Reset
+  document.querySelectorAll('#pref-budget .pref-choice, #pref-party .pref-choice, #pref-styles .pref-choice')
+    .forEach(c => c.classList.remove('selected'));
+
+  if (prefs.budgetLevel) document.querySelector(`#pref-budget [data-val="${prefs.budgetLevel}"]`)?.classList.add('selected');
+  if (prefs.party)       document.querySelector(`#pref-party [data-val="${prefs.party}"]`)?.classList.add('selected');
+  (prefs.styleList || []).forEach(v => document.querySelector(`#pref-styles [data-val="${v}"]`)?.classList.add('selected'));
+  const notesEl = document.getElementById('pref-notes');
+  if (notesEl) notesEl.value = prefs.notes || '';
+
+  // Update profile header
+  const user = getWmUser();
+  if (user) {
+    const usernameEl = document.getElementById('mem-username');
+    if (usernameEl) usernameEl.textContent = user.name || '旅行者';
+    const avatarEl = document.getElementById('mem-avatar');
+    if (avatarEl) avatarEl.textContent = (user.name || '游').slice(0, 2).toUpperCase();
+  }
+  showPrefsBadge(['budgetLevel','party','styleList'].some(k => prefs[k]));
+}
+
+// ── Show/hide "AI 已读取" badge ─────────────────────
+function showPrefsBadge(show) {
+  const badge = document.getElementById('prefs-active-badge');
+  if (badge) badge.style.display = show ? 'inline-flex' : 'none';
+}
 
 function loadMemory() {
   try { return JSON.parse(localStorage.getItem(MEMORY_KEY)) || createEmptyMemory(); }
@@ -5875,12 +6049,50 @@ navTabEls.forEach((tab, i) => {
     </div>
     <div class="modal-body">
       <div class="memory-profile">
-        <div class="memory-avatar">游</div>
+        <div class="memory-avatar" id="mem-avatar">游</div>
         <div>
-          <div style="font-size:16px;font-weight:600;color:var(--ink)">旅行者</div>
+          <div style="font-size:16px;font-weight:600;color:var(--ink)" id="mem-username">旅行者</div>
           <div style="font-size:12px;color:var(--ink-3);margin-top:2px" id="mem-stats-line">已记录 0 次对话 · 0 个偏好</div>
         </div>
         <button class="mem-clear-btn" onclick="clearMemory()">清空记忆</button>
+      </div>
+
+      <!-- ── Explicit preferences (user-set) ── -->
+      <div class="mem-section">
+        <div class="mem-section-title">⚙️ 我的旅行偏好 <span id="prefs-active-badge" style="display:none" class="pref-active-badge">✓ AI 已读取</span></div>
+        <div class="pref-row">
+          <div class="pref-row-label">💰 预算档次</div>
+          <div class="pref-choices" id="pref-budget">
+            <div class="pref-choice" data-val="budget" onclick="pickPref('budget',this)">经济实惠</div>
+            <div class="pref-choice" data-val="midrange" onclick="pickPref('budget',this)">标准舒适</div>
+            <div class="pref-choice" data-val="luxury" onclick="pickPref('budget',this)">豪华享受</div>
+          </div>
+        </div>
+        <div class="pref-row">
+          <div class="pref-row-label">🎭 旅行风格 <span style="font-weight:400;color:var(--ink-3)">（可多选）</span></div>
+          <div class="pref-choices" id="pref-styles">
+            <div class="pref-choice" data-val="culture" onclick="pickPrefMulti('styles',this)">文化历史</div>
+            <div class="pref-choice" data-val="food" onclick="pickPrefMulti('styles',this)">美食探索</div>
+            <div class="pref-choice" data-val="adventure" onclick="pickPrefMulti('styles',this)">冒险户外</div>
+            <div class="pref-choice" data-val="relax" onclick="pickPrefMulti('styles',this)">悠闲放松</div>
+            <div class="pref-choice" data-val="nature" onclick="pickPrefMulti('styles',this)">自然风光</div>
+            <div class="pref-choice" data-val="wellness" onclick="pickPrefMulti('styles',this)">养生健康</div>
+          </div>
+        </div>
+        <div class="pref-row">
+          <div class="pref-row-label">👥 同行方式</div>
+          <div class="pref-choices" id="pref-party">
+            <div class="pref-choice" data-val="solo" onclick="pickPref('party',this)">独自旅行</div>
+            <div class="pref-choice" data-val="couple" onclick="pickPref('party',this)">情侣出行</div>
+            <div class="pref-choice" data-val="family" onclick="pickPref('party',this)">家庭亲子</div>
+            <div class="pref-choice" data-val="group" onclick="pickPref('party',this)">朋友/团体</div>
+          </div>
+        </div>
+        <div class="pref-row">
+          <div class="pref-row-label">📝 特殊偏好 / 备注</div>
+          <textarea id="pref-notes" class="pref-notes-input" placeholder="如：素食、不喜欢太商业化的地方、需要无障碍设施…" rows="2"></textarea>
+        </div>
+        <button class="pref-save-btn" onclick="saveExplicitPrefs()">💾 保存偏好，让 AI 记住我</button>
       </div>
 
       <div class="mem-section">
