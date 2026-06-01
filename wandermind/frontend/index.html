@@ -1011,6 +1011,14 @@ html, body {
 .dest-skel-card { height: 64px; margin-bottom: 8px; border-radius: var(--r); }
 .dest-skel-line { height: 14px; margin-bottom: 6px; }
 .dest-skel-line-short { width: 60%; }
+/* ─── ITINERARY MODIFY CHIPS ─── */
+.modify-row { margin-top: 10px; padding-top: 10px; border-top: 1px dashed var(--paper-3); }
+.modify-row-title { font-size: 11px; font-weight: 700; color: var(--teal); margin-bottom: 6px; display: flex; align-items: center; gap: 5px; }
+.modify-row-title-hint { font-weight: 400; font-size: 10px; color: var(--ink-3); margin-left: 4px; }
+.modify-chips { display: flex; flex-wrap: wrap; gap: 6px; }
+.modify-chip { padding: 5px 11px; border-radius: 18px; border: 1.5px solid var(--teal-light); background: var(--paper); color: var(--teal); font-size: 11px; font-weight: 600; cursor: pointer; transition: all .15s; white-space: nowrap; }
+.modify-chip:hover { background: var(--teal-pale); border-color: var(--teal); transform: translateY(-1px); }
+.modify-chip:active { transform: translateY(0); }
 /* ─── HOTEL PRICE SEARCH ─── */
 .price-search-form { margin-bottom: 10px; }
 .price-date-row { display: flex; gap: 6px; margin-bottom: 8px; align-items: flex-end; }
@@ -3641,7 +3649,22 @@ async function sendMsg() {
   const agent = AGENT_PERSONAS[currentAgent];
   const langInstr = `\n\n【Language Instruction】Please respond in ${LANGS[currentLang]?.systemPromptLang || 'Chinese'} only. Never switch language mid-response.`;
   const memPrompt = getMemorySystemPrompt();
-  const systemPrompt = BASE_SYSTEM + memPrompt + (agent.suffix || '') + langInstr +
+
+  // ── Detect modification mode (clicked a modify chip) ──
+  let modifyInstr = '';
+  if (window._nextMsgIsModification) {
+    window._nextMsgIsModification = false;
+    modifyInstr = `\n\n【行程修改模式 / Itinerary Modification Mode】
+The user is requesting a LOCAL modification to a previously generated itinerary in this conversation. Critical rules:
+1. DO NOT regenerate the entire itinerary from scratch.
+2. Identify the most recent complete itinerary in the conversation history.
+3. Only modify the specific parts the user mentions (a day, the pacing, the budget, certain spots).
+4. Preserve everything else exactly as it was.
+5. Begin your reply with a short summary of WHAT YOU CHANGED (1-2 lines), then show the updated itinerary with only the changed sections highlighted. Mark changed items with ✏️.
+6. If the user's request is ambiguous (e.g., "modify Day X" without specifying X), ask a brief clarifying question first instead of guessing.`;
+  }
+
+  const systemPrompt = BASE_SYSTEM + memPrompt + (agent.suffix || '') + langInstr + modifyInstr +
     `\n\nCurrent destination: ${DESTINATIONS[currentDest]?.name || currentDest}\nActive agent role: ${agent.name}`;
 
   try {
@@ -3891,6 +3914,69 @@ function finalizeStreamMsg(id, searched) {
       agentLabel.insertAdjacentHTML('afterend', badge);
     }
   }
+  // ── If the AI response contains a full itinerary, attach modify chips ──
+  const text = bubble.textContent || '';
+  if (containsItinerary(text)) attachModifyChips(bubble);
+}
+
+// ─── ITINERARY MODIFY HELPER ─────────────────────────────────
+// Detect whether an AI reply contains a multi-day itinerary
+function containsItinerary(text) {
+  if (!text || text.length < 200) return false;
+  // Multi-language day-marker patterns: look for 3+ day markers
+  const patterns = [
+    /(?:^|[^A-Za-z])Day\s*[1-9]/gi,                  // Day 1 / Day2
+    /第\s*[一二三四五六七八九十1-9]\s*天/g,          // 第1天 / 第一天
+    /[1-9]\s*日目/g,                                 // 1日目
+    /[1-9]\s*일\s*[차째]/g,                          // 1일차 / 1일째
+    /Hari\s*[1-9]/gi,                                // Hari 1
+  ];
+  for (const re of patterns) {
+    const matches = text.match(re);
+    if (matches && matches.length >= 3) return true;
+  }
+  return false;
+}
+
+function attachModifyChips(bubbleEl) {
+  if (!bubbleEl || bubbleEl.parentElement?.querySelector('.modify-row')) return;
+  const L = LANGS[currentLang] || LANGS.zh;
+  const chips = L.modifyChips || [];
+  if (!chips.length) return;
+
+  const row = document.createElement('div');
+  row.className = 'modify-row';
+  row.innerHTML = `
+    <div class="modify-row-title">${L.modifyTitle || '✏️ 修改这份行程'}
+      <span class="modify-row-title-hint">${L.modifyHint || ''}</span>
+    </div>
+    <div class="modify-chips">
+      ${chips.map((c, i) => `<button class="modify-chip" data-idx="${i}">${c.icon} ${c.label}</button>`).join('')}
+    </div>`;
+
+  // Wire up click handlers
+  row.querySelectorAll('.modify-chip').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const idx = parseInt(btn.dataset.idx);
+      const chip = chips[idx];
+      if (!chip) return;
+      requestItineraryModification(chip.q);
+    });
+  });
+
+  bubbleEl.insertAdjacentElement('afterend', row);
+  scroll();
+}
+
+function requestItineraryModification(prefilledQuery) {
+  const inp = document.getElementById('main-input');
+  if (!inp) return;
+  // Pre-fill input with the modification template; user can edit before sending
+  inp.value = prefilledQuery;
+  inp.focus();
+  autoResize(inp);
+  // Tag the next sendMsg so it uses modification mode
+  window._nextMsgIsModification = true;
 }
 
 function setAgentWorking(id, state) {
@@ -3932,6 +4018,11 @@ function appendAIMsg(text, searched) {
       <div class="msg-time">${t}</div>
     </div>`;
   msgs.appendChild(d); scroll();
+  // Restore modify chips when reloading historical AI messages with itineraries
+  if (containsItinerary(text)) {
+    const bubble = d.querySelector('.bubble.ai');
+    if (bubble) attachModifyChips(bubble);
+  }
 }
 
 // ─── AGENT THINKING STEPS ────────────────────
@@ -4479,6 +4570,13 @@ const LANGS = {
     priceTitle:'🏨 酒店比价', priceCheckIn:'入住', priceCheckOut:'退房', priceAdults:'人数',
     priceSearchBtn:'查酒店价格', priceSearching:'正在搜索…', priceNoResults:'暂无结果，请更换日期重试',
     pricePerNight:'/ 晚', priceBookBtn:'查看订房', priceRatingCount:'条评价',
+    modifyTitle:'✏️ 修改这份行程', modifyHint:'AI 会在现有行程基础上局部调整，不会重新规划',
+    modifyChips:[
+      {icon:'✏️', label:'修改某一天',  q:'我想修改第X天的安排（请把"X"替换成实际天数，并说明想换成什么）'},
+      {icon:'⏰', label:'调整节奏',      q:'整体节奏太紧凑了，能不能放松一些？保留亮点景点，去掉一些非必去的'},
+      {icon:'💰', label:'调整预算',      q:'预算需要降低/提高，请重新分配各项支出，给出更经济/更高级的替代方案'},
+      {icon:'🔄', label:'换景点/餐厅',  q:'我对某些景点或餐厅不感兴趣，请推荐风格类似但更符合我偏好的替代项'},
+    ],
     destMenuItems:['🌺 巴厘岛 · 印度尼西亚','🌸 京都 · 日本','🗼 巴黎 · 法国','🏝️ 圣托里尼 · 希腊','✨ 输入其他目的地…'],
     systemPromptLang:'中文',
     callCount:'次调用', active:'活跃', standby:'待机',
@@ -4577,6 +4675,13 @@ const LANGS = {
     priceTitle:'🏨 Hotel Prices', priceCheckIn:'Check-in', priceCheckOut:'Check-out', priceAdults:'Adults',
     priceSearchBtn:'Search Hotels', priceSearching:'Searching…', priceNoResults:'No results, try different dates',
     pricePerNight:'/ night', priceBookBtn:'Book Now', priceRatingCount:'reviews',
+    modifyTitle:'✏️ Modify this itinerary', modifyHint:'AI will only adjust the parts you mention, keeping the rest unchanged',
+    modifyChips:[
+      {icon:'✏️', label:'Edit a specific day', q:'I want to modify Day X (please replace "X" with the actual day number and tell me what you want changed)'},
+      {icon:'⏰', label:'Adjust pacing',        q:'The pace is too tight — please relax it, keep the highlights and remove non-essential stops'},
+      {icon:'💰', label:'Adjust budget',        q:'I need to lower/raise the budget — please reallocate expenses with cheaper/more premium alternatives'},
+      {icon:'🔄', label:'Swap spots',           q:'I am not interested in some attractions or restaurants — recommend similar-style alternatives that match my preferences better'},
+    ],
     destMenuItems:['🌺 Bali · Indonesia','🌸 Kyoto · Japan','🗼 Paris · France','🏝️ Santorini · Greece','✨ Enter custom destination…'],
     systemPromptLang:'English',
     callCount:' calls', active:'Active', standby:'Idle',
@@ -4675,6 +4780,13 @@ const LANGS = {
     priceTitle:'🏨 ホテル料金', priceCheckIn:'チェックイン', priceCheckOut:'チェックアウト', priceAdults:'人数',
     priceSearchBtn:'ホテルを検索', priceSearching:'検索中…', priceNoResults:'結果なし。日程を変えてお試しください',
     pricePerNight:'/ 泊', priceBookBtn:'予約する', priceRatingCount:'件のレビュー',
+    modifyTitle:'✏️ このプランを修正', modifyHint:'AI は既存プランの一部だけを修正し、他はそのままにします',
+    modifyChips:[
+      {icon:'✏️', label:'特定の日を変更', q:'X日目の予定を変更したいです（「X」を実際の日数に置き換えて、変更内容を教えてください）'},
+      {icon:'⏰', label:'ペース調整',     q:'全体のペースがきつすぎます。ハイライトは残し、必須でないスポットを減らしてください'},
+      {icon:'💰', label:'予算調整',       q:'予算を下げ/上げたいです。各項目を再配分し、より経済的/高級な代替案を提案してください'},
+      {icon:'🔄', label:'スポット変更',   q:'一部のスポットや飲食店が好みではありません。似た雰囲気で好みに合う代替案を提案してください'},
+    ],
     destMenuItems:['🌺 バリ島 · インドネシア','🌸 京都 · 日本','🗼 パリ · フランス','🏝️ サントリーニ · ギリシャ','✨ その他の目的地を入力…'],
     systemPromptLang:'日本語',
     callCount:'回の呼び出し', active:'アクティブ', standby:'待機中',
@@ -4773,6 +4885,13 @@ const LANGS = {
     priceTitle:'🏨 호텔 가격', priceCheckIn:'체크인', priceCheckOut:'체크아웃', priceAdults:'인원',
     priceSearchBtn:'호텔 검색', priceSearching:'검색 중…', priceNoResults:'결과 없음, 날짜를 바꿔 보세요',
     pricePerNight:'/ 박', priceBookBtn:'예약하기', priceRatingCount:'개 리뷰',
+    modifyTitle:'✏️ 이 일정 수정하기', modifyHint:'AI는 기존 일정의 일부만 수정하고 나머지는 유지합니다',
+    modifyChips:[
+      {icon:'✏️', label:'특정 일자 수정', q:'X일째 일정을 수정하고 싶습니다 ("X"를 실제 일수로 바꾸고 변경 사항을 알려주세요)'},
+      {icon:'⏰', label:'페이스 조정',     q:'전체 페이스가 너무 빡빡합니다. 하이라이트는 남기고 필수가 아닌 곳은 빼주세요'},
+      {icon:'💰', label:'예산 조정',       q:'예산을 낮추/높이고 싶습니다. 각 항목을 재배분하고 더 저렴한/고급 대안을 제안해 주세요'},
+      {icon:'🔄', label:'장소 교체',       q:'일부 장소나 식당에 관심이 없습니다. 비슷한 스타일이면서 제 취향에 맞는 대안을 추천해 주세요'},
+    ],
     destMenuItems:['🌺 발리 · 인도네시아','🌸 교토 · 일본','🗼 파리 · 프랑스','🏝️ 산토리니 · 그리스','✨ 다른 목적지 입력…'],
     systemPromptLang:'한국어',
     callCount:'회 호출', active:'활성', standby:'대기',
@@ -4871,6 +4990,13 @@ const LANGS = {
     priceTitle:'🏨 Harga Hotel', priceCheckIn:'Check-in', priceCheckOut:'Check-out', priceAdults:'Tamu',
     priceSearchBtn:'Cari Hotel', priceSearching:'Mencari…', priceNoResults:'Tidak ada hasil, coba tanggal lain',
     pricePerNight:'/ malam', priceBookBtn:'Pesan Sekarang', priceRatingCount:'ulasan',
+    modifyTitle:'✏️ Ubah rencana ini', modifyHint:'AI hanya akan mengubah bagian yang Anda sebutkan, bagian lain tetap',
+    modifyChips:[
+      {icon:'✏️', label:'Ubah hari tertentu', q:'Saya ingin mengubah Hari X (ganti "X" dengan nomor hari sebenarnya dan beri tahu apa yang ingin diubah)'},
+      {icon:'⏰', label:'Atur kecepatan',     q:'Jadwalnya terlalu padat — santaikan, pertahankan yang utama, hilangkan yang tidak penting'},
+      {icon:'💰', label:'Atur anggaran',      q:'Saya perlu menurunkan/menaikkan anggaran — atur ulang pengeluaran dengan alternatif lebih murah/premium'},
+      {icon:'🔄', label:'Tukar tempat',       q:'Saya tidak tertarik pada beberapa tempat atau restoran — sarankan alternatif sejenis yang sesuai preferensi saya'},
+    ],
     destMenuItems:['🌺 Bali · Indonesia','🌸 Kyoto · Jepang','🗼 Paris · Prancis','🏝️ Santorini · Yunani','✨ Masukkan destinasi lain…'],
     systemPromptLang:'Bahasa Indonesia',
     callCount:' panggilan', active:'Aktif', standby:'Standby',
