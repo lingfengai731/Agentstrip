@@ -2215,6 +2215,7 @@ html, body {
           <!-- dynamically rendered by renderItinerary() -->
         </div>
         <button class="panel-action-btn" id="panel-itinerary-ai-btn" onclick="qsend('帮我为'+currentTripDays+'天行程生成详细的每日计划，精确到每半天，包括景点路线、餐厅预订建议和住宿推荐')">✨ AI 深度定制行程</button>
+        <button class="panel-action-btn" id="panel-export-pdf-btn" onclick="openExportPDF()" style="background:var(--paper);color:var(--teal);border:1.5px solid var(--teal-light);margin-top:6px">📄 导出行程 PDF</button>
       </div>
 
       <!-- Budget — rendered dynamically by renderBudgetPanel() -->
@@ -2941,6 +2942,206 @@ function renderBudgetPanel() {
 function askBudgetAI() {
   const destName = DESTINATIONS[currentDest]?.name || currentDest;
   qsend(`帮我分析${destName} ${currentTripPeople}人${currentTripDays}天旅行的详细预算方案，总预算¥${currentTripBudget}，按节俭/舒适/豪华三档分别列出各项费用明细`);
+}
+
+// ─── PDF EXPORT ───────────────────────────────────────────────────────────────
+function openExportPDF() {
+  const d   = DESTINATIONS[currentDest] || DESTINATIONS.bali;
+  const L   = LANGS[currentLang] || LANGS.zh;
+  const _gl = v => (typeof v === 'object' && v !== null) ? (v[currentLang] || v.zh || '') : (v || '');
+
+  // ── dates ──────────────────────────────────────────────────────────────────
+  let dateStr = L.chipDatePending || 'TBD';
+  if (currentTripStart) {
+    const sd = new Date(currentTripStart + 'T00:00:00');
+    const ed = new Date(sd); ed.setDate(ed.getDate() + currentTripDays - 1);
+    const fmt = dt => `${dt.getMonth()+1}/${dt.getDate()}`;
+    dateStr = `${currentTripStart} – ${ed.getFullYear()}-${String(ed.getMonth()+1).padStart(2,'0')}-${String(ed.getDate()).padStart(2,'0')}`;
+  }
+
+  // ── itinerary timeline ────────────────────────────────────────────────────
+  let itinHtml = '';
+  if (d.itinerary && d.itinerary.length) {
+    itinHtml = d.itinerary.map(item => {
+      let dayDate = '';
+      if (currentTripStart) {
+        const sd = new Date(currentTripStart + 'T00:00:00');
+        sd.setDate(sd.getDate() + (item.dayStart || 0));
+        const m = sd.getMonth()+1, n = sd.getDate();
+        if (item.dayEnd !== undefined) {
+          const ed = new Date(currentTripStart + 'T00:00:00');
+          ed.setDate(ed.getDate() + item.dayEnd);
+          dayDate = ` · ${m}/${n}–${ed.getDate()}`;
+        } else { dayDate = ` · ${m}/${n}`; }
+      }
+      return `<div class="pdf-day">
+        <div class="pdf-dot" style="background:${item.color}">${item.icon}</div>
+        <div class="pdf-day-body">
+          <div class="pdf-day-label">${item.dayLabel}${dayDate}</div>
+          <div class="pdf-day-title">${item.title}</div>
+          <div class="pdf-day-desc">${item.desc}</div>
+        </div>
+      </div>`;
+    }).join('');
+  }
+
+  // ── AI conversation highlights (last 4 AI msgs) ───────────────────────────
+  const mdToHtml = s => s
+    .replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')
+    .replace(/\*\*(.*?)\*\*/g,'<strong>$1</strong>')
+    .replace(/^###? (.+)$/gm,'<div class="pdf-h3">$1</div>')
+    .replace(/^## (.+)$/gm,'<div class="pdf-h2">$1</div>')
+    .replace(/^- (.+)$/gm,'<li>$1</li>')
+    .replace(/\n{2,}/g,'</p><p>').replace(/\n/g,' ');
+
+  let chatHtml = '';
+  const aiMsgs = history.filter(m => m.role === 'assistant').slice(-4);
+  if (aiMsgs.length) {
+    chatHtml = aiMsgs.map((m,i) => {
+      const txt = m.content.length > 800 ? m.content.slice(0,800)+'…' : m.content;
+      return `<div class="pdf-chat-item"><div class="pdf-chat-num">${i+1}</div><div class="pdf-chat-txt"><p>${mdToHtml(txt)}</p></div></div>`;
+    }).join('');
+  }
+
+  // ── driver card (Bali only) ───────────────────────────────────────────────
+  let driverHtml = '';
+  if (currentDest === 'bali') {
+    const dr = d.tips?.find(t => t.driver);
+    if (dr) {
+      const c = dr.contacts;
+      driverHtml = `<div class="pdf-driver">
+        <div class="pdf-driver-head">🚗 ${_gl(dr.title)}</div>
+        <div class="pdf-driver-desc">${_gl(dr.desc)}</div>
+        <div class="pdf-driver-row">📱 WhatsApp: <strong>${c.whatsapp}</strong></div>
+        <div class="pdf-driver-row">📕 小红书 / Xiaohongshu: <strong>${c.xhs}</strong></div>
+        <div class="pdf-driver-row">💬 WeChat: <strong>${c.wechat}</strong></div>
+      </div>`;
+    }
+  }
+
+  // ── mobile hint ───────────────────────────────────────────────────────────
+  const mobileHint = {
+    zh:'📱 手机用户：点击分享按钮 → 打印 → 存储为 PDF（iOS）；或菜单 → 打印 → 另存为 PDF（Android）',
+    en:'📱 Mobile: Share → Print → Save as PDF (iOS); Menu → Print → Save as PDF (Android)',
+    ja:'📱 スマホ: 共有 → 印刷 → PDFとして保存 (iOS); メニュー → 印刷 → PDFで保存 (Android)',
+    ko:'📱 모바일: 공유 → 인쇄 → PDF로 저장 (iOS); 메뉴 → 인쇄 → PDF로 저장 (Android)',
+    id:'📱 Ponsel: Bagikan → Cetak → Simpan sebagai PDF (iOS); Menu → Cetak → Simpan PDF (Android)',
+  }[currentLang] || mobileHint?.en || '';
+
+  // ── dest title (plain text) ───────────────────────────────────────────────
+  const destTitleRaw = (d.titles?.[currentLang] || d.title || d.name).replace(/<[^>]+>/g,' ').replace(/\s+/g,' ').trim();
+  const today = new Date().toISOString().slice(0,10);
+
+  // ── generate full HTML document ───────────────────────────────────────────
+  const html = `<!DOCTYPE html>
+<html lang="${currentLang}">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>${d.flag} ${d.name} · WanderMind</title>
+<style>
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','Noto Sans SC','Noto Sans JP','Noto Sans KR',sans-serif;color:#1a1a1a;background:#fff;padding:0}
+  .pdf-page{max-width:680px;margin:0 auto;padding:32px 28px}
+  /* Header */
+  .pdf-header{display:flex;align-items:center;gap:16px;padding-bottom:20px;border-bottom:2.5px solid #2DB89C;margin-bottom:20px}
+  .pdf-flag{font-size:48px;line-height:1}
+  .pdf-header-text h1{font-size:22px;font-weight:800;color:#1a1a1a;margin-bottom:2px}
+  .pdf-header-text .brand{font-size:11px;color:#888;letter-spacing:.08em;text-transform:uppercase}
+  /* Meta strip */
+  .pdf-meta{display:flex;flex-wrap:wrap;gap:10px 20px;font-size:12px;color:#444;padding:12px 14px;background:#F7F9F8;border-radius:8px;margin-bottom:24px}
+  .pdf-meta span{display:flex;align-items:center;gap:4px}
+  /* Section */
+  .pdf-section-title{font-size:13px;font-weight:700;color:#2DB89C;text-transform:uppercase;letter-spacing:.08em;margin:22px 0 10px;padding-bottom:4px;border-bottom:1px solid #e8f5f2}
+  /* Day items */
+  .pdf-day{display:flex;gap:12px;margin-bottom:12px;align-items:flex-start}
+  .pdf-dot{width:34px;height:34px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0}
+  .pdf-day-body{}
+  .pdf-day-label{font-size:10px;color:#888;font-weight:600;text-transform:uppercase;letter-spacing:.06em}
+  .pdf-day-title{font-size:13px;font-weight:700;color:#1a1a1a;margin:1px 0 2px}
+  .pdf-day-desc{font-size:11px;color:#555;line-height:1.5}
+  /* Chat */
+  .pdf-chat-item{display:flex;gap:10px;margin-bottom:14px;padding:10px 12px;border-left:3px solid #2DB89C;background:#fafffe;border-radius:0 6px 6px 0}
+  .pdf-chat-num{width:20px;height:20px;border-radius:50%;background:#2DB89C;color:#fff;font-size:10px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:2px}
+  .pdf-chat-txt{font-size:11px;color:#333;line-height:1.6}
+  .pdf-chat-txt p{margin-bottom:6px}.pdf-chat-txt p:last-child{margin:0}
+  .pdf-h2{font-size:12px;font-weight:700;color:#2DB89C;margin:4px 0 2px}
+  .pdf-h3{font-size:11px;font-weight:600;color:#444;margin:3px 0 1px}
+  ul{padding-left:16px;margin:2px 0}li{margin-bottom:2px}
+  /* Driver */
+  .pdf-driver{margin-top:20px;padding:14px 16px;border:1.5px solid #2DB89C;border-radius:10px;background:#f0fbf8}
+  .pdf-driver-head{font-size:13px;font-weight:700;color:#1a1a1a;margin-bottom:6px}
+  .pdf-driver-desc{font-size:11px;color:#555;margin-bottom:8px}
+  .pdf-driver-row{font-size:11px;color:#333;margin-bottom:3px}
+  /* Footer */
+  .pdf-footer{margin-top:28px;padding-top:14px;border-top:1px solid #e5e5e5;font-size:10px;color:#aaa;text-align:center}
+  .pdf-mobile-hint{margin-top:16px;padding:10px 14px;background:#fff8e6;border:1px solid #f0d070;border-radius:8px;font-size:11px;color:#6b5500;line-height:1.5}
+  .no-print{display:block}
+  @media print{
+    body{padding:0}
+    .pdf-page{max-width:100%;padding:16px 20px}
+    .no-print{display:none !important}
+    .pdf-driver{break-inside:avoid}
+    .pdf-day{break-inside:avoid}
+  }
+</style>
+</head>
+<body>
+<div class="pdf-page">
+  <!-- Header -->
+  <div class="pdf-header">
+    <div class="pdf-flag">${d.flag}</div>
+    <div class="pdf-header-text">
+      <h1>${destTitleRaw}</h1>
+      <div class="brand">WanderMind · AI Travel Planner · ${today}</div>
+    </div>
+  </div>
+
+  <!-- Meta -->
+  <div class="pdf-meta">
+    <span>📅 ${dateStr}</span>
+    <span>👥 ${currentTripPeople}${currentLang==='en'?' people':currentLang==='ja'?'名':currentLang==='ko'?'명':currentLang==='id'?' orang':'人'}</span>
+    <span>🗓️ ${currentTripDays}${currentLang==='en'?' days':currentLang==='ja'?'日間':currentLang==='ko'?'일':currentLang==='id'?' hari':'天'}</span>
+    ${currentTripBudget ? `<span>💰 ¥${Number(currentTripBudget).toLocaleString()}</span>` : ''}
+    <span>${d.weather?.icon||'🌤️'} ${_gl(d.weather?.cond)||''} ${d.weather?.temp||''}</span>
+    <span>${_gl(d.season)||''} · ${_gl(d.seasonDesc)||''}</span>
+    <span>💱 ${d.rate||''}</span>
+  </div>
+
+  <!-- Print button (hidden when printing) -->
+  <div class="no-print" style="margin-bottom:18px;display:flex;gap:10px;align-items:center">
+    <button onclick="window.print()" style="padding:10px 22px;background:#2DB89C;color:#fff;border:none;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer">🖨️ ${
+      {zh:'打印 / 存储为 PDF',en:'Print / Save as PDF',ja:'印刷 / PDFとして保存',ko:'인쇄 / PDF로 저장',id:'Cetak / Simpan PDF'}[currentLang]||'Print / Save as PDF'
+    }</button>
+    <button onclick="window.close()" style="padding:10px 16px;background:#f3f3f3;color:#555;border:none;border-radius:8px;font-size:13px;cursor:pointer">${
+      {zh:'关闭',en:'Close',ja:'閉じる',ko:'닫기',id:'Tutup'}[currentLang]||'Close'
+    }</button>
+  </div>
+
+  <!-- Itinerary -->
+  ${itinHtml ? `<div class="pdf-section-title">${{zh:'行程时间轴',en:'Itinerary Timeline',ja:'旅程タイムライン',ko:'일정 타임라인',id:'Timeline Perjalanan'}[currentLang]||'Itinerary'}</div>${itinHtml}` : ''}
+
+  <!-- AI Chat Highlights -->
+  ${chatHtml ? `<div class="pdf-section-title">${{zh:'AI 行程建议',en:'AI Recommendations',ja:'AI 旅行アドバイス',ko:'AI 추천 내용',id:'Rekomendasi AI'}[currentLang]||'AI Recommendations'}</div>${chatHtml}` : ''}
+
+  <!-- Driver -->
+  ${driverHtml}
+
+  <!-- Mobile hint -->
+  <div class="pdf-mobile-hint no-print">${mobileHint}</div>
+
+  <!-- Footer -->
+  <div class="pdf-footer">
+    ${{zh:'由 WanderMind 游心 · AI 多智能体旅行平台生成',en:'Generated by WanderMind · AI Multi-Agent Travel Platform',ja:'WanderMind · AIマルチエージェント旅行プラットフォームで生成',ko:'WanderMind · AI 멀티 에이전트 여행 플랫폼에서 생성',id:'Dibuat oleh WanderMind · Platform Perjalanan AI Multi-Agen'}[currentLang]||'Generated by WanderMind'} · ${today}
+  </div>
+</div>
+</body>
+</html>`;
+
+  const win = window.open('', '_blank', 'width=780,height=900');
+  if (!win) { alert('请允许弹出窗口以导出 PDF / Please allow popups to export PDF'); return; }
+  win.document.write(html);
+  win.document.close();
 }
 
 function renderWelcomeMsg(id) {
@@ -3776,7 +3977,7 @@ const LANGS = {
     panelTabs:['目的地','行程','预算','Agent日志'],
     rateLabel:'实时汇率',
     destTabSections:{regions:'推荐区域', tips:'旅行必知'},
-    itineraryTitle:'7日行程概览', deepCustom:'✨ AI 深度定制行程',
+    itineraryTitle:'7日行程概览', deepCustom:'✨ AI 深度定制行程', exportPDFBtn:'📄 导出行程 PDF',
     budgetTitle:'预算追踪 · 2人7天', budgetTotal:'总预算', budgetPlanned:'已规划 (34%)',
     budgetCats:'费用分类', budgetOptimize:'💡 AI 预算优化',
     logTitle:'实时日志', logClear:'清空', agentStatTitle:'Agent 状态',
@@ -3862,7 +4063,7 @@ const LANGS = {
     panelTabs:['Destination','Itinerary','Budget','Agent Log'],
     rateLabel:'Exchange Rate',
     destTabSections:{regions:'Recommended Areas', tips:'Travel Essentials'},
-    itineraryTitle:'7-Day Overview', deepCustom:'✨ AI Custom Itinerary',
+    itineraryTitle:'7-Day Overview', deepCustom:'✨ AI Custom Itinerary', exportPDFBtn:'📄 Export PDF',
     budgetTitle:'Budget Tracker · 2 people · 7 days', budgetTotal:'Total Budget', budgetPlanned:'Planned (34%)',
     budgetCats:'Cost Breakdown', budgetOptimize:'💡 AI Budget Optimize',
     logTitle:'Live Log', logClear:'Clear', agentStatTitle:'Agent Status',
@@ -3948,7 +4149,7 @@ const LANGS = {
     panelTabs:['目的地','旅程','予算','エージェントログ'],
     rateLabel:'為替レート',
     destTabSections:{regions:'おすすめエリア', tips:'旅行の必須情報'},
-    itineraryTitle:'7日間の概要', deepCustom:'✨ AIカスタム旅程',
+    itineraryTitle:'7日間の概要', deepCustom:'✨ AIカスタム旅程', exportPDFBtn:'📄 PDF 出力',
     budgetTitle:'予算トラッカー · 2名 · 7日間', budgetTotal:'総予算', budgetPlanned:'計画済み (34%)',
     budgetCats:'費用内訳', budgetOptimize:'💡 AI予算最適化',
     logTitle:'リアルタイムログ', logClear:'クリア', agentStatTitle:'エージェント状態',
@@ -4034,7 +4235,7 @@ const LANGS = {
     panelTabs:['여행지','일정','예산','에이전트 로그'],
     rateLabel:'환율',
     destTabSections:{regions:'추천 지역', tips:'여행 필수 정보'},
-    itineraryTitle:'7일 일정 개요', deepCustom:'✨ AI 맞춤 일정',
+    itineraryTitle:'7일 일정 개요', deepCustom:'✨ AI 맞춤 일정', exportPDFBtn:'📄 PDF 내보내기',
     budgetTitle:'예산 추적 · 2인 · 7일', budgetTotal:'총 예산', budgetPlanned:'계획됨 (34%)',
     budgetCats:'비용 분류', budgetOptimize:'💡 AI 예산 최적화',
     logTitle:'실시간 로그', logClear:'지우기', agentStatTitle:'에이전트 상태',
@@ -4120,7 +4321,7 @@ const LANGS = {
     panelTabs:['Destinasi','Itinerary','Anggaran','Log Agen'],
     rateLabel:'Nilai Tukar',
     destTabSections:{regions:'Area yang Direkomendasikan', tips:'Info Penting Perjalanan'},
-    itineraryTitle:'Gambaran 7 Hari', deepCustom:'✨ Itinerary Kustom AI',
+    itineraryTitle:'Gambaran 7 Hari', deepCustom:'✨ Itinerary Kustom AI', exportPDFBtn:'📄 Ekspor PDF',
     budgetTitle:'Pelacak Anggaran · 2 orang · 7 hari', budgetTotal:'Total Anggaran', budgetPlanned:'Direncanakan (34%)',
     budgetCats:'Rincian Biaya', budgetOptimize:'💡 Optimasi Anggaran AI',
     logTitle:'Log Real-time', logClear:'Hapus', agentStatTitle:'Status Agen',
@@ -4355,6 +4556,8 @@ function applyLang(lang) {
   renderItinerary(currentDest, currentTripStart);
   const deepBtn = document.querySelector('#panel-itinerary .panel-action-btn');
   if (deepBtn) deepBtn.textContent = L.deepCustom;
+  const exportBtn = document.getElementById('panel-export-pdf-btn');
+  if (exportBtn) exportBtn.textContent = L.exportPDFBtn || '📄 导出行程 PDF';
 
   // ── Re-render budget panel ───────────────────────────────────────────────────
   renderBudgetPanel();
