@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>WanderMind · 游心 — AI 多智能体旅行平台</title>
-<!-- BUILD: v0.4.2 2026-05-31 no-autosend stop-btn custom-city -->
+<!-- BUILD: v0.5.0 2026-06-01 full-i18n-all-panels -->
 <!-- PWA -->
 <link rel="manifest" href="/manifest.json">
 <meta name="theme-color" content="#0E7C6B">
@@ -2149,6 +2149,7 @@ const DESTINATIONS = {
   bali: {
     flag:'🌺', name:'巴厘岛', region:'印度尼西亚',
     title:'巴厘岛 · 神之岛<em>深度旅行</em>', eyebrow:'🌺 正在规划',
+    titles:{zh:'巴厘岛 · 神之岛<em>深度旅行</em>',en:'Bali · Island of Gods<em>Deep Journey</em>',ja:'バリ島 · 神の島<em>深い旅</em>',ko:'발리 · 신의 섬<em>깊은 여행</em>',id:'Bali · Pulau Dewata<em>Perjalanan Mendalam</em>'},
     weather:{temp:'29°C',cond:'巴厘岛 · 乌布 · 晴间多云',icon:'⛅',details:'💧 湿度 72% · 💨 14km/h · 🌅 06:14'},
     rate:'¥1≈2,200', season:'旺季', seasonDesc:'6月为旱季',
     regions:[
@@ -2180,6 +2181,7 @@ const DESTINATIONS = {
   kyoto: {
     flag:'🌸', name:'京都', region:'日本',
     title:'京都 · 千年古都<em>文化之旅</em>', eyebrow:'🌸 正在规划',
+    titles:{zh:'京都 · 千年古都<em>文化之旅</em>',en:'Kyoto · Ancient Capital<em>Cultural Journey</em>',ja:'京都 · 千年の古都<em>文化の旅</em>',ko:'교토 · 천년 고도<em>문화 여행</em>',id:'Kyoto · Ibu Kota Kuno<em>Perjalanan Budaya</em>'},
     weather:{temp:'24°C',cond:'京都 · 晴天',icon:'☀️',details:'💧 湿度 58% · 💨 8km/h · 🌅 05:02'},
     rate:'¥1≈21', season:'初夏', seasonDesc:'6月微雨季节',
     regions:[
@@ -2211,6 +2213,7 @@ const DESTINATIONS = {
   paris: {
     flag:'🗼', name:'巴黎', region:'法国',
     title:'巴黎 · 光之城<em>浪漫之旅</em>', eyebrow:'🗼 正在规划',
+    titles:{zh:'巴黎 · 光之城<em>浪漫之旅</em>',en:'Paris · City of Light<em>Romantic Journey</em>',ja:'パリ · 光の都<em>ロマンチックな旅</em>',ko:'파리 · 빛의 도시<em>낭만 여행</em>',id:'Paris · Kota Cahaya<em>Perjalanan Romantis</em>'},
     weather:{temp:'21°C',cond:'巴黎 · 部分多云',icon:'⛅',details:'💧 湿度 65% · 💨 12km/h · 🌅 06:01'},
     rate:'¥1≈0.13€', season:'旺季', seasonDesc:'6月最佳季节',
     regions:[
@@ -2242,6 +2245,7 @@ const DESTINATIONS = {
   santorini: {
     flag:'🏝️', name:'圣托里尼', region:'希腊',
     title:'圣托里尼 · 爱琴海<em>蓝白梦境</em>', eyebrow:'🏝️ 正在规划',
+    titles:{zh:'圣托里尼 · 爱琴海<em>蓝白梦境</em>',en:'Santorini · Aegean Sea<em>Blue &amp; White Dream</em>',ja:'サントリーニ · エーゲ海<em>白と青の夢</em>',ko:'산토리니 · 에게해<em>파랑과 흰색의 꿈</em>',id:'Santorini · Laut Aegea<em>Mimpi Biru &amp; Putih</em>'},
     weather:{temp:'26°C',cond:'圣托里尼 · 晴朗',icon:'☀️',details:'💧 湿度 55% · 💨 18km/h · 🌅 06:24'},
     rate:'¥1≈0.13€', season:'旺季', seasonDesc:'6–8月最美',
     regions:[
@@ -2568,11 +2572,12 @@ function renderDestPanel(id) {
           </div>`
         ).join('');
     } else {
+      const exploreText = (L.emptyExploreDest || '探索 {dest}').replace('{dest}', d.name);
       regEl.innerHTML = `<div class="panel-section-title">${L.destTabSections?.regions || '推荐区域'}</div>
         <div class="trip-empty" style="padding:18px 0">
           <div class="trip-empty-icon">🔍</div>
-          <div class="trip-empty-text">探索 ${d.name}</div>
-          <div class="trip-empty-sub">向 AI 询问当地区域特色和推荐地点</div>
+          <div class="trip-empty-text">${exploreText}</div>
+          <div class="trip-empty-sub">${L.emptyExploreHint || '向 AI 询问当地区域特色和推荐地点'}</div>
         </div>`;
     }
   }
@@ -2592,8 +2597,8 @@ function renderDestPanel(id) {
       tipsEl.innerHTML = `<div class="panel-section-title">${L.destTabSections?.tips || '旅行必知'}</div>
         <div class="trip-empty" style="padding:18px 0">
           <div class="trip-empty-icon">💡</div>
-          <div class="trip-empty-text">旅行贴士待加载</div>
-          <div class="trip-empty-sub">与 AI 对话后可获取目的地实用建议</div>
+          <div class="trip-empty-text">${L.emptyTipsText || '旅行贴士待加载'}</div>
+          <div class="trip-empty-sub">${L.emptyTipsHint || '与 AI 对话后可获取目的地实用建议'}</div>
         </div>`;
     }
   }
@@ -2601,10 +2606,18 @@ function renderDestPanel(id) {
 
 function renderItinerary(id, startDate) {
   const d = DESTINATIONS[id] || DESTINATIONS.bali;
+  const L = LANGS[currentLang] || LANGS.zh;
   const days = currentTripDays;
 
   const titleEl = document.getElementById('panel-itinerary-title');
-  if (titleEl) titleEl.textContent = startDate ? `${days}日行程概览` : '行程规划';
+  if (titleEl) {
+    if (startDate) {
+      const tpl = L.itineraryTitle || '7日行程概览';
+      titleEl.textContent = tpl.replace(/^\d+/, String(days));
+    } else {
+      titleEl.textContent = L.itinEmpty || '行程规划';
+    }
+  }
 
   const tlEl = document.getElementById('panel-timeline');
   if (!tlEl) return;
@@ -2613,9 +2626,9 @@ function renderItinerary(id, startDate) {
   if (!startDate) {
     tlEl.innerHTML = `<div class="trip-empty" style="padding:24px 0 16px">
       <div class="trip-empty-icon">🗓️</div>
-      <div class="trip-empty-text">还没有行程安排</div>
-      <div class="trip-empty-sub">新建行程并选择日期后，这里将显示完整行程时间轴</div>
-      <button onclick="openNewTrip()" style="margin-top:14px;padding:8px 16px;background:var(--teal);color:white;border:none;border-radius:8px;font-size:12px;cursor:pointer;font-family:inherit">＋ 新建行程</button>
+      <div class="trip-empty-text">${L.itinEmpty || '还没有行程安排'}</div>
+      <div class="trip-empty-sub">${L.itinEmptyHint || '新建行程并选择日期后，这里将显示完整行程时间轴'}</div>
+      <button onclick="openNewTrip()" style="margin-top:14px;padding:8px 16px;background:var(--teal);color:white;border:none;border-radius:8px;font-size:12px;cursor:pointer;font-family:inherit">${L.addTripBtn || '＋ 新建行程'}</button>
     </div>`;
     return;
   }
@@ -2650,36 +2663,38 @@ function renderItinerary(id, startDate) {
 function renderBudgetPanel() {
   const panel = document.getElementById('panel-budget');
   if (!panel) return;
+  const L = LANGS[currentLang] || LANGS.zh;
   if (!currentTripStart) {
     panel.innerHTML = `
       <div class="trip-empty" style="padding:40px 0">
         <div class="trip-empty-icon">💰</div>
-        <div class="trip-empty-text">暂无预算数据</div>
-        <div class="trip-empty-sub">新建行程并填写预算后，<br>这里将显示费用追踪</div>
-        <button onclick="openNewTrip()" style="margin-top:14px;padding:8px 18px;background:var(--teal);color:white;border:none;border-radius:8px;font-size:12px;cursor:pointer;font-family:inherit">＋ 新建行程</button>
+        <div class="trip-empty-text">${L.budgetEmpty || '暂无预算数据'}</div>
+        <div class="trip-empty-sub">${L.budgetEmptyHint || '新建行程并填写预算后，<br>这里将显示费用追踪'}</div>
+        <button onclick="openNewTrip()" style="margin-top:14px;padding:8px 18px;background:var(--teal);color:white;border:none;border-radius:8px;font-size:12px;cursor:pointer;font-family:inherit">${L.addTripBtn || '＋ 新建行程'}</button>
       </div>`;
     return;
   }
-  const destName = DESTINATIONS[currentDest]?.name || currentDest;
   const nights = currentTripDays;
+  const headerTpl = L.budgetTrackerTpl || '预算追踪 · {p}人{d}天';
+  const headerTxt = headerTpl.replace('{p}', currentTripPeople).replace('{d}', nights);
   panel.innerHTML = `
-    <div class="panel-section-title" id="panel-budget-header" style="margin-bottom:10px">预算追踪 · ${currentTripPeople}人${nights}天</div>
+    <div class="panel-section-title" id="panel-budget-header" style="margin-bottom:10px">${headerTxt}</div>
     <div class="budget-total">
       <div class="stat-card" style="background:var(--paper-2)">
         <div class="stat-val" id="budget-total-val">¥${Number(currentTripBudget).toLocaleString()}</div>
-        <div class="stat-lbl">总预算</div>
+        <div class="stat-lbl">${L.budgetTotalLabel || '总预算'}</div>
       </div>
       <div class="stat-card" style="background:var(--paper-2)">
-        <div class="stat-val" style="color:var(--teal)" id="budget-planned-val">待规划</div>
-        <div class="stat-lbl">已规划</div>
+        <div class="stat-val" style="color:var(--teal)" id="budget-planned-val">${L.budgetPendingLabel || '待规划'}</div>
+        <div class="stat-lbl">${L.budgetPlannedLabel || '已规划'}</div>
       </div>
     </div>
-    <div class="panel-section-title" style="margin-top:12px">费用分类</div>
+    <div class="panel-section-title" style="margin-top:12px">${L.budgetCatLabel || '费用分类'}</div>
     <div style="background:var(--paper-2);border-radius:10px;padding:14px 16px;font-size:12px;color:var(--ink-3);line-height:1.7;margin-bottom:10px">
-      💡 <strong style="color:var(--ink-2)">AI 预算分析就绪</strong><br>
-      向 AI 询问预算方案后，可在此追踪机票、住宿、餐饮、活动各项支出
+      💡 <strong style="color:var(--ink-2)">${L.budgetAIReadyTitle || 'AI 预算分析就绪'}</strong><br>
+      ${L.budgetAIReadyHint || '向 AI 询问预算方案后，可在此追踪机票、住宿、餐饮、活动各项支出'}
     </div>
-    <button class="panel-action-btn" id="panel-budget-ai-btn" onclick="askBudgetAI()">💡 AI 生成预算分析</button>`;
+    <button class="panel-action-btn" id="panel-budget-ai-btn" onclick="askBudgetAI()">${L.budgetAIBtn || '💡 AI 生成预算分析'}</button>`;
 }
 
 function askBudgetAI() {
@@ -2689,6 +2704,7 @@ function askBudgetAI() {
 
 function renderWelcomeMsg(id) {
   const d = DESTINATIONS[id] || DESTINATIONS.bali;
+  const L = LANGS[currentLang] || LANGS.zh;
   const msgEl = document.getElementById('messages');
   if (!msgEl) return;
 
@@ -2698,18 +2714,26 @@ function renderWelcomeMsg(id) {
   ).join('');
 
   const isFirst = (id === 'bali' && !currentTripStart);
-  const bodyTxt = isFirst
-    ? `你好！我是你的<strong>WanderMind 旅行伴侣</strong> ${d.flag}<br><br>我已激活 <strong>6个专属智能体</strong>，随时协同工作——联网搜索已启用，可实时获取最新资讯、天气、航班动态。<br><br>你可以问我任何关于目的地的问题，或者直接告诉我你的旅行想法：`
-    : `已切换至 <strong>${d.flag} ${d.name}</strong>。6个智能体已就绪，为您加载${d.name}专属旅行数据。<br><br>请告诉我您想了解什么：`;
+  let bodyTxt;
+  if (isFirst) {
+    const tpl = L.welcomeMsg || '你好！我是你的<strong>WanderMind 旅行伴侣</strong> {flag}<br><br>我已激活 <strong>6个专属智能体</strong>，随时协同工作——联网搜索已启用，可实时获取最新资讯、天气、航班动态。<br><br>你可以问我任何关于目的地的问题，或者直接告诉我你的旅行想法：';
+    bodyTxt = tpl.replace('{flag}', d.flag);
+  } else {
+    const tpl = L.welcomeSwitchedMsg || '已切换至 <strong>{flag} {name}</strong>。6个智能体已就绪，为您加载{name}专属旅行数据。<br><br>请告诉我您想了解什么：';
+    bodyTxt = tpl.replace(/\{flag\}/g, d.flag).replace(/\{name\}/g, d.name);
+  }
+
+  const agentLabel = L.agentLabelPlanner || '🗺️ 旅程规划师';
+  const timeLabel  = L.timeJustNow      || '刚刚';
 
   msgEl.innerHTML = `
     <div class="msg ai fade-in">
       <div class="msg-avatar ai">W</div>
       <div class="msg-body">
-        <div class="agent-label" style="color:var(--teal)">🗺️ 旅程规划师</div>
+        <div class="agent-label" style="color:var(--teal)">${agentLabel}</div>
         <div class="bubble ai">${bodyTxt}</div>
         <div class="chips-wrap">${chipsHtml}</div>
-        <div class="msg-time">刚刚</div>
+        <div class="msg-time">${timeLabel}</div>
       </div>
     </div>`;
 }
@@ -2754,10 +2778,15 @@ function switchDest(id, flag, name, e) {
   }
   currentDest = id;
   const d = DESTINATIONS[id];
+  const _CL = LANGS[currentLang] || LANGS.zh;
   document.getElementById('dest-flag').textContent    = flag;
   document.getElementById('dest-name-nav').textContent = name;
-  document.getElementById('dest-title').innerHTML      = d.title;
-  document.getElementById('dest-eyebrow').textContent  = d.eyebrow;
+  // Use translated title if available
+  document.getElementById('dest-title').innerHTML = (d.titles && d.titles[currentLang]) ? d.titles[currentLang] : d.title;
+  // Build eyebrow from flag + localized "planning" text
+  const _eyebrowFlag = flag || d.flag || '📍';
+  const _planningTxt = (id === 'custom') ? (_CL.destCustomEyebrow || '自定义目的地') : (_CL.destPlanning || '正在规划');
+  document.getElementById('dest-eyebrow').textContent = _eyebrowFlag + ' ' + _planningTxt;
   document.getElementById('w-temp').textContent        = d.weather.temp;
   document.getElementById('w-cond').textContent        = d.weather.cond;
   document.getElementById('w-icon').textContent        = d.weather.icon;
@@ -3517,7 +3546,34 @@ const LANGS = {
     agentNames:['旅程规划师','住宿顾问','美食探索家','活动策划师','预算管家','实时搜索'],
     agentDescs:['行程设计 · 路线优化','已加载 75 家酒店','本地餐厅 · 隐藏小馆','冲浪 · 瑜伽 · 文化游','费用预测 · 实时汇率','联网 · 最新资讯'],
     badgeOn:'运行中', badgeReady:'就绪', badgeIdle:'待机',
-    welcomeMsg:'你好！我是你的<strong>WanderMind 旅行伴侣</strong> 🌺<br><br>我已激活 <strong>6个专属智能体</strong>，随时协同工作——联网搜索已启用，可实时获取最新资讯、天气、航班动态。<br><br>你可以问我任何关于目的地的问题，或者直接告诉我你的旅行想法：',
+    welcomeMsg:'你好！我是你的<strong>WanderMind 旅行伴侣</strong> {flag}<br><br>我已激活 <strong>6个专属智能体</strong>，随时协同工作——联网搜索已启用，可实时获取最新资讯、天气、航班动态。<br><br>你可以问我任何关于目的地的问题，或者直接告诉我你的旅行想法：',
+    welcomeSwitchedMsg:'已切换至 <strong>{flag} {name}</strong>。6个智能体已就绪，为您加载{name}专属旅行数据。<br><br>请告诉我您想了解什么：',
+    agentLabelPlanner:'🗺️ 旅程规划师',
+    timeJustNow:'刚刚',
+    destPlanning:'正在规划',
+    destCustomEyebrow:'自定义目的地',
+    chipDatePending:'出发日期待定',
+    chipNightsPending:'行程待定',
+    chipAgentSync:'Agent 协同',
+    noTrips:'还没有行程',
+    noTripsHint:'点击下方按钮新建第一个旅行计划',
+    emptyExploreDest:'探索 {dest}',
+    emptyExploreHint:'向 AI 询问当地区域特色和推荐地点',
+    emptyTipsText:'旅行贴士待加载',
+    emptyTipsHint:'与 AI 对话后可获取目的地实用建议',
+    itinEmpty:'还没有行程安排',
+    itinEmptyHint:'新建行程并选择日期后，这里将显示完整行程时间轴',
+    budgetEmpty:'暂无预算数据',
+    budgetEmptyHint:'新建行程并填写预算后，<br>这里将显示费用追踪',
+    budgetTrackerTpl:'预算追踪 · {p}人{d}天',
+    budgetTotalLabel:'总预算',
+    budgetPlannedLabel:'已规划',
+    budgetPendingLabel:'待规划',
+    budgetCatLabel:'费用分类',
+    budgetAIReadyTitle:'AI 预算分析就绪',
+    budgetAIReadyHint:'向 AI 询问预算方案后，可在此追踪机票、住宿、餐饮、活动各项支出',
+    budgetAIBtn:'💡 AI 生成预算分析',
+    addTripBtn:'＋ 新建行程',
     suggChips:['🏨 乌布精品民宿','🌊 冲浪地点推荐','🍜 必吃美食清单','💰 预算规划','🕌 文化礼仪'],
     suggCmds:['推荐乌布最好的精品民宿，预算中等','巴厘岛最佳冲浪地点和适合新手的冲浪课','巴厘岛必吃地道美食清单','两人7天巴厘岛旅行，分节俭/舒适/豪华三档预算','巴厘岛文化礼仪和注意事项'],
     destMenuItems:['🌺 巴厘岛 · 印度尼西亚','🌸 京都 · 日本','🗼 巴黎 · 法国','🏝️ 圣托里尼 · 希腊','✨ 输入其他目的地…'],
@@ -3575,7 +3631,34 @@ const LANGS = {
     agentNames:['Trip Planner','Accommodation Advisor','Food Explorer','Activity Planner','Budget Manager','Live Search'],
     agentDescs:['Itinerary & route design','75 hotels loaded','Local restaurants & hidden gems','Surf · Yoga · Culture tours','Cost forecast · Live rates','Online · Latest news'],
     badgeOn:'Active', badgeReady:'Ready', badgeIdle:'Idle',
-    welcomeMsg:'Hi! I\'m your <strong>WanderMind Travel Companion</strong> 🌺<br><br>I\'ve activated <strong>6 specialized agents</strong> working in sync — live search is enabled for real-time info on weather, flights, and local events.<br><br>Ask me anything about your destination, or tell me your travel dream:',
+    welcomeMsg:'Hi! I\'m your <strong>WanderMind Travel Companion</strong> {flag}<br><br>I\'ve activated <strong>6 specialized agents</strong> working in sync — live search is enabled for real-time info on weather, flights, and local events.<br><br>Ask me anything about your destination, or tell me your travel dream:',
+    welcomeSwitchedMsg:'Switched to <strong>{flag} {name}</strong>. All 6 agents are ready with {name}-specific travel data.<br><br>What would you like to know?',
+    agentLabelPlanner:'🗺️ Trip Planner',
+    timeJustNow:'just now',
+    destPlanning:'Planning',
+    destCustomEyebrow:'Custom destination',
+    chipDatePending:'Departure TBD',
+    chipNightsPending:'Itinerary TBD',
+    chipAgentSync:'Agents synced',
+    noTrips:'No trips yet',
+    noTripsHint:'Click below to plan your first trip',
+    emptyExploreDest:'Explore {dest}',
+    emptyExploreHint:'Ask AI about local areas and must-visit spots',
+    emptyTipsText:'Travel tips loading…',
+    emptyTipsHint:'Chat with AI to get practical destination tips',
+    itinEmpty:'No itinerary yet',
+    itinEmptyHint:'Create a trip and set dates to see your full timeline',
+    budgetEmpty:'No budget data yet',
+    budgetEmptyHint:'Create a trip and add a budget<br>to track expenses here',
+    budgetTrackerTpl:'Budget Tracker · {p} people · {d} days',
+    budgetTotalLabel:'Total Budget',
+    budgetPlannedLabel:'Planned',
+    budgetPendingLabel:'Pending',
+    budgetCatLabel:'Cost Breakdown',
+    budgetAIReadyTitle:'AI Budget Analysis Ready',
+    budgetAIReadyHint:'Ask AI for a budget plan to track flights, hotels, food, and activities here',
+    budgetAIBtn:'💡 AI Budget Analysis',
+    addTripBtn:'＋ New Trip',
     suggChips:['🏨 Ubud Boutique Hotels','🌊 Best Surf Spots','🍜 Must-Try Local Food','💰 Budget Planning','🕌 Cultural Etiquette'],
     suggCmds:['Recommend the best boutique hotels in Ubud, mid-range budget','Best surf spots in Bali and beginner-friendly surf lessons','Must-try authentic local food in Bali','Budget planning for 2 people, 7 days in Bali — budget / comfort / luxury tiers','Cultural etiquette and important customs in Bali'],
     destMenuItems:['🌺 Bali · Indonesia','🌸 Kyoto · Japan','🗼 Paris · France','🏝️ Santorini · Greece','✨ Enter custom destination…'],
@@ -3633,7 +3716,34 @@ const LANGS = {
     agentNames:['旅程プランナー','宿泊アドバイザー','グルメ探索家','アクティビティプランナー','予算マネージャー','リアルタイム検索'],
     agentDescs:['旅程・ルート設計','ホテル75軒読込済','地元レストラン・穴場','サーフ・ヨガ・文化ツアー','費用予測・リアルタイムレート','オンライン・最新ニュース'],
     badgeOn:'稼働中', badgeReady:'準備完了', badgeIdle:'待機中',
-    welcomeMsg:'こんにちは！<strong>WanderMind トラベルコンパニオン</strong>です 🌺<br><br><strong>6つの専門エージェント</strong>が同時稼働中 — リアルタイム検索で最新の天気・フライト・現地情報を取得できます。<br><br>目的地について何でも聞いてください：',
+    welcomeMsg:'こんにちは！<strong>WanderMind トラベルコンパニオン</strong>です {flag}<br><br><strong>6つの専門エージェント</strong>が同時稼働中 — リアルタイム検索で最新の天気・フライト・現地情報を取得できます。<br><br>目的地について何でも聞いてください：',
+    welcomeSwitchedMsg:'<strong>{flag} {name}</strong>に切り替えました。6つのエージェントが{name}専用の旅行データを準備しました。<br><br>何でも聞いてください：',
+    agentLabelPlanner:'🗺️ 旅行プランナー',
+    timeJustNow:'たった今',
+    destPlanning:'計画中',
+    destCustomEyebrow:'カスタム目的地',
+    chipDatePending:'出発日未定',
+    chipNightsPending:'日程未定',
+    chipAgentSync:'エージェント協調',
+    noTrips:'まだ旅行がありません',
+    noTripsHint:'下のボタンをクリックして最初の旅行を計画しましょう',
+    emptyExploreDest:'{dest}を探索',
+    emptyExploreHint:'AIに現地エリアとおすすめスポットを聞いてください',
+    emptyTipsText:'旅行のヒントを読み込み中…',
+    emptyTipsHint:'AIとチャットして実用的な目的地のヒントを入手しましょう',
+    itinEmpty:'まだ旅程がありません',
+    itinEmptyHint:'旅行を作成して日付を設定すると、完全なタイムラインが表示されます',
+    budgetEmpty:'まだ予算データがありません',
+    budgetEmptyHint:'旅行を作成して予算を追加すると、<br>ここに費用が表示されます',
+    budgetTrackerTpl:'予算トラッカー · {p}名 · {d}日',
+    budgetTotalLabel:'総予算',
+    budgetPlannedLabel:'計画済み',
+    budgetPendingLabel:'未計画',
+    budgetCatLabel:'費用内訳',
+    budgetAIReadyTitle:'AI予算分析の準備完了',
+    budgetAIReadyHint:'AIに予算プランを聞いた後、航空券・ホテル・食事・アクティビティの費用をここで追跡できます',
+    budgetAIBtn:'💡 AI予算分析を生成',
+    addTripBtn:'＋ 新しい旅行',
     suggChips:['🏨 ウブドのブティックホテル','🌊 サーフィンスポット','🍜 必食グルメ','💰 予算プラン','🕌 文化マナー'],
     suggCmds:['ウブドのおすすめブティックホテル（中価格帯）','バリ島の最高のサーフスポットと初心者向けレッスン','バリ島の絶対食べるべき本場グルメリスト','バリ島2名7日間の予算プラン（節約・快適・豪華の3段階）','バリ島の文化マナーと注意事項'],
     destMenuItems:['🌺 バリ島 · インドネシア','🌸 京都 · 日本','🗼 パリ · フランス','🏝️ サントリーニ · ギリシャ','✨ その他の目的地を入力…'],
@@ -3691,7 +3801,34 @@ const LANGS = {
     agentNames:['여행 플래너','숙박 어드바이저','맛집 탐험가','액티비티 플래너','예산 매니저','실시간 검색'],
     agentDescs:['일정 및 경로 설계','호텔 75곳 로드됨','현지 레스토랑·숨은 맛집','서핑·요가·문화 투어','비용 예측·실시간 환율','온라인·최신 뉴스'],
     badgeOn:'실행 중', badgeReady:'준비됨', badgeIdle:'대기',
-    welcomeMsg:'안녕하세요! <strong>WanderMind 여행 파트너</strong>입니다 🌺<br><br><strong>6개의 전문 에이전트</strong>가 동시에 작동 중 — 실시간 검색으로 최신 날씨, 항공편, 현지 정보를 제공합니다.<br><br>여행지에 대해 무엇이든 물어보세요:',
+    welcomeMsg:'안녕하세요! <strong>WanderMind 여행 파트너</strong>입니다 {flag}<br><br><strong>6개의 전문 에이전트</strong>가 동시에 작동 중 — 실시간 검색으로 최신 날씨, 항공편, 현지 정보를 제공합니다.<br><br>여행지에 대해 무엇이든 물어보세요:',
+    welcomeSwitchedMsg:'<strong>{flag} {name}</strong>으로 전환했습니다. 6개의 에이전트가 {name} 여행 데이터를 준비했습니다.<br><br>무엇이든 물어보세요:',
+    agentLabelPlanner:'🗺️ 여행 플래너',
+    timeJustNow:'방금',
+    destPlanning:'계획 중',
+    destCustomEyebrow:'사용자 정의 목적지',
+    chipDatePending:'날짜 미정',
+    chipNightsPending:'일정 미정',
+    chipAgentSync:'에이전트 협력',
+    noTrips:'아직 여행이 없습니다',
+    noTripsHint:'아래 버튼을 클릭하여 첫 번째 여행을 계획하세요',
+    emptyExploreDest:'{dest} 탐색',
+    emptyExploreHint:'AI에게 현지 지역 특색과 추천 명소를 물어보세요',
+    emptyTipsText:'여행 팁 로딩 중…',
+    emptyTipsHint:'AI와 대화하여 목적지 실용 정보를 얻으세요',
+    itinEmpty:'아직 일정이 없습니다',
+    itinEmptyHint:'여행을 만들고 날짜를 설정하면 전체 타임라인이 표시됩니다',
+    budgetEmpty:'아직 예산 데이터가 없습니다',
+    budgetEmptyHint:'여행을 만들고 예산을 입력하면<br>여기에 비용이 표시됩니다',
+    budgetTrackerTpl:'예산 추적 · {p}명 · {d}일',
+    budgetTotalLabel:'총 예산',
+    budgetPlannedLabel:'계획됨',
+    budgetPendingLabel:'미정',
+    budgetCatLabel:'비용 분류',
+    budgetAIReadyTitle:'AI 예산 분석 준비 완료',
+    budgetAIReadyHint:'AI에게 예산 계획을 물어보면 항공권, 숙박, 식사, 액티비티 비용을 여기에서 추적할 수 있습니다',
+    budgetAIBtn:'💡 AI 예산 분석 생성',
+    addTripBtn:'＋ 새 여행',
     suggChips:['🏨 우붓 부티크 호텔','🌊 서핑 명소','🍜 필수 로컬 음식','💰 예산 계획','🕌 문화 에티켓'],
     suggCmds:['우붓의 최고 부티크 호텔 추천 (중간 가격대)','발리 최고의 서핑 명소와 초보자 강습','발리 필수 현지 음식 리스트','발리 2인 7일 여행 예산 계획 (절약/편안/럭셔리 3단계)','발리 문화 에티켓과 주의사항'],
     destMenuItems:['🌺 발리 · 인도네시아','🌸 교토 · 일본','🗼 파리 · 프랑스','🏝️ 산토리니 · 그리스','✨ 다른 목적지 입력…'],
@@ -3749,7 +3886,34 @@ const LANGS = {
     agentNames:['Perencana Perjalanan','Penasihat Akomodasi','Penjelajah Kuliner','Perencana Aktivitas','Manajer Anggaran','Pencarian Live'],
     agentDescs:['Desain itinerary & rute','75 hotel dimuat','Restoran lokal & permata tersembunyi','Surfing · Yoga · Wisata Budaya','Prakiraan biaya · Kurs real-time','Online · Berita terbaru'],
     badgeOn:'Aktif', badgeReady:'Siap', badgeIdle:'Standby',
-    welcomeMsg:'Halo! Saya <strong>WanderMind Travel Companion</strong> Anda 🌺<br><br>Saya telah mengaktifkan <strong>6 agen khusus</strong> yang bekerja bersama — pencarian live sudah diaktifkan untuk info real-time tentang cuaca, penerbangan, dan acara lokal.<br><br>Tanyakan apa saja tentang destinasi Anda:',
+    welcomeMsg:'Halo! Saya <strong>WanderMind Travel Companion</strong> Anda {flag}<br><br>Saya telah mengaktifkan <strong>6 agen khusus</strong> yang bekerja bersama — pencarian live sudah diaktifkan untuk info real-time tentang cuaca, penerbangan, dan acara lokal.<br><br>Tanyakan apa saja tentang destinasi Anda:',
+    welcomeSwitchedMsg:'Beralih ke <strong>{flag} {name}</strong>. 6 agen telah siap dengan data perjalanan {name}.<br><br>Apa yang ingin Anda ketahui?',
+    agentLabelPlanner:'🗺️ Perencana Perjalanan',
+    timeJustNow:'baru saja',
+    destPlanning:'Merencanakan',
+    destCustomEyebrow:'Destinasi kustom',
+    chipDatePending:'Tanggal Belum Pasti',
+    chipNightsPending:'Itinerary Belum Pasti',
+    chipAgentSync:'Agen Tersinkron',
+    noTrips:'Belum ada perjalanan',
+    noTripsHint:'Klik tombol di bawah untuk membuat rencana perjalanan pertama',
+    emptyExploreDest:'Jelajahi {dest}',
+    emptyExploreHint:'Tanyakan AI tentang area lokal dan tempat yang wajib dikunjungi',
+    emptyTipsText:'Tips perjalanan sedang dimuat…',
+    emptyTipsHint:'Ngobrol dengan AI untuk mendapatkan tips praktis destinasi',
+    itinEmpty:'Belum ada itinerary',
+    itinEmptyHint:'Buat perjalanan dan tentukan tanggal untuk melihat timeline lengkap',
+    budgetEmpty:'Belum ada data anggaran',
+    budgetEmptyHint:'Buat perjalanan dan tambahkan anggaran<br>untuk melacak pengeluaran di sini',
+    budgetTrackerTpl:'Pelacak Anggaran · {p} orang · {d} hari',
+    budgetTotalLabel:'Total Anggaran',
+    budgetPlannedLabel:'Direncanakan',
+    budgetPendingLabel:'Belum Direncanakan',
+    budgetCatLabel:'Rincian Biaya',
+    budgetAIReadyTitle:'Analisis Anggaran AI Siap',
+    budgetAIReadyHint:'Tanyakan AI untuk rencana anggaran untuk melacak penerbangan, hotel, makan, dan aktivitas di sini',
+    budgetAIBtn:'💡 Hasilkan Analisis Anggaran AI',
+    addTripBtn:'＋ Perjalanan Baru',
     suggChips:['🏨 Hotel Butik Ubud','🌊 Spot Surfing Terbaik','🍜 Kuliner Wajib Coba','💰 Perencanaan Anggaran','🕌 Etika Budaya'],
     suggCmds:['Rekomendasikan hotel butik terbaik di Ubud, anggaran menengah','Spot surfing terbaik di Bali dan kelas surfing untuk pemula','Daftar kuliner lokal autentik yang wajib dicoba di Bali','Perencanaan anggaran 2 orang 7 hari di Bali — hemat / nyaman / mewah','Etika budaya dan hal penting yang perlu diketahui di Bali'],
     destMenuItems:['🌺 Bali · Indonesia','🌸 Kyoto · Jepang','🗼 Paris · Prancis','🏝️ Santorini · Yunani','✨ Masukkan destinasi lain…'],
@@ -3865,28 +4029,62 @@ function applyLang(lang) {
   const ptabs = document.querySelectorAll('.panel-tab');
   ptabs.forEach((t,i) => { if (L.panelTabs[i]) t.textContent = L.panelTabs[i]; });
 
-  // Re-render destination panel (updates section titles in correct language)
+  // ── Destination header: translated title + eyebrow ──────────────────────────
+  const dHdr = DESTINATIONS[currentDest];
+  if (dHdr) {
+    const titleEl = document.getElementById('dest-title');
+    if (titleEl) titleEl.innerHTML = (dHdr.titles && dHdr.titles[lang]) ? dHdr.titles[lang] : dHdr.title;
+    const eyebrowEl = document.getElementById('dest-eyebrow');
+    if (eyebrowEl) {
+      const eyebrowFlag = dHdr.flag || '📍';
+      const planTxt = (currentDest === 'custom')
+        ? (L.destCustomEyebrow || '自定义目的地')
+        : (L.destPlanning || '正在规划');
+      eyebrowEl.textContent = eyebrowFlag + ' ' + planTxt;
+    }
+  }
+  // Chips: date / nights / agent count
+  const chipDateEl = document.getElementById('chip-date');
+  if (chipDateEl && !currentTripStart) {
+    const dot = chipDateEl.querySelector('.chip-dot');
+    chipDateEl.innerHTML = '';
+    if (dot) chipDateEl.appendChild(dot);
+    chipDateEl.appendChild(document.createTextNode(L.chipDatePending || '出发日期待定'));
+  }
+  const chipNightsEl = document.getElementById('chip-nights');
+  if (chipNightsEl && !currentTripStart) {
+    const dot = chipNightsEl.querySelector('.chip-dot');
+    chipNightsEl.innerHTML = '';
+    if (dot) chipNightsEl.appendChild(dot);
+    chipNightsEl.appendChild(document.createTextNode(L.chipNightsPending || '行程待定'));
+  }
+  // Third chip (6 Agent 协同) — find it by content pattern
+  const allChips = document.querySelectorAll('#dest-chips .dest-chip');
+  allChips.forEach(chip => {
+    if (chip.textContent.match(/Agent|エージェント|에이전트|Agen/i) || chip.textContent.includes('协同') || chip.textContent.includes('Agents')) {
+      const dot = chip.querySelector('.chip-dot');
+      chip.innerHTML = '';
+      if (dot) chip.appendChild(dot);
+      chip.appendChild(document.createTextNode('6 ' + (L.chipAgentSync || 'Agent 协同')));
+    }
+  });
+
+  // ── Sidebar empty state ──────────────────────────────────────────────────────
+  const emptyTextEl = document.querySelector('#trip-empty-state .trip-empty-text');
+  if (emptyTextEl) emptyTextEl.textContent = L.noTrips || '还没有行程';
+  const emptySubEl = document.querySelector('#trip-empty-state .trip-empty-sub');
+  if (emptySubEl) emptySubEl.textContent = L.noTripsHint || '点击下方按钮新建第一个旅行计划';
+
+  // ── Re-render destination panel (section titles in correct language) ─────────
   renderDestPanel(currentDest);
 
-  // Itinerary panel title (replace leading number with actual trip days)
-  const itinTitle = document.getElementById('panel-itinerary-title');
-  if (itinTitle) itinTitle.textContent = (L.itineraryTitle || '7日行程概览').replace(/^\d+/, String(currentTripDays));
+  // ── Re-render itinerary panel ────────────────────────────────────────────────
+  renderItinerary(currentDest, currentTripStart);
   const deepBtn = document.querySelector('#panel-itinerary .panel-action-btn');
   if (deepBtn) deepBtn.textContent = L.deepCustom;
 
-  // Budget panel (respect actual trip data if available)
-  const budgTitle = document.getElementById('panel-budget-header');
-  if (budgTitle) budgTitle.textContent = currentTripStart
-    ? (L.budgetTitle || '预算追踪').replace(/\d+人/, currentTripPeople+'人').replace(/\d+天/, currentTripDays+'天')
-    : (L.budgetTitle || '预算追踪');
-  const budgOptBtn = document.querySelector('#panel-budget .panel-action-btn');
-  if (budgOptBtn) budgOptBtn.textContent = L.budgetOptimize;
-
-  // Stat labels
-  const statLbls = document.querySelectorAll('.stat-lbl');
-  if (statLbls[2]) statLbls[2].textContent = L.budgetTotal;
-  if (statLbls[3]) statLbls[3].textContent = L.budgetPlanned;
-  const budgCatTitle = document.querySelector('#panel-budget .panel-section-title:last-of-type');
+  // ── Re-render budget panel ───────────────────────────────────────────────────
+  renderBudgetPanel();
 
   // Log panel
   const logTitle = document.querySelector('.log-status');
@@ -3965,15 +4163,20 @@ function applyLang(lang) {
   // Update fakeVoice phrases
   window._voicePhrases = L.voicePhrases;
 
-  // Update welcome chips with current-destination suggestions
-  const chips = document.querySelectorAll('.sugg-chip');
-  const destSuggs = DESTINATIONS[currentDest]?.suggestions || DESTINATIONS.bali.suggestions;
-  chips.forEach((chip, i) => {
-    if (destSuggs[i]) {
-      chip.textContent = destSuggs[i].label;
-      chip.onclick = () => qsend(destSuggs[i].q);
-    }
-  });
+  // ── Re-render welcome message if no conversation started ────────────────────
+  if (history.length === 0) {
+    renderWelcomeMsg(currentDest);
+  } else {
+    // Just update the suggestion chips inline if visible
+    const chips = document.querySelectorAll('.sugg-chip');
+    const destSuggs = DESTINATIONS[currentDest]?.suggestions || DESTINATIONS.bali.suggestions;
+    chips.forEach((chip, i) => {
+      if (destSuggs[i]) {
+        chip.textContent = destSuggs[i].label;
+        chip.onclick = () => qsend(destSuggs[i].q);
+      }
+    });
+  }
 
   // Search badge text
   window._searchBadgeText = L.searchBadge;
