@@ -645,6 +645,17 @@ html, body {
 .send-btn:hover { background: var(--teal-light); }
 .send-btn:disabled { background: var(--paper-3); color: var(--ink-3); cursor: default; }
 .send-btn svg { width: 15px; height: 15px; }
+/* ─── ASK-ALL (问全队) BUTTON ─── */
+.input-actions { display: flex; align-items: center; gap: 8px; padding: 5px 2px 0; }
+.ask-all-btn {
+  display: inline-flex; align-items: center; gap: 5px;
+  padding: 4px 12px; border: 1.5px solid var(--teal-light); border-radius: 20px;
+  background: transparent; color: var(--teal); font-size: 11px; font-weight: 700;
+  cursor: pointer; transition: all .18s; letter-spacing: .02em;
+}
+.ask-all-btn:hover { background: rgba(14,124,107,.1); border-color: var(--teal); }
+.ask-all-btn:disabled { opacity: .4; cursor: default; }
+.ask-all-hint { font-size: 10px; color: var(--ink-3); flex: 1; }
 
 /* ─── RIGHT PANEL ─── */
 .panel {
@@ -2168,6 +2179,10 @@ html, body {
           </button>
         </div>
       </div>
+      <div class="input-actions">
+        <button class="ask-all-btn" id="ask-all-btn" onclick="askAllAgents()" title="向规划师、活动策划师、预算管家 3 位专家同时发问">⚡ 问全队</button>
+        <span class="ask-all-hint" id="ask-all-hint">3位专家并行作答</span>
+      </div>
     </div>
   </main>
 
@@ -3551,6 +3566,115 @@ function resetSendBtn() {
   sb.onclick = sendMsg; sb.disabled = false;
 }
 
+// ─── PARALLEL MULTI-AGENT ─────────────────────────────────
+async function askAllAgents() {
+  const inp = document.getElementById('main-input');
+  const text = inp.value.trim();
+  if (!text || busy) return;
+  if (!getToken()) { document.getElementById('auth-overlay').classList.remove('hidden'); return; }
+  inp.value = ''; inp.style.height = 'auto'; busy = true;
+  abortCtrl = new AbortController();
+
+  const allBtn = document.getElementById('ask-all-btn');
+  const sb = document.getElementById('send-btn');
+  if (allBtn) allBtn.disabled = true;
+  if (sb) { sb.disabled = true; sb.style.background = 'var(--crimson)'; sb.style.borderRadius = '8px';
+    sb.innerHTML = '<svg viewBox="0 0 24 24" fill="currentColor" width="16" height="16"><rect x="5" y="5" width="14" height="14" rx="2"/></svg>';
+    sb.onclick = stopGeneration; }
+
+  appendUserMsg(text);
+  history.push({ role: 'user', content: text });
+
+  const typingId = appendTyping();
+  addThinkingStep(typingId, '⚡', (LANGS[currentLang]?.teamThinking || '问全队模式 · 3位专家并行思考中…'));
+
+  const langInstr = `\n\n【Language Instruction】Please respond in ${LANGS[currentLang]?.systemPromptLang || 'Chinese'} only. Never switch language mid-response.`;
+  const systemPrompt = BASE_SYSTEM + langInstr + `\n\nCurrent destination: ${DESTINATIONS[currentDest]?.name || currentDest}`;
+
+  let fullText = '';
+  let streamId = null;
+
+  try {
+    const resp = await fetch('/api/chat/team', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + getToken() },
+      body: JSON.stringify({ messages: history, system: systemPrompt, agent: 'team', destination: currentDest }),
+      signal: abortCtrl.signal
+    });
+
+    if (resp.status === 401) { doLogout(); return; }
+    if (!resp.ok) {
+      removeThinkingSteps(typingId);
+      const e = await resp.json(); throw new Error(e.detail || 'Server error');
+    }
+
+    const reader = resp.body.getReader();
+    const dec = new TextDecoder();
+    let buf = '';
+
+    while (true) {
+      const { done, value } = await reader.read();
+      if (done) break;
+      buf += dec.decode(value, { stream: true });
+      const lines = buf.split('\n');
+      buf = lines.pop();
+      for (const line of lines) {
+        if (!line.startsWith('data: ')) continue;
+        const raw = line.slice(6).trim();
+        if (!raw) continue;
+        try {
+          const ev = JSON.parse(raw);
+          if (ev.type === 'team_start') {
+            addThinkingStep(typingId, '🗺️', '规划师分析中…');
+            addThinkingStep(typingId, '🏄', '活动策划师分析中…');
+            addThinkingStep(typingId, '💰', '预算管家分析中…');
+          } else if (ev.type === 'team_result') {
+            removeThinkingSteps(typingId);
+            streamId = createStreamMsg();
+            fullText = ev.text;
+            // Smooth typewriter render
+            let i = 0;
+            const chunkSize = 40;
+            const typeOut = () => {
+              i = Math.min(i + chunkSize, fullText.length);
+              updateStreamMsg(streamId, fullText.slice(0, i));
+              if (i < fullText.length) requestAnimationFrame(typeOut);
+            };
+            typeOut();
+          } else if (ev.type === 'done') {
+            // Wait a tick so typewriter finishes rendering
+            setTimeout(() => {
+              if (streamId) finalizeStreamMsg(streamId, false);
+            }, Math.ceil(fullText.length / 40) * 16 + 50);
+            if (fullText) {
+              history.push({ role: 'assistant', content: fullText });
+              autoSaveConv();
+            }
+            addLog('success', '⚡', `<strong>问全队</strong> · 🗺️规划师 · 🏄活动 · 💰预算 并行 · ${fullText.length} 字`);
+            updateAgentStats();
+          } else if (ev.type === 'error') {
+            removeThinkingSteps(typingId);
+            if (streamId) document.getElementById(streamId)?.remove();
+            appendAIMsg('团队回应出了点问题 🌊\n\n' + ev.message, false);
+          }
+        } catch(e) { /* ignore malformed SSE */ }
+      }
+    }
+  } catch (err) {
+    if (err.name === 'AbortError') {
+      removeThinkingSteps(typingId);
+      addSystemMsg('⏹ 已停止生成');
+    } else {
+      removeThinkingSteps(typingId);
+      appendAIMsg('抱歉，专家团队连接出了点问题 🌊\n\n' + err.message, false);
+    }
+  } finally {
+    busy = false;
+    if (allBtn) allBtn.disabled = false;
+    resetSendBtn();
+  }
+}
+
 function stopGeneration() {
   if (abortCtrl) { abortCtrl.abort(); abortCtrl = null; }
 }
@@ -4116,6 +4240,7 @@ const LANGS = {
     rateLabel:'实时汇率', histTitle:'历史对话', confirmDelete:'确定删除「{name}」吗？',
     destTabSections:{regions:'推荐区域', tips:'旅行必知'},
     itineraryTitle:'7日行程概览', deepCustom:'✨ AI 深度定制行程', exportPDFBtn:'📄 导出行程 PDF',
+    askAllBtn:'⚡ 问全队', askAllHint:'3位专家并行作答', teamThinking:'⚡ 问全队 · 3位专家并行思考中…',
     budgetTitle:'预算追踪 · 2人7天', budgetTotal:'总预算', budgetPlanned:'已规划 (34%)',
     budgetCats:'费用分类', budgetOptimize:'💡 AI 预算优化',
     logTitle:'实时日志', logClear:'清空', agentStatTitle:'Agent 状态',
@@ -4202,6 +4327,7 @@ const LANGS = {
     rateLabel:'Exchange Rate', histTitle:'Past Chats', confirmDelete:'Delete "{name}"?',
     destTabSections:{regions:'Recommended Areas', tips:'Travel Essentials'},
     itineraryTitle:'7-Day Overview', deepCustom:'✨ AI Custom Itinerary', exportPDFBtn:'📄 Export PDF',
+    askAllBtn:'⚡ Ask All', askAllHint:'3 specialists answer in parallel', teamThinking:'⚡ Team mode · 3 specialists thinking in parallel…',
     budgetTitle:'Budget Tracker · 2 people · 7 days', budgetTotal:'Total Budget', budgetPlanned:'Planned (34%)',
     budgetCats:'Cost Breakdown', budgetOptimize:'💡 AI Budget Optimize',
     logTitle:'Live Log', logClear:'Clear', agentStatTitle:'Agent Status',
@@ -4288,6 +4414,7 @@ const LANGS = {
     rateLabel:'為替レート', histTitle:'過去の会話', confirmDelete:'「{name}」を削除しますか？',
     destTabSections:{regions:'おすすめエリア', tips:'旅行の必須情報'},
     itineraryTitle:'7日間の概要', deepCustom:'✨ AIカスタム旅程', exportPDFBtn:'📄 PDF 出力',
+    askAllBtn:'⚡ 全員に質問', askAllHint:'3名の専門家が並行回答', teamThinking:'⚡ チームモード · 3名が同時に考え中…',
     budgetTitle:'予算トラッカー · 2名 · 7日間', budgetTotal:'総予算', budgetPlanned:'計画済み (34%)',
     budgetCats:'費用内訳', budgetOptimize:'💡 AI予算最適化',
     logTitle:'リアルタイムログ', logClear:'クリア', agentStatTitle:'エージェント状態',
@@ -4374,6 +4501,7 @@ const LANGS = {
     rateLabel:'환율', histTitle:'이전 대화', confirmDelete:'"{name}"을 삭제하시겠습니까?',
     destTabSections:{regions:'추천 지역', tips:'여행 필수 정보'},
     itineraryTitle:'7일 일정 개요', deepCustom:'✨ AI 맞춤 일정', exportPDFBtn:'📄 PDF 내보내기',
+    askAllBtn:'⚡ 전체 질문', askAllHint:'전문가 3명이 동시에 답변', teamThinking:'⚡ 팀 모드 · 전문가 3명이 동시에 생각 중…',
     budgetTitle:'예산 추적 · 2인 · 7일', budgetTotal:'총 예산', budgetPlanned:'계획됨 (34%)',
     budgetCats:'비용 분류', budgetOptimize:'💡 AI 예산 최적화',
     logTitle:'실시간 로그', logClear:'지우기', agentStatTitle:'에이전트 상태',
@@ -4460,6 +4588,7 @@ const LANGS = {
     rateLabel:'Nilai Tukar', histTitle:'Riwayat Chat', confirmDelete:'Hapus "{name}"?',
     destTabSections:{regions:'Area yang Direkomendasikan', tips:'Info Penting Perjalanan'},
     itineraryTitle:'Gambaran 7 Hari', deepCustom:'✨ Itinerary Kustom AI', exportPDFBtn:'📄 Ekspor PDF',
+    askAllBtn:'⚡ Tanya Semua', askAllHint:'3 spesialis menjawab serentak', teamThinking:'⚡ Mode tim · 3 spesialis berpikir serentak…',
     budgetTitle:'Pelacak Anggaran · 2 orang · 7 hari', budgetTotal:'Total Anggaran', budgetPlanned:'Direncanakan (34%)',
     budgetCats:'Rincian Biaya', budgetOptimize:'💡 Optimasi Anggaran AI',
     logTitle:'Log Real-time', logClear:'Hapus', agentStatTitle:'Status Agen',
@@ -4696,6 +4825,10 @@ function applyLang(lang) {
   if (deepBtn) deepBtn.textContent = L.deepCustom;
   const exportBtn = document.getElementById('panel-export-pdf-btn');
   if (exportBtn) exportBtn.textContent = L.exportPDFBtn || '📄 导出行程 PDF';
+  const askAllBtnEl = document.getElementById('ask-all-btn');
+  if (askAllBtnEl) { askAllBtnEl.textContent = L.askAllBtn || '⚡ 问全队'; askAllBtnEl.title = L.askAllHint || '3位专家并行作答'; }
+  const askAllHintEl = document.getElementById('ask-all-hint');
+  if (askAllHintEl) askAllHintEl.textContent = L.askAllHint || '3位专家并行作答';
 
   // ── Re-render budget panel ───────────────────────────────────────────────────
   renderBudgetPanel();

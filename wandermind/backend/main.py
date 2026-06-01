@@ -1,3 +1,4 @@
+import asyncio
 import base64
 import hashlib
 import hmac
@@ -449,6 +450,84 @@ async def chat(req: ChatReq, user=Depends(current_user)):
             yield f"data: {json.dumps({'type':'error','message':'Request timed out (>2min)'})}\n\n"
         except Exception as e:
             yield f"data: {json.dumps({'type':'error','message':str(e)})}\n\n"
+
+    return StreamingResponse(
+        stream(),
+        media_type="text/event-stream",
+        headers={"Cache-Control": "no-cache", "X-Accel-Buffering": "no"},
+    )
+
+
+# ─── Team mode: 3 agents in parallel, merged output ──────────
+@app.post("/api/chat/team")
+async def chat_team(req: ChatReq, user=Depends(current_user)):
+    """真并行多 Agent：规划师 + 活动策划师 + 预算管家同时回答，合并输出。"""
+    if not _API_KEY:
+        raise HTTPException(500, "API_KEY not set")
+
+    TEAM_ROLES = [
+        {
+            "id": "planner",
+            "icon": "🗺️",
+            "name": "旅程规划师",
+            "suffix": "\n\n【你的角色】旅程规划师：专注整体行程安排、路线优化和时间节奏。给出具体实用的行程建议，简洁有力，控制在300字内。",
+        },
+        {
+            "id": "activity",
+            "icon": "🏄",
+            "name": "活动策划师",
+            "suffix": "\n\n【你的角色】活动策划师：专注独特体验、本地文化和隐藏亮点，推荐普通游客不一定知道的精彩活动。简洁有力，控制在300字内。",
+        },
+        {
+            "id": "budget",
+            "icon": "💰",
+            "name": "预算管家",
+            "suffix": "\n\n【你的角色】预算管家：专注费用估算、省钱技巧和性价比建议，给出具体价格区间和预算分配。简洁有力，控制在300字内。",
+        },
+    ]
+
+    raw_messages = [{"role": m.role, "content": m.content} for m in req.messages]
+
+    async def call_agent(role: dict) -> tuple:
+        system = req.system + role["suffix"]
+        messages = [{"role": "system", "content": system}] + raw_messages
+        try:
+            async with httpx.AsyncClient(timeout=90.0) as client:
+                resp = await client.post(
+                    _CHAT_URL,
+                    headers=_ai_headers(),
+                    json={
+                        "model": _MODEL,
+                        "max_tokens": 800,
+                        "stream": False,
+                        "messages": messages,
+                    },
+                )
+            if resp.status_code != 200:
+                return role, ""
+            data = resp.json()
+            choices = data.get("choices") or []
+            text = choices[0].get("message", {}).get("content", "") if choices else ""
+            return role, text.strip()
+        except Exception:
+            return role, ""
+
+    async def stream():
+        yield f"data: {json.dumps({'type': 'team_start', 'agents': [r['id'] for r in TEAM_ROLES]})}\n\n"
+
+        # ── Parallel execution ────────────────────────────────
+        results = await asyncio.gather(*[call_agent(r) for r in TEAM_ROLES])
+
+        # ── Build merged markdown ─────────────────────────────
+        parts = []
+        for role, text in results:
+            if text:
+                parts.append(f"**{role['icon']} {role['name']}**\n\n{text}")
+
+        merged = "\n\n---\n\n".join(parts) if parts else "抱歉，专家团队暂时无法回应，请稍后再试。"
+
+        yield f"data: {json.dumps({'type': 'team_result', 'text': merged})}\n\n"
+        yield f"data: {json.dumps({'type': 'done', 'searched': False})}\n\n"
 
     return StreamingResponse(
         stream(),
