@@ -345,6 +345,7 @@ async def get_dest_info(req: DestInfoReq, user=Depends(current_user)):
 
 严格按以下JSON格式返回，所有文字使用{lang_name}：
 {{
+  "timezone": "IANA时区字符串（如：Asia/Tokyo、Europe/Paris、America/New_York）",
   "weather": {{
     "temp": "当前典型气温（如：25-32°C）",
     "cond": "天气状况（10字内）",
