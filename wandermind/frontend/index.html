@@ -1043,6 +1043,30 @@ html, body {
 .hotel-card-amenities { font-size: 10px; color: var(--ink-3); margin-top: 3px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .hotel-card-book { padding: 5px 8px; background: transparent; border: 1.5px solid var(--teal); border-radius: 6px; color: var(--teal); font-size: 10px; font-weight: 700; cursor: pointer; white-space: nowrap; flex-shrink: 0; transition: background .15s; }
 .hotel-card-book:hover { background: var(--teal-pale); }
+/* ─── FLIGHT SEARCH ─── */
+.flight-from-row { display: flex; gap: 6px; margin-bottom: 8px; align-items: flex-end; }
+.flight-from-row .price-date-group { flex: 1; }
+.flight-from-select { background: var(--paper-2); border: 1.5px solid var(--paper-3); border-radius: 6px; padding: 5px 7px; font-size: 11px; color: var(--ink); width: 100%; outline: none; cursor: pointer; }
+.flight-from-input { background: var(--paper-2); border: 1.5px solid var(--teal-light); border-radius: 6px; padding: 5px 7px; font-size: 11px; color: var(--ink); width: 100%; outline: none; box-sizing: border-box; }
+.flight-trip-toggle { display: flex; gap: 4px; margin-bottom: 8px; background: var(--paper-2); border-radius: 8px; padding: 3px; }
+.flight-trip-btn { flex: 1; padding: 5px 8px; border: none; background: transparent; color: var(--ink-2); font-size: 11px; font-weight: 700; border-radius: 6px; cursor: pointer; transition: all .15s; }
+.flight-trip-btn.active { background: var(--paper); color: var(--teal); box-shadow: 0 1px 2px rgba(0,0,0,.08); }
+.flight-card { display: flex; align-items: center; gap: 8px; padding: 10px; background: var(--paper-2); border-radius: 8px; margin-bottom: 6px; cursor: pointer; border: 1.5px solid transparent; transition: border-color .15s; }
+.flight-card:hover { border-color: var(--teal-light); }
+.flight-card-airline { display: flex; align-items: center; gap: 6px; min-width: 0; flex-shrink: 0; }
+.flight-card-logo { width: 28px; height: 28px; border-radius: 6px; object-fit: contain; background: var(--paper); flex-shrink: 0; }
+.flight-airline-placeholder { width: 28px; height: 28px; border-radius: 6px; background: var(--paper); display: flex; align-items: center; justify-content: center; font-size: 16px; flex-shrink: 0; }
+.flight-card-info { flex: 1; min-width: 0; }
+.flight-card-route { font-size: 12px; font-weight: 700; color: var(--ink); display: flex; align-items: center; gap: 5px; flex-wrap: wrap; }
+.flight-arrow { color: var(--ink-3); font-size: 11px; }
+.flight-card-meta { font-size: 10px; color: var(--ink-2); margin-top: 2px; }
+.flight-card-stops { font-size: 10px; color: var(--ink-3); margin-top: 2px; }
+.flight-card-price { font-size: 13px; font-weight: 800; color: var(--teal); white-space: nowrap; flex-shrink: 0; }
+.flight-stops-direct { color: var(--teal); font-weight: 700; }
+.flight-stops-1 { color: var(--amber); }
+.flight-stops-2 { color: var(--crimson); }
+.flight-book-all { display: block; width: 100%; padding: 8px; background: transparent; color: var(--teal); border: 1.5px dashed var(--teal-light); border-radius: 8px; font-size: 11px; font-weight: 700; cursor: pointer; margin-top: 6px; text-align: center; text-decoration: none; transition: background .15s; }
+.flight-book-all:hover { background: var(--teal-pale); }
 .trip-empty-text { font-size: 13px; font-weight: 600; color: var(--ink-2); margin-bottom: 4px; }
 .trip-empty-sub  { font-size: 11px; line-height: 1.5; }
 
@@ -2322,6 +2346,54 @@ html, body {
             <button class="price-search-btn" id="price-search-btn" onclick="searchHotels()">🔍 <span id="price-search-btn-text">查酒店价格</span></button>
           </div>
           <div id="hotel-results"></div>
+        </div>
+
+        <div class="panel-section" id="panel-flights">
+          <div class="panel-section-title" id="flight-section-title">✈️ 机票比价</div>
+          <div class="price-search-form">
+            <div class="flight-trip-toggle" id="flight-trip-toggle">
+              <button class="flight-trip-btn active" id="flight-trip-round" onclick="setFlightTripType('round')">往返</button>
+              <button class="flight-trip-btn"        id="flight-trip-oneway" onclick="setFlightTripType('oneway')">单程</button>
+            </div>
+            <div class="flight-from-row">
+              <div class="price-date-group">
+                <label id="flight-from-label">出发</label>
+                <select id="flight-from-select" class="flight-from-select" onchange="onFlightFromChange()">
+                  <option value="PVG" selected>🇨🇳 上海 PVG</option>
+                  <option value="PEK">🇨🇳 北京 PEK</option>
+                  <option value="CAN">🇨🇳 广州 CAN</option>
+                  <option value="SZX">🇨🇳 深圳 SZX</option>
+                  <option value="CTU">🇨🇳 成都 CTU</option>
+                  <option value="HKG">🇭🇰 香港 HKG</option>
+                  <option value="HGH">🇨🇳 杭州 HGH</option>
+                  <option value="XIY">🇨🇳 西安 XIY</option>
+                  <option value="__custom__" id="flight-from-custom-opt">✈️ 其他城市…</option>
+                </select>
+                <input type="text" id="flight-from-input" class="flight-from-input" style="display:none;margin-top:4px" placeholder="输入城市名或 IATA 代码">
+              </div>
+            </div>
+            <div class="price-date-row">
+              <div class="price-date-group">
+                <label id="flight-depart-label">起飞</label>
+                <input type="date" id="flight-depart" class="price-date-input">
+              </div>
+              <div class="price-date-group" id="flight-return-wrap">
+                <label id="flight-return-label">返回</label>
+                <input type="date" id="flight-return" class="price-date-input">
+              </div>
+              <div class="price-date-group" style="flex:0 0 auto">
+                <label id="flight-adults-label">人数</label>
+                <select id="flight-adults" class="price-adults-select">
+                  <option value="1" selected>1</option>
+                  <option value="2">2</option>
+                  <option value="3">3</option>
+                  <option value="4">4</option>
+                </select>
+              </div>
+            </div>
+            <button class="price-search-btn" id="flight-search-btn" onclick="searchFlights()">🔍 <span id="flight-search-btn-text">查机票价格</span></button>
+          </div>
+          <div id="flight-results"></div>
         </div>
       </div>
 
@@ -4577,6 +4649,12 @@ const LANGS = {
       {icon:'💰', label:'调整预算',      q:'预算需要降低/提高，请重新分配各项支出，给出更经济/更高级的替代方案'},
       {icon:'🔄', label:'换景点/餐厅',  q:'我对某些景点或餐厅不感兴趣，请推荐风格类似但更符合我偏好的替代项'},
     ],
+    flightTitle:'✈️ 机票比价', flightRound:'往返', flightOneway:'单程',
+    flightFromLabel:'出发', flightDepartLabel:'起飞', flightReturnLabel:'返回', flightAdultsLabel:'人数',
+    flightCustomOpt:'✈️ 其他城市…', flightCustomPh:'输入城市名或 IATA 代码',
+    flightSearchBtn:'查机票价格', flightSearching:'正在搜索航班…', flightNoResults:'暂无航班，请更换日期或机场重试',
+    flightDirect:'直飞', flightStops1:'1 次中转', flightStopsN:'{n} 次中转',
+    flightDuration:'时长', flightBookAll:'🌐 在 Google Flights 查看全部航班并预订',
     destMenuItems:['🌺 巴厘岛 · 印度尼西亚','🌸 京都 · 日本','🗼 巴黎 · 法国','🏝️ 圣托里尼 · 希腊','✨ 输入其他目的地…'],
     systemPromptLang:'中文',
     callCount:'次调用', active:'活跃', standby:'待机',
@@ -4682,6 +4760,12 @@ const LANGS = {
       {icon:'💰', label:'Adjust budget',        q:'I need to lower/raise the budget — please reallocate expenses with cheaper/more premium alternatives'},
       {icon:'🔄', label:'Swap spots',           q:'I am not interested in some attractions or restaurants — recommend similar-style alternatives that match my preferences better'},
     ],
+    flightTitle:'✈️ Flight Prices', flightRound:'Round trip', flightOneway:'One way',
+    flightFromLabel:'From', flightDepartLabel:'Depart', flightReturnLabel:'Return', flightAdultsLabel:'Pax',
+    flightCustomOpt:'✈️ Other city…', flightCustomPh:'Enter city name or IATA code',
+    flightSearchBtn:'Search Flights', flightSearching:'Searching flights…', flightNoResults:'No flights found, try different dates or airports',
+    flightDirect:'Nonstop', flightStops1:'1 stop', flightStopsN:'{n} stops',
+    flightDuration:'Duration', flightBookAll:'🌐 View all flights & book on Google Flights',
     destMenuItems:['🌺 Bali · Indonesia','🌸 Kyoto · Japan','🗼 Paris · France','🏝️ Santorini · Greece','✨ Enter custom destination…'],
     systemPromptLang:'English',
     callCount:' calls', active:'Active', standby:'Idle',
@@ -4787,6 +4871,12 @@ const LANGS = {
       {icon:'💰', label:'予算調整',       q:'予算を下げ/上げたいです。各項目を再配分し、より経済的/高級な代替案を提案してください'},
       {icon:'🔄', label:'スポット変更',   q:'一部のスポットや飲食店が好みではありません。似た雰囲気で好みに合う代替案を提案してください'},
     ],
+    flightTitle:'✈️ 航空券料金', flightRound:'往復', flightOneway:'片道',
+    flightFromLabel:'出発', flightDepartLabel:'出発日', flightReturnLabel:'帰国日', flightAdultsLabel:'人数',
+    flightCustomOpt:'✈️ その他の都市…', flightCustomPh:'都市名または IATA コードを入力',
+    flightSearchBtn:'航空券を検索', flightSearching:'検索中…', flightNoResults:'該当便なし。日付や空港を変えてお試しください',
+    flightDirect:'直行便', flightStops1:'1 回乗継', flightStopsN:'{n} 回乗継',
+    flightDuration:'所要時間', flightBookAll:'🌐 Google Flights ですべての便を確認・予約',
     destMenuItems:['🌺 バリ島 · インドネシア','🌸 京都 · 日本','🗼 パリ · フランス','🏝️ サントリーニ · ギリシャ','✨ その他の目的地を入力…'],
     systemPromptLang:'日本語',
     callCount:'回の呼び出し', active:'アクティブ', standby:'待機中',
@@ -4892,6 +4982,12 @@ const LANGS = {
       {icon:'💰', label:'예산 조정',       q:'예산을 낮추/높이고 싶습니다. 각 항목을 재배분하고 더 저렴한/고급 대안을 제안해 주세요'},
       {icon:'🔄', label:'장소 교체',       q:'일부 장소나 식당에 관심이 없습니다. 비슷한 스타일이면서 제 취향에 맞는 대안을 추천해 주세요'},
     ],
+    flightTitle:'✈️ 항공권 가격', flightRound:'왕복', flightOneway:'편도',
+    flightFromLabel:'출발', flightDepartLabel:'출발일', flightReturnLabel:'귀국일', flightAdultsLabel:'인원',
+    flightCustomOpt:'✈️ 다른 도시…', flightCustomPh:'도시명 또는 IATA 코드 입력',
+    flightSearchBtn:'항공권 검색', flightSearching:'검색 중…', flightNoResults:'결과 없음, 날짜나 공항을 바꿔 보세요',
+    flightDirect:'직항', flightStops1:'1회 경유', flightStopsN:'{n}회 경유',
+    flightDuration:'소요시간', flightBookAll:'🌐 Google Flights에서 전체 항공편 확인 및 예약',
     destMenuItems:['🌺 발리 · 인도네시아','🌸 교토 · 일본','🗼 파리 · 프랑스','🏝️ 산토리니 · 그리스','✨ 다른 목적지 입력…'],
     systemPromptLang:'한국어',
     callCount:'회 호출', active:'활성', standby:'대기',
@@ -4997,6 +5093,12 @@ const LANGS = {
       {icon:'💰', label:'Atur anggaran',      q:'Saya perlu menurunkan/menaikkan anggaran — atur ulang pengeluaran dengan alternatif lebih murah/premium'},
       {icon:'🔄', label:'Tukar tempat',       q:'Saya tidak tertarik pada beberapa tempat atau restoran — sarankan alternatif sejenis yang sesuai preferensi saya'},
     ],
+    flightTitle:'✈️ Harga Tiket Pesawat', flightRound:'PP', flightOneway:'Sekali jalan',
+    flightFromLabel:'Dari', flightDepartLabel:'Berangkat', flightReturnLabel:'Pulang', flightAdultsLabel:'Penumpang',
+    flightCustomOpt:'✈️ Kota lain…', flightCustomPh:'Masukkan nama kota atau kode IATA',
+    flightSearchBtn:'Cari Penerbangan', flightSearching:'Mencari penerbangan…', flightNoResults:'Tidak ada penerbangan, coba tanggal atau bandara lain',
+    flightDirect:'Langsung', flightStops1:'1 transit', flightStopsN:'{n} transit',
+    flightDuration:'Durasi', flightBookAll:'🌐 Lihat semua penerbangan & pesan di Google Flights',
     destMenuItems:['🌺 Bali · Indonesia','🌸 Kyoto · Jepang','🗼 Paris · Prancis','🏝️ Santorini · Yunani','✨ Masukkan destinasi lain…'],
     systemPromptLang:'Bahasa Indonesia',
     callCount:' panggilan', active:'Aktif', standby:'Standby',
@@ -5350,6 +5452,29 @@ function applyLang(lang) {
   const pSBtn = document.getElementById('price-search-btn');
   if (pSBText && pSBtn && !pSBtn.disabled) pSBText.textContent = L.priceSearchBtn || '查酒店价格';
 
+  // ── Flight price search section ─────────────────────────────────────────────
+  const flightTitleEl = document.getElementById('flight-section-title');
+  if (flightTitleEl) flightTitleEl.textContent = L.flightTitle || '✈️ 机票比价';
+  const fRoundEl  = document.getElementById('flight-trip-round');
+  const fOneEl    = document.getElementById('flight-trip-oneway');
+  if (fRoundEl) fRoundEl.textContent = L.flightRound  || '往返';
+  if (fOneEl)   fOneEl.textContent   = L.flightOneway || '单程';
+  const fFromLbl    = document.getElementById('flight-from-label');
+  const fDepartLbl  = document.getElementById('flight-depart-label');
+  const fReturnLbl  = document.getElementById('flight-return-label');
+  const fAdultsLbl  = document.getElementById('flight-adults-label');
+  if (fFromLbl)   fFromLbl.textContent   = L.flightFromLabel   || '出发';
+  if (fDepartLbl) fDepartLbl.textContent = L.flightDepartLabel || '起飞';
+  if (fReturnLbl) fReturnLbl.textContent = L.flightReturnLabel || '返回';
+  if (fAdultsLbl) fAdultsLbl.textContent = L.flightAdultsLabel || '人数';
+  const fCustomOpt = document.getElementById('flight-from-custom-opt');
+  if (fCustomOpt)  fCustomOpt.textContent = L.flightCustomOpt || '✈️ 其他城市…';
+  const fCustomInp = document.getElementById('flight-from-input');
+  if (fCustomInp)  fCustomInp.placeholder = L.flightCustomPh || '输入城市名或 IATA 代码';
+  const fSBText = document.getElementById('flight-search-btn-text');
+  const fSBtn   = document.getElementById('flight-search-btn');
+  if (fSBText && fSBtn && !fSBtn.disabled) fSBText.textContent = L.flightSearchBtn || '查机票价格';
+
   // Update mobile nav labels
   if (typeof applyMobileNavLang === 'function') applyMobileNavLang(L);
 }
@@ -5616,9 +5741,169 @@ function renderHotelCards(hotels) {
   }).join('');
 }
 
+// ─── FLIGHT PRICE SEARCH (SerpAPI Google Flights) ────────────
+let _flightTripType = 'round';
+
+function initFlightDates() {
+  const dep = document.getElementById('flight-depart');
+  const ret = document.getElementById('flight-return');
+  if (!dep || !ret) return;
+  if (!dep.value) {
+    const d1 = new Date(); d1.setDate(d1.getDate() + 14);
+    dep.value = d1.toISOString().split('T')[0];
+  }
+  if (!ret.value) {
+    const d2 = new Date(); d2.setDate(d2.getDate() + 21);
+    ret.value = d2.toISOString().split('T')[0];
+  }
+}
+
+function setFlightTripType(type) {
+  _flightTripType = type;
+  document.getElementById('flight-trip-round').classList.toggle('active',  type === 'round');
+  document.getElementById('flight-trip-oneway').classList.toggle('active', type === 'oneway');
+  const retWrap = document.getElementById('flight-return-wrap');
+  if (retWrap) retWrap.style.display = (type === 'oneway') ? 'none' : '';
+}
+
+function onFlightFromChange() {
+  const sel = document.getElementById('flight-from-select');
+  const inp = document.getElementById('flight-from-input');
+  if (!sel || !inp) return;
+  if (sel.value === '__custom__') {
+    inp.style.display = '';
+    inp.focus();
+  } else {
+    inp.style.display = 'none';
+    inp.value = '';
+  }
+}
+
+async function searchFlights() {
+  const sel = document.getElementById('flight-from-select');
+  const inp = document.getElementById('flight-from-input');
+  const origin = (sel.value === '__custom__') ? inp.value.trim() : sel.value;
+  if (!origin) { alert('请选择或输入出发城市'); return; }
+
+  const dest = currentDest === 'custom'
+    ? (DESTINATIONS.custom?.name || '')
+    : (DESTINATIONS[currentDest]?.name || currentDest);
+  if (!dest) return;
+
+  const departDate = document.getElementById('flight-depart')?.value;
+  const returnDate = (_flightTripType === 'round')
+    ? document.getElementById('flight-return')?.value
+    : '';
+  const adults     = parseInt(document.getElementById('flight-adults')?.value) || 1;
+  const L = LANGS[currentLang] || LANGS.zh;
+
+  if (!departDate) return;
+  if (_flightTripType === 'round' && returnDate && returnDate <= departDate) {
+    alert('返回日期必须晚于起飞日期'); return;
+  }
+
+  const resultsEl = document.getElementById('flight-results');
+  const btn       = document.getElementById('flight-search-btn');
+  const btnTxt    = document.getElementById('flight-search-btn-text');
+
+  if (btnTxt) btnTxt.textContent = L.flightSearching || '正在搜索…';
+  if (btn) btn.disabled = true;
+  if (resultsEl) resultsEl.innerHTML = `<div class="dest-loading">
+    <div class="dest-loading-spinner">✈️</div>
+    <div class="dest-loading-text">${L.flightSearching || '正在搜索…'}</div>
+  </div>`;
+  addLog('info', '✈️', `搜索 <strong>${origin} → ${dest}</strong> 机票 ${departDate}${returnDate ? ' → '+returnDate : ' (单程)'}`);
+
+  try {
+    const resp = await fetch('/api/search/flights', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + getToken() },
+      body: JSON.stringify({
+        origin, destination: dest,
+        depart_date: departDate, return_date: returnDate,
+        adults, lang: currentLang
+      })
+    });
+    const data = await resp.json();
+    if (!resp.ok) throw new Error(data.detail || 'Search error ' + resp.status);
+    renderFlightCards(data.flights || [], data.booking_url || '');
+    addLog('success', '✅', `找到 ${(data.flights || []).length} 个航班 · ${data.origin} → ${data.destination}`);
+  } catch (err) {
+    if (resultsEl) resultsEl.innerHTML = `<div style="font-size:12px;color:var(--crimson);padding:8px 0">⚠️ ${err.message}</div>`;
+    addLog('warn', '⚠️', `机票搜索失败: ${err.message}`);
+  } finally {
+    if (btnTxt) btnTxt.textContent = (LANGS[currentLang] || LANGS.zh).flightSearchBtn || '查机票价格';
+    if (btn) btn.disabled = false;
+  }
+}
+
+function _fmtDuration(mins) {
+  if (!mins) return '';
+  const h = Math.floor(mins / 60);
+  const m = mins % 60;
+  return (h ? `${h}h ` : '') + (m ? `${m}m` : '');
+}
+
+function _fmtTime(t) {
+  // "2026-06-15 18:30" → "18:30"
+  if (!t) return '';
+  const m = t.match(/\d{1,2}:\d{2}/);
+  return m ? m[0] : t;
+}
+
+function renderFlightCards(flights, bookingUrl) {
+  const resultsEl = document.getElementById('flight-results');
+  if (!resultsEl) return;
+  const L = LANGS[currentLang] || LANGS.zh;
+
+  if (!flights || flights.length === 0) {
+    resultsEl.innerHTML = `<div class="trip-empty" style="padding:12px 0">
+      <div class="trip-empty-icon">🔍</div>
+      <div class="trip-empty-text">${L.flightNoResults || '暂无航班'}</div>
+    </div>`;
+    return;
+  }
+
+  const cards = flights.map(f => {
+    const logo = f.airline_logo
+      ? `<img class="flight-card-logo" src="${f.airline_logo}" alt="" loading="lazy" onerror="this.outerHTML='<div class=flight-airline-placeholder>✈️</div>'">`
+      : `<div class="flight-airline-placeholder">✈️</div>`;
+    let stopsHtml = '';
+    if (f.stops === 0) {
+      stopsHtml = `<span class="flight-stops-direct">${L.flightDirect || '直飞'}</span>`;
+    } else if (f.stops === 1) {
+      const via = f.layover_codes?.[0] ? ` · ${f.layover_codes[0]}` : '';
+      stopsHtml = `<span class="flight-stops-1">${L.flightStops1 || '1 次中转'}${via}</span>`;
+    } else {
+      const tpl = L.flightStopsN || '{n} 次中转';
+      stopsHtml = `<span class="flight-stops-2">${tpl.replace('{n}', f.stops)}</span>`;
+    }
+    const dep = _fmtTime(f.depart_time);
+    const arr = _fmtTime(f.arrive_time);
+    const route = `${dep} ${f.depart_id} <span class="flight-arrow">→</span> ${arr} ${f.arrive_id}`;
+    const meta  = `${f.airline || ''}${f.flight_no ? ' · '+f.flight_no : ''} · ${_fmtDuration(f.duration_min)}`;
+    return `<div class="flight-card" onclick="window.open('${bookingUrl}','_blank')">
+      ${logo}
+      <div class="flight-card-info">
+        <div class="flight-card-route">${route}</div>
+        <div class="flight-card-meta">${meta}</div>
+        <div class="flight-card-stops">${stopsHtml}</div>
+      </div>
+      <div class="flight-card-price">${f.price || ''}</div>
+    </div>`;
+  }).join('');
+
+  const bookAll = bookingUrl
+    ? `<a class="flight-book-all" href="${bookingUrl}" target="_blank" rel="noopener">${L.flightBookAll || '🌐 查看全部航班并预订'}</a>`
+    : '';
+
+  resultsEl.innerHTML = cards + bookAll;
+}
+
 // Initialize
 applyLang('zh');
 initPriceDates();
+initFlightDates();
 
 
 // ═══════════════════════════════════════════════════════

@@ -1,0 +1,28 @@
+feat: real-time flight prices via SerpAPI Google Flights
+
+- Backend: /api/search/flights endpoint using google_flights engine
+- resolve_iata() converts any city name to IATA via in-memory cache
+  (pre-seeded with 12 CN cities + 10 global destinations) or MiMo AI
+  for unknown inputs; recognizes 3-letter input as-is
+- FlightSearchReq model with origin/destination/depart/return/adults/lang
+- Returns best+other flights with airline, logo, price, duration, stops,
+  layover codes, plus a deep-link bookingUrl to Google Flights
+- Dedicated SERPAPI_FLIGHTS_KEY env var to use a separate quota
+  (falls back to SERPAPI_KEY if not set)
+
+- Frontend: flight search panel below hotel section in dest tab
+- Round-trip / one-way toggle
+- 8-city departure dropdown (PVG default) + "Other city" option that
+  reveals a free-input field accepting city names or IATA codes
+- Auto-fills departure D+14, return D+21 as sensible defaults
+- Cards show airline logo, route, time, duration, stops with color
+  badges (green=direct, amber=1 stop, red=multi-stop), price
+- "View all on Google Flights" deep link as footer button
+
+- LANGS: flightTitle/Round/Oneway/From/Depart/Return/Adults/Custom*/
+  SearchBtn/Searching/NoResults/Direct/Stops1/StopsN/Duration/BookAll
+  added for all 5 languages (zh/en/ja/ko/id)
+- applyLang() updates flight section labels on language switch
+- READMEs (client + dev) updated with new feature, env var, API doc
+
+Co-Authored-By: Claude Opus 4.7 (noreply@anthropic.com)

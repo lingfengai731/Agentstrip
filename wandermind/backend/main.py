@@ -195,6 +195,15 @@ class HotelSearchReq(BaseModel):
     lang: str = "zh"
 
 
+class FlightSearchReq(BaseModel):
+    origin: str          # City name or IATA code (e.g. "上海", "PVG", "New York")
+    destination: str     # City name or IATA code
+    depart_date: str     # YYYY-MM-DD
+    return_date: str = ""  # empty → one-way
+    adults: int = 1
+    lang: str = "zh"
+
+
 # ─── Auth routes ─────────────────────────────────────────────
 @app.post("/api/auth/register")
 async def register(data: RegisterReq):
@@ -409,8 +418,161 @@ async def get_dest_info(req: DestInfoReq, user=Depends(current_user)):
 
 
 # ─── SerpAPI ─────────────────────────────────────────────────
-_SERPAPI_KEY = os.getenv("SERPAPI_KEY", "")
-_SERPAPI_URL = "https://serpapi.com/search.json"
+_SERPAPI_KEY         = os.getenv("SERPAPI_KEY", "")
+_SERPAPI_FLIGHTS_KEY = os.getenv("SERPAPI_FLIGHTS_KEY", "") or _SERPAPI_KEY
+_SERPAPI_URL         = "https://serpapi.com/search.json"
+
+# IATA cache so we don't re-call MiMo for the same city
+_IATA_CACHE: dict = {
+    # Preset Chinese departure cities
+    "上海": "PVG", "北京": "PEK", "广州": "CAN", "深圳": "SZX",
+    "成都": "CTU", "香港": "HKG", "杭州": "HGH", "重庆": "CKG",
+    "西安": "XIY", "昆明": "KMG", "厦门": "XMN", "南京": "NKG",
+    # Common destinations
+    "巴厘岛": "DPS", "Bali": "DPS",
+    "京都": "KIX", "Kyoto": "KIX",
+    "巴黎": "CDG", "Paris": "CDG",
+    "圣托里尼": "JTR", "Santorini": "JTR",
+    "东京": "HND", "Tokyo": "HND",
+    "首尔": "ICN", "Seoul": "ICN",
+    "曼谷": "BKK", "Bangkok": "BKK",
+    "纽约": "JFK", "New York": "JFK",
+    "伦敦": "LHR", "London": "LHR",
+    "新加坡": "SIN", "Singapore": "SIN",
+}
+
+
+async def resolve_iata(text: str) -> str:
+    """Convert any city name or airport code to a 3-letter IATA code."""
+    if not text:
+        return ""
+    t = text.strip()
+    # Already a 3-letter IATA code?
+    if re.fullmatch(r"[A-Za-z]{3}", t):
+        return t.upper()
+    # Cache hit
+    if t in _IATA_CACHE:
+        return _IATA_CACHE[t]
+    # Ask MiMo to convert
+    if not _API_KEY:
+        return ""
+    prompt = (
+        f"Convert the city or airport name '{t}' to its main IATA airport code. "
+        "Reply with ONLY the 3-letter IATA code in uppercase, nothing else. "
+        "No explanation, no punctuation. If you are not sure, return UNK."
+    )
+    try:
+        async with httpx.AsyncClient(timeout=15.0) as client:
+            resp = await client.post(
+                _CHAT_URL,
+                headers=_ai_headers(),
+                json={
+                    "model": _MODEL,
+                    "max_tokens": 12,
+                    "messages": [{"role": "user", "content": prompt}],
+                },
+            )
+        if resp.status_code != 200:
+            return ""
+        out = resp.json().get("choices", [{}])[0].get("message", {}).get("content", "").strip().upper()
+        match = re.search(r"[A-Z]{3}", out)
+        if match:
+            code = match.group()
+            if code != "UNK":
+                _IATA_CACHE[t] = code
+                return code
+    except Exception:
+        pass
+    return ""
+
+
+@app.post("/api/search/flights")
+async def search_flights(req: FlightSearchReq, user=Depends(current_user)):
+    """SerpAPI Google Flights 实时航班价格搜索。"""
+    if not _SERPAPI_FLIGHTS_KEY:
+        raise HTTPException(500, "SERPAPI_FLIGHTS_KEY not configured")
+
+    origin_iata = await resolve_iata(req.origin)
+    dest_iata   = await resolve_iata(req.destination)
+    if not origin_iata:
+        raise HTTPException(400, f"无法识别出发城市 '{req.origin}'，请用 IATA 代码（如 PVG）")
+    if not dest_iata:
+        raise HTTPException(400, f"无法识别目的地 '{req.destination}'，请用 IATA 代码（如 DPS）")
+
+    hl_map = {"zh": "zh-CN", "en": "en", "ja": "ja", "ko": "ko", "id": "id"}
+    gl_map = {"zh": "cn",    "en": "us", "ja": "jp", "ko": "kr", "id": "id"}
+
+    params = {
+        "engine":         "google_flights",
+        "departure_id":   origin_iata,
+        "arrival_id":     dest_iata,
+        "outbound_date":  req.depart_date,
+        "type":           "1" if req.return_date else "2",   # 1=round, 2=one-way
+        "adults":         str(max(1, min(req.adults, 8))),
+        "api_key":        _SERPAPI_FLIGHTS_KEY,
+        "hl":             hl_map.get(req.lang, "zh-CN"),
+        "gl":             gl_map.get(req.lang, "cn"),
+        "currency":       "CNY",
+    }
+    if req.return_date:
+        params["return_date"] = req.return_date
+
+    try:
+        async with httpx.AsyncClient(timeout=25.0) as client:
+            resp = await client.get(_SERPAPI_URL, params=params)
+        if resp.status_code == 401:
+            raise HTTPException(401, "Invalid SERPAPI_FLIGHTS_KEY")
+        if resp.status_code != 200:
+            raise HTTPException(resp.status_code, f"SerpAPI error: {resp.text[:200]}")
+
+        data = resp.json()
+        if "error" in data:
+            raise HTTPException(400, data["error"])
+
+        # Combine best + other, take top 8
+        raw = (data.get("best_flights") or []) + (data.get("other_flights") or [])
+        flights = []
+        for item in raw[:8]:
+            legs = item.get("flights") or []
+            if not legs:
+                continue
+            first  = legs[0]
+            last   = legs[-1]
+            layovers = item.get("layovers") or []
+            stops_count = len(layovers)
+            total_min = item.get("total_duration") or sum(l.get("duration", 0) for l in legs)
+            flights.append({
+                "price":       item.get("price", ""),
+                "airline":     first.get("airline", ""),
+                "airline_logo": first.get("airline_logo", "") or item.get("airline_logo", ""),
+                "flight_no":   first.get("flight_number", ""),
+                "depart_time": (first.get("departure_airport") or {}).get("time", ""),
+                "depart_id":   (first.get("departure_airport") or {}).get("id", ""),
+                "arrive_time": (last.get("arrival_airport") or {}).get("time", ""),
+                "arrive_id":   (last.get("arrival_airport") or {}).get("id", ""),
+                "duration_min": total_min,
+                "stops":        stops_count,
+                "layover_codes": [(l.get("id") or "") for l in layovers if l.get("id")],
+                "travel_class": first.get("travel_class", ""),
+            })
+
+        # Build Google Flights link for booking
+        booking_url = (
+            f"https://www.google.com/travel/flights?hl={hl_map.get(req.lang,'zh-CN')}"
+            f"&q=Flights+from+{origin_iata}+to+{dest_iata}+on+{req.depart_date}"
+            + (f"+returning+{req.return_date}" if req.return_date else "")
+        )
+
+        return {
+            "flights":     flights,
+            "origin":      origin_iata,
+            "destination": dest_iata,
+            "booking_url": booking_url,
+        }
+    except HTTPException:
+        raise
+    except Exception as e:
+        raise HTTPException(500, str(e))
 
 
 @app.post("/api/search/hotels")
