@@ -1011,6 +1011,30 @@ html, body {
 .dest-skel-card { height: 64px; margin-bottom: 8px; border-radius: var(--r); }
 .dest-skel-line { height: 14px; margin-bottom: 6px; }
 .dest-skel-line-short { width: 60%; }
+/* ─── HOTEL PRICE SEARCH ─── */
+.price-search-form { margin-bottom: 10px; }
+.price-date-row { display: flex; gap: 6px; margin-bottom: 8px; align-items: flex-end; }
+.price-date-group { display: flex; flex-direction: column; gap: 3px; flex: 1; }
+.price-date-group label { font-size: 10px; color: var(--ink-2); font-weight: 600; text-transform: uppercase; letter-spacing: .3px; }
+.price-date-input { background: var(--paper-2); border: 1.5px solid var(--paper-3); border-radius: 6px; padding: 5px 7px; font-size: 11px; color: var(--ink); width: 100%; outline: none; box-sizing: border-box; }
+.price-date-input:focus { border-color: var(--teal-light); }
+.price-adults-select { background: var(--paper-2); border: 1.5px solid var(--paper-3); border-radius: 6px; padding: 5px 4px; font-size: 11px; color: var(--ink); width: 44px; outline: none; }
+.price-search-btn { width: 100%; padding: 8px 12px; background: var(--teal); color: #fff; border: none; border-radius: 8px; font-size: 12px; font-weight: 700; cursor: pointer; transition: background .2s; }
+.price-search-btn:hover:not(:disabled) { background: #0b6b5c; }
+.price-search-btn:disabled { opacity: .5; cursor: default; }
+.hotel-card { display: flex; align-items: center; gap: 8px; padding: 8px 10px; background: var(--paper-2); border-radius: 8px; margin-bottom: 6px; cursor: pointer; border: 1.5px solid transparent; transition: border-color .15s; }
+.hotel-card:hover { border-color: var(--teal-light); }
+.hotel-card-thumb { width: 52px; height: 52px; border-radius: 6px; object-fit: cover; flex-shrink: 0; background: var(--paper-3); }
+.hotel-thumb-placeholder { width: 52px; height: 52px; border-radius: 6px; background: var(--paper-3); display: flex; align-items: center; justify-content: center; font-size: 22px; flex-shrink: 0; }
+.hotel-card-info { flex: 1; min-width: 0; }
+.hotel-card-name { font-size: 12px; font-weight: 700; color: var(--ink); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.hotel-card-meta { display: flex; gap: 6px; align-items: center; margin-top: 2px; flex-wrap: wrap; }
+.hotel-card-rating { font-size: 11px; color: var(--amber); font-weight: 600; }
+.hotel-card-price { font-size: 13px; font-weight: 800; color: var(--teal); }
+.hotel-per-night { font-size: 10px; color: var(--ink-2); font-weight: normal; margin-left: 1px; }
+.hotel-card-amenities { font-size: 10px; color: var(--ink-3); margin-top: 3px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.hotel-card-book { padding: 5px 8px; background: transparent; border: 1.5px solid var(--teal); border-radius: 6px; color: var(--teal); font-size: 10px; font-weight: 700; cursor: pointer; white-space: nowrap; flex-shrink: 0; transition: background .15s; }
+.hotel-card-book:hover { background: var(--teal-pale); }
 .trip-empty-text { font-size: 13px; font-weight: 600; color: var(--ink-2); margin-bottom: 4px; }
 .trip-empty-sub  { font-size: 11px; line-height: 1.5; }
 
@@ -2263,6 +2287,33 @@ html, body {
 
         <div class="panel-section" id="panel-tips">
           <!-- dynamically rendered by renderDestPanel() -->
+        </div>
+
+        <div class="panel-section" id="panel-prices">
+          <div class="panel-section-title" id="price-section-title">🏨 酒店比价</div>
+          <div class="price-search-form">
+            <div class="price-date-row">
+              <div class="price-date-group">
+                <label id="price-checkin-label">入住</label>
+                <input type="date" id="price-checkin" class="price-date-input">
+              </div>
+              <div class="price-date-group">
+                <label id="price-checkout-label">退房</label>
+                <input type="date" id="price-checkout" class="price-date-input">
+              </div>
+              <div class="price-date-group" style="flex:0 0 auto">
+                <label id="price-adults-label">人数</label>
+                <select id="price-adults" class="price-adults-select">
+                  <option value="1">1</option>
+                  <option value="2" selected>2</option>
+                  <option value="3">3</option>
+                  <option value="4">4</option>
+                </select>
+              </div>
+            </div>
+            <button class="price-search-btn" id="price-search-btn" onclick="searchHotels()">🔍 <span id="price-search-btn-text">查酒店价格</span></button>
+          </div>
+          <div id="hotel-results"></div>
         </div>
       </div>
 
@@ -4425,6 +4476,9 @@ const LANGS = {
     addTripBtn:'＋ 新建行程',
     suggChips:['🏨 乌布精品民宿','🌊 冲浪地点推荐','🍜 必吃美食清单','💰 预算规划','🕌 文化礼仪'],
     suggCmds:['推荐乌布最好的精品民宿，预算中等','巴厘岛最佳冲浪地点和适合新手的冲浪课','巴厘岛必吃地道美食清单','两人7天巴厘岛旅行，分节俭/舒适/豪华三档预算','巴厘岛文化礼仪和注意事项'],
+    priceTitle:'🏨 酒店比价', priceCheckIn:'入住', priceCheckOut:'退房', priceAdults:'人数',
+    priceSearchBtn:'查酒店价格', priceSearching:'正在搜索…', priceNoResults:'暂无结果，请更换日期重试',
+    pricePerNight:'/ 晚', priceBookBtn:'查看订房', priceRatingCount:'条评价',
     destMenuItems:['🌺 巴厘岛 · 印度尼西亚','🌸 京都 · 日本','🗼 巴黎 · 法国','🏝️ 圣托里尼 · 希腊','✨ 输入其他目的地…'],
     systemPromptLang:'中文',
     callCount:'次调用', active:'活跃', standby:'待机',
@@ -4520,6 +4574,9 @@ const LANGS = {
     addTripBtn:'＋ New Trip',
     suggChips:['🏨 Ubud Boutique Hotels','🌊 Best Surf Spots','🍜 Must-Try Local Food','💰 Budget Planning','🕌 Cultural Etiquette'],
     suggCmds:['Recommend the best boutique hotels in Ubud, mid-range budget','Best surf spots in Bali and beginner-friendly surf lessons','Must-try authentic local food in Bali','Budget planning for 2 people, 7 days in Bali — budget / comfort / luxury tiers','Cultural etiquette and important customs in Bali'],
+    priceTitle:'🏨 Hotel Prices', priceCheckIn:'Check-in', priceCheckOut:'Check-out', priceAdults:'Adults',
+    priceSearchBtn:'Search Hotels', priceSearching:'Searching…', priceNoResults:'No results, try different dates',
+    pricePerNight:'/ night', priceBookBtn:'Book Now', priceRatingCount:'reviews',
     destMenuItems:['🌺 Bali · Indonesia','🌸 Kyoto · Japan','🗼 Paris · France','🏝️ Santorini · Greece','✨ Enter custom destination…'],
     systemPromptLang:'English',
     callCount:' calls', active:'Active', standby:'Idle',
@@ -4615,6 +4672,9 @@ const LANGS = {
     addTripBtn:'＋ 新しい旅行',
     suggChips:['🏨 ウブドのブティックホテル','🌊 サーフィンスポット','🍜 必食グルメ','💰 予算プラン','🕌 文化マナー'],
     suggCmds:['ウブドのおすすめブティックホテル（中価格帯）','バリ島の最高のサーフスポットと初心者向けレッスン','バリ島の絶対食べるべき本場グルメリスト','バリ島2名7日間の予算プラン（節約・快適・豪華の3段階）','バリ島の文化マナーと注意事項'],
+    priceTitle:'🏨 ホテル料金', priceCheckIn:'チェックイン', priceCheckOut:'チェックアウト', priceAdults:'人数',
+    priceSearchBtn:'ホテルを検索', priceSearching:'検索中…', priceNoResults:'結果なし。日程を変えてお試しください',
+    pricePerNight:'/ 泊', priceBookBtn:'予約する', priceRatingCount:'件のレビュー',
     destMenuItems:['🌺 バリ島 · インドネシア','🌸 京都 · 日本','🗼 パリ · フランス','🏝️ サントリーニ · ギリシャ','✨ その他の目的地を入力…'],
     systemPromptLang:'日本語',
     callCount:'回の呼び出し', active:'アクティブ', standby:'待機中',
@@ -4710,6 +4770,9 @@ const LANGS = {
     addTripBtn:'＋ 새 여행',
     suggChips:['🏨 우붓 부티크 호텔','🌊 서핑 명소','🍜 필수 로컬 음식','💰 예산 계획','🕌 문화 에티켓'],
     suggCmds:['우붓의 최고 부티크 호텔 추천 (중간 가격대)','발리 최고의 서핑 명소와 초보자 강습','발리 필수 현지 음식 리스트','발리 2인 7일 여행 예산 계획 (절약/편안/럭셔리 3단계)','발리 문화 에티켓과 주의사항'],
+    priceTitle:'🏨 호텔 가격', priceCheckIn:'체크인', priceCheckOut:'체크아웃', priceAdults:'인원',
+    priceSearchBtn:'호텔 검색', priceSearching:'검색 중…', priceNoResults:'결과 없음, 날짜를 바꿔 보세요',
+    pricePerNight:'/ 박', priceBookBtn:'예약하기', priceRatingCount:'개 리뷰',
     destMenuItems:['🌺 발리 · 인도네시아','🌸 교토 · 일본','🗼 파리 · 프랑스','🏝️ 산토리니 · 그리스','✨ 다른 목적지 입력…'],
     systemPromptLang:'한국어',
     callCount:'회 호출', active:'활성', standby:'대기',
@@ -4805,6 +4868,9 @@ const LANGS = {
     addTripBtn:'＋ Perjalanan Baru',
     suggChips:['🏨 Hotel Butik Ubud','🌊 Spot Surfing Terbaik','🍜 Kuliner Wajib Coba','💰 Perencanaan Anggaran','🕌 Etika Budaya'],
     suggCmds:['Rekomendasikan hotel butik terbaik di Ubud, anggaran menengah','Spot surfing terbaik di Bali dan kelas surfing untuk pemula','Daftar kuliner lokal autentik yang wajib dicoba di Bali','Perencanaan anggaran 2 orang 7 hari di Bali — hemat / nyaman / mewah','Etika budaya dan hal penting yang perlu diketahui di Bali'],
+    priceTitle:'🏨 Harga Hotel', priceCheckIn:'Check-in', priceCheckOut:'Check-out', priceAdults:'Tamu',
+    priceSearchBtn:'Cari Hotel', priceSearching:'Mencari…', priceNoResults:'Tidak ada hasil, coba tanggal lain',
+    pricePerNight:'/ malam', priceBookBtn:'Pesan Sekarang', priceRatingCount:'ulasan',
     destMenuItems:['🌺 Bali · Indonesia','🌸 Kyoto · Jepang','🗼 Paris · Prancis','🏝️ Santorini · Yunani','✨ Masukkan destinasi lain…'],
     systemPromptLang:'Bahasa Indonesia',
     callCount:' panggilan', active:'Aktif', standby:'Standby',
@@ -5145,6 +5211,19 @@ function applyLang(lang) {
   // Update calc tips to re-run with lang-specific content
   setTimeout(() => calcUpdate(), 50);
 
+  // ── Hotel price search section ──────────────────────────────────────────────
+  const priceTitleEl = document.getElementById('price-section-title');
+  if (priceTitleEl) priceTitleEl.textContent = L.priceTitle || '🏨 酒店比价';
+  const pCILbl = document.getElementById('price-checkin-label');
+  if (pCILbl) pCILbl.textContent = L.priceCheckIn || '入住';
+  const pCOLbl = document.getElementById('price-checkout-label');
+  if (pCOLbl) pCOLbl.textContent = L.priceCheckOut || '退房';
+  const pALbl = document.getElementById('price-adults-label');
+  if (pALbl) pALbl.textContent = L.priceAdults || '人数';
+  const pSBText = document.getElementById('price-search-btn-text');
+  const pSBtn = document.getElementById('price-search-btn');
+  if (pSBText && pSBtn && !pSBtn.disabled) pSBText.textContent = L.priceSearchBtn || '查酒店价格';
+
   // Update mobile nav labels
   if (typeof applyMobileNavLang === 'function') applyMobileNavLang(L);
 }
@@ -5318,8 +5397,102 @@ function applyMobileNavLang(L) {
   });
 }
 
+// ─── HOTEL PRICE SEARCH (SerpAPI) ────────────────────────────
+function initPriceDates() {
+  const ci = document.getElementById('price-checkin');
+  const co = document.getElementById('price-checkout');
+  if (!ci || !co || (ci.value && co.value)) return;
+  const now = new Date();
+  const d1 = new Date(now); d1.setDate(now.getDate() + 1);
+  const d2 = new Date(now); d2.setDate(now.getDate() + 4);
+  const fmt = d => d.toISOString().split('T')[0];
+  ci.value = fmt(d1);
+  co.value = fmt(d2);
+}
+
+async function searchHotels() {
+  const dest = currentDest === 'custom'
+    ? (DESTINATIONS.custom?.name || '')
+    : (DESTINATIONS[currentDest]?.name || currentDest);
+  if (!dest) return;
+
+  const checkIn  = document.getElementById('price-checkin')?.value;
+  const checkOut = document.getElementById('price-checkout')?.value;
+  const adults   = parseInt(document.getElementById('price-adults')?.value) || 2;
+  const L = LANGS[currentLang] || LANGS.zh;
+
+  if (!checkIn || !checkOut) return;
+  if (checkOut <= checkIn) { alert('退房日期必须晚于入住日期'); return; }
+
+  const resultsEl = document.getElementById('hotel-results');
+  const btn       = document.getElementById('price-search-btn');
+  const btnTxt    = document.getElementById('price-search-btn-text');
+
+  if (btnTxt) btnTxt.textContent = L.priceSearching || '正在搜索…';
+  if (btn) btn.disabled = true;
+  if (resultsEl) resultsEl.innerHTML = `<div class="dest-loading">
+    <div class="dest-loading-spinner">🏨</div>
+    <div class="dest-loading-text">${L.priceSearching || '正在搜索…'}</div>
+  </div>`;
+  addLog('info', '🏨', `搜索 <strong>${dest}</strong> 酒店 ${checkIn}→${checkOut}`);
+
+  try {
+    const resp = await fetch('/api/search/hotels', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + getToken() },
+      body: JSON.stringify({ destination: dest, check_in: checkIn, check_out: checkOut, adults, lang: currentLang })
+    });
+    const data = await resp.json();
+    if (!resp.ok) throw new Error(data.detail || 'Search error ' + resp.status);
+    renderHotelCards(data.hotels || []);
+    addLog('success', '✅', `找到 ${(data.hotels || []).length} 家酒店 · ${dest}`);
+  } catch (err) {
+    if (resultsEl) resultsEl.innerHTML = `<div style="font-size:12px;color:var(--crimson);padding:8px 0">⚠️ ${err.message}</div>`;
+    addLog('warn', '⚠️', `酒店搜索失败: ${err.message}`);
+  } finally {
+    if (btnTxt) btnTxt.textContent = (LANGS[currentLang] || LANGS.zh).priceSearchBtn || '查酒店价格';
+    if (btn) btn.disabled = false;
+  }
+}
+
+function renderHotelCards(hotels) {
+  const resultsEl = document.getElementById('hotel-results');
+  if (!resultsEl) return;
+  const L = LANGS[currentLang] || LANGS.zh;
+
+  if (!hotels || hotels.length === 0) {
+    resultsEl.innerHTML = `<div class="trip-empty" style="padding:12px 0">
+      <div class="trip-empty-icon">🔍</div>
+      <div class="trip-empty-text">${L.priceNoResults || '暂无结果，请更换日期重试'}</div>
+    </div>`;
+    return;
+  }
+
+  resultsEl.innerHTML = hotels.map(h => {
+    const thumb = h.thumbnail
+      ? `<img class="hotel-card-thumb" src="${h.thumbnail}" alt="" loading="lazy" onerror="this.outerHTML='<div class=hotel-thumb-placeholder>🏨</div>'">`
+      : `<div class="hotel-thumb-placeholder">🏨</div>`;
+    const ratingHtml  = h.rating  ? `<span class="hotel-card-rating">⭐ ${h.rating}</span>` : '';
+    const reviewHtml  = h.reviews ? `<span style="font-size:10px;color:var(--ink-3)">${Number(h.reviews).toLocaleString()} ${L.priceRatingCount||'条评价'}</span>` : '';
+    const priceHtml   = h.price   ? `<span class="hotel-card-price">${h.price}<span class="hotel-per-night">${L.pricePerNight||'/ 晚'}</span></span>` : '';
+    const amenities   = (h.amenities||[]).slice(0,3).join(' · ');
+    const link        = h.link || '#';
+    const nameSafe    = (h.name||'Hotel').replace(/'/g,"\\'");
+    return `<div class="hotel-card" onclick="window.open('${link}','_blank')">
+      ${thumb}
+      <div class="hotel-card-info">
+        <div class="hotel-card-name" title="${h.name||''}">${h.name||'Hotel'}</div>
+        <div class="hotel-card-meta">${ratingHtml}${reviewHtml}${priceHtml}</div>
+        ${amenities ? `<div class="hotel-card-amenities">${amenities}</div>` : ''}
+      </div>
+      <button class="hotel-card-book" onclick="event.stopPropagation();window.open('${link}','_blank')">${L.priceBookBtn||'查看订房'}</button>
+    </div>`;
+  }).join('');
+}
+
 // Initialize
 applyLang('zh');
+initPriceDates();
 
 
 // ═══════════════════════════════════════════════════════

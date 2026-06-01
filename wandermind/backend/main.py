@@ -187,6 +187,14 @@ class DestInfoReq(BaseModel):
     lang: str = "zh"
 
 
+class HotelSearchReq(BaseModel):
+    destination: str
+    check_in: str   # YYYY-MM-DD
+    check_out: str  # YYYY-MM-DD
+    adults: int = 2
+    lang: str = "zh"
+
+
 # ─── Auth routes ─────────────────────────────────────────────
 @app.post("/api/auth/register")
 async def register(data: RegisterReq):
@@ -394,6 +402,67 @@ async def get_dest_info(req: DestInfoReq, user=Depends(current_user)):
         return json.loads(match.group())
     except json.JSONDecodeError as e:
         raise HTTPException(500, f"JSON parse error: {e}")
+    except HTTPException:
+        raise
+    except Exception as e:
+        raise HTTPException(500, str(e))
+
+
+# ─── SerpAPI ─────────────────────────────────────────────────
+_SERPAPI_KEY = os.getenv("SERPAPI_KEY", "")
+_SERPAPI_URL = "https://serpapi.com/search.json"
+
+
+@app.post("/api/search/hotels")
+async def search_hotels(req: HotelSearchReq, user=Depends(current_user)):
+    """SerpAPI Google Hotels 实时价格搜索。"""
+    if not _SERPAPI_KEY:
+        raise HTTPException(500, "SERPAPI_KEY not configured")
+
+    hl_map = {"zh": "zh-CN", "en": "en", "ja": "ja", "ko": "ko", "id": "id"}
+    gl_map = {"zh": "cn",    "en": "us", "ja": "jp", "ko": "kr", "id": "id"}
+
+    params = {
+        "engine":         "google_hotels",
+        "q":              f"hotels in {req.destination}",
+        "check_in_date":  req.check_in,
+        "check_out_date": req.check_out,
+        "adults":         str(max(1, min(req.adults, 8))),
+        "api_key":        _SERPAPI_KEY,
+        "hl":             hl_map.get(req.lang, "zh-CN"),
+        "gl":             gl_map.get(req.lang, "cn"),
+        "currency":       "CNY",
+    }
+
+    try:
+        async with httpx.AsyncClient(timeout=20.0) as client:
+            resp = await client.get(_SERPAPI_URL, params=params)
+        if resp.status_code == 401:
+            raise HTTPException(401, "Invalid SERPAPI_KEY")
+        if resp.status_code != 200:
+            raise HTTPException(resp.status_code, f"SerpAPI error: {resp.text[:200]}")
+
+        data = resp.json()
+        # SerpAPI may return an error field even on 200
+        if "error" in data:
+            raise HTTPException(400, data["error"])
+
+        properties = data.get("properties", [])[:6]   # top 6
+        hotels = []
+        for p in properties:
+            rate = p.get("rate_per_night") or {}
+            hotels.append({
+                "name":        p.get("name", ""),
+                "price":       rate.get("lowest", ""),
+                "rating":      p.get("overall_rating", 0),
+                "reviews":     p.get("reviews", 0),
+                "link":        p.get("link", ""),
+                "thumbnail":   p.get("thumbnail", ""),
+                "description": (p.get("description") or "")[:80],
+                "amenities":   (p.get("amenities") or [])[:4],
+            })
+        return {"hotels": hotels, "destination": req.destination}
+
     except HTTPException:
         raise
     except Exception as e:
