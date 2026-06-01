@@ -12,7 +12,10 @@
       "PowerShell($python = \\(Get-Command python\\).Source; Write-Host \"Python: $python\"; & $python -c \"print\\(1+1\\)\")",
       "Bash(gh api *)",
       "Bash(python3 -c \"import json,sys; d=json.load\\(sys.stdin\\); [print\\(i['path']\\) for i in d.get\\('tree',[]\\) if not i['path'].startswith\\('.git'\\)]\")",
-      "WebFetch(domain:github.com)"
+      "WebFetch(domain:github.com)",
+      "Bash(git add *)",
+      "Bash(git commit -m ' *)",
+      "Bash(git push *)"
     ]
   }
 }
