@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>WanderMind · 游心 — AI 多智能体旅行平台</title>
-<!-- BUILD: v0.5.0 2026-06-01 full-i18n-all-panels -->
+<!-- BUILD: v0.5.1 2026-06-01 fix-6th-btn weather-i18n mobile-responsive -->
 <!-- PWA -->
 <link rel="manifest" href="/manifest.json">
 <meta name="theme-color" content="#0E7C6B">
@@ -984,44 +984,150 @@ html, body {
 .trip-empty-sub  { font-size: 11px; line-height: 1.5; }
 
 /* ─── MOBILE RESPONSIVE ─── */
+/* ─── MOBILE BOTTOM NAV ─── */
+.mobile-nav {
+  display: none; /* hidden on desktop */
+}
+.mobile-overlay {
+  display: none;
+  position: fixed; inset: 0;
+  background: rgba(15,13,10,.45);
+  z-index: 180;
+  backdrop-filter: blur(2px);
+}
+.mobile-overlay.open { display: block; }
+
 @media (max-width: 768px) {
-  html, body { overflow: auto; }
+  html, body { overflow: hidden; }
+
+  /* ── Grid ── */
   .app {
-    grid-template-columns: 1fr !important;
-    grid-template-rows: 56px 1fr !important;
-    height: auto; min-height: 100vh;
+    display: flex !important;
+    flex-direction: column !important;
+    height: 100dvh; height: 100vh;
   }
-  .sidebar { display: none !important; }
-  .panel   { display: none !important; }
-  .main {
-    grid-column: 1 !important;
-    height: calc(100dvh - 56px);
-    display: flex; flex-direction: column;
+
+  /* ── Nav bar ── */
+  .nav {
+    flex-shrink: 0;
+    padding: 0 10px; gap: 0;
+    height: 56px;
   }
-  .nav { padding: 0 10px; gap: 0; }
-  .nav-logo { font-size: 16px; margin-right: 8px; }
+  .nav-logo { font-size: 16px; margin-right: 6px; }
   .nav-logo .version { display: none; }
   .nav-tabs { overflow-x: auto; -webkit-overflow-scrolling: touch; gap: 0; flex-shrink: 1; }
   .nav-tabs::-webkit-scrollbar { display: none; }
   .nav-tab { padding: 5px 10px; font-size: 11px; white-space: nowrap; }
   .agent-status-bar { display: none; }
   .auth-logout-btn { display: none; }
-  .dest-header { padding: 12px 14px 6px; }
-  .dest-header-text .dest-title { font-size: 18px; }
+
+  /* ── Sidebar & Panel hidden by default, shown as overlays ── */
+  .sidebar, .panel { display: none !important; }
+  .sidebar.mobile-open {
+    display: flex !important;
+    position: fixed;
+    top: 56px; bottom: 52px; left: 0; right: 0;
+    z-index: 200;
+    overflow-y: auto;
+    animation: slideInLeft .22s ease;
+  }
+  .panel.mobile-open {
+    display: flex !important;
+    flex-direction: column !important;
+    position: fixed;
+    top: 56px; bottom: 52px; left: 0; right: 0;
+    z-index: 200;
+    overflow-y: auto;
+    animation: slideInRight .22s ease;
+  }
+  @keyframes slideInLeft  { from{opacity:0;transform:translateX(-16px)} to{opacity:1;transform:none} }
+  @keyframes slideInRight { from{opacity:0;transform:translateX(16px)}  to{opacity:1;transform:none} }
+
+  /* ── Main takes all remaining space ── */
+  .main {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    min-height: 0;
+  }
+
+  /* ── Destination header — compact ── */
+  .dest-header { padding: 10px 14px 6px; }
+  .dest-header-text .dest-title { font-size: 17px; }
+  .dest-header-text .dest-eyebrow { font-size: 9px; margin-bottom: 2px; }
   .dest-actions { display: none; }
-  .dest-chips { flex-wrap: wrap; gap: 4px; }
-  .active-agents-bar { overflow-x: auto; }
-  .quick-actions { overflow-x: auto; padding: 8px 14px; gap: 6px; }
-  .quick-btn { font-size: 11px; padding: 6px 10px; white-space: nowrap; }
-  .messages { flex: 1; padding: 10px 12px; }
+  .dest-chips { flex-wrap: wrap; gap: 3px; }
+  .dest-chip { font-size: 11px; padding: 2px 8px; }
+
+  /* ── Active agents bar — scrollable ── */
+  .active-agents-bar { overflow-x: auto; -webkit-overflow-scrolling: touch; flex-shrink: 0; }
+  .active-agents-bar::-webkit-scrollbar { display: none; }
+
+  /* ── Quick actions — scrollable ── */
+  .quick-actions {
+    overflow-x: auto; -webkit-overflow-scrolling: touch;
+    padding: 6px 12px; gap: 6px; flex-shrink: 0;
+    flex-wrap: nowrap !important;
+  }
+  .quick-actions::-webkit-scrollbar { display: none; }
+  .quick-btn { font-size: 11px; padding: 6px 10px; white-space: nowrap; flex-shrink: 0; }
+
+  /* ── Messages ── */
+  .messages { flex: 1; padding: 10px 12px; overflow-y: auto; min-height: 0; }
+  .msg-body { max-width: 88% !important; }
   .bubble { font-size: 13px; }
-  .input-area { padding: 8px 10px 12px; }
+  .sugg-chip { font-size: 12px; padding: 5px 10px; }
+  .chips-wrap { gap: 6px; }
+
+  /* ── Input area ── */
+  .input-area { padding: 6px 10px 8px; flex-shrink: 0; }
+  .input-box { border-radius: 10px; }
+  #main-input { font-size: 14px; }
+
+  /* ── Bottom nav bar ── */
+  .mobile-nav {
+    display: flex;
+    flex-shrink: 0;
+    height: 52px;
+    background: var(--white);
+    border-top: 1px solid var(--paper-3);
+    align-items: stretch;
+    z-index: 150;
+  }
+  .mnav-btn {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 2px;
+    border: none;
+    background: transparent;
+    cursor: pointer;
+    color: var(--ink-3);
+    font-size: 11px;
+    padding: 0;
+    transition: color .15s;
+  }
+  .mnav-btn.active { color: var(--teal); }
+  .mnav-btn.mnav-chat.active { color: var(--white); background: var(--teal); border-radius: 12px; margin: 5px; }
+  .mnav-icon { font-size: 20px; line-height: 1; }
+  .mnav-label { font-size: 10px; font-weight: 600; letter-spacing: .01em; }
+
+  /* ── Modals ── */
   .modal { width: 96vw !important; max-width: 96vw !important; margin: 0 auto; }
   .lang-picker { padding: 20px; }
   .lp-logo { font-size: 36px; }
   .lp-grid { gap: 8px; }
   .lp-btn { min-width: 80px; padding: 14px 14px; }
   .auth-card { padding: 28px 20px 24px; }
+
+  /* ── Right panel mobile adjustments ── */
+  .panel-tabs { overflow-x: auto; -webkit-overflow-scrolling: touch; flex-wrap: nowrap !important; }
+  .panel-tab { white-space: nowrap; font-size: 12px; padding: 10px 12px; }
+  .panel-body { overflow-y: auto; flex: 1; }
+  .weather-card { margin: 10px; }
 }
 
 /* Animations */
@@ -1651,7 +1757,7 @@ html, body {
 .lang-menu-item .lm-check { font-size: 12px; opacity: 0; }
 .lang-menu-item.active .lm-check { opacity: 1; }
 
-@media (max-width: 900px) {
+@media (max-width: 900px) and (min-width: 769px) {
   .app { grid-template-columns: 0 1fr 0; }
   .sidebar, .panel { display: none; }
 }
@@ -2139,6 +2245,28 @@ html, body {
     </div>
   </aside>
 
+  <!-- ─── MOBILE BOTTOM NAV ─── -->
+  <nav class="mobile-nav" id="mobile-nav">
+    <button class="mnav-btn" onclick="mnavGo('trips')" data-tab="trips">
+      <span class="mnav-icon">🧳</span><span class="mnav-label" id="mnav-trips">行程</span>
+    </button>
+    <button class="mnav-btn" onclick="mnavGo('dest')" data-tab="dest">
+      <span class="mnav-icon">🗺️</span><span class="mnav-label" id="mnav-dest">目的地</span>
+    </button>
+    <button class="mnav-btn mnav-chat active" onclick="mnavGo('chat')" data-tab="chat">
+      <span class="mnav-icon">💬</span><span class="mnav-label" id="mnav-chat">聊天</span>
+    </button>
+    <button class="mnav-btn" onclick="mnavGo('budget')" data-tab="budget">
+      <span class="mnav-icon">💰</span><span class="mnav-label" id="mnav-budget">预算</span>
+    </button>
+    <button class="mnav-btn" onclick="mnavGo('agents')" data-tab="agents">
+      <span class="mnav-icon">🤖</span><span class="mnav-label" id="mnav-agents">团队</span>
+    </button>
+  </nav>
+
+  <!-- Mobile overlay backdrop -->
+  <div class="mobile-overlay" id="mobile-overlay" onclick="mnavClose()"></div>
+
 </div>
 
 <script>
@@ -2150,8 +2278,8 @@ const DESTINATIONS = {
     flag:'🌺', name:'巴厘岛', region:'印度尼西亚',
     title:'巴厘岛 · 神之岛<em>深度旅行</em>', eyebrow:'🌺 正在规划',
     titles:{zh:'巴厘岛 · 神之岛<em>深度旅行</em>',en:'Bali · Island of Gods<em>Deep Journey</em>',ja:'バリ島 · 神の島<em>深い旅</em>',ko:'발리 · 신의 섬<em>깊은 여행</em>',id:'Bali · Pulau Dewata<em>Perjalanan Mendalam</em>'},
-    weather:{temp:'29°C',cond:'巴厘岛 · 乌布 · 晴间多云',icon:'⛅',details:'💧 湿度 72% · 💨 14km/h · 🌅 06:14'},
-    rate:'¥1≈2,200', season:'旺季', seasonDesc:'6月为旱季',
+    weather:{temp:'29°C',cond:{zh:'巴厘岛 · 乌布 · 晴间多云',en:'Bali · Ubud · Partly Cloudy',ja:'バリ島 · ウブド · 晴れ時々曇り',ko:'발리 · 우붓 · 구름 조금',id:'Bali · Ubud · Sebagian Berawan'},icon:'⛅',details:'💧 72% · 💨 14km/h · 🌅 06:14'},
+    rate:'¥1≈2,200', season:{zh:'旺季',en:'Peak Season',ja:'ピークシーズン',ko:'성수기',id:'Musim Puncak'}, seasonDesc:{zh:'6月为旱季',en:'June is dry season',ja:'6月は乾季',ko:'6월은 건기',id:'Juni adalah musim kemarau'},
     regions:[
       {name:'乌布 Ubud',         tag:'文化中心', cls:'tag-blue',  desc:'梯田、艺术、瑜伽、精神探索——旅行者心中的圣地',        q:'详细介绍乌布的景点、活动、住宿和美食'},
       {name:'水明漾 Seminyak',   tag:'最热门',   cls:'tag-amber', desc:'时尚海滩、精品酒店、网红餐厅、日落鸡尾酒',            q:'水明漾 Seminyak 的海滩酒吧、网红餐厅和日落体验推荐'},
@@ -2182,8 +2310,8 @@ const DESTINATIONS = {
     flag:'🌸', name:'京都', region:'日本',
     title:'京都 · 千年古都<em>文化之旅</em>', eyebrow:'🌸 正在规划',
     titles:{zh:'京都 · 千年古都<em>文化之旅</em>',en:'Kyoto · Ancient Capital<em>Cultural Journey</em>',ja:'京都 · 千年の古都<em>文化の旅</em>',ko:'교토 · 천년 고도<em>문화 여행</em>',id:'Kyoto · Ibu Kota Kuno<em>Perjalanan Budaya</em>'},
-    weather:{temp:'24°C',cond:'京都 · 晴天',icon:'☀️',details:'💧 湿度 58% · 💨 8km/h · 🌅 05:02'},
-    rate:'¥1≈21', season:'初夏', seasonDesc:'6月微雨季节',
+    weather:{temp:'24°C',cond:{zh:'京都 · 晴天',en:'Kyoto · Sunny',ja:'京都 · 晴れ',ko:'교토 · 맑음',id:'Kyoto · Cerah'},icon:'☀️',details:'💧 58% · 💨 8km/h · 🌅 05:02'},
+    rate:'¥1≈21', season:{zh:'初夏',en:'Early Summer',ja:'初夏',ko:'초여름',id:'Awal Musim Panas'}, seasonDesc:{zh:'6月微雨季节',en:'June — light rain season',ja:'6月は小雨の季節',ko:'6월은 가벼운 우기',id:'Juni — musim hujan ringan'},
     regions:[
       {name:'岚山 Arashiyama',  tag:'自然胜地', cls:'tag-green', desc:'竹林小道、渡月桥、嵐山温泉，最具京都意境',    q:'岚山竹林和渡月桥的游览攻略及最佳拍摄时间'},
       {name:'祇園 Gion',        tag:'最热门',   cls:'tag-amber', desc:'艺伎文化、花见小路、日式茶屋，古风情调',      q:'祇园花见小路和艺伎文化深度体验推荐'},
@@ -2214,8 +2342,8 @@ const DESTINATIONS = {
     flag:'🗼', name:'巴黎', region:'法国',
     title:'巴黎 · 光之城<em>浪漫之旅</em>', eyebrow:'🗼 正在规划',
     titles:{zh:'巴黎 · 光之城<em>浪漫之旅</em>',en:'Paris · City of Light<em>Romantic Journey</em>',ja:'パリ · 光の都<em>ロマンチックな旅</em>',ko:'파리 · 빛의 도시<em>낭만 여행</em>',id:'Paris · Kota Cahaya<em>Perjalanan Romantis</em>'},
-    weather:{temp:'21°C',cond:'巴黎 · 部分多云',icon:'⛅',details:'💧 湿度 65% · 💨 12km/h · 🌅 06:01'},
-    rate:'¥1≈0.13€', season:'旺季', seasonDesc:'6月最佳季节',
+    weather:{temp:'21°C',cond:{zh:'巴黎 · 部分多云',en:'Paris · Partly Cloudy',ja:'パリ · 曇り時々晴れ',ko:'파리 · 구름 조금',id:'Paris · Sebagian Berawan'},icon:'⛅',details:'💧 65% · 💨 12km/h · 🌅 06:01'},
+    rate:'¥1≈0.13€', season:{zh:'旺季',en:'Peak Season',ja:'ピークシーズン',ko:'성수기',id:'Musim Puncak'}, seasonDesc:{zh:'6月最佳季节',en:'June — best month to visit',ja:'6月が最も良い季節',ko:'6월이 최적의 방문 시기',id:'Juni — bulan terbaik untuk berkunjung'},
     regions:[
       {name:'玛黑区 Le Marais',      tag:'文艺潮流', cls:'tag-blue',  desc:'历史建筑、设计师精品店、画廊，LGBT文化聚集地',    q:'巴黎玛黑区的艺术画廊、精品咖啡馆和购物推荐'},
       {name:'蒙马特 Montmartre',     tag:'艺术圣地', cls:'tag-amber', desc:'圣心堂、艺术家广场、巴黎全景鸟瞰最佳位置',       q:'蒙马特圣心堂和艺术家广场游览攻略'},
@@ -2246,8 +2374,8 @@ const DESTINATIONS = {
     flag:'🏝️', name:'圣托里尼', region:'希腊',
     title:'圣托里尼 · 爱琴海<em>蓝白梦境</em>', eyebrow:'🏝️ 正在规划',
     titles:{zh:'圣托里尼 · 爱琴海<em>蓝白梦境</em>',en:'Santorini · Aegean Sea<em>Blue &amp; White Dream</em>',ja:'サントリーニ · エーゲ海<em>白と青の夢</em>',ko:'산토리니 · 에게해<em>파랑과 흰색의 꿈</em>',id:'Santorini · Laut Aegea<em>Mimpi Biru &amp; Putih</em>'},
-    weather:{temp:'26°C',cond:'圣托里尼 · 晴朗',icon:'☀️',details:'💧 湿度 55% · 💨 18km/h · 🌅 06:24'},
-    rate:'¥1≈0.13€', season:'旺季', seasonDesc:'6–8月最美',
+    weather:{temp:'26°C',cond:{zh:'圣托里尼 · 晴朗',en:'Santorini · Clear & Sunny',ja:'サントリーニ · 快晴',ko:'산토리니 · 맑고 화창',id:'Santorini · Cerah Sempurna'},icon:'☀️',details:'💧 55% · 💨 18km/h · 🌅 06:24'},
+    rate:'¥1≈0.13€', season:{zh:'旺季',en:'Peak Season',ja:'ピークシーズン',ko:'성수기',id:'Musim Puncak'}, seasonDesc:{zh:'6–8月最美',en:'Jun–Aug at its most beautiful',ja:'6〜8月が最も美しい',ko:'6~8월이 가장 아름다운 시기',id:'Jun–Agu paling indah'},
     regions:[
       {name:'菲拉 Fira',      tag:'主要城镇', cls:'tag-blue',  desc:'悬崖首府，精品店、酒吧、全景餐厅汇聚于此',        q:'菲拉的观景餐厅、购物和夜生活推荐'},
       {name:'伊亚 Oia',       tag:'最美日落', cls:'tag-amber', desc:'世界最美日落圣地，蓝顶教堂，白墙蜿蜒小道',       q:'伊亚最佳日落观赏地点和蓝顶教堂拍摄攻略'},
@@ -2708,10 +2836,19 @@ function renderWelcomeMsg(id) {
   const msgEl = document.getElementById('messages');
   if (!msgEl) return;
 
-  const suggs = d.suggestions || [];
-  const chipsHtml = suggs.map(s =>
-    `<button class="sugg-chip" onclick="qsend('${s.q.replace(/'/g, "\\'")}')">${s.label}</button>`
-  ).join('');
+  // For Bali use LANGS chips (already translated); other dests use DESTINATIONS.suggestions
+  let chipsHtml;
+  if (id === 'bali' && L.suggChips && L.suggCmds) {
+    chipsHtml = L.suggChips.map((label, i) => {
+      const q = L.suggCmds[i] || label;
+      return `<button class="sugg-chip" onclick="qsend('${q.replace(/'/g, "\\'")}')">${label}</button>`;
+    }).join('');
+  } else {
+    const suggs = d.suggestions || [];
+    chipsHtml = suggs.map(s =>
+      `<button class="sugg-chip" onclick="qsend('${s.q.replace(/'/g, "\\'")}')">${s.label}</button>`
+    ).join('');
+  }
 
   const isFirst = (id === 'bali' && !currentTripStart);
   let bodyTxt;
@@ -2787,13 +2924,15 @@ function switchDest(id, flag, name, e) {
   const _eyebrowFlag = flag || d.flag || '📍';
   const _planningTxt = (id === 'custom') ? (_CL.destCustomEyebrow || '自定义目的地') : (_CL.destPlanning || '正在规划');
   document.getElementById('dest-eyebrow').textContent = _eyebrowFlag + ' ' + _planningTxt;
+  const _L2 = LANGS[currentLang] || LANGS.zh;
+  const _gl = lang => (typeof lang === 'object') ? (lang[currentLang] || lang.zh) : lang;
   document.getElementById('w-temp').textContent        = d.weather.temp;
-  document.getElementById('w-cond').textContent        = d.weather.cond;
+  document.getElementById('w-cond').textContent        = _gl(d.weather.cond);
   document.getElementById('w-icon').textContent        = d.weather.icon;
-  document.getElementById('w-details').textContent     = d.weather.details;
+  document.getElementById('w-details').textContent     = _gl(d.weather.details);
   document.getElementById('s-rate').textContent        = d.rate;
-  document.getElementById('s-season').textContent      = d.season;
-  document.getElementById('s-season-desc').textContent = d.seasonDesc;
+  document.getElementById('s-season').textContent      = _gl(d.season);
+  document.getElementById('s-season-desc').textContent = _gl(d.seasonDesc);
   // Update destination menu selection highlight
   document.querySelectorAll('.dest-menu-item').forEach(el => el.classList.remove('selected'));
   e.target.classList.add('selected');
@@ -3514,7 +3653,7 @@ const LANGS = {
     newTrip:'＋ 新建行程',
     coordinating:'协同中',
     inputPlaceholder:'问任何关于目的地的问题，或描述你的旅行梦想…',
-    quickBtns:['🌌 平行宇宙预览','🧮 预算计算器','📋 生成完整行程','🔍 最新资讯','🏨 住宿推荐'],
+    quickBtns:['🌌 平行宇宙预览','🗺️ 探索地图','🧮 预算计算器','📋 生成完整行程','🔍 最新资讯','🏨 住宿推荐'],
     quickCmds:[
       '帮我生成完整的7日行程方案，包括每天景点、餐厅和住宿',
       '搜索目前最新的入境政策、签证要求和安全注意事项',
@@ -3599,7 +3738,7 @@ const LANGS = {
     newTrip:'＋ New Trip',
     coordinating:'Active',
     inputPlaceholder:'Ask anything about your destination, or describe your dream trip…',
-    quickBtns:['🌌 Parallel Preview','🧮 Budget Calculator','📋 Full Itinerary','🔍 Live Search','🏨 Accommodation'],
+    quickBtns:['🌌 Parallel Preview','🗺️ Explore Map','🧮 Budget Calculator','📋 Full Itinerary','🔍 Live Search','🏨 Accommodation'],
     quickCmds:[
       'Generate a complete 7-day itinerary with daily sights, restaurants, and accommodation',
       'Search for the latest entry requirements, visa info, and travel advisories',
@@ -3684,7 +3823,7 @@ const LANGS = {
     newTrip:'＋ 新しい旅行',
     coordinating:'稼働中',
     inputPlaceholder:'目的地について何でも聞いてください。旅の夢を教えてください…',
-    quickBtns:['🌌 並行宇宙プレビュー','🧮 予算計算機','📋 全行程生成','🔍 最新情報','🏨 宿泊施設'],
+    quickBtns:['🌌 並行宇宙プレビュー','🗺️ 地図を探索','🧮 予算計算機','📋 全行程生成','🔍 最新情報','🏨 宿泊施設'],
     quickCmds:[
       '毎日の観光スポット、レストラン、宿泊先を含む7日間の完全な旅程を作成してください',
       '最新の入国要件、ビザ情報、旅行注意事項を検索してください',
@@ -3769,7 +3908,7 @@ const LANGS = {
     newTrip:'＋ 새 여행',
     coordinating:'진행 중',
     inputPlaceholder:'여행지에 대해 무엇이든 물어보세요, 또는 여행의 꿈을 알려주세요…',
-    quickBtns:['🌌 병렬 우주 미리보기','🧮 예산 계산기','📋 전체 일정','🔍 실시간 검색','🏨 숙박 추천'],
+    quickBtns:['🌌 병렬 우주 미리보기','🗺️ 지도 탐색','🧮 예산 계산기','📋 전체 일정','🔍 실시간 검색','🏨 숙박 추천'],
     quickCmds:[
       '매일 관광지, 레스토랑, 숙박을 포함한 7일 전체 일정을 생성해주세요',
       '최신 입국 요건, 비자 정보, 여행 주의사항을 검색해주세요',
@@ -3854,7 +3993,7 @@ const LANGS = {
     newTrip:'＋ Perjalanan Baru',
     coordinating:'Aktif',
     inputPlaceholder:'Tanyakan apa saja tentang destinasi Anda, atau ceritakan impian perjalanan Anda…',
-    quickBtns:['🌌 Preview Paralel','🧮 Kalkulator Anggaran','📋 Itinerary Lengkap','🔍 Cari Terkini','🏨 Rekomendasi Hotel'],
+    quickBtns:['🌌 Preview Paralel','🗺️ Jelajahi Peta','🧮 Kalkulator Anggaran','📋 Itinerary Lengkap','🔍 Cari Terkini','🏨 Rekomendasi Hotel'],
     quickCmds:[
       'Buat itinerary 7 hari lengkap dengan tempat wisata, restoran, dan akomodasi setiap hari',
       'Cari persyaratan masuk terbaru, info visa, dan peringatan perjalanan',
@@ -4006,14 +4145,18 @@ function applyLang(lang) {
   const inp = document.getElementById('main-input');
   if (inp) inp.placeholder = L.inputPlaceholder;
 
-  // Quick action buttons
-  const qbtns = document.querySelectorAll('.quick-btn');
+  // Quick action buttons (6 total: Parallel Preview | Map | Budget Calc | Full Itinerary | Live Search | Accommodation)
+  const qbtns = document.querySelectorAll('.quick-actions .quick-btn');
   qbtns.forEach((btn,i) => {
-    const labels = [L.quickBtns[0], L.quickBtns[1], L.quickBtns[2], L.quickBtns[3], L.quickBtns[4]];
-    if (labels[i]) btn.childNodes[0] && (btn.textContent = labels[i]);
+    const lbl = L.quickBtns[i];
+    if (lbl) btn.textContent = lbl;
   });
-  // Re-wire quick btn commands
-  if (qbtns.length >= 5) {
+  // Re-wire quick btn commands (map=1 is already wired; 0=multiverse, 2=budgetcalc are HTML-wired)
+  if (qbtns.length >= 6) {
+    qbtns[3].onclick = () => qsend(L.quickCmds[0]);
+    qbtns[4].onclick = () => qsend(L.quickCmds[1]);
+    qbtns[5].onclick = () => qsend(L.quickCmds[2]);
+  } else if (qbtns.length >= 5) {
     qbtns[2].onclick = () => qsend(L.quickCmds[0]);
     qbtns[3].onclick = () => qsend(L.quickCmds[1]);
     qbtns[4].onclick = () => qsend(L.quickCmds[2]);
@@ -4029,8 +4172,9 @@ function applyLang(lang) {
   const ptabs = document.querySelectorAll('.panel-tab');
   ptabs.forEach((t,i) => { if (L.panelTabs[i]) t.textContent = L.panelTabs[i]; });
 
-  // ── Destination header: translated title + eyebrow ──────────────────────────
+  // ── Destination header: translated title + eyebrow + weather/season ─────────
   const dHdr = DESTINATIONS[currentDest];
+  const _gv = v => (typeof v === 'object') ? (v[lang] || v.zh) : v;
   if (dHdr) {
     const titleEl = document.getElementById('dest-title');
     if (titleEl) titleEl.innerHTML = (dHdr.titles && dHdr.titles[lang]) ? dHdr.titles[lang] : dHdr.title;
@@ -4042,6 +4186,15 @@ function applyLang(lang) {
         : (L.destPlanning || '正在规划');
       eyebrowEl.textContent = eyebrowFlag + ' ' + planTxt;
     }
+    // Weather & season in current language
+    const wCond = document.getElementById('w-cond');
+    if (wCond) wCond.textContent = _gv(dHdr.weather?.cond);
+    const wDet = document.getElementById('w-details');
+    if (wDet) wDet.textContent = _gv(dHdr.weather?.details);
+    const sSeason = document.getElementById('s-season');
+    if (sSeason) sSeason.textContent = _gv(dHdr.season);
+    const sDesc = document.getElementById('s-season-desc');
+    if (sDesc) sDesc.textContent = _gv(dHdr.seasonDesc);
   }
   // Chips: date / nights / agent count
   const chipDateEl = document.getElementById('chip-date');
@@ -4218,6 +4371,9 @@ function applyLang(lang) {
 
   // Update calc tips to re-run with lang-specific content
   setTimeout(() => calcUpdate(), 50);
+
+  // Update mobile nav labels
+  if (typeof applyMobileNavLang === 'function') applyMobileNavLang(L);
 }
 
 // Patch calcUpdate to use localized category labels
@@ -4327,6 +4483,67 @@ window.openMultiverse = function() {
   addLog('info', '🌌', `Parallel Universe · ${DESTINATIONS[currentDest]?.name || currentDest}`);
   generateMultiverse();
 };
+
+// ─── MOBILE BOTTOM NAV ────────────────────────────────
+let _mnavActive = 'chat';
+
+function mnavGo(tab) {
+  _mnavActive = tab;
+  document.querySelectorAll('.mnav-btn').forEach(b => b.classList.remove('active'));
+  const activeBtn = document.querySelector(`[data-tab="${tab}"]`);
+  if (activeBtn) activeBtn.classList.add('active');
+
+  const sidebar = document.querySelector('.sidebar');
+  const panel   = document.querySelector('.panel');
+  const overlay = document.getElementById('mobile-overlay');
+  // Close all mobile overlays first
+  sidebar?.classList.remove('mobile-open');
+  panel?.classList.remove('mobile-open');
+  overlay?.classList.remove('open');
+
+  if (tab === 'trips' || tab === 'agents') {
+    sidebar?.classList.add('mobile-open');
+    overlay?.classList.add('open');
+  } else if (tab === 'dest') {
+    panel?.classList.add('mobile-open');
+    overlay?.classList.add('open');
+    // Activate Destination tab in panel
+    document.querySelectorAll('.panel-tab').forEach((t,i) => t.classList.toggle('active', i===0));
+    document.querySelectorAll('.panel-content').forEach((c,i) => c.classList.toggle('active', i===0));
+  } else if (tab === 'budget') {
+    panel?.classList.add('mobile-open');
+    overlay?.classList.add('open');
+    // Activate Budget tab (index 2)
+    document.querySelectorAll('.panel-tab').forEach((t,i) => t.classList.toggle('active', i===2));
+    document.querySelectorAll('.panel-content').forEach((c,i) => c.classList.toggle('active', i===2));
+  }
+  // 'chat' — close everything (already done)
+}
+
+function mnavClose() {
+  document.querySelector('.sidebar')?.classList.remove('mobile-open');
+  document.querySelector('.panel')?.classList.remove('mobile-open');
+  document.getElementById('mobile-overlay')?.classList.remove('open');
+  _mnavActive = 'chat';
+  document.querySelectorAll('.mnav-btn').forEach(b => b.classList.remove('active'));
+  document.querySelector('[data-tab="chat"]')?.classList.add('active');
+}
+
+// Update mobile nav labels when language changes — called from applyLang
+function applyMobileNavLang(L) {
+  const labels = {
+    trips:  {zh:'行程',en:'Trips',ja:'旅行',ko:'여행',id:'Perjalanan'},
+    dest:   {zh:'目的地',en:'Destination',ja:'目的地',ko:'목적지',id:'Destinasi'},
+    chat:   {zh:'聊天',en:'Chat',ja:'チャット',ko:'채팅',id:'Chat'},
+    budget: {zh:'预算',en:'Budget',ja:'予算',ko:'예산',id:'Anggaran'},
+    agents: {zh:'团队',en:'Agents',ja:'チーム',ko:'팀',id:'Tim'},
+  };
+  const lang = L ? (Object.keys(LANGS).find(k => LANGS[k] === L) || 'zh') : 'zh';
+  Object.entries(labels).forEach(([tab, map]) => {
+    const el = document.getElementById('mnav-' + tab);
+    if (el) el.textContent = map[lang] || map.en;
+  });
+}
 
 // Initialize
 applyLang('zh');
@@ -4575,14 +4792,16 @@ function generateMapRoute() {
   qsend(asks[currentLang] || asks.en);
 }
 
-// Add map quick button
-const qbtns = document.querySelectorAll('.quick-btn');
-if (qbtns.length > 0) {
-  const mapBtn = document.createElement('button');
-  mapBtn.className = 'quick-btn';
-  mapBtn.innerHTML = '🗺️ 探索地图';
-  mapBtn.onclick = openMapModal;
-  qbtns[0].parentNode.insertBefore(mapBtn, qbtns[0].nextSibling);
+// Add map quick button (in correct language)
+{
+  const _allQbtns = document.querySelectorAll('.quick-actions .quick-btn');
+  if (_allQbtns.length > 0) {
+    const mapBtn = document.createElement('button');
+    mapBtn.className = 'quick-btn';
+    mapBtn.textContent = LANGS[currentLang]?.quickBtns[1] || '🗺️ 探索地图';
+    mapBtn.onclick = openMapModal;
+    _allQbtns[0].parentNode.insertBefore(mapBtn, _allQbtns[0].nextSibling);
+  }
 }
 
 // ═══════════════════════════════════════════════════════
@@ -4883,17 +5102,20 @@ function submitNewTrip() {
 
   // ── Update main header ────────────────────
   const d = destData;
+  const _glnt = v => (typeof v === 'object') ? (v[currentLang] || v.zh) : v;
+  const _LNT = LANGS[currentLang] || LANGS.zh;
   document.getElementById('dest-flag').textContent     = d.flag;
   document.getElementById('dest-name-nav').textContent = d.name;
-  document.getElementById('dest-eyebrow').textContent  = d.eyebrow;
-  document.getElementById('dest-title').innerHTML      = d.title;
+  const _ntEyebrow = d.flag + ' ' + (_LNT.destPlanning || '正在规划');
+  document.getElementById('dest-eyebrow').textContent  = _ntEyebrow;
+  document.getElementById('dest-title').innerHTML      = (d.titles && d.titles[currentLang]) ? d.titles[currentLang] : d.title;
   document.getElementById('w-temp').textContent        = d.weather.temp;
-  document.getElementById('w-cond').textContent        = d.weather.cond;
+  document.getElementById('w-cond').textContent        = _glnt(d.weather.cond);
   document.getElementById('w-icon').textContent        = d.weather.icon;
-  document.getElementById('w-details').textContent     = d.weather.details;
+  document.getElementById('w-details').textContent     = _glnt(d.weather.details);
   document.getElementById('s-rate').textContent        = d.rate;
-  document.getElementById('s-season').textContent      = d.season;
-  document.getElementById('s-season-desc').textContent = d.seasonDesc;
+  document.getElementById('s-season').textContent      = _glnt(d.season);
+  document.getElementById('s-season-desc').textContent = _glnt(d.seasonDesc);
 
   // ── Update date / nights chips ────────────
   const sd = new Date(start + 'T00:00:00');
