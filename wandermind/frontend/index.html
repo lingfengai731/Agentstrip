@@ -226,6 +226,9 @@ html, body {
 }
 .trip-card:hover { border-color: var(--teal-light); background: var(--teal-pale); }
 .trip-card.active { border-color: var(--teal); background: var(--teal-pale); }
+.hist-section { font-size: 10px; font-weight: 700; color: var(--ink-3); text-transform: uppercase; letter-spacing: .08em; padding: 10px 4px 4px; margin-top: 4px; }
+.hist-card { opacity: .82; }
+.hist-card:hover { opacity: 1; }
 .trip-card-title {
   font-size: 13px;
   font-weight: 600;
@@ -2522,6 +2525,7 @@ const BASE_SYSTEM = `你是 WanderMind 游心 —— 一个顶级 AI 多智能�
 该司机名叫 Dicky，是本地司机、会英语，可安排机场接送、单日包车、景点定制游览，性价比高、靠谱有口碑。建议用户提前通过小红书或 WhatsApp 联系确认行程安排。`;
 
 let currentDest = 'bali';
+let currentConvId = null;   // tracks DB conversation being saved/loaded
 let currentAgent = 'planner';
 let history = [];
 let busy = false;
@@ -2687,6 +2691,7 @@ document.addEventListener('DOMContentLoaded', () => {
 function checkAuth() {
   if (getToken()) {
     updateNavUser();
+    loadConvHistory();   // pull past conversations into sidebar
   }
   // No forced redirect — sendMsg() will prompt if token missing
 }
@@ -2942,6 +2947,136 @@ function renderBudgetPanel() {
 function askBudgetAI() {
   const destName = DESTINATIONS[currentDest]?.name || currentDest;
   qsend(`帮我分析${destName} ${currentTripPeople}人${currentTripDays}天旅行的详细预算方案，总预算¥${currentTripBudget}，按节俭/舒适/豪华三档分别列出各项费用明细`);
+}
+
+// ─── CONVERSATION HISTORY ────────────────────────────────────────────────────
+
+async function autoSaveConv() {
+  if (!getToken() || history.length === 0) return;
+  try {
+    const firstUser = history.find(m => m.role === 'user')?.content || '';
+    const title = firstUser.slice(0, 35) + (firstUser.length > 35 ? '…' : '');
+    const resp = await fetch('/api/conversations', {
+      method: 'POST',
+      headers: {'Content-Type':'application/json', 'Authorization':'Bearer '+getToken()},
+      body: JSON.stringify({conv_id: currentConvId, dest: currentDest, title, messages: history})
+    });
+    if (resp.ok) {
+      const data = await resp.json();
+      if (!currentConvId) {
+        currentConvId = data.id;
+        // Tag the active trip card so delete works
+        const activeCard = document.querySelector('#trip-list .trip-card.active');
+        if (activeCard) activeCard.dataset.convId = currentConvId;
+        // Refresh sidebar history list
+        loadConvHistory();
+      }
+    }
+  } catch(e) {}
+}
+
+async function loadConvHistory() {
+  if (!getToken()) return;
+  try {
+    const resp = await fetch('/api/conversations', {
+      headers: {'Authorization':'Bearer '+getToken()}
+    });
+    if (!resp.ok) return;
+    const convs = await resp.json();
+    renderHistSidebar(convs);
+  } catch(e) {}
+}
+
+function renderHistSidebar(convs) {
+  const tripList = document.getElementById('trip-list');
+  if (!tripList) return;
+  // Remove previous history items + section header
+  tripList.querySelectorAll('.hist-card, .hist-section').forEach(el => el.remove());
+  if (!convs || convs.length === 0) return;
+
+  const L = LANGS[currentLang] || LANGS.zh;
+  const emptyState = document.getElementById('trip-empty-state');
+  if (emptyState) emptyState.style.display = 'none';
+
+  const sec = document.createElement('div');
+  sec.className = 'hist-section';
+  sec.textContent = L.histTitle || '历史对话';
+  tripList.appendChild(sec);
+
+  convs.forEach(conv => {
+    const dest = DESTINATIONS[conv.dest] || DESTINATIONS.bali;
+    const date = new Date(conv.updated_at * 1000);
+    const dateStr = `${date.getMonth()+1}/${date.getDate()}`;
+    const card = document.createElement('div');
+    card.className = 'trip-card hist-card';
+    card.id = 'conv-card-' + conv.id;
+    card.dataset.convId = conv.id;
+    const titleTxt = (conv.title || dest.name).slice(0, 30);
+    card.innerHTML = `
+      <div class="trip-card-title">${dest.flag} ${titleTxt}</div>
+      <div class="trip-card-meta"><span>${dateStr}</span><span>·</span><span>${dest.name}</span></div>`;
+    card.onclick = () => openConv(conv.id);
+    card.setAttribute('oncontextmenu', `showTripMenu(event,this)`);
+    if (conv.id === currentConvId) card.classList.add('active');
+    tripList.appendChild(card);
+  });
+}
+
+async function openConv(convId) {
+  if (!getToken()) return;
+  try {
+    const resp = await fetch('/api/conversations/' + convId, {
+      headers: {'Authorization':'Bearer '+getToken()}
+    });
+    if (!resp.ok) return;
+    const conv = await resp.json();
+
+    // Restore state
+    currentConvId = conv.id;
+    currentDest = conv.dest || 'bali';
+    busy = false;
+    history.length = 0;
+    conv.messages.forEach(m => history.push(m));
+
+    // Update destination UI (no AI call)
+    const d = DESTINATIONS[currentDest] || DESTINATIONS.bali;
+    const L = LANGS[currentLang] || LANGS.zh;
+    const _glv = v => (typeof v === 'object') ? (v[currentLang] || v.zh) : v;
+    document.getElementById('dest-flag').textContent     = d.flag;
+    document.getElementById('dest-name-nav').textContent = d.name;
+    document.getElementById('dest-eyebrow').textContent  = d.flag + ' ' + (L.destPlanning || '正在规划');
+    document.getElementById('dest-title').innerHTML      = (d.titles?.[currentLang]) ? d.titles[currentLang] : d.title;
+    document.getElementById('w-temp').textContent        = d.weather.temp;
+    document.getElementById('w-cond').textContent        = _glv(d.weather.cond);
+    document.getElementById('w-icon').textContent        = d.weather.icon;
+    document.getElementById('w-details').textContent     = _glv(d.weather.details);
+    document.getElementById('s-rate').textContent        = d.rate;
+    document.getElementById('s-rate-lbl').textContent    = L.rateLabel || '实时汇率';
+    document.getElementById('s-season').textContent      = _glv(d.season);
+    document.getElementById('s-season-desc').textContent = _glv(d.seasonDesc);
+    renderDestPanel(currentDest);
+    renderItinerary(currentDest, currentTripStart);
+    renderBudgetPanel();
+
+    // Replay messages
+    const msgEl = document.getElementById('messages');
+    if (msgEl) {
+      msgEl.innerHTML = '';
+      conv.messages.forEach(m => {
+        if      (m.role === 'user')      appendUserMsg(m.content);
+        else if (m.role === 'assistant') appendAIMsg(m.content, false);
+      });
+      scroll?.();
+    }
+
+    // Highlight card
+    document.querySelectorAll('.trip-card.active').forEach(c => c.classList.remove('active'));
+    document.getElementById('conv-card-' + convId)?.classList.add('active');
+
+    // Close mobile drawer
+    if (typeof mnavClose === 'function') mnavClose();
+
+  } catch(e) { console.error('openConv:', e); }
 }
 
 // ─── PDF EXPORT ───────────────────────────────────────────────────────────────
@@ -3375,7 +3510,10 @@ async function sendMsg() {
             updateStreamMsg(streamId, fullText);
           } else if (ev.type === 'done') {
             if (streamId) finalizeStreamMsg(streamId, searched);
-            if (fullText) history.push({ role: 'assistant', content: fullText });
+            if (fullText) {
+              history.push({ role: 'assistant', content: fullText });
+              autoSaveConv();   // persist to DB
+            }
             agentCallCount[currentAgent] = (agentCallCount[currentAgent] || 0) + 1;
             addLog('success', agent.icon, `<strong>${agent.name}</strong> · ${fullText.length} 字`);
             if (searched) addLog('search', '🌐', '<strong>实时联网搜索</strong> · 已获取最新数据');
@@ -3975,7 +4113,7 @@ const LANGS = {
     ],
     genItinerary:'生成完整行程', liveSearch:'🔍 联网搜索',
     panelTabs:['目的地','行程','预算','Agent日志'],
-    rateLabel:'实时汇率',
+    rateLabel:'实时汇率', histTitle:'历史对话', confirmDelete:'确定删除「{name}」吗？',
     destTabSections:{regions:'推荐区域', tips:'旅行必知'},
     itineraryTitle:'7日行程概览', deepCustom:'✨ AI 深度定制行程', exportPDFBtn:'📄 导出行程 PDF',
     budgetTitle:'预算追踪 · 2人7天', budgetTotal:'总预算', budgetPlanned:'已规划 (34%)',
@@ -4061,7 +4199,7 @@ const LANGS = {
     ],
     genItinerary:'Full Itinerary', liveSearch:'🔍 Live Search',
     panelTabs:['Destination','Itinerary','Budget','Agent Log'],
-    rateLabel:'Exchange Rate',
+    rateLabel:'Exchange Rate', histTitle:'Past Chats', confirmDelete:'Delete "{name}"?',
     destTabSections:{regions:'Recommended Areas', tips:'Travel Essentials'},
     itineraryTitle:'7-Day Overview', deepCustom:'✨ AI Custom Itinerary', exportPDFBtn:'📄 Export PDF',
     budgetTitle:'Budget Tracker · 2 people · 7 days', budgetTotal:'Total Budget', budgetPlanned:'Planned (34%)',
@@ -4147,7 +4285,7 @@ const LANGS = {
     ],
     genItinerary:'全行程生成', liveSearch:'🔍 リアルタイム検索',
     panelTabs:['目的地','旅程','予算','エージェントログ'],
-    rateLabel:'為替レート',
+    rateLabel:'為替レート', histTitle:'過去の会話', confirmDelete:'「{name}」を削除しますか？',
     destTabSections:{regions:'おすすめエリア', tips:'旅行の必須情報'},
     itineraryTitle:'7日間の概要', deepCustom:'✨ AIカスタム旅程', exportPDFBtn:'📄 PDF 出力',
     budgetTitle:'予算トラッカー · 2名 · 7日間', budgetTotal:'総予算', budgetPlanned:'計画済み (34%)',
@@ -4233,7 +4371,7 @@ const LANGS = {
     ],
     genItinerary:'전체 일정 생성', liveSearch:'🔍 실시간 검색',
     panelTabs:['여행지','일정','예산','에이전트 로그'],
-    rateLabel:'환율',
+    rateLabel:'환율', histTitle:'이전 대화', confirmDelete:'"{name}"을 삭제하시겠습니까?',
     destTabSections:{regions:'추천 지역', tips:'여행 필수 정보'},
     itineraryTitle:'7일 일정 개요', deepCustom:'✨ AI 맞춤 일정', exportPDFBtn:'📄 PDF 내보내기',
     budgetTitle:'예산 추적 · 2인 · 7일', budgetTotal:'총 예산', budgetPlanned:'계획됨 (34%)',
@@ -4319,7 +4457,7 @@ const LANGS = {
     ],
     genItinerary:'Buat Itinerary', liveSearch:'🔍 Pencarian Live',
     panelTabs:['Destinasi','Itinerary','Anggaran','Log Agen'],
-    rateLabel:'Nilai Tukar',
+    rateLabel:'Nilai Tukar', histTitle:'Riwayat Chat', confirmDelete:'Hapus "{name}"?',
     destTabSections:{regions:'Area yang Direkomendasikan', tips:'Info Penting Perjalanan'},
     itineraryTitle:'Gambaran 7 Hari', deepCustom:'✨ Itinerary Kustom AI', exportPDFBtn:'📄 Ekspor PDF',
     budgetTitle:'Pelacak Anggaran · 2 orang · 7 hari', budgetTotal:'Total Anggaran', budgetPlanned:'Direncanakan (34%)',
@@ -5462,6 +5600,7 @@ function submitNewTrip() {
 
   closeModal('modal-newtrip');
   history.length = 0;
+  currentConvId = null;   // new trip = new conversation slot
   busy = false;
 
   const styleMap = { budget:'节俭穷游', comfort:'舒适平衡', luxury:'奢享高端' };
@@ -5495,9 +5634,22 @@ function hideTripCtx() {
 function deleteTrip() {
   if (!_tripCtxTarget) return;
   const name = _tripCtxTarget.querySelector('.trip-card-title')?.textContent || '此行程';
-  if (confirm(`确定删除「${name}」吗？`)) {
+  const L = LANGS[currentLang] || LANGS.zh;
+  const confirmMsg = (L.confirmDelete || '确定删除「{name}」吗？').replace('{name}', name);
+  if (confirm(confirmMsg)) {
+    const convId = _tripCtxTarget.dataset.convId;
+    if (convId && getToken()) {
+      fetch('/api/conversations/' + convId, {
+        method: 'DELETE',
+        headers: {'Authorization':'Bearer '+getToken()}
+      }).catch(() => {});
+      if (currentConvId === convId) currentConvId = null;
+    }
     _tripCtxTarget.remove();
-    addSystemMsg('行程已删除');
+    // Remove orphaned hist-section if no hist-cards remain
+    if (!document.querySelector('#trip-list .hist-card')) {
+      document.querySelector('#trip-list .hist-section')?.remove();
+    }
     // Show empty state if no trip cards remain
     const remaining = document.querySelectorAll('#trip-list .trip-card');
     const emptyState = document.getElementById('trip-empty-state');
