@@ -1000,6 +1000,17 @@ html, body {
   text-align: center; padding: 24px 16px; color: var(--ink-3);
 }
 .trip-empty-icon { font-size: 32px; margin-bottom: 8px; opacity: .5; }
+/* ─── DYNAMIC DEST LOADING SKELETON ─── */
+.dest-loading { padding: 20px 0; text-align: center; }
+.dest-loading-spinner { font-size: 28px; animation: spin 1.4s linear infinite; display: inline-block; }
+@keyframes spin { to { transform: rotate(360deg); } }
+.dest-loading-text { font-size: 12px; color: var(--ink-3); margin-top: 8px; }
+.dest-skel { background: linear-gradient(90deg, var(--paper-2) 25%, var(--paper-3) 50%, var(--paper-2) 75%);
+  background-size: 200% 100%; animation: skel 1.4s infinite; border-radius: 6px; }
+@keyframes skel { to { background-position: -200% 0; } }
+.dest-skel-card { height: 64px; margin-bottom: 8px; border-radius: var(--r); }
+.dest-skel-line { height: 14px; margin-bottom: 6px; }
+.dest-skel-line-short { width: 60%; }
 .trip-empty-text { font-size: 13px; font-weight: 600; color: var(--ink-2); margin-bottom: 4px; }
 .trip-empty-sub  { font-size: 11px; line-height: 1.5; }
 
@@ -2899,6 +2910,79 @@ function renderDestPanel(id) {
   }
 }
 
+// ─── DYNAMIC DESTINATION INFO ──────────────────────────
+const _destInfoCache = {};   // session cache keyed by city name
+
+async function loadDynamicDestInfo(city) {
+  if (!getToken()) return;
+  const cacheKey = city + '_' + currentLang;
+  if (_destInfoCache[cacheKey]) {
+    _applyDestInfo(city, _destInfoCache[cacheKey]);
+    return;
+  }
+
+  const L = LANGS[currentLang] || LANGS.zh;
+
+  // Show loading skeleton in panel
+  const regEl  = document.getElementById('panel-regions');
+  const tipsEl = document.getElementById('panel-tips');
+  const skelCard = () => `<div class="dest-skel dest-skel-card"></div>`;
+  if (regEl)  regEl.innerHTML  = `<div class="panel-section-title">${L.destTabSections?.regions || '推荐区域'}</div>
+    <div class="dest-loading"><div class="dest-loading-spinner">🌍</div>
+    <div class="dest-loading-text">${L.destLoadingText || 'AI 正在生成目的地数据…'}</div></div>
+    ${skelCard()}${skelCard()}`;
+  if (tipsEl) tipsEl.innerHTML = `<div class="panel-section-title">${L.destTabSections?.tips || '旅行必知'}</div>
+    ${skelCard()}${skelCard()}`;
+
+  // Also show loading in weather card
+  document.getElementById('w-temp').textContent    = '…';
+  document.getElementById('w-cond').textContent    = L.destLoadingText || 'AI 加载中…';
+  document.getElementById('w-icon').textContent    = '🌍';
+  document.getElementById('w-details').textContent = '';
+
+  try {
+    const resp = await fetch('/api/dest_info', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + getToken() },
+      body: JSON.stringify({ destination: city, lang: currentLang })
+    });
+    if (!resp.ok) throw new Error('dest_info API error ' + resp.status);
+    const data = await resp.json();
+    _destInfoCache[cacheKey] = data;
+    _applyDestInfo(city, data);
+    addLog('success', '🌍', `<strong>${city}</strong> · 目的地数据已加载`);
+  } catch (err) {
+    // On error, leave skeleton as-is and show hint
+    if (regEl) regEl.innerHTML += `<div style="font-size:11px;color:var(--crimson);padding:4px 0">${err.message}</div>`;
+    addLog('warn', '⚠️', `动态目的地加载失败: ${err.message}`);
+  }
+}
+
+function _applyDestInfo(city, data) {
+  // Merge into DESTINATIONS.custom
+  const d = DESTINATIONS.custom;
+  if (!d) return;
+  if (data.weather) d.weather = { ...d.weather, ...data.weather };
+  if (data.rate)        d.rate       = data.rate;
+  if (data.season)      d.season     = data.season;
+  if (data.seasonDesc)  d.seasonDesc = data.seasonDesc;
+  if (data.regions)     d.regions    = data.regions;
+  if (data.tips)        d.tips       = data.tips;
+
+  // Update weather card elements
+  const _gl = v => (typeof v === 'object' && v !== null) ? (v[currentLang] || v.zh || '') : (v || '');
+  document.getElementById('w-temp').textContent    = _gl(d.weather.temp);
+  document.getElementById('w-cond').textContent    = _gl(d.weather.cond);
+  document.getElementById('w-icon').textContent    = _gl(d.weather.icon);
+  document.getElementById('w-details').textContent = _gl(d.weather.details);
+  document.getElementById('s-rate').textContent    = d.rate;
+  document.getElementById('s-season').textContent      = _gl(d.season);
+  document.getElementById('s-season-desc').textContent = _gl(d.seasonDesc);
+
+  // Re-render regions + tips panel with real data
+  renderDestPanel('custom');
+}
+
 function renderItinerary(id, startDate) {
   const d = DESTINATIONS[id] || DESTINATIONS.bali;
   const L = LANGS[currentLang] || LANGS.zh;
@@ -3408,6 +3492,8 @@ function switchDest(id, flag, name, e) {
     // From here use the SAME path as regular destinations
     id = 'custom'; flag = '🌍'; name = city;
     document.getElementById('dest-menu').classList.remove('open');
+    // Kick off async AI data load (after switchDest finishes rendering)
+    setTimeout(() => loadDynamicDestInfo(city), 100);
     // falls through to main switchDest code below
   }
   currentDest = id;
@@ -4321,7 +4407,7 @@ const LANGS = {
     emptyExploreDest:'探索 {dest}',
     emptyExploreHint:'向 AI 询问当地区域特色和推荐地点',
     emptyTipsText:'旅行贴士待加载',
-    emptyTipsHint:'与 AI 对话后可获取目的地实用建议',
+    emptyTipsHint:'与 AI 对话后可获取目的地实用建议', destLoadingText:'AI 正在生成目的地数据…',
     itinEmpty:'还没有行程安排',
     itinEmptyHint:'新建行程并选择日期后，这里将显示完整行程时间轴',
     budgetEmpty:'暂无预算数据',
@@ -4416,7 +4502,7 @@ const LANGS = {
     emptyExploreDest:'Explore {dest}',
     emptyExploreHint:'Ask AI about local areas and must-visit spots',
     emptyTipsText:'Travel tips loading…',
-    emptyTipsHint:'Chat with AI to get practical destination tips',
+    emptyTipsHint:'Chat with AI to get practical destination tips', destLoadingText:'AI is generating destination data…',
     itinEmpty:'No itinerary yet',
     itinEmptyHint:'Create a trip and set dates to see your full timeline',
     budgetEmpty:'No budget data yet',
@@ -4511,7 +4597,7 @@ const LANGS = {
     emptyExploreDest:'{dest}を探索',
     emptyExploreHint:'AIに現地エリアとおすすめスポットを聞いてください',
     emptyTipsText:'旅行のヒントを読み込み中…',
-    emptyTipsHint:'AIとチャットして実用的な目的地のヒントを入手しましょう',
+    emptyTipsHint:'AIとチャットして実用的な目的地のヒントを入手しましょう', destLoadingText:'AIが目的地データを生成中…',
     itinEmpty:'まだ旅程がありません',
     itinEmptyHint:'旅行を作成して日付を設定すると、完全なタイムラインが表示されます',
     budgetEmpty:'まだ予算データがありません',
@@ -4606,7 +4692,7 @@ const LANGS = {
     emptyExploreDest:'{dest} 탐색',
     emptyExploreHint:'AI에게 현지 지역 특색과 추천 명소를 물어보세요',
     emptyTipsText:'여행 팁 로딩 중…',
-    emptyTipsHint:'AI와 대화하여 목적지 실용 정보를 얻으세요',
+    emptyTipsHint:'AI와 대화하여 목적지 실용 정보를 얻으세요', destLoadingText:'AI가 목적지 데이터를 생성 중…',
     itinEmpty:'아직 일정이 없습니다',
     itinEmptyHint:'여행을 만들고 날짜를 설정하면 전체 타임라인이 표시됩니다',
     budgetEmpty:'아직 예산 데이터가 없습니다',
@@ -4701,7 +4787,7 @@ const LANGS = {
     emptyExploreDest:'Jelajahi {dest}',
     emptyExploreHint:'Tanyakan AI tentang area lokal dan tempat yang wajib dikunjungi',
     emptyTipsText:'Tips perjalanan sedang dimuat…',
-    emptyTipsHint:'Ngobrol dengan AI untuk mendapatkan tips praktis destinasi',
+    emptyTipsHint:'Ngobrol dengan AI untuk mendapatkan tips praktis destinasi', destLoadingText:'AI sedang membuat data destinasi…',
     itinEmpty:'Belum ada itinerary',
     itinEmptyHint:'Buat perjalanan dan tentukan tanggal untuk melihat timeline lengkap',
     budgetEmpty:'Belum ada data anggaran',

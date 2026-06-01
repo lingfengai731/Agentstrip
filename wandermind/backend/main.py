@@ -1,6 +1,7 @@
 import asyncio
 import base64
 import hashlib
+import re
 import hmac
 import json
 import os
@@ -181,6 +182,11 @@ class PrefsReq(BaseModel):
     preferences: dict = {}
 
 
+class DestInfoReq(BaseModel):
+    destination: str
+    lang: str = "zh"
+
+
 # ─── Auth routes ─────────────────────────────────────────────
 @app.post("/api/auth/register")
 async def register(data: RegisterReq):
@@ -316,6 +322,81 @@ async def delete_conv(conv_id: str, user=Depends(current_user)):
         return {"ok": True}
     finally:
         conn.close()
+
+
+# ─── Dynamic destination info (AI-generated panel data) ──────
+@app.post("/api/dest_info")
+async def get_dest_info(req: DestInfoReq, user=Depends(current_user)):
+    """AI生成任意目的地的面板数据：天气/区域/贴士。"""
+    if not _API_KEY:
+        raise HTTPException(500, "API_KEY not set")
+
+    lang_map = {"zh": "中文", "en": "English", "ja": "日本語", "ko": "한국어", "id": "Bahasa Indonesia"}
+    lang_name = lang_map.get(req.lang, "中文")
+
+    # Optional: use Tavily for real-time weather context
+    weather_ctx = ""
+    if _TAVILY_KEY:
+        w_ctx, _ = await tavily_search(f"{req.destination} current weather temperature today", req.destination)
+        if w_ctx:
+            weather_ctx = f"\n\n【实时天气参考数据】\n{w_ctx[:500]}"
+
+    prompt = f"""你是旅行数据生成系统。请为目的地「{req.destination}」生成旅行面板数据。{weather_ctx}
+
+严格按以下JSON格式返回，所有文字使用{lang_name}：
+{{
+  "weather": {{
+    "temp": "当前典型气温（如：25-32°C）",
+    "cond": "天气状况（10字内）",
+    "icon": "最贴切的天气emoji（单个）",
+    "details": "简短气候提示（20字内）"
+  }},
+  "rate": "汇率参考（如：1 CNY ≈ 2,200 IDR；若为人民币城市写"本地货币：人民币"）",
+  "season": "最佳旅行月份（如：10-4月）",
+  "seasonDesc": "最佳季节说明（15字内）",
+  "regions": [
+    {{"name": "知名区域或景区名", "cls": "tag-blue", "tag": "核心特色（4字）", "desc": "区域特色介绍（40字）", "q": "游客常问该区域的完整问句"}},
+    {{"name": "...", "cls": "tag-amber", "tag": "...", "desc": "...", "q": "..."}},
+    {{"name": "...", "cls": "tag-green",  "tag": "...", "desc": "...", "q": "..."}},
+    {{"name": "...", "cls": "tag-red",   "tag": "...", "desc": "...", "q": "..."}}
+  ],
+  "tips": [
+    {{"title": "贴士标题（6字内）", "cls": "tag-blue",  "tag": "类型（4字）", "desc": "具体实用建议（30字）"}},
+    {{"title": "...",               "cls": "tag-amber", "tag": "...",         "desc": "..."}},
+    {{"title": "...",               "cls": "tag-green", "tag": "...",         "desc": "..."}}
+  ]
+}}
+要求：
+- regions 固定4条，cls 依次从 tag-blue/tag-amber/tag-green/tag-red 中取
+- tips 固定3条，覆盖 签证入境、货币消费、文化礼仪 等实用主题
+- 仅返回纯JSON，不要 markdown 代码块，不要任何其他文字"""
+
+    try:
+        async with httpx.AsyncClient(timeout=40.0) as client:
+            resp = await client.post(
+                _CHAT_URL,
+                headers=_ai_headers(),
+                json={
+                    "model": _MODEL,
+                    "max_tokens": 1400,
+                    "messages": [{"role": "user", "content": prompt}],
+                },
+            )
+        if resp.status_code != 200:
+            body = await resp.aread()
+            raise HTTPException(resp.status_code, body.decode(errors="replace")[:200])
+        text = resp.json().get("choices", [{}])[0].get("message", {}).get("content", "")
+        # Robustly extract the first {...} JSON block
+        match = re.search(r'\{[\s\S]*\}', text)
+        if not match:
+            raise HTTPException(500, "AI did not return valid JSON")
+        return json.loads(match.group())
+    except json.JSONDecodeError as e:
+        raise HTTPException(500, f"JSON parse error: {e}")
+    except HTTPException:
+        raise
+    except Exception as e:
+        raise HTTPException(500, str(e))
 
 
 # ─── AI config (OpenAI-compatible — MiMo / any proxy) ────────
