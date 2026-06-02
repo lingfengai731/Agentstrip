@@ -383,11 +383,16 @@ async def get_dest_info(req: DestInfoReq, user=Depends(current_user)):
     {{"title": "贴士标题（6字内）", "cls": "tag-blue",  "tag": "类型（4字）", "desc": "具体实用建议（30字）"}},
     {{"title": "...",               "cls": "tag-amber", "tag": "...",         "desc": "..."}},
     {{"title": "...",               "cls": "tag-green", "tag": "...",         "desc": "..."}}
+  ],
+  "hotelAreas": [
+    {{"name": "知名住宿区域中文名（如：水明漾、祇园、玛黑区）", "q": "对应英文/拉丁化名（如：Seminyak、Gion、Le Marais），用于酒店搜索关键词", "tag": "区域定位（4字内）"}},
+    {{"name": "...", "q": "...", "tag": "..."}}
   ]
 }}
 要求：
 - regions 固定4条，cls 依次从 tag-blue/tag-amber/tag-green/tag-red 中取
 - tips 固定3条，覆盖 签证入境、货币消费、文化礼仪 等实用主题
+- hotelAreas 固定6条，必须是该城市真实存在的知名住宿区域/街区（例如纽约的曼哈顿/布鲁克林、伦敦的Soho/Westminster），按热门度排列
 - 仅返回纯JSON，不要 markdown 代码块，不要任何其他文字"""
 
     try:
