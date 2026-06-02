@@ -19,9 +19,11 @@
     </view>
 
     <view class="me-card">
-      <view class="me-row" bindtap="todo" data-key="prefs">
+      <view class="me-row" bindtap="openPrefs">
         <view class="me-row-icon">⚙️</view>
         <view class="me-row-label">旅行偏好</view>
+        <view wx:if="{{hasPrefs}}" class="me-row-badge">✓ 已设置</view>
+        <view wx:else class="me-row-value">未设置</view>
         <view class="me-row-arrow">›</view>
       </view>
       <view class="me-row" bindtap="todo" data-key="history">

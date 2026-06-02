@@ -114,7 +114,9 @@ Page({
       const dest = app.globalData.currentDest === 'custom'
         ? (app.globalData.customDestName || 'custom')
         : this.data.destName;
-      const system = BASE_SYSTEM + `\n\n当前目的地: ${dest}`;
+      // 注入旅行偏好（如果用户在"我的-旅行偏好"里设置过）
+      const memoryPrompt = app.buildMemoryPrompt();
+      const system = BASE_SYSTEM + memoryPrompt + `\n\n当前目的地: ${dest}`;
       // 把所有历史发给后端（角色+内容）
       const history = messages.map(m => ({ role: m.role, content: m.content }));
       const res = await api.chatOnce(history, system, dest, this.data.mode);

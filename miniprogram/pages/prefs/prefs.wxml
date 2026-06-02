@@ -1,0 +1,80 @@
+<!--pages/prefs/prefs.wxml — 旅行偏好编辑-->
+<view class="prefs-page">
+
+  <view class="hero">
+    <view class="hero-emoji">🧠</view>
+    <view class="hero-title">让 AI 更懂你</view>
+    <view class="hero-desc">保存后，AI 每次对话都会自动参考你的偏好</view>
+  </view>
+
+  <!-- 预算档次（单选） -->
+  <view class="section">
+    <view class="section-title">💰 预算档次</view>
+    <view class="chip-row">
+      <view
+        wx:for="{{budgetOptions}}"
+        wx:key="value"
+        class="pref-chip {{budgetLevel === item.value ? 'active' : ''}}"
+        bindtap="selectBudget"
+        data-value="{{item.value}}"
+      >{{item.label}}</view>
+    </view>
+  </view>
+
+  <!-- 旅行风格（多选） -->
+  <view class="section">
+    <view class="section-title">🎭 旅行风格 <text class="multi-hint">（可多选）</text></view>
+    <view class="chip-row">
+      <view
+        wx:for="{{styleOptions}}"
+        wx:key="value"
+        class="pref-chip {{styleList.indexOf(item.value) >= 0 ? 'active' : ''}}"
+        bindtap="toggleStyle"
+        data-value="{{item.value}}"
+      >{{item.label}}</view>
+    </view>
+  </view>
+
+  <!-- 同行方式（单选） -->
+  <view class="section">
+    <view class="section-title">👥 同行方式</view>
+    <view class="chip-row">
+      <view
+        wx:for="{{partyOptions}}"
+        wx:key="value"
+        class="pref-chip {{party === item.value ? 'active' : ''}}"
+        bindtap="selectParty"
+        data-value="{{item.value}}"
+      >{{item.label}}</view>
+    </view>
+  </view>
+
+  <!-- 特殊偏好（备注） -->
+  <view class="section">
+    <view class="section-title">📝 特殊偏好 / 备注</view>
+    <textarea
+      class="notes-input"
+      placeholder="如：素食、不喜欢太商业化、需要无障碍设施、对海鲜过敏…"
+      placeholder-class="textarea-ph"
+      placeholder-style="color:#B0A89D;font-size:26rpx;"
+      value="{{notes}}"
+      bindinput="onNotesChange"
+      maxlength="200"
+      auto-height
+    />
+    <view class="char-count">{{notes.length}}/200</view>
+  </view>
+
+  <!-- 保存按钮 -->
+  <view class="action-bar">
+    <button class="btn-ghost" bindtap="clearPrefs">清除全部</button>
+    <button class="btn save-btn" bindtap="savePrefs" loading="{{busy}}" disabled="{{busy}}">
+      💾 {{busy ? '保存中…' : '保存偏好，让 AI 记住我'}}
+    </button>
+  </view>
+
+  <view wx:if="{{hasAny}}" class="saved-tip">
+    ✓ 已为你保存偏好，每次 AI 对话都会自动参考
+  </view>
+
+</view>

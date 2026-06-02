@@ -53,6 +53,14 @@
 .me-row-icon { font-size: 36rpx; }
 .me-row-label { flex: 1; font-size: 28rpx; color: #2A2723; }
 .me-row-value { font-size: 24rpx; color: #8A857F; }
+.me-row-badge {
+  font-size: 22rpx;
+  color: #0E7C6B;
+  background: #E3F5F1;
+  padding: 4rpx 14rpx;
+  border-radius: 14rpx;
+  font-weight: 600;
+}
 .me-row-arrow { color: #C0C0C0; font-size: 32rpx; }
 
 .logout-btn {

@@ -71,6 +71,11 @@ Page({
       app.setToken(res.token, res.user);
       wx.showToast({ title: authMode === 'login' ? '欢迎回来' : '注册成功', icon: 'success' });
       this.setData({ loggedIn: true, user: res.user, password: '' });
+      // 登录成功后异步拉取后端的旅行偏好（不阻塞 UI）
+      try {
+        const prefs = await api.getPrefs();
+        app.setPrefs(prefs || {});
+      } catch (e) { /* 静默失败 */ }
     } catch (err) {
       this.setData({ authError: err.message || '操作失败' });
     } finally {

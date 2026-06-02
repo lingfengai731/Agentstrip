@@ -1,0 +1,108 @@
+/* pages/prefs/prefs.wxss */
+.prefs-page {
+  min-height: 100vh;
+  padding: 0 30rpx 60rpx;
+  box-sizing: border-box;
+}
+
+/* —— Hero —— */
+.hero {
+  text-align: center;
+  padding: 40rpx 20rpx 30rpx;
+}
+.hero-emoji { font-size: 80rpx; margin-bottom: 16rpx; }
+.hero-title { font-size: 38rpx; font-weight: 700; color: #2A2723; }
+.hero-desc { font-size: 24rpx; color: #8A857F; margin-top: 8rpx; }
+
+/* —— Section —— */
+.section {
+  background: #fff;
+  border-radius: 20rpx;
+  padding: 28rpx;
+  margin-bottom: 24rpx;
+}
+.section-title {
+  font-size: 28rpx;
+  font-weight: 700;
+  color: #2A2723;
+  margin-bottom: 20rpx;
+}
+.multi-hint {
+  font-size: 22rpx;
+  font-weight: 400;
+  color: #8A857F;
+  margin-left: 8rpx;
+}
+
+/* —— Chips —— */
+.chip-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16rpx;
+}
+.pref-chip {
+  padding: 14rpx 26rpx;
+  background: #F0EDE6;
+  border: 2rpx solid transparent;
+  border-radius: 28rpx;
+  font-size: 26rpx;
+  font-weight: 600;
+  color: #5A554F;
+}
+.pref-chip.active {
+  background: #E3F5F1;
+  border-color: #0E7C6B;
+  color: #0E7C6B;
+}
+
+/* —— 备注输入框 —— */
+.notes-input {
+  width: 100%;
+  background: #F0EDE6;
+  border-radius: 14rpx;
+  padding: 24rpx;
+  font-size: 28rpx;
+  min-height: 120rpx;
+  box-sizing: border-box;
+  line-height: 1.5;
+  color: #2A2723;
+}
+.char-count {
+  text-align: right;
+  font-size: 22rpx;
+  color: #8A857F;
+  margin-top: 8rpx;
+}
+
+/* —— 底部操作栏 —— */
+.action-bar {
+  display: flex;
+  gap: 20rpx;
+  margin-top: 30rpx;
+}
+.btn-ghost {
+  flex: 0 0 200rpx;
+  background: transparent;
+  color: #C13B3B;
+  border: 2rpx solid #E1DCD3;
+  border-radius: 16rpx;
+  font-size: 26rpx;
+  font-weight: 700;
+  padding: 20rpx;
+  line-height: 1.2;
+}
+.btn-ghost::after { border: none; }
+.save-btn {
+  flex: 1;
+}
+
+.saved-tip {
+  margin-top: 24rpx;
+  padding: 18rpx 24rpx;
+  background: #E3F5F1;
+  border-radius: 14rpx;
+  font-size: 24rpx;
+  color: #0E7C6B;
+  font-weight: 600;
+  text-align: center;
+}

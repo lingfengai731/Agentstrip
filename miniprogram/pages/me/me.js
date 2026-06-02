@@ -2,12 +2,19 @@
 const { LANGS } = require('../../utils/const.js');
 const app = getApp();
 
+function _hasAny(p) {
+  if (!p) return false;
+  return !!(p.budgetLevel || p.party || (p.notes && p.notes.trim())
+    || (Array.isArray(p.styleList) && p.styleList.length > 0));
+}
+
 Page({
   data: {
     loggedIn: false,
     user: null,
     userInitial: '',
     currentLangLabel: '中文',
+    hasPrefs: false,
   },
 
   onShow() {
@@ -19,7 +26,21 @@ Page({
       user,
       userInitial: user?.name ? user.name.charAt(0) : '游',
       currentLangLabel: lang.flag + ' ' + lang.label,
+      hasPrefs: _hasAny(app.globalData.preferences),
     });
+  },
+
+  openPrefs() {
+    if (!app.globalData.token) {
+      wx.showModal({
+        title: '请先登录',
+        content: '需要登录后才能设置旅行偏好',
+        showCancel: false,
+        success: () => wx.switchTab({ url: '/pages/index/index' }),
+      });
+      return;
+    }
+    wx.navigateTo({ url: '/pages/prefs/prefs' });
   },
 
   goLogin() {

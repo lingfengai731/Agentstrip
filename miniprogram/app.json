@@ -4,7 +4,8 @@
     "pages/chat/chat",
     "pages/compare/compare",
     "pages/itinerary/itinerary",
-    "pages/me/me"
+    "pages/me/me",
+    "pages/prefs/prefs"
   ],
   "window": {
     "backgroundTextStyle": "dark",
