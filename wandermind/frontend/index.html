@@ -1122,13 +1122,20 @@ html, body {
 @media (max-width: 768px) {
   html, body { overflow: hidden; }
 
-  /* ── Grid — use 100dvh as primary so Safari toolbar doesn't push nav off-screen ── */
+  /* ── Grid — multi-layered height fallback for ALL iOS Safari versions ── */
   .app {
     display: flex !important;
     flex-direction: column !important;
-    height: 100vh;   /* fallback for old browsers */
-    height: 100dvh;  /* dynamic viewport — Safari excludes toolbar */
+    height: 100vh;                      /* fallback for old browsers */
+    height: -webkit-fill-available;     /* iOS Safari 14- */
+    height: 100dvh;                     /* iOS Safari 15.4+, modern */
+    height: var(--app-height, 100dvh);  /* JS-set actual visualViewport height */
+    max-height: 100vh;
+    max-height: -webkit-fill-available;
+    max-height: 100dvh;
+    max-height: var(--app-height, 100dvh);
   }
+  html, body { height: 100%; height: -webkit-fill-available; }
 
   /* ── Nav bar (top) — handle iPhone notch + tight space ── */
   .nav {
@@ -1270,6 +1277,10 @@ html, body {
   .panel-tab { white-space: nowrap; font-size: 12px; padding: 10px 12px; }
   .panel-body { overflow-y: auto; flex: 1; }
   .weather-card { margin: 10px; }
+  /* On mobile, hide Compare and Budget tab buttons — they are reached via bottom nav instead.
+     The content panels stay (so mnavGo can still activate them). */
+  .panel-tab.tab-compare,
+  .panel-tab.tab-budget { display: none !important; }
 
   /* ── Mode toggle row — compact on mobile, hint hides ── */
   .input-actions { flex-wrap: wrap; gap: 5px; padding: 4px 0 0; }
@@ -1311,16 +1322,23 @@ html, body {
   .flight-card-meta, .flight-card-stops { font-size: 9px; }
   .flight-card-price { font-size: 12px; }
 
-  /* ── Flight & hotel search forms ── */
-  .price-date-row { gap: 4px; }
-  .price-date-group label { font-size: 9px; }
-  .price-date-input { font-size: 10px; padding: 5px 5px; }
-  .price-adults-select { width: 40px; font-size: 10px; padding: 5px 3px; }
-  .price-search-btn { padding: 7px 10px; font-size: 11px; }
-  .flight-trip-btn { padding: 5px 6px; font-size: 10px; }
-  .flight-from-select { font-size: 10px; padding: 5px 6px; }
-  .flight-from-input { font-size: 10px; padding: 5px 6px; }
-  .flight-book-all { padding: 7px; font-size: 10px; }
+  /* ── Flight & hotel search forms — grid so inputs never overlap ── */
+  .price-date-row {
+    display: grid !important;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+    align-items: flex-end;
+  }
+  /* "People" select gets its own full-width row (no more overlap with date inputs) */
+  .price-date-row > .price-date-group:last-child { grid-column: 1 / -1; flex: none !important; }
+  .price-date-group label { font-size: 10px; }
+  .price-date-input { font-size: 13px; padding: 7px 8px; min-height: 36px; }
+  .price-adults-select { width: 100% !important; font-size: 13px; padding: 7px 8px; min-height: 36px; }
+  .price-search-btn { padding: 9px 10px; font-size: 12px; }
+  .flight-trip-btn { padding: 6px 8px; font-size: 11px; }
+  .flight-from-select { font-size: 12px; padding: 7px 8px; min-height: 36px; }
+  .flight-from-input { font-size: 12px; padding: 7px 8px; min-height: 36px; }
+  .flight-book-all { padding: 8px; font-size: 11px; }
 }
 
 /* Animations */
@@ -1542,6 +1560,7 @@ html, body {
   border-radius: 20px;
   width: 92vw; max-width: 860px;
   max-height: 88vh;
+  max-height: 88dvh;
   overflow: hidden;
   display: flex; flex-direction: column;
   transform: translateY(16px) scale(.98);
@@ -2395,11 +2414,11 @@ html, body {
   <!-- RIGHT PANEL -->
   <aside class="panel">
     <div class="panel-tabs">
-      <button class="panel-tab active" onclick="setPTab(this,'dest')">目的地</button>
-      <button class="panel-tab" onclick="setPTab(this,'compare')">💰 比价</button>
-      <button class="panel-tab" onclick="setPTab(this,'itinerary')">行程</button>
-      <button class="panel-tab" onclick="setPTab(this,'budget')">预算</button>
-      <button class="panel-tab" onclick="setPTab(this,'log')">Agent日志</button>
+      <button class="panel-tab active tab-dest"     onclick="setPTab(this,'dest')">目的地</button>
+      <button class="panel-tab tab-compare"          onclick="setPTab(this,'compare')">💰 比价</button>
+      <button class="panel-tab tab-itinerary"        onclick="setPTab(this,'itinerary')">行程</button>
+      <button class="panel-tab tab-budget"           onclick="setPTab(this,'budget')">预算</button>
+      <button class="panel-tab tab-log"              onclick="setPTab(this,'log')">Agent日志</button>
     </div>
     <div class="panel-body">
 
@@ -2582,8 +2601,8 @@ html, body {
     <button class="mnav-btn" onclick="mnavGo('budget')" data-tab="budget">
       <span class="mnav-icon">💰</span><span class="mnav-label" id="mnav-budget">预算</span>
     </button>
-    <button class="mnav-btn" onclick="mnavGo('agents')" data-tab="agents">
-      <span class="mnav-icon">🤖</span><span class="mnav-label" id="mnav-agents">团队</span>
+    <button class="mnav-btn" onclick="mnavGo('compare')" data-tab="compare">
+      <span class="mnav-icon">🎫</span><span class="mnav-label" id="mnav-compare">机酒</span>
     </button>
   </nav>
 
@@ -5841,19 +5860,25 @@ function mnavGo(tab) {
   panel?.classList.remove('mobile-open');
   overlay?.classList.remove('open');
 
-  if (tab === 'trips' || tab === 'agents') {
+  if (tab === 'trips') {
     sidebar?.classList.add('mobile-open');
     overlay?.classList.add('open');
   } else if (tab === 'dest') {
     panel?.classList.add('mobile-open');
     overlay?.classList.add('open');
-    // Activate Destination tab in panel
+    // Activate Destination tab in panel (index 0)
     document.querySelectorAll('.panel-tab').forEach((t,i) => t.classList.toggle('active', i===0));
     document.querySelectorAll('.panel-content').forEach((c,i) => c.classList.toggle('active', i===0));
+  } else if (tab === 'compare') {
+    panel?.classList.add('mobile-open');
+    overlay?.classList.add('open');
+    // Activate Compare tab in panel (index 1 — Hotels + Flights search)
+    document.querySelectorAll('.panel-tab').forEach((t,i) => t.classList.toggle('active', i===1));
+    document.querySelectorAll('.panel-content').forEach((c,i) => c.classList.toggle('active', i===1));
   } else if (tab === 'budget') {
     panel?.classList.add('mobile-open');
     overlay?.classList.add('open');
-    // Activate Budget tab (now index 3 — Compare was inserted at index 1)
+    // Activate Budget tab (index 3 — after Destination, Compare, Itinerary)
     document.querySelectorAll('.panel-tab').forEach((t,i) => t.classList.toggle('active', i===3));
     document.querySelectorAll('.panel-content').forEach((c,i) => c.classList.toggle('active', i===3));
   }
@@ -5872,11 +5897,11 @@ function mnavClose() {
 // Update mobile nav labels when language changes — called from applyLang
 function applyMobileNavLang(L) {
   const labels = {
-    trips:  {zh:'行程',en:'Trips',ja:'旅行',ko:'여행',id:'Perjalanan'},
-    dest:   {zh:'目的地',en:'Destination',ja:'目的地',ko:'목적지',id:'Destinasi'},
-    chat:   {zh:'聊天',en:'Chat',ja:'チャット',ko:'채팅',id:'Chat'},
-    budget: {zh:'预算',en:'Budget',ja:'予算',ko:'예산',id:'Anggaran'},
-    agents: {zh:'团队',en:'Agents',ja:'チーム',ko:'팀',id:'Tim'},
+    trips:   {zh:'行程',en:'Trips',ja:'旅行',ko:'여행',id:'Perjalanan'},
+    dest:    {zh:'目的地',en:'Destination',ja:'目的地',ko:'목적지',id:'Destinasi'},
+    chat:    {zh:'聊天',en:'Chat',ja:'チャット',ko:'채팅',id:'Chat'},
+    compare: {zh:'机酒',en:'Book',ja:'予約',ko:'예약',id:'Pesan'},
+    budget:  {zh:'预算',en:'Budget',ja:'予算',ko:'예산',id:'Anggaran'},
   };
   const lang = L ? (Object.keys(LANGS).find(k => LANGS[k] === L) || 'zh') : 'zh';
   Object.entries(labels).forEach(([tab, map]) => {
@@ -6206,6 +6231,22 @@ function applyModeI18n() {
   if (proLbl)  proLbl.textContent  = L.modeProLabel  || '精细';
   const toggle = document.getElementById('mode-toggle');
   if (toggle) toggle.title = L.modeToggleHint || '切换 AI 模型速度档位';
+}
+
+// ─── SAFARI VIEWPORT FIX ─────────────────────────────────────
+// iOS Safari sometimes mis-computes 100dvh when toolbar shows/hides,
+// causing the bottom mobile-nav to be hidden under the toolbar. We
+// listen to visualViewport changes and set --app-height to the real value.
+function fixAppHeight() {
+  const h = (window.visualViewport && window.visualViewport.height) || window.innerHeight;
+  document.documentElement.style.setProperty('--app-height', h + 'px');
+}
+fixAppHeight();
+window.addEventListener('resize', fixAppHeight);
+window.addEventListener('orientationchange', () => setTimeout(fixAppHeight, 100));
+if (window.visualViewport) {
+  window.visualViewport.addEventListener('resize', fixAppHeight);
+  window.visualViewport.addEventListener('scroll', fixAppHeight);
 }
 
 // Initialize
