@@ -1,0 +1,66 @@
+/* pages/me/me.wxss */
+.me-page { min-height: 100vh; padding: 30rpx; box-sizing: border-box; }
+
+.me-empty {
+  padding: 200rpx 0;
+  text-align: center;
+}
+.me-avatar-empty {
+  font-size: 100rpx;
+  margin-bottom: 30rpx;
+  opacity: .5;
+}
+.me-empty-text {
+  font-size: 28rpx;
+  color: #8A857F;
+  margin-bottom: 40rpx;
+}
+
+.me-header {
+  display: flex;
+  align-items: center;
+  gap: 24rpx;
+  padding: 30rpx 16rpx 40rpx;
+}
+.me-avatar {
+  width: 100rpx; height: 100rpx;
+  background: #0E7C6B;
+  color: #fff;
+  border-radius: 50%;
+  text-align: center;
+  line-height: 100rpx;
+  font-size: 40rpx;
+  font-weight: 700;
+}
+.me-info { flex: 1; }
+.me-name { font-size: 36rpx; font-weight: 700; color: #2A2723; }
+.me-email { font-size: 24rpx; color: #8A857F; margin-top: 4rpx; }
+
+.me-card {
+  background: #fff;
+  border-radius: 20rpx;
+  margin-bottom: 30rpx;
+  overflow: hidden;
+}
+.me-row {
+  display: flex;
+  align-items: center;
+  padding: 30rpx 24rpx;
+  border-bottom: 1rpx solid #F0EDE6;
+  gap: 16rpx;
+}
+.me-row:last-child { border-bottom: none; }
+.me-row-icon { font-size: 36rpx; }
+.me-row-label { flex: 1; font-size: 28rpx; color: #2A2723; }
+.me-row-value { font-size: 24rpx; color: #8A857F; }
+.me-row-arrow { color: #C0C0C0; font-size: 32rpx; }
+
+.logout-btn {
+  margin-top: 20rpx;
+}
+.me-footer {
+  text-align: center;
+  font-size: 22rpx;
+  color: #C0C0C0;
+  padding: 50rpx 0 30rpx;
+}

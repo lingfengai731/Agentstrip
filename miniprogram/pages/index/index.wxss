@@ -1,0 +1,184 @@
+/* pages/index/index.wxss */
+.page {
+  min-height: 100vh;
+  padding: 30rpx 30rpx 80rpx;
+  box-sizing: border-box;
+}
+
+/* —— Hero (登录页头部) —— */
+.hero {
+  text-align: center;
+  padding: 60rpx 0 40rpx;
+}
+.hero-logo {
+  display: inline-block;
+  width: 120rpx; height: 120rpx;
+  background: #0E7C6B;
+  color: #FAF7F2;
+  border-radius: 28rpx;
+  font-size: 70rpx;
+  font-family: 'Songti SC', 'STSong', serif;
+  text-align: center;
+  line-height: 120rpx;
+  margin-bottom: 24rpx;
+}
+.hero-title {
+  font-size: 44rpx;
+  font-weight: 700;
+  color: #2A2723;
+}
+.hero-subtitle {
+  font-size: 24rpx;
+  color: #8A857F;
+  margin-top: 6rpx;
+}
+
+/* —— 登录卡片 —— */
+.auth-card {
+  margin-top: 20rpx;
+}
+.auth-tabs {
+  display: flex;
+  margin-bottom: 30rpx;
+  border-bottom: 1rpx solid #E1DCD3;
+}
+.auth-tab {
+  flex: 1;
+  text-align: center;
+  padding: 20rpx 0;
+  font-size: 30rpx;
+  color: #8A857F;
+  font-weight: 600;
+  border-bottom: 4rpx solid transparent;
+  margin-bottom: -1rpx;
+}
+.auth-tab.active {
+  color: #0E7C6B;
+  border-bottom-color: #0E7C6B;
+}
+.form-row {
+  margin-bottom: 20rpx;
+}
+.auth-btn {
+  margin-top: 10rpx;
+}
+.auth-error {
+  margin-top: 20rpx;
+  color: #C13B3B;
+  font-size: 24rpx;
+  text-align: center;
+}
+
+/* —— 已登录：欢迎区 —— */
+.welcome {
+  padding: 30rpx 10rpx 30rpx;
+}
+.welcome-greeting {
+  font-size: 38rpx;
+  font-weight: 700;
+  color: #2A2723;
+}
+.welcome-sub {
+  font-size: 26rpx;
+  color: #8A857F;
+  margin-top: 6rpx;
+}
+
+/* —— 目的地卡片网格 —— */
+.dest-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 20rpx;
+  margin-bottom: 20rpx;
+}
+.dest-card {
+  background: #fff;
+  border-radius: 20rpx;
+  padding: 28rpx;
+  display: flex;
+  align-items: center;
+  gap: 24rpx;
+  box-shadow: 0 4rpx 16rpx rgba(0,0,0,.04);
+  border-left: 8rpx solid #E07A12;
+  transition: transform .15s;
+}
+.dest-card.active {
+  background: #E3F5F1;
+}
+.dest-flag {
+  font-size: 56rpx;
+}
+.dest-info {
+  flex: 1;
+}
+.dest-name {
+  font-size: 32rpx;
+  font-weight: 700;
+  color: #2A2723;
+}
+.dest-region {
+  font-size: 22rpx;
+  color: #8A857F;
+  margin-top: 4rpx;
+}
+.dest-check {
+  color: #0E7C6B;
+  font-size: 36rpx;
+  font-weight: 700;
+}
+
+/* —— 自定义目的地 —— */
+.custom-dest-card {
+  display: flex;
+  align-items: center;
+  gap: 20rpx;
+  padding: 26rpx 28rpx;
+}
+.custom-icon { font-size: 44rpx; }
+.custom-text { flex: 1; font-size: 28rpx; color: #2A2723; font-weight: 600; }
+.custom-arrow { color: #8A857F; font-size: 40rpx; }
+
+/* —— 快速入口 —— */
+.quick-actions {
+  margin-top: 30rpx;
+}
+.qa-title {
+  font-size: 24rpx;
+  color: #8A857F;
+  font-weight: 600;
+  letter-spacing: 1rpx;
+  text-transform: uppercase;
+  margin: 0 10rpx 16rpx;
+}
+.qa-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20rpx;
+}
+.qa-item {
+  background: #fff;
+  border-radius: 20rpx;
+  padding: 30rpx 20rpx;
+  text-align: center;
+  box-shadow: 0 4rpx 16rpx rgba(0,0,0,.04);
+}
+.qa-icon {
+  font-size: 56rpx;
+  margin-bottom: 12rpx;
+}
+.qa-label {
+  font-size: 26rpx;
+  color: #2A2723;
+  font-weight: 600;
+}
+
+/* —— 退出登录 —— */
+.logout-row {
+  text-align: center;
+  padding: 40rpx 0 20rpx;
+}
+.logout-link {
+  color: #8A857F;
+  font-size: 24rpx;
+  text-decoration: underline;
+}

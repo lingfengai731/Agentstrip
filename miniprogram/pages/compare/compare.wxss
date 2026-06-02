@@ -1,0 +1,27 @@
+/* 占位页通用样式 */
+.placeholder {
+  min-height: 100vh;
+  padding: 120rpx 40rpx;
+  text-align: center;
+}
+.ph-icon { font-size: 130rpx; margin-bottom: 30rpx; }
+.ph-title { font-size: 44rpx; font-weight: 700; color: #2A2723; margin-bottom: 10rpx; }
+.ph-desc { font-size: 28rpx; color: #8A857F; margin-bottom: 60rpx; }
+.ph-list {
+  background: #fff;
+  border-radius: 20rpx;
+  padding: 30rpx;
+  margin-bottom: 50rpx;
+  text-align: left;
+}
+.ph-item {
+  font-size: 26rpx;
+  color: #2A2723;
+  padding: 16rpx 0;
+  border-bottom: 1rpx solid #F0EDE6;
+}
+.ph-item:last-child { border-bottom: none; }
+.ph-tip {
+  font-size: 24rpx;
+  color: #8A857F;
+}

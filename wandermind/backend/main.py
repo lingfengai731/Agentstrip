@@ -840,6 +840,66 @@ async def chat(req: ChatReq, user=Depends(current_user)):
     )
 
 
+# ─── Non-streaming chat (for WeChat Mini Program) ────────────
+# Mini Program's wx.request does NOT support SSE streaming. This endpoint
+# returns the full reply as a single JSON object so the mini program can
+# render it after the await.
+@app.post("/api/chat/once")
+async def chat_once(req: ChatReq, user=Depends(current_user)):
+    if not _API_KEY:
+        raise HTTPException(500, "API_KEY not set")
+
+    raw_messages = [{"role": m.role, "content": m.content} for m in req.messages]
+    chat_url, chat_headers, chat_model, mode_label = _route(req.mode)
+
+    # ── Optional web search ──
+    search_context = ""
+    search_results: list = []
+    searched = False
+    if req.search and _should_search(raw_messages):
+        last_q = next((m["content"] for m in reversed(raw_messages) if m["role"] == "user"), req.destination)
+        search_context, search_results = await tavily_search(last_q, req.destination)
+        if search_context:
+            searched = True
+
+    system = req.system
+    if search_context:
+        today = time.strftime("%Y-%m-%d")
+        system += (
+            f"\n\n【🌐 实时联网搜索结果 · {today}】\n"
+            f"{search_context}\n\n"
+            "请在回答中整合以上最新搜索信息，让用户感受到信息的时效性。"
+        )
+
+    messages = [{"role": "system", "content": system}] + raw_messages
+    max_tok = 1200 if mode_label == "fast" else 2000
+
+    try:
+        async with httpx.AsyncClient(timeout=120.0) as client:
+            resp = await client.post(
+                chat_url,
+                headers=chat_headers,
+                json={"model": chat_model, "max_tokens": max_tok, "messages": messages},
+            )
+        if resp.status_code != 200:
+            body = resp.text[:300]
+            raise HTTPException(resp.status_code, body)
+        data = resp.json()
+        text = (data.get("choices") or [{}])[0].get("message", {}).get("content", "")
+        return {
+            "text":          text,
+            "mode":          mode_label,
+            "model":         chat_model,
+            "searched":      searched,
+            "search_count":  len(search_results),
+            "search_results": search_results,
+        }
+    except HTTPException:
+        raise
+    except Exception as e:
+        raise HTTPException(500, str(e))
+
+
 # ─── Team mode: 3 agents in parallel, merged output ──────────
 @app.post("/api/chat/team")
 async def chat_team(req: ChatReq, user=Depends(current_user)):

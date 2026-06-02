@@ -1,0 +1,12 @@
+<!--pages/compare/compare.wxml-->
+<view class="placeholder">
+  <view class="ph-icon">🎫</view>
+  <view class="ph-title">机酒比价</view>
+  <view class="ph-desc">即将上线</view>
+  <view class="ph-list">
+    <view class="ph-item">🏨 酒店实时比价（含区域筛选）</view>
+    <view class="ph-item">✈️ 机票实时比价（往返/单程）</view>
+    <view class="ph-item">🌍 支持 25+ 热门住宿区域</view>
+  </view>
+  <view class="ph-tip">下个版本上线，敬请期待 ✨</view>
+</view>

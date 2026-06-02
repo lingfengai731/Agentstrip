@@ -1,0 +1,58 @@
+<!--pages/me/me.wxml-->
+<view class="me-page">
+
+  <!-- 未登录 -->
+  <view wx:if="{{!loggedIn}}" class="me-empty">
+    <view class="me-avatar-empty">👤</view>
+    <view class="me-empty-text">尚未登录</view>
+    <button class="btn" bindtap="goLogin">前往登录</button>
+  </view>
+
+  <!-- 已登录 -->
+  <view wx:if="{{loggedIn}}">
+    <view class="me-header">
+      <view class="me-avatar">{{userInitial}}</view>
+      <view class="me-info">
+        <view class="me-name">{{user.name}}</view>
+        <view class="me-email">{{user.email}}</view>
+      </view>
+    </view>
+
+    <view class="me-card">
+      <view class="me-row" bindtap="todo" data-key="prefs">
+        <view class="me-row-icon">⚙️</view>
+        <view class="me-row-label">旅行偏好</view>
+        <view class="me-row-arrow">›</view>
+      </view>
+      <view class="me-row" bindtap="todo" data-key="history">
+        <view class="me-row-icon">📜</view>
+        <view class="me-row-label">对话历史</view>
+        <view class="me-row-arrow">›</view>
+      </view>
+      <view class="me-row" bindtap="todo" data-key="lang">
+        <view class="me-row-icon">🌐</view>
+        <view class="me-row-label">语言设置</view>
+        <view class="me-row-value">{{currentLangLabel}}</view>
+        <view class="me-row-arrow">›</view>
+      </view>
+    </view>
+
+    <view class="me-card">
+      <view class="me-row" bindtap="openH5">
+        <view class="me-row-icon">🌍</view>
+        <view class="me-row-label">在浏览器打开网页版</view>
+        <view class="me-row-arrow">›</view>
+      </view>
+      <view class="me-row" bindtap="about">
+        <view class="me-row-icon">ℹ️</view>
+        <view class="me-row-label">关于游心</view>
+        <view class="me-row-arrow">›</view>
+      </view>
+    </view>
+
+    <button class="btn-ghost logout-btn" bindtap="doLogout">退出登录</button>
+
+    <view class="me-footer">WanderMind · 游心 v0.1.0</view>
+  </view>
+
+</view>

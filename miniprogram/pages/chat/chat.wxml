@@ -1,0 +1,85 @@
+<!--pages/chat/chat.wxml — AI 对话页-->
+<view class="chat-page">
+
+  <!-- 顶部目的地标签 -->
+  <view class="dest-bar">
+    <view class="dest-bar-flag">{{destFlag}}</view>
+    <view class="dest-bar-info">
+      <view class="dest-bar-name">{{destName}}</view>
+      <view class="dest-bar-hint">6 位智能体协同 · {{modeLabel}}</view>
+    </view>
+    <view class="mode-toggle">
+      <view class="mode-btn {{mode === 'fast' ? 'active' : ''}}" bindtap="setMode" data-mode="fast">⚡ 极速</view>
+      <view class="mode-btn {{mode === 'pro' ? 'active' : ''}}" bindtap="setMode" data-mode="pro">🎯 精细</view>
+    </view>
+  </view>
+
+  <!-- 消息流 -->
+  <scroll-view
+    class="messages"
+    scroll-y
+    scroll-into-view="{{scrollAnchor}}"
+    enhanced
+    show-scrollbar="{{false}}"
+  >
+    <!-- 欢迎语 -->
+    <view wx:if="{{messages.length === 0}}" class="welcome">
+      <view class="welcome-emoji">{{destFlag}}</view>
+      <view class="welcome-title">向 AI 询问 {{destName}} 的任何问题</view>
+      <view class="welcome-hint">点下面建议提问，或直接输入</view>
+      <view class="sugg-list">
+        <view
+          wx:for="{{suggestions}}"
+          wx:key="*this"
+          class="sugg-chip"
+          bindtap="quickSend"
+          data-text="{{item}}"
+        >{{item}}</view>
+      </view>
+    </view>
+
+    <!-- 对话消息 -->
+    <view
+      wx:for="{{messages}}"
+      wx:key="id"
+      id="msg-{{item.id}}"
+      class="msg {{item.role}}"
+    >
+      <view class="msg-bubble">
+        <view wx:if="{{item.role === 'assistant' && item.searched}}" class="msg-search-badge">🌐 已联网搜索</view>
+        <text class="msg-text" user-select="{{item.role === 'assistant'}}">{{item.content}}</text>
+        <view wx:if="{{item.role === 'assistant'}}" class="msg-mode-badge {{item.mode}}">{{item.mode === 'fast' ? '⚡' : '🎯'}}</view>
+      </view>
+    </view>
+
+    <!-- 正在思考 -->
+    <view wx:if="{{busy}}" id="msg-typing" class="msg assistant">
+      <view class="msg-bubble">
+        <view class="typing">
+          <view class="dot"></view>
+          <view class="dot"></view>
+          <view class="dot"></view>
+        </view>
+      </view>
+    </view>
+  </scroll-view>
+
+  <!-- 输入区 -->
+  <view class="input-area">
+    <textarea
+      class="input-box"
+      placeholder="问任何关于 {{destName}} 的问题…"
+      value="{{inputText}}"
+      bindinput="onInputChange"
+      auto-height
+      maxlength="500"
+      cursor-spacing="20"
+      adjust-position="{{true}}"
+      show-confirm-bar="{{false}}"
+    />
+    <button class="send-btn" bindtap="sendMsg" disabled="{{busy || !inputText.trim()}}">
+      {{busy ? '…' : '发送'}}
+    </button>
+  </view>
+
+</view>

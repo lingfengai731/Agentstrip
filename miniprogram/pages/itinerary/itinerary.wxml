@@ -1,0 +1,12 @@
+<!--pages/itinerary/itinerary.wxml-->
+<view class="placeholder">
+  <view class="ph-icon">📋</view>
+  <view class="ph-title">我的行程</view>
+  <view class="ph-desc">即将上线</view>
+  <view class="ph-list">
+    <view class="ph-item">📅 行程时间轴展示</view>
+    <view class="ph-item">✏️ AI 行程修改助手</view>
+    <view class="ph-item">📄 一键导出 PDF</view>
+  </view>
+  <view class="ph-tip">先在「聊天」里和 AI 规划行程 ✨</view>
+</view>

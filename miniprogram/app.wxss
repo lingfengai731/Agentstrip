@@ -1,0 +1,89 @@
+/* app.wxss — WanderMind 全局样式 */
+/* 颜色与字体复用 H5 主题，让小程序和网页版视觉一致 */
+
+page {
+  background: #FAF7F2;
+  color: #2A2723;
+  font-family: -apple-system, "PingFang SC", "Microsoft YaHei", "Helvetica Neue", Arial, sans-serif;
+  font-size: 28rpx;
+  line-height: 1.5;
+  --teal:        #0E7C6B;
+  --teal-light:  #5DBDA7;
+  --teal-pale:   #E3F5F1;
+  --amber:       #E07A12;
+  --amber-light: #F5C078;
+  --crimson:     #C13B3B;
+  --ink:         #2A2723;
+  --ink-2:       #5A554F;
+  --ink-3:       #8A857F;
+  --paper:       #FAF7F2;
+  --paper-2:     #F0EDE6;
+  --paper-3:     #E1DCD3;
+  --white:       #FFFFFF;
+}
+
+/* —— 通用容器 —— */
+.container {
+  padding: 30rpx;
+  box-sizing: border-box;
+}
+
+/* —— 卡片 —— */
+.card {
+  background: #fff;
+  border-radius: 20rpx;
+  padding: 30rpx;
+  margin-bottom: 24rpx;
+  box-shadow: 0 4rpx 16rpx rgba(0,0,0,.04);
+}
+
+/* —— 按钮（覆盖小程序默认按钮样式） —— */
+.btn {
+  background: #0E7C6B;
+  color: #fff;
+  border: none;
+  border-radius: 16rpx;
+  padding: 22rpx 36rpx;
+  font-size: 30rpx;
+  font-weight: 600;
+  text-align: center;
+  line-height: 1.2;
+}
+.btn[disabled] { background: #C0C0C0 !important; color: #fff !important; }
+.btn-ghost {
+  background: transparent;
+  color: #0E7C6B;
+  border: 2rpx solid #5DBDA7;
+}
+.btn-ghost[disabled] { color: #C0C0C0 !important; border-color: #E1DCD3 !important; background: transparent !important; }
+.btn::after { border: none; }
+
+/* —— 输入框（统一风格） —— */
+.input-base {
+  background: #F0EDE6;
+  border-radius: 16rpx;
+  padding: 24rpx 28rpx;
+  font-size: 30rpx;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+/* —— 文字辅助类 —— */
+.title    { font-size: 38rpx; font-weight: 700; color: #2A2723; }
+.subtitle { font-size: 26rpx; color: #5A554F; }
+.hint     { font-size: 22rpx; color: #8A857F; }
+.teal     { color: #0E7C6B; }
+.amber    { color: #E07A12; }
+.crimson  { color: #C13B3B; }
+
+/* —— Flex 工具 —— */
+.row { display: flex; align-items: center; }
+.col { display: flex; flex-direction: column; }
+.flex-1 { flex: 1; }
+.spread { display: flex; justify-content: space-between; align-items: center; }
+.gap-sm { gap: 12rpx; }
+.gap-md { gap: 24rpx; }
+
+/* —— 安全区适配（刘海屏、底部小条） —— */
+.safe-bottom { padding-bottom: env(safe-area-inset-bottom); }
+.safe-top    { padding-top:    env(safe-area-inset-top); }

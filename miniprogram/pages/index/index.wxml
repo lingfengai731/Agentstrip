@@ -1,0 +1,94 @@
+<!--pages/index/index.wxml — 首页：登录 + 目的地选择-->
+<view class="page">
+
+  <!-- 未登录：显示登录/注册卡片 -->
+  <view wx:if="{{!loggedIn}}" class="auth-section">
+    <view class="hero">
+      <view class="hero-logo">游</view>
+      <view class="hero-title">WanderMind · 游心</view>
+      <view class="hero-subtitle">AI 多智能体旅行规划助手</view>
+    </view>
+
+    <view class="card auth-card">
+      <view class="auth-tabs">
+        <view class="auth-tab {{authMode === 'login' ? 'active' : ''}}" bindtap="switchAuth" data-mode="login">登录</view>
+        <view class="auth-tab {{authMode === 'register' ? 'active' : ''}}" bindtap="switchAuth" data-mode="register">注册</view>
+      </view>
+
+      <view wx:if="{{authMode === 'register'}}" class="form-row">
+        <input class="input-base" placeholder="昵称" value="{{regName}}" bindinput="onInput" data-field="regName" />
+      </view>
+      <view class="form-row">
+        <input class="input-base" placeholder="邮箱" type="text" value="{{email}}" bindinput="onInput" data-field="email" />
+      </view>
+      <view class="form-row">
+        <input class="input-base" placeholder="密码 (至少 6 位)" password value="{{password}}" bindinput="onInput" data-field="password" />
+      </view>
+
+      <button class="btn auth-btn" bindtap="doAuth" loading="{{authBusy}}" disabled="{{authBusy}}">
+        {{authMode === 'login' ? '登录' : '注册'}}
+      </button>
+
+      <view wx:if="{{authError}}" class="auth-error">{{authError}}</view>
+    </view>
+  </view>
+
+  <!-- 已登录：显示目的地选择 + 快速入口 -->
+  <view wx:if="{{loggedIn}}" class="dest-section">
+    <view class="welcome">
+      <view class="welcome-greeting">👋 你好，{{user.name}}</view>
+      <view class="welcome-sub">想去哪里旅行？</view>
+    </view>
+
+    <view class="dest-grid">
+      <view
+        wx:for="{{destinations}}"
+        wx:key="id"
+        class="dest-card {{currentDest === item.id ? 'active' : ''}}"
+        style="border-left: 8rpx solid {{item.accent}};"
+        bindtap="selectDest"
+        data-id="{{item.id}}"
+      >
+        <view class="dest-flag">{{item.flag}}</view>
+        <view class="dest-info">
+          <view class="dest-name">{{item.name}}</view>
+          <view class="dest-region">{{item.region}}</view>
+        </view>
+        <view wx:if="{{currentDest === item.id}}" class="dest-check">✓</view>
+      </view>
+    </view>
+
+    <view class="card custom-dest-card" bindtap="customDest">
+      <view class="custom-icon">✨</view>
+      <view class="custom-text">输入其他目的地…</view>
+      <view class="custom-arrow">›</view>
+    </view>
+
+    <view class="quick-actions">
+      <view class="qa-title">快速开始</view>
+      <view class="qa-grid">
+        <view class="qa-item" bindtap="goChat">
+          <view class="qa-icon">💬</view>
+          <view class="qa-label">AI 对话</view>
+        </view>
+        <view class="qa-item" bindtap="goCompare">
+          <view class="qa-icon">🎫</view>
+          <view class="qa-label">机酒比价</view>
+        </view>
+        <view class="qa-item" bindtap="goItinerary">
+          <view class="qa-icon">📋</view>
+          <view class="qa-label">我的行程</view>
+        </view>
+        <view class="qa-item" bindtap="goMe">
+          <view class="qa-icon">⚙️</view>
+          <view class="qa-label">偏好设置</view>
+        </view>
+      </view>
+    </view>
+
+    <view class="logout-row">
+      <text class="logout-link" bindtap="doLogout">退出登录</text>
+    </view>
+  </view>
+
+</view>
