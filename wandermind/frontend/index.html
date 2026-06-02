@@ -1356,16 +1356,6 @@ html, body {
   body.keyboard-open .sugg-chips,
   body.keyboard-open .active-agents-bar,
   body.keyboard-open .dest-header { display: none !important; }
-  /* Build-version stamp — bottom-right corner; lets users verify they
-     have the latest deploy. Tap to dismiss. */
-  .build-stamp {
-    position: fixed; right: 4px; bottom: 4px;
-    font-size: 9px; font-family: monospace;
-    color: rgba(0,0,0,.25); background: rgba(255,255,255,.6);
-    padding: 1px 5px; border-radius: 4px; z-index: 1;
-    pointer-events: auto; cursor: pointer;
-  }
-  body.keyboard-open .build-stamp { display: none; }
 
   /* ── Flight & hotel search forms — grid so inputs never overlap ── */
   .price-date-row {
@@ -2653,9 +2643,6 @@ html, body {
 
   <!-- Mobile overlay backdrop -->
   <div class="mobile-overlay" id="mobile-overlay" onclick="mnavClose()"></div>
-
-  <!-- Build stamp — only visible on mobile, helps user verify they have the latest deploy -->
-  <div class="build-stamp" id="build-stamp" onclick="this.style.display='none'" title="点击隐藏">v0.6.0 · 2026-06-02 · kb-fix-v2</div>
 
 </div>
 
