@@ -2,7 +2,9 @@
 <html lang="zh-CN">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <title>WanderMind · 游心 — AI 多智能体旅行平台</title>
 <!-- BUILD: v0.5.1 2026-06-01 fix-6th-btn weather-i18n mobile-responsive -->
 <!-- PWA -->
@@ -1094,6 +1096,15 @@ html, body {
 .trip-empty-text { font-size: 13px; font-weight: 600; color: var(--ink-2); margin-bottom: 4px; }
 .trip-empty-sub  { font-size: 11px; line-height: 1.5; }
 
+/* ─── VERY NARROW PHONES (iPhone SE/mini ≤ 380px) ─── */
+@media (max-width: 380px) {
+  .nav { padding: 0 6px !important; gap: 2px !important; }
+  .nav-logo { font-size: 14px !important; }
+  .nav-tab { padding: 4px 6px !important; font-size: 10px !important; }
+  .dest-switcher { padding: 3px 5px !important; }
+  .lang-btn { padding: 3px 5px !important; }
+  .nav-avatar { display: none !important; }
+}
 /* ─── MOBILE RESPONSIVE ─── */
 /* ─── MOBILE BOTTOM NAV ─── */
 .mobile-nav {
@@ -1111,33 +1122,49 @@ html, body {
 @media (max-width: 768px) {
   html, body { overflow: hidden; }
 
-  /* ── Grid ── */
+  /* ── Grid — use 100dvh as primary so Safari toolbar doesn't push nav off-screen ── */
   .app {
     display: flex !important;
     flex-direction: column !important;
-    height: 100dvh; height: 100vh;
+    height: 100vh;   /* fallback for old browsers */
+    height: 100dvh;  /* dynamic viewport — Safari excludes toolbar */
   }
 
-  /* ── Nav bar ── */
+  /* ── Nav bar (top) — handle iPhone notch + tight space ── */
   .nav {
     flex-shrink: 0;
-    padding: 0 10px; gap: 0;
+    padding: 0 8px; gap: 4px;
     height: 56px;
+    padding-top: env(safe-area-inset-top);   /* iPhone notch / Dynamic Island */
+    box-sizing: content-box;
   }
-  .nav-logo { font-size: 16px; margin-right: 6px; }
+  .nav-logo { font-size: 15px; margin-right: 4px; flex-shrink: 0; }
   .nav-logo .version { display: none; }
-  .nav-tabs { overflow-x: auto; -webkit-overflow-scrolling: touch; gap: 0; flex-shrink: 1; }
+  .nav-tabs { overflow-x: auto; -webkit-overflow-scrolling: touch; gap: 0; flex: 1 1 0; min-width: 0; }
   .nav-tabs::-webkit-scrollbar { display: none; }
-  .nav-tab { padding: 5px 10px; font-size: 11px; white-space: nowrap; }
+  .nav-tab { padding: 5px 8px; font-size: 11px; white-space: nowrap; }
   .agent-status-bar { display: none; }
   .auth-logout-btn { display: none; }
+  .nav-right { gap: 4px; flex-shrink: 0; }
+  /* Hide text labels on small screens — keep only flag + arrow so nav-tabs get space */
+  .dest-switcher { padding: 3px 7px 3px 5px; }
+  .dest-name { display: none; }
+  .dest-flag { font-size: 15px; }
+  .dest-arrow { font-size: 9px; }
+  .lang-btn { padding: 3px 7px 3px 5px; font-size: 11px; }
+  #lang-label { display: none; }
+  .lang-flag { font-size: 13px; }
+  .lang-arrow { font-size: 8px; }
+  .nav-avatar { width: 30px; height: 30px; font-size: 13px; }
 
   /* ── Sidebar & Panel hidden by default, shown as overlays ── */
   .sidebar, .panel { display: none !important; }
   .sidebar.mobile-open {
     display: flex !important;
     position: fixed;
-    top: 56px; bottom: 52px; left: 0; right: 0;
+    top: calc(56px + env(safe-area-inset-top));
+    bottom: calc(52px + env(safe-area-inset-bottom));
+    left: 0; right: 0;
     z-index: 200;
     overflow-y: auto;
     animation: slideInLeft .22s ease;
@@ -1146,7 +1173,9 @@ html, body {
     display: flex !important;
     flex-direction: column !important;
     position: fixed;
-    top: 56px; bottom: 52px; left: 0; right: 0;
+    top: calc(56px + env(safe-area-inset-top));
+    bottom: calc(52px + env(safe-area-inset-bottom));
+    left: 0; right: 0;
     z-index: 200;
     overflow-y: auto;
     animation: slideInRight .22s ease;
@@ -1196,7 +1225,7 @@ html, body {
   .input-box { border-radius: 10px; }
   #main-input { font-size: 14px; }
 
-  /* ── Bottom nav bar ── */
+  /* ── Bottom nav bar — pad for iPhone home indicator ── */
   .mobile-nav {
     display: flex;
     flex-shrink: 0;
@@ -1205,6 +1234,8 @@ html, body {
     border-top: 1px solid var(--paper-3);
     align-items: stretch;
     z-index: 150;
+    padding-bottom: env(safe-area-inset-bottom);
+    box-sizing: content-box;
   }
   .mnav-btn {
     flex: 1;
