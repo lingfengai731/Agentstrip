@@ -12,24 +12,69 @@
     <link rel="stylesheet" href="assets/css/style-starter.css">
     <link href="//fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
     <link href="//fonts.googleapis.com/css2?family=Roboto:wght@300;400&display=swap" rel="stylesheet">
-    <!-- Brand override (small additions, no overwriting the template) -->
+    <!-- Brand override + alignment fixes (only additions, template CSS untouched) -->
     <style>
-      .navbar-brand { font-weight: 700; letter-spacing: .02em; }
+      /* —— Brand —— */
+      .navbar-brand { font-weight: 700; letter-spacing: .02em; white-space: nowrap; }
       .navbar-brand small { font-size: 11px; opacity: .55; font-weight: 400; margin-left: 8px; letter-spacing: .15em; text-transform: uppercase; }
-      .lang-picker { display: inline-flex; align-items: center; gap: 6px; padding: 6px 10px; border-radius: 18px; background: rgba(255,255,255,.08); border: 1px solid rgba(255,255,255,.15); cursor: pointer; transition: .2s; }
+
+      /* ═══════════════════════════════════════════════════
+         HEADER ALIGNMENT FIX (desktop ≥ 992px)
+         All right-side items aligned to one row, no wrap.
+         ═══════════════════════════════════════════════════ */
+      @media (min-width: 992px) {
+        /* Both nav lists are flex rows, vertically centered */
+        .navbar .navbar-nav { display: flex !important; align-items: center !important; }
+        .navbar .navbar-nav .nav-item { display: flex !important; align-items: center !important; }
+        .navbar .navbar-nav .nav-link { white-space: nowrap; padding: 8px 14px !important; line-height: 1.2 !important; }
+        /* The phone/email link (NOT capitalized — keep email lowercase) */
+        .navbar .nav-link.phone { white-space: nowrap; display: inline-flex; align-items: center; gap: 6px; text-transform: none !important; }
+        .navbar .nav-link.phone .fa { font-size: 14px; }
+        /* Trim the bootstrap ml-3/ml-4 (too much spacing on tighter nav) */
+        .navbar .ml-3, .navbar .ml-4 { margin-left: .55rem !important; }
+        /* Search icon: aligned to row */
+        .navbar .search-search.nav-link { display: inline-flex !important; align-items: center; justify-content: center; height: 36px; padding: 0 10px !important; }
+        .navbar .search-search.nav-link .fa { margin-right: 0 !important; }
+        /* Pull the dark/light toggle into the row instead of floating it */
+        .navbar .mobile-position { position: static !important; top: auto !important; right: auto !important; margin-left: .55rem; display: inline-flex; align-items: center; }
+        .navbar .theme-selector { display: inline-flex !important; align-items: center; justify-content: center; width: 36px !important; height: 36px !important; margin: 0 !important; }
+        /* AI Tool nav highlight */
+        .nav-link.ai-tool-link { color: #ffd180 !important; font-weight: 700; }
+        .nav-link.ai-tool-link:hover { color: #fff !important; }
+      }
+
+      /* —— Language picker (desktop) —— */
+      .lang-picker {
+        display: inline-flex; align-items: center; gap: 6px;
+        padding: 0 10px; height: 36px; border-radius: 18px;
+        background: rgba(255,255,255,.08); border: 1px solid rgba(255,255,255,.15);
+        cursor: pointer; transition: .2s; box-sizing: border-box;
+        line-height: 1;
+      }
       .lang-picker:hover { background: rgba(255,255,255,.18); }
-      .lang-picker select { background: transparent; border: none; color: inherit; font-size: 13px; font-family: inherit; outline: none; cursor: pointer; }
+      .lang-picker .fa { font-size: 12px; opacity: .7; }
+      .lang-picker select {
+        background: transparent; border: none; color: inherit;
+        font-size: 13px; font-family: inherit; outline: none; cursor: pointer;
+        padding: 0; line-height: 1; height: 34px;
+        -webkit-appearance: none; -moz-appearance: none; appearance: none;
+      }
       .lang-picker select option { color: #333; background: #fff; }
       body.dark .lang-picker select option { color: #f0f0f0; background: #222; }
-      /* AI Tool nav highlight */
-      .nav-link.ai-tool-link { color: #ffd180 !important; font-weight: 700; }
-      .nav-link.ai-tool-link:hover { color: #fff !important; }
-      /* Section title sub-heading */
+
+      /* —— Section title sub-heading —— */
       .header-name + .zh-sub { display: block; text-align: center; font-size: 16px; color: rgba(0,0,0,.55); margin-top: -8px; margin-bottom: 12px; letter-spacing: .04em; }
       body.dark .zh-sub { color: rgba(255,255,255,.55); }
-      .footer-contact-line { display: flex; align-items: center; gap: 8px; padding: 4px 0; }
-      .footer-contact-line .fa { width: 18px; text-align: center; }
+
+      /* —— Footer contact lines —— */
+      .footer-contact-line { display: flex; align-items: center; gap: 8px; padding: 4px 0; flex-wrap: wrap; }
+      .footer-contact-line .fa { width: 18px; text-align: center; flex-shrink: 0; }
       .footer-tag { font-size: 11px; color: rgba(255,255,255,.55); margin-left: 4px; }
+
+      /* —— Mobile (< 992px): keep the dark toggle as the template designed —— */
+      @media (max-width: 991px) {
+        .lang-picker { padding: 0 8px; height: 34px; }
+      }
     </style>
   </head>
   <body id="home">
