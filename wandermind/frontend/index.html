@@ -1322,6 +1322,25 @@ html, body {
   .flight-card-meta, .flight-card-stops { font-size: 9px; }
   .flight-card-price { font-size: 12px; }
 
+  /* ── KEYBOARD-OPEN STATE ──
+     When the iOS keyboard pops up, we pin the input area above the keyboard
+     and hide the bottom nav so users can see what they're typing. */
+  body.keyboard-open .input-area {
+    position: fixed !important;
+    left: 0; right: 0;
+    bottom: 0;
+    z-index: 300;
+    background: var(--white);
+    border-top: 1px solid var(--paper-3);
+    padding-bottom: 10px;
+    box-shadow: 0 -4px 16px rgba(0,0,0,.06);
+  }
+  body.keyboard-open .mobile-nav { display: none !important; }
+  body.keyboard-open .messages { padding-bottom: 90px; }
+  body.keyboard-open .quick-actions,
+  body.keyboard-open .sugg-chips,
+  body.keyboard-open .active-agents-bar { display: none !important; }
+
   /* ── Flight & hotel search forms — grid so inputs never overlap ── */
   .price-date-row {
     display: grid !important;
@@ -6233,13 +6252,30 @@ function applyModeI18n() {
   if (toggle) toggle.title = L.modeToggleHint || '切换 AI 模型速度档位';
 }
 
-// ─── SAFARI VIEWPORT FIX ─────────────────────────────────────
+// ─── SAFARI VIEWPORT FIX + KEYBOARD HANDLER ──────────────────
 // iOS Safari sometimes mis-computes 100dvh when toolbar shows/hides,
 // causing the bottom mobile-nav to be hidden under the toolbar. We
 // listen to visualViewport changes and set --app-height to the real value.
+//
+// Also: when the on-screen keyboard pops up, the input area gets shoved
+// off-screen because .app has overflow:hidden. We detect the viewport
+// shrink and pin the input area above the keyboard via body.keyboard-open.
 function fixAppHeight() {
   const h = (window.visualViewport && window.visualViewport.height) || window.innerHeight;
   document.documentElement.style.setProperty('--app-height', h + 'px');
+  // Detect virtual keyboard: viewport shrinks by > 150px on phones
+  if (window.innerWidth <= 768 && window.visualViewport) {
+    const shrink = window.innerHeight - window.visualViewport.height;
+    const active = document.activeElement;
+    const isTypingInChat = active && active.id === 'main-input';
+    const keyboardOpen = shrink > 150 && isTypingInChat;
+    document.body.classList.toggle('keyboard-open', keyboardOpen);
+    if (keyboardOpen) {
+      // Scroll chat messages to bottom so the latest message stays visible
+      const msgs = document.getElementById('messages');
+      if (msgs) msgs.scrollTop = msgs.scrollHeight;
+    }
+  }
 }
 fixAppHeight();
 window.addEventListener('resize', fixAppHeight);
@@ -6248,6 +6284,22 @@ if (window.visualViewport) {
   window.visualViewport.addEventListener('resize', fixAppHeight);
   window.visualViewport.addEventListener('scroll', fixAppHeight);
 }
+// Also re-check on focus/blur of input — some iOS versions don't fire
+// visualViewport.resize reliably until you tap something
+document.addEventListener('focusin', e => {
+  if (e.target && e.target.id === 'main-input') {
+    setTimeout(fixAppHeight, 300);   // wait for keyboard animation
+    setTimeout(fixAppHeight, 600);
+  }
+});
+document.addEventListener('focusout', e => {
+  if (e.target && e.target.id === 'main-input') {
+    setTimeout(() => {
+      document.body.classList.remove('keyboard-open');
+      fixAppHeight();
+    }, 200);
+  }
+});
 
 // Initialize
 applyLang('zh');
