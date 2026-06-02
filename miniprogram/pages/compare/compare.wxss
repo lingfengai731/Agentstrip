@@ -1,27 +1,292 @@
-/* 占位页通用样式 */
-.placeholder {
+/* pages/compare/compare.wxss */
+.compare-page {
   min-height: 100vh;
-  padding: 120rpx 40rpx;
-  text-align: center;
+  background: #FAF7F2;
+  padding-bottom: 40rpx;
 }
-.ph-icon { font-size: 130rpx; margin-bottom: 30rpx; }
-.ph-title { font-size: 44rpx; font-weight: 700; color: #2A2723; margin-bottom: 10rpx; }
-.ph-desc { font-size: 28rpx; color: #8A857F; margin-bottom: 60rpx; }
-.ph-list {
+
+/* —— 顶部目的地条 —— */
+.dest-bar {
+  display: flex;
+  align-items: center;
+  gap: 16rpx;
+  padding: 24rpx 28rpx;
   background: #fff;
-  border-radius: 20rpx;
-  padding: 30rpx;
-  margin-bottom: 50rpx;
-  text-align: left;
+  border-bottom: 1rpx solid #E1DCD3;
 }
-.ph-item {
-  font-size: 26rpx;
-  color: #2A2723;
-  padding: 16rpx 0;
-  border-bottom: 1rpx solid #F0EDE6;
+.dest-flag { font-size: 56rpx; }
+.dest-info { flex: 1; }
+.dest-name { font-size: 32rpx; font-weight: 700; color: #2A2723; }
+.dest-hint { font-size: 22rpx; color: #8A857F; margin-top: 4rpx; }
+
+/* —— 子 tab：酒店 / 机票 —— */
+.sub-tabs {
+  display: flex;
+  margin: 24rpx 24rpx 0;
+  background: #F0EDE6;
+  border-radius: 16rpx;
+  padding: 6rpx;
 }
-.ph-item:last-child { border-bottom: none; }
-.ph-tip {
+.sub-tab {
+  flex: 1;
+  text-align: center;
+  padding: 18rpx 0;
+  font-size: 28rpx;
+  font-weight: 700;
+  color: #8A857F;
+  border-radius: 12rpx;
+}
+.sub-tab.active {
+  background: #fff;
+  color: #0E7C6B;
+  box-shadow: 0 2rpx 8rpx rgba(0,0,0,.06);
+}
+
+/* —— Panel 内容 —— */
+.panel {
+  padding: 24rpx 24rpx 0;
+}
+
+.form-section-label {
   font-size: 24rpx;
+  font-weight: 700;
+  color: #5A554F;
+  letter-spacing: 1rpx;
+  text-transform: uppercase;
+  margin: 24rpx 4rpx 14rpx;
+}
+
+/* —— Chips 横向滚动 —— */
+.chips-row {
+  white-space: nowrap;
+  margin-bottom: 8rpx;
+}
+.chip {
+  display: inline-block;
+  padding: 12rpx 22rpx;
+  border-radius: 28rpx;
+  background: #fff;
+  border: 2rpx solid #E1DCD3;
+  color: #5A554F;
+  font-size: 24rpx;
+  font-weight: 600;
+  margin-right: 12rpx;
+}
+.chip.active {
+  background: #0E7C6B;
+  color: #fff;
+  border-color: #0E7C6B;
+}
+
+/* —— 表单行 —— */
+.form-row {
+  display: flex;
+  gap: 16rpx;
+  margin-top: 20rpx;
+}
+.field {
+  flex: 1;
+  background: #fff;
+  border-radius: 16rpx;
+  padding: 16rpx 20rpx;
+  border: 2rpx solid #E1DCD3;
+}
+.field-label {
+  font-size: 20rpx;
+  color: #8A857F;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: .5rpx;
+}
+.picker-display {
+  font-size: 28rpx;
+  color: #2A2723;
+  font-weight: 600;
+  margin-top: 6rpx;
+}
+
+/* —— 搜索按钮 —— */
+.search-btn {
+  background: #0E7C6B;
+  color: #fff;
+  border-radius: 16rpx;
+  padding: 20rpx;
+  font-size: 30rpx;
+  font-weight: 700;
+  margin-top: 24rpx;
+  line-height: 1.2;
+  border: none;
+}
+.search-btn[disabled] { background: #5DBDA7 !important; color: #fff !important; opacity: .8; }
+.search-btn::after { border: none; }
+
+/* —— 单程/往返 toggle —— */
+.trip-toggle {
+  display: flex;
+  background: #F0EDE6;
+  border-radius: 14rpx;
+  padding: 4rpx;
+  margin-bottom: 8rpx;
+}
+.trip-btn {
+  flex: 1;
+  text-align: center;
+  padding: 14rpx 0;
+  font-size: 26rpx;
+  font-weight: 700;
+  color: #8A857F;
+  border-radius: 10rpx;
+}
+.trip-btn.active {
+  background: #fff;
+  color: #0E7C6B;
+  box-shadow: 0 1rpx 4rpx rgba(0,0,0,.06);
+}
+
+.custom-origin-display {
+  font-size: 24rpx;
+  color: #5A554F;
+  padding: 12rpx 4rpx 0;
+}
+
+/* —— 结果区 —— */
+.results {
+  margin-top: 30rpx;
+}
+
+/* —— 酒店卡片 —— */
+.hotel-card {
+  display: flex;
+  background: #fff;
+  border-radius: 16rpx;
+  margin-bottom: 16rpx;
+  padding: 16rpx;
+  gap: 16rpx;
+  box-shadow: 0 2rpx 8rpx rgba(0,0,0,.04);
+}
+.hotel-thumb {
+  width: 140rpx; height: 140rpx;
+  border-radius: 12rpx;
+  background: #F0EDE6;
+  flex-shrink: 0;
+}
+.hotel-thumb-placeholder {
+  width: 140rpx; height: 140rpx;
+  border-radius: 12rpx;
+  background: #F0EDE6;
+  text-align: center;
+  line-height: 140rpx;
+  font-size: 60rpx;
+  flex-shrink: 0;
+}
+.hotel-info {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+.hotel-name {
+  font-size: 28rpx;
+  font-weight: 700;
+  color: #2A2723;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.hotel-meta {
+  display: flex;
+  gap: 12rpx;
+  align-items: center;
+  font-size: 22rpx;
+  margin-top: 4rpx;
+}
+.hotel-rating { color: #E07A12; font-weight: 700; }
+.hotel-reviews { color: #8A857F; }
+.hotel-price {
+  font-size: 30rpx;
+  font-weight: 800;
+  color: #0E7C6B;
+  margin-top: 8rpx;
+}
+.per-night {
+  font-size: 20rpx;
+  font-weight: normal;
   color: #8A857F;
 }
+
+/* —— 航班卡片 —— */
+.flight-card {
+  display: flex;
+  align-items: center;
+  background: #fff;
+  border-radius: 16rpx;
+  margin-bottom: 16rpx;
+  padding: 20rpx 18rpx;
+  gap: 16rpx;
+  box-shadow: 0 2rpx 8rpx rgba(0,0,0,.04);
+}
+.flight-logo {
+  width: 60rpx; height: 60rpx;
+  border-radius: 12rpx;
+  background: #F0EDE6;
+  flex-shrink: 0;
+}
+.flight-logo-placeholder {
+  width: 60rpx; height: 60rpx;
+  border-radius: 12rpx;
+  background: #F0EDE6;
+  text-align: center;
+  line-height: 60rpx;
+  font-size: 32rpx;
+  flex-shrink: 0;
+}
+.flight-info { flex: 1; min-width: 0; }
+.flight-route {
+  font-size: 26rpx;
+  font-weight: 700;
+  color: #2A2723;
+}
+.flight-route .time { color: #0E7C6B; }
+.flight-route .arrow { color: #8A857F; margin: 0 4rpx; }
+.flight-meta {
+  font-size: 20rpx;
+  color: #8A857F;
+  margin-top: 4rpx;
+}
+.flight-stops {
+  font-size: 20rpx;
+  font-weight: 700;
+  margin-top: 4rpx;
+}
+.flight-stops.direct { color: #0E7C6B; }
+.flight-stops.one-stop { color: #E07A12; }
+.flight-stops.multi { color: #C13B3B; }
+.flight-price {
+  font-size: 28rpx;
+  font-weight: 800;
+  color: #0E7C6B;
+  flex-shrink: 0;
+}
+.flight-book-all {
+  text-align: center;
+  padding: 18rpx;
+  background: transparent;
+  color: #0E7C6B;
+  border: 2rpx dashed #5DBDA7;
+  border-radius: 14rpx;
+  font-size: 24rpx;
+  font-weight: 700;
+  margin-top: 8rpx;
+}
+
+/* —— 空状态 —— */
+.empty {
+  text-align: center;
+  padding: 60rpx 20rpx;
+}
+.empty-icon { font-size: 80rpx; opacity: .5; margin-bottom: 20rpx; }
+.empty-text { font-size: 26rpx; color: #8A857F; }
+
+.flex-1 { flex: 1; }
+.teal { color: #0E7C6B; font-weight: 700; }

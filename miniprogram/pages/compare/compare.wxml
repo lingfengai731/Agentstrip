@@ -1,12 +1,177 @@
-<!--pages/compare/compare.wxml-->
-<view class="placeholder">
-  <view class="ph-icon">🎫</view>
-  <view class="ph-title">机酒比价</view>
-  <view class="ph-desc">即将上线</view>
-  <view class="ph-list">
-    <view class="ph-item">🏨 酒店实时比价（含区域筛选）</view>
-    <view class="ph-item">✈️ 机票实时比价（往返/单程）</view>
-    <view class="ph-item">🌍 支持 25+ 热门住宿区域</view>
+<!--pages/compare/compare.wxml — 酒店 + 机票比价-->
+<view class="compare-page">
+
+  <!-- 顶部：目的地 + 子 tab -->
+  <view class="dest-bar">
+    <view class="dest-flag">{{destFlag}}</view>
+    <view class="dest-info">
+      <view class="dest-name">{{destName}}</view>
+      <view class="dest-hint">实时比价 · 数据来自 Google</view>
+    </view>
   </view>
-  <view class="ph-tip">下个版本上线，敬请期待 ✨</view>
+
+  <view class="sub-tabs">
+    <view class="sub-tab {{tab === 'hotels' ? 'active' : ''}}" bindtap="switchTab" data-tab="hotels">🏨 酒店</view>
+    <view class="sub-tab {{tab === 'flights' ? 'active' : ''}}" bindtap="switchTab" data-tab="flights">✈️ 机票</view>
+  </view>
+
+  <!-- ═══════════ 酒店 panel ═══════════ -->
+  <view wx:if="{{tab === 'hotels'}}" class="panel">
+
+    <!-- 住宿区域 chips -->
+    <view class="form-section-label">📍 住宿区域</view>
+    <scroll-view scroll-x enable-flex class="chips-row" show-scrollbar="{{false}}">
+      <view
+        wx:for="{{areas}}"
+        wx:key="key"
+        class="chip {{currentArea === item.key ? 'active' : ''}}"
+        bindtap="selectArea"
+        data-key="{{item.key}}"
+      >{{item.name}}</view>
+    </scroll-view>
+
+    <!-- 日期 + 人数 -->
+    <view class="form-row">
+      <view class="field">
+        <view class="field-label">入住</view>
+        <picker mode="date" value="{{hotelCheckIn}}" start="{{today}}" bindchange="onCheckIn">
+          <view class="picker-display">📅 {{hotelCheckIn}}</view>
+        </picker>
+      </view>
+      <view class="field">
+        <view class="field-label">退房</view>
+        <picker mode="date" value="{{hotelCheckOut}}" start="{{today}}" bindchange="onCheckOut">
+          <view class="picker-display">📅 {{hotelCheckOut}}</view>
+        </picker>
+      </view>
+    </view>
+    <view class="form-row">
+      <view class="field flex-1">
+        <view class="field-label">人数</view>
+        <picker mode="selector" range="{{adultsRange}}" value="{{hotelAdultsIdx}}" bindchange="onHotelAdults">
+          <view class="picker-display">👥 {{hotelAdultsIdx + 1}} 人</view>
+        </picker>
+      </view>
+    </view>
+
+    <button class="search-btn" bindtap="searchHotelsHandler" loading="{{hotelBusy}}" disabled="{{hotelBusy}}">
+      🔍 {{hotelBusy ? '搜索中…' : '查酒店价格'}}
+    </button>
+
+    <!-- 结果 -->
+    <view wx:if="{{hotelResults.length > 0}}" class="results">
+      <view
+        wx:for="{{hotelResults}}"
+        wx:key="name"
+        class="hotel-card"
+        bindtap="openHotelLink"
+        data-link="{{item.link}}"
+      >
+        <image wx:if="{{item.thumbnail}}" src="{{item.thumbnail}}" class="hotel-thumb" mode="aspectFill" />
+        <view wx:else class="hotel-thumb-placeholder">🏨</view>
+        <view class="hotel-info">
+          <view class="hotel-name">{{item.name}}</view>
+          <view class="hotel-meta">
+            <text wx:if="{{item.rating}}" class="hotel-rating">⭐ {{item.rating}}</text>
+            <text wx:if="{{item.reviews}}" class="hotel-reviews">{{item.reviews}} 条评价</text>
+          </view>
+          <view class="hotel-price">{{item.price || '价格待定'}} <text class="per-night">/ 晚</text></view>
+        </view>
+      </view>
+    </view>
+    <view wx:elif="{{hotelSearched && !hotelBusy}}" class="empty">
+      <view class="empty-icon">🔍</view>
+      <view class="empty-text">暂无结果，请更换日期重试</view>
+    </view>
+  </view>
+
+  <!-- ═══════════ 机票 panel ═══════════ -->
+  <view wx:if="{{tab === 'flights'}}" class="panel">
+
+    <!-- 单程 / 往返 -->
+    <view class="trip-toggle">
+      <view class="trip-btn {{flightTripType === 'round' ? 'active' : ''}}" bindtap="setTripType" data-type="round">往返</view>
+      <view class="trip-btn {{flightTripType === 'oneway' ? 'active' : ''}}" bindtap="setTripType" data-type="oneway">单程</view>
+    </view>
+
+    <!-- 出发城市 -->
+    <view class="form-section-label">出发城市</view>
+    <scroll-view scroll-x enable-flex class="chips-row" show-scrollbar="{{false}}">
+      <view
+        wx:for="{{cities}}"
+        wx:key="iata"
+        class="chip {{flightOrigin === item.iata ? 'active' : ''}}"
+        bindtap="selectOrigin"
+        data-iata="{{item.iata}}"
+      >{{item.flag}} {{item.name}}</view>
+      <view class="chip {{flightOrigin === '__custom__' ? 'active' : ''}}" bindtap="customOrigin">✈️ 其他城市</view>
+    </scroll-view>
+
+    <view wx:if="{{customOriginName}}" class="custom-origin-display">
+      已选：<text class="teal">{{customOriginName}}</text>
+    </view>
+
+    <!-- 日期 + 人数 -->
+    <view class="form-row">
+      <view class="field">
+        <view class="field-label">起飞</view>
+        <picker mode="date" value="{{flightDepart}}" start="{{today}}" bindchange="onFlightDepart">
+          <view class="picker-display">📅 {{flightDepart}}</view>
+        </picker>
+      </view>
+      <view wx:if="{{flightTripType === 'round'}}" class="field">
+        <view class="field-label">返回</view>
+        <picker mode="date" value="{{flightReturn}}" start="{{today}}" bindchange="onFlightReturn">
+          <view class="picker-display">📅 {{flightReturn}}</view>
+        </picker>
+      </view>
+      <view wx:else class="field">
+        <view class="field-label">人数</view>
+        <picker mode="selector" range="{{adultsRange}}" value="{{flightAdultsIdx}}" bindchange="onFlightAdults">
+          <view class="picker-display">👥 {{flightAdultsIdx + 1}} 人</view>
+        </picker>
+      </view>
+    </view>
+    <view wx:if="{{flightTripType === 'round'}}" class="form-row">
+      <view class="field flex-1">
+        <view class="field-label">人数</view>
+        <picker mode="selector" range="{{adultsRange}}" value="{{flightAdultsIdx}}" bindchange="onFlightAdults">
+          <view class="picker-display">👥 {{flightAdultsIdx + 1}} 人</view>
+        </picker>
+      </view>
+    </view>
+
+    <button class="search-btn" bindtap="searchFlightsHandler" loading="{{flightBusy}}" disabled="{{flightBusy}}">
+      🔍 {{flightBusy ? '搜索中…' : '查机票价格'}}
+    </button>
+
+    <!-- 结果 -->
+    <view wx:if="{{flightResults.length > 0}}" class="results">
+      <view
+        wx:for="{{flightResults}}"
+        wx:key="flight_no"
+        class="flight-card"
+        bindtap="openFlightLink"
+      >
+        <image wx:if="{{item.airline_logo}}" src="{{item.airline_logo}}" class="flight-logo" mode="aspectFit" />
+        <view wx:else class="flight-logo-placeholder">✈️</view>
+        <view class="flight-info">
+          <view class="flight-route">
+            <text class="time">{{item.depart_time_short}}</text> {{item.depart_id}}
+            <text class="arrow"> → </text>
+            <text class="time">{{item.arrive_time_short}}</text> {{item.arrive_id}}
+          </view>
+          <view class="flight-meta">{{item.airline}} · {{item.duration_label}}</view>
+          <view class="flight-stops {{item.stops === 0 ? 'direct' : item.stops === 1 ? 'one-stop' : 'multi'}}">{{item.stops_label}}</view>
+        </view>
+        <view class="flight-price">{{item.price}}</view>
+      </view>
+      <view class="flight-book-all" bindtap="openFlightLink">🌐 在 Google Flights 查看全部</view>
+    </view>
+    <view wx:elif="{{flightSearched && !flightBusy}}" class="empty">
+      <view class="empty-icon">🔍</view>
+      <view class="empty-text">暂无航班，请更换日期或机场重试</view>
+    </view>
+  </view>
+
 </view>
