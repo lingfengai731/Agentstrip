@@ -979,8 +979,10 @@ async def icon():
 @app.get("/sw.js")
 async def service_worker():
     sw = """
-const CACHE = 'wandermind-v2';
-const SHELL = ['/', '/manifest.json', '/icon.svg'];
+// v3 — network-first for HTML to fix Safari stuck-on-old-version bug.
+const CACHE = 'wandermind-v3';
+// Don't pre-cache '/' — we want fresh HTML on every load.
+const SHELL = ['/manifest.json', '/icon.svg'];
 
 self.addEventListener('install', e => {
   e.waitUntil(caches.open(CACHE).then(c => c.addAll(SHELL)));
@@ -990,25 +992,66 @@ self.addEventListener('install', e => {
 self.addEventListener('activate', e => {
   e.waitUntil(caches.keys().then(keys =>
     Promise.all(keys.filter(k => k !== CACHE).map(k => caches.delete(k)))
-  ));
-  self.clients.claim();
+  ).then(() => self.clients.claim()));
 });
 
+self.addEventListener('message', e => {
+  // Allow page to ask SW to skipWaiting immediately
+  if (e.data && e.data.type === 'SKIP_WAITING') self.skipWaiting();
+});
+
+function isHTMLRequest(req) {
+  if (req.mode === 'navigate') return true;
+  if (req.destination === 'document') return true;
+  const url = new URL(req.url);
+  if (url.pathname === '/' || url.pathname.endsWith('.html')) return true;
+  return false;
+}
+
 self.addEventListener('fetch', e => {
-  // Never cache API or SSE calls
-  if (e.request.url.includes('/api/')) return;
-  e.respondWith(
-    caches.match(e.request).then(cached => cached || fetch(e.request).then(res => {
-      if (res.ok && e.request.method === 'GET') {
-        const clone = res.clone();
-        caches.open(CACHE).then(c => c.put(e.request, clone));
-      }
-      return res;
-    }))
-  );
+  const url = e.request.url;
+  // Never touch API or SSE
+  if (url.includes('/api/')) return;
+  // sw.js itself — always fetch fresh
+  if (url.endsWith('/sw.js')) return;
+
+  if (isHTMLRequest(e.request)) {
+    // ── Network-first for HTML (so users always see latest version) ──
+    e.respondWith(
+      fetch(e.request).then(res => {
+        // Cache a fallback copy for offline use
+        if (res && res.ok) {
+          const clone = res.clone();
+          caches.open(CACHE).then(c => c.put(e.request, clone)).catch(() => {});
+        }
+        return res;
+      }).catch(() =>
+        caches.match(e.request).then(cached => cached || caches.match('/'))
+      )
+    );
+  } else {
+    // ── Cache-first for static assets (manifest, icons, etc.) ──
+    e.respondWith(
+      caches.match(e.request).then(cached => cached || fetch(e.request).then(res => {
+        if (res && res.ok && e.request.method === 'GET') {
+          const clone = res.clone();
+          caches.open(CACHE).then(c => c.put(e.request, clone)).catch(() => {});
+        }
+        return res;
+      }))
+    );
+  }
 });
 """
-    return PlainTextResponse(sw, media_type="application/javascript")
+    return PlainTextResponse(
+        sw,
+        media_type="application/javascript",
+        headers={
+            "Cache-Control": "no-cache, no-store, must-revalidate",
+            "Pragma": "no-cache",
+            "Expires": "0",
+        },
+    )
 
 
 # ─── Serve frontend ──────────────────────────────────────────

@@ -7227,10 +7227,46 @@ navTabEls.forEach((tab, i) => {
 </div>
 
 <script>
-// ─── PWA Service Worker Registration ────────
+// ─── PWA Service Worker Registration + Auto-update ────────
+// Strategy: every time a new sw.js is detected, force-activate it and
+// reload the page so users always see the latest build.
 if ('serviceWorker' in navigator) {
+  let _reloading = false;
+  // When the active SW changes (new build took over), reload once
+  navigator.serviceWorker.addEventListener('controllerchange', () => {
+    if (_reloading) return;
+    _reloading = true;
+    window.location.reload();
+  });
+
   window.addEventListener('load', () => {
-    navigator.serviceWorker.register('/sw.js').catch(() => {});
+    navigator.serviceWorker.register('/sw.js').then(reg => {
+      // Check for updates immediately on every page load
+      reg.update().catch(() => {});
+
+      // If an updated SW is waiting, tell it to activate immediately
+      if (reg.waiting) {
+        reg.waiting.postMessage({ type: 'SKIP_WAITING' });
+      }
+
+      // Listen for newly-installing SW
+      reg.addEventListener('updatefound', () => {
+        const newSW = reg.installing;
+        if (!newSW) return;
+        newSW.addEventListener('statechange', () => {
+          if (newSW.state === 'installed' && navigator.serviceWorker.controller) {
+            // A new SW is ready but waiting — push it through
+            newSW.postMessage({ type: 'SKIP_WAITING' });
+          }
+        });
+      });
+
+      // Re-check for updates whenever the tab is brought back to foreground
+      // (Safari aggressively backgrounds tabs)
+      document.addEventListener('visibilitychange', () => {
+        if (document.visibilityState === 'visible') reg.update().catch(() => {});
+      });
+    }).catch(() => {});
   });
 }
 </script>
