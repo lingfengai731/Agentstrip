@@ -59,13 +59,24 @@ page {
 .btn::after { border: none; }
 
 /* —— 输入框（统一风格） —— */
+/* 关键：小程序 input 默认高度太小，placeholder 会被裁切。
+   必须显式设置 min-height + line-height 让文字垂直居中。 */
 .input-base {
   background: #F0EDE6;
   border-radius: 16rpx;
-  padding: 24rpx 28rpx;
+  padding: 0 28rpx;
   font-size: 30rpx;
   width: 100%;
+  min-height: 88rpx;
+  height: 88rpx;
+  line-height: 88rpx;
   box-sizing: border-box;
+  color: #2A2723;
+}
+/* placeholder 样式（小程序需要单独类） */
+.input-ph {
+  color: #B0A89D;
+  font-size: 30rpx;
 }
 
 /* —— 文字辅助类 —— */

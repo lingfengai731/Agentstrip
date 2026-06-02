@@ -16,13 +16,13 @@
       </view>
 
       <view wx:if="{{authMode === 'register'}}" class="form-row">
-        <input class="input-base" placeholder="昵称" value="{{regName}}" bindinput="onInput" data-field="regName" />
+        <input class="input-base" placeholder-class="input-ph" placeholder="昵称" value="{{regName}}" bindinput="onInput" data-field="regName" />
       </view>
       <view class="form-row">
-        <input class="input-base" placeholder="邮箱" type="text" value="{{email}}" bindinput="onInput" data-field="email" />
+        <input class="input-base" placeholder-class="input-ph" placeholder="邮箱" type="text" value="{{email}}" bindinput="onInput" data-field="email" />
       </view>
       <view class="form-row">
-        <input class="input-base" placeholder="密码 (至少 6 位)" password value="{{password}}" bindinput="onInput" data-field="password" />
+        <input class="input-base" placeholder-class="input-ph" placeholder="密码 (至少 6 位)" password value="{{password}}" bindinput="onInput" data-field="password" />
       </view>
 
       <button class="btn auth-btn" bindtap="doAuth" loading="{{authBusy}}" disabled="{{authBusy}}">

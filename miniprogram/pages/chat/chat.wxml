@@ -69,6 +69,8 @@
     <textarea
       class="input-box"
       placeholder="问任何关于 {{destName}} 的问题…"
+      placeholder-class="textarea-ph"
+      placeholder-style="color:#B0A89D;font-size:28rpx;"
       value="{{inputText}}"
       bindinput="onInputChange"
       auto-height
