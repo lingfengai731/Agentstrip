@@ -1323,23 +1323,49 @@ html, body {
   .flight-card-price { font-size: 12px; }
 
   /* ── KEYBOARD-OPEN STATE ──
-     When the iOS keyboard pops up, we pin the input area above the keyboard
-     and hide the bottom nav so users can see what they're typing. */
+     When the iOS keyboard pops up, we lock the whole app to the visual
+     viewport, pin the input area above the keyboard, and hide everything
+     non-essential so users see what they're typing. */
+  body.keyboard-open {
+    /* Lock body to prevent iOS from scrolling the page upward */
+    position: fixed !important;
+    top: 0; left: 0; right: 0; bottom: 0;
+    height: var(--app-height, 100dvh);
+    overflow: hidden !important;
+  }
+  body.keyboard-open .app {
+    position: fixed !important;
+    top: 0; left: 0; right: 0;
+    height: var(--app-height, 100dvh) !important;
+    max-height: var(--app-height, 100dvh) !important;
+    overflow: hidden !important;
+  }
   body.keyboard-open .input-area {
     position: fixed !important;
     left: 0; right: 0;
     bottom: 0;
-    z-index: 300;
+    z-index: 999;
     background: var(--white);
     border-top: 1px solid var(--paper-3);
     padding-bottom: 10px;
-    box-shadow: 0 -4px 16px rgba(0,0,0,.06);
+    box-shadow: 0 -4px 16px rgba(0,0,0,.08);
   }
   body.keyboard-open .mobile-nav { display: none !important; }
-  body.keyboard-open .messages { padding-bottom: 90px; }
+  body.keyboard-open .messages { padding-bottom: 100px; }
   body.keyboard-open .quick-actions,
   body.keyboard-open .sugg-chips,
-  body.keyboard-open .active-agents-bar { display: none !important; }
+  body.keyboard-open .active-agents-bar,
+  body.keyboard-open .dest-header { display: none !important; }
+  /* Build-version stamp — bottom-right corner; lets users verify they
+     have the latest deploy. Tap to dismiss. */
+  .build-stamp {
+    position: fixed; right: 4px; bottom: 4px;
+    font-size: 9px; font-family: monospace;
+    color: rgba(0,0,0,.25); background: rgba(255,255,255,.6);
+    padding: 1px 5px; border-radius: 4px; z-index: 1;
+    pointer-events: auto; cursor: pointer;
+  }
+  body.keyboard-open .build-stamp { display: none; }
 
   /* ── Flight & hotel search forms — grid so inputs never overlap ── */
   .price-date-row {
@@ -2627,6 +2653,9 @@ html, body {
 
   <!-- Mobile overlay backdrop -->
   <div class="mobile-overlay" id="mobile-overlay" onclick="mnavClose()"></div>
+
+  <!-- Build stamp — only visible on mobile, helps user verify they have the latest deploy -->
+  <div class="build-stamp" id="build-stamp" onclick="this.style.display='none'" title="点击隐藏">v0.6.0 · 2026-06-02 · kb-fix-v2</div>
 
 </div>
 
@@ -6253,29 +6282,14 @@ function applyModeI18n() {
 }
 
 // ─── SAFARI VIEWPORT FIX + KEYBOARD HANDLER ──────────────────
-// iOS Safari sometimes mis-computes 100dvh when toolbar shows/hides,
-// causing the bottom mobile-nav to be hidden under the toolbar. We
-// listen to visualViewport changes and set --app-height to the real value.
-//
-// Also: when the on-screen keyboard pops up, the input area gets shoved
-// off-screen because .app has overflow:hidden. We detect the viewport
-// shrink and pin the input area above the keyboard via body.keyboard-open.
+// iOS Safari sometimes mis-computes 100dvh when the toolbar/keyboard
+// shows/hides. We listen to visualViewport changes to keep --app-height
+// in sync, and we proactively apply body.keyboard-open the moment the
+// chat input gains focus (without waiting for resize detection) because
+// iOS otherwise scrolls the whole page upward in the gap.
 function fixAppHeight() {
   const h = (window.visualViewport && window.visualViewport.height) || window.innerHeight;
   document.documentElement.style.setProperty('--app-height', h + 'px');
-  // Detect virtual keyboard: viewport shrinks by > 150px on phones
-  if (window.innerWidth <= 768 && window.visualViewport) {
-    const shrink = window.innerHeight - window.visualViewport.height;
-    const active = document.activeElement;
-    const isTypingInChat = active && active.id === 'main-input';
-    const keyboardOpen = shrink > 150 && isTypingInChat;
-    document.body.classList.toggle('keyboard-open', keyboardOpen);
-    if (keyboardOpen) {
-      // Scroll chat messages to bottom so the latest message stays visible
-      const msgs = document.getElementById('messages');
-      if (msgs) msgs.scrollTop = msgs.scrollHeight;
-    }
-  }
 }
 fixAppHeight();
 window.addEventListener('resize', fixAppHeight);
@@ -6284,22 +6298,57 @@ if (window.visualViewport) {
   window.visualViewport.addEventListener('resize', fixAppHeight);
   window.visualViewport.addEventListener('scroll', fixAppHeight);
 }
-// Also re-check on focus/blur of input — some iOS versions don't fire
-// visualViewport.resize reliably until you tap something
+
+// ─── iOS KEYBOARD HANDLER ─────────────────────────────────────
+// Trigger by focus directly, NOT by viewport detection — that has a
+// 300-600ms lag during which iOS shoves the page upward.
+function _isMobile() { return window.innerWidth <= 768; }
+
+function _pinInputForKeyboard() {
+  if (!_isMobile()) return;
+  document.body.classList.add('keyboard-open');
+  // Force page back to scroll origin so iOS can't push the nav off-screen
+  window.scrollTo(0, 0);
+  document.documentElement.scrollTop = 0;
+  if (document.body) document.body.scrollTop = 0;
+  // Scroll the chat messages to bottom so the last message stays visible
+  const msgs = document.getElementById('messages');
+  if (msgs) msgs.scrollTop = msgs.scrollHeight;
+}
+
+function _releaseInputFromKeyboard() {
+  document.body.classList.remove('keyboard-open');
+  // Give iOS a moment then re-zero scroll (sometimes it lingers)
+  setTimeout(() => {
+    window.scrollTo(0, 0);
+    document.documentElement.scrollTop = 0;
+    if (document.body) document.body.scrollTop = 0;
+  }, 50);
+}
+
 document.addEventListener('focusin', e => {
   if (e.target && e.target.id === 'main-input') {
-    setTimeout(fixAppHeight, 300);   // wait for keyboard animation
-    setTimeout(fixAppHeight, 600);
+    _pinInputForKeyboard();
+    // Multiple re-applies because iOS sometimes re-scrolls after the animation
+    setTimeout(_pinInputForKeyboard, 100);
+    setTimeout(_pinInputForKeyboard, 300);
+    setTimeout(_pinInputForKeyboard, 600);
   }
 });
 document.addEventListener('focusout', e => {
   if (e.target && e.target.id === 'main-input') {
-    setTimeout(() => {
-      document.body.classList.remove('keyboard-open');
-      fixAppHeight();
-    }, 200);
+    _releaseInputFromKeyboard();
   }
 });
+// Also catch the case where the user taps INSIDE main-input area's
+// container (the wrapping div) — iOS may delay the actual focus event
+document.addEventListener('touchend', e => {
+  if (!_isMobile()) return;
+  const t = e.target;
+  if (t && (t.id === 'main-input' || t.closest?.('.input-area'))) {
+    setTimeout(_pinInputForKeyboard, 0);
+  }
+}, { passive: true });
 
 // Initialize
 applyLang('zh');
