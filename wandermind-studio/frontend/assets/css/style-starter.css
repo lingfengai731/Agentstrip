@@ -2316,7 +2316,7 @@
   clip: auto; }
 
 .w3l-inner-banner-main .about-inner {
-  background: url(../images/4.jpg) no-repeat center;
+  background: url(../images/bali-2.jpg) no-repeat center;
   padding: 30px 0px 30px;
   background-size: cover;
   -webkit-background-size: cover;
@@ -3111,7 +3111,7 @@
     -moz-transition: 0.3s ease-in;
     -ms-transition: 0.3s ease-in; }
   .w3l-main-slider .banner-view {
-    background: url(../images/1.jpg) no-repeat center;
+    background: url(../images/hero-1.jpg) no-repeat center;
     background-size: cover;
     min-height: calc(100vh - 50px);
     position: relative;
@@ -3119,10 +3119,10 @@
     display: grid;
     align-items: center; }
   .w3l-main-slider .banner-top1 {
-    background: url(../images/2.jpg) no-repeat center;
+    background: url(../images/hero-2.jpg) no-repeat center;
     background-size: cover; }
   .w3l-main-slider .banner-top2 {
-    background: url(../images/3.jpg) no-repeat center;
+    background: url(../images/hero-3.jpg) no-repeat center;
     background-size: cover; }
   .w3l-main-slider .banner-view:before {
     content: "";
@@ -3672,7 +3672,7 @@
   grid-template-columns: 1fr 1fr; }
 
 .w3l-specification-6 .ser-bg1 {
-  background: url(../images/b8.jpg) no-repeat center;
+  background: url(../images/kyoto-1.jpg) no-repeat center;
   background-size: cover;
   min-height: 400px;
   position: relative;
@@ -3684,7 +3684,7 @@
   max-width: 500px; }
 
 .w3l-specification-6 .images-right {
-  background: url(../images/b5.jpg) no-repeat center;
+  background: url(../images/bali-1.jpg) no-repeat center;
   background-size: cover;
   min-height: 800px;
   position: relative;
@@ -3703,7 +3703,7 @@
   z-index: -1; }
 
 .w3l-specification-6 .ser-bg2 {
-  background: url(../images/b7.jpg) no-repeat center;
+  background: url(../images/santorini-1.jpg) no-repeat center;
   background-size: cover;
   min-height: 400px;
   position: relative;
@@ -3712,7 +3712,7 @@
   align-items: end; }
 
 .w3l-specification-6 .ser-bg3 {
-  background: url(../images/b6.jpg) no-repeat center;
+  background: url(../images/world-1.jpg) no-repeat center;
   background-size: cover;
   min-height: 400px;
   position: relative;
@@ -3721,7 +3721,7 @@
   align-items: end; }
 
 .w3l-specification-6 .ser-bg4 {
-  background: url(../images/b2.jpg) no-repeat center;
+  background: url(../images/paris-1.jpg) no-repeat center;
   background-size: cover;
   min-height: 400px;
   position: relative;
@@ -3782,7 +3782,7 @@
     min-height: 200px; } }
 
 .w3l-clients .call-w3 {
-  background: url(../images/3.jpg) no-repeat center;
+  background: url(../images/cta-bg.jpg) no-repeat center;
   background-size: cover;
   -webkit-background-size: cover;
   -moz-background-size: cover;
@@ -4103,7 +4103,7 @@
     padding: 40px 0px; } }
 
 .w3l-stats .main-w3 {
-  background: url(../images/3.jpg) no-repeat center;
+  background: url(../images/santorini-2.jpg) no-repeat center;
   background-size: cover;
   -webkit-background-size: cover;
   -moz-background-size: cover;
