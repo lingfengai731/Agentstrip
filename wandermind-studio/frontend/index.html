@@ -76,6 +76,89 @@
         .lang-picker { padding: 0 8px; height: 34px; }
       }
 
+      /* ═══════════════════════════════════════════════════
+         IMAGE UNIFORM SIZING
+         Source photos come in different aspect ratios — force
+         them all to the same display box so cards align cleanly.
+         object-fit: cover crops without stretching.
+         ═══════════════════════════════════════════════════ */
+
+      /* —— Section 5: Top Destinations card images —— */
+      .w3l-covers-18 .img-box {
+        background: #fff;
+        border-radius: 10px;
+        overflow: hidden;
+        box-shadow: 0 6px 24px rgba(0,0,0,.06);
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+      }
+      body.dark .w3l-covers-18 .img-box { background: rgba(255,255,255,.04); }
+      .w3l-covers-18 .img-box > img {
+        width: 100% !important;
+        height: 280px !important;
+        object-fit: cover;
+        object-position: center;
+        display: block;
+        margin: 0 !important;
+        transition: transform .5s ease;
+      }
+      .w3l-covers-18 .img-box:hover > img { transform: scale(1.04); }
+      .w3l-covers-18 .img-box h5,
+      .w3l-covers-18 .img-box .blog-date,
+      .w3l-covers-18 .img-box p.para,
+      .w3l-covers-18 .img-box .top-gap {
+        padding-left: 18px; padding-right: 18px;
+      }
+      .w3l-covers-18 .img-box .top-gap {
+        margin-top: auto;
+        padding-bottom: 18px;
+        padding-top: 6px;
+      }
+      .w3l-covers-18 .gallery-image.row {
+        align-items: stretch !important;
+      }
+      .w3l-covers-18 .gallery-image.row > [class*="col-"] {
+        display: flex;
+        margin-bottom: 24px;
+      }
+
+      /* —— Footer Gallery: 6 thumbnails in 3 columns, equal height —— */
+      .footer-29 .footer-3 .properties .images-col {
+        display: grid !important;
+        grid-template-columns: repeat(3, 1fr) !important;
+        gap: 8px !important;
+        margin: 0;
+        padding: 0;
+      }
+      .footer-29 .footer-3 .properties .images-col a {
+        display: block;
+        width: 100%;
+        line-height: 0;
+        border-radius: 6px;
+        overflow: hidden;
+      }
+      .footer-29 .footer-3 .properties .images-col a img {
+        width: 100% !important;
+        height: 80px !important;
+        object-fit: cover;
+        object-position: center;
+        display: block !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        transition: transform .4s ease, opacity .2s;
+      }
+      .footer-29 .footer-3 .properties .images-col a:hover img {
+        transform: scale(1.08);
+        opacity: .9;
+      }
+
+      /* —— Mobile: adjust uniform heights for smaller screens —— */
+      @media (max-width: 767px) {
+        .w3l-covers-18 .img-box > img { height: 220px !important; }
+        .footer-29 .footer-3 .properties .images-col a img { height: 70px !important; }
+      }
+
     </style>
   </head>
   <body id="home">
