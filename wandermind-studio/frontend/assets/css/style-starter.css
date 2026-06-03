@@ -2330,6 +2330,14 @@
   display: grid;
   align-items: end; }
 
+/* Per-page banner overrides (avoid image reuse across pages) */
+.w3l-inner-banner-main .about-inner.about {
+  background-image: url(../images/about-banner.jpg); }
+.w3l-inner-banner-main .about-inner.services {
+  background-image: url(../images/hero-3.jpg); }
+.w3l-inner-banner-main .about-inner.contact {
+  background-image: url(../images/gallery-2.jpg); }
+
 .w3l-inner-banner-main .about-inner:before {
   content: "";
   background: rgba(27, 27, 27, 0.6);
@@ -4103,7 +4111,7 @@
     padding: 40px 0px; } }
 
 .w3l-stats .main-w3 {
-  background: url(../images/santorini-2.jpg) no-repeat center;
+  background: url(../images/about-stats.jpg) no-repeat center;
   background-size: cover;
   -webkit-background-size: cover;
   -moz-background-size: cover;
