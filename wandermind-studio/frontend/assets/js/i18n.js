@@ -139,6 +139,7 @@ const LANGS = {
 
     /* —— Contact page —— */
     contactPageTitle: 'Contact | WanderMind Studio',
+    aiToolPageTitle: 'AI Tool | WanderMind Studio',
     contactTitle: 'Reach the WanderMind Studio team',
     contactSub: 'Questions, partnership ideas, or just want to say hello? Pick the channel that suits you best — we usually reply within 24 hours.',
     contactEmailTitle: 'Email', contactEmailTag: 'Best for project enquiries',
@@ -276,6 +277,7 @@ const LANGS = {
 
     /* —— Contact page —— */
     contactPageTitle: '联系我们 | WanderMind Studio 游心臻选',
+    aiToolPageTitle: 'AI 工具 | WanderMind Studio 游心臻选',
     contactTitle: '联系 WanderMind Studio 团队',
     contactSub: '有疑问、合作想法，或只是想打个招呼？选择最适合你的渠道 —— 我们通常在 24 小时内回复。',
     contactEmailTitle: '电子邮箱', contactEmailTag: '适合项目咨询',
@@ -413,6 +415,7 @@ const LANGS = {
 
     /* —— Contact page —— */
     contactPageTitle: 'お問い合わせ | WanderMind Studio',
+    aiToolPageTitle: 'AI ツール | WanderMind Studio',
     contactTitle: 'WanderMind Studio チームへ連絡',
     contactSub: '質問、提携アイデア、または挨拶でも？最も都合の良いチャネルをお選びください —— 通常 24 時間以内に返信します。',
     contactEmailTitle: 'メール', contactEmailTag: 'プロジェクト相談に最適',
@@ -550,6 +553,7 @@ const LANGS = {
 
     /* —— Contact page —— */
     contactPageTitle: '문의 | WanderMind Studio',
+    aiToolPageTitle: 'AI 도구 | WanderMind Studio',
     contactTitle: 'WanderMind Studio 팀에 연락하기',
     contactSub: '질문, 파트너십 아이디어 또는 인사? 가장 편한 채널을 선택하세요 —— 보통 24 시간 이내에 답변드립니다.',
     contactEmailTitle: '이메일', contactEmailTag: '프로젝트 문의에 적합',
@@ -687,6 +691,7 @@ const LANGS = {
 
     /* —— Contact page —— */
     contactPageTitle: 'Kontak | WanderMind Studio',
+    aiToolPageTitle: 'Alat AI | WanderMind Studio',
     contactTitle: 'Hubungi tim WanderMind Studio',
     contactSub: 'Pertanyaan, ide kemitraan, atau sekadar ingin menyapa? Pilih saluran yang paling sesuai untuk Anda — kami biasanya membalas dalam 24 jam.',
     contactEmailTitle: 'Email', contactEmailTag: 'Terbaik untuk pertanyaan proyek',
