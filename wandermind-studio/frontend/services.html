@@ -1,0 +1,303 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title data-i18n="servicesPageTitle">Explore | WanderMind Studio</title>
+    <meta name="description" content="Explore WanderMind Studio's six AI agents and curated destinations.">
+    <link rel="stylesheet" href="assets/css/style-starter.css">
+    <link href="//fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+      /* Shared header CSS — same as index.html */
+      .navbar-brand { font-weight: 700; letter-spacing: .02em; white-space: nowrap; }
+      .navbar-brand small { font-size: 11px; opacity: .55; font-weight: 400; margin-left: 8px; letter-spacing: .15em; text-transform: uppercase; }
+      @media (min-width: 992px) {
+        .navbar .navbar-nav { display: flex !important; align-items: center !important; }
+        .navbar .navbar-nav .nav-item { display: flex !important; align-items: center !important; }
+        .navbar .navbar-nav .nav-link { white-space: nowrap; padding: 8px 14px !important; line-height: 1.2 !important; }
+        .navbar .nav-link.phone { white-space: nowrap; display: inline-flex; align-items: center; gap: 6px; text-transform: none !important; }
+        .navbar .nav-link.phone .fa { font-size: 14px; }
+        .navbar .ml-3, .navbar .ml-4 { margin-left: .55rem !important; }
+        .navbar .search-search.nav-link { display: inline-flex !important; align-items: center; justify-content: center; height: 36px; padding: 0 10px !important; }
+        .navbar .search-search.nav-link .fa { margin-right: 0 !important; }
+        .navbar .mobile-position { position: static !important; top: auto !important; right: auto !important; margin-left: .55rem; display: inline-flex; align-items: center; }
+        .navbar .theme-selector { display: inline-flex !important; align-items: center; justify-content: center; width: 36px !important; height: 36px !important; margin: 0 !important; }
+        .nav-link.ai-tool-link { color: #ffd180 !important; font-weight: 700; }
+        .nav-link.ai-tool-link:hover { color: #fff !important; }
+      }
+      .lang-picker { display: inline-flex; align-items: center; gap: 6px; padding: 0 10px; height: 36px; border-radius: 18px; background: rgba(255,255,255,.08); border: 1px solid rgba(255,255,255,.15); cursor: pointer; transition: .2s; box-sizing: border-box; line-height: 1; }
+      .lang-picker:hover { background: rgba(255,255,255,.18); }
+      .lang-picker .fa { font-size: 12px; opacity: .7; }
+      .lang-picker select { background: transparent; border: none; color: inherit; font-size: 13px; font-family: inherit; outline: none; cursor: pointer; padding: 0; line-height: 1; height: 34px; -webkit-appearance: none; -moz-appearance: none; appearance: none; }
+      .lang-picker select option { color: #333; background: #fff; }
+      body.dark .lang-picker select option { color: #f0f0f0; background: #222; }
+      .footer-contact-line { display: flex; align-items: center; gap: 8px; padding: 4px 0; flex-wrap: wrap; }
+      .footer-contact-line .fa { width: 18px; text-align: center; flex-shrink: 0; }
+      .footer-tag { font-size: 11px; color: rgba(255,255,255,.55); margin-left: 4px; }
+      @media (max-width: 991px) { .lang-picker { padding: 0 8px; height: 34px; } }
+
+      /* Services destination card images — uniform sizing */
+      .w3l-services-two .img-box img {
+        width: 100% !important;
+        height: 260px !important;
+        object-fit: cover;
+        object-position: center;
+        border-radius: 8px;
+        display: block;
+        transition: transform .5s;
+      }
+      .w3l-services-two .img-box { margin-bottom: 30px; overflow: hidden; }
+      .w3l-services-two .img-box:hover img { transform: scale(1.05); }
+      .w3l-services-two .img-box h5 { margin-top: 12px !important; }
+      /* Footer gallery (same as index.html) */
+      .footer-29 .footer-3 .properties .images-col {
+        display: grid !important;
+        grid-template-columns: repeat(3, 1fr) !important;
+        gap: 8px !important;
+      }
+      .footer-29 .footer-3 .properties .images-col a img {
+        width: 100% !important; height: 80px !important;
+        object-fit: cover; display: block !important;
+        border-radius: 6px;
+      }
+    </style>
+  </head>
+  <body id="home">
+
+<!-- Header (same as index) -->
+<section class=" w3l-header-4 header-sticky">
+	<header id="site-header" class="fixed-top">
+		<div class="container">
+			<nav class="navbar navbar-expand-lg navbar-dark stroke">
+				<h1><a class="navbar-brand" href="index.html"><span class="fa fa-compass"></span> WanderMind <small>STUDIO</small></a></h1>
+				<button class="navbar-toggler collapsed bg-gradient" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo02">
+					<span class="navbar-toggler-icon fa icon-expand fa-bars"></span>
+					<span class="navbar-toggler-icon fa icon-close fa-times"></span>
+				</button>
+				<div class="collapse navbar-collapse" id="navbarTogglerDemo02">
+					<ul class="navbar-nav ml-lg-5">
+						<li class="nav-item"><a class="nav-link" href="index.html" data-i18n="navHome">Home</a></li>
+						<li class="nav-item"><a class="nav-link" href="about.html" data-i18n="navAbout">About</a></li>
+						<li class="nav-item active"><a class="nav-link" href="services.html" data-i18n="navExplore">Explore</a></li>
+						<li class="nav-item"><a class="nav-link ai-tool-link" href="ai-tool.html" data-i18n="navAITool">AI Tool</a></li>
+						<li class="nav-item"><a class="nav-link" href="contact.html" data-i18n="navContact">Contact</a></li>
+					</ul>
+					<ul class="navbar-nav ml-auto">
+						<li class="nav-item ml-3"><a class="nav-link phone" href="mailto:lfwu22@126.com"><span class="fa fa-envelope"></span> lfwu22@126.com</a></li>
+						<li class="nav-item ml-3">
+							<div class="lang-picker">
+								<span class="fa fa-globe"></span>
+								<select id="langPicker">
+									<option value="en">English</option>
+									<option value="zh">中文</option>
+									<option value="ja">日本語</option>
+									<option value="ko">한국어</option>
+									<option value="id">Indonesia</option>
+								</select>
+							</div>
+						</li>
+						<li class="nav-item ml-3"><a href="#search" class="search-search nav-link"><span class="fa fa-search mr-2"></span></a></li>
+						<div class="search-right"><div id="search" class="pop-overlay"><div class="popup"><form action="#" method="GET" class="d-flex"><input type="search" placeholder="Search.." name="search" required autofocus><button type="submit" data-i18n="searchBtn">Search</button></form><a class="close" href="#close">&times;</a></div></div></div>
+					</ul>
+				</div>
+				<div class="mobile-position"><label class="theme-selector"><input type="checkbox" id="themeToggle"><i class="gg-sun"></i><i class="gg-moon"></i></label></div>
+			</nav>
+		</div>
+	</header>
+</section>
+<script src="assets/js/jquery-3.3.1.min.js"></script>
+<script src="assets/js/bootstrap.min.js"></script>
+<script>
+	$(window).on("scroll", function () { var s = $(window).scrollTop(); if (s >= 80) $("#site-header").addClass("nav-fixed"); else $("#site-header").removeClass("nav-fixed"); });
+	$(".navbar-toggler").on("click", function () { $("header").toggleClass("active"); });
+	$('.navbar-toggler').click(function () { $('body').toggleClass('noscroll'); });
+	const bodyElement = document.querySelector('body');
+	const themeToggle = document.querySelector('#themeToggle');
+	const darkModeMql = window.matchMedia('(prefers-color-scheme: dark)');
+	const currentTheme = localStorage.getItem('theme') ? localStorage.getItem('theme') : (darkModeMql.matches ? 'dark' : '');
+	if (currentTheme) { bodyElement.classList.add(currentTheme); if (currentTheme === 'dark') themeToggle.checked = true; }
+	themeToggle.addEventListener('change', e => { if (e.target.checked) { bodyElement.classList.add('dark'); localStorage.setItem('theme', 'dark'); } else { bodyElement.classList.remove('dark'); localStorage.setItem('theme', ''); } });
+</script>
+
+<!-- Breadcrumb banner -->
+<section class="w3l-inner-banner-main">
+	<div class="about-inner services">
+		<div class="container">
+			<div class="breadcrumbs-sub">
+				<ul class="breadcrumbs-custom-path">
+					<li class="right-side propClone"><a href="index.html"><span data-i18n="navHome">Home</span> <span class="fa fa-angle-right"></span></a></li>
+					<li class="active" data-i18n="navExplore">Explore</li>
+				</ul>
+			</div>
+		</div>
+	</div>
+</section>
+
+<!-- 6 SERVICES (our features) -->
+<section class="w3l-recent-work-hobbies" id="services">
+	<div class="recent-work">
+		<div class="container">
+			<div class="main-titles-head">
+				<h3 class="header-name" data-i18n="srvHeaderTitle">What we do for you</h3>
+				<p class="tiltle-para" data-i18n="srvHeaderSub">Six AI-powered services, all in one conversation. From the moment you say "I want to go" to the moment you land back home.</p>
+			</div>
+			<div class="row service-service mt-4">
+				<div class="col-lg-4 col-md-6 propClone about-line-top">
+					<div class="color-white">
+						<div class="icon-back"><span class="fa fa-cogs"></span></div>
+						<h5><a href="ai-tool.html" data-i18n="srv1Title">AI Trip Planning</a></h5>
+						<p class="para" data-i18n="srv1Desc">A single conversation builds your complete itinerary — day-by-day routing, pacing, and timing tuned to your style.</p>
+					</div>
+				</div>
+				<div class="col-lg-4 col-md-6 propClone about-line-top">
+					<div class="color-white">
+						<div class="icon-back"><span class="fa fa-building"></span></div>
+						<h5><a href="ai-tool.html#hotels" data-i18n="srv2Title">Hotel Comparison</a></h5>
+						<p class="para" data-i18n="srv2Desc">Real-time pricing across Booking, Expedia, and direct rates — filtered by neighbourhood character, not just star rating.</p>
+					</div>
+				</div>
+				<div class="col-lg-4 col-md-6 propClone about-line-top">
+					<div class="color-white">
+						<div class="icon-back"><span class="fa fa-plane"></span></div>
+						<h5><a href="ai-tool.html#flights" data-i18n="srv3Title">Flight Comparison</a></h5>
+						<p class="para" data-i18n="srv3Desc">Live fares with stop counts, total duration, and carbon estimates. Optimal departure dates surfaced automatically.</p>
+					</div>
+				</div>
+				<div class="col-lg-4 col-md-6 propClone about-line-top">
+					<div class="color-white">
+						<div class="icon-back"><span class="fa fa-globe"></span></div>
+						<h5><a href="ai-tool.html" data-i18n="srv4Title">Live Web Search</a></h5>
+						<p class="para" data-i18n="srv4Desc">Visa rules, weather, currency, local events — pulled in real time so every answer reflects today's reality.</p>
+					</div>
+				</div>
+				<div class="col-lg-4 col-md-6 propClone about-line-top">
+					<div class="color-white">
+						<div class="icon-back"><span class="fa fa-list-alt"></span></div>
+						<h5><a href="ai-tool.html#itinerary" data-i18n="srv5Title">Itinerary Builder</a></h5>
+						<p class="para" data-i18n="srv5Desc">A clean, day-by-day timeline you can share with travel companions, edit on the fly, and export as a PDF.</p>
+					</div>
+				</div>
+				<div class="col-lg-4 col-md-6 propClone about-line-top">
+					<div class="color-white">
+						<div class="icon-back"><span class="fa fa-heart-o"></span></div>
+						<h5><a href="ai-tool.html#prefs" data-i18n="srv6Title">Travel Preferences</a></h5>
+						<p class="para" data-i18n="srv6Desc">Tell us once: budget, pace, dietary needs, family vs solo. Every future trip is built around what matters to you.</p>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</section>
+
+<!-- DESTINATIONS GRID -->
+<section class="w3l-services-two" id="destinations">
+	<div class="service-single-page">
+		<div class="container">
+			<div class="main-titles-head">
+				<h3 class="header-name" data-i18n="srvDestTitle">Destinations our agents know deeply</h3>
+				<p class="tiltle-para" data-i18n="srvDestSub">Our AI has hand-curated intelligence for these four destinations — and can build a complete guide for any city you name.</p>
+			</div>
+			<div class="gallery-image row mt-4">
+				<div class="img-box col-lg-4 col-md-6">
+					<a href="ai-tool.html?dest=bali"><img src="assets/images/bali-2.jpg" alt="Bali" class="img-responsive"></a>
+					<h5 class="mt-2"><a href="ai-tool.html?dest=bali" data-i18n="srvDestBali">Bali · Indonesia</a></h5>
+					<p class="para" data-i18n="srvDestBaliDesc">9 stay areas · 7 day itineraries · Local driver concierge</p>
+				</div>
+				<div class="img-box col-lg-4 col-md-6">
+					<a href="ai-tool.html?dest=kyoto"><img src="assets/images/kyoto-1.jpg" alt="Kyoto" class="img-responsive"></a>
+					<h5 class="mt-2"><a href="ai-tool.html?dest=kyoto" data-i18n="srvDestKyoto">Kyoto · Japan</a></h5>
+					<p class="para" data-i18n="srvDestKyotoDesc">5 stay areas · Cherry-blossom routing · Tea ceremony pickups</p>
+				</div>
+				<div class="img-box col-lg-4 col-md-6">
+					<a href="ai-tool.html?dest=paris"><img src="assets/images/paris-1.jpg" alt="Paris" class="img-responsive"></a>
+					<h5 class="mt-2"><a href="ai-tool.html?dest=paris" data-i18n="srvDestParis">Paris · France</a></h5>
+					<p class="para" data-i18n="srvDestParisDesc">6 stay areas · Patisserie crawls · Museum-pass optimisation</p>
+				</div>
+				<div class="img-box col-lg-4 col-md-6">
+					<a href="ai-tool.html?dest=santorini"><img src="assets/images/santorini-1.jpg" alt="Santorini" class="img-responsive"></a>
+					<h5 class="mt-2"><a href="ai-tool.html?dest=santorini" data-i18n="srvDestSant">Santorini · Greece</a></h5>
+					<p class="para" data-i18n="srvDestSantDesc">5 stay areas · Sunset spot timing · Caldera vineyard tours</p>
+				</div>
+				<div class="img-box col-lg-4 col-md-6">
+					<a href="ai-tool.html"><img src="assets/images/world-1.jpg" alt="Any City" class="img-responsive"></a>
+					<h5 class="mt-2"><a href="ai-tool.html" data-i18n="srvDestAny">Any City Worldwide</a></h5>
+					<p class="para" data-i18n="srvDestAnyDesc">Type Tokyo, Marrakech, Reykjavik — AI builds your full guide instantly</p>
+				</div>
+				<div class="img-box col-lg-4 col-md-6">
+					<a href="ai-tool.html"><img src="assets/images/santorini-2.jpg" alt="More" class="img-responsive"></a>
+					<h5 class="mt-2"><a href="ai-tool.html" data-i18n="srvDestMore">More coming soon</a></h5>
+					<p class="para" data-i18n="srvDestMoreDesc">Iceland, Morocco, Vietnam, Mexico — deep curation rolling out monthly</p>
+				</div>
+			</div>
+		</div>
+	</div>
+</section>
+
+<!-- FOOTER -->
+<section class="w3l-footer-29-main">
+	<div class="footer-29 py-5">
+		<div class="container">
+			<div class="grid-col-4 footer-top-29">
+				<div class="footer-list-29 footer-1">
+					<h2 class="footer-title-29" data-i18n="footContactTitle">Contact Us</h2>
+					<ul>
+						<li class="footer-contact-line"><span class="fa fa-envelope"></span><a href="mailto:lfwu22@126.com">lfwu22@126.com</a></li>
+						<li class="footer-contact-line"><span class="fa fa-weixin"></span><span>+86 130 7828 6932 <span class="footer-tag" data-i18n="footWeChat">(WeChat)</span></span></li>
+						<li class="footer-contact-line"><span class="fa fa-whatsapp"></span><a href="https://wa.me/628980532230" target="_blank">+62 898-0532-230</a> <span class="footer-tag" data-i18n="footWaTag">(Bali Concierge)</span></li>
+						<li class="footer-contact-line"><span class="fa fa-github"></span><a href="https://github.com/lingfengai731/Agentstrip" target="_blank">github.com/lingfengai731/Agentstrip</a></li>
+					</ul>
+					<div class="main-social-footer-29">
+						<a href="https://github.com/lingfengai731/Agentstrip" class="facebook" target="_blank"><span class="fa fa-github"></span></a>
+						<a href="mailto:lfwu22@126.com" class="twitter"><span class="fa fa-envelope"></span></a>
+						<a href="https://wa.me/628980532230" class="instagram" target="_blank"><span class="fa fa-whatsapp"></span></a>
+					</div>
+				</div>
+				<div class="footer-list-29 footer-2">
+					<ul>
+						<h6 class="footer-title-29" data-i18n="footFeaturesTitle">Features</h6>
+						<li><a href="ai-tool.html" data-i18n="footFeat1">AI Planning</a></li>
+						<li><a href="ai-tool.html#hotels" data-i18n="footFeat2">Hotels Compare</a></li>
+						<li><a href="ai-tool.html#flights" data-i18n="footFeat3">Flights Compare</a></li>
+						<li><a href="ai-tool.html#itinerary" data-i18n="footFeat4">Itinerary Builder</a></li>
+						<li><a href="ai-tool.html#prefs" data-i18n="footFeat5">Travel Preferences</a></li>
+					</ul>
+				</div>
+				<div class="footer-list-29 footer-3">
+					<div class="properties">
+						<h6 class="footer-title-29" data-i18n="footGalleryTitle">Gallery</h6>
+						<div class="images-col">
+							<a href="services.html"><img src="assets/images/gallery-1.jpg" class="img-responsive" alt=""></a>
+							<a href="services.html"><img src="assets/images/gallery-2.jpg" class="img-responsive" alt=""></a>
+							<a href="services.html"><img src="assets/images/gallery-3.jpg" class="img-responsive" alt=""></a>
+							<a href="services.html"><img src="assets/images/gallery-4.jpg" class="img-responsive" alt=""></a>
+							<a href="services.html"><img src="assets/images/gallery-5.jpg" class="img-responsive" alt=""></a>
+							<a href="services.html"><img src="assets/images/gallery-6.jpg" class="img-responsive" alt=""></a>
+						</div>
+					</div>
+				</div>
+				<div class="footer-list-29 footer-4">
+					<ul>
+						<h6 class="footer-title-29" data-i18n="footDestTitle">Top Destinations</h6>
+						<li><a href="ai-tool.html?dest=bali" data-i18n="footDest1">Bali</a></li>
+						<li><a href="ai-tool.html?dest=kyoto" data-i18n="footDest2">Kyoto</a></li>
+						<li><a href="ai-tool.html?dest=paris" data-i18n="footDest3">Paris</a></li>
+						<li><a href="ai-tool.html?dest=santorini" data-i18n="footDest4">Santorini</a></li>
+						<li><a href="ai-tool.html" data-i18n="footDest5">Any City</a></li>
+					</ul>
+				</div>
+			</div>
+			<div class="bottom-copies text-center">
+				<p class="copy-footer-29">© 2026 <strong>WanderMind Studio</strong>. <span data-i18n="footCopy">All rights reserved.</span></p>
+			</div>
+		</div>
+	</div>
+</section>
+
+<button onclick="topFunction()" id="movetop" title="Go to top"><span class="fa fa-chevron-up"></span></button>
+<script>
+	window.onscroll = function () { if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) { document.getElementById("movetop").style.display = "block"; } else { document.getElementById("movetop").style.display = "none"; } };
+	function topFunction() { document.body.scrollTop = 0; document.documentElement.scrollTop = 0; }
+</script>
+<script src="assets/js/i18n.js"></script>
+</body>
+</html>

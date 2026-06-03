@@ -1,0 +1,378 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title data-i18n="aboutPageTitle">About | WanderMind Studio</title>
+    <meta name="description" content="About WanderMind Studio — six AI agents working together for your perfect trip.">
+    <link rel="stylesheet" href="assets/css/style-starter.css">
+    <link href="//fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+    <link href="//fonts.googleapis.com/css2?family=Roboto:wght@300;400&display=swap" rel="stylesheet">
+    <style>
+      /* Brand override + alignment fixes (shared with index.html) */
+      .navbar-brand { font-weight: 700; letter-spacing: .02em; white-space: nowrap; }
+      .navbar-brand small { font-size: 11px; opacity: .55; font-weight: 400; margin-left: 8px; letter-spacing: .15em; text-transform: uppercase; }
+      @media (min-width: 992px) {
+        .navbar .navbar-nav { display: flex !important; align-items: center !important; }
+        .navbar .navbar-nav .nav-item { display: flex !important; align-items: center !important; }
+        .navbar .navbar-nav .nav-link { white-space: nowrap; padding: 8px 14px !important; line-height: 1.2 !important; }
+        .navbar .nav-link.phone { white-space: nowrap; display: inline-flex; align-items: center; gap: 6px; text-transform: none !important; }
+        .navbar .nav-link.phone .fa { font-size: 14px; }
+        .navbar .ml-3, .navbar .ml-4 { margin-left: .55rem !important; }
+        .navbar .search-search.nav-link { display: inline-flex !important; align-items: center; justify-content: center; height: 36px; padding: 0 10px !important; }
+        .navbar .search-search.nav-link .fa { margin-right: 0 !important; }
+        .navbar .mobile-position { position: static !important; top: auto !important; right: auto !important; margin-left: .55rem; display: inline-flex; align-items: center; }
+        .navbar .theme-selector { display: inline-flex !important; align-items: center; justify-content: center; width: 36px !important; height: 36px !important; margin: 0 !important; }
+        .nav-link.ai-tool-link { color: #ffd180 !important; font-weight: 700; }
+        .nav-link.ai-tool-link:hover { color: #fff !important; }
+      }
+      .lang-picker { display: inline-flex; align-items: center; gap: 6px; padding: 0 10px; height: 36px; border-radius: 18px; background: rgba(255,255,255,.08); border: 1px solid rgba(255,255,255,.15); cursor: pointer; transition: .2s; box-sizing: border-box; line-height: 1; }
+      .lang-picker:hover { background: rgba(255,255,255,.18); }
+      .lang-picker .fa { font-size: 12px; opacity: .7; }
+      .lang-picker select { background: transparent; border: none; color: inherit; font-size: 13px; font-family: inherit; outline: none; cursor: pointer; padding: 0; line-height: 1; height: 34px; -webkit-appearance: none; -moz-appearance: none; appearance: none; }
+      .lang-picker select option { color: #333; background: #fff; }
+      body.dark .lang-picker select option { color: #f0f0f0; background: #222; }
+      .footer-contact-line { display: flex; align-items: center; gap: 8px; padding: 4px 0; flex-wrap: wrap; }
+      .footer-contact-line .fa { width: 18px; text-align: center; flex-shrink: 0; }
+      .footer-tag { font-size: 11px; color: rgba(255,255,255,.55); margin-left: 4px; }
+      @media (max-width: 991px) { .lang-picker { padding: 0 8px; height: 34px; } }
+
+      /* —— About-page specific —— */
+      .agent-card {
+        background: #fff;
+        border-radius: 12px;
+        padding: 30px 22px;
+        text-align: center;
+        box-shadow: 0 6px 24px rgba(0,0,0,.06);
+        height: 100%;
+        transition: transform .3s, box-shadow .3s;
+        border-top: 4px solid #fcbf1e;
+      }
+      .agent-card:hover { transform: translateY(-6px); box-shadow: 0 14px 36px rgba(0,0,0,.1); }
+      body.dark .agent-card { background: rgba(255,255,255,.05); border-top-color: #fcbf1e; }
+      .agent-icon-circle {
+        width: 78px; height: 78px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, #fcbf1e, #f59e0b);
+        color: #fff;
+        display: inline-flex;
+        align-items: center; justify-content: center;
+        font-size: 34px;
+        margin-bottom: 18px;
+      }
+      .agent-card h4 { font-size: 18px; font-weight: 700; margin-bottom: 6px; }
+      .agent-card .role { font-size: 12px; color: #888; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 12px; }
+      .agent-card p.desc { font-size: 14px; color: #555; line-height: 1.65; }
+      body.dark .agent-card p.desc { color: rgba(255,255,255,.65); }
+      .agents-row { margin-top: 30px; }
+      .agents-row > [class*="col-"] { margin-bottom: 24px; }
+
+      /* —— Local partner (Dicky) card —— */
+      .partner-card {
+        background: #fff;
+        border-radius: 14px;
+        padding: 32px;
+        box-shadow: 0 6px 24px rgba(0,0,0,.06);
+        border-left: 6px solid #0e7c6b;
+      }
+      body.dark .partner-card { background: rgba(255,255,255,.05); }
+      .partner-card .partner-eyebrow { font-size: 12px; color: #0e7c6b; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 8px; }
+      .partner-card .partner-name { font-size: 24px; font-weight: 700; margin-bottom: 6px; }
+      .partner-card .partner-role { font-size: 14px; color: #888; margin-bottom: 16px; }
+      .partner-contacts { display: flex; flex-wrap: wrap; gap: 14px; margin-top: 16px; }
+      .partner-contact {
+        display: inline-flex; align-items: center; gap: 8px;
+        padding: 10px 16px; border-radius: 22px;
+        background: #f5f5f5; color: #333;
+        font-size: 13px; text-decoration: none;
+        transition: .2s;
+      }
+      .partner-contact:hover { background: #0e7c6b; color: #fff; text-decoration: none; }
+      body.dark .partner-contact { background: rgba(255,255,255,.08); color: #f5f5f5; }
+    </style>
+  </head>
+  <body id="home">
+
+<!-- ═══════ HEADER (identical to index.html) ═══════ -->
+<section class=" w3l-header-4 header-sticky">
+	<header id="site-header" class="fixed-top">
+		<div class="container">
+			<nav class="navbar navbar-expand-lg navbar-dark stroke">
+				<h1><a class="navbar-brand" href="index.html">
+					<span class="fa fa-compass"></span> WanderMind <small>STUDIO</small>
+				</a></h1>
+				<button class="navbar-toggler collapsed bg-gradient" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo02" aria-controls="navbarTogglerDemo02" aria-expanded="false" aria-label="Toggle navigation">
+					<span class="navbar-toggler-icon fa icon-expand fa-bars"></span>
+					<span class="navbar-toggler-icon fa icon-close fa-times"></span>
+				</button>
+				<div class="collapse navbar-collapse" id="navbarTogglerDemo02">
+					<ul class="navbar-nav ml-lg-5">
+						<li class="nav-item"><a class="nav-link" href="index.html" data-i18n="navHome">Home</a></li>
+						<li class="nav-item active"><a class="nav-link" href="about.html" data-i18n="navAbout">About <span class="sr-only">(current)</span></a></li>
+						<li class="nav-item"><a class="nav-link" href="services.html" data-i18n="navExplore">Explore</a></li>
+						<li class="nav-item"><a class="nav-link ai-tool-link" href="ai-tool.html" data-i18n="navAITool">AI Tool</a></li>
+						<li class="nav-item"><a class="nav-link" href="contact.html" data-i18n="navContact">Contact</a></li>
+					</ul>
+					<ul class="navbar-nav ml-auto">
+						<li class="nav-item ml-3"><a class="nav-link phone" href="mailto:lfwu22@126.com"><span class="fa fa-envelope"></span> lfwu22@126.com</a></li>
+						<li class="nav-item ml-3">
+							<div class="lang-picker">
+								<span class="fa fa-globe"></span>
+								<select id="langPicker">
+									<option value="en">English</option>
+									<option value="zh">中文</option>
+									<option value="ja">日本語</option>
+									<option value="ko">한국어</option>
+									<option value="id">Indonesia</option>
+								</select>
+							</div>
+						</li>
+						<li class="nav-item ml-3" title="Search"><a href="#search" class="search-search nav-link"><span class="fa fa-search mr-2" aria-hidden="true"></span></a></li>
+						<div class="search-right">
+							<div id="search" class="pop-overlay">
+								<div class="popup">
+									<form action="#" method="GET" class="d-flex">
+										<input type="search" placeholder="Search.." name="search" required autofocus>
+										<button type="submit" data-i18n="searchBtn">Search</button>
+									</form>
+									<a class="close" href="#close">&times;</a>
+								</div>
+							</div>
+						</div>
+					</ul>
+				</div>
+				<div class="mobile-position">
+					<label class="theme-selector">
+						<input type="checkbox" id="themeToggle">
+						<i class="gg-sun"></i>
+						<i class="gg-moon"></i>
+					</label>
+				</div>
+			</nav>
+		</div>
+	</header>
+</section>
+<script src="assets/js/jquery-3.3.1.min.js"></script>
+<script src="assets/js/bootstrap.min.js"></script>
+<script>
+	$(window).on("scroll", function () { var scroll = $(window).scrollTop(); if (scroll >= 80) { $("#site-header").addClass("nav-fixed"); } else { $("#site-header").removeClass("nav-fixed"); } });
+	$(".navbar-toggler").on("click", function () { $("header").toggleClass("active"); });
+	$(document).on("ready", function () { if ($(window).width() > 991) { $("header").removeClass("active"); } $(window).on("resize", function () { if ($(window).width() > 991) { $("header").removeClass("active"); } }); });
+	$('.navbar-toggler').click(function () { $('body').toggleClass('noscroll'); });
+</script>
+<script>
+	const bodyElement = document.querySelector('body');
+	const themeToggle = document.querySelector('#themeToggle');
+	const darkModeMql = window.matchMedia('(prefers-color-scheme: dark)');
+	const currentTheme = localStorage.getItem('theme') ? localStorage.getItem('theme') : userPreference(darkModeMql);
+	if (currentTheme) { bodyElement.classList.add(currentTheme); if (currentTheme === 'dark') { themeToggle.checked = true; } }
+	function userPreference(e) { if (e.matches) { bodyElement.classList.add("dark"); return "dark" } else { bodyElement.classList.remove("dark"); return "" } }
+	darkModeMql.addListener(userPreference);
+	function themeSwitcher(e) { if (e.target.checked) { bodyElement.classList.add('dark'); localStorage.setItem('theme', 'dark'); } else { bodyElement.classList.remove('dark'); localStorage.setItem('theme', ''); } }
+	themeToggle.addEventListener('change', themeSwitcher);
+</script>
+
+<!-- ═══════ BREADCRUMB BANNER ═══════ -->
+<section class="w3l-inner-banner-main">
+	<div class="about-inner services">
+		<div class="container">
+			<div class="breadcrumbs-sub">
+				<ul class="breadcrumbs-custom-path">
+					<li class="right-side propClone"><a href="index.html"><span data-i18n="navHome">Home</span> <span class="fa fa-angle-right" aria-hidden="true"></span></a></li>
+					<li class="active" data-i18n="navAbout">About</li>
+				</ul>
+			</div>
+		</div>
+	</div>
+</section>
+
+<!-- ═══════ STORY ═══════ -->
+<section class="w3l-content-with-photo-4" id="about">
+	<div class="content-with-photo4-block">
+		<div class="container">
+			<div class="my-bio">
+				<img src="assets/images/studio-feature.jpg" alt="WanderMind Studio" class="img-responsive about-me">
+				<h3 class="mt-lg-4 mt-3" data-i18n="aboutStoryTitle">Travel, reimagined — when six minds plan as one.</h3>
+				<p class="para mb-3" data-i18n="aboutStoryP1">WanderMind Studio was born from a simple frustration: planning a great trip still takes hours of switching between blog posts, booking sites, weather apps, and currency converters — only to end up with a generic itinerary that doesn't really fit you.</p>
+				<p class="para mb-lg-3" data-i18n="aboutStoryP2">We built six AI agents — a trip planner, an accommodation advisor, a food explorer, an activity curator, a budget manager, and a live web search — and taught them to collaborate. The result is a single conversation where every detail of your journey is considered, refined, and personalised. From Bali to Kyoto to Paris to Santorini, or any city you type in, your trip is built in minutes, not weekends.</p>
+			</div>
+		</div>
+	</div>
+</section>
+
+<!-- ═══════ STATS ═══════ -->
+<section class="w3l-stats">
+	<div class="main-w3">
+		<div class="container">
+			<div class="right-side">
+				<h3 class="title-big" data-i18n="aboutStatsTitle">Six AI agents. Five languages. Every city on Earth.</h3>
+				<p class="mt-4 para" data-i18n="aboutStatsDesc">We are a small team focused on one big idea: travel planning should feel like talking to a knowledgeable friend, not filling out forms. Our agents are always on duty, drawing from live weather data, real-time hotel and flight prices, and curated local intelligence from every corner of the globe.</p>
+			</div>
+		</div>
+	</div>
+</section>
+
+<!-- ═══════ SIX AGENTS TEAM ═══════ -->
+<section class="w3l-team-main-6" id="team">
+	<div class="team-content-page">
+		<div class="container">
+			<div class="main-titles-head">
+				<h3 class="header-name" data-i18n="aboutAgentsTitle">Meet the Six AI Agents</h3>
+				<p class="tiltle-para" data-i18n="aboutAgentsSub">Each agent has a single area of expertise — and together, they make sure no detail of your journey goes overlooked.</p>
+			</div>
+			<div class="row agents-row text-center">
+				<div class="col-lg-4 col-md-6">
+					<div class="agent-card">
+						<div class="agent-icon-circle"><span class="fa fa-map-signs"></span></div>
+						<h4 data-i18n="agent1Name">Trip Planner</h4>
+						<div class="role" data-i18n="agent1Role">Itinerary architect</div>
+						<p class="desc" data-i18n="agent1Desc">Designs day-by-day routes, optimises travel time between sights, and adapts pacing to your energy and interests.</p>
+					</div>
+				</div>
+				<div class="col-lg-4 col-md-6">
+					<div class="agent-card">
+						<div class="agent-icon-circle"><span class="fa fa-building"></span></div>
+						<h4 data-i18n="agent2Name">Hotel Advisor</h4>
+						<div class="role" data-i18n="agent2Role">Where to stay</div>
+						<p class="desc" data-i18n="agent2Desc">Compares real-time hotel prices, suggests stays by neighbourhood character, and balances budget against location.</p>
+					</div>
+				</div>
+				<div class="col-lg-4 col-md-6">
+					<div class="agent-card">
+						<div class="agent-icon-circle"><span class="fa fa-cutlery"></span></div>
+						<h4 data-i18n="agent3Name">Food Explorer</h4>
+						<div class="role" data-i18n="agent3Role">Local cuisine guide</div>
+						<p class="desc" data-i18n="agent3Desc">Surfaces hidden local eateries, signature dishes, and dietary-aware options — beyond the tourist menus.</p>
+					</div>
+				</div>
+				<div class="col-lg-4 col-md-6">
+					<div class="agent-card">
+						<div class="agent-icon-circle"><span class="fa fa-compass"></span></div>
+						<h4 data-i18n="agent4Name">Activity Curator</h4>
+						<div class="role" data-i18n="agent4Role">Experiences specialist</div>
+						<p class="desc" data-i18n="agent4Desc">Recommends experiences matched to your style — from sunrise hikes to wine tastings to traditional ceremonies.</p>
+					</div>
+				</div>
+				<div class="col-lg-4 col-md-6">
+					<div class="agent-card">
+						<div class="agent-icon-circle"><span class="fa fa-line-chart"></span></div>
+						<h4 data-i18n="agent5Name">Budget Manager</h4>
+						<div class="role" data-i18n="agent5Role">Cost optimisation</div>
+						<p class="desc" data-i18n="agent5Desc">Estimates daily spend, tracks live exchange rates, and finds where to save without compromising the experience.</p>
+					</div>
+				</div>
+				<div class="col-lg-4 col-md-6">
+					<div class="agent-card">
+						<div class="agent-icon-circle"><span class="fa fa-globe"></span></div>
+						<h4 data-i18n="agent6Name">Live Web Search</h4>
+						<div class="role" data-i18n="agent6Role">Real-time intelligence</div>
+						<p class="desc" data-i18n="agent6Desc">Pulls current visa policies, weather forecasts, event schedules, and local news to keep every answer up to date.</p>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</section>
+
+<!-- ═══════ LOCAL PARTNER (Dicky in Bali) ═══════ -->
+<section class="w3l-recent-work">
+	<div class="jst-two-col">
+		<div class="container">
+			<div class="main-titles-head">
+				<h3 class="header-name" data-i18n="partnerTitle">Trusted local partners</h3>
+				<p class="tiltle-para" data-i18n="partnerSub">Our AI is always on, but sometimes a human friend on the ground makes all the difference. We work with vetted local guides in our key destinations.</p>
+			</div>
+			<div class="row mt-4">
+				<div class="col-lg-12">
+					<div class="partner-card">
+						<div class="partner-eyebrow" data-i18n="partnerDickyEyebrow">Bali · Indonesia</div>
+						<div class="partner-name" data-i18n="partnerDickyName">Dicky — English-Speaking Driver &amp; Guide</div>
+						<div class="partner-role" data-i18n="partnerDickyRole">Airport transfers, full-day private tours, custom routes across the island.</div>
+						<p class="para" data-i18n="partnerDickyDesc">Dicky has been our trusted partner in Bali for several years — a local driver fluent in English, with deep knowledge of the island's roads, traditions, and hidden corners. Reliable, friendly, and fairly priced. When our AI mentions Dicky in Bali itineraries, this is who you reach out to.</p>
+						<div class="partner-contacts">
+							<a href="https://wa.me/628980532230" target="_blank" class="partner-contact">
+								<span class="fa fa-whatsapp"></span> WhatsApp: +62 898-0532-230
+							</a>
+							<div class="partner-contact">
+								<span class="fa fa-book"></span> <span data-i18n="partnerXHS">Xiaohongshu: Wander with ky</span>
+							</div>
+							<div class="partner-contact">
+								<span class="fa fa-weixin"></span> WeChat: wxid_vkzbrp1iyg6t12
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</section>
+
+<!-- ═══════ FOOTER (identical to index.html) ═══════ -->
+<section class="w3l-footer-29-main">
+	<div class="footer-29 py-5">
+		<div class="container">
+			<div class="grid-col-4 footer-top-29">
+				<div class="footer-list-29 footer-1">
+					<h2 class="footer-title-29" data-i18n="footContactTitle">Contact Us</h2>
+					<ul>
+						<li class="footer-contact-line"><span class="fa fa-envelope"></span><a href="mailto:lfwu22@126.com">lfwu22@126.com</a></li>
+						<li class="footer-contact-line"><span class="fa fa-weixin"></span><span>+86 130 7828 6932 <span class="footer-tag" data-i18n="footWeChat">(WeChat)</span></span></li>
+						<li class="footer-contact-line"><span class="fa fa-whatsapp"></span><a href="https://wa.me/628980532230" target="_blank">+62 898-0532-230</a> <span class="footer-tag" data-i18n="footWaTag">(Bali Concierge)</span></li>
+						<li class="footer-contact-line"><span class="fa fa-github"></span><a href="https://github.com/lingfengai731/Agentstrip" target="_blank">github.com/lingfengai731/Agentstrip</a></li>
+					</ul>
+					<div class="main-social-footer-29">
+						<a href="https://github.com/lingfengai731/Agentstrip" class="facebook" target="_blank"><span class="fa fa-github"></span></a>
+						<a href="mailto:lfwu22@126.com" class="twitter"><span class="fa fa-envelope"></span></a>
+						<a href="https://wa.me/628980532230" class="instagram" target="_blank"><span class="fa fa-whatsapp"></span></a>
+					</div>
+				</div>
+				<div class="footer-list-29 footer-2">
+					<ul>
+						<h6 class="footer-title-29" data-i18n="footFeaturesTitle">Features</h6>
+						<li><a href="ai-tool.html" data-i18n="footFeat1">AI Planning</a></li>
+						<li><a href="ai-tool.html#hotels" data-i18n="footFeat2">Hotels Compare</a></li>
+						<li><a href="ai-tool.html#flights" data-i18n="footFeat3">Flights Compare</a></li>
+						<li><a href="ai-tool.html#itinerary" data-i18n="footFeat4">Itinerary Builder</a></li>
+						<li><a href="ai-tool.html#prefs" data-i18n="footFeat5">Travel Preferences</a></li>
+					</ul>
+				</div>
+				<div class="footer-list-29 footer-3">
+					<div class="properties">
+						<h6 class="footer-title-29" data-i18n="footGalleryTitle">Gallery</h6>
+						<div class="images-col">
+							<a href="services.html"><img src="assets/images/gallery-1.jpg" class="img-responsive" alt=""></a>
+							<a href="services.html"><img src="assets/images/gallery-2.jpg" class="img-responsive" alt=""></a>
+							<a href="services.html"><img src="assets/images/gallery-3.jpg" class="img-responsive" alt=""></a>
+							<a href="services.html"><img src="assets/images/gallery-4.jpg" class="img-responsive" alt=""></a>
+							<a href="services.html"><img src="assets/images/gallery-5.jpg" class="img-responsive" alt=""></a>
+							<a href="services.html"><img src="assets/images/gallery-6.jpg" class="img-responsive" alt=""></a>
+						</div>
+					</div>
+				</div>
+				<div class="footer-list-29 footer-4">
+					<ul>
+						<h6 class="footer-title-29" data-i18n="footDestTitle">Top Destinations</h6>
+						<li><a href="ai-tool.html?dest=bali" data-i18n="footDest1">Bali</a></li>
+						<li><a href="ai-tool.html?dest=kyoto" data-i18n="footDest2">Kyoto</a></li>
+						<li><a href="ai-tool.html?dest=paris" data-i18n="footDest3">Paris</a></li>
+						<li><a href="ai-tool.html?dest=santorini" data-i18n="footDest4">Santorini</a></li>
+						<li><a href="ai-tool.html" data-i18n="footDest5">Any City</a></li>
+					</ul>
+				</div>
+			</div>
+			<div class="bottom-copies text-center">
+				<p class="copy-footer-29">© 2026 <strong>WanderMind Studio</strong>. <span data-i18n="footCopy">All rights reserved.</span></p>
+			</div>
+		</div>
+	</div>
+</section>
+
+<button onclick="topFunction()" id="movetop" title="Go to top"><span class="fa fa-chevron-up"></span></button>
+<script>
+	window.onscroll = function () { scrollFunction() };
+	function scrollFunction() { if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) { document.getElementById("movetop").style.display = "block"; } else { document.getElementById("movetop").style.display = "none"; } }
+	function topFunction() { document.body.scrollTop = 0; document.documentElement.scrollTop = 0; }
+</script>
+<script src="assets/js/i18n.js"></script>
+</body>
+</html>
