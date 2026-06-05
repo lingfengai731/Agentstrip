@@ -2646,7 +2646,7 @@ let _prefs = (() => {
 async function loadPrefs() {
   if (!isLoggedIn()) return;
   try {
-    const r = await fetch(BACKEND_BASE + '/api/user/preferences', { headers: _authHeaders() });
+    const r = await fetch(BACKEND_BASE + '/api/user/preferences', { headers: authHeaders() });
     if (r.ok) {
       _prefs = await r.json() || {};
       localStorage.setItem('wm_studio_prefs', JSON.stringify(_prefs));
@@ -2766,7 +2766,7 @@ async function savePrefs() {
     try {
       await fetch(BACKEND_BASE + '/api/user/preferences', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json', ..._authHeaders() },
+        headers: { 'Content-Type': 'application/json', ...authHeaders() },
         body: JSON.stringify({ preferences: _prefs })
       });
     } catch (_) {}
@@ -2850,7 +2850,7 @@ async function openMultiverseModal() {
       : `Generate 3 budget-tier comparison plans for "${destLabel}" (budget/comfort/luxury). Return ONLY pure JSON in this shape: {"budget":{"tier":"Budget","price":"$500","priceNote":"2p · 7d","hotel":{"name":"","note":""},"transport":{"name":"","note":""},"food":{"name":"","note":""},"highlight":"","suitable":""},"comfort":{...},"luxury":{...}}. All strings in ${currentLang.toUpperCase()}. Use realistic local prices.`;
     const r = await fetch(BACKEND_BASE + '/api/generate', {
       method:'POST',
-      headers: { 'Content-Type':'application/json', ..._authHeaders() },
+      headers: { 'Content-Type':'application/json', ...authHeaders() },
       body: JSON.stringify({ prompt: promptText, max_tokens: 1400 })
     });
     if (r.ok) {
