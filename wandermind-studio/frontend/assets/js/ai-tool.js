@@ -1937,6 +1937,16 @@ renderPanelDest = function() {
    ═══════════════════════════════════════════════════════════════════════ */
 
 Object.assign(TOOL_I18N.en, {
+  // New-trip wizard
+  ntTitle:'New trip', ntIntro:'Fill in the basics — your AI team will plan the rest.',
+  ntDest:'Destination', ntPeople:'People', ntStart:'Depart', ntEnd:'Return',
+  ntBudget:'Total budget', ntBudgetPh:'e.g. 3000', ntStyle:'Style',
+  ntStyleBudget:'Budget · backpack', ntStyleComfort:'Comfort · balanced', ntStyleLuxury:'Luxury · premium',
+  ntSubmit:'Start planning', ntAnonNote:'Sign in afterwards to save this trip across devices.',
+  ntCreatedToast:'New trip: {dest} · {n}d', ntChipDepart:'departure', ntChipDays:'{n} days', ntChipPeople:'{n} people',
+  destBali:'Bali · Indonesia', destKyoto:'Kyoto · Japan', destParis:'Paris · France', destSantorini:'Santorini · Greece', destAny:'Anywhere',
+  errDatesRequired:'Please pick both dates', errEndAfterStart:'Return date must be after depart', errBudgetRequired:'Please enter a budget',
+  logTripCreated2:'Trip created · <strong>{dest}</strong> · {n} days',
   authLogin:'Sign in', authRegister:'Create account', authEmail:'Email', authPassword:'Password', authName:'Your name',
   authLogout:'Sign out', authLoginCta:'Save trips · sync prefs · access on any device.',
   authNeed:'Sign in to save this trip', tripLoginToSave:'Sign in to save your trips across devices.',
@@ -1950,6 +1960,15 @@ Object.assign(TOOL_I18N.en, {
   errLoginFail:'Sign-in failed', errRegisterFail:'Sign-up failed'
 });
 Object.assign(TOOL_I18N.zh, {
+  ntTitle:'新建行程', ntIntro:'填上基础信息 —— 剩下的交给 AI 团队来规划',
+  ntDest:'目的地', ntPeople:'人数', ntStart:'出发日期', ntEnd:'返回日期',
+  ntBudget:'总预算', ntBudgetPh:'例：20000', ntStyle:'旅行风格',
+  ntStyleBudget:'节俭穷游', ntStyleComfort:'舒适平衡', ntStyleLuxury:'奢享高端',
+  ntSubmit:'开始规划行程', ntAnonNote:'之后登录即可跨设备保存此行程',
+  ntCreatedToast:'新行程：{dest} · {n}天', ntChipDepart:'出发', ntChipDays:'{n} 天', ntChipPeople:'{n} 人',
+  destBali:'巴厘岛 · 印尼', destKyoto:'京都 · 日本', destParis:'巴黎 · 法国', destSantorini:'圣托里尼 · 希腊', destAny:'任意目的地',
+  errDatesRequired:'请选择出行日期', errEndAfterStart:'返回日期必须晚于出发日期', errBudgetRequired:'请填写预算金额',
+  logTripCreated2:'新行程已创建 · <strong>{dest}</strong> · {n} 天',
   authLogin:'登录', authRegister:'注册', authEmail:'邮箱', authPassword:'密码', authName:'你的名字',
   authLogout:'退出', authLoginCta:'保存行程 · 同步偏好 · 多设备访问',
   authNeed:'请先登录以保存此行程', tripLoginToSave:'登录后可跨设备保存你的行程',
@@ -1963,6 +1982,15 @@ Object.assign(TOOL_I18N.zh, {
   errLoginFail:'登录失败', errRegisterFail:'注册失败'
 });
 Object.assign(TOOL_I18N.ja, {
+  ntTitle:'新規旅行', ntIntro:'基本情報を入力 — 残りはAIチームが計画',
+  ntDest:'目的地', ntPeople:'人数', ntStart:'出発日', ntEnd:'帰着日',
+  ntBudget:'総予算', ntBudgetPh:'例：300000', ntStyle:'旅スタイル',
+  ntStyleBudget:'予算重視 · バックパック', ntStyleComfort:'快適 · バランス', ntStyleLuxury:'豪華 · プレミアム',
+  ntSubmit:'プランニング開始', ntAnonNote:'後でログインすると端末間で保存可能',
+  ntCreatedToast:'新規旅行: {dest} · {n}日', ntChipDepart:'出発', ntChipDays:'{n} 日', ntChipPeople:'{n} 人',
+  destBali:'バリ · インドネシア', destKyoto:'京都 · 日本', destParis:'パリ · フランス', destSantorini:'サントリーニ · ギリシャ', destAny:'任意の目的地',
+  errDatesRequired:'日付を両方選択してください', errEndAfterStart:'帰着日は出発日より後である必要', errBudgetRequired:'予算を入力してください',
+  logTripCreated2:'新規旅行作成 · <strong>{dest}</strong> · {n} 日',
   authLogin:'ログイン', authRegister:'新規登録', authEmail:'メール', authPassword:'パスワード', authName:'お名前',
   authLogout:'ログアウト', authLoginCta:'旅程を保存・好みを同期・どの端末からも',
   authNeed:'保存にはログインが必要', tripLoginToSave:'ログインで旅程を端末間同期',
@@ -1976,6 +2004,15 @@ Object.assign(TOOL_I18N.ja, {
   errLoginFail:'ログイン失敗', errRegisterFail:'登録失敗'
 });
 Object.assign(TOOL_I18N.ko, {
+  ntTitle:'새 여행', ntIntro:'기본 정보를 입력하세요 — 나머지는 AI 팀이 계획합니다',
+  ntDest:'목적지', ntPeople:'인원', ntStart:'출발일', ntEnd:'귀국일',
+  ntBudget:'총 예산', ntBudgetPh:'예: 3000000', ntStyle:'여행 스타일',
+  ntStyleBudget:'알뜰 · 배낭', ntStyleComfort:'편안 · 균형', ntStyleLuxury:'럭셔리 · 프리미엄',
+  ntSubmit:'계획 시작', ntAnonNote:'나중에 로그인하여 기기 간 저장 가능',
+  ntCreatedToast:'새 여행: {dest} · {n}일', ntChipDepart:'출발', ntChipDays:'{n} 일', ntChipPeople:'{n} 명',
+  destBali:'발리 · 인도네시아', destKyoto:'교토 · 일본', destParis:'파리 · 프랑스', destSantorini:'산토리니 · 그리스', destAny:'어디든',
+  errDatesRequired:'날짜를 모두 선택하세요', errEndAfterStart:'귀국일은 출발일보다 늦어야 합니다', errBudgetRequired:'예산을 입력하세요',
+  logTripCreated2:'새 여행 생성 · <strong>{dest}</strong> · {n} 일',
   authLogin:'로그인', authRegister:'회원가입', authEmail:'이메일', authPassword:'비밀번호', authName:'이름',
   authLogout:'로그아웃', authLoginCta:'여행 저장 · 선호 동기화 · 모든 기기',
   authNeed:'저장하려면 로그인 필요', tripLoginToSave:'로그인하여 여행을 기기 간 동기화',
@@ -1989,6 +2026,15 @@ Object.assign(TOOL_I18N.ko, {
   errLoginFail:'로그인 실패', errRegisterFail:'가입 실패'
 });
 Object.assign(TOOL_I18N.id, {
+  ntTitle:'Perjalanan baru', ntIntro:'Isi info dasar — sisanya direncanakan tim AI',
+  ntDest:'Tujuan', ntPeople:'Orang', ntStart:'Berangkat', ntEnd:'Pulang',
+  ntBudget:'Anggaran total', ntBudgetPh:'mis: 3000', ntStyle:'Gaya',
+  ntStyleBudget:'Hemat · backpack', ntStyleComfort:'Nyaman · seimbang', ntStyleLuxury:'Mewah · premium',
+  ntSubmit:'Mulai merencanakan', ntAnonNote:'Masuk nanti untuk menyimpan lintas perangkat',
+  ntCreatedToast:'Perjalanan baru: {dest} · {n}h', ntChipDepart:'berangkat', ntChipDays:'{n} hari', ntChipPeople:'{n} orang',
+  destBali:'Bali · Indonesia', destKyoto:'Kyoto · Jepang', destParis:'Paris · Prancis', destSantorini:'Santorini · Yunani', destAny:'Mana saja',
+  errDatesRequired:'Pilih kedua tanggal', errEndAfterStart:'Tanggal pulang harus setelah berangkat', errBudgetRequired:'Masukkan anggaran',
+  logTripCreated2:'Perjalanan baru · <strong>{dest}</strong> · {n} hari',
   authLogin:'Masuk', authRegister:'Daftar', authEmail:'Email', authPassword:'Kata sandi', authName:'Nama',
   authLogout:'Keluar', authLoginCta:'Simpan perjalanan · sinkron preferensi · semua perangkat',
   authNeed:'Masuk untuk menyimpan perjalanan ini', tripLoginToSave:'Masuk untuk menyimpan perjalanan lintas perangkat',
@@ -2217,17 +2263,179 @@ async function deleteTripById(id) {
 }
 
 function createNewTrip() {
-  if (!isLoggedIn()) {
-    showAuthModal('login');
-    showToast(t().authNeed, 'fa-sign-in');
-    return;
+  // Anonymous users can still plan a trip — they just can't save it.
+  // Auth check happens at submit time for graceful flow.
+  showNewTripModal();
+}
+
+let currentTrip = (() => {
+  try { return JSON.parse(localStorage.getItem('wm_studio_currentTrip') || 'null'); }
+  catch(_) { return null; }
+})();
+
+function showNewTripModal() {
+  const el = _ensureModal();
+  const T = t();
+  const today = new Date().toISOString().split('T')[0];
+  const week  = new Date(Date.now() + 7 * 86400000).toISOString().split('T')[0];
+
+  el.innerHTML = `
+    <div class="ws-modal" style="max-width:520px">
+      <div class="ws-modal-head">
+        <div class="ws-modal-title"><span class="fa fa-bookmark-o"></span> ${escapeHtml(T.ntTitle)}</div>
+        <button class="ws-modal-close"><span class="fa fa-times"></span></button>
+      </div>
+      <div class="ws-modal-body">
+        <p style="color:var(--ws-ink-3);font-size:13px;margin:0 0 16px;line-height:1.6">${escapeHtml(T.ntIntro)}</p>
+        <div class="ws-form-row">
+          <div class="ws-form-field">
+            <label class="ws-form-label">${escapeHtml(T.ntDest)}</label>
+            <select class="ws-form-select" id="ws-nt-dest">
+              <option value="bali">${escapeHtml(T.destBali)}</option>
+              <option value="kyoto">${escapeHtml(T.destKyoto)}</option>
+              <option value="paris">${escapeHtml(T.destParis)}</option>
+              <option value="santorini">${escapeHtml(T.destSantorini)}</option>
+              <option value="any">${escapeHtml(T.destAny)}</option>
+            </select>
+          </div>
+          <div class="ws-form-field" style="max-width:120px">
+            <label class="ws-form-label">${escapeHtml(T.ntPeople)}</label>
+            <select class="ws-form-select" id="ws-nt-people">
+              <option value="1">1</option>
+              <option value="2" selected>2</option>
+              <option value="3">3</option>
+              <option value="4">4</option>
+              <option value="5">5+</option>
+            </select>
+          </div>
+        </div>
+        <div class="ws-form-row">
+          <div class="ws-form-field">
+            <label class="ws-form-label">${escapeHtml(T.ntStart)}</label>
+            <input type="date" class="ws-form-input" id="ws-nt-start" value="${today}">
+          </div>
+          <div class="ws-form-field">
+            <label class="ws-form-label">${escapeHtml(T.ntEnd)}</label>
+            <input type="date" class="ws-form-input" id="ws-nt-end" value="${week}">
+          </div>
+        </div>
+        <div class="ws-form-row">
+          <div class="ws-form-field" style="flex:1">
+            <label class="ws-form-label">${escapeHtml(T.ntBudget)}</label>
+            <input type="number" class="ws-form-input" id="ws-nt-budget" placeholder="${escapeHtml(T.ntBudgetPh)}" min="500" step="500">
+          </div>
+          <div class="ws-form-field" style="flex:1.2">
+            <label class="ws-form-label">${escapeHtml(T.ntStyle)}</label>
+            <select class="ws-form-select" id="ws-nt-style">
+              <option value="budget">${escapeHtml(T.ntStyleBudget)}</option>
+              <option value="comfort" selected>${escapeHtml(T.ntStyleComfort)}</option>
+              <option value="luxury">${escapeHtml(T.ntStyleLuxury)}</option>
+            </select>
+          </div>
+        </div>
+        <div class="ws-auth-error" id="ws-nt-err"></div>
+        <button class="ws-action-btn" id="ws-nt-submit" style="margin-top:14px"><span class="fa fa-rocket"></span> ${escapeHtml(T.ntSubmit)}</button>
+        ${!isLoggedIn() ? `<p style="font-size:11.5px;color:var(--ws-ink-3);text-align:center;margin-top:10px"><span class="fa fa-info-circle"></span> ${escapeHtml(T.ntAnonNote)}</p>` : ''}
+      </div>
+    </div>
+  `;
+  // Preselect current destination
+  document.getElementById('ws-nt-dest').value = (currentDest === 'any' ? 'bali' : currentDest);
+
+  el.querySelector('.ws-modal-close').onclick = closeModalEl;
+  document.getElementById('ws-nt-submit').onclick = submitNewTrip;
+  el.classList.add('show');
+}
+
+async function submitNewTrip() {
+  const T = t();
+  const dest   = document.getElementById('ws-nt-dest').value;
+  const people = parseInt(document.getElementById('ws-nt-people').value) || 2;
+  const start  = document.getElementById('ws-nt-start').value;
+  const end    = document.getElementById('ws-nt-end').value;
+  const budget = parseFloat(document.getElementById('ws-nt-budget').value);
+  const style  = document.getElementById('ws-nt-style').value;
+  const err    = document.getElementById('ws-nt-err');
+  err.textContent = '';
+
+  if (!start || !end) { err.textContent = T.errDatesRequired; return; }
+  if (new Date(end) <= new Date(start)) { err.textContent = T.errEndAfterStart; return; }
+  if (!budget || budget <= 0) { err.textContent = T.errBudgetRequired; return; }
+
+  const days = Math.max(1, Math.round((new Date(end) - new Date(start)) / 86400000));
+  const destLabels = {
+    bali:      { zh:'巴厘岛', en:'Bali',      ja:'バリ',         ko:'발리',         id:'Bali' },
+    kyoto:     { zh:'京都',   en:'Kyoto',     ja:'京都',         ko:'교토',         id:'Kyoto' },
+    paris:     { zh:'巴黎',   en:'Paris',     ja:'パリ',         ko:'파리',         id:'Paris' },
+    santorini: { zh:'圣托里尼', en:'Santorini', ja:'サントリーニ', ko:'산토리니',     id:'Santorini' },
+    any:       { zh:'自定义',  en:'Custom',    ja:'カスタム',     ko:'사용자 정의',  id:'Kustom' }
+  };
+  const destName = destLabels[dest][currentLang] || destLabels[dest].en;
+  const styleLabel = {
+    zh: { budget:'节俭穷游', comfort:'舒适平衡', luxury:'奢享高端' }[style],
+    en: { budget:'budget',   comfort:'comfort',  luxury:'luxury'    }[style],
+    ja: { budget:'予算重視', comfort:'快適',     luxury:'豪華'      }[style],
+    ko: { budget:'알뜰',     comfort:'편안',     luxury:'럭셔리'    }[style],
+    id: { budget:'hemat',    comfort:'nyaman',   luxury:'mewah'     }[style]
+  }[currentLang] || style;
+
+  const ccy = (currentLang === 'en' || currentLang === 'id') ? '$' : '¥';
+  const title = `${destName} · ${start} · ${days}d · ${people}p · ${ccy}${budget.toLocaleString()}`;
+
+  if (dest !== currentDest) {
+    currentDest = dest;
+    localStorage.setItem('wm_studio_dest', dest);
+    renderChatHeader();
+    renderPanelDest();
+    renderPanelCompare();
+    renderPanelItinerary();
+    renderPanelBudget();
+    if (typeof fetchDestInfo === 'function') fetchDestInfo(dest);
   }
+
+  currentTrip = { dest, start, end, days, people, budget, style, title };
+  localStorage.setItem('wm_studio_currentTrip', JSON.stringify(currentTrip));
   currentTripId = null;
   messages = [];
   renderMessages();
-  renderSidebar();
-  showToast(t().newTripStarted, 'fa-bookmark');
-  addLog('info', 'fa-bookmark', t().logTripCreated);
+  updateTripHeaderChips();
+
+  closeModalEl();
+  showToast(_interp(T.ntCreatedToast, { dest: destName, days }), 'fa-bookmark');
+  addLog('success', 'fa-bookmark', _interp(T.logTripCreated2, { dest: destName, days }));
+
+  // Kickoff message — first turn that tells the AI all trip params and asks
+  // it to start planning. Auto-saved 2.5s after AI replies (Phase 3a hook).
+  const kickoffs = {
+    zh: `我打算从 ${start} 出发，${days} 天，${people} 个人去${destName}，总预算 ${ccy}${budget.toLocaleString()}，旅行风格${styleLabel}。请你以旅程规划师的身份开始规划。`,
+    en: `Plan a ${days}-day trip to ${destName} starting ${start} for ${people} people. Total budget ${ccy}${budget.toLocaleString()}. Style: ${styleLabel}. Begin as the Trip Planner.`,
+    ja: `${start}から${days}日間、${people}人で${destName}へ。予算${ccy}${budget.toLocaleString()}、${styleLabel}スタイル。旅程プランナーとしてプランニングを開始してください。`,
+    ko: `${start}부터 ${days}일, ${people}명, ${destName}, 예산 ${ccy}${budget.toLocaleString()}, ${styleLabel} 스타일. 여행 플래너로서 계획을 시작해 주세요.`,
+    id: `Rencanakan ${days} hari ke ${destName} mulai ${start} untuk ${people} orang. Anggaran ${ccy}${budget.toLocaleString()}. Gaya: ${styleLabel}. Mulai sebagai Trip Planner.`
+  };
+  sendMessage(kickoffs[currentLang] || kickoffs.en);
+}
+
+function updateTripHeaderChips() {
+  if (!currentTrip || !currentTrip.start) return;
+  const T = t();
+  const ccy = (currentLang === 'en' || currentLang === 'id') ? '$' : '¥';
+  const startM = new Date(currentTrip.start);
+  const dateStr = (currentLang === 'zh' || currentLang === 'ja') ?
+    `${startM.getMonth()+1}/${startM.getDate()}` : currentTrip.start.slice(5);
+  const chips = [
+    `${dateStr} ${T.ntChipDepart}`,
+    _interp(T.ntChipDays, { n: currentTrip.days }),
+    _interp(T.ntChipPeople, { n: currentTrip.people }),
+    `${ccy}${Number(currentTrip.budget).toLocaleString()}`
+  ];
+  const chipsEl = document.getElementById('ws-dest-chips');
+  if (chipsEl) chipsEl.innerHTML = chips.map(c => `<span class="ws-dest-chip">${escapeHtml(c)}</span>`).join('');
+}
+
+// Restore trip chips on page boot
+if (currentTrip && currentTrip.start) {
+  setTimeout(() => updateTripHeaderChips(), 250);
 }
 
 function updateAuthUI() {
