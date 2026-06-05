@@ -2438,11 +2438,14 @@
   font-size: 32px;
   font-weight: 600;
   text-transform: capitalize;
-  color: #fff; }
+  color: #fcbf1e; }
 
 .w3l-header-4 .navbar .navbar-brand span.fa {
   display: inline-block;
-  color: #fff; }
+  color: #fcbf1e; }
+
+.w3l-header-4 .navbar .navbar-brand small {
+  color: #fcbf1e; }
 
 .w3l-header-4 .navbar .navbar-brand:hover {
   opacity: 0.95; }
@@ -2566,10 +2569,13 @@
   color: #40bad5; }
 
 .w3l-header-4 .nav-fixed .navbar-expand-lg .navbar-brand {
-  color: #40bad5; }
+  color: #fcbf1e; }
 
 .w3l-header-4 .nav-fixed .navbar-expand-lg .navbar-brand span {
-  color: #40bad5; }
+  color: #fcbf1e; }
+
+.w3l-header-4 .nav-fixed .navbar-expand-lg .navbar-brand small {
+  color: #fcbf1e; }
 
 .w3l-header-4 .dropdown-item:hover, .w3l-header-4 .dropdown-item:focus {
   color: var(--text-color) !important;
