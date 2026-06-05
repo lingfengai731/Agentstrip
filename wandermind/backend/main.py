@@ -16,6 +16,7 @@ from dotenv import load_dotenv
 from fastapi import Depends, FastAPI, Header, HTTPException, Request
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import HTMLResponse, JSONResponse, PlainTextResponse, StreamingResponse
+from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel
 
 load_dotenv(Path(__file__).parent.parent / ".env")
@@ -1114,7 +1115,8 @@ self.addEventListener('fetch', e => {
     )
 
 
-# ─── Serve frontend ──────────────────────────────────────────
+# ─── Serve frontends ─────────────────────────────────────────
+# H5 (existing single-file frontend) is served at /
 _FRONTEND = Path(__file__).parent.parent / "frontend" / "index.html"
 
 
@@ -1129,6 +1131,18 @@ async def frontend():
             "Pragma": "no-cache",
             "Expires": "0",
         }
+    )
+
+
+# WanderMind Studio (multi-file template-styled brand site) is mounted at /studio
+# Visit https://<host>/studio/ for the home page, /studio/ai-tool.html for the tool, etc.
+# Same backend, so all relative /api/* calls from Studio work out of the box.
+_STUDIO_DIR = Path(__file__).parent.parent.parent / "wandermind-studio" / "frontend"
+if _STUDIO_DIR.exists():
+    app.mount(
+        "/studio",
+        StaticFiles(directory=str(_STUDIO_DIR), html=True),
+        name="studio",
     )
 
 
