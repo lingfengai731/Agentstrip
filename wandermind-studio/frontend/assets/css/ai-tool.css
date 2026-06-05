@@ -1225,3 +1225,192 @@ body.dark .ws-auth-error { color: #fca5a5; }
 }
 .ws-thinking-pill .fa { font-size: 10px; animation: wsspin 1.2s linear infinite; }
 
+/* ═══════════════════════════════════════════════════════════════════
+   PHASE 3b — PREFERENCES / MULTIVERSE / BUDGET CALCULATOR
+   ═══════════════════════════════════════════════════════════════════ */
+
+/* —— Preferences modal chips —— */
+.ws-prefs-section { margin-bottom: 18px; }
+.ws-chip-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+.ws-chip-pick {
+  padding: 7px 13px;
+  border-radius: 16px;
+  border: 1.5px solid var(--ws-line);
+  background: var(--ws-paper);
+  color: var(--ws-ink-2);
+  font-size: 12.5px;
+  cursor: pointer;
+  font-family: inherit;
+  transition: all .15s;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+}
+.ws-chip-pick:hover {
+  border-color: var(--ws-teal);
+  color: var(--ws-ink);
+}
+.ws-chip-pick.active {
+  background: var(--ws-teal);
+  border-color: var(--ws-teal);
+  color: #fff;
+  font-weight: 600;
+}
+body.dark .ws-chip-pick { background: var(--ws-bg-2); }
+
+/* —— Multiverse modal —— */
+.ws-mv-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 16px;
+  margin-top: 8px;
+}
+@media (max-width: 767px) {
+  .ws-mv-grid { grid-template-columns: 1fr; }
+}
+.ws-mv-card {
+  background: var(--ws-paper);
+  border: 1px solid var(--ws-line);
+  border-top: 4px solid var(--ws-teal);
+  border-radius: 14px;
+  padding: 22px 18px 18px;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+.ws-mv-head {
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: .04em;
+  text-transform: uppercase;
+  margin-bottom: 4px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+.ws-mv-head .fa { font-size: 12px; }
+.ws-mv-price {
+  font-size: 28px;
+  font-weight: 700;
+  line-height: 1;
+  margin-top: 4px;
+}
+.ws-mv-price-sub {
+  font-size: 11px;
+  color: var(--ws-ink-3);
+  margin-top: 4px;
+}
+.ws-mv-divider {
+  height: 1px;
+  background: var(--ws-line);
+  margin: 14px 0 12px;
+}
+.ws-mv-item {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 10px;
+  font-size: 12px;
+}
+.ws-mv-item .fa {
+  width: 16px;
+  text-align: center;
+  color: var(--ws-ink-3);
+  margin-top: 3px;
+  flex-shrink: 0;
+}
+.ws-mv-lbl {
+  font-size: 10px;
+  color: var(--ws-ink-3);
+  letter-spacing: .05em;
+  text-transform: uppercase;
+  font-weight: 600;
+}
+.ws-mv-val {
+  font-size: 12.5px;
+  font-weight: 600;
+  color: var(--ws-ink);
+  margin: 1px 0;
+  line-height: 1.35;
+}
+.ws-mv-note {
+  font-size: 11px;
+  color: var(--ws-ink-3);
+}
+.ws-mv-tag {
+  padding: 6px 10px;
+  border-radius: 8px;
+  font-size: 11px;
+  line-height: 1.5;
+}
+.ws-mv-tag strong {
+  font-weight: 700;
+  letter-spacing: .02em;
+}
+
+/* —— Budget calculator —— */
+.ws-range {
+  width: 100%;
+  height: 6px;
+  appearance: none;
+  background: var(--ws-line);
+  border-radius: 4px;
+  outline: none;
+  cursor: pointer;
+}
+.ws-range::-webkit-slider-thumb {
+  appearance: none;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: var(--ws-amber);
+  cursor: pointer;
+  border: 2px solid #fff;
+  box-shadow: 0 2px 6px rgba(252,191,30,.4);
+}
+.ws-range::-moz-range-thumb {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: var(--ws-amber);
+  cursor: pointer;
+  border: 2px solid #fff;
+  box-shadow: 0 2px 6px rgba(252,191,30,.4);
+}
+.ws-calc-result {
+  margin-top: 8px;
+}
+.ws-calc-tips {
+  list-style: none;
+  padding: 0;
+  margin: 6px 0 0;
+}
+.ws-calc-tips li {
+  padding: 8px 12px;
+  background: var(--ws-bg-2);
+  border-left: 3px solid var(--ws-amber);
+  border-radius: 6px;
+  font-size: 12px;
+  color: var(--ws-ink-2);
+  margin-bottom: 6px;
+  line-height: 1.55;
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+}
+.ws-calc-tips li .fa {
+  color: var(--ws-amber);
+  margin-top: 2px;
+  flex-shrink: 0;
+}
+
+/* —— Sidebar Prefs button hover —— */
+#ws-prefs-btn:hover {
+  background: var(--ws-line-soft) !important;
+  color: var(--ws-ink) !important;
+}
+body.dark #ws-prefs-btn { color: var(--ws-ink-2) !important; }
+

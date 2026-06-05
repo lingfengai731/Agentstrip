@@ -505,12 +505,8 @@ function handleQuick(action) {
     return;
   }
   if (action === 'map') { openMapModal(); return; }
-  if (action === 'budgetcalc') { switchPanelTab('budget'); addLog('info', 'fa-credit-card', t().logJumpBudget); return; }
-  if (action === 'multiverse') {
-    const queries = { zh:'帮我生成本目的地 3 个预算档（节俭/舒适/奢享）的对比方案', en:'Generate 3 budget-tier comparison plans (thrifty/comfort/luxury) for this destination', ja:'本目的地の3予算プラン（節約/快適/豪華）を比較生成', ko:'이 목적지의 3가지 예산 계획 (절약/편안/럭셔리) 비교 생성', id:'Buat 3 rencana perbandingan anggaran (hemat/nyaman/mewah) untuk tujuan ini' };
-    sendMessage(queries[currentLang] || queries.en);
-    return;
-  }
+  if (action === 'budgetcalc') { openBudgetCalcModal(); return; }
+  if (action === 'multiverse') { openMultiverseModal(); return; }
   if (action === 'hotels') {
     switchPanelTab('compare');
     setTimeout(() => switchCompareSub('hotels'), 80);
@@ -2484,7 +2480,606 @@ onLangChange = function(newLang) {
     updateAuthUI();
     if (isLoggedIn()) loadTrips();
     if (typeof currentDest === 'string') fetchDestInfo(currentDest);
+    if (isLoggedIn()) loadPrefs();
+    injectPrefsButton();
   }
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', go);
   else setTimeout(go, 50);
 })();
+
+/* ═══════════════════════════════════════════════════════════════════════
+   PHASE 3b — TRAVEL PREFERENCES / MULTIVERSE / BUDGET CALCULATOR
+   ═══════════════════════════════════════════════════════════════════════ */
+
+/* —— Phase 3b i18n additions —— */
+Object.assign(TOOL_I18N.en, {
+  // Preferences
+  prefsTitle:'Travel preferences', prefsIntro:'Tell us how you travel — we factor this into every plan.',
+  prefsStyle:'Interests', prefsPace:'Pace', prefsDiet:'Diet & restrictions', prefsSensitivity:'Price sensitivity', prefsFree:'Anything else AI should know',
+  prefsFreePh:'e.g. mild seasickness, traveling with a 5-year-old, prefer historic neighbourhoods…',
+  prefsPaceFast:'Packed · max sights', prefsPaceMid:'Balanced · breathing room', prefsPaceSlow:'Slow · linger longer',
+  prefsSensLow:'Splurge ok', prefsSensMid:'Value matters', prefsSensHigh:'Optimise every dollar',
+  prefsStyleOpts:['Food','Culture','Nature','Adventure','Photography','Slow travel','Nightlife','Family-friendly','Wellness','Shopping'],
+  prefsDietOpts:['No restriction','Vegetarian','Vegan','Halal','Kosher','Gluten-free','Seafood allergy','Spicy ok','Mild only'],
+  prefsSave:'Save preferences', prefsSaved:'Preferences saved', prefsLoginFirst:'Sign in to save preferences across devices.',
+  prefsBtn:'My preferences', prefsLog:'Preferences saved',
+  // Multiverse
+  mvTitle:'Parallel-universe planning', mvIntro:'Three AI specialists draft three plan tiers in parallel. Pick the universe that fits.',
+  mvThinking:'Three specialists planning in parallel…',
+  mvTierBudget:'Budget · backpack', mvTierComfort:'Comfort · balanced', mvTierLuxury:'Luxury · premium',
+  mvPopular:'Most picked', mvCatLodging:'Lodging', mvCatTransport:'Transport', mvCatFood:'Food',
+  mvHighlight:'Highlight', mvSuitable:'Best for', mvPick:'Plan in detail',
+  mvFallbackBadge:'Showing sample plan',
+  // Budget calculator
+  calcTitle:'Budget calculator', calcIntro:'Adjust the inputs to see real-time cost breakdown.',
+  calcDays:'Days', calcPeople:'People', calcDest:'Destination', calcStyle:'Style',
+  calcTotal:'Estimated total', calcPerDay:'Per day · per person',
+  calcBreakdown:'Breakdown', calcTips:'Smart-save tips',
+  calcApply:'Apply to my trip',
+  calcTip1:'Book hotels 6+ weeks ahead — save 15-25%',
+  calcTip2:'Eat where the locals eat — half the price, twice the flavour',
+  calcTip3:'Bundle activities through your stay — often discounted',
+  calcTip4:'Travel mid-week — flights drop noticeably',
+  // Quick action log lines
+  logMvOpen:'Opened parallel-universe planner', logMvDone:'3 plan tiers ready',
+  logCalcOpen:'Opened budget calculator', logCalcApply:'Applied calculator output to trip header'
+});
+Object.assign(TOOL_I18N.zh, {
+  prefsTitle:'旅行偏好', prefsIntro:'告诉我们你怎么旅行 —— AI 会把它带进每一次规划',
+  prefsStyle:'兴趣方向', prefsPace:'旅行节奏', prefsDiet:'饮食与禁忌', prefsSensitivity:'价格敏感度', prefsFree:'你想让 AI 知道的其它信息',
+  prefsFreePh:'例：轻度晕船 / 带 5 岁孩子同行 / 偏爱历史街区…',
+  prefsPaceFast:'紧凑 · 景点最大化', prefsPaceMid:'平衡 · 留有余地', prefsPaceSlow:'慢节奏 · 深度停留',
+  prefsSensLow:'可以挥霍', prefsSensMid:'追求性价比', prefsSensHigh:'每一分都精打细算',
+  prefsStyleOpts:['美食','文化','自然','冒险','摄影','慢游','夜生活','亲子','疗愈','购物'],
+  prefsDietOpts:['无忌口','素食','纯素','清真','犹太洁食','无麸质','海鲜过敏','可吃辣','不吃辣'],
+  prefsSave:'保存偏好', prefsSaved:'偏好已保存', prefsLoginFirst:'登录后可跨设备同步偏好',
+  prefsBtn:'我的偏好', prefsLog:'偏好已保存',
+  mvTitle:'平行宇宙规划', mvIntro:'3 位 AI 专家并行起草 3 档方案 —— 挑一个你的宇宙',
+  mvThinking:'3 位专家并行规划中…',
+  mvTierBudget:'节俭穷游', mvTierComfort:'舒适平衡', mvTierLuxury:'奢享高端',
+  mvPopular:'最受欢迎', mvCatLodging:'住宿', mvCatTransport:'交通', mvCatFood:'餐饮',
+  mvHighlight:'亮点', mvSuitable:'适合', mvPick:'深入规划这个方案',
+  mvFallbackBadge:'展示示例方案',
+  calcTitle:'预算计算器', calcIntro:'调整参数 —— 实时查看费用拆分',
+  calcDays:'天数', calcPeople:'人数', calcDest:'目的地', calcStyle:'风格',
+  calcTotal:'估算总额', calcPerDay:'人均日花费',
+  calcBreakdown:'费用拆分', calcTips:'省钱小贴士',
+  calcApply:'套用到当前行程',
+  calcTip1:'酒店提前 6 周以上预订 —— 通常省 15-25%',
+  calcTip2:'吃本地人吃的店 —— 一半的价 · 两倍的好吃',
+  calcTip3:'通过住宿打包活动 —— 常有折扣',
+  calcTip4:'周二三出发返程 —— 机票明显降',
+  logMvOpen:'打开平行宇宙规划', logMvDone:'3 套方案就绪',
+  logCalcOpen:'打开预算计算器', logCalcApply:'应用计算结果到行程'
+});
+Object.assign(TOOL_I18N.ja, {
+  prefsTitle:'旅の好み', prefsIntro:'あなたの旅のスタイルを教えて —— 毎回の計画に反映します',
+  prefsStyle:'興味', prefsPace:'ペース', prefsDiet:'食事制限', prefsSensitivity:'価格感度', prefsFree:'AIに伝えたいその他',
+  prefsFreePh:'例：軽い船酔い／5歳児同伴／古い街並みが好み…',
+  prefsPaceFast:'タイト · 観光最大化', prefsPaceMid:'バランス · 余裕あり', prefsPaceSlow:'ゆったり · 滞在重視',
+  prefsSensLow:'惜しまない', prefsSensMid:'コスパ重視', prefsSensHigh:'徹底節約',
+  prefsStyleOpts:['グルメ','文化','自然','冒険','撮影','ゆっくり旅','ナイト','ファミリー','癒し','買い物'],
+  prefsDietOpts:['制限なし','ベジタリアン','ヴィーガン','ハラル','コーシャ','グルテンフリー','魚介アレルギー','辛い物OK','辛い物NG'],
+  prefsSave:'好みを保存', prefsSaved:'好みを保存しました', prefsLoginFirst:'ログインで端末間同期',
+  prefsBtn:'マイ好み', prefsLog:'好みを保存',
+  mvTitle:'パラレル企画', mvIntro:'3人のAI専門家が3階層を並行起草 —— あなたの宇宙を選ぼう',
+  mvThinking:'3人の専門家が並行プランニング中…',
+  mvTierBudget:'予算重視', mvTierComfort:'快適バランス', mvTierLuxury:'豪華プレミアム',
+  mvPopular:'人気No.1', mvCatLodging:'宿泊', mvCatTransport:'交通', mvCatFood:'食事',
+  mvHighlight:'ハイライト', mvSuitable:'最適', mvPick:'このプランを深掘り',
+  mvFallbackBadge:'サンプル表示',
+  calcTitle:'予算計算機', calcIntro:'値を調整して費用内訳をリアルタイム表示',
+  calcDays:'日数', calcPeople:'人数', calcDest:'目的地', calcStyle:'スタイル',
+  calcTotal:'合計見積', calcPerDay:'1人1日あたり',
+  calcBreakdown:'内訳', calcTips:'節約のコツ',
+  calcApply:'現在の旅行に適用',
+  calcTip1:'ホテルは6週間以上前に予約 —— 15-25%節約',
+  calcTip2:'地元の人気店を選ぼう —— 半額で2倍美味しい',
+  calcTip3:'宿経由でアクティビティをまとめる —— 割引あり',
+  calcTip4:'週中出発で航空券が下がる',
+  logMvOpen:'パラレル企画を開く', logMvDone:'3階層のプラン完成',
+  logCalcOpen:'予算計算機を開く', logCalcApply:'計算結果を旅行に適用'
+});
+Object.assign(TOOL_I18N.ko, {
+  prefsTitle:'여행 선호도', prefsIntro:'어떻게 여행하는지 알려 주세요 —— AI가 매번 계획에 반영합니다',
+  prefsStyle:'관심사', prefsPace:'페이스', prefsDiet:'식단·제한', prefsSensitivity:'가격 민감도', prefsFree:'AI에게 알릴 기타 정보',
+  prefsFreePh:'예: 가벼운 멀미 / 5살 동반 / 역사 구역 선호…',
+  prefsPaceFast:'타이트 · 명소 최대', prefsPaceMid:'밸런스 · 여유', prefsPaceSlow:'느리게 · 깊게',
+  prefsSensLow:'아끼지 않음', prefsSensMid:'가성비 중시', prefsSensHigh:'최대 절약',
+  prefsStyleOpts:['미식','문화','자연','모험','사진','느린 여행','나이트라이프','가족','웰니스','쇼핑'],
+  prefsDietOpts:['제한 없음','채식','비건','할랄','코셔','글루텐 프리','해산물 알러지','매운맛 가능','매운맛 불가'],
+  prefsSave:'선호도 저장', prefsSaved:'선호도 저장됨', prefsLoginFirst:'로그인하여 기기 간 동기화',
+  prefsBtn:'내 선호도', prefsLog:'선호도 저장',
+  mvTitle:'평행 우주 기획', mvIntro:'3명의 AI 전문가가 3단계를 병렬로 초안 작성 —— 당신의 우주를 선택',
+  mvThinking:'3명의 전문가가 병렬 기획 중…',
+  mvTierBudget:'알뜰', mvTierComfort:'편안 균형', mvTierLuxury:'럭셔리 프리미엄',
+  mvPopular:'최다 선택', mvCatLodging:'숙박', mvCatTransport:'교통', mvCatFood:'식사',
+  mvHighlight:'하이라이트', mvSuitable:'적합', mvPick:'이 플랜 자세히',
+  mvFallbackBadge:'샘플 표시',
+  calcTitle:'예산 계산기', calcIntro:'값을 조정해 실시간 비용 분석을 보세요',
+  calcDays:'일수', calcPeople:'인원', calcDest:'목적지', calcStyle:'스타일',
+  calcTotal:'예상 총액', calcPerDay:'1인 1일',
+  calcBreakdown:'분석', calcTips:'절약 팁',
+  calcApply:'현재 여행에 적용',
+  calcTip1:'호텔은 6주 전 예약 — 15-25% 절약',
+  calcTip2:'현지인 맛집 — 절반 가격, 두 배 맛',
+  calcTip3:'숙소 통해 액티비티 묶음 — 할인 빈번',
+  calcTip4:'주중 출발 — 항공권 인하 효과',
+  logMvOpen:'평행 우주 기획 열기', logMvDone:'3단계 플랜 준비',
+  logCalcOpen:'예산 계산기 열기', logCalcApply:'계산 결과를 여행에 적용'
+});
+Object.assign(TOOL_I18N.id, {
+  prefsTitle:'Preferensi perjalanan', prefsIntro:'Beri tahu cara kamu bepergian — AI akan menerapkannya di setiap rencana',
+  prefsStyle:'Minat', prefsPace:'Ritme', prefsDiet:'Diet & batasan', prefsSensitivity:'Sensitivitas harga', prefsFree:'Hal lain yang AI perlu tahu',
+  prefsFreePh:'mis: agak mabuk laut / bawa anak 5 tahun / suka kawasan bersejarah…',
+  prefsPaceFast:'Padat · maksimal wisata', prefsPaceMid:'Seimbang · ada jeda', prefsPaceSlow:'Lambat · tinggal lama',
+  prefsSensLow:'Bebas keluar uang', prefsSensMid:'Nilai penting', prefsSensHigh:'Hemat maksimal',
+  prefsStyleOpts:['Kuliner','Budaya','Alam','Petualangan','Fotografi','Slow travel','Nightlife','Keluarga','Wellness','Belanja'],
+  prefsDietOpts:['Tanpa pantangan','Vegetarian','Vegan','Halal','Kosher','Bebas gluten','Alergi seafood','Pedas ok','Tidak pedas'],
+  prefsSave:'Simpan preferensi', prefsSaved:'Preferensi tersimpan', prefsLoginFirst:'Masuk untuk sinkron lintas perangkat',
+  prefsBtn:'Preferensi saya', prefsLog:'Preferensi tersimpan',
+  mvTitle:'Perencanaan alam paralel', mvIntro:'3 ahli AI menyusun 3 tier secara paralel — pilih alam yang cocok',
+  mvThinking:'3 ahli merencanakan paralel…',
+  mvTierBudget:'Hemat · backpack', mvTierComfort:'Nyaman · seimbang', mvTierLuxury:'Mewah · premium',
+  mvPopular:'Paling dipilih', mvCatLodging:'Akomodasi', mvCatTransport:'Transportasi', mvCatFood:'Makanan',
+  mvHighlight:'Sorotan', mvSuitable:'Cocok untuk', mvPick:'Rencanakan tier ini',
+  mvFallbackBadge:'Menampilkan sampel',
+  calcTitle:'Kalkulator anggaran', calcIntro:'Atur input untuk melihat rincian biaya real-time',
+  calcDays:'Hari', calcPeople:'Orang', calcDest:'Tujuan', calcStyle:'Gaya',
+  calcTotal:'Total estimasi', calcPerDay:'Per hari · per orang',
+  calcBreakdown:'Rincian', calcTips:'Tips hemat',
+  calcApply:'Terapkan ke perjalanan',
+  calcTip1:'Pesan hotel 6+ minggu lebih awal — hemat 15-25%',
+  calcTip2:'Makan di tempat lokal — separuh harga, dua kali enak',
+  calcTip3:'Bundel aktivitas lewat akomodasi — sering diskon',
+  calcTip4:'Berangkat tengah pekan — tiket pesawat lebih murah',
+  logMvOpen:'Buka perencana alam paralel', logMvDone:'3 tier rencana siap',
+  logCalcOpen:'Buka kalkulator anggaran', logCalcApply:'Terapkan hasil kalkulator ke perjalanan'
+});
+
+/* ═════════════════ PREFERENCES MODAL ═════════════════ */
+let _prefs = (() => {
+  try { return JSON.parse(localStorage.getItem('wm_studio_prefs') || '{}'); }
+  catch(_) { return {}; }
+})();
+
+async function loadPrefs() {
+  if (!isLoggedIn()) return;
+  try {
+    const r = await fetch(BACKEND_BASE + '/api/user/preferences', { headers: _authHeaders() });
+    if (r.ok) {
+      _prefs = await r.json() || {};
+      localStorage.setItem('wm_studio_prefs', JSON.stringify(_prefs));
+    }
+  } catch (_) {}
+}
+
+function injectPrefsButton() {
+  // Add a "My Preferences" link below the New-Trip button in the sidebar
+  const newTripBtn = document.getElementById('ws-newtrip-btn');
+  if (!newTripBtn || document.getElementById('ws-prefs-btn')) return;
+  const btn = document.createElement('button');
+  btn.id = 'ws-prefs-btn';
+  btn.className = 'ws-newtrip-btn';
+  btn.style.cssText = 'background:transparent;color:var(--ws-ink-2);border:1px solid var(--ws-line);margin-top:8px';
+  btn.innerHTML = `<span class="fa fa-sliders"></span> <span id="ws-prefs-btn-label">${escapeHtml(t().prefsBtn)}</span>`;
+  btn.onclick = openPrefsModal;
+  newTripBtn.parentElement.appendChild(btn);
+}
+
+function openPrefsModal() {
+  const el = _ensureModal();
+  const T = t();
+  const styleOpts = T.prefsStyleOpts || [];
+  const dietOpts = T.prefsDietOpts || [];
+  const selStyle = new Set(_prefs.style || []);
+  const selDiet = new Set(_prefs.diet || []);
+  const pace = _prefs.pace || 'mid';
+  const sens = _prefs.sensitivity || 'mid';
+
+  el.innerHTML = `
+    <div class="ws-modal" style="max-width:560px">
+      <div class="ws-modal-head">
+        <div class="ws-modal-title"><span class="fa fa-sliders"></span> ${escapeHtml(T.prefsTitle)}</div>
+        <button class="ws-modal-close"><span class="fa fa-times"></span></button>
+      </div>
+      <div class="ws-modal-body">
+        <p style="color:var(--ws-ink-3);font-size:13px;margin:0 0 18px;line-height:1.6">${escapeHtml(T.prefsIntro)}</p>
+
+        <div class="ws-prefs-section">
+          <div class="ws-form-label" style="margin-bottom:8px">${escapeHtml(T.prefsStyle)}</div>
+          <div class="ws-chip-row" id="ws-prefs-style">
+            ${styleOpts.map(s => `<button class="ws-chip-pick ${selStyle.has(s)?'active':''}" data-v="${escapeHtml(s)}">${escapeHtml(s)}</button>`).join('')}
+          </div>
+        </div>
+
+        <div class="ws-prefs-section">
+          <div class="ws-form-label" style="margin-bottom:8px">${escapeHtml(T.prefsPace)}</div>
+          <div class="ws-chip-row" id="ws-prefs-pace">
+            <button class="ws-chip-pick ${pace==='fast'?'active':''}" data-v="fast">${escapeHtml(T.prefsPaceFast)}</button>
+            <button class="ws-chip-pick ${pace==='mid'?'active':''}"  data-v="mid">${escapeHtml(T.prefsPaceMid)}</button>
+            <button class="ws-chip-pick ${pace==='slow'?'active':''}" data-v="slow">${escapeHtml(T.prefsPaceSlow)}</button>
+          </div>
+        </div>
+
+        <div class="ws-prefs-section">
+          <div class="ws-form-label" style="margin-bottom:8px">${escapeHtml(T.prefsDiet)}</div>
+          <div class="ws-chip-row" id="ws-prefs-diet">
+            ${dietOpts.map(s => `<button class="ws-chip-pick ${selDiet.has(s)?'active':''}" data-v="${escapeHtml(s)}">${escapeHtml(s)}</button>`).join('')}
+          </div>
+        </div>
+
+        <div class="ws-prefs-section">
+          <div class="ws-form-label" style="margin-bottom:8px">${escapeHtml(T.prefsSensitivity)}</div>
+          <div class="ws-chip-row" id="ws-prefs-sens">
+            <button class="ws-chip-pick ${sens==='low'?'active':''}"  data-v="low">${escapeHtml(T.prefsSensLow)}</button>
+            <button class="ws-chip-pick ${sens==='mid'?'active':''}"  data-v="mid">${escapeHtml(T.prefsSensMid)}</button>
+            <button class="ws-chip-pick ${sens==='high'?'active':''}" data-v="high">${escapeHtml(T.prefsSensHigh)}</button>
+          </div>
+        </div>
+
+        <div class="ws-prefs-section">
+          <div class="ws-form-label" style="margin-bottom:8px">${escapeHtml(T.prefsFree)}</div>
+          <textarea class="ws-form-input" id="ws-prefs-free" rows="3" placeholder="${escapeHtml(T.prefsFreePh)}" style="resize:vertical;min-height:70px">${escapeHtml(_prefs.free || '')}</textarea>
+        </div>
+
+        ${!isLoggedIn() ? `<p style="font-size:11.5px;color:var(--ws-ink-3);text-align:center;margin:12px 0 0"><span class="fa fa-info-circle"></span> ${escapeHtml(T.prefsLoginFirst)}</p>` : ''}
+        <button class="ws-action-btn" id="ws-prefs-save" style="margin-top:14px"><span class="fa fa-check"></span> ${escapeHtml(T.prefsSave)}</button>
+      </div>
+    </div>
+  `;
+
+  el.querySelector('.ws-modal-close').onclick = closeModalEl;
+
+  // Multi-select chips for style + diet
+  ['ws-prefs-style','ws-prefs-diet'].forEach(id => {
+    document.getElementById(id).querySelectorAll('.ws-chip-pick').forEach(c => {
+      c.onclick = () => c.classList.toggle('active');
+    });
+  });
+  // Single-select for pace + sensitivity
+  ['ws-prefs-pace','ws-prefs-sens'].forEach(id => {
+    const wrap = document.getElementById(id);
+    wrap.querySelectorAll('.ws-chip-pick').forEach(c => {
+      c.onclick = () => {
+        wrap.querySelectorAll('.ws-chip-pick').forEach(x => x.classList.remove('active'));
+        c.classList.add('active');
+      };
+    });
+  });
+
+  document.getElementById('ws-prefs-save').onclick = savePrefs;
+  el.classList.add('show');
+}
+
+async function savePrefs() {
+  const styleSel = Array.from(document.querySelectorAll('#ws-prefs-style .ws-chip-pick.active')).map(c => c.dataset.v);
+  const dietSel = Array.from(document.querySelectorAll('#ws-prefs-diet .ws-chip-pick.active')).map(c => c.dataset.v);
+  const pace = document.querySelector('#ws-prefs-pace .ws-chip-pick.active')?.dataset.v || 'mid';
+  const sens = document.querySelector('#ws-prefs-sens .ws-chip-pick.active')?.dataset.v || 'mid';
+  const free = document.getElementById('ws-prefs-free').value.trim();
+
+  _prefs = { style: styleSel, diet: dietSel, pace, sensitivity: sens, free };
+  localStorage.setItem('wm_studio_prefs', JSON.stringify(_prefs));
+
+  if (isLoggedIn()) {
+    try {
+      await fetch(BACKEND_BASE + '/api/user/preferences', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', ..._authHeaders() },
+        body: JSON.stringify({ preferences: _prefs })
+      });
+    } catch (_) {}
+  }
+
+  closeModalEl();
+  showToast(t().prefsSaved, 'fa-check-circle');
+  addLog('success', 'fa-sliders', t().prefsLog);
+}
+
+function getPrefsSystemPrompt() {
+  if (!_prefs || Object.keys(_prefs).length === 0) return '';
+  const parts = [];
+  if (_prefs.style?.length)        parts.push(`Interests: ${_prefs.style.join(', ')}`);
+  if (_prefs.pace)                 parts.push(`Pace: ${_prefs.pace}`);
+  if (_prefs.diet?.length)         parts.push(`Diet: ${_prefs.diet.join(', ')}`);
+  if (_prefs.sensitivity)          parts.push(`Price sensitivity: ${_prefs.sensitivity}`);
+  if (_prefs.free)                 parts.push(`Notes: ${_prefs.free}`);
+  return parts.length ? `\n\n[User Preferences]\n${parts.join('\n')}` : '';
+}
+
+/* Patch sendMessage system prompt to inject prefs */
+const _origSendMessage_v2 = sendMessage;
+sendMessage = async function(text) {
+  // Tucked in via systemPrompt patching done inside sendMessage —
+  // we replicate that here by piggy-backing on the input value before forwarding.
+  return _origSendMessage_v2(text);
+};
+// Also patch the actual system prompt builder by overriding fetch
+const _origFetch_prefs = window.fetch.bind(window);
+window.fetch = function(url, opts) {
+  if (typeof url === 'string' && opts && opts.body && (url.endsWith('/api/chat/once') || url.endsWith('/api/chat/team'))) {
+    try {
+      const body = JSON.parse(opts.body);
+      if (body.system && typeof body.system === 'string' && !body.system.includes('[User Preferences]')) {
+        body.system += getPrefsSystemPrompt();
+        opts = { ...opts, body: JSON.stringify(body) };
+      }
+    } catch (_) {}
+  }
+  return _origFetch_prefs(url, opts);
+};
+
+/* ═════════════════ MULTIVERSE MODAL ═════════════════ */
+function _mvFallback() {
+  const T = t();
+  const ccy = (currentLang === 'en' || currentLang === 'id') ? '$' : '¥';
+  const factor = (currentLang === 'en' || currentLang === 'id') ? 0.14 : 1; // rough RMB->USD
+  return {
+    budget:  { tier:T.mvTierBudget,  price:`${ccy}${Math.round(3500*factor).toLocaleString()}`,  priceNote:'2p · 7d', hotel:{name:T.prefsStyleOpts? (currentLang==='zh'?'背包客栈':'Hostel / homestay'):'',note:`${ccy}${Math.round(120*factor)}/${currentLang==='zh'?'晚':'nt'}`}, transport:{name:currentLang==='zh'?'公共交通+租摩托':'Public transit + scooter',note:`${ccy}${Math.round(30*factor)}/${currentLang==='zh'?'日':'day'}`}, food:{name:currentLang==='zh'?'街边小吃+本地餐馆':'Street food + local diners',note:`${ccy}${Math.round(30*factor)}/${currentLang==='zh'?'餐':'meal'}`}, highlight:currentLang==='zh'?'最真实的本地生活体验':'Most authentic local life', suitable:currentLang==='zh'?'背包客、独行侠':'Backpackers, solo travel' },
+    comfort: { tier:T.mvTierComfort, price:`${ccy}${Math.round(12000*factor).toLocaleString()}`, priceNote:'2p · 7d', hotel:{name:currentLang==='zh'?'精品民宿/3星酒店':'Boutique inn / 3-star hotel',note:`${ccy}${Math.round(400*factor)}/${currentLang==='zh'?'晚':'nt'}`}, transport:{name:currentLang==='zh'?'包车+部分公交':'Private car + public mix',note:`${ccy}${Math.round(150*factor)}/${currentLang==='zh'?'日':'day'}`}, food:{name:currentLang==='zh'?'特色餐厅+路边摊':'Signature restaurants + street',note:`${ccy}${Math.round(90*factor)}/${currentLang==='zh'?'餐':'meal'}`}, highlight:currentLang==='zh'?'品质与性价比完美平衡':'Quality-to-cost sweet spot', suitable:currentLang==='zh'?'情侣、好友结伴':'Couples, small groups' },
+    luxury:  { tier:T.mvTierLuxury,  price:`${ccy}${Math.round(38000*factor).toLocaleString()}`, priceNote:'2p · 7d', hotel:{name:currentLang==='zh'?'五星度假村/顶级别墅':'5-star resort / private villa',note:`${ccy}${Math.round(2000*factor)}/${currentLang==='zh'?'晚':'nt'}`}, transport:{name:currentLang==='zh'?'专属司导+专车':'Private driver-guide',note:currentLang==='zh'?'全程包车':'Full-time chauffeured'}, food:{name:currentLang==='zh'?'米其林+私厨定制':'Michelin + private chef',note:`${ccy}${Math.round(300*factor)}+/${currentLang==='zh'?'餐':'meal'}`}, highlight:currentLang==='zh'?'极致奢华的专属体验':'Curated luxury experiences', suitable:currentLang==='zh'?'蜜月、周年纪念':'Honeymoons, anniversaries' }
+  };
+}
+
+async function openMultiverseModal() {
+  const el = _ensureModal();
+  const T = t();
+  const destLabel = (DESTS[currentDest]?.titles[currentLang] || DESTS[currentDest]?.titles?.en || '').replace(/<[^>]+>/g,'').trim();
+  el.innerHTML = `
+    <div class="ws-modal" style="max-width:980px">
+      <div class="ws-modal-head">
+        <div class="ws-modal-title"><span class="fa fa-clone"></span> ${escapeHtml(T.mvTitle)}</div>
+        <button class="ws-modal-close"><span class="fa fa-times"></span></button>
+      </div>
+      <div class="ws-modal-body" id="ws-mv-body">
+        <p style="color:var(--ws-ink-3);font-size:13px;margin:0 0 20px;line-height:1.6">${escapeHtml(T.mvIntro)}</p>
+        <div class="ws-loading"><span class="fa fa-circle-o-notch"></span><div>${escapeHtml(T.mvThinking)}</div></div>
+      </div>
+    </div>
+  `;
+  el.querySelector('.ws-modal-close').onclick = closeModalEl;
+  el.classList.add('show');
+  addLog('info', 'fa-clone', t().logMvOpen);
+
+  let plans = null;
+  let isFallback = false;
+  try {
+    const promptText = currentLang === 'zh'
+      ? `请为"${destLabel}"生成 3 个预算档（节俭/舒适/奢享）的方案对比，**只返回纯 JSON**，结构：{"budget":{"tier":"节俭穷游","price":"¥3,500","priceNote":"2人·7天","hotel":{"name":"","note":""},"transport":{"name":"","note":""},"food":{"name":"","note":""},"highlight":"","suitable":""},"comfort":{...},"luxury":{...}}。所有文字使用中文，价格根据目的地实际情况合理估算。`
+      : `Generate 3 budget-tier comparison plans for "${destLabel}" (budget/comfort/luxury). Return ONLY pure JSON in this shape: {"budget":{"tier":"Budget","price":"$500","priceNote":"2p · 7d","hotel":{"name":"","note":""},"transport":{"name":"","note":""},"food":{"name":"","note":""},"highlight":"","suitable":""},"comfort":{...},"luxury":{...}}. All strings in ${currentLang.toUpperCase()}. Use realistic local prices.`;
+    const r = await fetch(BACKEND_BASE + '/api/generate', {
+      method:'POST',
+      headers: { 'Content-Type':'application/json', ..._authHeaders() },
+      body: JSON.stringify({ prompt: promptText, max_tokens: 1400 })
+    });
+    if (r.ok) {
+      const data = await r.json();
+      const raw = (data.content || data.text || '').replace(/```json|```/g, '').trim();
+      const m = raw.match(/\{[\s\S]*\}/);
+      if (m) plans = JSON.parse(m[0]);
+    }
+    if (!plans) throw new Error('no plans');
+  } catch (_) {
+    plans = _mvFallback();
+    isFallback = true;
+  }
+
+  const tiers = [
+    { key:'budget',  color:'#0e7c6b', bg:'rgba(14,124,107,.08)',  icon:'fa-backpack', badge:null },
+    { key:'comfort', color:'#fcbf1e', bg:'rgba(252,191,30,.08)',  icon:'fa-coffee',   badge: T.mvPopular },
+    { key:'luxury',  color:'#7c3aed', bg:'rgba(124,58,237,.08)',  icon:'fa-diamond',  badge:null }
+  ];
+
+  const cards = tiers.map(t2 => {
+    const p = plans[t2.key] || {};
+    const badge = t2.badge ? `<div style="position:absolute;top:-10px;left:50%;transform:translateX(-50%);background:${t2.color};color:#fff;padding:3px 12px;border-radius:12px;font-size:10px;font-weight:700;letter-spacing:.05em">${escapeHtml(t2.badge)}</div>` : '';
+    return `
+      <div class="ws-mv-card" style="border-top-color:${t2.color};background:${t2.bg}">
+        ${badge}
+        <div class="ws-mv-head" style="color:${t2.color}">
+          <span class="fa fa-check-circle"></span> ${escapeHtml(p.tier || '')}
+        </div>
+        <div class="ws-mv-price" style="color:${t2.color}">${escapeHtml(p.price || '—')}</div>
+        <div class="ws-mv-price-sub">${escapeHtml(p.priceNote || '')}</div>
+        <div class="ws-mv-divider"></div>
+        <div class="ws-mv-item"><span class="fa fa-bed"></span><div><div class="ws-mv-lbl">${escapeHtml(T.mvCatLodging)}</div><div class="ws-mv-val">${escapeHtml(p.hotel?.name||'—')}</div><div class="ws-mv-note">${escapeHtml(p.hotel?.note||'')}</div></div></div>
+        <div class="ws-mv-item"><span class="fa fa-car"></span><div><div class="ws-mv-lbl">${escapeHtml(T.mvCatTransport)}</div><div class="ws-mv-val">${escapeHtml(p.transport?.name||'—')}</div><div class="ws-mv-note">${escapeHtml(p.transport?.note||'')}</div></div></div>
+        <div class="ws-mv-item"><span class="fa fa-coffee"></span><div><div class="ws-mv-lbl">${escapeHtml(T.mvCatFood)}</div><div class="ws-mv-val">${escapeHtml(p.food?.name||'—')}</div><div class="ws-mv-note">${escapeHtml(p.food?.note||'')}</div></div></div>
+        <div class="ws-mv-tag" style="background:${t2.bg};color:${t2.color}"><strong>${escapeHtml(T.mvHighlight)}</strong> · ${escapeHtml(p.highlight||'')}</div>
+        <div class="ws-mv-tag" style="background:${t2.bg};color:${t2.color};margin-top:6px"><strong>${escapeHtml(T.mvSuitable)}</strong> · ${escapeHtml(p.suitable||'')}</div>
+        <button class="ws-action-btn" data-tier="${t2.key}" data-tier-name="${escapeHtml(p.tier||'')}" style="background:${t2.color};color:#fff;margin-top:14px"><span class="fa fa-arrow-right"></span> ${escapeHtml(T.mvPick)}</button>
+      </div>
+    `;
+  }).join('');
+
+  document.getElementById('ws-mv-body').innerHTML = `
+    <p style="color:var(--ws-ink-3);font-size:13px;margin:0 0 18px;line-height:1.6">${escapeHtml(T.mvIntro)}${isFallback ? ` <span style="color:var(--ws-amber-dk);font-weight:600">· ${escapeHtml(T.mvFallbackBadge)}</span>` : ''}</p>
+    <div class="ws-mv-grid">${cards}</div>
+  `;
+  document.querySelectorAll('.ws-mv-grid [data-tier]').forEach(b => {
+    b.onclick = () => {
+      const name = b.dataset.tierName;
+      closeModalEl();
+      const queries = {
+        zh: `就按"${name}"这个方案深入帮我规划${destLabel}的完整行程`,
+        en: `Plan the full ${destLabel} itinerary in detail using the "${name}" tier`,
+        ja: `${destLabel}を「${name}」プランで詳細企画してください`,
+        ko: `${destLabel}을(를) "${name}" 등급으로 상세 기획해 주세요`,
+        id: `Rencanakan jadwal lengkap ${destLabel} dengan tier "${name}"`
+      };
+      sendMessage(queries[currentLang] || queries.en);
+    };
+  });
+  addLog('success', 'fa-clone', t().logMvDone);
+}
+
+/* ═════════════════ BUDGET CALCULATOR MODAL ═════════════════ */
+const CALC_BASE = {
+  // Base per-person-per-day RMB for comfort tier
+  bali:      350,
+  kyoto:     500,
+  paris:     650,
+  santorini: 600,
+  any:       400
+};
+const CALC_STYLE_MULT = { budget: 0.55, comfort: 1.0, luxury: 2.4 };
+const CALC_BREAKDOWN = { lodging: 0.40, food: 0.22, transport: 0.15, activities: 0.16, misc: 0.07 };
+
+function openBudgetCalcModal() {
+  const el = _ensureModal();
+  const T = t();
+  const dest = currentTrip?.dest || currentDest || 'bali';
+  const days = currentTrip?.days || 7;
+  const people = currentTrip?.people || 2;
+  const style = currentTrip?.style || 'comfort';
+
+  el.innerHTML = `
+    <div class="ws-modal" style="max-width:560px">
+      <div class="ws-modal-head">
+        <div class="ws-modal-title"><span class="fa fa-calculator"></span> ${escapeHtml(T.calcTitle)}</div>
+        <button class="ws-modal-close"><span class="fa fa-times"></span></button>
+      </div>
+      <div class="ws-modal-body">
+        <p style="color:var(--ws-ink-3);font-size:13px;margin:0 0 18px;line-height:1.6">${escapeHtml(T.calcIntro)}</p>
+
+        <div class="ws-form-row">
+          <div class="ws-form-field">
+            <label class="ws-form-label">${escapeHtml(T.calcDest)}</label>
+            <select class="ws-form-select" id="ws-calc-dest">
+              <option value="bali">${escapeHtml(T.destBali)}</option>
+              <option value="kyoto">${escapeHtml(T.destKyoto)}</option>
+              <option value="paris">${escapeHtml(T.destParis)}</option>
+              <option value="santorini">${escapeHtml(T.destSantorini)}</option>
+              <option value="any">${escapeHtml(T.destAny)}</option>
+            </select>
+          </div>
+          <div class="ws-form-field" style="max-width:130px">
+            <label class="ws-form-label">${escapeHtml(T.calcStyle)}</label>
+            <select class="ws-form-select" id="ws-calc-style">
+              <option value="budget">${escapeHtml(T.mvTierBudget)}</option>
+              <option value="comfort" selected>${escapeHtml(T.mvTierComfort)}</option>
+              <option value="luxury">${escapeHtml(T.mvTierLuxury)}</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="ws-form-row">
+          <div class="ws-form-field">
+            <label class="ws-form-label">${escapeHtml(T.calcDays)} <span id="ws-calc-days-val" style="color:var(--ws-teal);font-weight:700">${days}</span></label>
+            <input type="range" min="1" max="21" value="${days}" id="ws-calc-days" class="ws-range">
+          </div>
+          <div class="ws-form-field">
+            <label class="ws-form-label">${escapeHtml(T.calcPeople)} <span id="ws-calc-people-val" style="color:var(--ws-teal);font-weight:700">${people}</span></label>
+            <input type="range" min="1" max="8" value="${people}" id="ws-calc-people" class="ws-range">
+          </div>
+        </div>
+
+        <div class="ws-calc-result" id="ws-calc-result"></div>
+        <button class="ws-action-btn" id="ws-calc-apply" style="margin-top:14px"><span class="fa fa-check"></span> ${escapeHtml(T.calcApply)}</button>
+      </div>
+    </div>
+  `;
+  document.getElementById('ws-calc-dest').value = dest;
+  document.getElementById('ws-calc-style').value = style;
+
+  el.querySelector('.ws-modal-close').onclick = closeModalEl;
+  ['ws-calc-dest','ws-calc-style','ws-calc-days','ws-calc-people'].forEach(id => {
+    document.getElementById(id).addEventListener('input', recomputeBudgetCalc);
+    document.getElementById(id).addEventListener('change', recomputeBudgetCalc);
+  });
+  document.getElementById('ws-calc-apply').onclick = applyBudgetCalc;
+  recomputeBudgetCalc();
+  el.classList.add('show');
+  addLog('info', 'fa-calculator', t().logCalcOpen);
+}
+
+function recomputeBudgetCalc() {
+  const T = t();
+  const dest = document.getElementById('ws-calc-dest').value;
+  const style = document.getElementById('ws-calc-style').value;
+  const days = parseInt(document.getElementById('ws-calc-days').value) || 7;
+  const people = parseInt(document.getElementById('ws-calc-people').value) || 2;
+  document.getElementById('ws-calc-days-val').textContent = days;
+  document.getElementById('ws-calc-people-val').textContent = people;
+
+  const base = CALC_BASE[dest] || 400;
+  const mult = CALC_STYLE_MULT[style] || 1.0;
+  const ccy = (currentLang === 'en' || currentLang === 'id') ? '$' : '¥';
+  const factor = (currentLang === 'en' || currentLang === 'id') ? 0.14 : 1;
+  const totalRMB = base * mult * days * people;
+  const total = Math.round(totalRMB * factor);
+  const perDayPerPerson = Math.round(base * mult * factor);
+
+  const cats = [
+    { key:'lodging',    pct: CALC_BREAKDOWN.lodging,    color:'#2563eb', icon:'fa-bed',         label: T.budgetCatLodging },
+    { key:'food',       pct: CALC_BREAKDOWN.food,       color:'#ea580c', icon:'fa-coffee',      label: T.budgetCatFood },
+    { key:'transport',  pct: CALC_BREAKDOWN.transport,  color:'#0e7c6b', icon:'fa-car',         label: T.budgetCatTransport },
+    { key:'activities', pct: CALC_BREAKDOWN.activities, color:'#7c3aed', icon:'fa-compass',     label: T.budgetCatActivities },
+    { key:'misc',       pct: CALC_BREAKDOWN.misc,       color:'#6b7280', icon:'fa-ellipsis-h',  label: T.budgetCatMisc }
+  ];
+  const tips = [T.calcTip1, T.calcTip2, T.calcTip3, T.calcTip4];
+
+  document.getElementById('ws-calc-result').innerHTML = `
+    <div class="ws-budget-total">
+      <div class="ws-budget-amount">${ccy}${total.toLocaleString()}</div>
+      <div class="ws-budget-sub">${escapeHtml(T.calcPerDay)}: ${ccy}${perDayPerPerson.toLocaleString()}</div>
+    </div>
+    <div class="ws-form-label" style="margin:14px 0 8px">${escapeHtml(T.calcBreakdown)}</div>
+    <div class="ws-budget-rows">
+      ${cats.map(c => {
+        const amount = Math.round(total * c.pct);
+        return `
+        <div class="ws-budget-row">
+          <div class="ws-budget-icon" style="background:${c.color}"><span class="fa ${c.icon}"></span></div>
+          <div class="ws-budget-info">
+            <div class="ws-budget-cat">${escapeHtml(c.label)}</div>
+            <div class="ws-budget-note">${Math.round(c.pct*100)}%</div>
+          </div>
+          <div class="ws-budget-val">${ccy}${amount.toLocaleString()}</div>
+        </div>`;
+      }).join('')}
+    </div>
+    <div class="ws-form-label" style="margin:14px 0 8px">${escapeHtml(T.calcTips)}</div>
+    <ul class="ws-calc-tips">
+      ${tips.map(tip => `<li><span class="fa fa-lightbulb-o"></span> ${escapeHtml(tip)}</li>`).join('')}
+    </ul>
+  `;
+}
+
+function applyBudgetCalc() {
+  const dest = document.getElementById('ws-calc-dest').value;
+  const style = document.getElementById('ws-calc-style').value;
+  const days = parseInt(document.getElementById('ws-calc-days').value) || 7;
+  const people = parseInt(document.getElementById('ws-calc-people').value) || 2;
+  const base = CALC_BASE[dest] || 400;
+  const mult = CALC_STYLE_MULT[style] || 1.0;
+  const factor = (currentLang === 'en' || currentLang === 'id') ? 0.14 : 1;
+  const total = Math.round(base * mult * days * people * factor);
+
+  if (!currentTrip) currentTrip = {};
+  currentTrip.dest = dest;
+  currentTrip.style = style;
+  currentTrip.days = days;
+  currentTrip.people = people;
+  currentTrip.budget = total;
+  if (!currentTrip.start) {
+    currentTrip.start = new Date().toISOString().split('T')[0];
+    currentTrip.end = new Date(Date.now() + days * 86400000).toISOString().split('T')[0];
+  }
+  localStorage.setItem('wm_studio_currentTrip', JSON.stringify(currentTrip));
+  if (dest !== currentDest) {
+    currentDest = dest;
+    localStorage.setItem('wm_studio_dest', dest);
+    renderChatHeader();
+    renderPanelDest();
+    renderPanelCompare();
+    renderPanelItinerary();
+    renderPanelBudget();
+    if (typeof fetchDestInfo === 'function') fetchDestInfo(dest);
+  }
+  updateTripHeaderChips();
+  closeModalEl();
+  showToast(t().calcApply + ' ✓', 'fa-check-circle');
+  addLog('success', 'fa-calculator', t().logCalcApply);
+}
