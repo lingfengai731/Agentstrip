@@ -34,28 +34,32 @@ body.dark {
   --ws-ink-3:      #8a8a8a;
 }
 
-/* —— Page-level wrapper sits below the sticky Studio navbar —— */
+/* —— Page-level wrapper sits below the sticky Studio navbar + fixed tab bar —— */
 .ws-aitool {
   background: var(--ws-bg);
   color: var(--ws-ink);
   min-height: calc(100vh - 80px);
-  padding-top: 100px;
+  padding-top: 144px;  /* 80px navbar + 52px fixed top-tabs + 12px breathing room */
   font-family: 'Roboto', -apple-system, BlinkMacSystemFont, sans-serif;
 }
 
-/* ─────────────────── TOP NAV TABS ─────────────────── */
+/* ─────────────────── TOP NAV TABS (FIXED — stays pinned under navbar) ─────────────────── */
 .ws-top-tabs {
   display: flex;
   gap: 0;
   background: var(--ws-paper);
   border-bottom: 1px solid var(--ws-line);
   padding: 0 24px;
-  position: sticky;
+  position: fixed;
   top: 80px;
-  z-index: 30;
+  left: 0;
+  right: 0;
+  z-index: 1020;       /* above page content, below modals */
   overflow-x: auto;
   scrollbar-width: none;
+  box-shadow: 0 1px 4px rgba(0,0,0,.03);
 }
+body.dark .ws-top-tabs { background: var(--ws-bg-2); border-bottom-color: var(--ws-line); }
 .ws-top-tabs::-webkit-scrollbar { display: none; }
 .ws-top-tab {
   display: inline-flex;
@@ -648,9 +652,11 @@ body.dark .ws-region-tag { filter: brightness(.85); }
   padding: 10px 16px;
   gap: 8px;
   justify-content: space-between;
-  position: sticky;
-  top: 130px;
-  z-index: 25;
+  position: fixed;
+  top: 132px;          /* sits flush under the fixed top-tab bar */
+  left: 0;
+  right: 0;
+  z-index: 1019;
 }
 @media (max-width: 991px) { .ws-mobile-bar { display: flex; } }
 .ws-mobile-btn {

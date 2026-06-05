@@ -1308,15 +1308,51 @@ function renderPanelItinerary() {
     return;
   }
 
-  // Use bali's itinerary as fallback shape if dest has none
-  const fallback = [
-    { icon:'fa-plane',    color:'#0e7c6b', dayLabel:'Day 1', title:'Arrival & settle in', desc:'Airport transfer, check-in, gentle first stroll' },
-    { icon:'fa-camera',   color:'#7c3aed', dayLabel:'Day 2', title:'Headline sights',    desc:'Highest-impact landmarks while energy is fresh' },
-    { icon:'fa-cutlery',  color:'#ea580c', dayLabel:'Day 3', title:'Food + neighbourhoods', desc:'Local eats, slower exploration, optional class' },
-    { icon:'fa-leaf',     color:'#10b981', dayLabel:'Day 4', title:'Nature day',           desc:'Day trip — beach / mountain / temple route' },
-    { icon:'fa-shopping-bag', color:'#fcbf1e', dayLabel:'Day 5', title:'Markets & rest',  desc:'Shopping, café-hopping, spa or downtime' },
-    { icon:'fa-suitcase', color:'#2563eb', dayLabel:'Day 6', title:'Free + departure',    desc:'Final highlights, pack up, transfer back' }
-  ];
+  // Language-aware default itinerary (used when the destination has no
+  // pre-curated day-by-day data)
+  const FALLBACK_ITIN = {
+    en: [
+      { icon:'fa-plane',        color:'#0e7c6b', dayLabel:'Day 1', title:'Arrival & settle in',  desc:'Airport transfer, check-in, gentle first stroll' },
+      { icon:'fa-camera',       color:'#7c3aed', dayLabel:'Day 2', title:'Headline sights',      desc:'Highest-impact landmarks while energy is fresh' },
+      { icon:'fa-cutlery',      color:'#ea580c', dayLabel:'Day 3', title:'Food & neighbourhoods', desc:'Local eats, slower exploration, optional class' },
+      { icon:'fa-leaf',         color:'#10b981', dayLabel:'Day 4', title:'Nature day',           desc:'Day trip — beach / mountain / temple route' },
+      { icon:'fa-shopping-bag', color:'#fcbf1e', dayLabel:'Day 5', title:'Markets & rest',       desc:'Shopping, café-hopping, spa or downtime' },
+      { icon:'fa-suitcase',     color:'#2563eb', dayLabel:'Day 6', title:'Free time & departure',desc:'Final highlights, pack up, transfer back' }
+    ],
+    zh: [
+      { icon:'fa-plane',        color:'#0e7c6b', dayLabel:'第 1 天', title:'抵达 · 安顿',           desc:'机场接送、入住、傍晚轻松漫步' },
+      { icon:'fa-camera',       color:'#7c3aed', dayLabel:'第 2 天', title:'核心地标',             desc:'体力最好的一天打卡最具代表性的景点' },
+      { icon:'fa-cutlery',      color:'#ea580c', dayLabel:'第 3 天', title:'美食 · 街区',          desc:'本地餐厅、慢节奏探索、可选体验课' },
+      { icon:'fa-leaf',         color:'#10b981', dayLabel:'第 4 天', title:'自然一日',             desc:'郊外一日游 —— 海滩 / 山林 / 寺庙路线' },
+      { icon:'fa-shopping-bag', color:'#fcbf1e', dayLabel:'第 5 天', title:'市集 · 放松',          desc:'购物、咖啡馆漫游、SPA 或休息' },
+      { icon:'fa-suitcase',     color:'#2563eb', dayLabel:'第 6 天', title:'自由活动 · 返程',     desc:'最后回顾、收拾行李、机场送机' }
+    ],
+    ja: [
+      { icon:'fa-plane',        color:'#0e7c6b', dayLabel:'1日目', title:'到着・落ち着く',         desc:'空港送迎、チェックイン、夕方の散歩' },
+      { icon:'fa-camera',       color:'#7c3aed', dayLabel:'2日目', title:'主要観光地',             desc:'体力のあるうちに代表的なスポットへ' },
+      { icon:'fa-cutlery',      color:'#ea580c', dayLabel:'3日目', title:'グルメ・街歩き',         desc:'地元の名店、ゆったり散策、体験講座も' },
+      { icon:'fa-leaf',         color:'#10b981', dayLabel:'4日目', title:'自然デー',               desc:'郊外日帰り — ビーチ／山／寺院ルート' },
+      { icon:'fa-shopping-bag', color:'#fcbf1e', dayLabel:'5日目', title:'市場・リフレッシュ',     desc:'ショッピング、カフェ巡り、スパ' },
+      { icon:'fa-suitcase',     color:'#2563eb', dayLabel:'6日目', title:'自由時間・帰国',         desc:'ハイライト再訪、荷造り、空港へ' }
+    ],
+    ko: [
+      { icon:'fa-plane',        color:'#0e7c6b', dayLabel:'1일차', title:'도착 · 적응',           desc:'공항 픽업, 체크인, 저녁 가벼운 산책' },
+      { icon:'fa-camera',       color:'#7c3aed', dayLabel:'2일차', title:'대표 명소',             desc:'체력 좋은 첫 풀데이에 핵심 랜드마크' },
+      { icon:'fa-cutlery',      color:'#ea580c', dayLabel:'3일차', title:'음식 · 동네',           desc:'현지 맛집, 느린 탐방, 선택형 클래스' },
+      { icon:'fa-leaf',         color:'#10b981', dayLabel:'4일차', title:'자연 데이',             desc:'당일치기 — 해변 / 산 / 사원 코스' },
+      { icon:'fa-shopping-bag', color:'#fcbf1e', dayLabel:'5일차', title:'시장 · 휴식',           desc:'쇼핑, 카페 투어, 스파 또는 휴식' },
+      { icon:'fa-suitcase',     color:'#2563eb', dayLabel:'6일차', title:'자유 시간 · 출국',     desc:'마지막 하이라이트, 짐 정리, 공항 이동' }
+    ],
+    id: [
+      { icon:'fa-plane',        color:'#0e7c6b', dayLabel:'Hari 1', title:'Tiba & menyesuaikan diri', desc:'Jemput bandara, check-in, jalan santai sore' },
+      { icon:'fa-camera',       color:'#7c3aed', dayLabel:'Hari 2', title:'Landmark utama',         desc:'Tempat ikonik saat energi masih segar' },
+      { icon:'fa-cutlery',      color:'#ea580c', dayLabel:'Hari 3', title:'Kuliner & lingkungan',   desc:'Tempat makan lokal, jelajah santai, kelas opsional' },
+      { icon:'fa-leaf',         color:'#10b981', dayLabel:'Hari 4', title:'Hari alam',              desc:'Trip sehari — pantai / gunung / pura' },
+      { icon:'fa-shopping-bag', color:'#fcbf1e', dayLabel:'Hari 5', title:'Pasar & istirahat',      desc:'Belanja, café-hopping, spa atau santai' },
+      { icon:'fa-suitcase',     color:'#2563eb', dayLabel:'Hari 6', title:'Waktu bebas & pulang',  desc:'Tempat favorit terakhir, packing, antar bandara' }
+    ]
+  };
+  const fallback = FALLBACK_ITIN[currentLang] || FALLBACK_ITIN.en;
   const useItems = items.length ? items : fallback;
 
   // Static itinerary rendering
