@@ -242,7 +242,7 @@ const TOOL_I18N = {
     quickItinerary:'生成完整行程', quickLatest:'最新资讯', quickHotels:'住宿推荐',
     inputPh:'告诉我你想去哪里 · 想要什么样的体验…',
     panelDest:'目的地', panelCompare:'比价', panelItinerary:'行程', panelBudget:'预算', panelLog:'日志',
-    sectionWeather:'目的地速览 · 示例', sectionRegions:'热门区域', sectionTips:'实用贴士',
+    sectionWeather:'目的地情报', sectionRegions:'热门区域', sectionTips:'实用贴士',
     rateLbl:'实时汇率', seasonLbl:'季节',
     comingTitle:'即将在 Phase 2 上线',
     comingDesc:'此模块功能正在迁移中，将与现有 H5 完全等价但视觉为 Studio 风格。',
@@ -260,7 +260,7 @@ const TOOL_I18N = {
     quickItinerary:'Generate Full Itinerary', quickLatest:'Latest News', quickHotels:'Hotel Picks',
     inputPh:'Tell me where you want to go · what kind of experience…',
     panelDest:'Place', panelCompare:'Compare', panelItinerary:'Plan', panelBudget:'Budget', panelLog:'Log',
-    sectionWeather:'Destination Snapshot · sample', sectionRegions:'Top Areas', sectionTips:'Practical Tips',
+    sectionWeather:'Destination Intel', sectionRegions:'Top Areas', sectionTips:'Practical Tips',
     rateLbl:'Live FX', seasonLbl:'Season',
     comingTitle:'Coming in Phase 2',
     comingDesc:'This module is being migrated — full feature parity with the existing H5, restyled to Studio.',
@@ -278,7 +278,7 @@ const TOOL_I18N = {
     quickItinerary:'フル旅程生成', quickLatest:'最新情報', quickHotels:'宿泊おすすめ',
     inputPh:'行きたい場所·体験を教えて…',
     panelDest:'目的地', panelCompare:'比較', panelItinerary:'旅程', panelBudget:'予算', panelLog:'ログ',
-    sectionWeather:'目的地概要 · サンプル', sectionRegions:'人気エリア', sectionTips:'実用ヒント',
+    sectionWeather:'目的地情報', sectionRegions:'人気エリア', sectionTips:'実用ヒント',
     rateLbl:'為替', seasonLbl:'シーズン',
     comingTitle:'Phase 2 で公開予定',
     comingDesc:'このモジュールは移行中です。既存H5と機能同等、Studio風にリスタイル。',
@@ -296,7 +296,7 @@ const TOOL_I18N = {
     quickItinerary:'전체 일정 생성', quickLatest:'최신 정보', quickHotels:'숙소 추천',
     inputPh:'어디로 가고 싶은지·어떤 경험을…',
     panelDest:'목적지', panelCompare:'비교', panelItinerary:'일정', panelBudget:'예산', panelLog:'로그',
-    sectionWeather:'목적지 개요 · 샘플', sectionRegions:'인기 지역', sectionTips:'실용 팁',
+    sectionWeather:'목적지 정보', sectionRegions:'인기 지역', sectionTips:'실용 팁',
     rateLbl:'환율', seasonLbl:'시즌',
     comingTitle:'Phase 2 출시 예정',
     comingDesc:'이 모듈은 마이그레이션 중. 기존 H5와 동등하며 Studio 스타일.',
@@ -314,7 +314,7 @@ const TOOL_I18N = {
     quickItinerary:'Buat Rencana Penuh', quickLatest:'Berita Terbaru', quickHotels:'Pilihan Hotel',
     inputPh:'Beri tahu kemana & pengalaman seperti apa…',
     panelDest:'Tempat', panelCompare:'Banding', panelItinerary:'Rencana', panelBudget:'Anggaran', panelLog:'Log',
-    sectionWeather:'Sekilas Destinasi · contoh', sectionRegions:'Area Populer', sectionTips:'Tips Praktis',
+    sectionWeather:'Info Destinasi', sectionRegions:'Area Populer', sectionTips:'Tips Praktis',
     rateLbl:'Kurs', seasonLbl:'Musim',
     comingTitle:'Hadir di Fase 2',
     comingDesc:'Modul ini sedang dimigrasikan — fitur setara H5, gaya Studio.',
@@ -398,9 +398,35 @@ function handleTopTab(id, btn) {
 function renderSidebar() {
   // Trips
   $('#ws-trip-title').textContent = t().sideMyTrips;
-  $('#ws-trip-empty').innerHTML = t().tripEmpty;
   $('#ws-newtrip-label').textContent = t().sideNewTrip;
   $('#ws-agents-title').textContent = t().sideAgents;
+
+  // Trip list — only when logged in
+  const listEl = $('#ws-trip-list');
+  const emptyEl = $('#ws-trip-empty');
+  if (typeof isLoggedIn === 'function' && isLoggedIn() && Array.isArray(tripList) && tripList.length) {
+    listEl.innerHTML = tripList.map(trip => `
+      <div class="ws-trip-item ${trip.id === currentTripId ? 'active' : ''}" data-trip="${escapeHtml(trip.id)}">
+        <span class="fa fa-bookmark-o"></span>
+        <span style="flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${escapeHtml(trip.title || trip.dest || 'Trip')}</span>
+        <span class="fa fa-times ws-trip-del" data-del="${escapeHtml(trip.id)}" title="${escapeHtml(t().tripDelete || 'Delete')}" style="opacity:.4;font-size:10px"></span>
+      </div>
+    `).join('');
+    emptyEl.style.display = 'none';
+    listEl.querySelectorAll('.ws-trip-item').forEach(el => {
+      el.onclick = e => {
+        if (e.target.classList.contains('ws-trip-del')) return;
+        if (typeof loadTrip === 'function') loadTrip(el.dataset.trip);
+      };
+    });
+    listEl.querySelectorAll('.ws-trip-del').forEach(x => {
+      x.onclick = e => { e.stopPropagation(); if (typeof deleteTripById === 'function') deleteTripById(x.dataset.del); };
+    });
+  } else {
+    listEl.innerHTML = '';
+    emptyEl.style.display = 'block';
+    emptyEl.innerHTML = (typeof isLoggedIn === 'function' && isLoggedIn()) ? t().tripEmpty : (t().tripLoginToSave || t().tripEmpty);
+  }
 
   const agentList = $('#ws-agent-list');
   agentList.innerHTML = Object.keys(AGENTS).map(key => {
@@ -778,7 +804,7 @@ function init() {
   $('#ws-send-btn').onclick = () => sendMessage();
   $('#ws-mode-toggle').onclick = toggleMode;
   $('#ws-askall').onclick = askTeam;
-  $('#ws-newtrip-btn').onclick = () => showToast(t().toastPhase3 + ' · ' + t().sideNewTrip, 'fa-plus-circle');
+  $('#ws-newtrip-btn').onclick = () => { if (typeof createNewTrip === 'function') createNewTrip(); };
 
   // Seed first log
   addLog('info', 'fa-power-off', t().logBooted);
@@ -1793,4 +1819,464 @@ switchDest = function(key) {
   renderPanelCompare();
   renderPanelItinerary();
   renderPanelBudget();
+  // Phase 2.5: fetch live data for the new destination (silent)
+  if (typeof fetchDestInfo === 'function') fetchDestInfo(key);
 };
+
+/* ═══════════════════════════════════════════════════════════════════════
+   PHASE 2.5 — Live destination data via /api/dest_info
+   ═══════════════════════════════════════════════════════════════════════ */
+
+Object.assign(TOOL_I18N.en, { liveTag:'LIVE', sampleTag:'SAMPLE', destLoading:'Loading live data…' });
+Object.assign(TOOL_I18N.zh, { liveTag:'实时', sampleTag:'示例', destLoading:'加载实时数据…' });
+Object.assign(TOOL_I18N.ja, { liveTag:'ライブ', sampleTag:'サンプル', destLoading:'リアル情報読込中…' });
+Object.assign(TOOL_I18N.ko, { liveTag:'실시간', sampleTag:'샘플', destLoading:'실시간 데이터 로드 중…' });
+Object.assign(TOOL_I18N.id, { liveTag:'LIVE', sampleTag:'SAMPLE', destLoading:'Memuat data langsung…' });
+
+let _destInfoCache = {};
+let _destIsLive = {};
+
+const _DEST_API_NAMES = {
+  bali:'Bali, Indonesia',
+  kyoto:'Kyoto, Japan',
+  paris:'Paris, France',
+  santorini:'Santorini, Greece'
+};
+
+async function fetchDestInfo(key, force = false) {
+  const apiDest = _DEST_API_NAMES[key];
+  if (!apiDest) return;
+  const cacheKey = key + ':' + currentLang;
+  if (!force && _destInfoCache[cacheKey]) {
+    _applyDestInfo(key, _destInfoCache[cacheKey]);
+    return;
+  }
+  addLog('info', 'fa-cloud-download', _interp((currentLang==='zh'?'获取 {d} 实时数据':'Fetching live data for {d}'), { d: apiDest }));
+  try {
+    const r = await fetch(BACKEND_BASE + '/api/dest_info', {
+      method:'POST',
+      headers:{ 'Content-Type':'application/json' },
+      body: JSON.stringify({ destination: apiDest, lang: currentLang })
+    });
+    if (!r.ok) {
+      let detail = 'HTTP ' + r.status;
+      try { const e = await r.json(); detail = e.detail || detail; } catch(_) {}
+      throw new Error(detail);
+    }
+    const data = await r.json();
+    _destInfoCache[cacheKey] = data;
+    _applyDestInfo(key, data);
+    addLog('success', 'fa-cloud', _interp((currentLang==='zh'?'{d} · 实时数据已加载':'{d} · live data loaded'), { d: apiDest }));
+  } catch (err) {
+    addLog('warn', 'fa-cloud-download', _interp((currentLang==='zh'?'实时数据获取失败 · 使用示例: {e}':'Live fetch failed, using sample: {e}'), { e: err.message || err }));
+  }
+}
+
+function _applyDestInfo(key, data) {
+  const d = DESTS[key];
+  if (!d || !data) return;
+  // Weather — backend returns strings already localised since we passed `lang`
+  if (data.weather) {
+    if (data.weather.temp) d.weather.temp = data.weather.temp;
+    if (data.weather.details) d.weather.details = data.weather.details;
+    if (data.weather.cond) d.weather.cond = { ...(d.weather.cond || {}), [currentLang]: data.weather.cond };
+  }
+  if (data.rate) d.rate = data.rate;
+  if (data.season) d.season = { ...(d.season || {}), [currentLang]: data.season };
+  if (data.seasonDesc) d.seasonDesc = { ...(d.seasonDesc || {}), [currentLang]: data.seasonDesc };
+  if (Array.isArray(data.regions) && data.regions.length) {
+    d.regions = data.regions.map(r => ({
+      name: r.name || '—',
+      cls: r.cls || 'tag-blue',
+      tag: { [currentLang]: r.tag || '' },
+      desc: { [currentLang]: r.desc || '' }
+    }));
+  }
+  if (Array.isArray(data.tips) && data.tips.length) {
+    // Preserve any driver/partner tips that exist in static data
+    const driverTips = (d.tips || []).filter(tip => tip.driver);
+    d.tips = [
+      ...data.tips.map(tip => ({
+        cls: tip.cls || 'tag-blue',
+        title: { [currentLang]: tip.title || '' },
+        tag: { [currentLang]: tip.tag || '' },
+        desc: { [currentLang]: tip.desc || '' }
+      })),
+      ...driverTips
+    ];
+  }
+  _destIsLive[key] = true;
+  // Repaint UI surfaces that use this data
+  if (currentDest === key) {
+    renderPanelDest();
+    renderChatHeader();
+  }
+}
+
+// Augment the destination section title with a LIVE/SAMPLE chip after each render
+const _origRenderPanelDest = renderPanelDest;
+renderPanelDest = function() {
+  _origRenderPanelDest();
+  const titleEl = document.getElementById('ws-section-weather');
+  if (!titleEl) return;
+  const live = !!_destIsLive[currentDest];
+  const tag = live ? t().liveTag : t().sampleTag;
+  const bg = live ? '#10b981' : '#9ca3af';
+  if (!titleEl.querySelector('.ws-live-chip')) {
+    titleEl.insertAdjacentHTML('beforeend',
+      ` <span class="ws-live-chip" style="font-size:9px;font-weight:700;padding:2px 6px;border-radius:8px;background:${bg};color:#fff;letter-spacing:.05em;margin-left:6px;vertical-align:middle">${escapeHtml(tag)}</span>`);
+  } else {
+    const chip = titleEl.querySelector('.ws-live-chip');
+    chip.textContent = tag;
+    chip.style.background = bg;
+  }
+};
+
+/* ═══════════════════════════════════════════════════════════════════════
+   PHASE 3a — Auth + Trip persistence
+   ═══════════════════════════════════════════════════════════════════════ */
+
+Object.assign(TOOL_I18N.en, {
+  authLogin:'Sign in', authRegister:'Create account', authEmail:'Email', authPassword:'Password', authName:'Your name',
+  authLogout:'Sign out', authLoginCta:'Save trips · sync prefs · access on any device.',
+  authNeed:'Sign in to save this trip', tripLoginToSave:'Sign in to save your trips across devices.',
+  tripDelete:'Delete', tripUntitled:'Untitled trip',
+  newTripStarted:'New trip started — start chatting to save it',
+  logLogin:'Signed in as <strong>{name}</strong>', logLogout:'Signed out',
+  logTripSaved:'Trip saved · <strong>{title}</strong>',
+  logTripLoaded:'Loaded trip · <strong>{title}</strong>',
+  logTripCreated:'New trip created', logTripDeleted:'Trip deleted',
+  errInvalidEmail:'Please enter a valid email', errShortPw:'Password must be at least 6 characters',
+  errLoginFail:'Sign-in failed', errRegisterFail:'Sign-up failed'
+});
+Object.assign(TOOL_I18N.zh, {
+  authLogin:'登录', authRegister:'注册', authEmail:'邮箱', authPassword:'密码', authName:'你的名字',
+  authLogout:'退出', authLoginCta:'保存行程 · 同步偏好 · 多设备访问',
+  authNeed:'请先登录以保存此行程', tripLoginToSave:'登录后可跨设备保存你的行程',
+  tripDelete:'删除', tripUntitled:'未命名行程',
+  newTripStarted:'新行程已开始 —— 开始对话即自动保存',
+  logLogin:'已登录 · <strong>{name}</strong>', logLogout:'已退出登录',
+  logTripSaved:'行程已保存 · <strong>{title}</strong>',
+  logTripLoaded:'已载入行程 · <strong>{title}</strong>',
+  logTripCreated:'新建行程成功', logTripDeleted:'行程已删除',
+  errInvalidEmail:'请输入有效的邮箱', errShortPw:'密码至少 6 位',
+  errLoginFail:'登录失败', errRegisterFail:'注册失败'
+});
+Object.assign(TOOL_I18N.ja, {
+  authLogin:'ログイン', authRegister:'新規登録', authEmail:'メール', authPassword:'パスワード', authName:'お名前',
+  authLogout:'ログアウト', authLoginCta:'旅程を保存・好みを同期・どの端末からも',
+  authNeed:'保存にはログインが必要', tripLoginToSave:'ログインで旅程を端末間同期',
+  tripDelete:'削除', tripUntitled:'無題の旅行',
+  newTripStarted:'新しい旅行を開始 — チャットすると自動保存',
+  logLogin:'<strong>{name}</strong>としてログイン', logLogout:'ログアウト済み',
+  logTripSaved:'旅行保存 · <strong>{title}</strong>',
+  logTripLoaded:'旅行を読込 · <strong>{title}</strong>',
+  logTripCreated:'新規旅行作成', logTripDeleted:'旅行削除',
+  errInvalidEmail:'有効なメールを入力', errShortPw:'パスワードは6文字以上',
+  errLoginFail:'ログイン失敗', errRegisterFail:'登録失敗'
+});
+Object.assign(TOOL_I18N.ko, {
+  authLogin:'로그인', authRegister:'회원가입', authEmail:'이메일', authPassword:'비밀번호', authName:'이름',
+  authLogout:'로그아웃', authLoginCta:'여행 저장 · 선호 동기화 · 모든 기기',
+  authNeed:'저장하려면 로그인 필요', tripLoginToSave:'로그인하여 여행을 기기 간 동기화',
+  tripDelete:'삭제', tripUntitled:'제목 없는 여행',
+  newTripStarted:'새 여행 시작 — 대화 시 자동 저장',
+  logLogin:'<strong>{name}</strong>(으)로 로그인', logLogout:'로그아웃됨',
+  logTripSaved:'여행 저장 · <strong>{title}</strong>',
+  logTripLoaded:'여행 로드 · <strong>{title}</strong>',
+  logTripCreated:'새 여행 생성', logTripDeleted:'여행 삭제',
+  errInvalidEmail:'유효한 이메일 입력', errShortPw:'비밀번호 6자 이상',
+  errLoginFail:'로그인 실패', errRegisterFail:'가입 실패'
+});
+Object.assign(TOOL_I18N.id, {
+  authLogin:'Masuk', authRegister:'Daftar', authEmail:'Email', authPassword:'Kata sandi', authName:'Nama',
+  authLogout:'Keluar', authLoginCta:'Simpan perjalanan · sinkron preferensi · semua perangkat',
+  authNeed:'Masuk untuk menyimpan perjalanan ini', tripLoginToSave:'Masuk untuk menyimpan perjalanan lintas perangkat',
+  tripDelete:'Hapus', tripUntitled:'Perjalanan tanpa judul',
+  newTripStarted:'Perjalanan baru dimulai — chat untuk menyimpan',
+  logLogin:'Masuk sebagai <strong>{name}</strong>', logLogout:'Keluar',
+  logTripSaved:'Perjalanan tersimpan · <strong>{title}</strong>',
+  logTripLoaded:'Memuat perjalanan · <strong>{title}</strong>',
+  logTripCreated:'Perjalanan baru dibuat', logTripDeleted:'Perjalanan dihapus',
+  errInvalidEmail:'Masukkan email valid', errShortPw:'Kata sandi minimal 6 karakter',
+  errLoginFail:'Gagal masuk', errRegisterFail:'Gagal daftar'
+});
+
+let authToken  = localStorage.getItem('wm_studio_token') || null;
+let authUser   = (() => { try { return JSON.parse(localStorage.getItem('wm_studio_user') || 'null'); } catch(_) { return null; } })();
+let tripList   = [];
+let currentTripId = null;
+let _saveTimer = null;
+
+function isLoggedIn() { return !!authToken && !!authUser; }
+function authHeaders() { return authToken ? { Authorization: 'Bearer ' + authToken } : {}; }
+
+function _autoTitle() {
+  const labels = { bali:'Bali', kyoto:'Kyoto', paris:'Paris', santorini:'Santorini', any:'Custom' };
+  const firstUser = messages.find(m => m.role === 'user');
+  const preview = firstUser ? (firstUser.text.slice(0, 24) + (firstUser.text.length > 24 ? '…' : '')) : (labels[currentDest] || 'Trip');
+  return preview;
+}
+
+async function doLogin(email, password) {
+  const r = await fetch(BACKEND_BASE + '/api/auth/login', {
+    method:'POST', headers:{ 'Content-Type':'application/json' },
+    body: JSON.stringify({ email, password })
+  });
+  const data = await r.json();
+  if (!r.ok) throw new Error(data.detail || t().errLoginFail);
+  authToken = data.token;
+  authUser  = data.user;
+  localStorage.setItem('wm_studio_token', authToken);
+  localStorage.setItem('wm_studio_user', JSON.stringify(authUser));
+  updateAuthUI();
+  await loadTrips();
+  closeModalEl();
+  addLog('success', 'fa-sign-in', _interp(t().logLogin, { name: authUser.name || authUser.email }));
+}
+
+async function doRegister(name, email, password) {
+  const r = await fetch(BACKEND_BASE + '/api/auth/register', {
+    method:'POST', headers:{ 'Content-Type':'application/json' },
+    body: JSON.stringify({ name, email, password })
+  });
+  const data = await r.json();
+  if (!r.ok) throw new Error(data.detail || t().errRegisterFail);
+  authToken = data.token;
+  authUser  = data.user;
+  localStorage.setItem('wm_studio_token', authToken);
+  localStorage.setItem('wm_studio_user', JSON.stringify(authUser));
+  updateAuthUI();
+  await loadTrips();
+  closeModalEl();
+  addLog('success', 'fa-sign-in', _interp(t().logLogin, { name: authUser.name || authUser.email }));
+}
+
+function doLogout() {
+  authToken = null;
+  authUser  = null;
+  currentTripId = null;
+  tripList = [];
+  messages = [];
+  localStorage.removeItem('wm_studio_token');
+  localStorage.removeItem('wm_studio_user');
+  updateAuthUI();
+  renderSidebar();
+  renderMessages();
+  addLog('info', 'fa-sign-out', t().logLogout);
+}
+
+function showAuthModal(tab = 'login') {
+  const el = _ensureModal();
+  const T = t();
+  el.innerHTML = `
+    <div class="ws-modal" style="max-width:440px">
+      <div class="ws-modal-head">
+        <div class="ws-modal-title"><span class="fa fa-user-circle-o"></span> ${escapeHtml(tab === 'login' ? T.authLogin : T.authRegister)}</div>
+        <button class="ws-modal-close"><span class="fa fa-times"></span></button>
+      </div>
+      <div class="ws-modal-body">
+        <p style="color:var(--ws-ink-3);font-size:13px;margin:0 0 18px;line-height:1.6">${escapeHtml(T.authLoginCta)}</p>
+        <div class="ws-auth-tabs">
+          <button class="ws-auth-tab ${tab==='login'?'active':''}" data-auth-tab="login">${escapeHtml(T.authLogin)}</button>
+          <button class="ws-auth-tab ${tab==='register'?'active':''}" data-auth-tab="register">${escapeHtml(T.authRegister)}</button>
+        </div>
+        <div class="ws-auth-form" data-form="login" style="display:${tab==='login'?'block':'none'}">
+          <input type="email" class="ws-form-input ws-auth-input" id="ws-li-email" placeholder="${escapeHtml(T.authEmail)}" autocomplete="email">
+          <input type="password" class="ws-form-input ws-auth-input" id="ws-li-pw" placeholder="${escapeHtml(T.authPassword)}" autocomplete="current-password">
+          <div class="ws-auth-error" id="ws-li-err"></div>
+          <button class="ws-search-btn" id="ws-li-btn"><span class="fa fa-sign-in"></span> ${escapeHtml(T.authLogin)}</button>
+        </div>
+        <div class="ws-auth-form" data-form="register" style="display:${tab==='register'?'block':'none'}">
+          <input type="text" class="ws-form-input ws-auth-input" id="ws-rg-name" placeholder="${escapeHtml(T.authName)}" autocomplete="name">
+          <input type="email" class="ws-form-input ws-auth-input" id="ws-rg-email" placeholder="${escapeHtml(T.authEmail)}" autocomplete="email">
+          <input type="password" class="ws-form-input ws-auth-input" id="ws-rg-pw" placeholder="${escapeHtml(T.authPassword)} (6+)" autocomplete="new-password">
+          <div class="ws-auth-error" id="ws-rg-err"></div>
+          <button class="ws-search-btn" id="ws-rg-btn"><span class="fa fa-user-plus"></span> ${escapeHtml(T.authRegister)}</button>
+        </div>
+      </div>
+    </div>
+  `;
+  el.querySelector('.ws-modal-close').onclick = closeModalEl;
+  el.querySelectorAll('.ws-auth-tab').forEach(b => b.onclick = () => {
+    el.querySelectorAll('.ws-auth-tab').forEach(x => x.classList.toggle('active', x.dataset.authTab === b.dataset.authTab));
+    el.querySelectorAll('.ws-auth-form').forEach(f => f.style.display = (f.dataset.form === b.dataset.authTab ? 'block' : 'none'));
+  });
+  const liBtn = document.getElementById('ws-li-btn');
+  liBtn.onclick = async () => {
+    const email = document.getElementById('ws-li-email').value.trim();
+    const pw    = document.getElementById('ws-li-pw').value;
+    const err   = document.getElementById('ws-li-err');
+    err.textContent = '';
+    if (!/.+@.+\..+/.test(email)) { err.textContent = T.errInvalidEmail; return; }
+    if (!pw) { err.textContent = T.authPassword; return; }
+    liBtn.disabled = true;
+    try { await doLogin(email, pw); } catch (e) { err.textContent = e.message || T.errLoginFail; }
+    liBtn.disabled = false;
+  };
+  const rgBtn = document.getElementById('ws-rg-btn');
+  rgBtn.onclick = async () => {
+    const name  = document.getElementById('ws-rg-name').value.trim();
+    const email = document.getElementById('ws-rg-email').value.trim();
+    const pw    = document.getElementById('ws-rg-pw').value;
+    const err   = document.getElementById('ws-rg-err');
+    err.textContent = '';
+    if (!name) { err.textContent = T.authName; return; }
+    if (!/.+@.+\..+/.test(email)) { err.textContent = T.errInvalidEmail; return; }
+    if (pw.length < 6) { err.textContent = T.errShortPw; return; }
+    rgBtn.disabled = true;
+    try { await doRegister(name, email, pw); } catch (e) { err.textContent = e.message || T.errRegisterFail; }
+    rgBtn.disabled = false;
+  };
+  // Enter to submit
+  el.querySelectorAll('.ws-auth-input').forEach(inp => inp.addEventListener('keydown', e => {
+    if (e.key === 'Enter') {
+      const form = inp.closest('.ws-auth-form');
+      const btn = form.querySelector('.ws-search-btn');
+      if (btn) btn.click();
+    }
+  }));
+  el.classList.add('show');
+}
+
+async function loadTrips() {
+  if (!isLoggedIn()) { tripList = []; renderSidebar(); return; }
+  try {
+    const r = await fetch(BACKEND_BASE + '/api/conversations', { headers: authHeaders() });
+    if (r.status === 401) { doLogout(); return; }
+    if (!r.ok) throw new Error('HTTP ' + r.status);
+    tripList = await r.json();
+    renderSidebar();
+  } catch (err) { /* silent */ }
+}
+
+async function loadTrip(id) {
+  if (!isLoggedIn()) return;
+  try {
+    const r = await fetch(BACKEND_BASE + '/api/conversations/' + id, { headers: authHeaders() });
+    if (!r.ok) throw new Error('HTTP ' + r.status);
+    const data = await r.json();
+    currentTripId = id;
+    if (data.dest && DESTS[data.dest]) { currentDest = data.dest; localStorage.setItem('wm_studio_dest', data.dest); }
+    const raw = typeof data.messages === 'string' ? JSON.parse(data.messages || '[]') : (data.messages || []);
+    messages = raw.map(m => ({
+      role: m.role === 'assistant' ? 'ai' : (m.role === 'user' ? 'user' : 'system'),
+      agent: m.role === 'assistant' ? (m.agent || 'planner') : null,
+      text: m.content || m.text || '',
+      ts: Date.now()
+    }));
+    renderChatHeader();
+    renderPanelDest();
+    renderSidebar();
+    renderMessages();
+    addLog('info', 'fa-folder-open-o', _interp(t().logTripLoaded, { title: data.title || t().tripUntitled }));
+  } catch (err) {
+    addLog('error', 'fa-exclamation-circle', escapeHtml(err.message || String(err)));
+  }
+}
+
+async function saveCurrentTrip() {
+  if (!isLoggedIn() || messages.length === 0) return;
+  const title = (tripList.find(x => x.id === currentTripId) || {}).title || _autoTitle();
+  try {
+    const r = await fetch(BACKEND_BASE + '/api/conversations', {
+      method:'POST',
+      headers:{ 'Content-Type':'application/json', ...authHeaders() },
+      body: JSON.stringify({
+        conv_id: currentTripId,
+        dest: currentDest,
+        title: title || t().tripUntitled,
+        messages: messages
+          .filter(m => m.role !== 'system' && m.text !== '__typing__')
+          .map(m => ({ role: m.role === 'ai' ? 'assistant' : 'user', content: m.text, agent: m.agent || null }))
+      })
+    });
+    if (!r.ok) return;
+    const data = await r.json();
+    if (data && data.conv_id) currentTripId = data.conv_id;
+    await loadTrips();
+    addLog('success', 'fa-floppy-o', _interp(t().logTripSaved, { title }));
+  } catch (_) { /* silent */ }
+}
+
+function scheduleAutoSave() {
+  if (!isLoggedIn()) return;
+  clearTimeout(_saveTimer);
+  _saveTimer = setTimeout(saveCurrentTrip, 2500);
+}
+
+async function deleteTripById(id) {
+  if (!isLoggedIn()) return;
+  if (!confirm(t().tripDelete + '?')) return;
+  try {
+    await fetch(BACKEND_BASE + '/api/conversations/' + id, { method:'DELETE', headers: authHeaders() });
+    if (currentTripId === id) { currentTripId = null; messages = []; renderMessages(); }
+    addLog('info', 'fa-trash-o', t().logTripDeleted);
+    await loadTrips();
+  } catch (_) { /* silent */ }
+}
+
+function createNewTrip() {
+  if (!isLoggedIn()) {
+    showAuthModal('login');
+    showToast(t().authNeed, 'fa-sign-in');
+    return;
+  }
+  currentTripId = null;
+  messages = [];
+  renderMessages();
+  renderSidebar();
+  showToast(t().newTripStarted, 'fa-bookmark');
+  addLog('info', 'fa-bookmark', t().logTripCreated);
+}
+
+function updateAuthUI() {
+  const slot = document.getElementById('ws-nav-auth-slot');
+  if (!slot) return;
+  if (isLoggedIn()) {
+    slot.innerHTML = `
+      <div class="lang-picker" id="ws-user-menu" style="cursor:pointer;font-weight:600;gap:8px">
+        <span class="fa fa-user" style="color:#fcbf1e"></span>
+        <span style="max-width:90px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${escapeHtml(authUser.name || authUser.email)}</span>
+      </div>
+    `;
+    document.getElementById('ws-user-menu').onclick = () => {
+      if (confirm(t().authLogout + '?')) doLogout();
+    };
+  } else {
+    slot.innerHTML = `
+      <div class="lang-picker" id="ws-login-trigger" style="cursor:pointer;font-weight:600;gap:8px">
+        <span class="fa fa-sign-in" style="color:#fcbf1e"></span>
+        <span>${escapeHtml(t().authLogin)}</span>
+      </div>
+    `;
+    document.getElementById('ws-login-trigger').onclick = () => showAuthModal('login');
+  }
+}
+
+// Auto-save after each successful AI reply
+const _origSendMessage2 = sendMessage;
+sendMessage = async function(text) {
+  const r = await _origSendMessage2(text);
+  setTimeout(scheduleAutoSave, 1500);
+  return r;
+};
+
+// Re-render auth UI on language change
+const _origOnLangChange = onLangChange;
+onLangChange = function(newLang) {
+  _origOnLangChange(newLang);
+  updateAuthUI();
+};
+
+// Boot: hydrate auth state, fetch live dest data, render auth UI
+(function bootPhase3() {
+  // Delay until DOM is ready and panel slots exist
+  function go() {
+    updateAuthUI();
+    if (isLoggedIn()) loadTrips();
+    if (typeof currentDest === 'string') fetchDestInfo(currentDest);
+  }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', go);
+  else setTimeout(go, 50);
+})();

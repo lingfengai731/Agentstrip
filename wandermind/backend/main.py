@@ -357,7 +357,7 @@ async def delete_conv(conv_id: str, user=Depends(current_user)):
 
 # ─── Dynamic destination info (AI-generated panel data) ──────
 @app.post("/api/dest_info")
-async def get_dest_info(req: DestInfoReq, user=Depends(current_user)):
+async def get_dest_info(req: DestInfoReq, user=Depends(optional_user)):
     """AI生成任意目的地的面板数据：天气/区域/贴士。"""
     if not _API_KEY:
         raise HTTPException(500, "API_KEY not set")
