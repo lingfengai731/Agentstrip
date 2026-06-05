@@ -547,14 +547,18 @@ function switchPanelTab(id) {
 function renderPanelDest() {
   const d = dest();
   const w = d.weather;
-  $('#ws-section-weather').textContent = t().sectionWeather;
+  // When live weather has loaded, swap the section title from "Snapshot · sample" -> "Snapshot · live"
+  const liveLbl = { zh:'实时', en:'live', ja:'リアルタイム', ko:'실시간', id:'langsung' }[currentLang] || 'live';
+  const sampleLbl = { zh:'示例', en:'sample', ja:'サンプル', ko:'샘플', id:'contoh' }[currentLang] || 'sample';
+  const baseTitle = (t().sectionWeather || '').replace(/[·][\s]*(sample|示例|サンプル|샘플|contoh)\s*$/i, '').trim();
+  $('#ws-section-weather').textContent = baseTitle + ' · ' + (d._isLive ? liveLbl : sampleLbl);
   $('#ws-section-regions').textContent = t().sectionRegions;
   $('#ws-section-tips').textContent = t().sectionTips;
   $('#ws-rate-lbl').textContent = t().rateLbl;
   $('#ws-season-lbl').textContent = t().seasonLbl;
 
   $('#ws-w-temp').textContent = w.temp;
-  $('#ws-w-cond').textContent = w.cond[currentLang] || w.cond.en;
+  $('#ws-w-cond').textContent = (w.cond && typeof w.cond === 'object') ? (w.cond[currentLang] || w.cond.en) : (w.cond || '');
   $('#ws-w-icon').className = 'ws-weather-icon fa ' + w.icon;
   $('#ws-w-details').textContent = w.details;
   $('#ws-s-rate').textContent = d.rate;
@@ -1865,6 +1869,39 @@ async function fetchDestInfo(key, force = false) {
     addLog('success', 'fa-cloud', _interp((currentLang==='zh'?'{d} · 实时数据已加载':'{d} · live data loaded'), { d: apiDest }));
   } catch (err) {
     addLog('warn', 'fa-cloud-download', _interp((currentLang==='zh'?'实时数据获取失败 · 使用示例: {e}':'Live fetch failed, using sample: {e}'), { e: err.message || err }));
+  }
+  // After dest_info, layer real-time weather on top (gracefully fails if no key)
+  fetchLiveWeather(key);
+}
+
+// —— Live weather via OpenWeatherMap (backend /api/weather) ——
+// Silently no-ops if the backend has no OPENWEATHER_API_KEY set.
+async function fetchLiveWeather(key) {
+  const apiDest = key;  // backend looks up alias internally
+  try {
+    const r = await fetch(BACKEND_BASE + '/api/weather?city=' + encodeURIComponent(apiDest) + '&lang=' + currentLang);
+    if (!r.ok) {
+      // 503 = no key configured — that's expected and silent
+      if (r.status !== 503) {
+        addLog('warn', 'fa-cloud-download', 'Live weather unavailable · HTTP ' + r.status);
+      }
+      return;
+    }
+    const w = await r.json();
+    // Overwrite current dest's weather card with real data
+    const d = DESTS[key];
+    if (!d || !d.weather) return;
+    d.weather.temp = w.temp;
+    d.weather.details = w.details;
+    d.weather.icon = w.icon;  // FA icon class (already mapped backend-side)
+    d.weather.cond = { ...(d.weather.cond || {}), [currentLang]: w.cond };
+    d._isLive = true;
+    d._liveUpdatedAt = w.updated_at || Math.floor(Date.now() / 1000);
+    // Repaint dest panel if it's the currently selected destination
+    if (key === currentDest && typeof renderPanelDest === 'function') renderPanelDest();
+    addLog('success', 'fa-thermometer-half', _interp((currentLang==='zh'?'{d} · 实时天气已更新':'{d} · live weather updated'), { d: apiDest }));
+  } catch (_) {
+    // Network error — silent (we have static fallback)
   }
 }
 

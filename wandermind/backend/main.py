@@ -683,6 +683,118 @@ def _route(mode: str) -> tuple:
     return _CHAT_URL, _ai_headers(), _MODEL, "pro"
 
 
+# ─── Real-time weather (OpenWeatherMap) ───────────────────────
+# To activate live weather, set OPENWEATHER_API_KEY in Render env vars.
+# Get a free key (1000 calls/day) at https://openweathermap.org/api
+_OPENWEATHER_KEY = os.getenv("OPENWEATHER_API_KEY", "")
+_OPENWEATHER_URL = "https://api.openweathermap.org/data/2.5/weather"
+
+# Hand-curated city -> canonical name for OpenWeather lookups
+_WEATHER_CITY_ALIAS = {
+    "bali":       "Denpasar,ID",
+    "kyoto":      "Kyoto,JP",
+    "paris":      "Paris,FR",
+    "santorini":  "Thira,GR",
+    "巴厘岛":     "Denpasar,ID",
+    "京都":       "Kyoto,JP",
+    "巴黎":       "Paris,FR",
+    "圣托里尼":   "Thira,GR",
+}
+
+
+@app.get("/api/weather")
+async def get_weather(city: str, lang: str = "en"):
+    """Live weather for a destination. Gracefully returns 503 with hint
+    if OPENWEATHER_API_KEY is not configured, so the frontend can fall
+    back to the AI-generated dest_info data."""
+    if not _OPENWEATHER_KEY:
+        raise HTTPException(503, "OPENWEATHER_API_KEY not set — set it in Render env to enable live weather")
+
+    # Resolve to a canonical name OpenWeather understands
+    key = city.strip().lower()
+    q = _WEATHER_CITY_ALIAS.get(key) or _WEATHER_CITY_ALIAS.get(city.strip()) or city.strip()
+
+    # OpenWeather lang code mapping
+    ow_lang = {"zh": "zh_cn", "en": "en", "ja": "ja", "ko": "kr", "id": "id"}.get(lang, "en")
+
+    try:
+        async with httpx.AsyncClient(timeout=10.0) as client:
+            resp = await client.get(
+                _OPENWEATHER_URL,
+                params={
+                    "q": q,
+                    "appid": _OPENWEATHER_KEY,
+                    "units": "metric",
+                    "lang": ow_lang,
+                },
+            )
+        if resp.status_code != 200:
+            raise HTTPException(resp.status_code, f"OpenWeather error: {resp.text[:200]}")
+        d = resp.json()
+
+        # Map OpenWeather icon code to a Font Awesome 4.7 icon class
+        icon_code = (d.get("weather") or [{}])[0].get("icon", "01d")
+        fa_icon = {
+            "01d": "fa-sun-o",   "01n": "fa-moon-o",
+            "02d": "fa-cloud",   "02n": "fa-cloud",
+            "03d": "fa-cloud",   "03n": "fa-cloud",
+            "04d": "fa-cloud",   "04n": "fa-cloud",
+            "09d": "fa-tint",    "09n": "fa-tint",
+            "10d": "fa-umbrella","10n": "fa-umbrella",
+            "11d": "fa-bolt",    "11n": "fa-bolt",
+            "13d": "fa-snowflake-o", "13n": "fa-snowflake-o",
+            "50d": "fa-align-justify","50n": "fa-align-justify",
+        }.get(icon_code, "fa-sun-o")
+
+        main = d.get("main", {})
+        wind = d.get("wind", {})
+        sys  = d.get("sys", {})
+        weather_desc = (d.get("weather") or [{}])[0].get("description", "")
+
+        # Format sunrise time in city's local timezone
+        tz_offset = d.get("timezone", 0)  # seconds offset from UTC
+        sunrise_ts = sys.get("sunrise", 0)
+        sunset_ts  = sys.get("sunset", 0)
+        def _fmt_hm(ts):
+            if not ts: return ""
+            local = ts + tz_offset
+            h = (local // 3600) % 24
+            m = (local % 3600) // 60
+            return f"{h:02d}:{m:02d}"
+        sunrise = _fmt_hm(sunrise_ts)
+        sunset  = _fmt_hm(sunset_ts)
+
+        # Localised "feels like" + details label
+        details_tpl = {
+            "zh": f"湿度 {main.get('humidity', '?')}% · 风速 {wind.get('speed', '?')}m/s · 日出 {sunrise}",
+            "en": f"Humidity {main.get('humidity', '?')}% · Wind {wind.get('speed', '?')}m/s · Sunrise {sunrise}",
+            "ja": f"湿度 {main.get('humidity', '?')}% · 風速 {wind.get('speed', '?')}m/s · 日の出 {sunrise}",
+            "ko": f"습도 {main.get('humidity', '?')}% · 풍속 {wind.get('speed', '?')}m/s · 일출 {sunrise}",
+            "id": f"Kelembaban {main.get('humidity', '?')}% · Angin {wind.get('speed', '?')}m/s · Matahari terbit {sunrise}",
+        }
+        details = details_tpl.get(lang, details_tpl["en"])
+
+        return {
+            "temp":     f"{round(main.get('temp', 0))}°C",
+            "feels":    f"{round(main.get('feels_like', 0))}°C",
+            "cond":     weather_desc.capitalize() if weather_desc else "",
+            "icon":     fa_icon,
+            "icon_code": icon_code,
+            "details":  details,
+            "humidity": main.get("humidity"),
+            "wind":     wind.get("speed"),
+            "sunrise":  sunrise,
+            "sunset":   sunset,
+            "city":     d.get("name", ""),
+            "country":  sys.get("country", ""),
+            "updated_at": int(time.time()),
+        }
+    except HTTPException:
+        raise
+    except Exception as e:
+        raise HTTPException(500, f"Weather fetch failed: {e}")
+
+
 # ─── Tavily Web Search ────────────────────────────────────────
 _TAVILY_KEY = os.getenv("TAVILY_API_KEY", "")
 _TAVILY_URL = "https://api.tavily.com/search"
