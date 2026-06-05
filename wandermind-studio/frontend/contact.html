@@ -5,12 +5,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title data-i18n="contactPageTitle">Contact | WanderMind Studio</title>
     <meta name="description" content="Get in touch with the WanderMind Studio team — email, WeChat, WhatsApp, GitHub.">
+    <link rel="icon" type="image/png" href="assets/images/logo-mark.png">
+    <link rel="apple-touch-icon" href="assets/images/logo-mark.png">
     <link rel="stylesheet" href="assets/css/style-starter.css">
     <link href="//fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
     <style>
       /* Shared header CSS */
-      .navbar-brand { font-weight: 700; letter-spacing: .02em; white-space: nowrap; }
-      .navbar-brand small { font-size: 11px; opacity: .55; font-weight: 400; margin-left: 8px; letter-spacing: .15em; text-transform: uppercase; }
+      .navbar-brand { font-weight: 700; letter-spacing: .02em; white-space: nowrap; display: inline-flex !important; align-items: center; gap: 8px; }
+      .navbar-brand small { font-size: 11px; opacity: .55; font-weight: 400; letter-spacing: .15em; text-transform: uppercase; }
+      .wm-logo-img { height: 40px; width: 40px; display: inline-block; vertical-align: middle; object-fit: contain; flex-shrink: 0; }
+      @media (max-width: 1199px) { .wm-logo-img { height: 34px; width: 34px; } }
       @media (min-width: 992px) {
         .navbar .navbar-nav { display: flex !important; align-items: center !important; }
         .navbar .navbar-nav .nav-item { display: flex !important; align-items: center !important; }
@@ -92,7 +96,7 @@
 	<header id="site-header" class="fixed-top">
 		<div class="container">
 			<nav class="navbar navbar-expand-lg navbar-dark stroke">
-				<h1><a class="navbar-brand" href="index.html"><span class="fa fa-compass"></span> WanderMind <small>STUDIO</small></a></h1>
+				<h1><a class="navbar-brand" href="index.html"><img src="assets/images/logo-mark.png" alt="WanderMind" class="wm-logo-img"> WanderMind <small>STUDIO</small></a></h1>
 				<button class="navbar-toggler collapsed bg-gradient" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo02">
 					<span class="navbar-toggler-icon fa icon-expand fa-bars"></span>
 					<span class="navbar-toggler-icon fa icon-close fa-times"></span>
