@@ -690,3 +690,479 @@ body.dark .ws-region-tag { filter: brightness(.85); }
 }
 .ws-toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
 .ws-toast .fa { color: var(--ws-amber); }
+
+/* ═══════════════════════════════════════════════════════════════════
+   PHASE 2 — RIGHT PANEL FULL CONTENT
+   Compare (hotels + flights) · Itinerary · Budget · Log · Modals
+   ═══════════════════════════════════════════════════════════════════ */
+
+/* —— Sub-tab strip (used inside Compare for Hotels/Flights toggle) —— */
+.ws-subtabs {
+  display: flex;
+  gap: 4px;
+  background: var(--ws-bg-2);
+  padding: 4px;
+  border-radius: 10px;
+  margin-bottom: 14px;
+}
+.ws-subtab {
+  flex: 1;
+  padding: 7px 10px;
+  background: transparent;
+  border: none;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--ws-ink-3);
+  border-radius: 8px;
+  cursor: pointer;
+  font-family: inherit;
+  transition: background .2s, color .2s;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+}
+.ws-subtab:hover { color: var(--ws-ink); }
+.ws-subtab.active { background: var(--ws-paper); color: var(--ws-teal); box-shadow: 0 1px 4px rgba(0,0,0,.06); }
+
+/* —— Compare form inputs —— */
+.ws-form-row { display: flex; gap: 8px; margin-bottom: 10px; flex-wrap: wrap; }
+.ws-form-field { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 4px; }
+.ws-form-label { font-size: 10.5px; color: var(--ws-ink-3); font-weight: 600; letter-spacing: .04em; text-transform: uppercase; }
+.ws-form-input, .ws-form-select {
+  width: 100%;
+  padding: 7px 10px;
+  border: 1px solid var(--ws-line);
+  border-radius: 8px;
+  background: var(--ws-paper);
+  font-size: 12.5px;
+  color: var(--ws-ink);
+  font-family: inherit;
+  outline: none;
+  transition: border-color .2s;
+}
+.ws-form-input:focus, .ws-form-select:focus { border-color: var(--ws-teal); }
+.ws-form-input::placeholder { color: var(--ws-ink-3); }
+
+.ws-search-btn {
+  width: 100%;
+  padding: 9px 14px;
+  background: var(--ws-teal);
+  color: #fff;
+  border: none;
+  border-radius: 10px;
+  font-size: 12.5px;
+  font-weight: 700;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  font-family: inherit;
+  transition: background .2s, transform .15s;
+}
+.ws-search-btn:hover { background: #0d6f5f; transform: translateY(-1px); }
+.ws-search-btn:disabled { opacity: .5; cursor: not-allowed; transform: none; }
+.ws-search-btn .fa { font-size: 12px; }
+
+/* —— Area chip strip (e.g. Bali sub-areas inside Hotels) —— */
+.ws-area-chips { display: flex; flex-wrap: wrap; gap: 5px; margin: 6px 0 12px; }
+.ws-area-chip {
+  font-size: 11px;
+  padding: 4px 9px;
+  border-radius: 12px;
+  background: var(--ws-bg-2);
+  border: 1px solid var(--ws-line);
+  color: var(--ws-ink-2);
+  cursor: pointer;
+  font-family: inherit;
+  transition: all .15s;
+}
+.ws-area-chip:hover { border-color: var(--ws-teal); }
+.ws-area-chip.active { background: var(--ws-teal); border-color: var(--ws-teal); color: #fff; font-weight: 600; }
+
+/* —— Trip type toggle for flights —— */
+.ws-trip-toggle {
+  display: inline-flex;
+  background: var(--ws-bg-2);
+  border-radius: 10px;
+  padding: 3px;
+  margin-bottom: 10px;
+}
+.ws-trip-toggle-btn {
+  padding: 5px 14px;
+  background: transparent;
+  border: none;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--ws-ink-3);
+  border-radius: 7px;
+  cursor: pointer;
+  font-family: inherit;
+}
+.ws-trip-toggle-btn.active { background: var(--ws-paper); color: var(--ws-teal); }
+
+/* —— Hotel result card —— */
+.ws-hotel-card {
+  display: flex;
+  gap: 10px;
+  padding: 10px;
+  background: var(--ws-paper);
+  border: 1px solid var(--ws-line);
+  border-radius: 10px;
+  margin-bottom: 8px;
+  cursor: pointer;
+  transition: border-color .2s, transform .15s, box-shadow .2s;
+}
+.ws-hotel-card:hover { border-color: var(--ws-teal); transform: translateY(-1px); box-shadow: var(--ws-shadow-sm); }
+.ws-hotel-thumb {
+  width: 64px;
+  height: 64px;
+  border-radius: 8px;
+  object-fit: cover;
+  flex-shrink: 0;
+  background: var(--ws-bg-2);
+}
+.ws-hotel-thumb-ph {
+  width: 64px; height: 64px; border-radius: 8px; flex-shrink: 0;
+  background: linear-gradient(135deg, var(--ws-line), var(--ws-bg-2));
+  display: inline-flex; align-items: center; justify-content: center;
+  color: var(--ws-ink-3); font-size: 22px;
+}
+.ws-hotel-body { flex: 1; min-width: 0; }
+.ws-hotel-name {
+  font-size: 12.5px; font-weight: 700; color: var(--ws-ink);
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  margin-bottom: 2px;
+}
+.ws-hotel-meta { display: flex; gap: 8px; align-items: center; font-size: 11px; color: var(--ws-ink-2); flex-wrap: wrap; }
+.ws-hotel-rating { color: #f59e0b; font-weight: 600; }
+.ws-hotel-price { color: var(--ws-teal); font-weight: 700; font-size: 13px; margin-left: auto; }
+.ws-hotel-price .per { font-weight: 400; color: var(--ws-ink-3); font-size: 10px; margin-left: 2px; }
+.ws-hotel-amen { font-size: 10.5px; color: var(--ws-ink-3); margin-top: 4px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+/* —— Flight result card —— */
+.ws-flight-card {
+  background: var(--ws-paper);
+  border: 1px solid var(--ws-line);
+  border-radius: 10px;
+  padding: 10px;
+  margin-bottom: 8px;
+  cursor: pointer;
+  transition: border-color .2s, transform .15s, box-shadow .2s;
+}
+.ws-flight-card:hover { border-color: var(--ws-teal); transform: translateY(-1px); box-shadow: var(--ws-shadow-sm); }
+.ws-flight-row { display: flex; align-items: center; gap: 8px; }
+.ws-flight-logo { width: 28px; height: 28px; object-fit: contain; border-radius: 4px; background: #fff; flex-shrink: 0; }
+.ws-flight-logo-ph { width: 28px; height: 28px; border-radius: 4px; background: var(--ws-bg-2); display: inline-flex; align-items: center; justify-content: center; color: var(--ws-ink-3); font-size: 14px; flex-shrink: 0; }
+.ws-flight-times { font-size: 13px; font-weight: 700; color: var(--ws-ink); flex: 1; }
+.ws-flight-route { font-size: 10.5px; color: var(--ws-ink-3); margin-top: 2px; }
+.ws-flight-price { font-size: 14px; font-weight: 700; color: var(--ws-teal); }
+.ws-flight-stops {
+  font-size: 10px;
+  padding: 2px 7px;
+  border-radius: 8px;
+  font-weight: 600;
+  letter-spacing: .03em;
+  margin-top: 6px;
+  display: inline-block;
+}
+.ws-flight-stops.direct { background: #d1fae5; color: #065f46; }
+.ws-flight-stops.s1     { background: #fef3c7; color: #92400e; }
+.ws-flight-stops.s2     { background: #fee2e2; color: #991b1b; }
+body.dark .ws-flight-stops { filter: brightness(.85); }
+.ws-flight-dur { font-size: 10.5px; color: var(--ws-ink-3); margin-top: 4px; }
+
+/* —— Loading + empty states —— */
+.ws-loading {
+  text-align: center;
+  padding: 24px 12px;
+  color: var(--ws-ink-3);
+  font-size: 12px;
+}
+.ws-loading .fa { font-size: 22px; color: var(--ws-amber); animation: wsspin 1s linear infinite; margin-bottom: 8px; }
+@keyframes wsspin { from { transform: rotate(0); } to { transform: rotate(360deg); } }
+.ws-empty {
+  text-align: center;
+  padding: 24px 12px;
+  color: var(--ws-ink-3);
+  font-size: 12px;
+}
+.ws-empty .fa { font-size: 28px; opacity: .4; margin-bottom: 8px; display: block; color: var(--ws-amber); }
+.ws-error {
+  padding: 10px 12px;
+  background: #fef2f2;
+  border: 1px solid #fecaca;
+  border-radius: 8px;
+  color: #991b1b;
+  font-size: 11.5px;
+  margin: 6px 0;
+}
+body.dark .ws-error { background: rgba(220,38,38,.08); border-color: rgba(220,38,38,.3); color: #fca5a5; }
+
+/* —— Itinerary timeline —— */
+.ws-timeline { display: flex; flex-direction: column; gap: 10px; margin-top: 6px; }
+.ws-tl-item {
+  display: flex; gap: 12px;
+  padding: 10px 12px;
+  background: var(--ws-bg-2);
+  border-radius: 10px;
+  border: 1px solid var(--ws-line);
+}
+.ws-tl-icon {
+  width: 36px; height: 36px; border-radius: 50%;
+  display: inline-flex; align-items: center; justify-content: center;
+  color: #fff; font-size: 14px; flex-shrink: 0;
+}
+.ws-tl-body { flex: 1; min-width: 0; }
+.ws-tl-day { font-size: 10.5px; color: var(--ws-teal); font-weight: 700; letter-spacing: .08em; text-transform: uppercase; }
+.ws-tl-title { font-size: 13px; font-weight: 700; color: var(--ws-ink); margin: 1px 0 3px; }
+.ws-tl-desc { font-size: 11.5px; color: var(--ws-ink-2); line-height: 1.5; }
+.ws-action-btn {
+  width: 100%;
+  padding: 10px 14px;
+  margin-top: 10px;
+  background: var(--ws-amber);
+  color: var(--ws-ink);
+  border: none;
+  border-radius: 10px;
+  font-size: 12.5px;
+  font-weight: 700;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  font-family: inherit;
+  transition: background .2s;
+}
+.ws-action-btn:hover { background: var(--ws-amber-dk); }
+.ws-action-btn.secondary {
+  background: var(--ws-paper);
+  border: 1.5px solid var(--ws-teal);
+  color: var(--ws-teal);
+}
+.ws-action-btn.secondary:hover { background: var(--ws-teal); color: #fff; }
+.ws-action-btn .fa { font-size: 12px; }
+
+/* —— Budget panel —— */
+.ws-budget-total {
+  text-align: center;
+  padding: 18px 14px;
+  background: linear-gradient(135deg, rgba(252,191,30,.18), rgba(252,191,30,.04));
+  border-radius: 14px;
+  margin-bottom: 14px;
+  border: 1px solid rgba(252,191,30,.3);
+}
+.ws-budget-amount {
+  font-size: 28px; font-weight: 700; color: var(--ws-ink); line-height: 1;
+}
+.ws-budget-sub { font-size: 11px; color: var(--ws-ink-3); margin-top: 5px; letter-spacing: .04em; }
+.ws-budget-rows { display: flex; flex-direction: column; gap: 6px; }
+.ws-budget-row {
+  display: flex; align-items: center; gap: 10px;
+  padding: 9px 12px;
+  background: var(--ws-bg-2);
+  border-radius: 10px;
+  border: 1px solid var(--ws-line);
+}
+.ws-budget-icon {
+  width: 30px; height: 30px; border-radius: 50%;
+  display: inline-flex; align-items: center; justify-content: center;
+  color: #fff; font-size: 12px; flex-shrink: 0;
+}
+.ws-budget-info { flex: 1; min-width: 0; }
+.ws-budget-cat { font-size: 12px; font-weight: 600; color: var(--ws-ink); }
+.ws-budget-note { font-size: 10.5px; color: var(--ws-ink-3); margin-top: 1px; }
+.ws-budget-val { font-size: 13px; font-weight: 700; color: var(--ws-teal); }
+
+/* —— Activity log stream —— */
+.ws-log-list {
+  display: flex; flex-direction: column; gap: 6px;
+  max-height: 100%;
+  overflow-y: auto;
+}
+.ws-log-row {
+  display: flex; gap: 8px;
+  padding: 7px 10px;
+  background: var(--ws-bg-2);
+  border-radius: 8px;
+  border-left: 3px solid var(--ws-teal);
+  font-size: 11.5px;
+  color: var(--ws-ink-2);
+  line-height: 1.4;
+  animation: wslogin .25s ease-out;
+}
+.ws-log-row.success { border-left-color: #10b981; }
+.ws-log-row.warn    { border-left-color: #f59e0b; }
+.ws-log-row.error   { border-left-color: #ef4444; }
+.ws-log-row.info    { border-left-color: var(--ws-teal-lt); }
+.ws-log-time { font-size: 9.5px; color: var(--ws-ink-3); margin-top: 2px; letter-spacing: .03em; font-family: 'SF Mono', monospace; }
+.ws-log-icon { width: 18px; text-align: center; color: var(--ws-amber); flex-shrink: 0; }
+.ws-log-msg { flex: 1; min-width: 0; }
+.ws-log-msg strong { color: var(--ws-ink); font-weight: 700; }
+@keyframes wslogin { from { opacity: 0; transform: translateY(-4px); } to { opacity: 1; transform: translateY(0); } }
+.ws-log-clear {
+  padding: 4px 10px;
+  background: transparent;
+  border: 1px solid var(--ws-line);
+  border-radius: 12px;
+  font-size: 11px;
+  color: var(--ws-ink-3);
+  cursor: pointer;
+  font-family: inherit;
+  float: right;
+}
+.ws-log-clear:hover { color: var(--ws-ink); border-color: var(--ws-ink-3); }
+
+/* —— Modals (Map + Diary) —— */
+.ws-modal-overlay {
+  position: fixed; inset: 0;
+  background: rgba(15, 17, 20, 0.6);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  z-index: 9000;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  animation: wsfadein .2s ease-out;
+}
+.ws-modal-overlay.show { display: flex; }
+@keyframes wsfadein { from { opacity: 0; } to { opacity: 1; } }
+.ws-modal {
+  background: var(--ws-paper);
+  border-radius: 18px;
+  width: 100%;
+  max-width: 900px;
+  max-height: 90vh;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  box-shadow: var(--ws-shadow-lg);
+  animation: wsmodalin .25s ease-out;
+}
+@keyframes wsmodalin { from { opacity: 0; transform: scale(.96); } to { opacity: 1; transform: scale(1); } }
+.ws-modal-head {
+  padding: 18px 24px;
+  border-bottom: 1px solid var(--ws-line);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.ws-modal-title { font-size: 18px; font-weight: 700; color: var(--ws-ink); display: inline-flex; align-items: center; gap: 10px; }
+.ws-modal-title .fa { color: var(--ws-amber); }
+.ws-modal-close {
+  width: 32px; height: 32px;
+  border-radius: 50%;
+  background: var(--ws-bg-2);
+  border: none;
+  color: var(--ws-ink-2);
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: background .2s;
+}
+.ws-modal-close:hover { background: var(--ws-line); color: var(--ws-ink); }
+.ws-modal-body {
+  flex: 1;
+  overflow-y: auto;
+  padding: 22px 24px;
+}
+.ws-modal-body p { font-size: 13.5px; line-height: 1.75; color: var(--ws-ink-2); margin-bottom: 12px; white-space: pre-wrap; }
+.ws-modal-body h3, .ws-modal-body h4 { color: var(--ws-ink); margin: 18px 0 8px; }
+.ws-modal-foot {
+  padding: 14px 24px;
+  border-top: 1px solid var(--ws-line);
+  background: var(--ws-bg-2);
+  display: flex;
+  gap: 10px;
+  justify-content: flex-end;
+}
+
+/* —— Map modal specific —— */
+.ws-map-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+  align-items: start;
+}
+@media (max-width: 767px) { .ws-map-grid { grid-template-columns: 1fr; } }
+.ws-map-visual {
+  background: linear-gradient(135deg, #1e293b, #0f172a);
+  border-radius: 14px;
+  padding: 30px 20px;
+  text-align: center;
+  color: #fff;
+  position: relative;
+  min-height: 280px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.ws-map-globe {
+  font-size: 86px;
+  color: var(--ws-amber);
+  filter: drop-shadow(0 0 30px rgba(252,191,30,.4));
+}
+.ws-map-pin {
+  position: absolute;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -130%);
+  font-size: 22px;
+  color: var(--ws-amber);
+  animation: wspulse 2s infinite;
+}
+@keyframes wspulse { 0%, 100% { opacity: 1; transform: translate(-50%, -130%) scale(1); } 50% { opacity: .6; transform: translate(-50%, -130%) scale(1.15); } }
+.ws-map-dest-name { font-size: 22px; font-weight: 700; color: #fff; margin-top: 16px; }
+.ws-map-dest-region { font-size: 12px; color: rgba(255,255,255,.65); margin-top: 2px; }
+.ws-map-region-list { display: flex; flex-direction: column; gap: 8px; }
+.ws-map-region {
+  padding: 12px 14px;
+  background: var(--ws-bg-2);
+  border-left: 3px solid var(--ws-teal);
+  border-radius: 8px;
+  cursor: pointer;
+  transition: border-left-width .2s, background .2s;
+}
+.ws-map-region:hover { background: var(--ws-paper); border-left-width: 6px; }
+.ws-map-region-name { font-size: 14px; font-weight: 700; color: var(--ws-ink); }
+.ws-map-region-desc { font-size: 11.5px; color: var(--ws-ink-2); margin-top: 3px; line-height: 1.5; }
+
+/* —— Diary modal specific —— */
+.ws-diary-content {
+  font-family: 'Georgia', 'Noto Serif SC', serif;
+  font-size: 14px;
+  line-height: 1.85;
+  color: var(--ws-ink);
+  padding: 8px 0;
+}
+.ws-diary-content p { font-size: 14px; line-height: 1.85; color: var(--ws-ink-2); margin-bottom: 14px; }
+.ws-diary-meta { font-size: 11px; color: var(--ws-ink-3); margin-bottom: 18px; letter-spacing: .08em; text-transform: uppercase; }
+
+/* Print stylesheet for PDF export */
+@media print {
+  body * { visibility: hidden; }
+  .ws-print-target, .ws-print-target * { visibility: visible; }
+  .ws-print-target { position: absolute; top: 0; left: 0; width: 100%; padding: 40px; background: #fff; color: #000; }
+  .ws-print-target h2 { font-size: 26px; margin-bottom: 6px; }
+  .ws-print-target .ws-tl-item { page-break-inside: avoid; border: 1px solid #ddd; }
+}
+
+/* —— Thinking step pill (used during Ask-the-Team SSE) —— */
+.ws-thinking-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 10px;
+  background: rgba(14,124,107,.08);
+  border: 1px solid rgba(14,124,107,.25);
+  border-radius: 14px;
+  font-size: 11px;
+  color: var(--ws-teal);
+  margin-right: 5px;
+  margin-bottom: 4px;
+}
+.ws-thinking-pill .fa { font-size: 10px; animation: wsspin 1.2s linear infinite; }
+
