@@ -242,7 +242,7 @@ const TOOL_I18N = {
     quickItinerary:'生成完整行程', quickLatest:'最新资讯', quickHotels:'住宿推荐',
     inputPh:'告诉我你想去哪里 · 想要什么样的体验…',
     panelDest:'目的地', panelCompare:'比价', panelItinerary:'行程', panelBudget:'预算', panelLog:'日志',
-    sectionWeather:'实时情报', sectionRegions:'热门区域', sectionTips:'实用贴士',
+    sectionWeather:'目的地速览 · 示例', sectionRegions:'热门区域', sectionTips:'实用贴士',
     rateLbl:'实时汇率', seasonLbl:'季节',
     comingTitle:'即将在 Phase 2 上线',
     comingDesc:'此模块功能正在迁移中，将与现有 H5 完全等价但视觉为 Studio 风格。',
@@ -260,7 +260,7 @@ const TOOL_I18N = {
     quickItinerary:'Generate Full Itinerary', quickLatest:'Latest News', quickHotels:'Hotel Picks',
     inputPh:'Tell me where you want to go · what kind of experience…',
     panelDest:'Place', panelCompare:'Compare', panelItinerary:'Plan', panelBudget:'Budget', panelLog:'Log',
-    sectionWeather:'Live Intel', sectionRegions:'Top Areas', sectionTips:'Practical Tips',
+    sectionWeather:'Destination Snapshot · sample', sectionRegions:'Top Areas', sectionTips:'Practical Tips',
     rateLbl:'Live FX', seasonLbl:'Season',
     comingTitle:'Coming in Phase 2',
     comingDesc:'This module is being migrated — full feature parity with the existing H5, restyled to Studio.',
@@ -278,7 +278,7 @@ const TOOL_I18N = {
     quickItinerary:'フル旅程生成', quickLatest:'最新情報', quickHotels:'宿泊おすすめ',
     inputPh:'行きたい場所·体験を教えて…',
     panelDest:'目的地', panelCompare:'比較', panelItinerary:'旅程', panelBudget:'予算', panelLog:'ログ',
-    sectionWeather:'リアル情報', sectionRegions:'人気エリア', sectionTips:'実用ヒント',
+    sectionWeather:'目的地概要 · サンプル', sectionRegions:'人気エリア', sectionTips:'実用ヒント',
     rateLbl:'為替', seasonLbl:'シーズン',
     comingTitle:'Phase 2 で公開予定',
     comingDesc:'このモジュールは移行中です。既存H5と機能同等、Studio風にリスタイル。',
@@ -296,7 +296,7 @@ const TOOL_I18N = {
     quickItinerary:'전체 일정 생성', quickLatest:'최신 정보', quickHotels:'숙소 추천',
     inputPh:'어디로 가고 싶은지·어떤 경험을…',
     panelDest:'목적지', panelCompare:'비교', panelItinerary:'일정', panelBudget:'예산', panelLog:'로그',
-    sectionWeather:'실시간 정보', sectionRegions:'인기 지역', sectionTips:'실용 팁',
+    sectionWeather:'목적지 개요 · 샘플', sectionRegions:'인기 지역', sectionTips:'실용 팁',
     rateLbl:'환율', seasonLbl:'시즌',
     comingTitle:'Phase 2 출시 예정',
     comingDesc:'이 모듈은 마이그레이션 중. 기존 H5와 동등하며 Studio 스타일.',
@@ -314,7 +314,7 @@ const TOOL_I18N = {
     quickItinerary:'Buat Rencana Penuh', quickLatest:'Berita Terbaru', quickHotels:'Pilihan Hotel',
     inputPh:'Beri tahu kemana & pengalaman seperti apa…',
     panelDest:'Tempat', panelCompare:'Banding', panelItinerary:'Rencana', panelBudget:'Anggaran', panelLog:'Log',
-    sectionWeather:'Info Langsung', sectionRegions:'Area Populer', sectionTips:'Tips Praktis',
+    sectionWeather:'Sekilas Destinasi · contoh', sectionRegions:'Area Populer', sectionTips:'Tips Praktis',
     rateLbl:'Kurs', seasonLbl:'Musim',
     comingTitle:'Hadir di Fase 2',
     comingDesc:'Modul ini sedang dimigrasikan — fitur setara H5, gaya Studio.',
@@ -647,25 +647,42 @@ async function sendMessage(text) {
   pushMsg(aiPlaceholder);
 
   try {
-    const r = await fetch(BACKEND_BASE + '/api/chat', {
+    // Build messages array matching backend ChatReq shape:
+    // history (last 12 turns) + the new user message.
+    const history = messages
+      .filter(m => m.role !== 'system' && m.text !== '__typing__' && m !== aiPlaceholder)
+      .slice(-12)
+      .map(m => ({ role: m.role === 'ai' ? 'assistant' : 'user', content: m.text }));
+    history.push({ role: 'user', content: text });
+
+    const langLabel = { zh:'Chinese', en:'English', ja:'Japanese', ko:'Korean', id:'Indonesian' }[currentLang] || 'English';
+    const agentName = AGENT_NAMES[currentLang][currentAgent] || currentAgent;
+    const destName = _destNameForApi ? (_destNameForApi() || currentDest) : currentDest;
+    const systemPrompt =
+      `You are WanderMind, a senior travel planner currently acting as the "${agentName}" specialist.\n` +
+      `Current destination context: ${destName}.\n` +
+      `IMPORTANT: respond ONLY in ${langLabel}. Never switch language mid-reply.\n` +
+      `Be concrete, warm, and editorial. Use short paragraphs and occasional bullet lists when useful.`;
+
+    const r = await fetch(BACKEND_BASE + '/api/chat/once', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
-        message: text,
+        messages: history,
+        system: systemPrompt,
         agent: currentAgent,
         destination: currentDest,
-        lang: currentLang,
-        mode: currentMode,
-        session_id: sessionId,
-        history: messages.filter(m => m.role !== 'system' && m.text !== '__typing__').slice(-12).map(m => ({
-          role: m.role === 'ai' ? 'assistant' : 'user',
-          content: m.text
-        }))
+        mode: currentMode === 'fast' ? 'fast' : 'pro',
+        search: true
       })
     });
-    if (!r.ok) throw new Error('HTTP ' + r.status);
+    if (!r.ok) {
+      let detail = 'HTTP ' + r.status;
+      try { const e = await r.json(); detail = e.detail || detail; } catch (_) {}
+      throw new Error(detail);
+    }
     const data = await r.json();
-    const reply = (data && (data.reply || data.message || data.content)) || (t().sendErr);
+    const reply = (data && (data.text || data.reply || data.message || data.content)) || (t().sendErr);
     // Replace typing placeholder
     const idx = messages.indexOf(aiPlaceholder);
     if (idx >= 0) messages[idx] = { role:'ai', agent: currentAgent, text: reply, ts: Date.now() };
@@ -1498,10 +1515,16 @@ async function askTeam() {
 
   let fullText = '';
   try {
+    const langLabel = { zh:'Chinese', en:'English', ja:'Japanese', ko:'Korean', id:'Indonesian' }[currentLang] || 'English';
+    const destName = _destNameForApi() || currentDest;
+    const teamSys =
+      `You are WanderMind, a multi-agent travel platform. Three specialists (Trip Planner, Activity Curator, Budget Manager) are answering in parallel.\n` +
+      `Current destination context: ${destName}.\n` +
+      `IMPORTANT: respond ONLY in ${langLabel}. Combine the three expert viewpoints into one consolidated reply.`;
     const r = await fetch(BACKEND_BASE + '/api/chat/team', {
       method:'POST',
       headers:{ 'Content-Type':'application/json' },
-      body: JSON.stringify({ messages: history, agent:'team', destination: currentDest, lang: currentLang })
+      body: JSON.stringify({ messages: history, system: teamSys, agent:'team', destination: currentDest, mode:'pro', search:false })
     });
     if (!r.ok) {
       const e = await r.json().catch(() => ({}));

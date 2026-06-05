@@ -142,6 +142,18 @@ async def current_user(authorization: Optional[str] = Header(None)) -> dict:
         raise HTTPException(401, str(e))
 
 
+# Soft auth: returns the user dict if a valid token is present, else None.
+# Used by public AI endpoints (chat / search / generate) so anonymous
+# WanderMind Studio visitors can use the tool without signing in.
+async def optional_user(authorization: Optional[str] = Header(None)):
+    if not authorization or not authorization.startswith("Bearer "):
+        return None
+    try:
+        return verify_token(authorization.split(" ", 1)[1])
+    except Exception:
+        return None
+
+
 # ─── Request models ──────────────────────────────────────────
 class RegisterReq(BaseModel):
     email: str
@@ -494,7 +506,7 @@ async def resolve_iata(text: str) -> str:
 
 
 @app.post("/api/search/flights")
-async def search_flights(req: FlightSearchReq, user=Depends(current_user)):
+async def search_flights(req: FlightSearchReq, user=Depends(optional_user)):
     """SerpAPI Google Flights 实时航班价格搜索。"""
     if not _SERPAPI_FLIGHTS_KEY:
         raise HTTPException(500, "SERPAPI_FLIGHTS_KEY not configured")
@@ -583,7 +595,7 @@ async def search_flights(req: FlightSearchReq, user=Depends(current_user)):
 
 
 @app.post("/api/search/hotels")
-async def search_hotels(req: HotelSearchReq, user=Depends(current_user)):
+async def search_hotels(req: HotelSearchReq, user=Depends(optional_user)):
     """SerpAPI Google Hotels 实时价格搜索。"""
     if not _SERPAPI_KEY:
         raise HTTPException(500, "SERPAPI_KEY not configured")
@@ -745,7 +757,7 @@ async def tavily_search(query: str, destination: str = "") -> tuple[str, list]:
 
 # ─── Chat (SSE streaming, OpenAI format) ─────────────────────
 @app.post("/api/chat")
-async def chat(req: ChatReq, user=Depends(current_user)):
+async def chat(req: ChatReq, user=Depends(optional_user)):
     if not _API_KEY:
         raise HTTPException(500, "API_KEY not set")
 
@@ -846,7 +858,7 @@ async def chat(req: ChatReq, user=Depends(current_user)):
 # returns the full reply as a single JSON object so the mini program can
 # render it after the await.
 @app.post("/api/chat/once")
-async def chat_once(req: ChatReq, user=Depends(current_user)):
+async def chat_once(req: ChatReq, user=Depends(optional_user)):
     if not _API_KEY:
         raise HTTPException(500, "API_KEY not set")
 
@@ -903,7 +915,7 @@ async def chat_once(req: ChatReq, user=Depends(current_user)):
 
 # ─── Team mode: 3 agents in parallel, merged output ──────────
 @app.post("/api/chat/team")
-async def chat_team(req: ChatReq, user=Depends(current_user)):
+async def chat_team(req: ChatReq, user=Depends(optional_user)):
     """真并行多 Agent：规划师 + 活动策划师 + 预算管家同时回答，合并输出。"""
     if not _API_KEY:
         raise HTTPException(500, "API_KEY not set")
@@ -981,7 +993,7 @@ async def chat_team(req: ChatReq, user=Depends(current_user)):
 
 # ─── One-shot generate (multiverse / budget AI) ──────────────
 @app.post("/api/generate")
-async def generate(req: GenerateReq, user=Depends(current_user)):
+async def generate(req: GenerateReq, user=Depends(optional_user)):
     if not _API_KEY:
         raise HTTPException(500, "API_KEY not set")
     async with httpx.AsyncClient(timeout=60.0) as client:
