@@ -12279,6 +12279,63 @@ body.dark .gg-moon {
   color: var(--heading-color);
   opacity: 0.9; }
 
+/* ═══════════════════════════════════════════════════════════════════════
+   STUDIO NAVBAR — BRAND-CONSISTENT COLORS + LOGO SIZE
+   Forces amber #fcbf1e on email / search / theme-toggle in BOTH the
+   default dark-navbar state AND the scrolled .nav-fixed state, so all
+   nav items stay readable on the pages that don't sit over a dark
+   banner (e.g. ai-tool.html). Logo bumped large enough to dominate
+   the "W" of WanderMind despite PNG transparency padding.
+   ═══════════════════════════════════════════════════════════════════════ */
+.w3l-header-4 .navbar-brand .wm-logo-img {
+  height: 52px !important;
+  width: 52px !important;
+  margin-right: 4px;
+}
+@media (max-width: 1199px) {
+  .w3l-header-4 .navbar-brand .wm-logo-img {
+    height: 44px !important;
+    width: 44px !important;
+  }
+}
+
+/* Email link in nav (default + scrolled) */
+.w3l-header-4 .navbar-expand-lg .navbar-nav .nav-link.phone,
+.w3l-header-4 .navbar-expand-lg .navbar-nav .nav-link.phone span,
+.w3l-header-4 .navbar-expand-lg .navbar-nav .nav-link.phone .fa,
+.w3l-header-4 .nav-fixed .phone a,
+.w3l-header-4 .nav-fixed .phone a span,
+.w3l-header-4 .nav-fixed .phone a .fa {
+  color: #fcbf1e !important;
+}
+.w3l-header-4 .navbar-expand-lg .navbar-nav .nav-link.phone:hover {
+  color: #f59e0b !important;
+}
+
+/* Search icon (default + scrolled) */
+.w3l-header-4 li a.search-search span.fa-search,
+.w3l-header-4 .nav-fixed .navbar-expand-lg .navbar-nav li a.search-search span.fa-search,
+.w3l-header-4 a.search-search .fa-search {
+  color: #fcbf1e !important;
+}
+.w3l-header-4 a.search-search:hover .fa-search {
+  color: #f59e0b !important;
+}
+
+/* Theme toggle (sun + moon, default + scrolled, both light & dark mode) */
+.w3l-header-4 .theme-selector .gg-sun,
+.w3l-header-4 .theme-selector .gg-moon,
+.w3l-header-4 .theme-selector i.gg-sun,
+.w3l-header-4 .theme-selector i.gg-moon,
+.w3l-header-4 .nav-fixed .theme-selector .gg-sun,
+.w3l-header-4 .nav-fixed .theme-selector .gg-moon,
+.w3l-header-4 .nav-fixed .navbar-expand-lg .theme-selector i.gg-sun,
+.w3l-header-4 .nav-fixed .navbar-expand-lg .theme-selector i.gg-moon,
+body .gg-sun, body .gg-moon,
+body.dark .gg-sun, body.dark .gg-moon {
+  color: #fcbf1e !important;
+}
+
 html {
   scroll-behavior: smooth; }
 
