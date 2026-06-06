@@ -80,6 +80,12 @@
       @media (max-width: 991px) {
         .lang-picker { padding: 0 8px; height: 34px; }
       }
+      /* Medium desktop (lg only): hide email text → frees ~110px for wide-language navbars (Japanese) */
+      @media (min-width: 992px) and (max-width: 1199px) {
+        .navbar .nav-link.phone { font-size: 0 !important; gap: 0 !important; }
+        .navbar .nav-link.phone .fa { font-size: 14px !important; }
+        .navbar .navbar-nav .nav-link { padding: 8px 6px !important; }
+      }
 
       /* ═══════════════════════════════════════════════════
          IMAGE UNIFORM SIZING

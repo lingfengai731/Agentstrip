@@ -41,6 +41,12 @@
       .footer-contact-line .fa { width: 18px; text-align: center; flex-shrink: 0; }
       .footer-tag { font-size: 11px; color: rgba(255,255,255,.55); margin-left: 4px; }
       @media (max-width: 991px) { .lang-picker { padding: 0 8px; height: 34px; } }
+      /* Medium desktop (lg only): hide email text → frees ~110px for wide-language navbars (Japanese) */
+      @media (min-width: 992px) and (max-width: 1199px) {
+        .navbar .nav-link.phone { font-size: 0 !important; gap: 0 !important; }
+        .navbar .nav-link.phone .fa { font-size: 14px !important; }
+        .navbar .navbar-nav .nav-link { padding: 8px 6px !important; }
+      }
 
       /* —— About-page specific —— */
       .agent-card {
