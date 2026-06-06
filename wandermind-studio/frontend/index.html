@@ -31,20 +31,18 @@
         /* Both nav lists are flex rows, vertically centered */
         .navbar .navbar-nav { display: flex !important; align-items: center !important; }
         .navbar .navbar-nav .nav-item { display: flex !important; align-items: center !important; }
-        .navbar .navbar-nav .nav-link { white-space: nowrap; padding: 8px 14px !important; line-height: 1.2 !important; }
+        .navbar .navbar-nav .nav-link { white-space: nowrap; padding: 8px 9px !important; line-height: 1.2 !important; }
         /* The phone/email link (NOT capitalized — keep email lowercase) */
-        .navbar .nav-link.phone { white-space: nowrap; display: inline-flex; align-items: center; gap: 6px; text-transform: none !important; }
+        .navbar .nav-link.phone { white-space: nowrap; display: inline-flex; align-items: center; gap: 5px; text-transform: none !important; }
         .navbar .nav-link.phone .fa { font-size: 14px; }
-        /* Trim the bootstrap ml-3/ml-4 (too much spacing on tighter nav) */
-        .navbar .ml-3, .navbar .ml-4 { margin-left: .55rem !important; }
+        /* Trim the bootstrap ml-3/ml-4 */
+        .navbar .ml-3, .navbar .ml-4 { margin-left: .35rem !important; }
         /* Search icon: aligned to row */
-        .navbar .search-search.nav-link { display: inline-flex !important; align-items: center; justify-content: center; height: 36px; padding: 0 10px !important; }
+        .navbar .search-search.nav-link { display: inline-flex !important; align-items: center; justify-content: center; height: 36px; padding: 0 8px !important; }
         .navbar .search-search.nav-link .fa { margin-right: 0 !important; }
-        /* Theme toggle: absolutely positioned at navbar right — never pushed off-screen */
-        .navbar { position: relative; }
-        .navbar .mobile-position { position: absolute !important; right: 6px !important; top: 50% !important; transform: translateY(-50%) !important; margin: 0 !important; z-index: 20; display: inline-flex !important; align-items: center; }
-        .navbar .navbar-collapse { padding-right: 50px !important; }
-        .navbar .theme-selector { display: inline-flex !important; align-items: center; justify-content: center; width: 36px !important; height: 36px !important; margin: 0 !important; }
+        /* Theme toggle: static flow after search, flex-shrink:0 so it is never squished */
+        .navbar .mobile-position { position: static !important; top: auto !important; right: auto !important; margin-left: .35rem !important; display: inline-flex !important; align-items: center; flex-shrink: 0; }
+        .navbar .theme-selector { display: inline-flex !important; align-items: center; justify-content: center; width: 34px !important; height: 34px !important; margin: 0 !important; }
         /* AI Tool nav highlight */
         .nav-link.ai-tool-link { color: #ffd180 !important; font-weight: 700; }
         .nav-link.ai-tool-link:hover { color: #fff !important; }
@@ -187,7 +185,7 @@
 				</button>
 
 				<div class="collapse navbar-collapse" id="navbarTogglerDemo02">
-					<ul class="navbar-nav ml-lg-5">
+					<ul class="navbar-nav ml-lg-1">
 						<li class="nav-item active">
 							<a class="nav-link" href="index.html" data-i18n="navHome">Home <span class="sr-only">(current)</span></a>
 						</li>
