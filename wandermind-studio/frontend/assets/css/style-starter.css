@@ -12357,15 +12357,26 @@ body.dark .gg-sun, body.dark .gg-moon {
   color: #fcbf1e !important;
 }
 
-/* —— Theme toggle: absolutely positioned inside navbar — immune to flex overflow —— */
+/* —— Navbar spacing tweaks —— */
 @media (min-width: 992px) {
   .w3l-header-4 .navbar {
     position: relative;
     padding-right: 0 !important;
     overflow: visible;
   }
-  /* The inline style on each page takes care of absolute positioning;
-     this rule just ensures no extra padding fights against it. */
+}
+
+/* On medium desktop (lg, not xl): hide email address text, keep icon only.
+   Frees ~110 px so even Japanese お問い合わせ never pushes the moon off-screen.
+   On xl (≥1200 px) the full address re-appears. */
+@media (min-width: 992px) and (max-width: 1199px) {
+  .w3l-header-4 .navbar .nav-link.phone {
+    font-size: 0 !important;   /* hide address text */
+    gap: 0 !important;
+  }
+  .w3l-header-4 .navbar .nav-link.phone .fa {
+    font-size: 14px !important; /* keep envelope icon */
+  }
 }
 
 html {
