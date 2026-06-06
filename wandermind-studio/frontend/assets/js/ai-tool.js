@@ -1944,8 +1944,9 @@ function _applyDestInfo(key, data) {
   }
 }
 
-// Augment the destination section title with a LIVE/SAMPLE chip after each render.
-// "Live" if EITHER dest_info AI data OR OpenWeather real data succeeded.
+// Augment the destination section title with a LIVE chip after each render.
+// Only shown when EITHER dest_info AI data OR OpenWeather real data succeeded.
+// When data is sample (not live), the title stays clean with no badge.
 const _origRenderPanelDest = renderPanelDest;
 renderPanelDest = function() {
   _origRenderPanelDest();
@@ -1953,15 +1954,13 @@ renderPanelDest = function() {
   if (!titleEl) return;
   const d = DESTS[currentDest] || {};
   const live = !!_destIsLive[currentDest] || !!d._isLive;
-  const tag = live ? t().liveTag : t().sampleTag;
-  const bg = live ? '#10b981' : '#9ca3af';
-  if (!titleEl.querySelector('.ws-live-chip')) {
+  // Always remove existing chip first (textContent was already reset by _orig)
+  const existing = titleEl.querySelector('.ws-live-chip');
+  if (existing) existing.remove();
+  // Only show badge when data is actually live — no badge for sample data
+  if (live) {
     titleEl.insertAdjacentHTML('beforeend',
-      ` <span class="ws-live-chip" style="font-size:9px;font-weight:700;padding:2px 6px;border-radius:8px;background:${bg};color:#fff;letter-spacing:.05em;margin-left:6px;vertical-align:middle">${escapeHtml(tag)}</span>`);
-  } else {
-    const chip = titleEl.querySelector('.ws-live-chip');
-    chip.textContent = tag;
-    chip.style.background = bg;
+      ` <span class="ws-live-chip" style="font-size:9px;font-weight:700;padding:2px 6px;border-radius:8px;background:#10b981;color:#fff;letter-spacing:.05em;margin-left:6px;vertical-align:middle">${escapeHtml(t().liveTag)}</span>`);
   }
 };
 

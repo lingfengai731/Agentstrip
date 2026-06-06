@@ -25,7 +25,10 @@
         .navbar .ml-3, .navbar .ml-4 { margin-left: .55rem !important; }
         .navbar .search-search.nav-link { display: inline-flex !important; align-items: center; justify-content: center; height: 36px; padding: 0 10px !important; }
         .navbar .search-search.nav-link .fa { margin-right: 0 !important; }
-        .navbar .mobile-position { position: static !important; top: auto !important; right: auto !important; margin-left: .55rem; display: inline-flex; align-items: center; }
+        /* Theme toggle: absolutely positioned at navbar right — never pushed off-screen */
+        .navbar { position: relative; }
+        .navbar .mobile-position { position: absolute !important; right: 6px !important; top: 50% !important; transform: translateY(-50%) !important; margin: 0 !important; z-index: 20; display: inline-flex !important; align-items: center; }
+        .navbar .navbar-collapse { padding-right: 50px !important; }
         .navbar .theme-selector { display: inline-flex !important; align-items: center; justify-content: center; width: 36px !important; height: 36px !important; margin: 0 !important; }
         .nav-link.ai-tool-link { color: #ffd180 !important; font-weight: 700; }
         .nav-link.ai-tool-link:hover { color: #fff !important; }

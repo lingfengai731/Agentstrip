@@ -12357,16 +12357,15 @@ body.dark .gg-sun, body.dark .gg-moon {
   color: #fcbf1e !important;
 }
 
-/* —— Theme toggle: move left so it never gets clipped on the right edge —— */
+/* —— Theme toggle: absolutely positioned inside navbar — immune to flex overflow —— */
 @media (min-width: 992px) {
-  .w3l-header-4 .navbar .mobile-position {
-    margin-right: 14px !important;
-    margin-left: .55rem !important;
-  }
-  /* Reserve a comfortable right gutter on the navbar container itself */
   .w3l-header-4 .navbar {
-    padding-right: 14px !important;
+    position: relative;
+    padding-right: 0 !important;
+    overflow: visible;
   }
+  /* The inline style on each page takes care of absolute positioning;
+     this rule just ensures no extra padding fights against it. */
 }
 
 html {
