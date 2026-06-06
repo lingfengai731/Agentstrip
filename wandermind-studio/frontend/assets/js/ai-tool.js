@@ -547,11 +547,9 @@ function switchPanelTab(id) {
 function renderPanelDest() {
   const d = dest();
   const w = d.weather;
-  // When live weather has loaded, swap the section title from "Snapshot · sample" -> "Snapshot · live"
-  const liveLbl = { zh:'实时', en:'live', ja:'リアルタイム', ko:'실시간', id:'langsung' }[currentLang] || 'live';
-  const sampleLbl = { zh:'示例', en:'sample', ja:'サンプル', ko:'샘플', id:'contoh' }[currentLang] || 'sample';
-  const baseTitle = (t().sectionWeather || '').replace(/[·][\s]*(sample|示例|サンプル|샘플|contoh)\s*$/i, '').trim();
-  $('#ws-section-weather').textContent = baseTitle + ' · ' + (d._isLive ? liveLbl : sampleLbl);
+  // Section title stays clean — the LIVE/SAMPLE badge is added by the
+  // Phase 2.5 wrapper below (renderPanelDest override). Single source of truth.
+  $('#ws-section-weather').textContent = t().sectionWeather;
   $('#ws-section-regions').textContent = t().sectionRegions;
   $('#ws-section-tips').textContent = t().sectionTips;
   $('#ws-rate-lbl').textContent = t().rateLbl;
@@ -1946,13 +1944,15 @@ function _applyDestInfo(key, data) {
   }
 }
 
-// Augment the destination section title with a LIVE/SAMPLE chip after each render
+// Augment the destination section title with a LIVE/SAMPLE chip after each render.
+// "Live" if EITHER dest_info AI data OR OpenWeather real data succeeded.
 const _origRenderPanelDest = renderPanelDest;
 renderPanelDest = function() {
   _origRenderPanelDest();
   const titleEl = document.getElementById('ws-section-weather');
   if (!titleEl) return;
-  const live = !!_destIsLive[currentDest];
+  const d = DESTS[currentDest] || {};
+  const live = !!_destIsLive[currentDest] || !!d._isLive;
   const tag = live ? t().liveTag : t().sampleTag;
   const bg = live ? '#10b981' : '#9ca3af';
   if (!titleEl.querySelector('.ws-live-chip')) {

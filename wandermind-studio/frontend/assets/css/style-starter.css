@@ -12357,6 +12357,18 @@ body.dark .gg-sun, body.dark .gg-moon {
   color: #fcbf1e !important;
 }
 
+/* —— Theme toggle: move left so it never gets clipped on the right edge —— */
+@media (min-width: 992px) {
+  .w3l-header-4 .navbar .mobile-position {
+    margin-right: 14px !important;
+    margin-left: .55rem !important;
+  }
+  /* Reserve a comfortable right gutter on the navbar container itself */
+  .w3l-header-4 .navbar {
+    padding-right: 14px !important;
+  }
+}
+
 html {
   scroll-behavior: smooth; }
 
