@@ -46,6 +46,23 @@
         .navbar .nav-link.phone .fa { font-size: 14px !important; }
         .navbar .navbar-nav .nav-link { padding: 8px 6px !important; }
       }
+      /* Mobile ≤767px: hide STUDIO text so it never overlaps moon icon; tighten logo gap */
+      @media (max-width: 767px) {
+        .navbar-brand small { display: none !important; }
+        .navbar-brand { gap: 4px !important; }
+        .wm-logo-img { height: 30px !important; width: 30px !important; }
+      }
+      /* Mobile nav dropdown: dark panel so white nav-link text is readable */
+      @media (max-width: 991px) {
+        .navbar-collapse.show,
+        .navbar-collapse.collapsing {
+          background: rgba(10, 18, 35, 0.96) !important;
+          border-radius: 0 0 16px 16px;
+          padding: 12px 8px 20px !important;
+          margin-top: 8px;
+          box-shadow: 0 16px 40px rgba(0,0,0,.4);
+        }
+      }
 
       /* Services destination card images — uniform sizing */
       .w3l-services-two .img-box img {
