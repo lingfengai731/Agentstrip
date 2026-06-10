@@ -103,6 +103,28 @@
           box-shadow: 0 16px 40px rgba(0,0,0,.4);
         }
       }
+      /* —— Lang picker: force white text + center alignment (was inheriting dark #333) —— */
+      .lang-picker { color: #fff !important; }
+      .lang-picker .fa { color: #fff !important; opacity: .85; }
+      .lang-picker select {
+        color: #fff !important;
+        text-align: center;
+        text-align-last: center;
+        -moz-text-align-last: center;
+        padding-right: 4px !important;
+      }
+      .lang-picker select option { color: #333 !important; background: #fff !important; }
+      body.dark .lang-picker select option { color: #f0f0f0 !important; background: #222 !important; }
+      /* Mobile: make lang picker full-width row so it doesn't overlap auth slot */
+      @media (max-width: 991px) {
+        .navbar-nav .nav-item .lang-picker { width: 100%; justify-content: center; height: 38px; }
+        .navbar-nav .nav-item { margin: 4px 0 !important; }
+        #ws-nav-auth-slot { display: flex; justify-content: center; padding: 4px 0; }
+      }
+      /* —— Footer contact icons: brand gold so they're visible on dark footer —— */
+      .footer-contact-line .fa { color: #fcbf1e !important; opacity: 1; font-size: 15px; }
+      .footer-contact-line a { color: #ddd; }
+      .footer-contact-line a:hover { color: #fcbf1e; }
 
       /* ═══════════════════════════════════════════════════
          IMAGE UNIFORM SIZING
