@@ -13,10 +13,11 @@
 
 | 产品 | 地址 | 说明 |
 |------|------|------|
-| 🏠 **WanderMind Studio** | [域名配置中，敬请期待] | 官方多页面网站 + AI 工作台 |
-| ⚡ **AI 核心应用** | **[https://agentstrip.onrender.com](https://agentstrip.onrender.com)** | 6 AI 智能体完整功能版 |
+| 🏠 **WanderMind Studio** | **[https://agentstrip.onrender.com/studio/](https://agentstrip.onrender.com/studio/)** | 官方多页面品牌网站 + AI 工作台 |
+| ⚡ **AI 核心应用** | **[https://agentstrip.onrender.com](https://agentstrip.onrender.com)** | 6 AI 智能体单页极简版 |
 
-> 💡 **两端均支持手机浏览器直接访问**，无需下载 App。
+> 💡 **两端共享同一后端 + 同一数据库**，同一账号互通登录。
+> **手机浏览器直接访问**，无需下载 App。自定义域名绑定中。
 
 ---
 

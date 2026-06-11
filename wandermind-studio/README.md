@@ -88,16 +88,25 @@ wandermind-studio/
 
 ## 🔗 后端 API
 
-Studio 工作台调用的后端 API 部署于：
+Studio **由 wandermind 后端通过 FastAPI `StaticFiles` 自动托管**在 `/studio` 路径：
 
 ```
-https://agentstrip.onrender.com
+https://agentstrip.onrender.com/studio/        ← Studio 网站
+https://agentstrip.onrender.com/studio/ai-tool.html  ← AI 工作台
+https://agentstrip.onrender.com/api/*          ← 共享后端 API
 ```
 
-如需修改后端地址，在 `ai-tool.js` 顶部设置：
+**同源部署的好处**：
+- 零 CORS 配置
+- 相对路径 `/api/*` 自动生效，无需写后端 URL
+- 自定义域名绑定后两者一起切换
+- 单一 Render 服务，单一 Postgres 数据库
 
-```javascript
-window.WM_BACKEND = 'https://your-backend.onrender.com';
+如需把 Studio 独立部署到其他域名（如单独 CDN / Vercel），在 HTML 加：
+
+```html
+<script>window.WM_BACKEND = 'https://agentstrip.onrender.com';</script>
+<script src="assets/js/ai-tool.js"></script>
 ```
 
 主要接口：
@@ -136,15 +145,15 @@ python -m http.server 3000
 
 ---
 
-## 🌐 部署（Render Static Site）
+## 🌐 部署（已上线，自动）
 
-1. Push 代码到 GitHub
-2. 在 [Render.com](https://render.com) 创建 **Static Site**
-3. Root Directory 设置为：`wandermind-studio/frontend`
-4. Publish Directory 留空（直接发布根目录）
-5. 无需 Build Command
+Studio **已经随 wandermind 后端一起部署**，无需单独配置：
 
-> 后端 API 需单独部署，见 [wandermind/README.md](../wandermind/README.md)
+1. 后端 `main.py` 末尾通过 `app.mount("/studio", StaticFiles(...))` 自动托管
+2. push 代码到 GitHub → Render 自动重新部署 → Studio 同时更新
+3. 访问 https://agentstrip.onrender.com/studio/ 即可
+
+> 如要拆分独立部署（如 Vercel / Netlify）：见上方"后端 API"章节的 `WM_BACKEND` 配置
 
 ---
 
