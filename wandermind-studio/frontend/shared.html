@@ -1,0 +1,496 @@
+<!doctype html>
+<html lang="zh">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <title>WanderMind · Shared Trip</title>
+  <meta name="description" content="A read-only WanderMind trip plan shared with you.">
+  <link rel="icon" type="image/png" href="assets/images/logo-mark.png">
+  <meta property="og:title" content="WanderMind Trip Plan">
+  <meta property="og:description" content="Curated by 6 AI travel agents — check out this trip plan.">
+  <meta property="og:type" content="article">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <style>
+    :root {
+      --gold: #fcbf1e;
+      --gold-dk: #d97706;
+      --teal: #0e7c6b;
+      --teal-lt: #14b8a6;
+      --ink: #1e293b;
+      --ink-2: #475569;
+      --ink-3: #94a3b8;
+      --paper: #ffffff;
+      --bg: #fafaf7;
+      --bg-2: #f5f3ed;
+      --line: #e5e2d8;
+      --shadow: 0 1px 3px rgba(0,0,0,.05), 0 4px 12px rgba(0,0,0,.04);
+      --shadow-lg: 0 10px 30px rgba(0,0,0,.10);
+    }
+    body.dark {
+      --ink: #f0f0ec;
+      --ink-2: #b8b8b0;
+      --ink-3: #707068;
+      --paper: #1f1f1c;
+      --bg: #15150f;
+      --bg-2: #2a2a25;
+      --line: #3a3a32;
+      --shadow: 0 1px 3px rgba(0,0,0,.4);
+      --shadow-lg: 0 10px 30px rgba(0,0,0,.5);
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
+      background: var(--bg);
+      color: var(--ink);
+      line-height: 1.6;
+    }
+    a { color: var(--teal); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+
+    /* —— Top bar —— */
+    .sh-top {
+      background: var(--paper);
+      border-bottom: 1px solid var(--line);
+      padding: 14px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      backdrop-filter: blur(8px);
+    }
+    .sh-brand {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      font-weight: 700;
+      color: var(--ink);
+      font-size: 17px;
+      letter-spacing: .02em;
+    }
+    .sh-brand img { width: 32px; height: 32px; object-fit: contain; }
+    .sh-brand small { font-size: 10px; opacity: .55; letter-spacing: .18em; text-transform: uppercase; font-weight: 400; }
+    .sh-cta {
+      background: linear-gradient(135deg, var(--gold), var(--gold-dk));
+      color: #fff;
+      padding: 9px 18px;
+      border-radius: 20px;
+      font-size: 13px;
+      font-weight: 700;
+      border: none;
+      cursor: pointer;
+      transition: transform .15s, box-shadow .2s;
+      white-space: nowrap;
+    }
+    .sh-cta:hover { transform: translateY(-1px); box-shadow: 0 6px 18px rgba(252,191,30,.4); text-decoration: none; color: #fff; }
+
+    /* —— Hero —— */
+    .sh-hero {
+      max-width: 760px;
+      margin: 30px auto 0;
+      padding: 0 24px;
+    }
+    .sh-eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--gold-dk);
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      margin-bottom: 10px;
+    }
+    .sh-title {
+      font-size: 32px;
+      font-weight: 800;
+      color: var(--ink);
+      line-height: 1.25;
+      margin: 0 0 14px;
+      letter-spacing: -.01em;
+    }
+    .sh-chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 18px;
+    }
+    .sh-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      padding: 5px 12px;
+      background: var(--bg-2);
+      border-radius: 14px;
+      font-size: 12.5px;
+      color: var(--ink-2);
+      border: 1px solid var(--line);
+    }
+    .sh-chip .fa { color: var(--gold-dk); font-size: 11px; }
+    .sh-meta {
+      font-size: 13px;
+      color: var(--ink-3);
+      padding: 8px 0 22px;
+      border-bottom: 1px dashed var(--line);
+    }
+    .sh-meta .fa { margin-right: 4px; opacity: .7; }
+
+    /* —— Messages —— */
+    .sh-feed {
+      max-width: 760px;
+      margin: 0 auto 60px;
+      padding: 24px;
+    }
+    .sh-msg {
+      display: flex;
+      gap: 12px;
+      margin-bottom: 22px;
+    }
+    .sh-msg-user {
+      flex-direction: row-reverse;
+    }
+    .sh-avatar {
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      flex-shrink: 0;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+      font-size: 16px;
+      box-shadow: var(--shadow);
+    }
+    .sh-avatar.user { background: linear-gradient(135deg, #fcbf1e, #d97706); }
+    .sh-avatar.planner  { background: linear-gradient(135deg, #14b8a6, #0e7c6b); }
+    .sh-avatar.hotel    { background: linear-gradient(135deg, #60a5fa, #2563eb); }
+    .sh-avatar.food     { background: linear-gradient(135deg, #fb923c, #ea580c); }
+    .sh-avatar.activity { background: linear-gradient(135deg, #a78bfa, #7c3aed); }
+    .sh-avatar.budget   { background: linear-gradient(135deg, #fcbf1e, #d97706); }
+    .sh-avatar.search   { background: linear-gradient(135deg, #34d399, #059669); }
+    .sh-bubble-wrap {
+      max-width: calc(100% - 56px);
+      min-width: 0;
+    }
+    .sh-agent-name {
+      font-size: 11.5px;
+      font-weight: 700;
+      color: var(--ink-3);
+      letter-spacing: .04em;
+      margin-bottom: 5px;
+    }
+    .sh-bubble {
+      background: var(--paper);
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      padding: 14px 16px;
+      font-size: 14.5px;
+      line-height: 1.7;
+      color: var(--ink);
+      box-shadow: var(--shadow);
+      word-wrap: break-word;
+      overflow-wrap: break-word;
+    }
+    .sh-msg-user .sh-bubble {
+      background: linear-gradient(135deg, rgba(252,191,30,.18), rgba(252,191,30,.06));
+      border-color: rgba(252,191,30,.3);
+    }
+    .sh-bubble p { margin: 0 0 10px; }
+    .sh-bubble p:last-child { margin-bottom: 0; }
+    .sh-bubble h1, .sh-bubble h2, .sh-bubble h3 {
+      font-size: 15px;
+      font-weight: 700;
+      margin: 12px 0 6px;
+      color: var(--ink);
+    }
+    .sh-bubble ul, .sh-bubble ol { padding-left: 24px; margin: 6px 0 10px; }
+    .sh-bubble li { margin-bottom: 4px; }
+    .sh-bubble code {
+      background: var(--bg-2);
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-family: ui-monospace, SFMono-Regular, monospace;
+      font-size: 12.5px;
+    }
+    .sh-bubble strong { color: var(--ink); font-weight: 700; }
+
+    /* —— Footer CTA —— */
+    .sh-footer-cta {
+      max-width: 760px;
+      margin: 40px auto;
+      padding: 28px 24px;
+      background: linear-gradient(135deg, rgba(252,191,30,.12), rgba(14,124,107,.08));
+      border-radius: 20px;
+      text-align: center;
+      border: 1px solid rgba(252,191,30,.25);
+    }
+    .sh-footer-cta h3 {
+      font-size: 20px;
+      font-weight: 700;
+      margin: 0 0 8px;
+      color: var(--ink);
+    }
+    .sh-footer-cta p {
+      color: var(--ink-2);
+      margin: 0 0 18px;
+      font-size: 14px;
+    }
+    .sh-footer-cta .sh-cta {
+      padding: 12px 28px;
+      font-size: 14px;
+      display: inline-block;
+    }
+
+    /* —— Loading / error states —— */
+    .sh-state {
+      max-width: 560px;
+      margin: 80px auto;
+      padding: 0 24px;
+      text-align: center;
+    }
+    .sh-state .fa-spinner { animation: spin 1s linear infinite; color: var(--gold); font-size: 36px; }
+    .sh-state .fa-frown-o, .sh-state .fa-exclamation-triangle {
+      color: var(--ink-3); font-size: 48px;
+    }
+    .sh-state h2 { font-size: 22px; margin: 20px 0 8px; color: var(--ink); }
+    .sh-state p { color: var(--ink-2); margin: 0 0 22px; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* —— Theme toggle —— */
+    .sh-theme-toggle {
+      background: var(--bg-2);
+      border: 1px solid var(--line);
+      width: 36px;
+      height: 36px;
+      border-radius: 18px;
+      cursor: pointer;
+      color: var(--ink-2);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      transition: background .2s;
+    }
+    .sh-theme-toggle:hover { background: var(--line); }
+
+    /* —— Mobile —— */
+    @media (max-width: 575px) {
+      .sh-top { padding: 12px 16px; }
+      .sh-brand { font-size: 15px; }
+      .sh-brand small { display: none; }
+      .sh-cta { padding: 8px 14px; font-size: 12px; }
+      .sh-hero { padding: 0 16px; margin-top: 20px; }
+      .sh-title { font-size: 24px; }
+      .sh-feed { padding: 18px 16px; }
+      .sh-avatar { width: 32px; height: 32px; font-size: 14px; }
+      .sh-bubble-wrap { max-width: calc(100% - 48px); }
+      .sh-bubble { font-size: 14px; padding: 12px 14px; }
+      .sh-footer-cta { margin: 30px 16px; padding: 22px 18px; }
+      .sh-footer-cta h3 { font-size: 18px; }
+    }
+  </style>
+</head>
+<body>
+
+  <header class="sh-top">
+    <a href="/studio/" class="sh-brand">
+      <img src="assets/images/logo-mark.png" alt="WanderMind">
+      <span>WanderMind <small>STUDIO</small></span>
+    </a>
+    <div style="display:flex;gap:10px;align-items:center">
+      <button class="sh-theme-toggle" id="sh-theme" title="Toggle theme"><span class="fa fa-moon-o"></span></button>
+      <a href="/studio/ai-tool.html" class="sh-cta" id="sh-cta-top">Plan my own</a>
+    </div>
+  </header>
+
+  <main id="sh-main">
+    <div class="sh-state" id="sh-loading">
+      <span class="fa fa-spinner"></span>
+      <p style="margin-top:18px">Loading shared trip…</p>
+    </div>
+  </main>
+
+  <script>
+    /* ---------- Minimal i18n ---------- */
+    const I18N = {
+      zh: { hero:'查看这份 WanderMind 旅程规划', cta:'我也要规划一个', sharedBy:'分享自 {name}', views:'已被查看 {n} 次', created:'创建于 {date}', errTitle:'链接已失效或不存在', errBody:'这个分享链接可能已被取消，或者从未存在过。', loadFail:'加载失败', user:'你', planner:'旅程规划师', hotel:'住宿顾问', food:'美食探索家', activity:'活动策划师', budget:'预算管家', search:'实时搜索', assistant:'AI 助手' },
+      en: { hero:'View this WanderMind trip plan', cta:'Plan my own', sharedBy:'Shared by {name}', views:'Viewed {n} times', created:'Created {date}', errTitle:'Link expired or not found', errBody:'This share link may have been revoked, or it never existed.', loadFail:'Failed to load', user:'You', planner:'Trip Planner', hotel:'Hotel Advisor', food:'Food Explorer', activity:'Activity Planner', budget:'Budget Steward', search:'Live Search', assistant:'AI Assistant' },
+      ja: { hero:'このWanderMind旅程プランを見る', cta:'自分の旅程を計画する', sharedBy:'{name}さんが共有', views:'{n}回閲覧', created:'{date}作成', errTitle:'リンクが無効または存在しません', errBody:'このリンクは取り消されたか、存在しません。', loadFail:'読み込み失敗', user:'あなた', planner:'旅程プランナー', hotel:'宿泊アドバイザー', food:'グルメ', activity:'アクティビティ', budget:'予算管理', search:'リアルタイム検索', assistant:'AI アシスタント' },
+      ko: { hero:'이 WanderMind 여행 계획 보기', cta:'나도 여행 시작', sharedBy:'{name}님 공유', views:'{n}회 조회', created:'{date} 생성', errTitle:'링크 만료 또는 없음', errBody:'이 링크는 취소되었거나 존재하지 않습니다.', loadFail:'로드 실패', user:'당신', planner:'여행 플래너', hotel:'숙소 어드바이저', food:'미식 탐험가', activity:'액티비티 플래너', budget:'예산 관리자', search:'실시간 검색', assistant:'AI 어시스턴트' },
+      id: { hero:'Lihat rencana WanderMind ini', cta:'Rencanakan punyaku', sharedBy:'Dibagikan oleh {name}', views:'Dilihat {n} kali', created:'Dibuat {date}', errTitle:'Link tidak valid', errBody:'Link ini mungkin sudah dicabut atau tidak pernah ada.', loadFail:'Gagal memuat', user:'Anda', planner:'Perencana', hotel:'Hotel', food:'Kuliner', activity:'Aktivitas', budget:'Anggaran', search:'Pencarian', assistant:'AI Asisten' }
+    };
+    const userLang = ((navigator.language||'en').toLowerCase().split('-')[0]);
+    const LANG = I18N[userLang] ? userLang : 'en';
+    const T = I18N[LANG];
+
+    /* Apply translations to static elements */
+    document.documentElement.lang = LANG;
+    document.getElementById('sh-cta-top').textContent = T.cta;
+
+    /* ---------- Theme ---------- */
+    const savedTheme = localStorage.getItem('wm_studio_theme') || 'light';
+    if (savedTheme === 'dark') document.body.classList.add('dark');
+    document.getElementById('sh-theme').onclick = () => {
+      document.body.classList.toggle('dark');
+      const isDark = document.body.classList.contains('dark');
+      localStorage.setItem('wm_studio_theme', isDark ? 'dark' : 'light');
+      document.querySelector('#sh-theme .fa').className = isDark ? 'fa fa-sun-o' : 'fa fa-moon-o';
+    };
+    if (savedTheme === 'dark') document.querySelector('#sh-theme .fa').className = 'fa fa-sun-o';
+
+    /* ---------- Helpers ---------- */
+    function escapeHtml(s) {
+      return String(s == null ? '' : s)
+        .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+    }
+    function interp(s, vars) {
+      return s.replace(/\{(\w+)\}/g, (_, k) => vars[k] != null ? vars[k] : '');
+    }
+    function fmtDate(ts) {
+      try {
+        const d = new Date(ts * 1000);
+        return d.toLocaleDateString(LANG === 'zh' ? 'zh-CN' : LANG, { year:'numeric', month:'short', day:'numeric' });
+      } catch (_) { return ''; }
+    }
+
+    /* Light markdown → HTML (paragraphs / bold / italic / lists / headings / code) */
+    function renderMd(text) {
+      if (!text) return '';
+      let s = escapeHtml(text);
+      s = s.replace(/```([\s\S]*?)```/g, (_, c) => `<pre><code>${c}</code></pre>`);
+      s = s.replace(/`([^`]+)`/g, '<code>$1</code>');
+      s = s.replace(/^###\s+(.*)$/gm, '<h3>$1</h3>');
+      s = s.replace(/^##\s+(.*)$/gm, '<h2>$1</h2>');
+      s = s.replace(/^#\s+(.*)$/gm, '<h1>$1</h1>');
+      s = s.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
+      s = s.replace(/\*([^*]+)\*/g, '<em>$1</em>');
+      // simple list grouping
+      const lines = s.split(/\n/);
+      const out = []; let inUl = false, inOl = false;
+      for (const ln of lines) {
+        const ul = ln.match(/^[\-\*]\s+(.*)$/);
+        const ol = ln.match(/^\d+\.\s+(.*)$/);
+        if (ul) {
+          if (!inUl) { if (inOl) { out.push('</ol>'); inOl=false; } out.push('<ul>'); inUl=true; }
+          out.push('<li>' + ul[1] + '</li>');
+        } else if (ol) {
+          if (!inOl) { if (inUl) { out.push('</ul>'); inUl=false; } out.push('<ol>'); inOl=true; }
+          out.push('<li>' + ol[1] + '</li>');
+        } else {
+          if (inUl) { out.push('</ul>'); inUl=false; }
+          if (inOl) { out.push('</ol>'); inOl=false; }
+          if (ln.trim()) out.push('<p>' + ln + '</p>');
+        }
+      }
+      if (inUl) out.push('</ul>');
+      if (inOl) out.push('</ol>');
+      return out.join('\n');
+    }
+
+    const AGENT_ICONS = {
+      planner: 'fa-map-o', hotel: 'fa-bed', food: 'fa-cutlery',
+      activity: 'fa-paw', budget: 'fa-pie-chart', search: 'fa-search'
+    };
+
+    /* ---------- Load shared trip ---------- */
+    async function loadShared() {
+      const params = new URLSearchParams(location.search);
+      const token = params.get('t') || params.get('token');
+      const main = document.getElementById('sh-main');
+      if (!token) {
+        main.innerHTML = renderErr();
+        return;
+      }
+      try {
+        const r = await fetch('/api/share/' + encodeURIComponent(token));
+        if (!r.ok) throw new Error('not found');
+        const data = await r.json();
+        render(data);
+      } catch (_) {
+        main.innerHTML = renderErr();
+      }
+    }
+
+    function renderErr() {
+      return `
+        <div class="sh-state">
+          <span class="fa fa-frown-o"></span>
+          <h2>${escapeHtml(T.errTitle)}</h2>
+          <p>${escapeHtml(T.errBody)}</p>
+          <a href="/studio/" class="sh-cta">${escapeHtml(T.cta)}</a>
+        </div>
+      `;
+    }
+
+    function render(data) {
+      const main = document.getElementById('sh-main');
+      const title = data.title || 'Untitled trip';
+      const meta = data.trip_meta || {};
+      const owner = data.owner_name || '';
+      const dest = data.dest || '';
+
+      const chips = [];
+      if (meta.start) chips.push({ icon:'fa-calendar', text: meta.start });
+      if (meta.days)  chips.push({ icon:'fa-clock-o', text: meta.days + (LANG==='zh'?' 天': LANG==='ja'?'日': LANG==='ko'?'일': LANG==='id'?' hari':' days') });
+      if (meta.people) chips.push({ icon:'fa-users', text: meta.people + (LANG==='zh'?' 人':LANG==='ja'?'人':LANG==='ko'?'명':LANG==='id'?' orang':' people') });
+      if (meta.budget) chips.push({ icon:'fa-dollar', text: Number(meta.budget).toLocaleString() });
+      if (dest) chips.push({ icon:'fa-map-marker', text: dest });
+
+      const heroHtml = `
+        <section class="sh-hero">
+          <div class="sh-eyebrow"><span class="fa fa-share-alt"></span> ${escapeHtml(T.hero)}</div>
+          <h1 class="sh-title">${escapeHtml(title)}</h1>
+          ${chips.length ? `<div class="sh-chips">${chips.map(c => `<span class="sh-chip"><span class="fa ${c.icon}"></span>${escapeHtml(c.text)}</span>`).join('')}</div>` : ''}
+          <div class="sh-meta">
+            ${owner ? `<span><span class="fa fa-user-circle-o"></span>${interp(T.sharedBy, {name: escapeHtml(owner)})}</span> · ` : ''}
+            <span><span class="fa fa-eye"></span>${interp(T.views, {n: data.views || 1})}</span>
+            ${data.created_at ? ` · <span><span class="fa fa-calendar"></span>${interp(T.created, {date: fmtDate(data.created_at)})}</span>` : ''}
+          </div>
+        </section>
+      `;
+
+      const msgs = data.messages || [];
+      const feedHtml = `
+        <section class="sh-feed">
+          ${msgs.map(m => renderMsg(m)).join('')}
+        </section>
+      `;
+
+      const ctaHtml = `
+        <section class="sh-footer-cta">
+          <h3>${escapeHtml(T.hero)}</h3>
+          <p>WanderMind · ${LANG==='zh'?'6 位 AI 智能体为你的旅行护航':'6 AI agents at your service'}</p>
+          <a href="/studio/ai-tool.html" class="sh-cta">${escapeHtml(T.cta)}</a>
+        </section>
+      `;
+
+      main.innerHTML = heroHtml + feedHtml + ctaHtml;
+
+      // Update document title
+      document.title = title + ' · WanderMind';
+    }
+
+    function renderMsg(m) {
+      const isUser = m.role === 'user';
+      const agentKey = m.agent || 'planner';
+      const agentLabel = isUser ? T.user : (T[agentKey] || T.assistant);
+      const avatarCls = isUser ? 'user' : agentKey;
+      const icon = isUser ? 'fa-user' : (AGENT_ICONS[agentKey] || 'fa-comment-o');
+      return `
+        <div class="sh-msg ${isUser ? 'sh-msg-user' : ''}">
+          <div class="sh-avatar ${avatarCls}"><span class="fa ${icon}"></span></div>
+          <div class="sh-bubble-wrap">
+            ${!isUser ? `<div class="sh-agent-name">${escapeHtml(agentLabel)}</div>` : ''}
+            <div class="sh-bubble">${renderMd(m.content || m.text || '')}</div>
+          </div>
+        </div>
+      `;
+    }
+
+    loadShared();
+  </script>
+</body>
+</html>

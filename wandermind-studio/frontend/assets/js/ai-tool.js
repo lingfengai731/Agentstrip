@@ -249,7 +249,16 @@ const TOOL_I18N = {
     greetTitle:'你好，旅行者 👋', greetSub:'我是 WanderMind 旅程规划师 —— 告诉我你想去哪里、什么时候、和谁一起，我会和我的 5 个 AI 同事联手为你设计完整方案。',
     toastPhase2:'此功能将在 Phase 2 上线',
     welcomeUnknown:'欢迎选择目的地开始规划。',
-    sendErr:'抱歉，请求出错了。请稍后重试或检查后端是否在线。'
+    sendErr:'抱歉，请求出错了。请稍后重试或检查后端是否在线。',
+    shareBtn:'分享', shareTip:'生成分享链接',
+    shareModalTitle:'分享你的旅程', shareModalSub:'生成只读链接，朋友无需登录即可查看你的完整规划',
+    shareLinkLabel:'你的分享链接', shareCopy:'复制', shareCopied:'已复制 ✓',
+    shareNative:'系统分享…', shareRevoke:'取消分享',
+    shareNothing:'还没有可分享的对话内容', shareErr:'生成分享链接失败',
+    shareLoginReq:'请先登录后再生成分享链接', shareGenerating:'生成中…',
+    sharedViews:'已被查看 {n} 次', sharedFrom:'分享自 {name}',
+    sharedHero:'查看这份 WanderMind 旅程规划',
+    sharedCta:'我也要规划一个'
   },
   en: {
     topChat:'Chat', topItinerary:'Itinerary', topMap:'Map', topBudget:'Budget', topDiary:'Diary',
@@ -267,7 +276,16 @@ const TOOL_I18N = {
     greetTitle:'Hello traveller 👋', greetSub:'I am the WanderMind Trip Planner. Tell me where, when and with whom — my five AI colleagues and I will draft a complete plan together.',
     toastPhase2:'This feature lands in Phase 2',
     welcomeUnknown:'Pick a destination to start planning.',
-    sendErr:'Sorry, the request failed. Please retry or check that the backend is online.'
+    sendErr:'Sorry, the request failed. Please retry or check that the backend is online.',
+    shareBtn:'Share', shareTip:'Generate share link',
+    shareModalTitle:'Share your trip', shareModalSub:'Get a read-only link — friends can view your full plan without signing in',
+    shareLinkLabel:'Your share link', shareCopy:'Copy', shareCopied:'Copied ✓',
+    shareNative:'Share via…', shareRevoke:'Revoke share',
+    shareNothing:'Start a conversation first — nothing to share yet', shareErr:'Failed to generate share link',
+    shareLoginReq:'Please sign in to create a share link', shareGenerating:'Generating…',
+    sharedViews:'Viewed {n} times', sharedFrom:'Shared by {name}',
+    sharedHero:'View this WanderMind trip plan',
+    sharedCta:'Plan my own trip'
   },
   ja: {
     topChat:'チャット', topItinerary:'旅程', topMap:'地図', topBudget:'予算', topDiary:'紀行',
@@ -285,7 +303,16 @@ const TOOL_I18N = {
     greetTitle:'こんにちは、旅人 👋', greetSub:'私はWanderMind旅程プランナーです。行きたい場所·時期·同行者を教えて。5人のAI同僚と一緒に完全プランを設計します。',
     toastPhase2:'この機能はPhase 2で公開',
     welcomeUnknown:'目的地を選んで計画を開始。',
-    sendErr:'リクエストに失敗しました。バックエンドの状態を確認してください。'
+    sendErr:'リクエストに失敗しました。バックエンドの状態を確認してください。',
+    shareBtn:'共有', shareTip:'共有リンクを生成',
+    shareModalTitle:'旅程を共有', shareModalSub:'読み取り専用リンク、ログイン不要で全プランを閲覧できます',
+    shareLinkLabel:'共有リンク', shareCopy:'コピー', shareCopied:'コピー済み ✓',
+    shareNative:'システム共有…', shareRevoke:'共有を取り消す',
+    shareNothing:'まずチャットを開始してください', shareErr:'リンクの生成に失敗',
+    shareLoginReq:'共有にはログインが必要です', shareGenerating:'生成中…',
+    sharedViews:'{n}回閲覧されました', sharedFrom:'{name}さんが共有',
+    sharedHero:'このWanderMind旅程プランを見る',
+    sharedCta:'自分の旅程を計画する'
   },
   ko: {
     topChat:'챗', topItinerary:'일정', topMap:'지도', topBudget:'예산', topDiary:'기행문',
@@ -303,7 +330,16 @@ const TOOL_I18N = {
     greetTitle:'안녕하세요, 여행자 👋', greetSub:'저는 WanderMind 여행 플래너입니다. 어디로, 언제, 누구와 — 5명의 AI 동료와 함께 완전한 계획을 설계합니다.',
     toastPhase2:'이 기능은 Phase 2에서 제공',
     welcomeUnknown:'계획을 시작할 목적지를 선택하세요.',
-    sendErr:'요청 실패. 백엔드 상태를 확인하세요.'
+    sendErr:'요청 실패. 백엔드 상태를 확인하세요.',
+    shareBtn:'공유', shareTip:'공유 링크 생성',
+    shareModalTitle:'여행 공유', shareModalSub:'읽기 전용 링크 — 친구는 로그인 없이 전체 계획을 볼 수 있음',
+    shareLinkLabel:'공유 링크', shareCopy:'복사', shareCopied:'복사됨 ✓',
+    shareNative:'시스템 공유…', shareRevoke:'공유 취소',
+    shareNothing:'먼저 대화를 시작하세요', shareErr:'링크 생성 실패',
+    shareLoginReq:'공유하려면 로그인하세요', shareGenerating:'생성 중…',
+    sharedViews:'{n}회 조회됨', sharedFrom:'{name}님이 공유',
+    sharedHero:'이 WanderMind 여행 계획 보기',
+    sharedCta:'나도 여행 계획 시작'
   },
   id: {
     topChat:'Chat', topItinerary:'Rencana', topMap:'Peta', topBudget:'Anggaran', topDiary:'Cerita',
@@ -321,7 +357,16 @@ const TOOL_I18N = {
     greetTitle:'Halo traveler 👋', greetSub:'Saya Perencana WanderMind. Beri tahu ke mana, kapan, dengan siapa — bersama 5 rekan AI saya, kami buat rencana lengkap.',
     toastPhase2:'Fitur ini hadir di Fase 2',
     welcomeUnknown:'Pilih tujuan untuk mulai merencanakan.',
-    sendErr:'Permintaan gagal. Periksa apakah backend online.'
+    sendErr:'Permintaan gagal. Periksa apakah backend online.',
+    shareBtn:'Bagikan', shareTip:'Buat link berbagi',
+    shareModalTitle:'Bagikan perjalanan', shareModalSub:'Link hanya-baca — teman bisa lihat rencana lengkap tanpa login',
+    shareLinkLabel:'Link Anda', shareCopy:'Salin', shareCopied:'Tersalin ✓',
+    shareNative:'Bagikan via…', shareRevoke:'Cabut share',
+    shareNothing:'Mulai percakapan dulu', shareErr:'Gagal membuat link',
+    shareLoginReq:'Masuk dulu untuk berbagi', shareGenerating:'Membuat…',
+    sharedViews:'Dilihat {n} kali', sharedFrom:'Dibagikan oleh {name}',
+    sharedHero:'Lihat rencana WanderMind ini',
+    sharedCta:'Rencanakan punyaku'
   }
 };
 
@@ -476,6 +521,10 @@ function renderChatHeader() {
 function renderControlsAndQuick() {
   $('#ws-askall').innerHTML = `<span class="fa fa-bolt"></span> ${escapeHtml(t().askAll)}`;
   $('#ws-mode-label').textContent = currentMode === 'precise' ? t().modePrecise : t().modeFast;
+  const shareLbl = $('#ws-share-label');
+  if (shareLbl) shareLbl.textContent = t().shareBtn;
+  const shareBtn = $('#ws-share-btn');
+  if (shareBtn) shareBtn.setAttribute('title', t().shareTip || t().shareBtn);
 
   // Quick buttons (6 from the H5 quickBtns array)
   const quicks = [
@@ -803,6 +852,8 @@ function init() {
   $('#ws-mode-toggle').onclick = toggleMode;
   $('#ws-askall').onclick = askTeam;
   $('#ws-newtrip-btn').onclick = () => { if (typeof createNewTrip === 'function') createNewTrip(); };
+  const shareBtn = $('#ws-share-btn');
+  if (shareBtn) shareBtn.onclick = openShareModal;
 
   // Seed first log
   addLog('info', 'fa-power-off', t().logBooted);
@@ -1701,6 +1752,146 @@ function openMapModal() {
   });
   el.classList.add('show');
   addLog('info', 'fa-map-marker', t().logMapOpen);
+}
+
+/* ═════════════════ SHARE MODAL ═════════════════ */
+async function openShareModal() {
+  const T = t();
+  // Need at least some content to share
+  const realMsgs = messages.filter(m => (m.role === 'user' || m.role === 'ai') && m.text && m.text !== '__typing__');
+  if (realMsgs.length === 0) {
+    showToast(T.shareNothing || 'Nothing to share yet');
+    return;
+  }
+  if (!isLoggedIn()) {
+    showToast(T.shareLoginReq || 'Please sign in first');
+    if (typeof openAuthModal === 'function') openAuthModal('login');
+    return;
+  }
+
+  const el = _ensureModal();
+  el.innerHTML = `
+    <div class="ws-modal" style="max-width:520px">
+      <div class="ws-modal-head">
+        <div class="ws-modal-title"><span class="fa fa-share-alt"></span> ${escapeHtml(T.shareModalTitle)}</div>
+        <button class="ws-modal-close"><span class="fa fa-times"></span></button>
+      </div>
+      <div class="ws-modal-body">
+        <p style="margin:0 0 14px;color:var(--ws-ink-3);font-size:13px">${escapeHtml(T.shareModalSub)}</p>
+        <div class="ws-share-loading" id="ws-share-loading">
+          <span class="fa fa-spinner"></span> ${escapeHtml(T.shareGenerating)}
+        </div>
+        <div id="ws-share-result" style="display:none"></div>
+      </div>
+    </div>
+  `;
+  el.querySelector('.ws-modal-close').onclick = closeModalEl;
+  el.classList.add('show');
+
+  // Build the snapshot payload
+  const payload = {
+    conv_id: currentTripId || null,
+    title: (tripList.find(x => x.id === currentTripId) || {}).title || _autoTitle(),
+    dest: currentDest,
+    messages: realMsgs.map(m => ({
+      role: m.role === 'ai' ? 'assistant' : 'user',
+      content: m.text,
+      agent: m.agent || null
+    })),
+    trip_meta: currentTrip || {}
+  };
+
+  try {
+    const r = await fetch(BACKEND_BASE + '/api/share/create', {
+      method:'POST',
+      headers:{ 'Content-Type':'application/json', ...authHeaders() },
+      body: JSON.stringify(payload)
+    });
+    if (!r.ok) {
+      const errData = await r.json().catch(() => ({}));
+      throw new Error(errData.detail || T.shareErr);
+    }
+    const data = await r.json();
+    const fullUrl = window.location.origin + data.url;
+    _renderShareResult(fullUrl, data.token);
+    addLog('success', 'fa-share-alt', `${T.shareBtn}: ${data.token}`);
+  } catch (err) {
+    const loadingEl = document.getElementById('ws-share-loading');
+    if (loadingEl) {
+      loadingEl.innerHTML = `<span class="fa fa-exclamation-circle" style="color:#dc2626"></span> ${escapeHtml(err.message || T.shareErr)}`;
+    }
+  }
+}
+
+function _renderShareResult(url, token) {
+  const T = t();
+  const loadingEl = document.getElementById('ws-share-loading');
+  const resultEl = document.getElementById('ws-share-result');
+  if (!resultEl) return;
+  if (loadingEl) loadingEl.style.display = 'none';
+  resultEl.style.display = 'block';
+
+  const hasNativeShare = typeof navigator.share === 'function';
+
+  resultEl.innerHTML = `
+    <div style="font-size:12.5px;font-weight:600;color:var(--ws-ink-2);margin-bottom:4px">${escapeHtml(T.shareLinkLabel)}</div>
+    <div class="ws-share-link-row">
+      <input type="text" class="ws-share-link-input" id="ws-share-link-input" value="${escapeHtml(url)}" readonly>
+      <button class="ws-share-copy-btn" id="ws-share-copy"><span class="fa fa-copy"></span> <span>${escapeHtml(T.shareCopy)}</span></button>
+    </div>
+    <div class="ws-share-actions">
+      ${hasNativeShare ? `<button class="ws-action-btn" id="ws-share-native"><span class="fa fa-paper-plane"></span> ${escapeHtml(T.shareNative)}</button>` : ''}
+      <button class="ws-action-btn secondary" id="ws-share-revoke"><span class="fa fa-trash-o"></span> ${escapeHtml(T.shareRevoke)}</button>
+    </div>
+  `;
+
+  const input = document.getElementById('ws-share-link-input');
+  // Auto-select on focus for desktop usability
+  input.onfocus = () => input.select();
+
+  const copyBtn = document.getElementById('ws-share-copy');
+  copyBtn.onclick = async () => {
+    try {
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        await navigator.clipboard.writeText(url);
+      } else {
+        input.select();
+        document.execCommand('copy');
+      }
+      copyBtn.classList.add('copied');
+      copyBtn.innerHTML = `<span class="fa fa-check"></span> <span>${escapeHtml(T.shareCopied)}</span>`;
+      setTimeout(() => {
+        copyBtn.classList.remove('copied');
+        copyBtn.innerHTML = `<span class="fa fa-copy"></span> <span>${escapeHtml(T.shareCopy)}</span>`;
+      }, 1800);
+    } catch (_) { /* silent */ }
+  };
+
+  const nativeBtn = document.getElementById('ws-share-native');
+  if (nativeBtn) {
+    nativeBtn.onclick = async () => {
+      try {
+        await navigator.share({
+          title: 'WanderMind',
+          text: T.sharedHero,
+          url: url
+        });
+      } catch (_) { /* user cancelled */ }
+    };
+  }
+
+  const revokeBtn = document.getElementById('ws-share-revoke');
+  revokeBtn.onclick = async () => {
+    if (!confirm(T.shareRevoke + '?')) return;
+    try {
+      await fetch(BACKEND_BASE + '/api/share/' + token, {
+        method:'DELETE',
+        headers: authHeaders()
+      });
+      closeModalEl();
+      showToast(T.shareRevoke + ' ✓');
+    } catch (_) { /* silent */ }
+  };
 }
 
 /* ═════════════════ DIARY MODAL ═════════════════ */

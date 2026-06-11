@@ -177,6 +177,14 @@ class FlightSearchReq(BaseModel):
     lang: str = "zh"
 
 
+class ShareCreateReq(BaseModel):
+    conv_id: Optional[str] = None       # if user already saved this trip
+    title: Optional[str] = ""
+    dest: Optional[str] = "bali"
+    messages: Optional[List[dict]] = None
+    trip_meta: Optional[dict] = None    # {start, end, days, people, budget, style}
+
+
 # ─── Auth routes ─────────────────────────────────────────────
 @app.post("/api/auth/register")
 async def register(data: RegisterReq):
@@ -308,6 +316,139 @@ async def delete_conv(conv_id: str, user=Depends(current_user)):
     conn = get_db()
     try:
         conn.execute("DELETE FROM conversations WHERE id=? AND user_id=?", (conv_id, user["sub"]))
+        conn.commit()
+        return {"ok": True}
+    finally:
+        conn.close()
+
+
+# ─── Trip sharing ──────────────────────────────────────────────
+# Short URL-friendly token: 10 chars from base62 → ~8.4×10^17 combinations.
+_TOKEN_ALPHABET = "ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnpqrstuvwxyz23456789"  # no 0/O/1/I/l
+
+
+def _gen_share_token() -> str:
+    import secrets
+    return "".join(secrets.choice(_TOKEN_ALPHABET) for _ in range(10))
+
+
+@app.post("/api/share/create")
+async def share_create(data: ShareCreateReq, user=Depends(current_user)):
+    """Create a public read-only snapshot of a trip and return its share token.
+
+    Two modes:
+      • conv_id provided  → load the saved conversation from DB
+      • messages provided → use the inline snapshot (for unsaved trips)
+    """
+    conn = get_db()
+    try:
+        title = (data.title or "").strip()
+        dest = data.dest or "bali"
+        messages = data.messages or []
+        trip_meta = data.trip_meta or {}
+        owner_name = ""
+
+        # Pull owner name for display on the shared page
+        u_row = conn.execute(
+            "SELECT name FROM users WHERE id=?", (user["sub"],)
+        ).fetchone()
+        if u_row:
+            owner_name = dict(u_row).get("name", "") or ""
+
+        # If conv_id given, use the latest saved version as the source of truth
+        if data.conv_id:
+            row = conn.execute(
+                "SELECT title, dest, messages FROM conversations WHERE id=? AND user_id=?",
+                (data.conv_id, user["sub"]),
+            ).fetchone()
+            if not row:
+                raise HTTPException(404, "Conversation not found")
+            r = dict(row)
+            title = title or (r.get("title") or "")
+            dest = r.get("dest") or dest
+            messages = json.loads(r.get("messages") or "[]")
+
+        if not messages:
+            raise HTTPException(400, "Nothing to share — start a conversation first")
+
+        # Generate a fresh, collision-resistant token
+        token = _gen_share_token()
+        for _ in range(3):
+            exists = conn.execute(
+                "SELECT token FROM shared_trips WHERE token=?", (token,)
+            ).fetchone()
+            if not exists:
+                break
+            token = _gen_share_token()
+
+        snapshot = json.dumps({
+            "messages": messages,
+            "trip_meta": trip_meta,
+            "owner_name": owner_name,
+        }, ensure_ascii=False)
+
+        conn.execute(
+            "INSERT INTO shared_trips (token,user_id,conv_id,dest,title,snapshot,created_at) "
+            "VALUES (?,?,?,?,?,?,?)",
+            (token, user["sub"], data.conv_id, dest, title, snapshot, int(time.time())),
+        )
+        conn.commit()
+        return {"token": token, "url": f"/studio/shared.html?t={token}"}
+    finally:
+        conn.close()
+
+
+@app.get("/api/share/{token}")
+async def share_get(token: str):
+    """Public read-only fetch of a shared trip. No auth required."""
+    if not re.fullmatch(r"[A-Za-z0-9]{6,16}", token):
+        raise HTTPException(400, "Invalid token")
+    conn = get_db()
+    try:
+        row = conn.execute(
+            "SELECT token,dest,title,snapshot,views,created_at FROM shared_trips WHERE token=?",
+            (token,),
+        ).fetchone()
+        if not row:
+            raise HTTPException(404, "Shared trip not found or has been removed")
+        d = dict(row)
+        snap = json.loads(d["snapshot"] or "{}")
+        # Increment view counter (fire-and-forget; ignore concurrent races)
+        try:
+            conn.execute(
+                "UPDATE shared_trips SET views = COALESCE(views,0) + 1 WHERE token=?",
+                (token,),
+            )
+            conn.commit()
+        except Exception:
+            pass
+        return {
+            "token": d["token"],
+            "dest": d["dest"],
+            "title": d["title"],
+            "messages": snap.get("messages", []),
+            "trip_meta": snap.get("trip_meta", {}),
+            "owner_name": snap.get("owner_name", ""),
+            "views": (d["views"] or 0) + 1,
+            "created_at": d["created_at"],
+        }
+    finally:
+        conn.close()
+
+
+@app.delete("/api/share/{token}")
+async def share_delete(token: str, user=Depends(current_user)):
+    """Revoke a share link. Owner only."""
+    conn = get_db()
+    try:
+        row = conn.execute(
+            "SELECT user_id FROM shared_trips WHERE token=?", (token,)
+        ).fetchone()
+        if not row:
+            raise HTTPException(404, "Not found")
+        if dict(row)["user_id"] != user["sub"]:
+            raise HTTPException(403, "Not the owner")
+        conn.execute("DELETE FROM shared_trips WHERE token=?", (token,))
         conn.commit()
         return {"ok": True}
     finally:

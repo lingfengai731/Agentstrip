@@ -313,6 +313,128 @@ body.dark .ws-top-tabs { background: var(--ws-bg-2); border-bottom-color: var(--
 .ws-mode-toggle:hover { border-color: var(--ws-teal-lt); }
 .ws-mode-toggle .ws-mode-label { font-weight: 600; color: var(--ws-ink); }
 
+/* —— Right-side controls cluster (mode + share) —— */
+.ws-chat-controls-right {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+/* —— Share button — small outline pill with teal accent —— */
+.ws-share-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  background: var(--ws-paper);
+  border: 1px solid var(--ws-teal-lt);
+  color: var(--ws-teal);
+  border-radius: 18px;
+  font-size: 12px;
+  font-weight: 600;
+  font-family: inherit;
+  cursor: pointer;
+  transition: transform .15s, box-shadow .2s, background .2s;
+}
+.ws-share-btn .fa { font-size: 12px; }
+.ws-share-btn:hover {
+  background: linear-gradient(135deg, rgba(14,124,107,.10), rgba(14,124,107,.04));
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(14,124,107,.18);
+}
+.ws-share-btn:disabled {
+  opacity: .45;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+body.dark .ws-share-btn {
+  background: rgba(14,124,107,.08);
+  border-color: rgba(20,184,166,.4);
+  color: #5eead4;
+}
+body.dark .ws-share-btn:hover {
+  background: rgba(20,184,166,.18);
+}
+/* Mobile: hide label, keep icon only — keeps the row compact */
+@media (max-width: 575px) {
+  .ws-share-btn .ws-share-label { display: none; }
+  .ws-share-btn { padding: 6px 10px; }
+  .ws-chat-controls { padding: 10px 16px; gap: 8px; }
+}
+
+/* —— Share modal styling —— */
+.ws-share-link-row {
+  display: flex;
+  gap: 8px;
+  align-items: stretch;
+  margin: 10px 0 6px;
+}
+.ws-share-link-input {
+  flex: 1;
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 12.5px;
+  padding: 10px 12px;
+  background: var(--ws-bg-2);
+  border: 1px solid var(--ws-line);
+  border-radius: 10px;
+  color: var(--ws-ink);
+  outline: none;
+  min-width: 0;            /* allow flex shrink on mobile */
+}
+.ws-share-link-input:focus { border-color: var(--ws-teal-lt); }
+.ws-share-copy-btn {
+  flex-shrink: 0;
+  padding: 0 16px;
+  background: linear-gradient(135deg, var(--ws-amber), var(--ws-amber-dk));
+  color: #fff;
+  border: none;
+  border-radius: 10px;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  font-family: inherit;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  transition: transform .15s;
+  white-space: nowrap;
+}
+.ws-share-copy-btn:hover { transform: translateY(-1px); }
+.ws-share-copy-btn.copied {
+  background: linear-gradient(135deg, #14b8a6, #0e7c6b);
+}
+.ws-share-actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 14px;
+  flex-wrap: wrap;
+}
+.ws-share-actions button {
+  flex: 1 1 120px;
+  min-width: 0;
+}
+.ws-share-meta {
+  font-size: 12px;
+  color: var(--ws-ink-3);
+  margin-top: 12px;
+  padding-top: 12px;
+  border-top: 1px dashed var(--ws-line);
+}
+.ws-share-loading {
+  padding: 30px 0;
+  text-align: center;
+  color: var(--ws-ink-3);
+  font-size: 13px;
+}
+.ws-share-loading .fa { animation: ws-spin 1s linear infinite; margin-right: 6px; color: var(--ws-amber); }
+@keyframes ws-spin { to { transform: rotate(360deg); } }
+@media (max-width: 575px) {
+  .ws-share-link-row { flex-direction: column; }
+  .ws-share-copy-btn { padding: 12px 16px; justify-content: center; }
+}
+
 /* —— Messages —— */
 .ws-messages {
   flex: 1;

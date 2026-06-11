@@ -135,6 +135,23 @@ def init_db():
             )
         """)
 
+        # Shared trips — public read-only snapshots
+        conn.execute(f"""
+            CREATE TABLE IF NOT EXISTS shared_trips (
+                token       TEXT PRIMARY KEY,
+                user_id     TEXT NOT NULL,
+                conv_id     TEXT,
+                dest        TEXT,
+                title       TEXT,
+                snapshot    TEXT NOT NULL,
+                views       INTEGER DEFAULT 0,
+                created_at  {ts_type} NOT NULL
+            )
+        """)
+        conn.execute(
+            "CREATE INDEX IF NOT EXISTS idx_shared_trips_user ON shared_trips(user_id)"
+        )
+
         # SQLite-only legacy migration: add preferences column on old DBs
         if not USE_POSTGRES:
             try:
