@@ -350,8 +350,14 @@
   function scrollFunction() { if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) { document.getElementById("movetop").style.display = "block"; } else { document.getElementById("movetop").style.display = "none"; } }
   function topFunction() { document.body.scrollTop = 0; document.documentElement.scrollTop = 0; }
 </script>
-<script src="assets/js/i18n.js?v=p27"></script>
-<script src="assets/js/ai-tool.js?v=p27"></script>
+<script>
+  /* Studio is a standalone static site — point all API calls to the wandermind backend.
+     If you ever serve Studio from the same Render service as the backend, remove this
+     line and same-origin relative paths will be used automatically. */
+  window.WM_BACKEND = 'https://agentstrip.onrender.com';
+</script>
+<script src="assets/js/i18n.js?v=p28"></script>
+<script src="assets/js/ai-tool.js?v=p28"></script>
 <script>
   // Auto-pick destination from ?dest=… query string
   (function() {
