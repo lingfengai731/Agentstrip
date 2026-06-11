@@ -61,7 +61,7 @@
           box-shadow: 0 16px 40px rgba(0,0,0,.4);
         }
       }
-      /* —— Lang picker: force white text + center alignment —— */
+      /* —— Lang picker: white over dark hero, dark when scrolled in light mode —— */
       .lang-picker { color: #fff !important; }
       .lang-picker .fa { color: #fff !important; opacity: .85; }
       .lang-picker select {
@@ -71,10 +71,28 @@
       }
       .lang-picker select option { color: #333 !important; background: #fff !important; }
       body.dark .lang-picker select option { color: #f0f0f0 !important; background: #222 !important; }
+      body:not(.dark) .nav-fixed .lang-picker,
+      body:not(.dark) .nav-fixed .lang-picker .fa,
+      body:not(.dark) .nav-fixed .lang-picker select { color: #1e293b !important; }
+      body:not(.dark) .nav-fixed .lang-picker { background: rgba(0,0,0,.05) !important; border-color: rgba(0,0,0,.12) !important; }
+      body:not(.dark) .nav-fixed .lang-picker:hover { background: rgba(0,0,0,.10) !important; }
+      body:not(.dark) .nav-fixed .navbar-brand,
+      body:not(.dark) .nav-fixed .navbar-brand small,
+      body:not(.dark) .nav-fixed .navbar-nav .nav-link,
+      body:not(.dark) .nav-fixed .navbar .nav-link.phone,
+      body:not(.dark) .nav-fixed .navbar .nav-link.phone .fa,
+      body:not(.dark) .nav-fixed .navbar .search-search.nav-link .fa,
+      body:not(.dark) .nav-fixed .navbar-toggler .navbar-toggler-icon { color: #1e293b !important; }
+      body:not(.dark) .nav-fixed #ws-nav-auth-slot .fa-user,
+      body:not(.dark) .nav-fixed #ws-nav-auth-slot .fa-sign-in { color: #d97706 !important; }
       @media (max-width: 991px) {
         .navbar-nav .nav-item .lang-picker { width: 100%; justify-content: center; height: 38px; }
         .navbar-nav .nav-item { margin: 4px 0 !important; }
         #ws-nav-auth-slot { display: flex; justify-content: center; padding: 4px 0; }
+        .navbar-collapse.show .lang-picker,
+        .navbar-collapse.show .lang-picker .fa,
+        .navbar-collapse.show .lang-picker select { color: #f0f0ec !important; }
+        .navbar-collapse.show .lang-picker { background: rgba(255,255,255,.10) !important; border-color: rgba(255,255,255,.18) !important; }
       }
       /* —— Footer contact icons: brand gold —— */
       .footer-contact-line .fa { color: #fcbf1e !important; opacity: 1; font-size: 15px; }

@@ -65,20 +65,61 @@
           box-shadow: 0 16px 40px rgba(0,0,0,.4);
         }
       }
-      /* —— Lang picker: force white text + center alignment —— */
-      .lang-picker { color: #fff !important; }
-      .lang-picker .fa { color: #fff !important; opacity: .85; }
+      /* —— Lang picker / nav text: THEME-AWARE (ai-tool has no dark hero, so it must adapt) —— */
       .lang-picker select {
-        color: #fff !important;
         text-align: center; text-align-last: center; -moz-text-align-last: center;
         padding-right: 4px !important;
       }
-      .lang-picker select option { color: #333 !important; background: #fff !important; }
+      /* Light mode (default): dark text on light navbar */
+      body:not(.dark) .lang-picker,
+      body:not(.dark) .lang-picker .fa,
+      body:not(.dark) .lang-picker select { color: #1e293b !important; }
+      body:not(.dark) .lang-picker { background: rgba(0,0,0,.05) !important; border-color: rgba(0,0,0,.12) !important; }
+      body:not(.dark) .lang-picker:hover { background: rgba(0,0,0,.10) !important; }
+      body:not(.dark) .lang-picker select option { color: #333 !important; background: #fff !important; }
+      body:not(.dark) .navbar-brand,
+      body:not(.dark) .navbar-brand small,
+      body:not(.dark) .navbar-nav .nav-link,
+      body:not(.dark) .navbar .nav-link.phone,
+      body:not(.dark) .navbar .nav-link.phone .fa,
+      body:not(.dark) .navbar .search-search.nav-link .fa { color: #1e293b !important; }
+      body:not(.dark) .navbar-toggler .navbar-toggler-icon { color: #1e293b !important; }
+      /* Dark mode: white text on dark navbar (template default but force after Bootstrap overrides) */
+      body.dark .lang-picker,
+      body.dark .lang-picker .fa,
+      body.dark .lang-picker select { color: #f0f0ec !important; }
+      body.dark .lang-picker { background: rgba(255,255,255,.08) !important; border-color: rgba(255,255,255,.15) !important; }
+      body.dark .lang-picker:hover { background: rgba(255,255,255,.18) !important; }
       body.dark .lang-picker select option { color: #f0f0f0 !important; background: #222 !important; }
+      body.dark .navbar-brand,
+      body.dark .navbar-brand small,
+      body.dark .navbar-nav .nav-link,
+      body.dark .navbar .nav-link.phone,
+      body.dark .navbar .nav-link.phone .fa,
+      body.dark .navbar .search-search.nav-link .fa { color: #f0f0ec !important; }
+      body.dark .navbar-toggler .navbar-toggler-icon { color: #f0f0ec !important; }
+      /* AI Tool nav highlight stays gold across both themes */
+      .navbar-nav .nav-link.ai-tool-link { color: #d97706 !important; font-weight: 700; }
+      body.dark .navbar-nav .nav-link.ai-tool-link { color: #ffd180 !important; }
+      /* Auth slot user icon: gold accent both themes */
+      #ws-nav-auth-slot .fa-user,
+      #ws-nav-auth-slot .fa-sign-in { color: #d97706 !important; }
+      body.dark #ws-nav-auth-slot .fa-user,
+      body.dark #ws-nav-auth-slot .fa-sign-in { color: #fcbf1e !important; }
       @media (max-width: 991px) {
         .navbar-nav .nav-item .lang-picker { width: 100%; justify-content: center; height: 38px; }
         .navbar-nav .nav-item { margin: 4px 0 !important; }
         #ws-nav-auth-slot { display: flex; justify-content: center; padding: 4px 0; }
+        /* Mobile dropdown panel is dark (set in earlier rule) — force light text inside */
+        .navbar-collapse.show .lang-picker,
+        .navbar-collapse.show .lang-picker .fa,
+        .navbar-collapse.show .lang-picker select,
+        .navbar-collapse.show .nav-link,
+        .navbar-collapse.show .nav-link .fa { color: #f0f0ec !important; }
+        .navbar-collapse.show .lang-picker {
+          background: rgba(255,255,255,.10) !important;
+          border-color: rgba(255,255,255,.18) !important;
+        }
       }
       /* —— Footer contact icons: brand gold —— */
       .footer-contact-line .fa { color: #fcbf1e !important; opacity: 1; font-size: 15px; }
