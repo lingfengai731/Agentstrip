@@ -207,11 +207,79 @@ Content-Type: application/json
 
 1. Push 代码到 GitHub（`.env` 已在 `.gitignore` 中，不会上传）
 2. 在 [Render.com](https://render.com) 创建 Web Service
-3. Build Command: `pip install fastapi uvicorn httpx python-dotenv`
-4. Start Command: `uvicorn main:app --host 0.0.0.0 --port $PORT`
+3. Build Command: `pip install -r backend/requirements.txt`
+4. Start Command: `cd backend && uvicorn main:app --host 0.0.0.0 --port $PORT`
 5. 在 Render 的 Environment Variables 面板设置所有 `.env` 中的变量
+6. **强烈建议**：配置 `DATABASE_URL` 切换到 PostgreSQL（见下方）
 
 > ⚠️ **安全提示**：API 密钥只能设置在 Render 环境变量中，绝对不能硬编码到代码里或提交到 Git
+
+---
+
+## 🗄️ 数据库迁移到 PostgreSQL（生产必做）
+
+### ⚠️ 为什么必须迁移？
+
+- 默认的 SQLite 文件 (`wandermind.db`) 存在 Render 容器内
+- Render 实例**重启 / 重新部署时整个文件系统会被重置** → 所有用户数据丢失
+- 哪怕只是 push 一次代码触发自动部署，注册用户和对话历史就全没了
+
+### 兼容层设计
+
+后端通过 `backend/db.py` 自动选择数据库：
+
+```
+┌─ 环境变量 DATABASE_URL 是否存在？
+│
+├─ 是 → 使用 PostgreSQL（生产）
+└─ 否 → 使用本地 SQLite 文件（开发）
+```
+
+业务代码完全相同，零侵入。
+
+### 推荐数据库服务（按优先级）
+
+| 服务 | 免费额度 | 优缺点 | 推荐场景 |
+|------|---------|-------|---------|
+| **Neon** ([neon.tech](https://neon.tech)) | 3 GB 永久免费 | 自动扩缩、Serverless、无信用卡 | ⭐ 个人 / 初创首选 |
+| **Supabase** ([supabase.com](https://supabase.com)) | 500 MB 永久免费 | 自带管理后台、Auth/Storage 全套 | 长期项目 |
+| **Render PostgreSQL** | 1 GB / 30 天到期 | 同平台延迟低 | 测试用，过期需重建 |
+
+### 迁移步骤（以 Neon 为例）
+
+1. **创建数据库**
+   - 访问 [console.neon.tech](https://console.neon.tech)，注册并新建项目
+   - 选 Region：US East（与 Render 同区域延迟最低）
+   - 复制 Connection String，格式形如：
+     ```
+     postgresql://user:pass@ep-xxx.us-east-1.aws.neon.tech/wandermind?sslmode=require
+     ```
+
+2. **配置 Render 环境变量**
+   - Render Dashboard → 你的 Web Service → Environment
+   - 添加 Key: `DATABASE_URL`，Value: 上面复制的连接串
+   - Save 后 Render 会自动重新部署
+
+3. **首次部署自动建表**
+   - `db.py` 在启动时调用 `init_db()` 自动 `CREATE TABLE IF NOT EXISTS`
+   - 日志会打印 `[wandermind] DB backend: postgres` 表示连接成功
+
+4. **本地继续用 SQLite 调试**
+   - 本地不设置 `DATABASE_URL` 即可，零配置切换
+
+### 已有用户数据迁移（可选）
+
+如果旧 SQLite 里已有真实用户（可能性低，因为重启就丢了）：
+
+```bash
+# 1. 从 SQLite 导出
+sqlite3 wandermind.db .dump > backup.sql
+
+# 2. 手动整理为 PostgreSQL 兼容语法（去掉 PRAGMA、BEGIN TRANSACTION 等）
+
+# 3. 导入 Neon
+psql "postgresql://user:pass@..." < backup.sql
+```
 
 ---
 

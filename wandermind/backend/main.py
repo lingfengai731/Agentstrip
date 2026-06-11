@@ -5,7 +5,6 @@ import re
 import hmac
 import json
 import os
-import sqlite3
 import time
 import uuid
 from pathlib import Path
@@ -19,6 +18,8 @@ from fastapi.responses import HTMLResponse, JSONResponse, PlainTextResponse, Str
 from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel
 
+from db import get_db, init_db, IntegrityError, backend_name
+
 load_dotenv(Path(__file__).parent.parent / ".env")
 
 app = FastAPI(title="WanderMind API")
@@ -30,51 +31,9 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# ─── Database ────────────────────────────────────────────────
-DB_PATH = Path(os.getenv("DB_PATH", str(Path(__file__).parent / "wandermind.db")))
-
-
-def get_db():
-    conn = sqlite3.connect(DB_PATH)
-    conn.row_factory = sqlite3.Row
-    return conn
-
-
-def init_db():
-    conn = get_db()
-    conn.execute("""
-        CREATE TABLE IF NOT EXISTS users (
-            id          TEXT PRIMARY KEY,
-            email       TEXT UNIQUE NOT NULL,
-            name        TEXT NOT NULL,
-            password_hash TEXT NOT NULL,
-            lang        TEXT DEFAULT 'zh',
-            created_at  INTEGER NOT NULL
-        )
-    """)
-    conn.execute("""
-        CREATE TABLE IF NOT EXISTS conversations (
-            id          TEXT PRIMARY KEY,
-            user_id     TEXT NOT NULL,
-            dest        TEXT DEFAULT 'bali',
-            title       TEXT,
-            messages    TEXT DEFAULT '[]',
-            created_at  INTEGER NOT NULL,
-            updated_at  INTEGER NOT NULL,
-            FOREIGN KEY(user_id) REFERENCES users(id)
-        )
-    """)
-    # Migration: add preferences column if it doesn't exist yet
-    try:
-        conn.execute("ALTER TABLE users ADD COLUMN preferences TEXT DEFAULT '{}'")
-        conn.commit()
-    except Exception:
-        pass  # column already exists
-    conn.commit()
-    conn.close()
-
-
+# ─── Database init (SQLite local / PostgreSQL prod via DATABASE_URL) ─
 init_db()
+print(f"[wandermind] DB backend: {backend_name()}")
 
 # ─── JWT (no external deps) ──────────────────────────────────
 _SECRET = os.getenv("SECRET_KEY", "wandermind-dev-secret-please-change")
@@ -234,7 +193,7 @@ async def register(data: RegisterReq):
         )
         conn.commit()
         return {"token": make_token(uid, data.email), "user": {"id": uid, "email": data.email, "name": data.name}}
-    except sqlite3.IntegrityError:
+    except IntegrityError:
         raise HTTPException(400, "Email already registered")
     finally:
         conn.close()
