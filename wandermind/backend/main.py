@@ -19,6 +19,7 @@ from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel
 
 from db import get_db, init_db, IntegrityError, backend_name
+from email_service import send_welcome, send_password_reset
 
 load_dotenv(Path(__file__).parent.parent / ".env")
 
@@ -56,6 +57,21 @@ def make_token(user_id: str, email: str) -> str:
             "sub": user_id,
             "email": email,
             "exp": int(time.time()) + 7 * 86400,
+            "iat": int(time.time()),
+        }).encode()
+    )
+    return f"{header}.{payload}.{_sign(header, payload)}"
+
+
+def make_reset_token(user_id: str, email: str, ttl_seconds: int = 3600) -> str:
+    """Single-purpose JWT for password reset. Defaults to 1h validity."""
+    header = _b64(json.dumps({"alg": "HS256", "typ": "JWT"}).encode())
+    payload = _b64(
+        json.dumps({
+            "sub": user_id,
+            "email": email,
+            "purpose": "pwreset",
+            "exp": int(time.time()) + ttl_seconds,
             "iat": int(time.time()),
         }).encode()
     )
@@ -125,6 +141,15 @@ class LoginReq(BaseModel):
     password: str
 
 
+class ForgotPwReq(BaseModel):
+    email: str
+
+
+class ResetPwReq(BaseModel):
+    token: str
+    password: str
+
+
 class Message(BaseModel):
     role: str
     content: str
@@ -186,8 +211,19 @@ class ShareCreateReq(BaseModel):
 
 
 # ─── Auth routes ─────────────────────────────────────────────
+def _public_base_url(request: Request) -> str:
+    """Pick the externally-visible base URL for email links.
+    PUBLIC_URL env wins → otherwise auto-detect from request headers."""
+    env_url = os.getenv("PUBLIC_URL", "").strip().rstrip("/")
+    if env_url:
+        return env_url
+    # FastAPI's Request.base_url honours X-Forwarded-Proto/Host so works
+    # behind Render's TLS terminator.
+    return str(request.base_url).rstrip("/")
+
+
 @app.post("/api/auth/register")
-async def register(data: RegisterReq):
+async def register(data: RegisterReq, request: Request):
     if len(data.password) < 6:
         raise HTTPException(400, "Password must be at least 6 characters")
     if "@" not in data.email:
@@ -195,11 +231,15 @@ async def register(data: RegisterReq):
     conn = get_db()
     try:
         uid = str(uuid.uuid4())
+        email = data.email.lower().strip()
+        name = data.name.strip()
         conn.execute(
             "INSERT INTO users (id,email,name,password_hash,created_at) VALUES (?,?,?,?,?)",
-            (uid, data.email.lower().strip(), data.name.strip(), hash_pw(data.password), int(time.time())),
+            (uid, email, name, hash_pw(data.password), int(time.time())),
         )
         conn.commit()
+        # Fire welcome email in background — never block registration on it
+        asyncio.create_task(send_welcome(email, name, _public_base_url(request)))
         return {"token": make_token(uid, data.email), "user": {"id": uid, "email": data.email, "name": data.name}}
     except IntegrityError:
         raise HTTPException(400, "Email already registered")
@@ -215,6 +255,65 @@ async def login(data: LoginReq):
         if not row or not verify_pw(data.password, row["password_hash"]):
             raise HTTPException(401, "Invalid email or password")
         return {"token": make_token(row["id"], row["email"]), "user": {"id": row["id"], "email": row["email"], "name": row["name"]}}
+    finally:
+        conn.close()
+
+
+@app.post("/api/auth/forgot-password")
+async def forgot_password(data: ForgotPwReq, request: Request):
+    """Send a password-reset email. Returns the same response regardless of
+    whether the email exists (no account-enumeration leak)."""
+    email = (data.email or "").lower().strip()
+    if "@" not in email:
+        raise HTTPException(400, "Invalid email address")
+    conn = get_db()
+    try:
+        row = conn.execute(
+            "SELECT id,email,name FROM users WHERE email=?", (email,)
+        ).fetchone()
+        if row:
+            r = dict(row)
+            token = make_reset_token(r["id"], r["email"])
+            link = f"{_public_base_url(request)}/reset-password?token={token}"
+            # Background send; we don't expose success/failure to caller
+            asyncio.create_task(send_password_reset(r["email"], r["name"] or r["email"], link))
+        # Always return the same message
+        return {"ok": True, "message": "If that email is registered, a reset link has been sent."}
+    finally:
+        conn.close()
+
+
+@app.post("/api/auth/reset-password")
+async def reset_password(data: ResetPwReq):
+    if len(data.password) < 6:
+        raise HTTPException(400, "Password must be at least 6 characters")
+    try:
+        payload = verify_token(data.token)
+    except ValueError as e:
+        raise HTTPException(400, f"Invalid or expired reset link ({e})")
+    if payload.get("purpose") != "pwreset":
+        raise HTTPException(400, "Wrong token type")
+    uid = payload.get("sub")
+    if not uid:
+        raise HTTPException(400, "Bad token payload")
+    conn = get_db()
+    try:
+        # Confirm the user still exists
+        row = conn.execute("SELECT id,email,name FROM users WHERE id=?", (uid,)).fetchone()
+        if not row:
+            raise HTTPException(404, "User not found")
+        r = dict(row)
+        conn.execute(
+            "UPDATE users SET password_hash=? WHERE id=?",
+            (hash_pw(data.password), uid),
+        )
+        conn.commit()
+        # Issue a fresh auth token so the user is signed in right after reset
+        return {
+            "ok": True,
+            "token": make_token(uid, r["email"]),
+            "user": {"id": uid, "email": r["email"], "name": r["name"]},
+        }
     finally:
         conn.close()
 

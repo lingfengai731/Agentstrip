@@ -11,12 +11,17 @@
 
 ## 🌐 立即体验
 
-| 产品 | 地址 | 说明 |
+| 入口 | 地址 | 说明 |
 |------|------|------|
-| 🏠 **WanderMind Studio** | **[https://agentstrip.onrender.com/studio/](https://agentstrip.onrender.com/studio/)** | 官方多页面品牌网站 + AI 工作台 |
-| ⚡ **AI 核心应用** | **[https://agentstrip.onrender.com](https://agentstrip.onrender.com)** | 6 AI 智能体单页极简版 |
+| 🏠 **首页** | **[https://agentstrip.onrender.com](https://agentstrip.onrender.com)** | Studio 品牌站首页 |
+| 🤖 **AI 工作台** | [https://agentstrip.onrender.com/ai-tool](https://agentstrip.onrender.com/ai-tool) | 6 AI 智能体规划工作台 |
+| 📖 **关于我们** | [https://agentstrip.onrender.com/about](https://agentstrip.onrender.com/about) | 团队与产品故事 |
+| 🌍 **探索目的地** | [https://agentstrip.onrender.com/services](https://agentstrip.onrender.com/services) | 巴厘岛 · 京都 · 巴黎 · 圣托里尼 |
+| 📩 **联系我们** | [https://agentstrip.onrender.com/contact](https://agentstrip.onrender.com/contact) | |
+| 🔗 **行程分享** | `/shared?t=TOKEN` | 用户生成的公开只读链接 |
+| ⚡ **老 AI 应用**（兼容） | [https://agentstrip.onrender.com/app](https://agentstrip.onrender.com/app) | 原始单页极简版 |
 
-> 💡 **两端共享同一后端 + 同一数据库**，同一账号互通登录。
+> 💡 **所有页面共享同一后端 + 同一 Neon Postgres 数据库**，同一账号互通登录。
 > **手机浏览器直接访问**，无需下载 App。自定义域名绑定中。
 
 ---

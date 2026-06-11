@@ -86,20 +86,29 @@ wandermind-studio/
 
 ---
 
-## 🔗 后端 API
+## 🔗 URL 结构与后端 API
 
-Studio **由 wandermind 后端通过 FastAPI `StaticFiles` 自动托管**在 `/studio` 路径：
+Studio **由 wandermind 后端通过 FastAPI `StaticFiles` 挂载在根路径 `/`**，是品牌主入口：
 
 ```
-https://agentstrip.onrender.com/studio/        ← Studio 网站
-https://agentstrip.onrender.com/studio/ai-tool.html  ← AI 工作台
-https://agentstrip.onrender.com/api/*          ← 共享后端 API
+https://agentstrip.onrender.com/              ← Studio 首页
+https://agentstrip.onrender.com/about         ← 关于（干净 URL）
+https://agentstrip.onrender.com/services      ← 探索目的地
+https://agentstrip.onrender.com/ai-tool       ← AI 工作台
+https://agentstrip.onrender.com/contact       ← 联系
+https://agentstrip.onrender.com/shared?t=XXX  ← 公开分享页
+https://agentstrip.onrender.com/app           ← 老 AI 单页应用（书签兼容）
+https://agentstrip.onrender.com/api/*         ← 后端 API
 ```
+
+带 `.html` 后缀的老路径（`/about.html` 等）也照样能访问，**老书签不会断**。
+
+**Clean URL 是怎么实现的：** `main.py` 里有个 `clean_html_urls` 中间件，遇到 `/about` 这样无后缀的请求时，内部重写 scope 路径成 `/about.html`，让下游 StaticFiles 找到真实文件。`/api/*`、`/app`、`/manifest.json` 等保留路径完全跳过中间件。
 
 **同源部署的好处**：
 - 零 CORS 配置
-- 相对路径 `/api/*` 自动生效，无需写后端 URL
-- 自定义域名绑定后两者一起切换
+- 相对路径 `/api/*` 自动生效
+- 自定义域名绑定后所有页面一起切换
 - 单一 Render 服务，单一 Postgres 数据库
 
 如需把 Studio 独立部署到其他域名（如单独 CDN / Vercel），在 HTML 加：

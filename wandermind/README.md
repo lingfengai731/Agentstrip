@@ -65,9 +65,10 @@ wandermind/
 └── README.md
 ```
 
-**同源部署**：后端通过 `app.mount("/studio", StaticFiles(...))` 把同仓库的
-`wandermind-studio/frontend/` 自动托管在 `/studio/` 路径，**两个产品共享同一个 FastAPI
-进程 + 同一个 PostgreSQL 数据库**，单一账号互通。
+**同源部署**：后端通过 `app.mount("/", StaticFiles(...))` 把同仓库的
+`wandermind-studio/frontend/` 托管在**根路径**。老的单页 AI 应用从 `/` 移到 `/app`，
+保留老书签的兼容性。Clean URL 中间件让 `/about` 自动映射到 `about.html`。
+**两个产品共享同一个 FastAPI 进程 + 同一个 PostgreSQL 数据库**，单一账号互通。
 
 ### 后端
 | 组件 | 说明 |
@@ -137,6 +138,16 @@ SERPAPI_FLIGHTS_KEY=
 SILICONFLOW_KEY=
 SILICONFLOW_URL=https://api.siliconflow.cn/v1/chat/completions
 SILICONFLOW_MODEL=Qwen/Qwen2.5-7B-Instruct
+
+# 📧 邮件系统（可选，欢迎信 + 密码重置）
+# 注册：https://resend.com（免费 3000 封/月，100/天）
+# 未配置时邮件功能在开发模式：内容会打印到 stdout，不实际发送
+RESEND_API_KEY=
+# 发件人。开发期可用 Resend 默认 onboarding@resend.dev（仅能发到注册账号邮箱）。
+# 上线后配置自己的域名后改成 "WanderMind <noreply@你的域名.com>"
+EMAIL_FROM=WanderMind <onboarding@resend.dev>
+# 邮件链接里使用的 base URL。未设置时自动从请求头检测（推荐留空）
+# PUBLIC_URL=https://你的域名.com
 ```
 
 ### 4. 启动服务
@@ -161,9 +172,14 @@ python -m uvicorn main:app --port 8000 --reload
 
 | 方法 | 路径 | 说明 |
 |------|------|------|
-| POST | `/api/auth/register` | 注册 |
+| POST | `/api/auth/register` | 注册（同时发欢迎邮件） |
 | POST | `/api/auth/login` | 登录，返回 JWT |
 | GET  | `/api/auth/me` | 当前用户信息 |
+| POST | `/api/auth/forgot-password` | 发送密码重置链接（永远返回相同消息，防枚举） |
+| POST | `/api/auth/reset-password` | 用重置 token 设置新密码，返回新 JWT 自动登录 |
+| POST | `/api/share/create` | 创建公开分享 token |
+| GET  | `/api/share/{token}` | 公开获取分享内容（view+1） |
+| DELETE | `/api/share/{token}` | 撤销分享（仅作者） |
 | POST | `/api/chat` | SSE 流式对话（含联网搜索） |
 | POST | `/api/chat/team` | 3 Agent 并行作答（SSE） |
 | POST | `/api/dest_info` | AI 生成目的地面板数据 |
@@ -322,10 +338,11 @@ psql "postgresql://user:pass@..." < backup.sql
 - [x] 快慢双轨（SiliconFlow Qwen2.5-7B + MiMo Pro）
 - [x] 5 语言国际化
 - [x] PWA 支持
-- [x] **WanderMind Studio** 多页面品牌网站（同源 `/studio/`）
+- [x] **WanderMind Studio** 多页面品牌网站（同根目录 `/`）
 - [x] **PostgreSQL 持久化**（Neon，解决 Render 重启数据丢失）
-- [ ] 🚧 **行程分享链接**（公开只读 trip token）
-- [ ] 邮件系统（Resend：注册欢迎 / 密码重置 / 分享通知）
+- [x] **行程分享链接**（公开只读 `/shared?t=TOKEN`，含 view 计数）
+- [x] **Clean URL** 中间件（`/about` 自动映射到 `about.html`）
+- [x] **邮件系统**（Resend：注册欢迎信 + 密码重置流程）
 - [ ] 双人偏好融合（情侣 / 朋友合作规划）
 - [ ] 微信小程序版本
 - [ ] 行程 PDF 导出优化

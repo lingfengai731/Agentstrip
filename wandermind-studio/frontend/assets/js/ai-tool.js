@@ -2254,7 +2254,12 @@ Object.assign(TOOL_I18N.en, {
   logTripLoaded:'Loaded trip · <strong>{title}</strong>',
   logTripCreated:'New trip created', logTripDeleted:'Trip deleted',
   errInvalidEmail:'Please enter a valid email', errShortPw:'Password must be at least 6 characters',
-  errLoginFail:'Sign-in failed', errRegisterFail:'Sign-up failed'
+  errLoginFail:'Sign-in failed', errRegisterFail:'Sign-up failed',
+  authForgotLink:'Forgot password?', authForgotTitle:'Reset your password',
+  authForgotSub:'Enter your email and we will send you a reset link (valid 1 hour).',
+  authForgotBtn:'Send reset link', authForgotSending:'Sending…',
+  authForgotSent:'If that email is registered, a reset link has been sent. Check your inbox.',
+  authForgotBack:'Back to sign in'
 });
 Object.assign(TOOL_I18N.zh, {
   ntTitle:'新建行程', ntIntro:'填上基础信息 —— 剩下的交给 AI 团队来规划',
@@ -2268,6 +2273,11 @@ Object.assign(TOOL_I18N.zh, {
   logTripCreated2:'新行程已创建 · <strong>{dest}</strong> · {n} 天',
   authLogin:'登录', authRegister:'注册', authEmail:'邮箱', authPassword:'密码', authName:'你的名字',
   authLogout:'退出', authLoginCta:'保存行程 · 同步偏好 · 多设备访问',
+  authForgotLink:'忘记密码？', authForgotTitle:'重置你的密码',
+  authForgotSub:'输入你的注册邮箱，我们会发送一封重置链接（1 小时内有效）。',
+  authForgotBtn:'发送重置链接', authForgotSending:'发送中…',
+  authForgotSent:'如果这个邮箱已注册，重置链接已发出。请查收邮箱（包括垃圾邮件）。',
+  authForgotBack:'返回登录',
   authNeed:'请先登录以保存此行程', tripLoginToSave:'登录后可跨设备保存你的行程',
   tripDelete:'删除', tripUntitled:'未命名行程',
   newTripStarted:'新行程已开始 —— 开始对话即自动保存',
@@ -2290,6 +2300,11 @@ Object.assign(TOOL_I18N.ja, {
   logTripCreated2:'新規旅行作成 · <strong>{dest}</strong> · {n} 日',
   authLogin:'ログイン', authRegister:'新規登録', authEmail:'メール', authPassword:'パスワード', authName:'お名前',
   authLogout:'ログアウト', authLoginCta:'旅程を保存・好みを同期・どの端末からも',
+  authForgotLink:'パスワードをお忘れ？', authForgotTitle:'パスワードをリセット',
+  authForgotSub:'登録メールを入力してください。リセットリンクを送信します（1時間有効）。',
+  authForgotBtn:'リセットリンクを送信', authForgotSending:'送信中…',
+  authForgotSent:'登録済みの場合、リセットリンクを送信しました。受信箱をご確認ください。',
+  authForgotBack:'ログインに戻る',
   authNeed:'保存にはログインが必要', tripLoginToSave:'ログインで旅程を端末間同期',
   tripDelete:'削除', tripUntitled:'無題の旅行',
   newTripStarted:'新しい旅行を開始 — チャットすると自動保存',
@@ -2312,6 +2327,11 @@ Object.assign(TOOL_I18N.ko, {
   logTripCreated2:'새 여행 생성 · <strong>{dest}</strong> · {n} 일',
   authLogin:'로그인', authRegister:'회원가입', authEmail:'이메일', authPassword:'비밀번호', authName:'이름',
   authLogout:'로그아웃', authLoginCta:'여행 저장 · 선호 동기화 · 모든 기기',
+  authForgotLink:'비밀번호를 잊으셨나요?', authForgotTitle:'비밀번호 재설정',
+  authForgotSub:'가입한 이메일을 입력하시면 재설정 링크를 보내드립니다 (1시간 유효).',
+  authForgotBtn:'재설정 링크 보내기', authForgotSending:'전송 중…',
+  authForgotSent:'가입된 이메일이면 재설정 링크가 발송되었습니다. 받은편지함을 확인하세요.',
+  authForgotBack:'로그인으로 돌아가기',
   authNeed:'저장하려면 로그인 필요', tripLoginToSave:'로그인하여 여행을 기기 간 동기화',
   tripDelete:'삭제', tripUntitled:'제목 없는 여행',
   newTripStarted:'새 여행 시작 — 대화 시 자동 저장',
@@ -2334,6 +2354,11 @@ Object.assign(TOOL_I18N.id, {
   logTripCreated2:'Perjalanan baru · <strong>{dest}</strong> · {n} hari',
   authLogin:'Masuk', authRegister:'Daftar', authEmail:'Email', authPassword:'Kata sandi', authName:'Nama',
   authLogout:'Keluar', authLoginCta:'Simpan perjalanan · sinkron preferensi · semua perangkat',
+  authForgotLink:'Lupa kata sandi?', authForgotTitle:'Reset kata sandi',
+  authForgotSub:'Masukkan email terdaftar — kami akan mengirim link reset (berlaku 1 jam).',
+  authForgotBtn:'Kirim link reset', authForgotSending:'Mengirim…',
+  authForgotSent:'Jika email terdaftar, link reset telah dikirim. Cek inbox Anda.',
+  authForgotBack:'Kembali ke masuk',
   authNeed:'Masuk untuk menyimpan perjalanan ini', tripLoginToSave:'Masuk untuk menyimpan perjalanan lintas perangkat',
   tripDelete:'Hapus', tripUntitled:'Perjalanan tanpa judul',
   newTripStarted:'Perjalanan baru dimulai — chat untuk menyimpan',
@@ -2429,6 +2454,9 @@ function showAuthModal(tab = 'login') {
           <input type="password" class="ws-form-input ws-auth-input" id="ws-li-pw" placeholder="${escapeHtml(T.authPassword)}" autocomplete="current-password">
           <div class="ws-auth-error" id="ws-li-err"></div>
           <button class="ws-search-btn" id="ws-li-btn"><span class="fa fa-sign-in"></span> ${escapeHtml(T.authLogin)}</button>
+          <div style="text-align:right;margin-top:10px">
+            <a href="#" id="ws-li-forgot" style="font-size:12.5px;color:var(--ws-teal);text-decoration:none">${escapeHtml(T.authForgotLink)}</a>
+          </div>
         </div>
         <div class="ws-auth-form" data-form="register" style="display:${tab==='register'?'block':'none'}">
           <input type="text" class="ws-form-input ws-auth-input" id="ws-rg-name" placeholder="${escapeHtml(T.authName)}" autocomplete="name">
@@ -2436,6 +2464,16 @@ function showAuthModal(tab = 'login') {
           <input type="password" class="ws-form-input ws-auth-input" id="ws-rg-pw" placeholder="${escapeHtml(T.authPassword)} (6+)" autocomplete="new-password">
           <div class="ws-auth-error" id="ws-rg-err"></div>
           <button class="ws-search-btn" id="ws-rg-btn"><span class="fa fa-user-plus"></span> ${escapeHtml(T.authRegister)}</button>
+        </div>
+        <div class="ws-auth-form" data-form="forgot" style="display:none">
+          <h3 style="font-size:16px;font-weight:700;margin:0 0 8px;color:var(--ws-ink)">${escapeHtml(T.authForgotTitle)}</h3>
+          <p style="font-size:13px;color:var(--ws-ink-3);margin:0 0 14px;line-height:1.6">${escapeHtml(T.authForgotSub)}</p>
+          <input type="email" class="ws-form-input ws-auth-input" id="ws-fp-email" placeholder="${escapeHtml(T.authEmail)}" autocomplete="email">
+          <div class="ws-auth-error" id="ws-fp-msg"></div>
+          <button class="ws-search-btn" id="ws-fp-btn"><span class="fa fa-paper-plane"></span> ${escapeHtml(T.authForgotBtn)}</button>
+          <div style="text-align:center;margin-top:10px">
+            <a href="#" id="ws-fp-back" style="font-size:12.5px;color:var(--ws-ink-3);text-decoration:none">← ${escapeHtml(T.authForgotBack)}</a>
+          </div>
         </div>
       </div>
     </div>
@@ -2479,6 +2517,48 @@ function showAuthModal(tab = 'login') {
       if (btn) btn.click();
     }
   }));
+
+  // Forgot password — show inline panel instead of leaving the modal
+  const showForm = which => {
+    el.querySelectorAll('.ws-auth-form').forEach(f => f.style.display = (f.dataset.form === which ? 'block' : 'none'));
+    el.querySelectorAll('.ws-auth-tab').forEach(t => t.style.display = (which === 'forgot' ? 'none' : ''));
+  };
+  const forgotLink = document.getElementById('ws-li-forgot');
+  if (forgotLink) forgotLink.onclick = e => {
+    e.preventDefault();
+    showForm('forgot');
+    const pre = document.getElementById('ws-li-email').value.trim();
+    if (pre) document.getElementById('ws-fp-email').value = pre;
+    document.getElementById('ws-fp-email').focus();
+  };
+  const fpBack = document.getElementById('ws-fp-back');
+  if (fpBack) fpBack.onclick = e => { e.preventDefault(); showForm('login'); };
+  const fpBtn = document.getElementById('ws-fp-btn');
+  if (fpBtn) fpBtn.onclick = async () => {
+    const email = document.getElementById('ws-fp-email').value.trim();
+    const msg   = document.getElementById('ws-fp-msg');
+    msg.style.color = '';
+    msg.textContent = '';
+    if (!/.+@.+\..+/.test(email)) { msg.textContent = T.errInvalidEmail; return; }
+    fpBtn.disabled = true;
+    const oldHtml = fpBtn.innerHTML;
+    fpBtn.innerHTML = `<span class="fa fa-spinner fa-spin"></span> ${escapeHtml(T.authForgotSending)}`;
+    try {
+      await fetch(BACKEND_BASE + '/api/auth/forgot-password', {
+        method:'POST', headers:{ 'Content-Type':'application/json' },
+        body: JSON.stringify({ email })
+      });
+      // Always show success — never leak whether the email exists
+      msg.style.color = 'var(--ws-teal)';
+      msg.textContent = T.authForgotSent;
+    } catch (e) {
+      msg.textContent = e.message || T.errLoginFail;
+    } finally {
+      fpBtn.disabled = false;
+      fpBtn.innerHTML = oldHtml;
+    }
+  };
+
   el.classList.add('show');
 }
 
