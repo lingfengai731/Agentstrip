@@ -784,8 +784,11 @@ function switchDest(key) {
   if (!DESTS[key]) return;
   currentDest = key;
   localStorage.setItem('wm_studio_dest', key);
+  // Reset hotel area selection since chip lists differ per destination
+  _selectedHotelArea = 'all';
   renderChatHeader();
   renderPanelDest();
+  if (typeof renderPanelCompare === 'function') renderPanelCompare();
 }
 
 function toggleMode() {
@@ -1084,11 +1087,61 @@ Object.assign(TOOL_I18N.id, {
   qPlanItinerary:'Rencanakan jadwal harian lengkap untuk {dest}'
 });
 
+/* ═════════════════ HOTEL AREAS (per-destination) ═════════════════
+   "key" — internal id, "q" — search keyword appended to dest for SerpAPI,
+   "name" — localized chip label, "tag" — short subtitle hint.
+   Bali 9 areas · Kyoto 5 · Paris 6 · Santorini 5 · Custom dynamic.       */
+const HOTEL_AREAS = {
+  bali: [
+    {key:'all',         q:'',                name:{zh:'全部',en:'All',ja:'すべて',ko:'전체',id:'Semua'},                                 tag:{zh:'综合',en:'All',ja:'全',ko:'전체',id:'Semua'}},
+    {key:'seminyak',    q:'Seminyak',        name:{zh:'水明漾',en:'Seminyak',ja:'スミニャック',ko:'스미냑',id:'Seminyak'},               tag:{zh:'时尚海滩',en:'Trendy beach',ja:'おしゃれビーチ',ko:'트렌디 비치',id:'Pantai trendi'}},
+    {key:'canggu',      q:'Canggu',          name:{zh:'仓古',en:'Canggu',ja:'チャングー',ko:'창구',id:'Canggu'},                         tag:{zh:'数字游民',en:'Digital nomad',ja:'デジタルノマド',ko:'디지털 노마드',id:'Digital nomad'}},
+    {key:'ubud',        q:'Ubud',            name:{zh:'乌布',en:'Ubud',ja:'ウブド',ko:'우붓',id:'Ubud'},                                 tag:{zh:'文化雨林',en:'Jungle culture',ja:'文化と森',ko:'문화 정글',id:'Budaya hutan'}},
+    {key:'uluwatu',     q:'Uluwatu',         name:{zh:'乌鲁瓦图',en:'Uluwatu',ja:'ウルワトゥ',ko:'울루와뚜',id:'Uluwatu'},               tag:{zh:'蜜月悬崖',en:'Honeymoon cliff',ja:'ハネムーン断崖',ko:'허니문 절벽',id:'Tebing bulan madu'}},
+    {key:'sanur',       q:'Sanur',           name:{zh:'沙努尔',en:'Sanur',ja:'サヌール',ko:'사누르',id:'Sanur'},                         tag:{zh:'家庭安静',en:'Family quiet',ja:'家族向け静か',ko:'가족 한적',id:'Keluarga tenang'}},
+    {key:'jimbaran',    q:'Jimbaran',        name:{zh:'金巴兰',en:'Jimbaran',ja:'ジンバラン',ko:'짐바란',id:'Jimbaran'},                 tag:{zh:'海鲜悬崖',en:'Seafood cliff',ja:'海鮮と崖',ko:'해산물 절벽',id:'Tebing seafood'}},
+    {key:'kuta',        q:'Kuta',            name:{zh:'库塔',en:'Kuta',ja:'クタ',ko:'쿠타',id:'Kuta'},                                   tag:{zh:'夜生活',en:'Nightlife',ja:'ナイトライフ',ko:'나이트라이프',id:'Nightlife'}},
+    {key:'nusa-dua',    q:'Nusa Dua',        name:{zh:'努沙杜瓦',en:'Nusa Dua',ja:'ヌサドゥア',ko:'누사두아',id:'Nusa Dua'},             tag:{zh:'高端度假',en:'Luxury resort',ja:'高級リゾート',ko:'럭셔리 리조트',id:'Resor mewah'}},
+    {key:'lembongan',   q:'Nusa Lembongan',  name:{zh:'蓝梦岛',en:'Nusa Lembongan',ja:'ヌサ・レンボンガン',ko:'누사 렘봉안',id:'Nusa Lembongan'}, tag:{zh:'离岛浮潜',en:'Island snorkeling',ja:'離島スノーケル',ko:'섬 스노클링',id:'Snorkeling pulau'}},
+  ],
+  kyoto: [
+    {key:'all',           q:'',                     name:{zh:'全部',en:'All',ja:'すべて',ko:'전체',id:'Semua'},                tag:{zh:'综合',en:'All',ja:'全',ko:'전체',id:'Semua'}},
+    {key:'gion',          q:'Gion',                 name:{zh:'祇园',en:'Gion',ja:'祇園',ko:'기온',id:'Gion'},                  tag:{zh:'传统茶屋',en:'Traditional',ja:'伝統茶屋',ko:'전통 다실',id:'Tradisional'}},
+    {key:'kawaramachi',   q:'Kawaramachi Downtown', name:{zh:'河原町',en:'Kawaramachi',ja:'河原町',ko:'가와라마치',id:'Kawaramachi'}, tag:{zh:'市中心',en:'Downtown',ja:'繁華街',ko:'도심',id:'Pusat kota'}},
+    {key:'higashiyama',   q:'Higashiyama',          name:{zh:'东山',en:'Higashiyama',ja:'東山',ko:'히가시야마',id:'Higashiyama'}, tag:{zh:'寺庙密集',en:'Temple zone',ja:'寺院密集',ko:'사찰 밀집',id:'Kawasan kuil'}},
+    {key:'arashiyama',    q:'Arashiyama',           name:{zh:'嵐山',en:'Arashiyama',ja:'嵐山',ko:'아라시야마',id:'Arashiyama'}, tag:{zh:'竹林安静',en:'Bamboo quiet',ja:'竹林の静けさ',ko:'대나무 한적',id:'Bambu tenang'}},
+    {key:'kyoto-station', q:'Kyoto Station',        name:{zh:'京都站',en:'Kyoto Station',ja:'京都駅',ko:'교토역',id:'Stasiun Kyoto'}, tag:{zh:'交通枢纽',en:'Transit hub',ja:'交通要所',ko:'교통 허브',id:'Transit'}},
+  ],
+  paris: [
+    {key:'all',            q:'',                                    name:{zh:'全部',en:'All',ja:'すべて',ko:'전체',id:'Semua'},                                       tag:{zh:'综合',en:'All',ja:'全',ko:'전체',id:'Semua'}},
+    {key:'marais',         q:'Le Marais 4th arrondissement',        name:{zh:'玛黑区',en:'Le Marais',ja:'マレ地区',ko:'마레',id:'Le Marais'},                         tag:{zh:'综合首选',en:'Top all-round',ja:'総合一番',ko:'올라운드 1위',id:'Pilihan utama'}},
+    {key:'saint-germain',  q:'Saint-Germain-des-Pres 6th',          name:{zh:'圣日耳曼',en:'Saint-Germain',ja:'サンジェルマン',ko:'생제르맹',id:'Saint-Germain'},     tag:{zh:'文艺优雅',en:'Chic literary',ja:'文芸エレガント',ko:'문예 우아',id:'Sastra elegan'}},
+    {key:'montmartre',     q:'Montmartre 18th arrondissement',      name:{zh:'蒙马特',en:'Montmartre',ja:'モンマルトル',ko:'몽마르트르',id:'Montmartre'},             tag:{zh:'电影感',en:'Cinematic',ja:'映画的',ko:'영화 분위기',id:'Sinematik'}},
+    {key:'latin-quarter',  q:'Latin Quarter 5th arrondissement',    name:{zh:'拉丁区',en:'Latin Quarter',ja:'カルチエ・ラタン',ko:'라탱 지구',id:'Latin Quarter'},    tag:{zh:'性价比',en:'Value',ja:'コスパ',ko:'가성비',id:'Hemat'}},
+    {key:'champs-elysees', q:'Champs-Elysees 8th arrondissement',   name:{zh:'香榭丽舍',en:'Champs-Élysées',ja:'シャンゼリゼ',ko:'샹젤리제',id:'Champs-Élysées'},    tag:{zh:'奢华商务',en:'Luxury',ja:'高級ビジネス',ko:'럭셔리 비즈니스',id:'Bisnis mewah'}},
+    {key:'louvre',         q:'Louvre 1st arrondissement',           name:{zh:'卢浮宫',en:'Louvre 1st',ja:'ルーブル1区',ko:'루브르 1구',id:'Louvre 1'},               tag:{zh:'核心经典',en:'Core classic',ja:'中心クラシック',ko:'중심 클래식',id:'Pusat klasik'}},
+  ],
+  santorini: [
+    {key:'all',         q:'',                  name:{zh:'全部',en:'All',ja:'すべて',ko:'전체',id:'Semua'},                              tag:{zh:'综合',en:'All',ja:'全',ko:'전체',id:'Semua'}},
+    {key:'oia',         q:'Oia',               name:{zh:'伊亚',en:'Oia',ja:'イア',ko:'이아',id:'Oia'},                                   tag:{zh:'蜜月奢华',en:'Honeymoon',ja:'ハネムーン',ko:'허니문',id:'Bulan madu'}},
+    {key:'fira',        q:'Fira',              name:{zh:'菲拉',en:'Fira',ja:'フィラ',ko:'피라',id:'Fira'},                                tag:{zh:'首都便利',en:'Capital',ja:'首都便利',ko:'수도 편리',id:'Ibu kota'}},
+    {key:'imerovigli',  q:'Imerovigli',        name:{zh:'伊姆罗维利',en:'Imerovigli',ja:'イメロヴィグリ',ko:'이메로비글리',id:'Imerovigli'}, tag:{zh:'静奢悬崖',en:'Cliff calm',ja:'静かな崖',ko:'조용한 절벽',id:'Tebing tenang'}},
+    {key:'kamari',      q:'Kamari',            name:{zh:'卡马里',en:'Kamari',ja:'カマリ',ko:'카마리',id:'Kamari'},                        tag:{zh:'黑沙海滩',en:'Black sand',ja:'黒砂浜',ko:'검은 모래',id:'Pasir hitam'}},
+    {key:'perissa',     q:'Perissa',           name:{zh:'佩里萨',en:'Perissa',ja:'ペリッサ',ko:'페리사',id:'Perissa'},                    tag:{zh:'平价海滩',en:'Budget beach',ja:'格安ビーチ',ko:'저렴한 해변',id:'Pantai murah'}},
+  ],
+  custom: []  // dynamically populated when /api/dest_info returns hotelAreas for a new destination
+};
+
+function _hotelAreasFor(destKey) {
+  if (destKey === 'any') return HOTEL_AREAS.custom || [];
+  return HOTEL_AREAS[destKey] || [];
+}
+
 /* —— State for Phase 2 features —— */
 let _hotels = [];      // last hotel search results
 let _flights = [];     // last flight search results
 let _flightTripType = 'round';
-let _selectedHotelArea = null;
+let _selectedHotelArea = 'all';   // chip key: 'all', 'seminyak', etc.
 let _compareSub = 'hotels';
 let _itinAiContent = null;  // AI-customized itinerary text
 let _logEntries = [];   // {level, icon, msg, ts}
@@ -1127,8 +1180,7 @@ function _destNameForApi() {
 function renderPanelCompare() {
   const wrap = document.querySelector('.ws-panel-content[data-panel="compare"]');
   if (!wrap) return;
-  const d = dest();
-  const areas = (d.regions || []).map(r => r.name);
+  const areas = _hotelAreasFor(currentDest);
 
   wrap.innerHTML = `
     <div class="ws-subtabs">
@@ -1139,7 +1191,12 @@ function renderPanelCompare() {
       ${areas.length ? `
         <div class="ws-form-label">${escapeHtml(t().hotelAreaLabel)}</div>
         <div class="ws-area-chips" id="ws-hotel-areas">
-          ${areas.map(a => `<button class="ws-area-chip ${_selectedHotelArea===a?'active':''}" data-area="${escapeHtml(a)}">${escapeHtml(a)}</button>`).join('')}
+          ${areas.map(a => {
+            const label = (a.name && (a.name[currentLang] || a.name.en)) || a.key;
+            const subtag = (a.tag && (a.tag[currentLang] || a.tag.en)) || '';
+            const isActive = _selectedHotelArea === a.key;
+            return `<button class="ws-area-chip ${isActive?'active':''}" data-area-key="${escapeHtml(a.key)}" title="${escapeHtml(subtag)}">${escapeHtml(label)}</button>`;
+          }).join('')}
         </div>` : ''}
       <div class="ws-form-row">
         <div class="ws-form-field"><label class="ws-form-label">${escapeHtml(t().hotelCheckIn)}</label><input type="date" class="ws-form-input" id="ws-hotel-checkin" value="${_addDays(14)}"></div>
@@ -1191,10 +1248,10 @@ function renderPanelCompare() {
 
   // Wire sub-tabs
   wrap.querySelectorAll('.ws-subtab').forEach(b => b.onclick = () => switchCompareSub(b.dataset.sub));
-  // Area chips
+  // Area chips — toggle by KEY (not display name) so localized labels still match
   wrap.querySelectorAll('.ws-area-chip').forEach(c => c.onclick = () => {
-    _selectedHotelArea = (_selectedHotelArea === c.dataset.area) ? null : c.dataset.area;
-    wrap.querySelectorAll('.ws-area-chip').forEach(x => x.classList.toggle('active', x.dataset.area === _selectedHotelArea));
+    _selectedHotelArea = (_selectedHotelArea === c.dataset.areaKey) ? 'all' : c.dataset.areaKey;
+    wrap.querySelectorAll('.ws-area-chip').forEach(x => x.classList.toggle('active', x.dataset.areaKey === _selectedHotelArea));
   });
   // Trip toggle
   wrap.querySelectorAll('.ws-trip-toggle-btn').forEach(b => b.onclick = () => {
@@ -1231,8 +1288,11 @@ function switchCompareSub(sub) {
 async function fetchHotels() {
   const destName = _destNameForApi();
   if (!destName && currentDest !== 'any') return;
-  const area = _selectedHotelArea;
-  const queryDest = area ? `${destName} ${area}` : destName;
+  // Look up the selected area's SerpAPI keyword; 'all' or unknown → no suffix
+  const areaList = _hotelAreasFor(currentDest);
+  const areaObj = areaList.find(a => a.key === _selectedHotelArea);
+  const areaQ = (areaObj && areaObj.q) || '';
+  const queryDest = areaQ ? `${destName} ${areaQ}` : destName;
   const checkIn = document.getElementById('ws-hotel-checkin').value;
   const checkOut = document.getElementById('ws-hotel-checkout').value;
   const adults = parseInt(document.getElementById('ws-hotel-adults').value) || 2;
@@ -2127,11 +2187,25 @@ function _applyDestInfo(key, data) {
       ...driverTips
     ];
   }
+  // Populate dynamic hotel areas for the "any city" destination
+  if (key === 'any' && Array.isArray(data.hotelAreas) && data.hotelAreas.length > 0) {
+    HOTEL_AREAS.custom = [
+      { key:'all', q:'', name:{zh:'全部',en:'All',ja:'すべて',ko:'전체',id:'Semua'}, tag:{zh:'综合',en:'All',ja:'全',ko:'전체',id:'Semua'} },
+      ...data.hotelAreas.map((a, idx) => ({
+        key: (a.key || `area-${idx}`).toLowerCase().replace(/\s+/g, '-'),
+        q: a.q || a.name || '',
+        name: { [currentLang]: a.name || a.q || `Area ${idx+1}` },
+        tag: { [currentLang]: a.tag || '' }
+      }))
+    ];
+    _selectedHotelArea = 'all';
+  }
   _destIsLive[key] = true;
   // Repaint UI surfaces that use this data
   if (currentDest === key) {
     renderPanelDest();
     renderChatHeader();
+    if (typeof renderPanelCompare === 'function') renderPanelCompare();
   }
 }
 

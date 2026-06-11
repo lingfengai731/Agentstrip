@@ -393,7 +393,7 @@ async def share_create(data: ShareCreateReq, user=Depends(current_user)):
             (token, user["sub"], data.conv_id, dest, title, snapshot, int(time.time())),
         )
         conn.commit()
-        return {"token": token, "url": f"/studio/shared.html?t={token}"}
+        return {"token": token, "url": f"/shared?t={token}"}
     finally:
         conn.close()
 
@@ -1344,8 +1344,11 @@ self.addEventListener('fetch', e => {
 _FRONTEND = Path(__file__).parent.parent / "frontend" / "index.html"
 
 
-@app.get("/")
-async def frontend():
+# ─── Legacy single-page AI app at /app (preserves old bookmarks) ──────────
+@app.get("/app")
+async def legacy_app():
+    """Original WanderMind single-page AI app. Kept for backward-compat
+    with users who bookmarked the root URL before Studio became the home."""
     if not _FRONTEND.exists():
         return HTMLResponse("<h1>frontend/index.html not found</h1>", status_code=404)
     return HTMLResponse(
@@ -1358,13 +1361,40 @@ async def frontend():
     )
 
 
-# WanderMind Studio (multi-file template-styled brand site) is mounted at /studio
-# Visit https://<host>/studio/ for the home page, /studio/ai-tool.html for the tool, etc.
-# Same backend, so all relative /api/* calls from Studio work out of the box.
+# ─── Clean URL middleware ─────────────────────────────────────────────────
+# Lets visitors use /about, /ai-tool, /shared instead of forcing .html suffix.
+# Internally rewrites the path so the StaticFiles handler still finds the file.
 _STUDIO_DIR = Path(__file__).parent.parent.parent / "wandermind-studio" / "frontend"
+
+_RESERVED_ROOTS = ("/api/", "/app", "/manifest.json", "/icon.svg", "/sw.js",
+                   "/docs", "/openapi.json", "/redoc", "/favicon.ico")
+
+
+@app.middleware("http")
+async def clean_html_urls(request: Request, call_next):
+    path = request.url.path
+    # Skip API / known one-shot routes / paths that already have an extension
+    if any(path.startswith(p) for p in _RESERVED_ROOTS):
+        return await call_next(request)
+    last = path.rsplit("/", 1)[-1]
+    if not last or "." in last:
+        return await call_next(request)
+    # Try {path}.html relative to Studio root
+    candidate = _STUDIO_DIR / (path.lstrip("/") + ".html")
+    if candidate.is_file():
+        # Rewrite scope so the downstream StaticFiles mount serves the .html file
+        request.scope["path"] = path + ".html"
+        request.scope["raw_path"] = (path + ".html").encode("utf-8")
+    return await call_next(request)
+
+
+# ─── Studio is now mounted at ROOT — the primary brand site ───────────────
+# / → /index.html, /about.html, /ai-tool.html, /shared.html?t=... all served
+# from wandermind-studio/frontend/. Clean URLs (/about, /ai-tool) handled by
+# the middleware above. Old /api/* and /app keep working (registered earlier).
 if _STUDIO_DIR.exists():
     app.mount(
-        "/studio",
+        "/",
         StaticFiles(directory=str(_STUDIO_DIR), html=True),
         name="studio",
     )
