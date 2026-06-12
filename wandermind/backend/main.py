@@ -210,6 +210,14 @@ class ShareCreateReq(BaseModel):
     trip_meta: Optional[dict] = None    # {start, end, days, people, budget, style}
 
 
+class FuseReq(BaseModel):
+    guest_name: str = ""
+    # Free-form structured prefs from the form. We accept anything and
+    # serialize as JSON — the AI prompt builder will format whatever's here.
+    guest_prefs: dict
+    lang: str = "zh"
+
+
 # ─── Auth routes ─────────────────────────────────────────────
 def _public_base_url(request: Request) -> str:
     """Pick the externally-visible base URL for email links.
@@ -550,6 +558,226 @@ async def share_delete(token: str, user=Depends(current_user)):
         conn.execute("DELETE FROM shared_trips WHERE token=?", (token,))
         conn.commit()
         return {"ok": True}
+    finally:
+        conn.close()
+
+
+# ─── Trip fusion (D — dual-user preference merge) ─────────────
+# Guest of a shared trip adds their own prefs → AI re-plans for both.
+# No auth required: it's a public "join the planning" feature.
+
+_FUSION_PROMPT_TPL = {
+    "zh": (
+        "你是 WanderMind 的资深旅程规划师。下面是「{owner}」的完整旅行规划对话。"
+        "现在朋友「{guest}」加入了，提供了自己的偏好。"
+        "请基于两人**共同**的需求，输出一份**融合方案**。\n\n"
+        "格式严格如下（必须用 Markdown）：\n"
+        "**🤝 双人偏好融合**\n"
+        "- 简短一句话总结你的判断\n\n"
+        "**✅ 保留的部分**\n"
+        "- 列 2–4 条原方案中两人都会喜欢的安排\n\n"
+        "**🔄 需要调整的部分**\n"
+        "- 列 3–6 条具体调整建议（写明改了什么 + 为什么）\n\n"
+        "**✨ 新增建议**\n"
+        "- 2–3 条专门照顾「{guest}」偏好的新点子\n\n"
+        "**💬 给两位的话**\n"
+        "- 1–2 句温暖、人性化的总结\n\n"
+        "「{guest}」的偏好如下：\n{prefs}\n\n"
+        "请直接输出 Markdown，不要任何额外解释。"
+    ),
+    "en": (
+        "You are WanderMind's senior travel planner. Below is the full planning conversation by '{owner}'. "
+        "Now their travel companion '{guest}' has joined with their own preferences. "
+        "Output a **fusion plan** based on both parties' needs.\n\n"
+        "Format strictly as Markdown:\n"
+        "**🤝 Two-person preference fusion**\n"
+        "- One-sentence judgement\n\n"
+        "**✅ What to keep**\n"
+        "- 2–4 things from the original plan both will love\n\n"
+        "**🔄 What to adjust**\n"
+        "- 3–6 specific changes (what + why)\n\n"
+        "**✨ New ideas**\n"
+        "- 2–3 fresh ideas tailored to '{guest}'\n\n"
+        "**💬 A note for both**\n"
+        "- 1–2 warm closing sentences\n\n"
+        "'{guest}' preferences:\n{prefs}\n\n"
+        "Output Markdown only."
+    ),
+}
+
+
+def _format_prefs(prefs: dict, lang: str) -> str:
+    """Render the guest_prefs dict as human-readable bullets."""
+    label_map_zh = {
+        "budget": "预算偏好", "pace": "节奏", "style": "风格", "food": "饮食",
+        "activities": "活动偏好", "must_have": "必须包含", "avoid": "想避免的",
+        "special_needs": "特殊需求", "free_text": "自由备注",
+    }
+    label_map_en = {
+        "budget": "Budget", "pace": "Pace", "style": "Style", "food": "Food",
+        "activities": "Activities", "must_have": "Must have", "avoid": "Avoid",
+        "special_needs": "Special needs", "free_text": "Free notes",
+    }
+    labels = label_map_zh if lang.startswith("zh") else label_map_en
+    lines = []
+    for k, v in prefs.items():
+        if not v:
+            continue
+        if isinstance(v, list):
+            v = ", ".join(str(x) for x in v)
+        lines.append(f"- {labels.get(k, k)}: {v}")
+    return "\n".join(lines) if lines else "(none)"
+
+
+@app.post("/api/share/{token}/fuse")
+async def share_fuse(token: str, data: FuseReq):
+    """Guest of a shared trip submits their preferences; AI returns a
+    merged plan that respects both parties. Public — no auth required."""
+    if not re.fullmatch(r"[A-Za-z0-9]{6,16}", token):
+        raise HTTPException(400, "Invalid token")
+    conn = get_db()
+    try:
+        row = conn.execute(
+            "SELECT snapshot, title, dest FROM shared_trips WHERE token=?", (token,)
+        ).fetchone()
+        if not row:
+            raise HTTPException(404, "Shared trip not found")
+        r = dict(row)
+        snap = json.loads(r.get("snapshot") or "{}")
+        owner_name = snap.get("owner_name", "") or "the planner"
+        guest_name = (data.guest_name or "").strip() or "Friend"
+
+        # Build the prompt
+        lang = (data.lang or "zh").lower()
+        prompt_tpl = _FUSION_PROMPT_TPL.get("zh" if lang.startswith("zh") else "en")
+        prefs_text = _format_prefs(data.guest_prefs or {}, lang)
+
+        # Compose: original conversation + fusion instruction
+        msgs = snap.get("messages") or []
+        # Trim history to keep prompt sane — last 30 messages is plenty
+        msgs = msgs[-30:]
+
+        ai_messages = [{"role": "system", "content": "You are WanderMind, a multi-agent travel planner."}]
+        for m in msgs:
+            role = "assistant" if m.get("role") == "assistant" else "user"
+            content = (m.get("content") or m.get("text") or "").strip()
+            if content:
+                ai_messages.append({"role": role, "content": content})
+        ai_messages.append({
+            "role": "user",
+            "content": prompt_tpl.format(owner=owner_name, guest=guest_name, prefs=prefs_text),
+        })
+
+        if not _API_KEY:
+            raise HTTPException(500, "AI API_KEY not configured on the server")
+
+        # Call MiMo (pro mode — fusion needs deeper reasoning)
+        try:
+            async with httpx.AsyncClient(timeout=90.0) as client:
+                resp = await client.post(
+                    _CHAT_URL,
+                    headers=_ai_headers(),
+                    json={
+                        "model": _MODEL,
+                        "max_tokens": 1500,
+                        "temperature": 0.75,
+                        "messages": ai_messages,
+                    },
+                )
+            if resp.status_code != 200:
+                raise HTTPException(502, f"Upstream AI error: HTTP {resp.status_code}")
+            ai_text = (
+                resp.json().get("choices", [{}])[0].get("message", {}).get("content", "").strip()
+            )
+        except HTTPException:
+            raise
+        except Exception as e:
+            raise HTTPException(502, f"AI call failed: {type(e).__name__}: {e}")
+
+        if not ai_text:
+            raise HTTPException(502, "AI returned empty response")
+
+        # Persist the fusion record
+        fusion_token = _gen_share_token()
+        for _ in range(3):
+            exists = conn.execute(
+                "SELECT token FROM trip_fusions WHERE token=?", (fusion_token,)
+            ).fetchone()
+            if not exists:
+                break
+            fusion_token = _gen_share_token()
+
+        conn.execute(
+            "INSERT INTO trip_fusions (token,source_token,guest_name,guest_prefs,ai_response,created_at) "
+            "VALUES (?,?,?,?,?,?)",
+            (fusion_token, token, guest_name,
+             json.dumps(data.guest_prefs or {}, ensure_ascii=False),
+             ai_text, int(time.time())),
+        )
+        conn.commit()
+        return {
+            "token": fusion_token,
+            "url": f"/fusion?t={fusion_token}",
+            "ai_response": ai_text,
+            "source_title": r.get("title", ""),
+            "owner_name": owner_name,
+            "guest_name": guest_name,
+        }
+    finally:
+        conn.close()
+
+
+@app.get("/api/fusion/{token}")
+async def fusion_get(token: str):
+    """Public read of a fusion result. Returns guest info, AI response,
+    and the source trip's title/owner so the page can render context."""
+    if not re.fullmatch(r"[A-Za-z0-9]{6,16}", token):
+        raise HTTPException(400, "Invalid token")
+    conn = get_db()
+    try:
+        row = conn.execute(
+            "SELECT token,source_token,guest_name,guest_prefs,ai_response,views,created_at "
+            "FROM trip_fusions WHERE token=?", (token,),
+        ).fetchone()
+        if not row:
+            raise HTTPException(404, "Fusion not found")
+        f = dict(row)
+
+        # Fetch source trip metadata for display
+        src = conn.execute(
+            "SELECT title,dest,snapshot FROM shared_trips WHERE token=?", (f["source_token"],)
+        ).fetchone()
+        src_data = {}
+        if src:
+            s = dict(src)
+            snap = json.loads(s.get("snapshot") or "{}")
+            src_data = {
+                "title": s.get("title"),
+                "dest": s.get("dest"),
+                "owner_name": snap.get("owner_name", ""),
+                "trip_meta": snap.get("trip_meta", {}),
+            }
+
+        # Bump view counter
+        try:
+            conn.execute(
+                "UPDATE trip_fusions SET views = COALESCE(views,0) + 1 WHERE token=?",
+                (token,),
+            )
+            conn.commit()
+        except Exception:
+            pass
+
+        return {
+            "token": f["token"],
+            "guest_name": f["guest_name"],
+            "guest_prefs": json.loads(f.get("guest_prefs") or "{}"),
+            "ai_response": f["ai_response"],
+            "views": (f["views"] or 0) + 1,
+            "created_at": f["created_at"],
+            "source": src_data,
+            "source_token": f["source_token"],
+        }
     finally:
         conn.close()
 
@@ -1477,6 +1705,11 @@ async def clean_html_urls(request: Request, call_next):
         return await call_next(request)
     last = path.rsplit("/", 1)[-1]
     if not last or "." in last:
+        return await call_next(request)
+    # Alias /fusion → /shared.html (same SPA file routes both views by JS)
+    if path == "/fusion":
+        request.scope["path"] = "/shared.html"
+        request.scope["raw_path"] = b"/shared.html"
         return await call_next(request)
     # Try {path}.html relative to Studio root
     candidate = _STUDIO_DIR / (path.lstrip("/") + ".html")

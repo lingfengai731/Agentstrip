@@ -152,6 +152,23 @@ def init_db():
             "CREATE INDEX IF NOT EXISTS idx_shared_trips_user ON shared_trips(user_id)"
         )
 
+        # Trip fusions — guest adds prefs to someone else's shared trip,
+        # AI re-plans for both parties. Public read by token.
+        conn.execute(f"""
+            CREATE TABLE IF NOT EXISTS trip_fusions (
+                token         TEXT PRIMARY KEY,
+                source_token  TEXT NOT NULL,
+                guest_name    TEXT,
+                guest_prefs   TEXT,
+                ai_response   TEXT NOT NULL,
+                views         INTEGER DEFAULT 0,
+                created_at    {ts_type} NOT NULL
+            )
+        """)
+        conn.execute(
+            "CREATE INDEX IF NOT EXISTS idx_fusion_source ON trip_fusions(source_token)"
+        )
+
         # SQLite-only legacy migration: add preferences column on old DBs
         if not USE_POSTGRES:
             try:

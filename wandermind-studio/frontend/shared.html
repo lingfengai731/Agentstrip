@@ -275,6 +275,254 @@
     }
     .sh-theme-toggle:hover { background: var(--line); }
 
+    /* —— Fusion CTA card —— */
+    .sh-fuse-cta {
+      max-width: 760px;
+      margin: 28px auto 0;
+      padding: 26px 28px;
+      background: linear-gradient(135deg, rgba(14,124,107,.12), rgba(252,191,30,.10));
+      border-radius: 18px;
+      border: 1px solid rgba(14,124,107,.25);
+    }
+    .sh-fuse-cta h3 {
+      font-size: 19px;
+      font-weight: 700;
+      margin: 0 0 6px;
+      color: var(--ink);
+    }
+    .sh-fuse-cta p {
+      color: var(--ink-2);
+      margin: 0 0 16px;
+      font-size: 13.5px;
+      line-height: 1.65;
+    }
+    .sh-fuse-btn {
+      display: inline-block;
+      background: linear-gradient(135deg, var(--teal-lt), var(--teal));
+      color: #fff;
+      padding: 11px 24px;
+      border-radius: 22px;
+      font-size: 14px;
+      font-weight: 700;
+      border: none;
+      cursor: pointer;
+      font-family: inherit;
+      transition: transform .15s, box-shadow .2s;
+    }
+    .sh-fuse-btn:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 8px 22px rgba(14,124,107,.32);
+    }
+
+    /* —— Modal overlay (used for fusion form + result) —— */
+    .sh-modal-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(15,15,15,.55);
+      backdrop-filter: blur(4px);
+      z-index: 100;
+      align-items: center;
+      justify-content: center;
+      padding: 18px;
+    }
+    .sh-modal-overlay.show { display: flex; }
+    .sh-modal {
+      background: var(--paper);
+      width: 100%;
+      max-width: 540px;
+      max-height: 90vh;
+      overflow-y: auto;
+      border-radius: 18px;
+      box-shadow: 0 30px 60px rgba(0,0,0,.30);
+    }
+    .sh-modal-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 20px 24px 14px;
+      border-bottom: 1px solid var(--line);
+    }
+    .sh-modal-title {
+      font-size: 17px;
+      font-weight: 700;
+      color: var(--ink);
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .sh-modal-title .fa { color: var(--teal); }
+    .sh-modal-close {
+      width: 32px;
+      height: 32px;
+      background: var(--bg-2);
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      cursor: pointer;
+      color: var(--ink-2);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .sh-modal-close:hover { background: var(--line); }
+    .sh-modal-body { padding: 22px 24px 24px; }
+    .sh-modal-body p.sh-modal-sub {
+      color: var(--ink-2);
+      font-size: 13.5px;
+      line-height: 1.65;
+      margin: 0 0 18px;
+    }
+
+    /* —— Fusion form —— */
+    .sh-form-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+    }
+    .sh-form-field { display: block; }
+    .sh-form-field.full { grid-column: 1 / -1; }
+    .sh-form-label {
+      display: block;
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--ink-2);
+      margin-bottom: 5px;
+    }
+    .sh-form-input, .sh-form-select, .sh-form-textarea {
+      width: 100%;
+      padding: 10px 12px;
+      background: var(--bg-2);
+      border: 1px solid var(--line);
+      border-radius: 9px;
+      font-size: 13.5px;
+      color: var(--ink);
+      font-family: inherit;
+      outline: none;
+      box-sizing: border-box;
+      transition: border-color .2s;
+    }
+    .sh-form-input:focus, .sh-form-select:focus, .sh-form-textarea:focus {
+      border-color: var(--teal-lt);
+    }
+    .sh-form-textarea { resize: vertical; min-height: 60px; }
+    .sh-form-msg {
+      font-size: 13px;
+      margin: 6px 0 12px;
+      min-height: 16px;
+      color: #dc2626;
+    }
+    .sh-form-msg.ok { color: var(--teal); }
+    .sh-form-submit {
+      width: 100%;
+      padding: 13px 18px;
+      margin-top: 14px;
+      background: linear-gradient(135deg, var(--gold), var(--gold-dk));
+      color: #fff;
+      border: none;
+      border-radius: 11px;
+      font-size: 14px;
+      font-weight: 700;
+      cursor: pointer;
+      font-family: inherit;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      transition: transform .15s, box-shadow .2s;
+    }
+    .sh-form-submit:hover { transform: translateY(-1px); box-shadow: 0 6px 18px rgba(252,191,30,.35); }
+    .sh-form-submit:disabled { opacity: .55; cursor: not-allowed; transform: none; box-shadow: none; }
+
+    /* —— Fusion result —— */
+    .sh-fusion-result {
+      max-width: 760px;
+      margin: 0 auto;
+      padding: 26px 28px;
+      background: var(--paper);
+      border: 2px solid rgba(14,124,107,.28);
+      border-radius: 18px;
+      margin-top: 28px;
+      box-shadow: 0 12px 38px rgba(14,124,107,.08);
+    }
+    .sh-fusion-result h2 {
+      font-size: 20px;
+      font-weight: 800;
+      margin: 0 0 6px;
+      color: var(--ink);
+      line-height: 1.35;
+    }
+    .sh-fusion-meta {
+      font-size: 12.5px;
+      color: var(--ink-3);
+      margin-bottom: 16px;
+      padding-bottom: 14px;
+      border-bottom: 1px dashed var(--line);
+    }
+    .sh-fusion-body {
+      font-size: 14.5px;
+      line-height: 1.75;
+      color: var(--ink);
+    }
+    .sh-fusion-body p { margin: 0 0 12px; }
+    .sh-fusion-body strong { font-weight: 700; color: var(--ink); }
+    .sh-fusion-body ul, .sh-fusion-body ol { padding-left: 22px; margin: 6px 0 14px; }
+    .sh-fusion-body li { margin-bottom: 4px; }
+    .sh-fusion-actions {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-top: 18px;
+      padding-top: 16px;
+      border-top: 1px solid var(--line);
+    }
+    .sh-fusion-actions button,
+    .sh-fusion-actions a {
+      flex: 1 1 180px;
+      padding: 11px 16px;
+      border-radius: 11px;
+      border: 1px solid var(--line);
+      background: var(--bg-2);
+      color: var(--ink);
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      font-family: inherit;
+      text-align: center;
+      text-decoration: none;
+      transition: background .2s;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+    }
+    .sh-fusion-actions .primary {
+      background: linear-gradient(135deg, var(--gold), var(--gold-dk));
+      color: #fff;
+      border-color: transparent;
+    }
+    .sh-fusion-actions button:hover,
+    .sh-fusion-actions a:hover { background: var(--line); }
+    .sh-fusion-actions .primary:hover { background: linear-gradient(135deg, var(--gold-dk), var(--gold-dk)); }
+    .sh-fusion-actions .copied {
+      background: linear-gradient(135deg, var(--teal-lt), var(--teal)) !important;
+      color: #fff !important;
+      border-color: transparent !important;
+    }
+
+    /* —— Loading state inside modal —— */
+    .sh-fuse-loading {
+      text-align: center;
+      padding: 36px 12px;
+      color: var(--ink-2);
+    }
+    .sh-fuse-loading .fa-spinner {
+      font-size: 32px;
+      color: var(--gold);
+      animation: spin 1s linear infinite;
+      margin-bottom: 12px;
+    }
+
     /* —— Mobile —— */
     @media (max-width: 575px) {
       .sh-top { padding: 12px 16px; }
@@ -289,6 +537,15 @@
       .sh-bubble { font-size: 14px; padding: 12px 14px; }
       .sh-footer-cta { margin: 30px 16px; padding: 22px 18px; }
       .sh-footer-cta h3 { font-size: 18px; }
+      .sh-fuse-cta { margin: 22px 16px 0; padding: 20px 18px; border-radius: 14px; }
+      .sh-fuse-cta h3 { font-size: 17px; }
+      .sh-form-grid { grid-template-columns: 1fr; gap: 10px; }
+      .sh-modal { max-height: 92vh; }
+      .sh-modal-head { padding: 16px 18px 12px; }
+      .sh-modal-body { padding: 18px 18px 20px; }
+      .sh-fusion-result { margin: 22px 16px 0; padding: 22px 20px; border-radius: 14px; }
+      .sh-fusion-actions { flex-direction: column; }
+      .sh-fusion-actions button, .sh-fusion-actions a { flex: 1; }
     }
   </style>
 </head>
@@ -312,14 +569,67 @@
     </div>
   </main>
 
+  <!-- Fusion form modal (built lazily by JS) -->
+  <div class="sh-modal-overlay" id="sh-fuse-modal"></div>
+
   <script>
     /* ---------- Minimal i18n ---------- */
     const I18N = {
-      zh: { hero:'查看这份 WanderMind 旅程规划', cta:'我也要规划一个', sharedBy:'分享自 {name}', views:'已被查看 {n} 次', created:'创建于 {date}', errTitle:'链接已失效或不存在', errBody:'这个分享链接可能已被取消，或者从未存在过。', loadFail:'加载失败', user:'你', planner:'旅程规划师', hotel:'住宿顾问', food:'美食探索家', activity:'活动策划师', budget:'预算管家', search:'实时搜索', assistant:'AI 助手' },
-      en: { hero:'View this WanderMind trip plan', cta:'Plan my own', sharedBy:'Shared by {name}', views:'Viewed {n} times', created:'Created {date}', errTitle:'Link expired or not found', errBody:'This share link may have been revoked, or it never existed.', loadFail:'Failed to load', user:'You', planner:'Trip Planner', hotel:'Hotel Advisor', food:'Food Explorer', activity:'Activity Planner', budget:'Budget Steward', search:'Live Search', assistant:'AI Assistant' },
-      ja: { hero:'このWanderMind旅程プランを見る', cta:'自分の旅程を計画する', sharedBy:'{name}さんが共有', views:'{n}回閲覧', created:'{date}作成', errTitle:'リンクが無効または存在しません', errBody:'このリンクは取り消されたか、存在しません。', loadFail:'読み込み失敗', user:'あなた', planner:'旅程プランナー', hotel:'宿泊アドバイザー', food:'グルメ', activity:'アクティビティ', budget:'予算管理', search:'リアルタイム検索', assistant:'AI アシスタント' },
-      ko: { hero:'이 WanderMind 여행 계획 보기', cta:'나도 여행 시작', sharedBy:'{name}님 공유', views:'{n}회 조회', created:'{date} 생성', errTitle:'링크 만료 또는 없음', errBody:'이 링크는 취소되었거나 존재하지 않습니다.', loadFail:'로드 실패', user:'당신', planner:'여행 플래너', hotel:'숙소 어드바이저', food:'미식 탐험가', activity:'액티비티 플래너', budget:'예산 관리자', search:'실시간 검색', assistant:'AI 어시스턴트' },
-      id: { hero:'Lihat rencana WanderMind ini', cta:'Rencanakan punyaku', sharedBy:'Dibagikan oleh {name}', views:'Dilihat {n} kali', created:'Dibuat {date}', errTitle:'Link tidak valid', errBody:'Link ini mungkin sudah dicabut atau tidak pernah ada.', loadFail:'Gagal memuat', user:'Anda', planner:'Perencana', hotel:'Hotel', food:'Kuliner', activity:'Aktivitas', budget:'Anggaran', search:'Pencarian', assistant:'AI Asisten' }
+      zh: { hero:'查看这份 WanderMind 旅程规划', cta:'我也要规划一个', sharedBy:'分享自 {name}', views:'已被查看 {n} 次', created:'创建于 {date}', errTitle:'链接已失效或不存在', errBody:'这个分享链接可能已被取消，或者从未存在过。', loadFail:'加载失败', user:'你', planner:'旅程规划师', hotel:'住宿顾问', food:'美食探索家', activity:'活动策划师', budget:'预算管家', search:'实时搜索', assistant:'AI 助手',
+        fuseTitle:'一起来规划 · 双人偏好融合', fuseSub:'你也填一下偏好，AI 会为你们俩重新调整这份行程，让两个人都满意。', fuseBtn:'🤝 让 AI 为我们俩规划', fuseFormTitle:'告诉 AI 你的偏好', fuseFormSub:'快速填几项，AI 会综合两个人的偏好生成融合方案。',
+        fuseFieldName:'你的名字', fuseFieldNamePh:'例如 张三', fuseFieldBudget:'预算偏好', fuseFieldPace:'旅行节奏', fuseFieldStyle:'风格偏好', fuseFieldFood:'饮食偏好', fuseFieldMustHave:'你必须要有的（可选）', fuseFieldAvoid:'你想避开的（可选）', fuseFieldFree:'其他想说的（可选）',
+        fuseBudgetOpts:[['','—'],['economy','节俭'],['balanced','平衡'],['comfort','舒适'],['luxury','奢华']],
+        fusePaceOpts:[['','—'],['relaxed','慢节奏，多休息'],['moderate','适中'],['packed','想看尽可能多']],
+        fuseStyleOpts:[['','—'],['cultural','文化深度'],['nature','自然探险'],['food','美食为先'],['shopping','购物为主'],['photo','拍照打卡'],['romantic','浪漫蜜月']],
+        fuseFoodOpts:[['','—'],['local','地道当地菜'],['vegetarian','素食'],['halal','清真'],['allergy','有过敏'],['no_seafood','不吃海鲜']],
+        fuseFreePh:'例如：怕辣 / 我爱海岛 / 想看演出 …',
+        fuseSubmit:'融合规划', fuseGenerating:'AI 正在融合两人偏好…', fuseErr:'融合失败，请稍后再试',
+        fuseResultTitle:'🤝 AI 为 {a} & {b} 准备的融合方案', fuseShareBtn:'复制融合方案链接', fuseShareCopied:'已复制 ✓',
+        fuseBackToOriginal:'查看原始方案', fuseNameRequired:'请填写你的名字' },
+      en: { hero:'View this WanderMind trip plan', cta:'Plan my own', sharedBy:'Shared by {name}', views:'Viewed {n} times', created:'Created {date}', errTitle:'Link expired or not found', errBody:'This share link may have been revoked, or it never existed.', loadFail:'Failed to load', user:'You', planner:'Trip Planner', hotel:'Hotel Advisor', food:'Food Explorer', activity:'Activity Planner', budget:'Budget Steward', search:'Live Search', assistant:'AI Assistant',
+        fuseTitle:'Plan together · merge both preferences', fuseSub:'Add YOUR preferences and our AI will re-tune this trip so both of you love it.', fuseBtn:'🤝 Let AI re-plan for both of us', fuseFormTitle:'Tell the AI about you', fuseFormSub:'Just a few quick choices — the AI will fuse both sets of preferences.',
+        fuseFieldName:'Your name', fuseFieldNamePh:'e.g. Bob', fuseFieldBudget:'Budget feel', fuseFieldPace:'Trip pace', fuseFieldStyle:'Style', fuseFieldFood:'Food', fuseFieldMustHave:'Must-have (optional)', fuseFieldAvoid:'Avoid (optional)', fuseFieldFree:'Anything else (optional)',
+        fuseBudgetOpts:[['','—'],['economy','Economy'],['balanced','Balanced'],['comfort','Comfort'],['luxury','Luxury']],
+        fusePaceOpts:[['','—'],['relaxed','Relaxed, lots of rest'],['moderate','Moderate'],['packed','Pack everything in']],
+        fuseStyleOpts:[['','—'],['cultural','Cultural depth'],['nature','Nature & adventure'],['food','Food-first'],['shopping','Shopping focus'],['photo','Photo spots'],['romantic','Romantic / honeymoon']],
+        fuseFoodOpts:[['','—'],['local','Local & authentic'],['vegetarian','Vegetarian'],['halal','Halal'],['allergy','Allergies'],['no_seafood','No seafood']],
+        fuseFreePh:'e.g. love beaches / want a concert / spicy food OK …',
+        fuseSubmit:'Fuse the plan', fuseGenerating:'AI is merging both preferences…', fuseErr:'Fusion failed, please retry',
+        fuseResultTitle:'🤝 AI fusion plan for {a} & {b}', fuseShareBtn:'Copy fusion link', fuseShareCopied:'Copied ✓',
+        fuseBackToOriginal:'View original plan', fuseNameRequired:'Please enter your name' },
+      ja: { hero:'このWanderMind旅程プランを見る', cta:'自分の旅程を計画する', sharedBy:'{name}さんが共有', views:'{n}回閲覧', created:'{date}作成', errTitle:'リンクが無効または存在しません', errBody:'このリンクは取り消されたか、存在しません。', loadFail:'読み込み失敗', user:'あなた', planner:'旅程プランナー', hotel:'宿泊アドバイザー', food:'グルメ', activity:'アクティビティ', budget:'予算管理', search:'リアルタイム検索', assistant:'AI アシスタント',
+        fuseTitle:'一緒にプランニング · 二人の好みを融合', fuseSub:'あなたの好みも追加すれば、AIが二人とも満足できる旅程に再調整します。', fuseBtn:'🤝 AIに二人分を再計画してもらう', fuseFormTitle:'あなたについて教えてください', fuseFormSub:'簡単な選択肢のみ。AIが両者の好みを融合します。',
+        fuseFieldName:'お名前', fuseFieldNamePh:'例：太郎', fuseFieldBudget:'予算感', fuseFieldPace:'ペース', fuseFieldStyle:'スタイル', fuseFieldFood:'食事', fuseFieldMustHave:'必ず欲しい（任意）', fuseFieldAvoid:'避けたい（任意）', fuseFieldFree:'その他（任意）',
+        fuseBudgetOpts:[['','—'],['economy','節約'],['balanced','バランス'],['comfort','快適'],['luxury','贅沢']],
+        fusePaceOpts:[['','—'],['relaxed','のんびり、休憩多め'],['moderate','普通'],['packed','詰め込む']],
+        fuseStyleOpts:[['','—'],['cultural','文化重視'],['nature','自然・アドベンチャー'],['food','グルメ重視'],['shopping','ショッピング'],['photo','写真スポット'],['romantic','ロマンチック']],
+        fuseFoodOpts:[['','—'],['local','地元料理'],['vegetarian','ベジタリアン'],['halal','ハラル'],['allergy','アレルギーあり'],['no_seafood','魚介NG']],
+        fuseFreePh:'例：辛いものが苦手 / 海が好き / ライブが見たい …',
+        fuseSubmit:'プランを融合', fuseGenerating:'AIが二人の好みを融合中…', fuseErr:'融合に失敗しました',
+        fuseResultTitle:'🤝 {a} と {b} のための融合プラン', fuseShareBtn:'融合プランのリンクをコピー', fuseShareCopied:'コピー済み ✓',
+        fuseBackToOriginal:'元のプランを見る', fuseNameRequired:'お名前を入力してください' },
+      ko: { hero:'이 WanderMind 여행 계획 보기', cta:'나도 여행 시작', sharedBy:'{name}님 공유', views:'{n}회 조회', created:'{date} 생성', errTitle:'링크 만료 또는 없음', errBody:'이 링크는 취소되었거나 존재하지 않습니다.', loadFail:'로드 실패', user:'당신', planner:'여행 플래너', hotel:'숙소 어드바이저', food:'미식 탐험가', activity:'액티비티 플래너', budget:'예산 관리자', search:'실시간 검색', assistant:'AI 어시스턴트',
+        fuseTitle:'함께 계획하기 · 두 사람 선호도 융합', fuseSub:'당신의 선호도도 추가하면 AI가 두 사람 모두 만족할 일정으로 재구성합니다.', fuseBtn:'🤝 AI에게 둘을 위한 재계획 요청', fuseFormTitle:'AI에게 당신을 알려주세요', fuseFormSub:'몇 가지만 선택하면 AI가 두 선호도를 융합합니다.',
+        fuseFieldName:'이름', fuseFieldNamePh:'예: 민준', fuseFieldBudget:'예산 성향', fuseFieldPace:'여행 속도', fuseFieldStyle:'스타일', fuseFieldFood:'음식', fuseFieldMustHave:'꼭 있어야 (선택)', fuseFieldAvoid:'피하고 싶은 것 (선택)', fuseFieldFree:'기타 (선택)',
+        fuseBudgetOpts:[['','—'],['economy','절약'],['balanced','균형'],['comfort','편안'],['luxury','럭셔리']],
+        fusePaceOpts:[['','—'],['relaxed','여유롭게'],['moderate','보통'],['packed','꽉 채우기']],
+        fuseStyleOpts:[['','—'],['cultural','문화 심도'],['nature','자연 탐험'],['food','음식 우선'],['shopping','쇼핑'],['photo','사진 명소'],['romantic','로맨틱']],
+        fuseFoodOpts:[['','—'],['local','현지 음식'],['vegetarian','채식'],['halal','할랄'],['allergy','알레르기'],['no_seafood','해산물 X']],
+        fuseFreePh:'예: 매운 거 못 먹음 / 바다 좋아함 / 공연 보고 싶음 …',
+        fuseSubmit:'플랜 융합', fuseGenerating:'AI가 두 선호도를 융합 중…', fuseErr:'융합 실패',
+        fuseResultTitle:'🤝 {a}와 {b}를 위한 융합 플랜', fuseShareBtn:'융합 링크 복사', fuseShareCopied:'복사됨 ✓',
+        fuseBackToOriginal:'원본 플랜 보기', fuseNameRequired:'이름을 입력하세요' },
+      id: { hero:'Lihat rencana WanderMind ini', cta:'Rencanakan punyaku', sharedBy:'Dibagikan oleh {name}', views:'Dilihat {n} kali', created:'Dibuat {date}', errTitle:'Link tidak valid', errBody:'Link ini mungkin sudah dicabut atau tidak pernah ada.', loadFail:'Gagal memuat', user:'Anda', planner:'Perencana', hotel:'Hotel', food:'Kuliner', activity:'Aktivitas', budget:'Anggaran', search:'Pencarian', assistant:'AI Asisten',
+        fuseTitle:'Rencanakan bersama · gabung 2 preferensi', fuseSub:'Tambahkan preferensimu — AI akan menyesuaikan plan agar dua-duanya senang.', fuseBtn:'🤝 Minta AI rencanakan untuk kami berdua', fuseFormTitle:'Beri tahu AI tentang kamu', fuseFormSub:'Pilih beberapa hal — AI akan menggabungkan preferensi dua orang.',
+        fuseFieldName:'Nama', fuseFieldNamePh:'cth: Andi', fuseFieldBudget:'Selera anggaran', fuseFieldPace:'Tempo', fuseFieldStyle:'Gaya', fuseFieldFood:'Makanan', fuseFieldMustHave:'Wajib ada (opsional)', fuseFieldAvoid:'Hindari (opsional)', fuseFieldFree:'Lainnya (opsional)',
+        fuseBudgetOpts:[['','—'],['economy','Hemat'],['balanced','Seimbang'],['comfort','Nyaman'],['luxury','Mewah']],
+        fusePaceOpts:[['','—'],['relaxed','Santai, banyak istirahat'],['moderate','Sedang'],['packed','Padat']],
+        fuseStyleOpts:[['','—'],['cultural','Budaya'],['nature','Alam & petualangan'],['food','Kuliner dulu'],['shopping','Belanja'],['photo','Spot foto'],['romantic','Romantis']],
+        fuseFoodOpts:[['','—'],['local','Makanan lokal'],['vegetarian','Vegetarian'],['halal','Halal'],['allergy','Ada alergi'],['no_seafood','Tanpa seafood']],
+        fuseFreePh:'cth: anti pedas / suka pantai / mau lihat konser …',
+        fuseSubmit:'Gabungkan rencana', fuseGenerating:'AI sedang menggabungkan preferensi…', fuseErr:'Gagal menggabung',
+        fuseResultTitle:'🤝 Plan fusion untuk {a} & {b}', fuseShareBtn:'Salin link fusion', fuseShareCopied:'Tersalin ✓',
+        fuseBackToOriginal:'Lihat plan asli', fuseNameRequired:'Masukkan nama Anda' }
     };
     const userLang = ((navigator.language||'en').toLowerCase().split('-')[0]);
     const LANG = I18N[userLang] ? userLang : 'en';
@@ -459,6 +769,18 @@
         </section>
       `;
 
+      // Fusion CTA — the headline differentiator: "plan together"
+      const fuseCtaHtml = `
+        <section class="sh-fuse-cta">
+          <h3>${escapeHtml(T.fuseTitle)}</h3>
+          <p>${escapeHtml(T.fuseSub)}</p>
+          <button class="sh-fuse-btn" id="sh-open-fuse">${escapeHtml(T.fuseBtn)}</button>
+        </section>
+      `;
+
+      // Anchor for the fusion result so we can scroll to it after success
+      const fuseResultAnchor = `<div id="sh-fusion-anchor"></div>`;
+
       const ctaHtml = `
         <section class="sh-footer-cta">
           <h3>${escapeHtml(T.hero)}</h3>
@@ -467,10 +789,17 @@
         </section>
       `;
 
-      main.innerHTML = heroHtml + feedHtml + ctaHtml;
+      main.innerHTML = heroHtml + feedHtml + fuseCtaHtml + fuseResultAnchor + ctaHtml;
+
+      // Wire the fusion CTA → opens the form modal
+      const fuseBtn = document.getElementById('sh-open-fuse');
+      if (fuseBtn) fuseBtn.onclick = () => openFuseForm();
 
       // Update document title
       document.title = title + ' · WanderMind';
+
+      // Stash source data so the form / fusion result can reference it
+      window._shSource = { token: data.token, title, owner_name: owner };
     }
 
     function renderMsg(m) {
@@ -490,7 +819,249 @@
       `;
     }
 
-    loadShared();
+    /* ─────────────── Fusion form modal ─────────────── */
+    function _optionsHtml(opts) {
+      return opts.map(([val, label]) =>
+        `<option value="${escapeHtml(val)}">${escapeHtml(label)}</option>`).join('');
+    }
+
+    function openFuseForm() {
+      const overlay = document.getElementById('sh-fuse-modal');
+      overlay.innerHTML = `
+        <div class="sh-modal">
+          <div class="sh-modal-head">
+            <div class="sh-modal-title"><span class="fa fa-handshake-o"></span> ${escapeHtml(T.fuseFormTitle)}</div>
+            <button class="sh-modal-close" id="sh-fuse-close"><span class="fa fa-times"></span></button>
+          </div>
+          <div class="sh-modal-body">
+            <p class="sh-modal-sub">${escapeHtml(T.fuseFormSub)}</p>
+            <div class="sh-form-grid">
+              <div class="sh-form-field full">
+                <label class="sh-form-label">${escapeHtml(T.fuseFieldName)} *</label>
+                <input type="text" class="sh-form-input" id="sh-fp-name" placeholder="${escapeHtml(T.fuseFieldNamePh)}">
+              </div>
+              <div class="sh-form-field">
+                <label class="sh-form-label">${escapeHtml(T.fuseFieldBudget)}</label>
+                <select class="sh-form-select" id="sh-fp-budget">${_optionsHtml(T.fuseBudgetOpts)}</select>
+              </div>
+              <div class="sh-form-field">
+                <label class="sh-form-label">${escapeHtml(T.fuseFieldPace)}</label>
+                <select class="sh-form-select" id="sh-fp-pace">${_optionsHtml(T.fusePaceOpts)}</select>
+              </div>
+              <div class="sh-form-field">
+                <label class="sh-form-label">${escapeHtml(T.fuseFieldStyle)}</label>
+                <select class="sh-form-select" id="sh-fp-style">${_optionsHtml(T.fuseStyleOpts)}</select>
+              </div>
+              <div class="sh-form-field">
+                <label class="sh-form-label">${escapeHtml(T.fuseFieldFood)}</label>
+                <select class="sh-form-select" id="sh-fp-food">${_optionsHtml(T.fuseFoodOpts)}</select>
+              </div>
+              <div class="sh-form-field full">
+                <label class="sh-form-label">${escapeHtml(T.fuseFieldMustHave)}</label>
+                <input type="text" class="sh-form-input" id="sh-fp-must">
+              </div>
+              <div class="sh-form-field full">
+                <label class="sh-form-label">${escapeHtml(T.fuseFieldAvoid)}</label>
+                <input type="text" class="sh-form-input" id="sh-fp-avoid">
+              </div>
+              <div class="sh-form-field full">
+                <label class="sh-form-label">${escapeHtml(T.fuseFieldFree)}</label>
+                <textarea class="sh-form-textarea" id="sh-fp-free" placeholder="${escapeHtml(T.fuseFreePh)}"></textarea>
+              </div>
+            </div>
+            <div class="sh-form-msg" id="sh-fp-msg"></div>
+            <button class="sh-form-submit" id="sh-fp-submit"><span class="fa fa-magic"></span> ${escapeHtml(T.fuseSubmit)}</button>
+          </div>
+        </div>
+      `;
+      overlay.classList.add('show');
+      document.getElementById('sh-fuse-close').onclick = closeFuseModal;
+      overlay.onclick = e => { if (e.target === overlay) closeFuseModal(); };
+      document.getElementById('sh-fp-submit').onclick = submitFusion;
+      document.getElementById('sh-fp-name').focus();
+    }
+
+    function closeFuseModal() {
+      const overlay = document.getElementById('sh-fuse-modal');
+      overlay.classList.remove('show');
+    }
+
+    async function submitFusion() {
+      const name = document.getElementById('sh-fp-name').value.trim();
+      const msg  = document.getElementById('sh-fp-msg');
+      const btn  = document.getElementById('sh-fp-submit');
+      msg.classList.remove('ok');
+      msg.textContent = '';
+      if (!name) { msg.textContent = T.fuseNameRequired; return; }
+
+      const prefs = {
+        budget:    document.getElementById('sh-fp-budget').value || null,
+        pace:      document.getElementById('sh-fp-pace').value || null,
+        style:     document.getElementById('sh-fp-style').value || null,
+        food:      document.getElementById('sh-fp-food').value || null,
+        must_have: document.getElementById('sh-fp-must').value.trim() || null,
+        avoid:     document.getElementById('sh-fp-avoid').value.trim() || null,
+        free_text: document.getElementById('sh-fp-free').value.trim() || null,
+      };
+
+      // Show loading state inside the modal
+      const overlay = document.getElementById('sh-fuse-modal');
+      overlay.querySelector('.sh-modal-body').innerHTML = `
+        <div class="sh-fuse-loading">
+          <div><span class="fa fa-spinner"></span></div>
+          <div style="margin-top:8px">${escapeHtml(T.fuseGenerating)}</div>
+        </div>
+      `;
+
+      const sourceToken = (window._shSource && window._shSource.token) ||
+                          new URLSearchParams(location.search).get('t');
+
+      try {
+        const r = await fetch('/api/share/' + encodeURIComponent(sourceToken) + '/fuse', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ guest_name: name, guest_prefs: prefs, lang: LANG })
+        });
+        if (!r.ok) {
+          const ed = await r.json().catch(() => ({}));
+          throw new Error(ed.detail || ('HTTP ' + r.status));
+        }
+        const data = await r.json();
+        closeFuseModal();
+        renderFusionResult({
+          owner_name: data.owner_name,
+          guest_name: data.guest_name,
+          ai_response: data.ai_response,
+          token: data.token,
+          url: data.url
+        });
+      } catch (e) {
+        // Restore form on error
+        openFuseForm();
+        document.getElementById('sh-fp-name').value = name;
+        document.getElementById('sh-fp-budget').value = prefs.budget || '';
+        document.getElementById('sh-fp-pace').value = prefs.pace || '';
+        document.getElementById('sh-fp-style').value = prefs.style || '';
+        document.getElementById('sh-fp-food').value = prefs.food || '';
+        document.getElementById('sh-fp-must').value = prefs.must_have || '';
+        document.getElementById('sh-fp-avoid').value = prefs.avoid || '';
+        document.getElementById('sh-fp-free').value = prefs.free_text || '';
+        const m = document.getElementById('sh-fp-msg');
+        if (m) m.textContent = (e && e.message) || T.fuseErr;
+      }
+    }
+
+    function renderFusionResult({ owner_name, guest_name, ai_response, token, url }) {
+      const anchor = document.getElementById('sh-fusion-anchor');
+      const fullUrl = window.location.origin + (url || ('/fusion?t=' + token));
+      const ownerSafe = escapeHtml(owner_name || T.assistant);
+      const guestSafe = escapeHtml(guest_name || T.user);
+      const title = (T.fuseResultTitle || '').replace('{a}', ownerSafe).replace('{b}', guestSafe);
+      const html = `
+        <section class="sh-fusion-result" id="sh-fusion-card">
+          <h2>${title}</h2>
+          <div class="sh-fusion-meta">
+            <span class="fa fa-users"></span> ${escapeHtml(owner_name || '')} &times; ${escapeHtml(guest_name || '')}
+          </div>
+          <div class="sh-fusion-body">${renderMd(ai_response || '')}</div>
+          <div class="sh-fusion-actions">
+            <button class="primary" id="sh-fusion-copy" data-url="${escapeHtml(fullUrl)}">
+              <span class="fa fa-link"></span> ${escapeHtml(T.fuseShareBtn)}
+            </button>
+            <a href="/shared?t=${escapeHtml((window._shSource && window._shSource.token) || '')}">
+              <span class="fa fa-arrow-left"></span> ${escapeHtml(T.fuseBackToOriginal)}
+            </a>
+            <a href="/ai-tool" class="">
+              <span class="fa fa-magic"></span> ${escapeHtml(T.cta)}
+            </a>
+          </div>
+        </section>
+      `;
+      if (anchor) {
+        anchor.innerHTML = html;
+        // Push the new fusion URL to history so refresh / share works
+        if (token) {
+          history.replaceState(null, '', '/fusion?t=' + token);
+        }
+        const copyBtn = document.getElementById('sh-fusion-copy');
+        copyBtn.onclick = async () => {
+          try {
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+              await navigator.clipboard.writeText(fullUrl);
+            } else {
+              const ta = document.createElement('textarea');
+              ta.value = fullUrl;
+              ta.style.position = 'fixed'; ta.style.left = '-9999px';
+              document.body.appendChild(ta); ta.select(); document.execCommand('copy');
+              document.body.removeChild(ta);
+            }
+            copyBtn.classList.add('copied');
+            copyBtn.innerHTML = `<span class="fa fa-check"></span> ${escapeHtml(T.fuseShareCopied)}`;
+            setTimeout(() => {
+              copyBtn.classList.remove('copied');
+              copyBtn.innerHTML = `<span class="fa fa-link"></span> ${escapeHtml(T.fuseShareBtn)}`;
+            }, 2000);
+          } catch (_) { /* silent */ }
+        };
+        document.getElementById('sh-fusion-card').scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    }
+
+    /* ─────────────── Direct /fusion?t=xxx access ───────────────
+       Load both the source shared trip AND the fusion result, then render
+       the source as read-only context above the fusion card. */
+    async function loadFusion() {
+      const params = new URLSearchParams(location.search);
+      const fusionToken = params.get('t') || params.get('token');
+      const main = document.getElementById('sh-main');
+      if (!fusionToken) { main.innerHTML = renderErr(); return; }
+      try {
+        const r = await fetch('/api/fusion/' + encodeURIComponent(fusionToken));
+        if (!r.ok) throw new Error('not found');
+        const data = await r.json();
+        const src = data.source || {};
+
+        // Synthesize a "shared trip" payload so the existing render() reuses
+        // its hero + chips + meta UI for the source context
+        const sourcePayload = {
+          token: data.source_token,
+          dest: src.dest || '',
+          title: src.title || '',
+          messages: [],   // hide message thread on fusion view to keep focus
+          trip_meta: src.trip_meta || {},
+          owner_name: src.owner_name || '',
+          views: data.views,
+          created_at: data.created_at,
+        };
+        render(sourcePayload);
+
+        // Hide source CTA & feed since the focus is the fusion
+        const fuseCta = document.querySelector('.sh-fuse-cta');
+        if (fuseCta) fuseCta.style.display = 'none';
+        const footerCta = document.querySelector('.sh-footer-cta');
+        if (footerCta) footerCta.style.display = 'none';
+
+        renderFusionResult({
+          owner_name: src.owner_name || T.assistant,
+          guest_name: data.guest_name || T.user,
+          ai_response: data.ai_response,
+          token: data.token,
+          url: '/fusion?t=' + data.token,
+        });
+        document.title = (T.fuseResultTitle || '')
+          .replace('{a}', src.owner_name || '')
+          .replace('{b}', data.guest_name || '') + ' · WanderMind';
+      } catch (_) {
+        main.innerHTML = renderErr();
+      }
+    }
+
+    /* Route by URL path: /fusion → fusion result view, otherwise → shared */
+    if (location.pathname.startsWith('/fusion')) {
+      loadFusion();
+    } else {
+      loadShared();
+    }
   </script>
 </body>
 </html>

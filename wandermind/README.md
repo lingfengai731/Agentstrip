@@ -180,6 +180,8 @@ python -m uvicorn main:app --port 8000 --reload
 | POST | `/api/share/create` | 创建公开分享 token |
 | GET  | `/api/share/{token}` | 公开获取分享内容（view+1） |
 | DELETE | `/api/share/{token}` | 撤销分享（仅作者） |
+| POST | `/api/share/{token}/fuse` | 访客提交偏好 → AI 融合两人偏好，返回 fusion token |
+| GET  | `/api/fusion/{token}` | 公开获取融合方案（含源行程上下文） |
 | POST | `/api/chat` | SSE 流式对话（含联网搜索） |
 | POST | `/api/chat/team` | 3 Agent 并行作答（SSE） |
 | POST | `/api/dest_info` | AI 生成目的地面板数据 |
@@ -343,7 +345,7 @@ psql "postgresql://user:pass@..." < backup.sql
 - [x] **行程分享链接**（公开只读 `/shared?t=TOKEN`，含 view 计数）
 - [x] **Clean URL** 中间件（`/about` 自动映射到 `about.html`）
 - [x] **邮件系统**（Resend：注册欢迎信 + 密码重置流程）
-- [ ] 双人偏好融合（情侣 / 朋友合作规划）
+- [x] **双人偏好融合**（朋友打开分享链接 → 填偏好 → AI 重新规划 → `/fusion?t=TOKEN`）
 - [ ] 微信小程序版本
 - [ ] 行程 PDF 导出优化
 - [ ] 快慢双轨升级 Groq（极速 < 100ms 首字）
