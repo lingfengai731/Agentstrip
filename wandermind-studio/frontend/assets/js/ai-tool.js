@@ -108,8 +108,16 @@ const DESTS = {
     tips: [
       { cls:'tag-blue', title:{ zh:'签证',en:'Visa',ja:'ビザ',ko:'비자',id:'Visa' }, tag:{ zh:'中国护照',en:'CN Passport',ja:'中国パスポート',ko:'중국 여권',id:'Paspor CN' },
         desc:{ zh:'落地签约 $35，备美元现金',en:'Visa on arrival ~$35, bring USD cash',ja:'到着ビザ約$35、米ドル現金を準備',ko:'도착 비자 약 $35, USD 현금 준비',id:'VOA ~$35, siapkan USD tunai' } },
-      { cls:'tag-green', driver: true, title:{ zh:'司机推荐 · Dicky',en:'Driver · Dicky',ja:'ドライバー · Dicky',ko:'운전기사 · Dicky',id:'Driver · Dicky' }, tag:{ zh:'亲测靠谱',en:'Trusted',ja:'信頼済み',ko:'검증됨',id:'Terpercaya' },
-        desc:{ zh:'本地司机 · 英语 · 机场接送 · 包车',en:'Local · English-speaking · Transfers · Tours',ja:'ローカル · 英語 · 空港送迎 · 貸切',ko:'현지 · 영어 · 픽업 · 전세 투어',id:'Lokal · Bisa Inggris · Jemput · Tur privat' } }
+      { cls:'tag-green', driver: true,
+        title:{ zh:'司机推荐 · Dicky',en:'Driver · Dicky',ja:'ドライバー · Dicky',ko:'운전기사 · Dicky',id:'Driver Rekomendasi · Dicky' },
+        tag:{ zh:'亲测靠谱',en:'Trusted',ja:'信頼済み',ko:'검증됨',id:'Terpercaya' },
+        desc:{ zh:'本地司机 · 英语 · 机场接送 · 包车',en:'Local · English-speaking · Transfers · Tours',ja:'ローカル · 英語 · 空港送迎 · 貸切',ko:'현지 · 영어 · 픽업 · 전세 투어',id:'Driver lokal · Bisa bahasa Inggris · Jemput bandara · Tur privat' },
+        contacts: [
+          { icon:'fa-whatsapp', label:'WhatsApp', value:'+62 898-0532-230', href:'https://wa.me/628980532230' },
+          { icon:'fa-book',     label:'Xiaohongshu', value:'Wander with ky (ID: 18613428065)', href:'https://www.xiaohongshu.com/user/profile/' },
+          { icon:'fa-comment',  label:'WeChat',   value:'wxid_vkzbrp1iyg6t12', href:null }
+        ]
+      }
     ],
     suggestions: {
       zh: [{l:'乌布精品民宿', q:'推荐乌布最好的精品民宿，预算中等'},{l:'冲浪地点推荐', q:'巴厘岛最佳冲浪地点和适合新手的冲浪课'},{l:'必吃美食清单', q:'巴厘岛必吃地道美食清单'},{l:'预算规划', q:'两人7天巴厘岛旅行，分节俭/舒适/豪华三档预算'}],
@@ -629,15 +637,24 @@ function renderPanelDest() {
   });
 
   // Tips
-  $('#ws-tip-list').innerHTML = (d.tips || []).map(tip => `
-    <div class="ws-tip ${tip.driver ? 'driver' : ''}">
-      <div class="ws-tip-head">
-        <span class="ws-tip-title">${escapeHtml(tip.title[currentLang] || tip.title.en)}</span>
-        <span class="ws-tip-tag ${tip.cls}">${escapeHtml(tip.tag[currentLang] || tip.tag.en)}</span>
+  $('#ws-tip-list').innerHTML = (d.tips || []).map(tip => {
+    const contactsHtml = (tip.contacts || []).map(c => {
+      const inner = `<span class="fa ${escapeHtml(c.icon)}" aria-hidden="true"></span><span class="ws-tip-contact-text">${escapeHtml(c.value)}</span>`;
+      return c.href
+        ? `<a class="ws-tip-contact" href="${escapeHtml(c.href)}" target="_blank" rel="noopener" title="${escapeHtml(c.label)}">${inner}</a>`
+        : `<div class="ws-tip-contact" title="${escapeHtml(c.label)}">${inner}</div>`;
+    }).join('');
+    return `
+      <div class="ws-tip ${tip.driver ? 'driver' : ''}">
+        <div class="ws-tip-head">
+          <span class="ws-tip-title">${escapeHtml(tip.title[currentLang] || tip.title.en)}</span>
+          <span class="ws-tip-tag ${tip.cls}">${escapeHtml(tip.tag[currentLang] || tip.tag.en)}</span>
+        </div>
+        <div class="ws-tip-desc">${escapeHtml(tip.desc[currentLang] || tip.desc.en)}</div>
+        ${contactsHtml ? `<div class="ws-tip-contacts">${contactsHtml}</div>` : ''}
       </div>
-      <div class="ws-tip-desc">${escapeHtml(tip.desc[currentLang] || tip.desc.en)}</div>
-    </div>
-  `).join('');
+    `;
+  }).join('');
 }
 
 function renderPanelComing(panelId, iconClass, titleSuffix) {
