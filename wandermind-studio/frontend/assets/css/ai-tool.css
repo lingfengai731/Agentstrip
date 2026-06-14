@@ -40,7 +40,7 @@ body.dark {
   color: var(--ws-ink);
   min-height: calc(100vh - 80px);
   padding-top: 144px;  /* 80px navbar + 52px fixed top-tabs + 12px breathing room */
-  font-family: 'Roboto', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-family: 'Roboto', -apple-system, BlinkMacSystemFont, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Source Han Sans SC", "Noto Sans SC", sans-serif;
 }
 
 /* ─────────────────── TOP NAV TABS (FIXED — stays pinned under navbar) ─────────────────── */
