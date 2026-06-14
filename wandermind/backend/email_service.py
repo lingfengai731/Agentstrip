@@ -43,10 +43,13 @@ async def send_email(
     subject: str,
     html: str,
     text: Optional[str] = None,
+    reply_to: Optional[str] = None,
 ) -> dict:
     """Send an email. Returns {'ok': bool, 'id': str|None, 'reason': str|None}.
 
     Failure is non-fatal — caller decides what to do.
+    reply_to lets the recipient reply straight to a third party (e.g. driver
+    replies to the traveller).
     """
     if not _is_enabled():
         # Use sys.stdout to bypass Windows GBK console errors on emoji subjects
@@ -66,6 +69,8 @@ async def send_email(
     }
     if text:
         payload["text"] = text
+    if reply_to:
+        payload["reply_to"] = reply_to
 
     headers = {
         "Authorization": f"Bearer {RESEND_API_KEY}",
@@ -193,3 +198,86 @@ async def send_welcome(to: str, name: str, public_url: Optional[str] = None) -> 
 async def send_password_reset(to: str, name: str, reset_link: str) -> dict:
     subject, html, text = render_password_reset(name, reset_link)
     return await send_email(to, subject, html, text)
+
+
+# ─── Driver request (Find a Driver → email to Dicky) ──────────────────────
+DRIVER_EMAIL = os.getenv("DRIVER_EMAIL", "Dickymahaputramahaputra@gmail.com").strip()
+DRIVER_PHONE = os.getenv("DRIVER_PHONE", "+62 898-0532-230").strip()
+
+
+def _esc(s) -> str:
+    s = "" if s is None else str(s)
+    return (s.replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;")
+             .replace('"', "&quot;"))
+
+
+def render_driver_request(data: dict) -> tuple:
+    """Build the email that goes to the driver. `data` keys:
+    first_name, last_name, intro, contact_whatsapp, contact_email,
+    contact_phone, num_people, num_days, attractions."""
+    full_name = f"{_esc(data.get('first_name',''))} {_esc(data.get('last_name',''))}".strip() or "A traveller"
+    subject = f"🚗 New Bali driver request from {full_name}"
+
+    def row(label, value):
+        if not value:
+            return ""
+        return (f'<tr><td style="padding:8px 0;color:#94a3b8;font-size:13px;'
+                f'white-space:nowrap;vertical-align:top;width:130px;">{_esc(label)}</td>'
+                f'<td style="padding:8px 0;color:#1e293b;font-size:14.5px;line-height:1.6;">{_esc(value)}</td></tr>')
+
+    contacts = []
+    if data.get("contact_whatsapp"):
+        contacts.append(("WhatsApp", data["contact_whatsapp"]))
+    if data.get("contact_email"):
+        contacts.append(("Email", data["contact_email"]))
+    if data.get("contact_phone"):
+        contacts.append(("Phone", data["contact_phone"]))
+    contacts_html = "".join(row(l, v) for l, v in contacts)
+
+    inner = f"""
+      <h1 style="margin:0 0 6px;font-size:22px;font-weight:700;color:#1e293b;">
+        🚗 New driver request
+      </h1>
+      <p style="margin:0 0 20px;font-size:14px;line-height:1.6;color:#475569;">
+        A traveller found you through WanderMind and would like to book your driving service in Bali.
+        Just hit <strong>Reply</strong> to contact them directly.
+      </p>
+      <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%"
+             style="border-collapse:collapse;background:#f8fafc;border-radius:10px;padding:6px 16px;">
+        {row("Name", full_name)}
+        {row("Group size", (str(data.get("num_people")) + " people") if data.get("num_people") else "")}
+        {row("Duration", (str(data.get("num_days")) + " days in Bali") if data.get("num_days") else "")}
+        {contacts_html}
+      </table>
+
+      {("<div style='margin-top:18px;'><div style='font-size:13px;color:#94a3b8;margin-bottom:6px;'>About them</div>"
+        "<div style='font-size:14.5px;line-height:1.7;color:#1e293b;background:#f8fafc;border-radius:10px;padding:14px 16px;white-space:pre-wrap;'>"
+        + _esc(data.get("intro","")) + "</div></div>") if data.get("intro") else ""}
+
+      {("<div style='margin-top:18px;'><div style='font-size:13px;color:#94a3b8;margin-bottom:6px;'>Places they want to visit</div>"
+        "<div style='font-size:14.5px;line-height:1.7;color:#1e293b;background:#fffbeb;border:1px solid #fde68a;border-radius:10px;padding:14px 16px;white-space:pre-wrap;'>"
+        + _esc(data.get("attractions","")) + "</div></div>") if data.get("attractions") else ""}
+
+      <div style="margin-top:24px;padding-top:18px;border-top:1px solid #e5e2d8;font-size:12.5px;color:#94a3b8;line-height:1.7;">
+        <strong style="color:#475569;">Your listed service (for reference):</strong><br>
+        📞 {_esc(DRIVER_PHONE)}<br>
+        🕙 Full-day tours 10–12 hours · ~550–650k IDR/day (10h)<br>
+        ✈️ Airport &amp; hotel pickup / drop-off
+      </div>
+    """
+    text = (
+        f"New Bali driver request from {full_name}\n\n"
+        f"Group: {data.get('num_people','?')} people, {data.get('num_days','?')} days\n"
+        + "".join(f"{l}: {v}\n" for l, v in contacts)
+        + (f"\nAbout: {data.get('intro','')}\n" if data.get("intro") else "")
+        + (f"\nPlaces: {data.get('attractions','')}\n" if data.get("attractions") else "")
+        + f"\nYour service ref: {DRIVER_PHONE} · 10-12h tours · ~550-650k IDR/day · airport & hotel pickup\n"
+    )
+    return subject, _wrapper(inner, preheader=f"New Bali driver request from {full_name}"), text
+
+
+async def send_driver_request(data: dict) -> dict:
+    """Email the driver. Sets reply_to to the traveller's email when given."""
+    subject, html, text = render_driver_request(data)
+    reply_to = data.get("contact_email") or None
+    return await send_email(DRIVER_EMAIL, subject, html, text, reply_to=reply_to)

@@ -716,6 +716,22 @@ function renderMessages() {
     `;
   }).join('');
   wrap.scrollTop = wrap.scrollHeight;
+  _persistLastPlan();
+}
+
+/* Stash the latest AI plan text + trip meta so the Find-a-Driver page can
+   import the user's itinerary. Capped to keep localStorage small. */
+function _persistLastPlan() {
+  try {
+    const lastAi = [...messages].reverse().find(m => m.role === 'ai' && m.text && m.text !== '__typing__');
+    if (!lastAi) return;
+    const payload = {
+      dest: currentDest,
+      text: String(lastAi.text).slice(0, 4000),
+      ts: Date.now()
+    };
+    localStorage.setItem('wm_studio_lastPlan', JSON.stringify(payload));
+  } catch (_) { /* ignore quota / private mode */ }
 }
 
 function pushMsg(m) {

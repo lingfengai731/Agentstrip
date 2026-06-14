@@ -19,7 +19,7 @@ from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel
 
 from db import get_db, init_db, IntegrityError, backend_name
-from email_service import send_welcome, send_password_reset
+from email_service import send_welcome, send_password_reset, send_driver_request
 
 load_dotenv(Path(__file__).parent.parent / ".env")
 
@@ -216,6 +216,18 @@ class FuseReq(BaseModel):
     # serialize as JSON — the AI prompt builder will format whatever's here.
     guest_prefs: dict
     lang: str = "zh"
+
+
+class DriverReq(BaseModel):
+    first_name: str = ""
+    last_name: str = ""
+    intro: str = ""
+    contact_whatsapp: str = ""
+    contact_email: str = ""
+    contact_phone: str = ""
+    num_people: Optional[int] = None
+    num_days: Optional[int] = None
+    attractions: str = ""
 
 
 # ─── Auth routes ─────────────────────────────────────────────
@@ -780,6 +792,37 @@ async def fusion_get(token: str):
         }
     finally:
         conn.close()
+
+
+# ─── Find a Driver → email the request to the driver ──────────
+# Privacy by design: we do NOT persist any of the traveller's contact
+# details. The request is relayed once by email and never stored in the DB.
+@app.post("/api/driver-request")
+async def driver_request(data: DriverReq):
+    # Require at least one contact method so the driver can respond
+    if not (data.contact_whatsapp.strip() or data.contact_email.strip() or data.contact_phone.strip()):
+        raise HTTPException(400, "Please provide at least one contact method")
+    if not (data.first_name.strip() or data.last_name.strip()):
+        raise HTTPException(400, "Please provide your name")
+    payload = {
+        "first_name": data.first_name.strip(),
+        "last_name": data.last_name.strip(),
+        "intro": data.intro.strip(),
+        "contact_whatsapp": data.contact_whatsapp.strip(),
+        "contact_email": data.contact_email.strip(),
+        "contact_phone": data.contact_phone.strip(),
+        "num_people": data.num_people,
+        "num_days": data.num_days,
+        "attractions": data.attractions.strip(),
+    }
+    result = await send_driver_request(payload)
+    # In dev mode (no RESEND_API_KEY) result.ok is False but we still return
+    # success so the UX flow is testable; the request was logged to stdout.
+    return {
+        "ok": True,
+        "delivered": bool(result.get("ok")),
+        "note": None if result.get("ok") else "Email service in dev mode — request logged but not delivered.",
+    }
 
 
 # ─── Dynamic destination info (AI-generated panel data) ──────

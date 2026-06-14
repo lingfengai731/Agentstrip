@@ -1,0 +1,390 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title data-i18n="fdPageTitle">Find a Bali Driver | WanderMind Studio</title>
+    <meta name="description" content="Request WanderMind's trusted local Bali driver Dicky — airport transfers, hotel pickups and full-day private tours.">
+    <link rel="icon" type="image/png" href="assets/images/logo-mark.png">
+    <link rel="apple-touch-icon" href="assets/images/logo-mark.png">
+    <link rel="stylesheet" href="assets/css/style-starter.css?v=p34">
+    <link href="//fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+      .navbar-brand { font-weight: 700; letter-spacing: .02em; white-space: nowrap; display: inline-flex !important; align-items: center; gap: 8px; }
+      .navbar-brand small { font-size: 11px; opacity: .55; font-weight: 400; letter-spacing: .15em; text-transform: uppercase; }
+      .wm-logo-img { height: 40px; width: 40px; object-fit: contain; flex-shrink: 0; }
+      @media (max-width: 1199px) { .wm-logo-img { height: 34px; width: 34px; } }
+      @media (min-width: 992px) {
+        .navbar .navbar-nav { display: flex !important; align-items: center !important; }
+        .navbar .navbar-nav .nav-link { white-space: nowrap; padding: 8px 9px !important; line-height: 1.2 !important; }
+        .navbar .nav-link.phone { white-space: nowrap; display: inline-flex; align-items: center; gap: 5px; text-transform: none !important; }
+        .navbar .nav-link.phone .fa { font-size: 14px; }
+        .navbar .search-search.nav-link { display: inline-flex !important; align-items: center; justify-content: center; height: 36px; padding: 0 8px !important; }
+      }
+      .lang-picker { display: inline-flex; align-items: center; gap: 6px; padding: 0 10px; height: 36px; border-radius: 18px; background: rgba(255,255,255,.08); border: 1px solid rgba(255,255,255,.15); cursor: pointer; box-sizing: border-box; }
+      .lang-picker .fa { font-size: 12px; opacity: .7; }
+      .lang-picker select { background: transparent; border: none; color: inherit; font-size: 13px; font-family: inherit; outline: none; cursor: pointer; height: 34px; text-align: center; text-align-last: center; -webkit-appearance: none; -moz-appearance: none; appearance: none; }
+      .lang-picker select option { color: #333; background: #fff; }
+      body.dark .lang-picker select option { color: #f0f0f0; background: #222; }
+      body:not(.dark) .nav-fixed .lang-picker, body:not(.dark) .nav-fixed .lang-picker .fa, body:not(.dark) .nav-fixed .lang-picker select,
+      body:not(.dark) .nav-fixed .navbar-brand, body:not(.dark) .nav-fixed .navbar-brand small, body:not(.dark) .nav-fixed .navbar-nav .nav-link,
+      body:not(.dark) .nav-fixed .navbar .nav-link.phone, body:not(.dark) .nav-fixed .navbar .nav-link.phone .fa,
+      body:not(.dark) .nav-fixed .navbar .search-search.nav-link .fa, body:not(.dark) .nav-fixed .navbar-toggler .navbar-toggler-icon { color: #1e293b !important; }
+      @media (max-width: 991px) {
+        .navbar-collapse.show, .navbar-collapse.collapsing { background: rgba(10,18,35,.96) !important; border-radius: 0 0 16px 16px; padding: 12px 8px 20px !important; margin-top: 8px; box-shadow: 0 16px 40px rgba(0,0,0,.4); }
+        .navbar-collapse.show .lang-picker, .navbar-collapse.show .lang-picker .fa, .navbar-collapse.show .lang-picker select, .navbar-collapse.show .nav-link { color: #f0f0ec !important; }
+      }
+      :root { --fd-teal: #0e7c6b; --fd-teal-lt: #14b8a6; --fd-gold: #fcbf1e; --fd-gold-dk: #d97706; --fd-ink: #1e293b; }
+
+      .fd-hero { background: linear-gradient(135deg, #0e7c6b, #14b8a6); color: #fff; padding: 130px 0 56px; }
+      .fd-hero h1 { font-size: clamp(30px, 5vw, 46px); font-weight: 800; margin: 0 0 12px; letter-spacing: -.01em; }
+      .fd-hero p { font-size: 16px; line-height: 1.7; color: rgba(255,255,255,.92); margin: 0; max-width: 620px; }
+
+      .fd-wrap { max-width: 1000px; margin: -36px auto 0; padding: 0 18px 80px; position: relative; }
+      .fd-grid { display: grid; grid-template-columns: 1.4fr 1fr; gap: 24px; align-items: start; }
+      @media (max-width: 860px) { .fd-grid { grid-template-columns: 1fr; } }
+
+      .fd-card { background: #fff; border-radius: 16px; box-shadow: 0 10px 40px rgba(0,0,0,.10); padding: 30px 30px 34px; }
+      body.dark .fd-card { background: #1f1f1c; }
+      .fd-card h2 { font-size: 21px; font-weight: 700; color: var(--fd-ink); margin: 0 0 4px; }
+      body.dark .fd-card h2 { color: #f0f0ec; }
+      .fd-card .fd-sub { font-size: 13.5px; color: #64748b; margin: 0 0 22px; line-height: 1.6; }
+      body.dark .fd-card .fd-sub { color: rgba(255,255,255,.6); }
+
+      .fd-field { margin-bottom: 16px; }
+      .fd-row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+      @media (max-width: 480px) { .fd-row { grid-template-columns: 1fr; } }
+      .fd-label { display: block; font-size: 12.5px; font-weight: 600; color: var(--fd-ink); margin-bottom: 6px; }
+      body.dark .fd-label { color: #d8d8d2; }
+      .fd-req { color: #dc2626; }
+      .fd-input, .fd-textarea, .fd-num { width: 100%; padding: 11px 13px; background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 10px; font-size: 14px; color: var(--fd-ink); font-family: inherit; outline: none; box-sizing: border-box; transition: border-color .2s; }
+      body.dark .fd-input, body.dark .fd-textarea, body.dark .fd-num { background: #2a2a25; border-color: #3a3a32; color: #f0f0ec; }
+      .fd-input:focus, .fd-textarea:focus, .fd-num:focus { border-color: var(--fd-teal-lt); }
+      .fd-textarea { resize: vertical; min-height: 90px; line-height: 1.6; }
+      .fd-hint { font-size: 11.5px; color: #94a3b8; margin-top: 5px; }
+
+      .fd-source-toggle { display: inline-flex; background: #f1f5f9; border-radius: 10px; padding: 3px; margin-bottom: 10px; }
+      body.dark .fd-source-toggle { background: #2a2a25; }
+      .fd-source-btn { border: none; background: transparent; padding: 7px 14px; border-radius: 8px; font-size: 12.5px; font-weight: 600; color: #64748b; cursor: pointer; font-family: inherit; }
+      .fd-source-btn.active { background: #fff; color: var(--fd-teal); box-shadow: 0 1px 4px rgba(0,0,0,.08); }
+      body.dark .fd-source-btn.active { background: #14b8a6; color: #fff; }
+
+      .fd-privacy { display: flex; align-items: flex-start; gap: 10px; background: rgba(14,124,107,.06); border: 1px solid rgba(14,124,107,.2); border-radius: 10px; padding: 12px 14px; margin: 4px 0 18px; }
+      .fd-privacy .fa { color: var(--fd-teal); font-size: 16px; margin-top: 2px; flex-shrink: 0; }
+      .fd-privacy span { font-size: 12.5px; color: #475569; line-height: 1.6; }
+      body.dark .fd-privacy span { color: rgba(255,255,255,.7); }
+
+      .fd-submit { width: 100%; padding: 14px; background: linear-gradient(135deg, var(--fd-gold), var(--fd-gold-dk)); color: #fff; border: none; border-radius: 11px; font-size: 15px; font-weight: 700; cursor: pointer; font-family: inherit; display: inline-flex; align-items: center; justify-content: center; gap: 8px; transition: transform .15s, box-shadow .2s; }
+      .fd-submit:hover { transform: translateY(-1px); box-shadow: 0 8px 22px rgba(252,191,30,.4); }
+      .fd-submit:disabled { opacity: .55; cursor: not-allowed; transform: none; box-shadow: none; }
+      .fd-msg { font-size: 13px; margin-top: 12px; min-height: 16px; text-align: center; }
+      .fd-msg.err { color: #dc2626; }
+      .fd-msg.ok { color: var(--fd-teal); }
+      .fd-spin { animation: fdspin 1s linear infinite; } @keyframes fdspin { to { transform: rotate(360deg); } }
+
+      /* Driver card */
+      .fd-driver { background: linear-gradient(160deg, #0e7c6b, #0a5e51); color: #fff; border-radius: 16px; padding: 28px 26px; box-shadow: 0 10px 40px rgba(14,124,107,.25); }
+      .fd-driver-top { display: flex; align-items: center; gap: 14px; margin-bottom: 18px; }
+      .fd-driver-avatar { width: 56px; height: 56px; border-radius: 50%; background: rgba(255,255,255,.16); display: inline-flex; align-items: center; justify-content: center; font-size: 26px; flex-shrink: 0; }
+      .fd-driver-top h3 { margin: 0; font-size: 19px; font-weight: 700; }
+      .fd-driver-top .fd-badge { font-size: 11px; font-weight: 700; background: var(--fd-gold); color: #5a3d00; padding: 2px 9px; border-radius: 10px; display: inline-block; margin-top: 4px; letter-spacing: .03em; }
+      .fd-driver ul { list-style: none; padding: 0; margin: 0 0 18px; }
+      .fd-driver li { display: flex; align-items: flex-start; gap: 10px; font-size: 13.5px; line-height: 1.6; padding: 6px 0; color: rgba(255,255,255,.92); }
+      .fd-driver li .fa { width: 18px; text-align: center; color: var(--fd-gold); flex-shrink: 0; margin-top: 2px; }
+      .fd-price-box { background: rgba(255,255,255,.10); border-radius: 12px; padding: 14px 16px; font-size: 13px; line-height: 1.8; }
+      .fd-price-box strong { color: var(--fd-gold); }
+      .fd-success { text-align: center; padding: 26px 6px; }
+      .fd-success .fa { font-size: 56px; color: var(--fd-teal); margin-bottom: 14px; }
+      .fd-success h2 { color: var(--fd-ink); } body.dark .fd-success h2 { color: #f0f0ec; }
+
+      .footer-contact-line { display: flex; align-items: center; gap: 8px; padding: 4px 0; flex-wrap: wrap; }
+      .footer-contact-line .fa { color: #fcbf1e !important; width: 18px; text-align: center; flex-shrink: 0; font-size: 15px; }
+      .footer-contact-line a { color: #ddd; } .footer-contact-line a:hover { color: #fcbf1e; }
+    </style>
+  </head>
+  <body id="home">
+
+<section class=" w3l-header-4 header-sticky">
+  <header id="site-header" class="fixed-top">
+    <div class="container">
+      <nav class="navbar navbar-expand-lg navbar-dark stroke">
+        <h1><a class="navbar-brand" href="index.html"><img src="assets/images/logo-mark.png" alt="WanderMind" class="wm-logo-img"> WanderMind <small>STUDIO</small></a></h1>
+        <button class="navbar-toggler collapsed bg-gradient" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo02">
+          <span class="navbar-toggler-icon fa icon-expand fa-bars"></span>
+          <span class="navbar-toggler-icon fa icon-close fa-times"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarTogglerDemo02">
+          <ul class="navbar-nav ml-lg-1">
+            <li class="nav-item"><a class="nav-link" href="index.html" data-i18n="navHome">Home</a></li>
+            <li class="nav-item"><a class="nav-link" href="about.html" data-i18n="navAbout">About</a></li>
+            <li class="nav-item"><a class="nav-link" href="services.html" data-i18n="navExplore">Explore</a></li>
+            <li class="nav-item active"><a class="nav-link" href="bali.html" data-i18n="navBali">Bali</a></li>
+            <li class="nav-item"><a class="nav-link ai-tool-link" href="ai-tool.html" data-i18n="navAITool">AI Tool</a></li>
+            <li class="nav-item"><a class="nav-link" href="contact.html" data-i18n="navContact">Contact</a></li>
+          </ul>
+          <ul class="navbar-nav ml-auto">
+            <li class="nav-item ml-3"><a class="nav-link phone" href="mailto:lfwu22@126.com"><span class="fa fa-envelope"></span> lfwu22@126.com</a></li>
+            <li class="nav-item ml-3">
+              <div class="lang-picker"><span class="fa fa-globe"></span>
+                <select id="langPicker">
+                  <option value="en">English</option><option value="zh">中文</option><option value="ja">日本語</option><option value="ko">한국어</option><option value="id">Indonesia</option>
+                </select>
+              </div>
+            </li>
+            <li class="nav-item ml-3"><a href="#search" class="search-search nav-link"><span class="fa fa-search mr-2"></span></a></li>
+          </ul>
+        </div>
+        <div class="mobile-position"><label class="theme-selector"><input type="checkbox" id="themeToggle"><i class="gg-sun"></i><i class="gg-moon"></i></label></div>
+      </nav>
+    </div>
+  </header>
+</section>
+<script src="assets/js/jquery-3.3.1.min.js"></script>
+<script src="assets/js/bootstrap.min.js"></script>
+<script>
+  $(window).on("scroll", function () { var s = $(window).scrollTop(); if (s >= 80) $("#site-header").addClass("nav-fixed"); else $("#site-header").removeClass("nav-fixed"); });
+  $(".navbar-toggler").on("click", function () { $("header").toggleClass("active"); });
+  $('.navbar-toggler').click(function () { $('body').toggleClass('noscroll'); });
+  const bodyElement = document.querySelector('body');
+  const themeToggle = document.querySelector('#themeToggle');
+  const darkModeMql = window.matchMedia('(prefers-color-scheme: dark)');
+  const currentTheme = localStorage.getItem('theme') ? localStorage.getItem('theme') : (darkModeMql.matches ? 'dark' : '');
+  if (currentTheme) { bodyElement.classList.add(currentTheme); if (currentTheme === 'dark') themeToggle.checked = true; }
+  themeToggle.addEventListener('change', e => { if (e.target.checked) { bodyElement.classList.add('dark'); localStorage.setItem('theme', 'dark'); } else { bodyElement.classList.remove('dark'); localStorage.setItem('theme', ''); } });
+</script>
+
+<section class="fd-hero">
+  <div class="container">
+    <h1 data-i18n="fdTitle">Request a trusted Bali driver</h1>
+    <p data-i18n="fdSub">Tell us about your trip and we'll forward your request directly to Dicky, our verified local driver. He handles airport transfers, hotel pickups and full-day private tours.</p>
+  </div>
+</section>
+
+<div class="fd-wrap">
+  <div class="fd-grid">
+
+    <!-- FORM -->
+    <div class="fd-card" id="fd-form-card">
+      <h2 data-i18n="fdFormTitle">Your trip details</h2>
+      <p class="fd-sub" data-i18n="fdFormSub">Dicky will reply to you directly using the contact you provide.</p>
+
+      <div class="fd-row">
+        <div class="fd-field">
+          <label class="fd-label">First name <span class="fd-req">*</span></label>
+          <input type="text" class="fd-input" id="fd-first" data-i18n="fdFirstPh" data-i18n-attr="placeholder" placeholder="First name">
+        </div>
+        <div class="fd-field">
+          <label class="fd-label">Last name <span class="fd-req">*</span></label>
+          <input type="text" class="fd-input" id="fd-last" data-i18n="fdLastPh" data-i18n-attr="placeholder" placeholder="Last name">
+        </div>
+      </div>
+
+      <div class="fd-field">
+        <label class="fd-label" data-i18n="fdIntro">A little about you</label>
+        <textarea class="fd-textarea" id="fd-intro" data-i18n="fdIntroPh" data-i18n-attr="placeholder" placeholder="e.g. A couple on honeymoon, love photography and beaches…"></textarea>
+      </div>
+
+      <div class="fd-row">
+        <div class="fd-field">
+          <label class="fd-label" data-i18n="fdPeople">How many people</label>
+          <input type="number" min="1" max="40" class="fd-num" id="fd-people" placeholder="2">
+        </div>
+        <div class="fd-field">
+          <label class="fd-label" data-i18n="fdDays">Days in Bali</label>
+          <input type="number" min="1" max="60" class="fd-num" id="fd-days" placeholder="10">
+        </div>
+      </div>
+
+      <div class="fd-field">
+        <label class="fd-label" data-i18n="fdContact">Your contact <span class="fd-req">*</span></label>
+        <div class="fd-hint" style="margin-top:0;margin-bottom:8px" data-i18n="fdContactHint">Provide at least one so Dicky can reach you.</div>
+        <input type="text" class="fd-input" id="fd-wa" style="margin-bottom:10px" data-i18n="fdWaPh" data-i18n-attr="placeholder" placeholder="WhatsApp number">
+        <input type="email" class="fd-input" id="fd-email" style="margin-bottom:10px" data-i18n="fdEmailPh" data-i18n-attr="placeholder" placeholder="Email address">
+        <input type="text" class="fd-input" id="fd-phone" data-i18n="fdPhonePh" data-i18n-attr="placeholder" placeholder="Phone number">
+      </div>
+
+      <div class="fd-field">
+        <label class="fd-label" data-i18n="fdPlaces">Places you'd like to visit</label>
+        <div class="fd-source-toggle">
+          <button type="button" class="fd-source-btn active" id="fd-src-manual" data-i18n="fdSrcManual">Write manually</button>
+          <button type="button" class="fd-source-btn" id="fd-src-import" data-i18n="fdSrcImport">Import from my AI plan</button>
+        </div>
+        <textarea class="fd-textarea" id="fd-places" data-i18n="fdPlacesPh" data-i18n-attr="placeholder" placeholder="e.g. Nusa Penida, Ubud rice terraces, Uluwatu temple…"></textarea>
+        <div class="fd-hint" id="fd-import-hint" style="display:none"></div>
+      </div>
+
+      <div class="fd-privacy">
+        <span class="fa fa-lock"></span>
+        <span data-i18n="fdPrivacy">Your privacy is protected. We forward this request once to the driver by email and never store your contact details on our servers.</span>
+      </div>
+
+      <button class="fd-submit" id="fd-submit"><span class="fa fa-paper-plane"></span> <span data-i18n="fdSubmit">Send request to Dicky</span></button>
+      <div class="fd-msg" id="fd-msg"></div>
+    </div>
+
+    <!-- DRIVER CARD -->
+    <div class="fd-driver">
+      <div class="fd-driver-top">
+        <div class="fd-driver-avatar"><span class="fa fa-car"></span></div>
+        <div>
+          <h3>Dicky</h3>
+          <span class="fd-badge" data-i18n="fdBadge">Verified local driver</span>
+        </div>
+      </div>
+      <ul>
+        <li><span class="fa fa-check-circle"></span> <span data-i18n="fdFeat1">Local Bali driver, English-speaking</span></li>
+        <li><span class="fa fa-plane"></span> <span data-i18n="fdFeat2">Airport &amp; hotel pickup / drop-off</span></li>
+        <li><span class="fa fa-clock-o"></span> <span data-i18n="fdFeat3">Full-day private tours, 10–12 hours</span></li>
+        <li><span class="fa fa-thumbs-up"></span> <span data-i18n="fdFeat4">Traveller-approved &amp; reliable</span></li>
+      </ul>
+      <div class="fd-price-box">
+        <span data-i18n="fdPriceLine1"><strong>~550–650k IDR</strong> per day (10 hours)</span><br>
+        <span data-i18n="fdPriceNote">Fuel prices in Indonesia have risen recently, so rates reflect that.</span>
+      </div>
+      <div style="margin-top:16px;font-size:13px;display:flex;align-items:center;gap:8px">
+        <span class="fa fa-whatsapp" style="color:var(--fd-gold)"></span>
+        <a href="https://wa.me/628980532230" target="_blank" style="color:#fff;text-decoration:underline">+62 898-0532-230</a>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<section class="w3l-footer-29-main">
+  <div class="footer-29 py-5">
+    <div class="container">
+      <div class="grid-col-4 footer-top-29">
+        <div class="footer-list-29 footer-1">
+          <h2 class="footer-title-29" data-i18n="footContactTitle">Contact Us</h2>
+          <ul>
+            <li class="footer-contact-line"><span class="fa fa-envelope"></span><a href="mailto:lfwu22@126.com">lfwu22@126.com</a></li>
+            <li class="footer-contact-line"><span class="fa fa-whatsapp"></span><a href="https://wa.me/628980532230" target="_blank">+62 898-0532-230</a> <span class="footer-tag" data-i18n="footWaTag">(Bali Concierge)</span></li>
+          </ul>
+        </div>
+        <div class="footer-list-29 footer-2">
+          <ul>
+            <h6 class="footer-title-29" data-i18n="footFeaturesTitle">Features</h6>
+            <li><a href="bali.html" data-i18n="navBali">Bali</a></li>
+            <li><a href="ai-tool.html" data-i18n="footFeat1">AI Planning</a></li>
+          </ul>
+        </div>
+        <div class="footer-list-29 footer-3">
+          <h6 class="footer-title-29" data-i18n="navBali">Bali</h6>
+          <div class="properties"><div class="images-col" style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px">
+            <a href="bali.html"><img src="assets/images/bali-5.jpg" alt="Bali" style="width:100%;height:80px;object-fit:cover;border-radius:6px"></a>
+            <a href="bali.html"><img src="assets/images/bali-13.jpg" alt="Bali" style="width:100%;height:80px;object-fit:cover;border-radius:6px"></a>
+            <a href="bali.html"><img src="assets/images/bali-18.jpg" alt="Bali" style="width:100%;height:80px;object-fit:cover;border-radius:6px"></a>
+          </div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="below-section"><div class="container"><div class="copy-footer-29"><p data-i18n="footCopy">© 2026 WanderMind Studio. All rights reserved.</p></div></div></div>
+</section>
+
+<button onclick="topFunction()" id="movetop" title="Go to top"><span class="fa fa-angle-up"></span></button>
+<script>
+  function topFunction() { document.body.scrollTop = 0; document.documentElement.scrollTop = 0; }
+
+  // —— Import-from-AI toggle ——
+  (function () {
+    var manualBtn = document.getElementById('fd-src-manual');
+    var importBtn = document.getElementById('fd-src-import');
+    var places = document.getElementById('fd-places');
+    var hint = document.getElementById('fd-import-hint');
+    var peopleEl = document.getElementById('fd-people');
+    var daysEl = document.getElementById('fd-days');
+
+    function readPlan() {
+      try {
+        var plan = JSON.parse(localStorage.getItem('wm_studio_lastPlan') || 'null');
+        var trip = JSON.parse(localStorage.getItem('wm_studio_currentTrip') || 'null');
+        return { plan: plan, trip: trip };
+      } catch (e) { return { plan: null, trip: null }; }
+    }
+    manualBtn.onclick = function () {
+      manualBtn.classList.add('active'); importBtn.classList.remove('active');
+      hint.style.display = 'none';
+    };
+    importBtn.onclick = function () {
+      importBtn.classList.add('active'); manualBtn.classList.remove('active');
+      var d = readPlan();
+      var L = (window.FD_T || {});
+      if (d.plan && d.plan.text) {
+        places.value = d.plan.text;
+        if (d.trip) {
+          if (d.trip.people && !peopleEl.value) peopleEl.value = d.trip.people;
+          if (d.trip.days && !daysEl.value) daysEl.value = d.trip.days;
+        }
+        hint.textContent = L.fdImportOk || 'Imported from your latest AI plan. Feel free to edit.';
+        hint.style.display = 'block';
+      } else {
+        hint.textContent = L.fdImportNone || 'No AI plan found yet. Try planning a trip in the AI Tool first, or write manually.';
+        hint.style.display = 'block';
+        manualBtn.classList.add('active'); importBtn.classList.remove('active');
+      }
+    };
+
+    // —— Submit ——
+    var btn = document.getElementById('fd-submit');
+    var msg = document.getElementById('fd-msg');
+    btn.onclick = async function () {
+      var L = (window.FD_T || {});
+      msg.className = 'fd-msg'; msg.textContent = '';
+      var first = document.getElementById('fd-first').value.trim();
+      var last = document.getElementById('fd-last').value.trim();
+      var wa = document.getElementById('fd-wa').value.trim();
+      var email = document.getElementById('fd-email').value.trim();
+      var phone = document.getElementById('fd-phone').value.trim();
+      if (!first && !last) { msg.className = 'fd-msg err'; msg.textContent = L.fdErrName || 'Please enter your name'; return; }
+      if (!wa && !email && !phone) { msg.className = 'fd-msg err'; msg.textContent = L.fdErrContact || 'Please provide at least one contact method'; return; }
+
+      var payload = {
+        first_name: first, last_name: last,
+        intro: document.getElementById('fd-intro').value.trim(),
+        contact_whatsapp: wa, contact_email: email, contact_phone: phone,
+        num_people: parseInt(peopleEl.value) || null,
+        num_days: parseInt(daysEl.value) || null,
+        attractions: places.value.trim()
+      };
+      btn.disabled = true;
+      var old = btn.innerHTML;
+      btn.innerHTML = '<span class="fa fa-spinner fd-spin"></span> ' + (L.fdSending || 'Sending…');
+      try {
+        var r = await fetch('/api/driver-request', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
+        var data = await r.json().catch(function () { return {}; });
+        if (!r.ok) throw new Error((data && data.detail) || ('HTTP ' + r.status));
+        document.getElementById('fd-form-card').innerHTML =
+          '<div class="fd-success"><div><span class="fa fa-check-circle"></span></div>' +
+          '<h2>' + (L.fdSuccessTitle || 'Request sent!') + '</h2>' +
+          '<p class="fd-sub" style="margin-top:8px">' + (L.fdSuccessSub || 'Dicky will get back to you soon using the contact you provided. Selamat jalan!') + '</p>' +
+          '<a href="bali.html" class="fd-submit" style="display:inline-flex;width:auto;padding:12px 26px;text-decoration:none;margin-top:8px">' + (L.fdBackBali || 'Back to Bali') + '</a></div>';
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      } catch (e) {
+        msg.className = 'fd-msg err'; msg.textContent = (e && e.message) || (L.fdErrSend || 'Failed to send, please retry');
+        btn.disabled = false; btn.innerHTML = old;
+      }
+    };
+  })();
+</script>
+<script src="assets/js/i18n.js?v=p34"></script>
+<script>
+  // Expose JS-side strings for the dynamic messages (filled after i18n load)
+  (function () {
+    function pull() {
+      if (typeof LANGS === 'undefined') return;
+      var lang = (localStorage.getItem('wm_studio_lang')) || (navigator.language || 'en').slice(0,2).toLowerCase();
+      var d = LANGS[lang] || LANGS.en;
+      window.FD_T = {
+        fdImportOk: d.fdImportOk, fdImportNone: d.fdImportNone, fdErrName: d.fdErrName,
+        fdErrContact: d.fdErrContact, fdSending: d.fdSending, fdSuccessTitle: d.fdSuccessTitle,
+        fdSuccessSub: d.fdSuccessSub, fdBackBali: d.fdBackBali, fdErrSend: d.fdErrSend
+      };
+    }
+    pull();
+    var picker = document.getElementById('langPicker');
+    if (picker) picker.addEventListener('change', pull);
+  })();
+</script>
+</body>
+</html>
