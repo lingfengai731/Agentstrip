@@ -321,6 +321,31 @@ body.dark .ws-top-tabs { background: var(--ws-bg-2); border-bottom-color: var(--
   flex-wrap: wrap;
 }
 
+/* —— Usage quota pill —— */
+.ws-quota-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  border-radius: 18px;
+  font-size: 12px;
+  font-weight: 700;
+  font-family: inherit;
+  cursor: pointer;
+  border: 1px solid var(--ws-line);
+  background: var(--ws-bg-2);
+  color: var(--ws-ink-2);
+  transition: transform .15s, box-shadow .2s;
+  white-space: nowrap;
+}
+.ws-quota-pill:hover { transform: translateY(-1px); box-shadow: 0 4px 12px rgba(0,0,0,.12); }
+.ws-quota-pill .fa { font-size: 11px; }
+.ws-quota-pill.low { border-color: #fcd34d; color: #92400e; background: #fffbeb; }
+.ws-quota-pill.empty { border-color: #fca5a5; color: #b91c1c; background: #fef2f2; }
+body.dark .ws-quota-pill.low { background: rgba(252,191,30,.14); color: #fcd34d; border-color: rgba(252,191,30,.4); }
+body.dark .ws-quota-pill.empty { background: rgba(220,38,38,.14); color: #fca5a5; border-color: rgba(220,38,38,.4); }
+@media (max-width: 575px) { .ws-quota-pill { padding: 6px 10px; } }
+
 /* —— Share button — small outline pill with teal accent —— */
 .ws-share-btn {
   display: inline-flex;

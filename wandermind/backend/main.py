@@ -129,6 +129,86 @@ async def optional_user(authorization: Optional[str] = Header(None)):
         return None
 
 
+# ─── AI usage quota (5 free Q&A, then beans) ─────────────────
+FREE_USE_LIMIT = int(os.getenv("FREE_USE_LIMIT", "5"))
+
+
+async def anon_id_header(x_anon_id: Optional[str] = Header(None, alias="X-Anon-Id")):
+    """Client-generated stable id for metering not-logged-in visitors."""
+    if x_anon_id and re.fullmatch(r"[A-Za-z0-9_-]{8,64}", x_anon_id):
+        return x_anon_id
+    return None
+
+
+def _quota_snapshot(conn, user, anon_id) -> dict:
+    """Read current quota without consuming. Never raises."""
+    fu = b = 0
+    tracked = True
+    if user:
+        row = conn.execute("SELECT free_uses, beans FROM users WHERE id=?", (user["sub"],)).fetchone()
+        if row:
+            d = dict(row); fu = d.get("free_uses") or 0; b = d.get("beans") or 0
+    elif anon_id:
+        row = conn.execute("SELECT free_uses, beans FROM guest_usage WHERE anon_id=?", (anon_id,)).fetchone()
+        if row:
+            d = dict(row); fu = d.get("free_uses") or 0; b = d.get("beans") or 0
+    else:
+        tracked = False  # no id to meter against
+    free_left = max(0, FREE_USE_LIMIT - fu)
+    return {
+        "free_used": fu, "free_limit": FREE_USE_LIMIT, "free_left": free_left,
+        "beans": b, "can_use": (not tracked) or free_left > 0 or b > 0,
+        "logged_in": bool(user), "tracked": tracked,
+    }
+
+
+def quota_status(user, anon_id) -> dict:
+    conn = get_db()
+    try:
+        return _quota_snapshot(conn, user, anon_id)
+    finally:
+        conn.close()
+
+
+def consume_quota(user, anon_id):
+    """Consume one AI use. Raises HTTPException(402) when exhausted.
+    Returns the post-consume snapshot."""
+    conn = get_db()
+    try:
+        if user:
+            row = conn.execute("SELECT free_uses, beans FROM users WHERE id=?", (user["sub"],)).fetchone()
+            fu = (dict(row).get("free_uses") or 0) if row else 0
+            b = (dict(row).get("beans") or 0) if row else 0
+            if fu < FREE_USE_LIMIT:
+                conn.execute("UPDATE users SET free_uses=free_uses+1 WHERE id=?", (user["sub"],))
+            elif b > 0:
+                conn.execute("UPDATE users SET beans=beans-1 WHERE id=?", (user["sub"],))
+            else:
+                raise HTTPException(402, detail={"error": "quota_exhausted", "free_limit": FREE_USE_LIMIT, "beans": 0})
+            conn.commit()
+        elif anon_id:
+            now = int(time.time())
+            row = conn.execute("SELECT free_uses, beans FROM guest_usage WHERE anon_id=?", (anon_id,)).fetchone()
+            if not row:
+                conn.execute(
+                    "INSERT INTO guest_usage (anon_id, free_uses, beans, created_at, updated_at) VALUES (?,?,?,?,?)",
+                    (anon_id, 1, 0, now, now),
+                )
+            else:
+                d = dict(row); fu = d.get("free_uses") or 0; b = d.get("beans") or 0
+                if fu < FREE_USE_LIMIT:
+                    conn.execute("UPDATE guest_usage SET free_uses=free_uses+1, updated_at=? WHERE anon_id=?", (now, anon_id))
+                elif b > 0:
+                    conn.execute("UPDATE guest_usage SET beans=beans-1, updated_at=? WHERE anon_id=?", (now, anon_id))
+                else:
+                    raise HTTPException(402, detail={"error": "quota_exhausted", "free_limit": FREE_USE_LIMIT, "beans": 0})
+            conn.commit()
+        # else: no id → cannot meter, allow through (frontend always sends one)
+        return _quota_snapshot(conn, user, anon_id)
+    finally:
+        conn.close()
+
+
 # ─── Request models ──────────────────────────────────────────
 class RegisterReq(BaseModel):
     email: str
@@ -334,6 +414,62 @@ async def reset_password(data: ResetPwReq):
             "token": make_token(uid, r["email"]),
             "user": {"id": uid, "email": r["email"], "name": r["name"]},
         }
+    finally:
+        conn.close()
+
+
+# ─── Quota / beans endpoints ─────────────────────────────────
+class RedeemReq(BaseModel):
+    code: str
+
+
+def _redeem_codes() -> dict:
+    """Parse REDEEM_CODES env: 'CODE1:100,CODE2:50' → {CODE1:100, ...}.
+    Lets the owner hand out bean top-ups before a real payment flow exists."""
+    raw = os.getenv("REDEEM_CODES", "").strip()
+    out = {}
+    for part in raw.split(","):
+        part = part.strip()
+        if ":" in part:
+            code, _, amt = part.partition(":")
+            code = code.strip()
+            try:
+                out[code] = int(amt.strip())
+            except ValueError:
+                pass
+    return out
+
+
+@app.get("/api/quota")
+async def get_quota(user=Depends(optional_user), anon_id=Depends(anon_id_header)):
+    """Current free-use / beans status for the caller."""
+    return quota_status(user, anon_id)
+
+
+@app.post("/api/quota/redeem")
+async def redeem_code(data: RedeemReq, user=Depends(optional_user), anon_id=Depends(anon_id_header)):
+    """Redeem a top-up code for beans. Owner-issued codes via REDEEM_CODES env."""
+    codes = _redeem_codes()
+    amount = codes.get((data.code or "").strip())
+    if not amount:
+        raise HTTPException(400, "Invalid or expired code")
+    conn = get_db()
+    try:
+        if user:
+            conn.execute("UPDATE users SET beans = COALESCE(beans,0) + ? WHERE id=?", (amount, user["sub"]))
+            conn.commit()
+        elif anon_id:
+            now = int(time.time())
+            row = conn.execute("SELECT anon_id FROM guest_usage WHERE anon_id=?", (anon_id,)).fetchone()
+            if row:
+                conn.execute("UPDATE guest_usage SET beans = COALESCE(beans,0) + ?, updated_at=? WHERE anon_id=?", (amount, now, anon_id))
+            else:
+                conn.execute("INSERT INTO guest_usage (anon_id, free_uses, beans, created_at, updated_at) VALUES (?,?,?,?,?)", (anon_id, 0, amount, now, now))
+            conn.commit()
+        else:
+            raise HTTPException(400, "No session to credit — please reload")
+        snap = _quota_snapshot(conn, user, anon_id)
+        return {"ok": True, "granted": amount, **snap}
     finally:
         conn.close()
 
@@ -1339,9 +1475,10 @@ async def tavily_search(query: str, destination: str = "") -> tuple[str, list]:
 
 # ─── Chat (SSE streaming, OpenAI format) ─────────────────────
 @app.post("/api/chat")
-async def chat(req: ChatReq, user=Depends(optional_user)):
+async def chat(req: ChatReq, user=Depends(optional_user), anon_id=Depends(anon_id_header)):
     if not _API_KEY:
         raise HTTPException(500, "API_KEY not set")
+    consume_quota(user, anon_id)  # raises 402 when free uses + beans exhausted
 
     raw_messages = [{"role": m.role, "content": m.content} for m in req.messages]
     chat_url, chat_headers, chat_model, mode_label = _route(req.mode)
@@ -1440,9 +1577,10 @@ async def chat(req: ChatReq, user=Depends(optional_user)):
 # returns the full reply as a single JSON object so the mini program can
 # render it after the await.
 @app.post("/api/chat/once")
-async def chat_once(req: ChatReq, user=Depends(optional_user)):
+async def chat_once(req: ChatReq, user=Depends(optional_user), anon_id=Depends(anon_id_header)):
     if not _API_KEY:
         raise HTTPException(500, "API_KEY not set")
+    consume_quota(user, anon_id)
 
     raw_messages = [{"role": m.role, "content": m.content} for m in req.messages]
     chat_url, chat_headers, chat_model, mode_label = _route(req.mode)
@@ -1497,10 +1635,11 @@ async def chat_once(req: ChatReq, user=Depends(optional_user)):
 
 # ─── Team mode: 3 agents in parallel, merged output ──────────
 @app.post("/api/chat/team")
-async def chat_team(req: ChatReq, user=Depends(optional_user)):
+async def chat_team(req: ChatReq, user=Depends(optional_user), anon_id=Depends(anon_id_header)):
     """真并行多 Agent：规划师 + 活动策划师 + 预算管家同时回答，合并输出。"""
     if not _API_KEY:
         raise HTTPException(500, "API_KEY not set")
+    consume_quota(user, anon_id)
 
     TEAM_ROLES = [
         {
@@ -1575,9 +1714,10 @@ async def chat_team(req: ChatReq, user=Depends(optional_user)):
 
 # ─── One-shot generate (multiverse / budget AI) ──────────────
 @app.post("/api/generate")
-async def generate(req: GenerateReq, user=Depends(optional_user)):
+async def generate(req: GenerateReq, user=Depends(optional_user), anon_id=Depends(anon_id_header)):
     if not _API_KEY:
         raise HTTPException(500, "API_KEY not set")
+    consume_quota(user, anon_id)
     async with httpx.AsyncClient(timeout=60.0) as client:
         resp = await client.post(
             _CHAT_URL,

@@ -120,7 +120,19 @@ def init_db():
                 password_hash TEXT NOT NULL,
                 lang          TEXT DEFAULT 'zh',
                 preferences   TEXT DEFAULT '{{}}',
+                free_uses     INTEGER DEFAULT 0,
+                beans         INTEGER DEFAULT 0,
                 created_at    {ts_type} NOT NULL
+            )
+        """)
+        # Anonymous (not-logged-in) usage quota, keyed by client-generated id
+        conn.execute(f"""
+            CREATE TABLE IF NOT EXISTS guest_usage (
+                anon_id     TEXT PRIMARY KEY,
+                free_uses   INTEGER DEFAULT 0,
+                beans       INTEGER DEFAULT 0,
+                created_at  {ts_type} NOT NULL,
+                updated_at  {ts_type} NOT NULL
             )
         """)
         conn.execute(f"""
@@ -169,12 +181,21 @@ def init_db():
             "CREATE INDEX IF NOT EXISTS idx_fusion_source ON trip_fusions(source_token)"
         )
 
-        # SQLite-only legacy migration: add preferences column on old DBs
-        if not USE_POSTGRES:
+        # Legacy migrations: add columns on pre-existing tables (both backends)
+        for col_sql in (
+            "ALTER TABLE users ADD COLUMN preferences TEXT DEFAULT '{}'",
+            "ALTER TABLE users ADD COLUMN free_uses INTEGER DEFAULT 0",
+            "ALTER TABLE users ADD COLUMN beans INTEGER DEFAULT 0",
+        ):
             try:
-                conn.execute("ALTER TABLE users ADD COLUMN preferences TEXT DEFAULT '{}'")
+                conn.execute(col_sql)
+                conn.commit()
             except Exception:
-                pass  # column already exists
+                # column already exists — rollback so the connection stays usable
+                try:
+                    conn.rollback()
+                except Exception:
+                    pass
 
         conn.commit()
     finally:

@@ -148,6 +148,16 @@ RESEND_API_KEY=
 EMAIL_FROM=WanderMind <onboarding@resend.dev>
 # 邮件链接里使用的 base URL。未设置时自动从请求头检测（推荐留空）
 # PUBLIC_URL=https://你的域名.com
+
+# 🫘 AI 用量限额 + 旅行豆（防滥用）
+# 每位访客（含注册/未注册）默认 5 次免费 AI 问答，用完需充值豆。
+FREE_USE_LIMIT=5
+# 充值码（暂无在线支付时，手动发码给用户充豆）。格式：码:豆数,码:豆数
+# 例：REDEEM_CODES=WELCOME10:10,VIP100:100
+REDEEM_CODES=
+# 找司机邮件收件人（默认 Dicky）+ 邮件里展示的司机电话
+DRIVER_EMAIL=Dickymahaputramahaputra@gmail.com
+DRIVER_PHONE=+62 898-0532-230
 ```
 
 ### 4. 启动服务
@@ -346,6 +356,9 @@ psql "postgresql://user:pass@..." < backup.sql
 - [x] **Clean URL** 中间件（`/about` 自动映射到 `about.html`）
 - [x] **邮件系统**（Resend：注册欢迎信 + 密码重置流程）
 - [x] **双人偏好融合**（朋友打开分享链接 → 填偏好 → AI 重新规划 → `/fusion?t=TOKEN`）
+- [x] **巴厘岛深度页**（`bali.html` 作品集 + 12-14 天行程）+ **找司机**页（邮件转发给 Dicky，不存数据）
+- [x] **AI 用量限额 + 旅行豆**（5 次免费，超出需充值豆；兑换码机制；游客匿名计量）
+- [x] **专业中文字体**（全站注入 PingFang SC / 微软雅黑 等 CJK 字体栈）
 - [ ] 微信小程序版本
 - [ ] 行程 PDF 导出优化
 - [ ] 快慢双轨升级 Groq（极速 < 100ms 首字）

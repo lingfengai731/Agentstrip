@@ -258,6 +258,12 @@ const TOOL_I18N = {
     toastPhase2:'此功能将在 Phase 2 上线',
     welcomeUnknown:'欢迎选择目的地开始规划。',
     sendErr:'抱歉，请求出错了。请稍后重试或检查后端是否在线。',
+    quotaFree:'剩余 {n} 次免费', quotaBeans:'{n} 颗豆', quotaUnlimited:'',
+    rechargeTitle:'免费次数已用完', rechargeSub:'你已用完 5 次免费 AI 问答。充值「旅行豆」即可继续使用 —— 每次 AI 问答消耗 1 颗豆。',
+    rechargeCodeLabel:'有兑换码？', rechargeCodePh:'输入兑换码', rechargeRedeem:'兑换',
+    rechargeRedeemOk:'兑换成功！已到账 {n} 颗豆', rechargeRedeemErr:'兑换码无效或已过期',
+    rechargeSoon:'在线支付即将上线。想要更多次数？可联系我们获取兑换码。', rechargeContact:'联系我们',
+    rechargeClose:'关闭', rechargeLoginTip:'登录后充值的豆会保存到账号，换设备也能用。',
     shareBtn:'分享', shareTip:'生成分享链接',
     shareModalTitle:'分享你的旅程', shareModalSub:'生成只读链接，朋友无需登录即可查看你的完整规划',
     shareLinkLabel:'你的分享链接', shareCopy:'复制', shareCopied:'已复制 ✓',
@@ -285,6 +291,12 @@ const TOOL_I18N = {
     toastPhase2:'This feature lands in Phase 2',
     welcomeUnknown:'Pick a destination to start planning.',
     sendErr:'Sorry, the request failed. Please retry or check that the backend is online.',
+    quotaFree:'{n} free left', quotaBeans:'{n} beans', quotaUnlimited:'',
+    rechargeTitle:'Free uses used up', rechargeSub:'You\'ve used all 5 free AI questions. Top up Travel Beans to keep going — each AI question costs 1 bean.',
+    rechargeCodeLabel:'Have a code?', rechargeCodePh:'Enter redeem code', rechargeRedeem:'Redeem',
+    rechargeRedeemOk:'Redeemed! {n} beans added', rechargeRedeemErr:'Invalid or expired code',
+    rechargeSoon:'Online payment is coming soon. Want more uses? Contact us for a redeem code.', rechargeContact:'Contact us',
+    rechargeClose:'Close', rechargeLoginTip:'Sign in so your beans are saved to your account across devices.',
     shareBtn:'Share', shareTip:'Generate share link',
     shareModalTitle:'Share your trip', shareModalSub:'Get a read-only link — friends can view your full plan without signing in',
     shareLinkLabel:'Your share link', shareCopy:'Copy', shareCopied:'Copied ✓',
@@ -312,6 +324,12 @@ const TOOL_I18N = {
     toastPhase2:'この機能はPhase 2で公開',
     welcomeUnknown:'目的地を選んで計画を開始。',
     sendErr:'リクエストに失敗しました。バックエンドの状態を確認してください。',
+    quotaFree:'残り{n}回無料', quotaBeans:'豆{n}個', quotaUnlimited:'',
+    rechargeTitle:'無料回数を使い切りました', rechargeSub:'無料のAI質問5回を使い切りました。トラベルビーンズをチャージして続行 —— AI質問1回につき豆1個。',
+    rechargeCodeLabel:'コードをお持ちですか？', rechargeCodePh:'引換コードを入力', rechargeRedeem:'引換',
+    rechargeRedeemOk:'引換完了！豆{n}個を追加', rechargeRedeemErr:'無効または期限切れのコード',
+    rechargeSoon:'オンライン決済は近日公開。もっと使いたい方はお問い合わせで引換コードを。', rechargeContact:'お問い合わせ',
+    rechargeClose:'閉じる', rechargeLoginTip:'ログインすると豆がアカウントに保存され、端末を変えても使えます。',
     shareBtn:'共有', shareTip:'共有リンクを生成',
     shareModalTitle:'旅程を共有', shareModalSub:'読み取り専用リンク、ログイン不要で全プランを閲覧できます',
     shareLinkLabel:'共有リンク', shareCopy:'コピー', shareCopied:'コピー済み ✓',
@@ -339,6 +357,12 @@ const TOOL_I18N = {
     toastPhase2:'이 기능은 Phase 2에서 제공',
     welcomeUnknown:'계획을 시작할 목적지를 선택하세요.',
     sendErr:'요청 실패. 백엔드 상태를 확인하세요.',
+    quotaFree:'무료 {n}회 남음', quotaBeans:'콩 {n}개', quotaUnlimited:'',
+    rechargeTitle:'무료 횟수 소진', rechargeSub:'무료 AI 질문 5회를 모두 사용했습니다. 트래블 콩을 충전하면 계속 사용할 수 있어요 —— AI 질문 1회당 콩 1개.',
+    rechargeCodeLabel:'코드가 있으신가요?', rechargeCodePh:'교환 코드 입력', rechargeRedeem:'교환',
+    rechargeRedeemOk:'교환 완료! 콩 {n}개 추가', rechargeRedeemErr:'유효하지 않거나 만료된 코드',
+    rechargeSoon:'온라인 결제 곧 출시. 더 사용하려면 문의하여 교환 코드를 받으세요.', rechargeContact:'문의하기',
+    rechargeClose:'닫기', rechargeLoginTip:'로그인하면 콩이 계정에 저장되어 다른 기기에서도 사용할 수 있습니다.',
     shareBtn:'공유', shareTip:'공유 링크 생성',
     shareModalTitle:'여행 공유', shareModalSub:'읽기 전용 링크 — 친구는 로그인 없이 전체 계획을 볼 수 있음',
     shareLinkLabel:'공유 링크', shareCopy:'복사', shareCopied:'복사됨 ✓',
@@ -366,6 +390,12 @@ const TOOL_I18N = {
     toastPhase2:'Fitur ini hadir di Fase 2',
     welcomeUnknown:'Pilih tujuan untuk mulai merencanakan.',
     sendErr:'Permintaan gagal. Periksa apakah backend online.',
+    quotaFree:'sisa {n} gratis', quotaBeans:'{n} bean', quotaUnlimited:'',
+    rechargeTitle:'Kuota gratis habis', rechargeSub:'Anda telah memakai 5 pertanyaan AI gratis. Isi Travel Beans untuk lanjut — tiap pertanyaan AI memakai 1 bean.',
+    rechargeCodeLabel:'Punya kode?', rechargeCodePh:'Masukkan kode tukar', rechargeRedeem:'Tukar',
+    rechargeRedeemOk:'Berhasil! {n} bean ditambahkan', rechargeRedeemErr:'Kode tidak valid atau kedaluwarsa',
+    rechargeSoon:'Pembayaran online segera hadir. Mau lebih? Hubungi kami untuk kode tukar.', rechargeContact:'Hubungi kami',
+    rechargeClose:'Tutup', rechargeLoginTip:'Masuk agar bean tersimpan di akun dan bisa dipakai lintas perangkat.',
     shareBtn:'Bagikan', shareTip:'Buat link berbagi',
     shareModalTitle:'Bagikan perjalanan', shareModalSub:'Link hanya-baca — teman bisa lihat rencana lengkap tanpa login',
     shareLinkLabel:'Link Anda', shareCopy:'Salin', shareCopied:'Tersalin ✓',
@@ -533,6 +563,7 @@ function renderControlsAndQuick() {
   if (shareLbl) shareLbl.textContent = t().shareBtn;
   const shareBtn = $('#ws-share-btn');
   if (shareBtn) shareBtn.setAttribute('title', t().shareTip || t().shareBtn);
+  if (typeof renderQuotaPill === 'function') renderQuotaPill();
 
   // Quick buttons (6 from the H5 quickBtns array)
   const quicks = [
@@ -893,6 +924,9 @@ function init() {
 
   // Seed first log
   addLog('info', 'fa-power-off', t().logBooted);
+
+  // Load usage quota and show the pill
+  if (typeof refreshQuota === 'function') refreshQuota();
 
   // Mobile drawers
   const mLeftBtn = document.getElementById('ws-mob-left');
@@ -3209,20 +3243,142 @@ sendMessage = async function(text) {
   // we replicate that here by piggy-backing on the input value before forwarding.
   return _origSendMessage_v2(text);
 };
-// Also patch the actual system prompt builder by overriding fetch
+// Also patch the actual system prompt builder by overriding fetch.
+// This single override ALSO: (1) injects the X-Anon-Id quota header on every
+// backend call, and (2) catches 402 (quota exhausted) to open the recharge modal.
 const _origFetch_prefs = window.fetch.bind(window);
-window.fetch = function(url, opts) {
-  if (typeof url === 'string' && opts && opts.body && (url.endsWith('/api/chat/once') || url.endsWith('/api/chat/team'))) {
-    try {
-      const body = JSON.parse(opts.body);
-      if (body.system && typeof body.system === 'string' && !body.system.includes('[User Preferences]')) {
-        body.system += getPrefsSystemPrompt();
-        opts = { ...opts, body: JSON.stringify(body) };
-      }
-    } catch (_) {}
+window.fetch = async function(url, opts) {
+  const isApi = typeof url === 'string' && url.indexOf('/api/') !== -1;
+  if (isApi) {
+    opts = opts || {};
+    // Inject prefs into chat system prompt
+    if (opts.body && (url.endsWith('/api/chat/once') || url.endsWith('/api/chat/team'))) {
+      try {
+        const body = JSON.parse(opts.body);
+        if (body.system && typeof body.system === 'string' && !body.system.includes('[User Preferences]')) {
+          body.system += getPrefsSystemPrompt();
+          opts = { ...opts, body: JSON.stringify(body) };
+        }
+      } catch (_) {}
+    }
+    // Always attach the anonymous quota id
+    opts.headers = Object.assign({}, opts.headers || {}, { 'X-Anon-Id': sessionId });
   }
-  return _origFetch_prefs(url, opts);
+  const resp = await _origFetch_prefs(url, opts);
+  if (isApi && resp.status === 402) {
+    try { openRechargeModal(); } catch (_) {}
+    if (typeof refreshQuota === 'function') refreshQuota();
+  } else if (isApi && resp.ok && /\/api\/(chat|chat\/once|chat\/team|generate)$/.test(url)) {
+    // a use was just consumed — refresh the pill shortly after
+    setTimeout(() => { if (typeof refreshQuota === 'function') refreshQuota(); }, 400);
+  }
+  return resp;
 };
+
+/* ═════════════════ USAGE QUOTA + BEANS ═════════════════ */
+let _quotaState = null;
+
+async function refreshQuota() {
+  try {
+    const r = await _origFetch_prefs(BACKEND_BASE + '/api/quota', {
+      headers: Object.assign({ 'X-Anon-Id': sessionId }, authHeaders())
+    });
+    if (!r.ok) return;
+    _quotaState = await r.json();
+    renderQuotaPill();
+  } catch (_) { /* silent */ }
+}
+
+function renderQuotaPill() {
+  if (!_quotaState) return;
+  const host = document.querySelector('.ws-chat-controls-right');
+  if (!host) return;
+  let pill = document.getElementById('ws-quota-pill');
+  if (!pill) {
+    pill = document.createElement('button');
+    pill.id = 'ws-quota-pill';
+    pill.className = 'ws-quota-pill';
+    pill.onclick = openRechargeModal;
+    host.insertBefore(pill, host.firstChild);
+  }
+  const T = t();
+  const beans = _quotaState.beans || 0;
+  const freeLeft = _quotaState.free_left != null ? _quotaState.free_left : 0;
+  let label, cls = '';
+  if (beans > 0) {
+    label = `<span class="fa fa-circle"></span> ${_interp(T.quotaBeans, { n: beans })}`;
+  } else if (freeLeft > 0) {
+    label = `<span class="fa fa-bolt"></span> ${_interp(T.quotaFree, { n: freeLeft })}`;
+    if (freeLeft <= 2) cls = 'low';
+  } else {
+    label = `<span class="fa fa-exclamation-circle"></span> ${_interp(T.quotaFree, { n: 0 })}`;
+    cls = 'empty';
+  }
+  pill.className = 'ws-quota-pill ' + cls;
+  pill.innerHTML = label;
+}
+
+function openRechargeModal() {
+  const T = t();
+  const el = _ensureModal();
+  const loggedIn = (typeof isLoggedIn === 'function') && isLoggedIn();
+  el.innerHTML = `
+    <div class="ws-modal" style="max-width:460px">
+      <div class="ws-modal-head">
+        <div class="ws-modal-title"><span class="fa fa-diamond"></span> ${escapeHtml(T.rechargeTitle)}</div>
+        <button class="ws-modal-close"><span class="fa fa-times"></span></button>
+      </div>
+      <div class="ws-modal-body">
+        <p style="font-size:13.5px;color:var(--ws-ink-2);line-height:1.7;margin:0 0 16px">${escapeHtml(T.rechargeSub)}</p>
+        <div style="background:var(--ws-bg-2);border-radius:12px;padding:14px 16px;margin-bottom:16px;font-size:13px;color:var(--ws-ink-3);display:flex;align-items:center;gap:10px">
+          <span class="fa fa-info-circle" style="color:var(--ws-amber)"></span>
+          <span>${escapeHtml(T.rechargeSoon)}</span>
+        </div>
+        <div style="font-size:12.5px;font-weight:600;color:var(--ws-ink-2);margin-bottom:6px">${escapeHtml(T.rechargeCodeLabel)}</div>
+        <div style="display:flex;gap:8px">
+          <input type="text" class="ws-form-input" id="ws-redeem-code" placeholder="${escapeHtml(T.rechargeCodePh)}" style="flex:1;text-transform:uppercase">
+          <button class="ws-search-btn" id="ws-redeem-btn" style="width:auto;padding:0 18px;white-space:nowrap">${escapeHtml(T.rechargeRedeem)}</button>
+        </div>
+        <div class="ws-auth-error" id="ws-redeem-msg" style="margin-top:8px"></div>
+        ${loggedIn ? '' : `<div style="font-size:12px;color:var(--ws-ink-3);margin-top:14px;line-height:1.6"><span class="fa fa-lightbulb-o"></span> ${escapeHtml(T.rechargeLoginTip)}</div>`}
+        <div style="text-align:center;margin-top:18px">
+          <a href="contact.html" style="font-size:13px;color:var(--ws-teal);text-decoration:none">${escapeHtml(T.rechargeContact)} →</a>
+        </div>
+      </div>
+    </div>
+  `;
+  el.querySelector('.ws-modal-close').onclick = closeModalEl;
+  el.classList.add('show');
+  const codeInput = document.getElementById('ws-redeem-code');
+  const redeemBtn = document.getElementById('ws-redeem-btn');
+  const msg = document.getElementById('ws-redeem-msg');
+  codeInput.addEventListener('keydown', e => { if (e.key === 'Enter') redeemBtn.click(); });
+  redeemBtn.onclick = async () => {
+    const code = codeInput.value.trim();
+    if (!code) return;
+    msg.style.color = ''; msg.textContent = '';
+    redeemBtn.disabled = true;
+    try {
+      const r = await _origFetch_prefs(BACKEND_BASE + '/api/quota/redeem', {
+        method: 'POST',
+        headers: Object.assign({ 'Content-Type': 'application/json', 'X-Anon-Id': sessionId }, authHeaders()),
+        body: JSON.stringify({ code })
+      });
+      const data = await r.json().catch(() => ({}));
+      if (!r.ok) throw new Error((data && data.detail) || T.rechargeRedeemErr);
+      _quotaState = data;
+      renderQuotaPill();
+      msg.style.color = 'var(--ws-teal)';
+      msg.textContent = _interp(T.rechargeRedeemOk, { n: data.granted || 0 });
+      setTimeout(closeModalEl, 1600);
+    } catch (e) {
+      msg.style.color = '#dc2626';
+      msg.textContent = (e && e.message) || T.rechargeRedeemErr;
+    } finally {
+      redeemBtn.disabled = false;
+    }
+  };
+}
 
 /* ═════════════════ MULTIVERSE MODAL ═════════════════ */
 function _mvFallback() {
