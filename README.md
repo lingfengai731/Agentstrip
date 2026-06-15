@@ -13,16 +13,16 @@
 
 | 入口 | 地址 | 说明 |
 |------|------|------|
-| 🏠 **首页** | **[https://agentstrip.onrender.com](https://agentstrip.onrender.com)** | Studio 品牌站首页 |
-| 🤖 **AI 工作台** | [https://agentstrip.onrender.com/ai-tool](https://agentstrip.onrender.com/ai-tool) | 6 AI 智能体规划工作台 |
-| 📖 **关于我们** | [https://agentstrip.onrender.com/about](https://agentstrip.onrender.com/about) | 团队与产品故事 |
-| 🌍 **探索目的地** | [https://agentstrip.onrender.com/services](https://agentstrip.onrender.com/services) | 巴厘岛 · 京都 · 巴黎 · 圣托里尼 |
-| 📩 **联系我们** | [https://agentstrip.onrender.com/contact](https://agentstrip.onrender.com/contact) | |
+| 🏠 **首页** | **[https://wandermind.cc](https://wandermind.cc)** | Studio 品牌站首页 |
+| 🤖 **AI 工作台** | [https://wandermind.cc/ai-tool](https://wandermind.cc/ai-tool) | 6 AI 智能体规划工作台 |
+| 📖 **关于我们** | [https://wandermind.cc/about](https://wandermind.cc/about) | 团队与产品故事 |
+| 🌍 **探索目的地** | [https://wandermind.cc/services](https://wandermind.cc/services) | 巴厘岛 · 京都 · 巴黎 · 圣托里尼 |
+| 📩 **联系我们** | [https://wandermind.cc/contact](https://wandermind.cc/contact) | |
 | 🔗 **行程分享** | `/shared?t=TOKEN` | 用户生成的公开只读链接 |
-| ⚡ **老 AI 应用**（兼容） | [https://agentstrip.onrender.com/app](https://agentstrip.onrender.com/app) | 原始单页极简版 |
+| ⚡ **老 AI 应用**（兼容） | [https://wandermind.cc/app](https://wandermind.cc/app) | 原始单页极简版 |
 
 > 💡 **所有页面共享同一后端 + 同一 Neon Postgres 数据库**，同一账号互通登录。
-> **手机浏览器直接访问**，无需下载 App。自定义域名绑定中。
+> **手机浏览器直接访问**，无需下载 App。正式域名 **wandermind.cc** 已上线（HTTPS）。
 
 ---
 
@@ -97,7 +97,7 @@ WanderMind Studio 是面向用户的**官方门户网站**，包含：
 
 ### 快速开始（AI 应用）
 
-1. 打开 **[https://agentstrip.onrender.com](https://agentstrip.onrender.com)**
+1. 打开 **[https://wandermind.cc](https://wandermind.cc)**
 2. 邮箱注册（10 秒）
 3. 选择目的地，开始对话
 
@@ -142,7 +142,7 @@ WanderMind Studio 是面向用户的**官方门户网站**，包含：
 
 ## 📬 联系与反馈
 
-- 🌐 在线访问：[https://agentstrip.onrender.com](https://agentstrip.onrender.com)
+- 🌐 在线访问：[https://wandermind.cc](https://wandermind.cc)
 - 💻 GitHub：[lingfengai731/Agentstrip](https://github.com/lingfengai731/Agentstrip)
 - 🐛 问题反馈：在 GitHub 提 Issue
 - 📧 邮箱：lfwu22@126.com

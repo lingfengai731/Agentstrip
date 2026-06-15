@@ -14,7 +14,7 @@ import httpx
 from dotenv import load_dotenv
 from fastapi import Depends, FastAPI, Header, HTTPException, Request
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import HTMLResponse, JSONResponse, PlainTextResponse, StreamingResponse
+from fastapi.responses import HTMLResponse, JSONResponse, PlainTextResponse, Response, StreamingResponse
 from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel
 
@@ -1854,6 +1854,47 @@ self.addEventListener('fetch', e => {
 _FRONTEND = Path(__file__).parent.parent / "frontend" / "index.html"
 
 
+# ─── Health check (keep-alive ping target) ───────────────────────────────
+# Lightweight — no DB, no AI. Hit this every few minutes from an uptime
+# monitor (UptimeRobot etc.) to keep the free-tier instance from sleeping.
+@app.get("/healthz")
+async def healthz():
+    return PlainTextResponse("ok")
+
+
+# ─── SEO: robots.txt + sitemap.xml ───────────────────────────────────────
+_SITE_URL = os.getenv("PUBLIC_URL", "https://wandermind.cc").strip().rstrip("/")
+_SITEMAP_PATHS = ["/", "/about", "/services", "/bali", "/ai-tool", "/find-driver", "/contact"]
+
+
+@app.get("/robots.txt")
+async def robots_txt():
+    body = (
+        "User-agent: *\n"
+        "Allow: /\n"
+        "Disallow: /api/\n"
+        "Disallow: /app\n"
+        f"Sitemap: {_SITE_URL}/sitemap.xml\n"
+    )
+    return PlainTextResponse(body)
+
+
+@app.get("/sitemap.xml")
+async def sitemap_xml():
+    today = time.strftime("%Y-%m-%d")
+    urls = "".join(
+        f"<url><loc>{_SITE_URL}{p}</loc><lastmod>{today}</lastmod>"
+        f"<changefreq>weekly</changefreq><priority>{'1.0' if p == '/' else '0.8'}</priority></url>"
+        for p in _SITEMAP_PATHS
+    )
+    xml = (
+        '<?xml version="1.0" encoding="UTF-8"?>'
+        '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">'
+        f"{urls}</urlset>"
+    )
+    return Response(content=xml, media_type="application/xml")
+
+
 # ─── Legacy single-page AI app at /app (preserves old bookmarks) ──────────
 @app.get("/app")
 async def legacy_app():
@@ -1876,7 +1917,8 @@ async def legacy_app():
 # Internally rewrites the path so the StaticFiles handler still finds the file.
 _STUDIO_DIR = Path(__file__).parent.parent.parent / "wandermind-studio" / "frontend"
 
-_RESERVED_ROOTS = ("/api/", "/app", "/manifest.json", "/icon.svg", "/sw.js",
+_RESERVED_ROOTS = ("/api/", "/app", "/healthz", "/sitemap.xml", "/robots.txt",
+                   "/manifest.json", "/icon.svg", "/sw.js",
                    "/docs", "/openapi.json", "/redoc", "/favicon.ico")
 
 

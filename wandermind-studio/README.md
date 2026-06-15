@@ -67,7 +67,7 @@ wandermind-studio/
 | **行程管理** | Trip 创建 / 切换 / 持久化（localStorage） |
 | **旅行偏好** | 预算档次 · 旅行风格 · 同行方式，注入每次 AI 对话 |
 | **游记生成** | AI 一键生成第一人称旅行游记 |
-| **登录注册** | Modal 弹窗，JWT 认证，接入后端 `agentstrip.onrender.com` |
+| **登录注册** | Modal 弹窗，JWT 认证，接入后端 `wandermind.cc` |
 | **深色模式** | CSS 变量切换，记忆用户偏好（localStorage） |
 | **5 语言** | 中文 · English · 日本語 · 한국어 · Bahasa Indonesia，所有 UI 同步 |
 
@@ -91,14 +91,14 @@ wandermind-studio/
 Studio **由 wandermind 后端通过 FastAPI `StaticFiles` 挂载在根路径 `/`**，是品牌主入口：
 
 ```
-https://agentstrip.onrender.com/              ← Studio 首页
-https://agentstrip.onrender.com/about         ← 关于（干净 URL）
-https://agentstrip.onrender.com/services      ← 探索目的地
-https://agentstrip.onrender.com/ai-tool       ← AI 工作台
-https://agentstrip.onrender.com/contact       ← 联系
-https://agentstrip.onrender.com/shared?t=XXX  ← 公开分享页
-https://agentstrip.onrender.com/app           ← 老 AI 单页应用（书签兼容）
-https://agentstrip.onrender.com/api/*         ← 后端 API
+https://wandermind.cc/              ← Studio 首页
+https://wandermind.cc/about         ← 关于（干净 URL）
+https://wandermind.cc/services      ← 探索目的地
+https://wandermind.cc/ai-tool       ← AI 工作台
+https://wandermind.cc/contact       ← 联系
+https://wandermind.cc/shared?t=XXX  ← 公开分享页
+https://wandermind.cc/app           ← 老 AI 单页应用（书签兼容）
+https://wandermind.cc/api/*         ← 后端 API
 ```
 
 带 `.html` 后缀的老路径（`/about.html` 等）也照样能访问，**老书签不会断**。
@@ -114,7 +114,7 @@ https://agentstrip.onrender.com/api/*         ← 后端 API
 如需把 Studio 独立部署到其他域名（如单独 CDN / Vercel），在 HTML 加：
 
 ```html
-<script>window.WM_BACKEND = 'https://agentstrip.onrender.com';</script>
+<script>window.WM_BACKEND = 'https://wandermind.cc';</script>
 <script src="assets/js/ai-tool.js"></script>
 ```
 
@@ -158,9 +158,9 @@ python -m http.server 3000
 
 Studio **已经随 wandermind 后端一起部署**，无需单独配置：
 
-1. 后端 `main.py` 末尾通过 `app.mount("/studio", StaticFiles(...))` 自动托管
+1. 后端 `main.py` 末尾通过 `app.mount("/", StaticFiles(...))` 把 Studio 挂在根路径
 2. push 代码到 GitHub → Render 自动重新部署 → Studio 同时更新
-3. 访问 https://agentstrip.onrender.com/studio/ 即可
+3. 访问 https://wandermind.cc/ 即可（正式域名已上线）
 
 > 如要拆分独立部署（如 Vercel / Netlify）：见上方"后端 API"章节的 `WM_BACKEND` 配置
 

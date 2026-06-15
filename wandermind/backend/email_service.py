@@ -28,8 +28,11 @@ from typing import Optional
 import httpx
 
 RESEND_API_KEY = os.getenv("RESEND_API_KEY", "").strip()
+# Until the wandermind.cc domain is verified on Resend, keep using the shared
+# onboarding@resend.dev sender (only delivers to your own account email).
+# After verification, set EMAIL_FROM=WanderMind <noreply@wandermind.cc> on Render.
 EMAIL_FROM = os.getenv("EMAIL_FROM", "WanderMind <onboarding@resend.dev>").strip()
-PUBLIC_URL_DEFAULT = os.getenv("PUBLIC_URL", "https://agentstrip.onrender.com").strip().rstrip("/")
+PUBLIC_URL_DEFAULT = os.getenv("PUBLIC_URL", "https://wandermind.cc").strip().rstrip("/")
 
 _RESEND_ENDPOINT = "https://api.resend.com/emails"
 
