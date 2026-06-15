@@ -47,12 +47,16 @@ async def send_email(
     html: str,
     text: Optional[str] = None,
     reply_to: Optional[str] = None,
+    bcc: Optional[str] = None,
 ) -> dict:
     """Send an email. Returns {'ok': bool, 'id': str|None, 'reason': str|None}.
 
     Failure is non-fatal — caller decides what to do.
     reply_to lets the recipient reply straight to a third party (e.g. driver
     replies to the traveller).
+    bcc silently copies a hidden recipient — it never appears in any header the
+    'to'/visible recipients can see (used so the owner is copied on driver leads
+    without the driver or traveller knowing).
     """
     if not _is_enabled():
         # Use sys.stdout to bypass Windows GBK console errors on emoji subjects
@@ -74,6 +78,8 @@ async def send_email(
         payload["text"] = text
     if reply_to:
         payload["reply_to"] = reply_to
+    if bcc:
+        payload["bcc"] = [bcc]
 
     headers = {
         "Authorization": f"Bearer {RESEND_API_KEY}",
@@ -206,6 +212,9 @@ async def send_password_reset(to: str, name: str, reset_link: str) -> dict:
 # ─── Driver request (Find a Driver → email to Dicky) ──────────────────────
 DRIVER_EMAIL = os.getenv("DRIVER_EMAIL", "Dickymahaputramahaputra@gmail.com").strip()
 DRIVER_PHONE = os.getenv("DRIVER_PHONE", "+62 898-0532-230").strip()
+# Silent owner copy on every driver lead — hidden from the driver and traveller
+# (BCC), so the owner always knows when a customer contacts Dicky. Blank disables.
+OWNER_BCC_EMAIL = os.getenv("OWNER_BCC_EMAIL", "wlfyyds666@gmail.com").strip()
 
 
 def _esc(s) -> str:
@@ -283,4 +292,8 @@ async def send_driver_request(data: dict) -> dict:
     """Email the driver. Sets reply_to to the traveller's email when given."""
     subject, html, text = render_driver_request(data)
     reply_to = data.get("contact_email") or None
-    return await send_email(DRIVER_EMAIL, subject, html, text, reply_to=reply_to)
+    return await send_email(
+        DRIVER_EMAIL, subject, html, text,
+        reply_to=reply_to,
+        bcc=OWNER_BCC_EMAIL or None,
+    )
