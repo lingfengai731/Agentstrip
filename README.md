@@ -63,7 +63,8 @@ WanderMind Studio 是面向用户的**官方门户网站**，包含：
 | 🗺️ 探索地图 | SVG 交互地图，POI 热力图（按小时人流） |
 | 🧮 智能预算计算器 | 按目的地 / 天数 / 风格估算全程预算 |
 | 📝 旅行游记生成 | AI 一键生成小红书 / 朋友圈风格游记 |
-| 🫘 免费额度 + 旅行豆 | 新访客 5 次免费 AI 问答,用尽后凭兑换码充值「旅行豆」继续(匿名按设备计数,登录后按账号) |
+| 🫘 免费额度 + 旅行豆 | 新访客 5 次免费 AI 问答,用尽后充值「旅行豆」继续(匿名按设备计数,登录后按账号) |
+| 💰 半自动收款 | 充值弹窗内置价目表 + 微信/支付宝收款码;扫码付款备注邮箱,店主用管理员接口为该账号加豆(亦支持兑换码) |
 | 🏝️ 巴厘岛实拍 Portfolio | 12–14 天真实行程时间线 + 实拍画廊 + 一键找司机 |
 | 🚗 找当地司机 | 隐私优先表单,可从 AI 行程一键导入,直接邮件发给巴厘岛司机(不留存任何数据) |
 | 🌐 5 语言切换 | 中文 · English · 日本語 · 한국어 · Bahasa Indonesia |
@@ -141,9 +142,11 @@ WanderMind Studio 是面向用户的**官方门户网站**，包含：
 | **AI 模型** | MiMo v2.5-Pro · SiliconFlow Qwen2.5-7B |
 | **搜索 / 数据** | Tavily · SerpAPI Google Hotels & Flights · OpenWeather |
 | **邮件** | Resend(欢迎信 / 密码重置 / 找司机请求,发件域名 wandermind.cc) |
+| **收款** | 微信 / 支付宝收款码(半自动)· 管理员加豆接口(ADMIN_TOKEN 保护) |
 | **前端（Studio）** | Bootstrap 4 · 原生 JS · CSS 变量深色模式 · SSE 流式 |
 | **前端（核心应用）** | 原生 JS + CSS · SSE 流式 · PWA |
-| **部署** | Render(24/7 在线,UptimeRobot 保活防冷启动)· 自定义域名 wandermind.cc(HTTPS) |
+| **SEO** | robots.txt · sitemap.xml · Open Graph / Twitter Card · Google Search Console 已验证收录 |
+| **部署** | Render(24/7 在线,UptimeRobot 保活防冷启动)· Cloudflare DNS · 自定义域名 wandermind.cc(HTTPS) |
 
 ---
 
