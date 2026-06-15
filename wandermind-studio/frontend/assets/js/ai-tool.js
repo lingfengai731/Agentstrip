@@ -3377,8 +3377,8 @@ function openRechargeModal() {
 
         <div style="font-size:12.5px;font-weight:700;color:var(--ws-ink-2);margin:16px 0 8px">${escapeHtml(T.rechargePayWith)}</div>
         <div class="ws-pay-qrs">
-          ${qr(T.payWechat, 'pay-wechat.png')}
-          ${qr(T.payAlipay, 'pay-alipay.png')}
+          ${qr(T.payWechat, 'pay-wechat.jpg')}
+          ${qr(T.payAlipay, 'pay-alipay.jpg')}
         </div>
         <div style="background:var(--ws-bg-2);border-radius:12px;padding:12px 14px;margin-top:12px;font-size:12.5px;color:var(--ws-ink-3);line-height:1.65;display:flex;gap:9px">
           <span class="fa fa-info-circle" style="color:var(--ws-amber);margin-top:2px"></span>
