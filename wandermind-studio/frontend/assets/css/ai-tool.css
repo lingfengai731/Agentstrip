@@ -39,7 +39,8 @@ body.dark {
   background: var(--ws-bg);
   color: var(--ws-ink);
   min-height: calc(100vh - 80px);
-  padding-top: 144px;  /* 80px navbar + 52px fixed top-tabs + 12px breathing room */
+  /* navbar height is measured live into --ws-nav-h (fallback 70px); + 52px tab bar + 12px gap */
+  padding-top: calc(var(--ws-nav-h, 70px) + 64px);
   font-family: 'Roboto', -apple-system, BlinkMacSystemFont, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Source Han Sans SC", "Noto Sans SC", sans-serif;
 }
 
@@ -51,13 +52,14 @@ body.dark {
   border-bottom: 1px solid var(--ws-line);
   padding: 0 24px;
   position: fixed;
-  top: 80px;
+  top: var(--ws-nav-h, 70px);   /* sits flush under the live-measured navbar */
   left: 0;
   right: 0;
   z-index: 1020;       /* above page content, below modals */
   overflow-x: auto;
   scrollbar-width: none;
   box-shadow: 0 1px 4px rgba(0,0,0,.03);
+  transition: top .25s ease;
 }
 body.dark .ws-top-tabs { background: var(--ws-bg-2); border-bottom-color: var(--ws-line); }
 .ws-top-tabs::-webkit-scrollbar { display: none; }

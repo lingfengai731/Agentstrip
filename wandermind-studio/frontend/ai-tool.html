@@ -18,8 +18,8 @@
     <meta name="twitter:image" content="https://wandermind.cc/assets/images/logo-mark.png">
     <link rel="icon" type="image/png" href="assets/images/logo-mark.png">
     <link rel="apple-touch-icon" href="assets/images/logo-mark.png">
-    <link rel="stylesheet" href="assets/css/style-starter.css?v=p37">
-    <link rel="stylesheet" href="assets/css/ai-tool.css?v=p37">
+    <link rel="stylesheet" href="assets/css/style-starter.css?v=p38">
+    <link rel="stylesheet" href="assets/css/ai-tool.css?v=p38">
     <link href="//fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
     <link href="//fonts.googleapis.com/css2?family=Roboto:wght@300;400&display=swap" rel="stylesheet">
     <style>
@@ -208,6 +208,25 @@
   $(".navbar-toggler").on("click", function () { $("header").toggleClass("active"); });
   $(document).on("ready", function () { if ($(window).width() > 991) { $("header").removeClass("active"); } $(window).on("resize", function () { if ($(window).width() > 991) { $("header").removeClass("active"); } }); });
   $('.navbar-toggler').click(function () { $('body').toggleClass('noscroll'); });
+
+  // Keep the fixed AI-tool top tabs glued exactly under the navbar, whatever its
+  // height (it changes while web fonts load and across breakpoints). We measure
+  // #site-header and publish it as --ws-nav-h; the tab bar + content padding read it.
+  (function () {
+    var lastH = -1;
+    function syncNavHeight() {
+      var hdr = document.getElementById('site-header');
+      if (!hdr) return;
+      var h = Math.round(hdr.getBoundingClientRect().height);
+      if (h && h !== lastH) { lastH = h; document.documentElement.style.setProperty('--ws-nav-h', h + 'px'); }
+    }
+    syncNavHeight();
+    window.addEventListener('load', syncNavHeight);
+    window.addEventListener('resize', syncNavHeight, { passive: true });
+    window.addEventListener('scroll', syncNavHeight, { passive: true });
+    setTimeout(syncNavHeight, 300);   // after web fonts settle
+    setTimeout(syncNavHeight, 1200);
+  })();
 </script>
 <script>
   const bodyElement = document.querySelector('body');
@@ -409,8 +428,8 @@
   function scrollFunction() { if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) { document.getElementById("movetop").style.display = "block"; } else { document.getElementById("movetop").style.display = "none"; } }
   function topFunction() { document.body.scrollTop = 0; document.documentElement.scrollTop = 0; }
 </script>
-<script src="assets/js/i18n.js?v=p37"></script>
-<script src="assets/js/ai-tool.js?v=p37"></script>
+<script src="assets/js/i18n.js?v=p38"></script>
+<script src="assets/js/ai-tool.js?v=p38"></script>
 <script>
   // Auto-pick destination from ?dest=… query string
   (function() {
