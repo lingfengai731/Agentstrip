@@ -181,6 +181,12 @@ def init_db():
             "CREATE INDEX IF NOT EXISTS idx_fusion_source ON trip_fusions(source_token)"
         )
 
+        # Commit table/index creation BEFORE running migrations. On Postgres a
+        # failing ALTER (e.g. column already exists) aborts the whole transaction;
+        # without this commit the subsequent rollback would also undo any table
+        # created above (this is exactly how guest_usage went missing in prod).
+        conn.commit()
+
         # Legacy migrations: add columns on pre-existing tables (both backends)
         for col_sql in (
             "ALTER TABLE users ADD COLUMN preferences TEXT DEFAULT '{}'",
