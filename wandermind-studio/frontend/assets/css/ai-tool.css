@@ -346,6 +346,40 @@ body.dark .ws-quota-pill.low { background: rgba(252,191,30,.14); color: #fcd34d;
 body.dark .ws-quota-pill.empty { background: rgba(220,38,38,.14); color: #fca5a5; border-color: rgba(220,38,38,.4); }
 @media (max-width: 575px) { .ws-quota-pill { padding: 6px 10px; } }
 
+/* ── Recharge modal: bean pricing tiers ── */
+.ws-bean-tiers { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+.ws-bean-tier {
+  border: 1.5px solid var(--ws-line); border-radius: 12px; padding: 12px 8px;
+  text-align: center; background: var(--ws-bg-2); position: relative;
+}
+.ws-bean-tier.best { border-color: var(--ws-teal); }
+.ws-bean-tier.best::after {
+  content: '★'; position: absolute; top: -8px; right: -6px;
+  background: var(--ws-teal); color: #fff; font-size: 10px;
+  width: 18px; height: 18px; line-height: 18px; border-radius: 50%;
+}
+.ws-bean-price { font-size: 18px; font-weight: 800; color: var(--ws-ink-1); }
+.ws-bean-amt { font-size: 12px; color: var(--ws-ink-2); margin-top: 3px; white-space: nowrap; }
+.ws-bean-amt .fa { color: var(--ws-teal); font-size: 10px; }
+
+/* ── Recharge modal: payment QR codes ── */
+.ws-pay-qrs { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.ws-pay-qr { text-align: center; }
+.ws-pay-qr-label { font-size: 12px; font-weight: 600; color: var(--ws-ink-2); margin-bottom: 6px; }
+.ws-pay-qr-img {
+  border: 1px solid var(--ws-line); border-radius: 12px; overflow: hidden;
+  background: #fff; aspect-ratio: 1; display: flex; align-items: center; justify-content: center;
+}
+.ws-pay-qr-img img { width: 100%; height: 100%; object-fit: contain; display: block; }
+.ws-pay-qr-missing {
+  width: 100%; height: 100%; align-items: center; justify-content: center;
+  color: var(--ws-ink-3); font-size: 40px; background: var(--ws-bg-2);
+}
+@media (max-width: 420px) {
+  .ws-bean-tiers { grid-template-columns: repeat(3, 1fr); gap: 6px; }
+  .ws-bean-price { font-size: 16px; }
+}
+
 /* —— Share button — small outline pill with teal accent —— */
 .ws-share-btn {
   display: inline-flex;

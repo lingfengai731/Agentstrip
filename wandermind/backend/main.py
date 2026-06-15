@@ -474,6 +474,40 @@ async def redeem_code(data: RedeemReq, user=Depends(optional_user), anon_id=Depe
         conn.close()
 
 
+class GrantReq(BaseModel):
+    token: str
+    email: str
+    beans: int
+
+
+@app.post("/api/admin/grant-beans")
+async def admin_grant_beans(data: GrantReq):
+    """Owner-only: credit beans to a registered user by email after confirming
+    an offline payment (WeChat / Alipay QR). The buyer pays the QR amount, notes
+    their account email, and the owner runs this once payment lands. Protected by
+    the ADMIN_TOKEN env var — keep that secret, set it only in the host env."""
+    admin_token = os.getenv("ADMIN_TOKEN", "").strip()
+    if not admin_token:
+        raise HTTPException(503, "Admin grants disabled — set ADMIN_TOKEN")
+    if (data.token or "").strip() != admin_token:
+        raise HTTPException(403, "Bad admin token")
+    amount = int(data.beans or 0)
+    if amount <= 0:
+        raise HTTPException(400, "beans must be a positive integer")
+    email = (data.email or "").lower().strip()
+    conn = get_db()
+    try:
+        row = conn.execute("SELECT id, beans FROM users WHERE email=?", (email,)).fetchone()
+        if not row:
+            raise HTTPException(404, f"No registered user with email {email}")
+        d = dict(row)
+        conn.execute("UPDATE users SET beans = COALESCE(beans,0) + ? WHERE id=?", (amount, d["id"]))
+        conn.commit()
+        return {"ok": True, "email": email, "granted": amount, "beans": (d.get("beans") or 0) + amount}
+    finally:
+        conn.close()
+
+
 @app.get("/api/auth/me")
 async def me(user=Depends(current_user)):
     conn = get_db()

@@ -264,6 +264,10 @@ const TOOL_I18N = {
     rechargeRedeemOk:'兑换成功！已到账 {n} 颗豆', rechargeRedeemErr:'兑换码无效或已过期',
     rechargeSoon:'在线支付即将上线。想要更多次数？可联系我们获取兑换码。', rechargeContact:'联系我们',
     rechargeClose:'关闭', rechargeLoginTip:'登录后充值的豆会保存到账号，换设备也能用。',
+    rechargePackTitle:'选择充值套餐', beanUnit:'豆', rechargePayWith:'扫码支付',
+    payWechat:'微信支付', payAlipay:'支付宝',
+    rechargePayHint:'扫上方收款码支付对应金额，付款时请备注你的注册邮箱。我们核对到账后会为你充值旅行豆（通常几分钟内）。',
+    rechargePaidLabel:'已付款？输入我们发给你的兑换码：',
     shareBtn:'分享', shareTip:'生成分享链接',
     shareModalTitle:'分享你的旅程', shareModalSub:'生成只读链接，朋友无需登录即可查看你的完整规划',
     shareLinkLabel:'你的分享链接', shareCopy:'复制', shareCopied:'已复制 ✓',
@@ -297,6 +301,10 @@ const TOOL_I18N = {
     rechargeRedeemOk:'Redeemed! {n} beans added', rechargeRedeemErr:'Invalid or expired code',
     rechargeSoon:'Online payment is coming soon. Want more uses? Contact us for a redeem code.', rechargeContact:'Contact us',
     rechargeClose:'Close', rechargeLoginTip:'Sign in so your beans are saved to your account across devices.',
+    rechargePackTitle:'Choose a pack', beanUnit:'beans', rechargePayWith:'Scan to pay',
+    payWechat:'WeChat Pay', payAlipay:'Alipay',
+    rechargePayHint:'Scan a code above to pay the matching amount, and note your account email in the payment. We\'ll top up your Travel Beans once we confirm receipt (usually within minutes).',
+    rechargePaidLabel:'Already paid? Enter the redeem code we send you:',
     shareBtn:'Share', shareTip:'Generate share link',
     shareModalTitle:'Share your trip', shareModalSub:'Get a read-only link — friends can view your full plan without signing in',
     shareLinkLabel:'Your share link', shareCopy:'Copy', shareCopied:'Copied ✓',
@@ -330,6 +338,10 @@ const TOOL_I18N = {
     rechargeRedeemOk:'引換完了！豆{n}個を追加', rechargeRedeemErr:'無効または期限切れのコード',
     rechargeSoon:'オンライン決済は近日公開。もっと使いたい方はお問い合わせで引換コードを。', rechargeContact:'お問い合わせ',
     rechargeClose:'閉じる', rechargeLoginTip:'ログインすると豆がアカウントに保存され、端末を変えても使えます。',
+    rechargePackTitle:'プランを選択', beanUnit:'豆', rechargePayWith:'スキャンして支払う',
+    payWechat:'WeChat Pay', payAlipay:'Alipay',
+    rechargePayHint:'上のコードをスキャンして該当金額を支払い、登録メールアドレスを備考に記入してください。入金確認後にトラベルビーンズをチャージします（通常数分以内）。',
+    rechargePaidLabel:'支払い済みですか？お送りした引換コードを入力：',
     shareBtn:'共有', shareTip:'共有リンクを生成',
     shareModalTitle:'旅程を共有', shareModalSub:'読み取り専用リンク、ログイン不要で全プランを閲覧できます',
     shareLinkLabel:'共有リンク', shareCopy:'コピー', shareCopied:'コピー済み ✓',
@@ -363,6 +375,10 @@ const TOOL_I18N = {
     rechargeRedeemOk:'교환 완료! 콩 {n}개 추가', rechargeRedeemErr:'유효하지 않거나 만료된 코드',
     rechargeSoon:'온라인 결제 곧 출시. 더 사용하려면 문의하여 교환 코드를 받으세요.', rechargeContact:'문의하기',
     rechargeClose:'닫기', rechargeLoginTip:'로그인하면 콩이 계정에 저장되어 다른 기기에서도 사용할 수 있습니다.',
+    rechargePackTitle:'패키지 선택', beanUnit:'콩', rechargePayWith:'스캔하여 결제',
+    payWechat:'WeChat Pay', payAlipay:'Alipay',
+    rechargePayHint:'위 코드를 스캔해 해당 금액을 결제하고, 결제 시 가입 이메일을 메모에 적어주세요. 입금 확인 후 트래블 콩을 충전해 드립니다(보통 몇 분 이내).',
+    rechargePaidLabel:'결제하셨나요? 보내드린 교환 코드를 입력하세요:',
     shareBtn:'공유', shareTip:'공유 링크 생성',
     shareModalTitle:'여행 공유', shareModalSub:'읽기 전용 링크 — 친구는 로그인 없이 전체 계획을 볼 수 있음',
     shareLinkLabel:'공유 링크', shareCopy:'복사', shareCopied:'복사됨 ✓',
@@ -396,6 +412,10 @@ const TOOL_I18N = {
     rechargeRedeemOk:'Berhasil! {n} bean ditambahkan', rechargeRedeemErr:'Kode tidak valid atau kedaluwarsa',
     rechargeSoon:'Pembayaran online segera hadir. Mau lebih? Hubungi kami untuk kode tukar.', rechargeContact:'Hubungi kami',
     rechargeClose:'Tutup', rechargeLoginTip:'Masuk agar bean tersimpan di akun dan bisa dipakai lintas perangkat.',
+    rechargePackTitle:'Pilih paket', beanUnit:'bean', rechargePayWith:'Pindai untuk bayar',
+    payWechat:'WeChat Pay', payAlipay:'Alipay',
+    rechargePayHint:'Pindai kode di atas untuk membayar jumlah yang sesuai, dan cantumkan email akun Anda pada pembayaran. Kami akan mengisi Travel Beans setelah pembayaran dikonfirmasi (biasanya dalam beberapa menit).',
+    rechargePaidLabel:'Sudah bayar? Masukkan kode tukar yang kami kirim:',
     shareBtn:'Bagikan', shareTip:'Buat link berbagi',
     shareModalTitle:'Bagikan perjalanan', shareModalSub:'Link hanya-baca — teman bisa lihat rencana lengkap tanpa login',
     shareLinkLabel:'Link Anda', shareCopy:'Salin', shareCopied:'Tersalin ✓',
@@ -3318,30 +3338,62 @@ function renderQuotaPill() {
   pill.innerHTML = label;
 }
 
+// Travel Beans pricing — edit freely. cny = price in RMB, beans = beans granted.
+const BEAN_TIERS = [
+  { cny: 9,  beans: 10 },
+  { cny: 25, beans: 30, best: true },
+  { cny: 50, beans: 70 },
+];
+
 function openRechargeModal() {
   const T = t();
   const el = _ensureModal();
   const loggedIn = (typeof isLoggedIn === 'function') && isLoggedIn();
+  const tierCards = BEAN_TIERS.map(p => `
+    <div class="ws-bean-tier${p.best ? ' best' : ''}">
+      <div class="ws-bean-price">¥${p.cny}</div>
+      <div class="ws-bean-amt"><span class="fa fa-diamond"></span> ${p.beans} ${escapeHtml(T.beanUnit)}</div>
+    </div>`).join('');
+  const qr = (label, img) => `
+    <div class="ws-pay-qr">
+      <div class="ws-pay-qr-label">${escapeHtml(label)}</div>
+      <div class="ws-pay-qr-img">
+        <img src="assets/images/${img}" alt="${escapeHtml(label)}"
+             onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+        <div class="ws-pay-qr-missing" style="display:none"><span class="fa fa-qrcode"></span></div>
+      </div>
+    </div>`;
   el.innerHTML = `
-    <div class="ws-modal" style="max-width:460px">
+    <div class="ws-modal" style="max-width:480px">
       <div class="ws-modal-head">
         <div class="ws-modal-title"><span class="fa fa-diamond"></span> ${escapeHtml(T.rechargeTitle)}</div>
         <button class="ws-modal-close"><span class="fa fa-times"></span></button>
       </div>
       <div class="ws-modal-body">
-        <p style="font-size:13.5px;color:var(--ws-ink-2);line-height:1.7;margin:0 0 16px">${escapeHtml(T.rechargeSub)}</p>
-        <div style="background:var(--ws-bg-2);border-radius:12px;padding:14px 16px;margin-bottom:16px;font-size:13px;color:var(--ws-ink-3);display:flex;align-items:center;gap:10px">
-          <span class="fa fa-info-circle" style="color:var(--ws-amber)"></span>
-          <span>${escapeHtml(T.rechargeSoon)}</span>
+        <p style="font-size:13.5px;color:var(--ws-ink-2);line-height:1.7;margin:0 0 14px">${escapeHtml(T.rechargeSub)}</p>
+
+        <div style="font-size:12.5px;font-weight:700;color:var(--ws-ink-2);margin-bottom:8px">${escapeHtml(T.rechargePackTitle)}</div>
+        <div class="ws-bean-tiers">${tierCards}</div>
+
+        <div style="font-size:12.5px;font-weight:700;color:var(--ws-ink-2);margin:16px 0 8px">${escapeHtml(T.rechargePayWith)}</div>
+        <div class="ws-pay-qrs">
+          ${qr(T.payWechat, 'pay-wechat.png')}
+          ${qr(T.payAlipay, 'pay-alipay.png')}
         </div>
-        <div style="font-size:12.5px;font-weight:600;color:var(--ws-ink-2);margin-bottom:6px">${escapeHtml(T.rechargeCodeLabel)}</div>
+        <div style="background:var(--ws-bg-2);border-radius:12px;padding:12px 14px;margin-top:12px;font-size:12.5px;color:var(--ws-ink-3);line-height:1.65;display:flex;gap:9px">
+          <span class="fa fa-info-circle" style="color:var(--ws-amber);margin-top:2px"></span>
+          <span>${escapeHtml(T.rechargePayHint)}</span>
+        </div>
+
+        <div style="border-top:1px solid var(--ws-line);margin:18px 0 14px"></div>
+        <div style="font-size:12.5px;font-weight:600;color:var(--ws-ink-2);margin-bottom:6px">${escapeHtml(T.rechargePaidLabel)}</div>
         <div style="display:flex;gap:8px">
           <input type="text" class="ws-form-input" id="ws-redeem-code" placeholder="${escapeHtml(T.rechargeCodePh)}" style="flex:1;text-transform:uppercase">
           <button class="ws-search-btn" id="ws-redeem-btn" style="width:auto;padding:0 18px;white-space:nowrap">${escapeHtml(T.rechargeRedeem)}</button>
         </div>
         <div class="ws-auth-error" id="ws-redeem-msg" style="margin-top:8px"></div>
         ${loggedIn ? '' : `<div style="font-size:12px;color:var(--ws-ink-3);margin-top:14px;line-height:1.6"><span class="fa fa-lightbulb-o"></span> ${escapeHtml(T.rechargeLoginTip)}</div>`}
-        <div style="text-align:center;margin-top:18px">
+        <div style="text-align:center;margin-top:16px">
           <a href="contact.html" style="font-size:13px;color:var(--ws-teal);text-decoration:none">${escapeHtml(T.rechargeContact)} →</a>
         </div>
       </div>
