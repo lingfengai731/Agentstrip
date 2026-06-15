@@ -17,6 +17,8 @@
 | 🤖 **AI 工作台** | [https://wandermind.cc/ai-tool](https://wandermind.cc/ai-tool) | 6 AI 智能体规划工作台 |
 | 📖 **关于我们** | [https://wandermind.cc/about](https://wandermind.cc/about) | 团队与产品故事 |
 | 🌍 **探索目的地** | [https://wandermind.cc/services](https://wandermind.cc/services) | 巴厘岛 · 京都 · 巴黎 · 圣托里尼 |
+| 🏝️ **巴厘岛实拍行程** | [https://wandermind.cc/bali](https://wandermind.cc/bali) | 12–14 天真实行程 + 实拍画廊 |
+| 🚗 **找当地司机** | [https://wandermind.cc/find-driver](https://wandermind.cc/find-driver) | 隐私优先,直接邮件对接巴厘岛司机 |
 | 📩 **联系我们** | [https://wandermind.cc/contact](https://wandermind.cc/contact) | |
 | 🔗 **行程分享** | `/shared?t=TOKEN` | 用户生成的公开只读链接 |
 | ⚡ **老 AI 应用**（兼容） | [https://wandermind.cc/app](https://wandermind.cc/app) | 原始单页极简版 |
@@ -61,6 +63,9 @@ WanderMind Studio 是面向用户的**官方门户网站**，包含：
 | 🗺️ 探索地图 | SVG 交互地图，POI 热力图（按小时人流） |
 | 🧮 智能预算计算器 | 按目的地 / 天数 / 风格估算全程预算 |
 | 📝 旅行游记生成 | AI 一键生成小红书 / 朋友圈风格游记 |
+| 🫘 免费额度 + 旅行豆 | 新访客 5 次免费 AI 问答,用尽后凭兑换码充值「旅行豆」继续(匿名按设备计数,登录后按账号) |
+| 🏝️ 巴厘岛实拍 Portfolio | 12–14 天真实行程时间线 + 实拍画廊 + 一键找司机 |
+| 🚗 找当地司机 | 隐私优先表单,可从 AI 行程一键导入,直接邮件发给巴厘岛司机(不留存任何数据) |
 | 🌐 5 语言切换 | 中文 · English · 日本語 · 한국어 · Bahasa Indonesia |
 | 🌓 深色模式 | 深色 / 浅色一键切换，记忆用户偏好 |
 | 📱 手机端全适配 | 响应式布局，≤991px 抽屉式面板，导航汉堡菜单 |
@@ -131,12 +136,14 @@ WanderMind Studio 是面向用户的**官方门户网站**，包含：
 
 | 层级 | 技术 |
 |------|------|
-| **后端** | Python 3.11 · FastAPI · SQLite · JWT |
+| **后端** | Python 3.11 · FastAPI · JWT |
+| **数据库** | Neon PostgreSQL(生产)· SQLite(本地开发,自动切换) |
 | **AI 模型** | MiMo v2.5-Pro · SiliconFlow Qwen2.5-7B |
 | **搜索 / 数据** | Tavily · SerpAPI Google Hotels & Flights · OpenWeather |
+| **邮件** | Resend(欢迎信 / 密码重置 / 找司机请求,发件域名 wandermind.cc) |
 | **前端（Studio）** | Bootstrap 4 · 原生 JS · CSS 变量深色模式 · SSE 流式 |
 | **前端（核心应用）** | 原生 JS + CSS · SSE 流式 · PWA |
-| **部署** | Render（24/7 在线） |
+| **部署** | Render(24/7 在线,UptimeRobot 保活防冷启动)· 自定义域名 wandermind.cc(HTTPS) |
 
 ---
 
