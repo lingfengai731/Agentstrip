@@ -1891,7 +1891,7 @@ _FRONTEND = Path(__file__).parent.parent / "frontend" / "index.html"
 # ─── Health check (keep-alive ping target) ───────────────────────────────
 # Lightweight — no DB, no AI. Hit this every few minutes from an uptime
 # monitor (UptimeRobot etc.) to keep the free-tier instance from sleeping.
-@app.get("/healthz")
+@app.api_route("/healthz", methods=["GET", "HEAD"])
 async def healthz():
     return PlainTextResponse("ok")
 
@@ -1901,7 +1901,7 @@ _SITE_URL = os.getenv("PUBLIC_URL", "https://wandermind.cc").strip().rstrip("/")
 _SITEMAP_PATHS = ["/", "/about", "/services", "/bali", "/ai-tool", "/find-driver", "/contact"]
 
 
-@app.get("/robots.txt")
+@app.api_route("/robots.txt", methods=["GET", "HEAD"])
 async def robots_txt():
     body = (
         "User-agent: *\n"
@@ -1913,7 +1913,7 @@ async def robots_txt():
     return PlainTextResponse(body)
 
 
-@app.get("/sitemap.xml")
+@app.api_route("/sitemap.xml", methods=["GET", "HEAD"])
 async def sitemap_xml():
     today = time.strftime("%Y-%m-%d")
     urls = "".join(
