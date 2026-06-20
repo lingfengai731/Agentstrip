@@ -855,6 +855,46 @@ body.dark .ws-region-tag { filter: brightness(.85); }
   font-weight: 600;
 }
 
+/* Custom-destination input (shown when "其他 / Any" is selected) */
+.ws-custom-dest {
+  display: flex;
+  gap: 8px;
+  margin-top: 10px;
+  max-width: 460px;
+  animation: ws-cd-in .25s ease;
+}
+@keyframes ws-cd-in { from { opacity: 0; transform: translateY(-4px); } to { opacity: 1; transform: none; } }
+.ws-custom-dest-input {
+  flex: 1;
+  padding: 9px 14px;
+  border-radius: 12px;
+  background: var(--ws-paper);
+  border: 1.5px solid var(--ws-teal);
+  font-size: 13.5px;
+  color: var(--ws-ink);
+  font-family: inherit;
+  outline: none;
+}
+.ws-custom-dest-input::placeholder { color: var(--ws-ink-3); }
+.ws-custom-dest-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 0 16px;
+  border: none;
+  border-radius: 12px;
+  background: var(--ws-teal);
+  color: #fff;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  white-space: nowrap;
+  font-family: inherit;
+  transition: background .2s, transform .2s;
+}
+.ws-custom-dest-btn:hover { background: #0d6f5f; transform: translateY(-1px); }
+.ws-custom-dest-btn .fa { font-size: 12px; }
+
 /* ─────────────────── MOBILE PANEL TOGGLE ─────────────────── */
 .ws-mobile-bar {
   display: none;

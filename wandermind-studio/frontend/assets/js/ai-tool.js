@@ -431,6 +431,7 @@ const TOOL_I18N = {
 /* ─────────────────── STATE ─────────────────── */
 let currentLang = localStorage.getItem('wm_studio_lang') || 'en';
 let currentDest = localStorage.getItem('wm_studio_dest') || 'bali';
+let _customDest = localStorage.getItem('wm_studio_customdest') || '';  // user-typed city when dest = 'any'
 let currentAgent = 'planner';
 let currentMode = localStorage.getItem('wm_studio_mode') || 'precise';
 let messages = []; // {role:'user'|'ai'|'system', agent, text, ts}
@@ -574,6 +575,43 @@ function renderChatHeader() {
   $$('#ws-dest-switch .ws-dest-pill').forEach(p => {
     p.onclick = () => switchDest(p.dataset.dest);
   });
+
+  // Custom-destination input — only visible when "其他 / Any" is selected.
+  const cdWrap = document.getElementById('ws-custom-dest');
+  if (cdWrap) {
+    if (currentDest === 'any') {
+      const ph  = { zh:'输入想去的城市/国家，回车激活情报与工具', en:'Type a city or country, press Enter', ja:'都市・国を入力してEnter', ko:'도시·국가 입력 후 Enter', id:'Ketik kota/negara, tekan Enter' }[currentLang] || 'Type a city or country';
+      const btn = { zh:'激活', en:'Go', ja:'実行', ko:'확인', id:'Mulai' }[currentLang] || 'Go';
+      cdWrap.style.display = 'flex';
+      cdWrap.innerHTML =
+        `<input type="text" id="ws-custom-dest-input" class="ws-custom-dest-input" placeholder="${escapeHtml(ph)}" value="${escapeHtml(_customDest)}">` +
+        `<button id="ws-custom-dest-btn" class="ws-custom-dest-btn"><span class="fa fa-compass"></span> ${escapeHtml(btn)}</button>`;
+      const inp = document.getElementById('ws-custom-dest-input');
+      const go  = document.getElementById('ws-custom-dest-btn');
+      const apply = () => { const v = inp.value.trim(); if (v) setCustomDest(v); };
+      go.onclick = apply;
+      inp.addEventListener('keydown', e => { if (e.key === 'Enter') { e.preventDefault(); apply(); } });
+      // Reflect the chosen city in the header title once set
+      if (_customDest) {
+        const tail = { zh:'定制规划', en:'custom plan', ja:'カスタム計画', ko:'맞춤 플랜', id:'rencana khusus' }[currentLang] || 'custom plan';
+        $('#ws-dest-title').innerHTML = `${escapeHtml(_customDest)} <span style="color:var(--ws-amber)">${escapeHtml(tail)}</span>`;
+      }
+    } else {
+      cdWrap.style.display = 'none';
+      cdWrap.innerHTML = '';
+    }
+  }
+}
+
+// Set the custom destination (when dest = 'any'), persist it, and pull live data
+// so the right-panel intel + hotel/flight/itinerary tools all activate.
+function setCustomDest(name) {
+  _customDest = name;
+  localStorage.setItem('wm_studio_customdest', name);
+  renderChatHeader();
+  addLog('info', 'fa-compass', (currentLang === 'zh' ? '目的地已设为 ' : 'Destination set to ') + name);
+  if (typeof fetchDestInfo === 'function') fetchDestInfo('any', true);
+  if (typeof renderPanelCompare === 'function') renderPanelCompare();
 }
 
 function renderControlsAndQuick() {
@@ -873,6 +911,12 @@ function switchDest(key) {
   renderChatHeader();
   renderPanelDest();
   if (typeof renderPanelCompare === 'function') renderPanelCompare();
+  // Re-activate live intel when returning to a previously-set custom destination
+  if (key === 'any' && _customDest && typeof fetchDestInfo === 'function') fetchDestInfo('any');
+  // Focus the custom-dest input so it's obvious the user should type
+  if (key === 'any' && !_customDest) {
+    setTimeout(() => { const i = document.getElementById('ws-custom-dest-input'); if (i) i.focus(); }, 60);
+  }
 }
 
 function toggleMode() {
@@ -1259,7 +1303,8 @@ function _addDays(n) {
   return d.toISOString().split('T')[0];
 }
 function _destNameForApi() {
-  const labels = { bali:'Bali', kyoto:'Kyoto', paris:'Paris', santorini:'Santorini', any:'' };
+  if (currentDest === 'any') return _customDest || '';
+  const labels = { bali:'Bali', kyoto:'Kyoto', paris:'Paris', santorini:'Santorini' };
   return labels[currentDest] || '';
 }
 
@@ -2180,7 +2225,7 @@ const _DEST_API_NAMES = {
 };
 
 async function fetchDestInfo(key, force = false) {
-  const apiDest = _DEST_API_NAMES[key];
+  const apiDest = key === 'any' ? (_customDest || '') : _DEST_API_NAMES[key];
   if (!apiDest) return;
   const cacheKey = key + ':' + currentLang;
   if (!force && _destInfoCache[cacheKey]) {
