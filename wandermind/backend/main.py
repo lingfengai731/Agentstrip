@@ -1127,15 +1127,18 @@ async def get_dest_info(req: DestInfoReq, user=Depends(optional_user)):
                 headers=headers,
                 json={
                     "model": model,
-                    "max_tokens": 2000,
+                    "max_tokens": 3000,   # reasoning models spend tokens "thinking" first
                     "messages": [{"role": "user", "content": prompt}],
                 },
             )
         if resp.status_code != 200:
             body = await resp.aread()
             raise HTTPException(resp.status_code, body.decode(errors="replace")[:200])
-        text = resp.json().get("choices", [{}])[0].get("message", {}).get("content", "")
-        data = _extract_json(text)
+        msg = resp.json().get("choices", [{}])[0].get("message", {}) or {}
+        # Reasoning models (MiMo) may put the answer in content OR reasoning_content
+        data = _extract_json(msg.get("content") or "")
+        if data is None:
+            data = _extract_json(msg.get("reasoning_content") or "")
         if data is None:
             raise HTTPException(500, "AI did not return valid JSON")
         _DEST_INFO_CACHE[cache_key] = (now, data)
