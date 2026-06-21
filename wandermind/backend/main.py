@@ -1091,26 +1091,25 @@ async def get_dest_info(req: DestInfoReq, user=Depends(optional_user)):
 
 现在为「{req.destination}」生成JSON：regions恰好3条、tips恰好2条(签证/货币)、hotelAreas恰好3条真实街区。只输出JSON对象本身，值简短不重复用字。"""
 
-    # Fast lane (SiliconFlow Qwen2.5-7B). IMPORTANT: SiliconFlow's free tier hangs
-    # on NON-streaming completions (40s+ → timeout), but streams fine — so we stream
-    # the reply and reassemble it server-side. Falls back to pro if no fast key.
-    url, headers, model, _label = _route("fast")
+    # Use the capable PRO model (MiMo) — the free 7B fast model degenerates on this
+    # structured task. Stream it (non-streaming hangs on these providers) and collect
+    # the answer (content) separately from any reasoning trace.
+    url, headers, model, _label = _route("pro")
     try:
-        parts: list[str] = []
-        async with httpx.AsyncClient(timeout=90.0) as client:
+        content_parts: list[str] = []
+        reasoning_parts: list[str] = []
+        async with httpx.AsyncClient(timeout=110.0) as client:
             async with client.stream(
                 "POST",
                 url,
                 headers=headers,
                 json={
                     "model": model,
-                    "max_tokens": 1100,
-                    "temperature": 0.3,
-                    "frequency_penalty": 0.6,   # stop the 7B model degenerating into "和和和和"
-                    "response_format": {"type": "json_object"},
+                    "max_tokens": 2600,        # reasoning model needs room to think + answer
+                    "temperature": 0.5,
                     "stream": True,
                     "messages": [
-                        {"role": "system", "content": "你只输出严格合法的JSON对象，字段名与要求完全一致。"},
+                        {"role": "system", "content": "你只输出一个严格合法的JSON对象，字段名与示例完全一致。"},
                         {"role": "user", "content": prompt},
                     ],
                 },
@@ -1132,11 +1131,15 @@ async def get_dest_info(req: DestInfoReq, user=Depends(optional_user)):
                     if not choices:
                         continue
                     delta = choices[0].get("delta", {}) or {}
-                    piece = delta.get("content") or delta.get("reasoning_content") or ""
-                    if piece:
-                        parts.append(piece)
-        joined = "".join(parts)
+                    if delta.get("content"):
+                        content_parts.append(delta["content"])
+                    elif delta.get("reasoning_content"):
+                        reasoning_parts.append(delta["reasoning_content"])
+        joined = "".join(content_parts)
         data = _extract_json(joined)
+        if data is None:                       # answer empty → look in the reasoning trace
+            joined = "".join(reasoning_parts)
+            data = _extract_json(joined)
         if data is None:
             snippet = (joined[:300] if joined else "<empty>")
             raise HTTPException(500, f"AI did not return valid JSON | chars={len(joined)} | head={snippet!r}")
