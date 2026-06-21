@@ -1117,24 +1117,36 @@ async def get_dest_info(req: DestInfoReq, user=Depends(optional_user)):
                 if resp.status_code != 200:
                     body = await resp.aread()
                     raise HTTPException(resp.status_code, body.decode(errors="replace")[:200])
-                async for line in resp.aiter_lines():
-                    if not line or not line.startswith("data:"):
-                        continue
-                    raw = line[5:].strip()
-                    if raw == "[DONE]":
+                # Buffer raw BYTES and split on newlines, then decode each complete
+                # line as UTF-8. aiter_lines() decodes per-chunk and corrupts multibyte
+                # CJK chars split across chunk boundaries (lone surrogates / mojibake).
+                buf = b""
+                done = False
+                async for chunk in resp.aiter_bytes():
+                    buf += chunk
+                    while b"\n" in buf:
+                        rawline, buf = buf.split(b"\n", 1)
+                        line = rawline.decode("utf-8", errors="ignore").strip()
+                        if not line or not line.startswith("data:"):
+                            continue
+                        raw = line[5:].strip()
+                        if raw == "[DONE]":
+                            done = True
+                            break
+                        try:
+                            ev = json.loads(raw)
+                        except json.JSONDecodeError:
+                            continue
+                        choices = ev.get("choices") or []
+                        if not choices:
+                            continue
+                        delta = choices[0].get("delta", {}) or {}
+                        if delta.get("content"):
+                            content_parts.append(delta["content"])
+                        elif delta.get("reasoning_content"):
+                            reasoning_parts.append(delta["reasoning_content"])
+                    if done:
                         break
-                    try:
-                        ev = json.loads(raw)
-                    except json.JSONDecodeError:
-                        continue
-                    choices = ev.get("choices") or []
-                    if not choices:
-                        continue
-                    delta = choices[0].get("delta", {}) or {}
-                    if delta.get("content"):
-                        content_parts.append(delta["content"])
-                    elif delta.get("reasoning_content"):
-                        reasoning_parts.append(delta["reasoning_content"])
         joined = "".join(content_parts)
         data = _extract_json(joined)
         if data is None:                       # answer empty → look in the reasoning trace
