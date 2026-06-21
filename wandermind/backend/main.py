@@ -1081,41 +1081,30 @@ async def get_dest_info(req: DestInfoReq, user=Depends(optional_user)):
     lang_map = {"zh": "中文", "en": "English", "ja": "日本語", "ko": "한국어", "id": "Bahasa Indonesia"}
     lang_name = lang_map.get(req.lang, "中文")
 
-    prompt = f"""你是旅行数据生成系统。请为目的地「{req.destination}」生成旅行面板数据。
-
-严格按以下JSON格式返回，所有文字使用{lang_name}：
+    prompt = f"""为目的地「{req.destination}」生成旅行面板数据，所有文字用{lang_name}。
+只输出一个JSON对象，不要解释、不要markdown。结构：
 {{
-  "timezone": "IANA时区字符串（如：Asia/Tokyo、Europe/Paris、America/New_York）",
-  "weather": {{
-    "temp": "当前典型气温（如：25-32°C）",
-    "cond": "天气状况（10字内）",
-    "icon": "最贴切的天气emoji（单个）",
-    "details": "简短气候提示（20字内）"
-  }},
-  "rate": "汇率参考（如：1 CNY ≈ 2,200 IDR；若为人民币城市写"本地货币：人民币"）",
-  "season": "最佳旅行月份（如：10-4月）",
-  "seasonDesc": "最佳季节说明（15字内）",
+  "timezone": "IANA时区，如 Asia/Tashkent",
+  "weather": {{"temp": "如 22-30°C", "cond": "天气(8字内)", "details": "气候提示(15字内)"}},
+  "rate": "汇率，如 1 CNY ≈ 105 UZS",
+  "season": "最佳月份，如 4-6月",
+  "seasonDesc": "季节说明(12字内)",
   "regions": [
-    {{"name": "知名区域或景区名", "cls": "tag-blue", "tag": "核心特色（4字）", "desc": "区域特色介绍（40字）", "q": "游客常问该区域的完整问句"}},
-    {{"name": "...", "cls": "tag-amber", "tag": "...", "desc": "...", "q": "..."}},
-    {{"name": "...", "cls": "tag-green",  "tag": "...", "desc": "...", "q": "..."}},
-    {{"name": "...", "cls": "tag-red",   "tag": "...", "desc": "...", "q": "..."}}
+    {{"name": "知名景区名", "tag": "特色(4字)", "desc": "简介(25字内)"}},
+    {{"name": "景区2", "tag": "特色", "desc": "简介"}},
+    {{"name": "景区3", "tag": "特色", "desc": "简介"}}
   ],
   "tips": [
-    {{"title": "贴士标题（6字内）", "cls": "tag-blue",  "tag": "类型（4字）", "desc": "具体实用建议（30字）"}},
-    {{"title": "...",               "cls": "tag-amber", "tag": "...",         "desc": "..."}},
-    {{"title": "...",               "cls": "tag-green", "tag": "...",         "desc": "..."}}
+    {{"title": "标题(6字内)", "tag": "签证", "desc": "建议(25字内)"}},
+    {{"title": "标题", "tag": "货币", "desc": "建议"}}
   ],
   "hotelAreas": [
-    {{"name": "知名住宿区域中文名（如：水明漾、祇园、玛黑区）", "q": "对应英文/拉丁化名（如：Seminyak、Gion、Le Marais），用于酒店搜索关键词", "tag": "区域定位（4字内）"}},
-    {{"name": "...", "q": "...", "tag": "..."}}
+    {{"name": "住宿区中文名", "q": "对应英文名(酒店搜索用)"}},
+    {{"name": "住宿区2", "q": "英文名"}},
+    {{"name": "住宿区3", "q": "英文名"}}
   ]
 }}
-要求：
-- regions 固定4条，cls 依次从 tag-blue/tag-amber/tag-green/tag-red 中取
-- tips 固定3条，覆盖 签证入境、货币消费、文化礼仪 等实用主题
-- hotelAreas 固定6条，必须是该城市真实存在的知名住宿区域/街区（例如纽约的曼哈顿/布鲁克林、伦敦的Soho/Westminster），按热门度排列
-- 仅返回纯JSON，不要 markdown 代码块，不要任何其他文字"""
+要求：regions恰好3条、tips恰好2条、hotelAreas恰好3条真实街区。字段名严格一致，值简短，不重复用字。"""
 
     # Fast lane (SiliconFlow Qwen2.5-7B). IMPORTANT: SiliconFlow's free tier hangs
     # on NON-streaming completions (40s+ → timeout), but streams fine — so we stream
@@ -1130,10 +1119,15 @@ async def get_dest_info(req: DestInfoReq, user=Depends(optional_user)):
                 headers=headers,
                 json={
                     "model": model,
-                    "max_tokens": 1600,
-                    "temperature": 0.4,
+                    "max_tokens": 1100,
+                    "temperature": 0.3,
+                    "frequency_penalty": 0.6,   # stop the 7B model degenerating into "和和和和"
+                    "response_format": {"type": "json_object"},
                     "stream": True,
-                    "messages": [{"role": "user", "content": prompt}],
+                    "messages": [
+                        {"role": "system", "content": "你只输出严格合法的JSON对象，字段名与要求完全一致。"},
+                        {"role": "user", "content": prompt},
+                    ],
                 },
             ) as resp:
                 if resp.status_code != 200:
@@ -1159,9 +1153,17 @@ async def get_dest_info(req: DestInfoReq, user=Depends(optional_user)):
         joined = "".join(parts)
         data = _extract_json(joined)
         if data is None:
-            # Temporary diagnostic: surface what actually streamed back (not a secret)
-            snippet = (joined[:400] if joined else "<empty>")
+            snippet = (joined[:300] if joined else "<empty>")
             raise HTTPException(500, f"AI did not return valid JSON | chars={len(joined)} | head={snippet!r}")
+        # Assign card colours server-side (we dropped cls from the prompt to lighten
+        # the small model's load) so regions/tips render with varied tags.
+        _cls_cycle = ["tag-blue", "tag-amber", "tag-green", "tag-red"]
+        for i, r in enumerate(data.get("regions") or []):
+            if isinstance(r, dict):
+                r.setdefault("cls", _cls_cycle[i % len(_cls_cycle)])
+        for i, tp in enumerate(data.get("tips") or []):
+            if isinstance(tp, dict):
+                tp.setdefault("cls", _cls_cycle[i % len(_cls_cycle)])
         _DEST_INFO_CACHE[cache_key] = (now, data)
         return data
     except HTTPException:
