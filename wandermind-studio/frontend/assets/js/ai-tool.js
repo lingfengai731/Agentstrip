@@ -610,6 +610,10 @@ function setCustomDest(name) {
   localStorage.setItem('wm_studio_customdest', name);
   renderChatHeader();
   addLog('info', 'fa-compass', (currentLang === 'zh' ? '目的地已设为 ' : 'Destination set to ') + name);
+  // Immediate feedback — the AI intel takes a few seconds to come back
+  if (typeof showToast === 'function') {
+    showToast((currentLang === 'zh' ? '正在加载 ' + name + ' 的实时情报…' : 'Loading live intel for ' + name + '…'), 'fa-spinner');
+  }
   if (typeof fetchDestInfo === 'function') fetchDestInfo('any', true);
   if (typeof renderPanelCompare === 'function') renderPanelCompare();
 }

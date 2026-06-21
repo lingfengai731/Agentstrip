@@ -996,23 +996,45 @@ async def driver_request(data: DriverReq):
 
 
 # ─── Dynamic destination info (AI-generated panel data) ──────
+_DEST_INFO_CACHE: dict = {}          # (dest_lower, lang) -> (ts, data)
+_DEST_INFO_TTL = 24 * 3600           # regions/tips/season barely change day-to-day
+
+
+def _extract_json(text: str):
+    """Pull a JSON object out of an LLM reply that may be fenced or wrapped in
+    prose. Returns the parsed dict, or None if nothing parseable is found."""
+    if not text:
+        return None
+    t = text.strip()
+    if t.startswith("```"):                       # strip ```json … ``` fences
+        t = re.sub(r"^```[a-zA-Z]*\n?", "", t)
+        t = re.sub(r"\n?```\s*$", "", t).strip()
+    m = re.search(r'\{[\s\S]*\}', t)              # first {...} block
+    candidate = m.group() if m else t
+    try:
+        return json.loads(candidate)
+    except json.JSONDecodeError:
+        return None
+
+
 @app.post("/api/dest_info")
 async def get_dest_info(req: DestInfoReq, user=Depends(optional_user)):
-    """AI生成任意目的地的面板数据：天气/区域/贴士。"""
-    if not _API_KEY:
+    """AI生成任意目的地的面板数据：天气/区域/贴士。快模型 + 24h 缓存。"""
+    if not _API_KEY and not _FAST_KEY:
         raise HTTPException(500, "API_KEY not set")
+
+    # Serve from cache when fresh — makes repeat/preset destinations instant
+    dest_key = (req.destination or "").strip().lower()
+    cache_key = (dest_key, req.lang or "zh")
+    now = time.time()
+    cached = _DEST_INFO_CACHE.get(cache_key)
+    if cached and now - cached[0] < _DEST_INFO_TTL:
+        return cached[1]
 
     lang_map = {"zh": "中文", "en": "English", "ja": "日本語", "ko": "한국어", "id": "Bahasa Indonesia"}
     lang_name = lang_map.get(req.lang, "中文")
 
-    # Optional: use Tavily for real-time weather context
-    weather_ctx = ""
-    if _TAVILY_KEY:
-        w_ctx, _ = await tavily_search(f"{req.destination} current weather temperature today", req.destination)
-        if w_ctx:
-            weather_ctx = f"\n\n【实时天气参考数据】\n{w_ctx[:500]}"
-
-    prompt = f"""你是旅行数据生成系统。请为目的地「{req.destination}」生成旅行面板数据。{weather_ctx}
+    prompt = f"""你是旅行数据生成系统。请为目的地「{req.destination}」生成旅行面板数据。
 
 严格按以下JSON格式返回，所有文字使用{lang_name}：
 {{
@@ -1048,13 +1070,16 @@ async def get_dest_info(req: DestInfoReq, user=Depends(optional_user)):
 - hotelAreas 固定6条，必须是该城市真实存在的知名住宿区域/街区（例如纽约的曼哈顿/布鲁克林、伦敦的Soho/Westminster），按热门度排列
 - 仅返回纯JSON，不要 markdown 代码块，不要任何其他文字"""
 
+    # Fast lane (SiliconFlow Qwen2.5-7B) — structured JSON generation doesn't need
+    # the slow pro model; falls back to pro automatically if no fast key is set.
+    url, headers, model, _label = _route("fast")
     try:
         async with httpx.AsyncClient(timeout=40.0) as client:
             resp = await client.post(
-                _CHAT_URL,
-                headers=_ai_headers(),
+                url,
+                headers=headers,
                 json={
-                    "model": _MODEL,
+                    "model": model,
                     "max_tokens": 1400,
                     "messages": [{"role": "user", "content": prompt}],
                 },
@@ -1063,13 +1088,11 @@ async def get_dest_info(req: DestInfoReq, user=Depends(optional_user)):
             body = await resp.aread()
             raise HTTPException(resp.status_code, body.decode(errors="replace")[:200])
         text = resp.json().get("choices", [{}])[0].get("message", {}).get("content", "")
-        # Robustly extract the first {...} JSON block
-        match = re.search(r'\{[\s\S]*\}', text)
-        if not match:
+        data = _extract_json(text)
+        if data is None:
             raise HTTPException(500, "AI did not return valid JSON")
-        return json.loads(match.group())
-    except json.JSONDecodeError as e:
-        raise HTTPException(500, f"JSON parse error: {e}")
+        _DEST_INFO_CACHE[cache_key] = (now, data)
+        return data
     except HTTPException:
         raise
     except Exception as e:
