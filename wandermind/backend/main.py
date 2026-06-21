@@ -1001,18 +1001,65 @@ _DEST_INFO_TTL = 24 * 3600           # regions/tips/season barely change day-to-
 
 
 def _extract_json(text: str):
-    """Pull a JSON object out of an LLM reply that may be fenced or wrapped in
-    prose. Returns the parsed dict, or None if nothing parseable is found."""
+    """Pull a JSON object out of an LLM reply that may be fenced, wrapped in
+    prose, or TRUNCATED (the slow model often hits max_tokens mid-object).
+    Returns the parsed dict, or None if nothing salvageable is found."""
     if not text:
         return None
     t = text.strip()
     if t.startswith("```"):                       # strip ```json … ``` fences
         t = re.sub(r"^```[a-zA-Z]*\n?", "", t)
         t = re.sub(r"\n?```\s*$", "", t).strip()
-    m = re.search(r'\{[\s\S]*\}', t)              # first {...} block
-    candidate = m.group() if m else t
+    start = t.find("{")
+    if start == -1:
+        return None
+    t = t[start:]
+    # Fast path: already valid
     try:
-        return json.loads(candidate)
+        return json.loads(t)
+    except json.JSONDecodeError:
+        pass
+    # Walk once: track nesting/string state, and remember where the outermost
+    # object last closed cleanly (so trailing prose after valid JSON is trimmed).
+    depth_stack = []
+    in_str = False
+    esc = False
+    last_complete = None
+    for i, ch in enumerate(t):
+        if in_str:
+            if esc:
+                esc = False
+            elif ch == "\\":
+                esc = True
+            elif ch == '"':
+                in_str = False
+            continue
+        if ch == '"':
+            in_str = True
+        elif ch in "{[":
+            depth_stack.append(ch)
+        elif ch in "}]":
+            if depth_stack:
+                depth_stack.pop()
+                if not depth_stack:
+                    last_complete = i + 1
+    # Clean object found (with junk after it) — trim and parse
+    if last_complete:
+        try:
+            return json.loads(t[:last_complete])
+        except json.JSONDecodeError:
+            pass
+    # Truncated: close the open string (if any) and the unbalanced brackets.
+    frag = t
+    if in_str:
+        frag += '"'                       # close a value cut off mid-string
+    frag = frag.rstrip().rstrip(",")
+    # Drop a dangling key with no value (e.g. …,"regions":  or …,"name")
+    frag = re.sub(r',\s*"[^"]*"\s*:?\s*$', '', frag).rstrip().rstrip(",")
+    for opener in reversed(depth_stack):
+        frag += "}" if opener == "{" else "]"
+    try:
+        return json.loads(frag)
     except json.JSONDecodeError:
         return None
 
@@ -1080,7 +1127,7 @@ async def get_dest_info(req: DestInfoReq, user=Depends(optional_user)):
                 headers=headers,
                 json={
                     "model": model,
-                    "max_tokens": 1400,
+                    "max_tokens": 2000,
                     "messages": [{"role": "user", "content": prompt}],
                 },
             )
