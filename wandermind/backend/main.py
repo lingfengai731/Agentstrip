@@ -1121,13 +1121,15 @@ async def get_dest_info(req: DestInfoReq, user=Depends(optional_user)):
     # the slow pro model; falls back to pro automatically if no fast key is set.
     url, headers, model, _label = _route("fast")
     try:
-        async with httpx.AsyncClient(timeout=40.0) as client:
+        async with httpx.AsyncClient(timeout=50.0) as client:
             resp = await client.post(
                 url,
                 headers=headers,
                 json={
                     "model": model,
-                    "max_tokens": 3000,   # reasoning models spend tokens "thinking" first
+                    "max_tokens": 1600,   # the JSON is ~800 tokens; cap generation so
+                                          # the fast model doesn't ramble to the limit
+                    "temperature": 0.4,
                     "messages": [{"role": "user", "content": prompt}],
                 },
             )
