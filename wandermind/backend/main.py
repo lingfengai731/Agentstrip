@@ -1117,30 +1117,46 @@ async def get_dest_info(req: DestInfoReq, user=Depends(optional_user)):
 - hotelAreas 固定6条，必须是该城市真实存在的知名住宿区域/街区（例如纽约的曼哈顿/布鲁克林、伦敦的Soho/Westminster），按热门度排列
 - 仅返回纯JSON，不要 markdown 代码块，不要任何其他文字"""
 
-    # Fast lane (SiliconFlow Qwen2.5-7B) — structured JSON generation doesn't need
-    # the slow pro model; falls back to pro automatically if no fast key is set.
+    # Fast lane (SiliconFlow Qwen2.5-7B). IMPORTANT: SiliconFlow's free tier hangs
+    # on NON-streaming completions (40s+ → timeout), but streams fine — so we stream
+    # the reply and reassemble it server-side. Falls back to pro if no fast key.
     url, headers, model, _label = _route("fast")
     try:
-        async with httpx.AsyncClient(timeout=50.0) as client:
-            resp = await client.post(
+        parts: list[str] = []
+        async with httpx.AsyncClient(timeout=90.0) as client:
+            async with client.stream(
+                "POST",
                 url,
                 headers=headers,
                 json={
                     "model": model,
-                    "max_tokens": 1600,   # the JSON is ~800 tokens; cap generation so
-                                          # the fast model doesn't ramble to the limit
+                    "max_tokens": 1600,
                     "temperature": 0.4,
+                    "stream": True,
                     "messages": [{"role": "user", "content": prompt}],
                 },
-            )
-        if resp.status_code != 200:
-            body = await resp.aread()
-            raise HTTPException(resp.status_code, body.decode(errors="replace")[:200])
-        msg = resp.json().get("choices", [{}])[0].get("message", {}) or {}
-        # Reasoning models (MiMo) may put the answer in content OR reasoning_content
-        data = _extract_json(msg.get("content") or "")
-        if data is None:
-            data = _extract_json(msg.get("reasoning_content") or "")
+            ) as resp:
+                if resp.status_code != 200:
+                    body = await resp.aread()
+                    raise HTTPException(resp.status_code, body.decode(errors="replace")[:200])
+                async for line in resp.aiter_lines():
+                    if not line or not line.startswith("data:"):
+                        continue
+                    raw = line[5:].strip()
+                    if raw == "[DONE]":
+                        break
+                    try:
+                        ev = json.loads(raw)
+                    except json.JSONDecodeError:
+                        continue
+                    choices = ev.get("choices") or []
+                    if not choices:
+                        continue
+                    delta = choices[0].get("delta", {}) or {}
+                    piece = delta.get("content") or delta.get("reasoning_content") or ""
+                    if piece:
+                        parts.append(piece)
+        data = _extract_json("".join(parts))
         if data is None:
             raise HTTPException(500, "AI did not return valid JSON")
         _DEST_INFO_CACHE[cache_key] = (now, data)
