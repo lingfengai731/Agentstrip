@@ -1156,9 +1156,12 @@ async def get_dest_info(req: DestInfoReq, user=Depends(optional_user)):
                     piece = delta.get("content") or delta.get("reasoning_content") or ""
                     if piece:
                         parts.append(piece)
-        data = _extract_json("".join(parts))
+        joined = "".join(parts)
+        data = _extract_json(joined)
         if data is None:
-            raise HTTPException(500, "AI did not return valid JSON")
+            # Temporary diagnostic: surface what actually streamed back (not a secret)
+            snippet = (joined[:400] if joined else "<empty>")
+            raise HTTPException(500, f"AI did not return valid JSON | chars={len(joined)} | head={snippet!r}")
         _DEST_INFO_CACHE[cache_key] = (now, data)
         return data
     except HTTPException:
