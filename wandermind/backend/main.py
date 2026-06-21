@@ -1969,6 +1969,21 @@ async def healthz():
     return PlainTextResponse("ok")
 
 
+@app.get("/api/_diag")
+async def _diag():
+    """Non-sensitive config check — booleans only, never the secret values.
+    Lets us confirm which env vars actually loaded without exposing them."""
+    return {
+        "api_key_set": bool(_API_KEY),
+        "fast_key_set": bool(_FAST_KEY),
+        "fast_model": _FAST_MODEL,
+        "fast_lane_active": bool(_FAST_KEY),   # dest_info/fast-chat use Qwen when true
+        "openweather_set": bool(os.getenv("OPENWEATHER_API_KEY", "")),
+        "resend_set": bool(os.getenv("RESEND_API_KEY", "")),
+        "tavily_set": bool(_TAVILY_KEY),
+    }
+
+
 # ─── SEO: robots.txt + sitemap.xml ───────────────────────────────────────
 _SITE_URL = os.getenv("PUBLIC_URL", "https://wandermind.cc").strip().rstrip("/")
 _SITEMAP_PATHS = ["/", "/about", "/services", "/bali", "/ai-tool", "/find-driver", "/contact"]
