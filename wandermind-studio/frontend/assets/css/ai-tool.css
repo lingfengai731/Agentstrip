@@ -895,6 +895,35 @@ body.dark .ws-region-tag { filter: brightness(.85); }
 .ws-custom-dest-btn:hover { background: #0d6f5f; transform: translateY(-1px); }
 .ws-custom-dest-btn .fa { font-size: 12px; }
 
+/* Destination panel status banner (loading / error+retry) */
+.ws-dest-status {
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 10px 13px;
+  border-radius: 10px;
+  font-size: 12.5px;
+  margin-bottom: 14px;
+  line-height: 1.5;
+}
+.ws-dest-status.loading { background: rgba(14,124,107,.08); border: 1px solid rgba(14,124,107,.25); color: var(--ws-teal); }
+.ws-dest-status.error   { background: #fef2f2; border: 1px solid #fca5a5; color: #b91c1c; }
+body.dark .ws-dest-status.error { background: rgba(220,38,38,.14); border-color: rgba(220,38,38,.4); color: #fca5a5; }
+.ws-dest-status .fa-spin { margin-right: 4px; }
+.ws-dest-retry {
+  flex-shrink: 0;
+  border: none;
+  border-radius: 8px;
+  background: #b91c1c;
+  color: #fff;
+  font-size: 12px;
+  font-weight: 600;
+  padding: 5px 12px;
+  cursor: pointer;
+  font-family: inherit;
+}
+.ws-dest-retry:hover { background: #991b1b; }
+
 /* ─────────────────── MOBILE PANEL TOGGLE ─────────────────── */
 .ws-mobile-bar {
   display: none;

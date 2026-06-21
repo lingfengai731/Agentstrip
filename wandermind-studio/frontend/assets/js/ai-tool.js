@@ -2228,14 +2228,42 @@ const _DEST_API_NAMES = {
   santorini:'Santorini, Greece'
 };
 
+// Show a status banner in the destination panel: 'loading' | 'error' | '' (hide).
+function _setDestStatus(mode, key) {
+  const el = document.getElementById('ws-dest-status');
+  if (!el) return;
+  if (mode === 'loading') {
+    const msg = { zh:'正在生成目的地情报，约 20–40 秒…', en:'Generating destination intel — 20–40s…', ja:'目的地情報を生成中…20〜40秒', ko:'목적지 정보 생성 중… 20–40초', id:'Menyusun info tujuan… 20–40 dtk' }[currentLang] || 'Generating…';
+    el.className = 'ws-dest-status loading';
+    el.innerHTML = `<span class="fa fa-circle-o-notch fa-spin"></span> ${escapeHtml(msg)}`;
+    el.style.display = 'flex';
+  } else if (mode === 'error') {
+    const msg = { zh:'情报生成失败', en:'Couldn\'t generate intel', ja:'生成に失敗', ko:'생성 실패', id:'Gagal memuat' }[currentLang] || 'Failed';
+    const retry = { zh:'重试', en:'Retry', ja:'再試行', ko:'다시', id:'Coba lagi' }[currentLang] || 'Retry';
+    el.className = 'ws-dest-status error';
+    el.innerHTML = `<span><span class="fa fa-exclamation-triangle"></span> ${escapeHtml(msg)}</span><button class="ws-dest-retry" id="ws-dest-retry">${escapeHtml(retry)}</button>`;
+    el.style.display = 'flex';
+    const btn = document.getElementById('ws-dest-retry');
+    if (btn) btn.onclick = () => fetchDestInfo(key, true);
+  } else {
+    el.style.display = 'none';
+    el.innerHTML = '';
+  }
+}
+
 async function fetchDestInfo(key, force = false) {
   const apiDest = key === 'any' ? (_customDest || '') : _DEST_API_NAMES[key];
   if (!apiDest) return;
+  // Weather comes from OpenWeather independently — fire it now so the user sees
+  // something fast instead of waiting on the slow AI intel.
+  fetchLiveWeather(key);
   const cacheKey = key + ':' + currentLang;
   if (!force && _destInfoCache[cacheKey]) {
     _applyDestInfo(key, _destInfoCache[cacheKey]);
+    _setDestStatus('', key);
     return;
   }
+  _setDestStatus('loading', key);
   addLog('info', 'fa-cloud-download', _interp((currentLang==='zh'?'获取 {d} 实时数据':'Fetching live data for {d}'), { d: apiDest }));
   try {
     const r = await fetch(BACKEND_BASE + '/api/dest_info', {
@@ -2251,18 +2279,19 @@ async function fetchDestInfo(key, force = false) {
     const data = await r.json();
     _destInfoCache[cacheKey] = data;
     _applyDestInfo(key, data);
+    _setDestStatus('', key);
     addLog('success', 'fa-cloud', _interp((currentLang==='zh'?'{d} · 实时数据已加载':'{d} · live data loaded'), { d: apiDest }));
   } catch (err) {
-    addLog('warn', 'fa-cloud-download', _interp((currentLang==='zh'?'实时数据获取失败 · 使用示例: {e}':'Live fetch failed, using sample: {e}'), { e: err.message || err }));
+    _setDestStatus('error', key);
+    addLog('warn', 'fa-cloud-download', _interp((currentLang==='zh'?'实时数据获取失败: {e}':'Live fetch failed: {e}'), { e: err.message || err }));
   }
-  // After dest_info, layer real-time weather on top (gracefully fails if no key)
-  fetchLiveWeather(key);
 }
 
 // —— Live weather via OpenWeatherMap (backend /api/weather) ——
 // Silently no-ops if the backend has no OPENWEATHER_API_KEY set.
 async function fetchLiveWeather(key) {
-  const apiDest = key;  // backend looks up alias internally
+  // For a custom "any" destination, query the user-typed city (not the literal "any")
+  const apiDest = (key === 'any') ? (_customDest || 'any') : key;
   try {
     const r = await fetch(BACKEND_BASE + '/api/weather?city=' + encodeURIComponent(apiDest) + '&lang=' + currentLang);
     if (!r.ok) {
