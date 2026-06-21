@@ -1081,30 +1081,15 @@ async def get_dest_info(req: DestInfoReq, user=Depends(optional_user)):
     lang_map = {"zh": "中文", "en": "English", "ja": "日本語", "ko": "한국어", "id": "Bahasa Indonesia"}
     lang_name = lang_map.get(req.lang, "中文")
 
-    prompt = f"""为目的地「{req.destination}」生成旅行面板数据，所有文字用{lang_name}。
-只输出一个JSON对象，不要解释、不要markdown。结构：
-{{
-  "timezone": "IANA时区，如 Asia/Tashkent",
-  "weather": {{"temp": "如 22-30°C", "cond": "天气(8字内)", "details": "气候提示(15字内)"}},
-  "rate": "汇率，如 1 CNY ≈ 105 UZS",
-  "season": "最佳月份，如 4-6月",
-  "seasonDesc": "季节说明(12字内)",
-  "regions": [
-    {{"name": "知名景区名", "tag": "特色(4字)", "desc": "简介(25字内)"}},
-    {{"name": "景区2", "tag": "特色", "desc": "简介"}},
-    {{"name": "景区3", "tag": "特色", "desc": "简介"}}
-  ],
-  "tips": [
-    {{"title": "标题(6字内)", "tag": "签证", "desc": "建议(25字内)"}},
-    {{"title": "标题", "tag": "货币", "desc": "建议"}}
-  ],
-  "hotelAreas": [
-    {{"name": "住宿区中文名", "q": "对应英文名(酒店搜索用)"}},
-    {{"name": "住宿区2", "q": "英文名"}},
-    {{"name": "住宿区3", "q": "英文名"}}
-  ]
-}}
-要求：regions恰好3条、tips恰好2条、hotelAreas恰好3条真实街区。字段名严格一致，值简短，不重复用字。"""
+    # One-shot with REAL data — a weak 7B model otherwise echoes the schema text.
+    example = """示例（目的地=京都，日本）：
+{"timezone":"Asia/Tokyo","weather":{"temp":"8-16°C","cond":"晴朗微凉","details":"秋季干爽宜出行"},"rate":"1 CNY ≈ 21 JPY","season":"3-5月、10-11月","seasonDesc":"樱花与红叶季最佳","regions":[{"name":"祇园","tag":"古韵","desc":"艺伎与古町，夜晚灯火别致"},{"name":"岚山","tag":"自然","desc":"竹林与渡月桥，秋色尤美"},{"name":"清水寺周边","tag":"古迹","desc":"清水舞台俯瞰全城"}],"tips":[{"title":"免签停留","tag":"签证","desc":"持团签或单次签可入境"},{"title":"现金为主","tag":"货币","desc":"小店多收现金，备好日元"}],"hotelAreas":[{"name":"京都站","q":"Kyoto Station"},{"name":"祇园","q":"Gion"},{"name":"河原町","q":"Kawaramachi"}]}"""
+
+    prompt = f"""你是旅行数据生成器。仿照下面的示例，为目的地「{req.destination}」生成同样结构的JSON，所有文字用{lang_name}，填入该目的地的真实信息（不要照抄示例的京都内容，也不要保留任何"如/示例"字样）。
+
+{example}
+
+现在为「{req.destination}」生成JSON：regions恰好3条、tips恰好2条(签证/货币)、hotelAreas恰好3条真实街区。只输出JSON对象本身，值简短不重复用字。"""
 
     # Fast lane (SiliconFlow Qwen2.5-7B). IMPORTANT: SiliconFlow's free tier hangs
     # on NON-streaming completions (40s+ → timeout), but streams fine — so we stream
@@ -1155,6 +1140,12 @@ async def get_dest_info(req: DestInfoReq, user=Depends(optional_user)):
         if data is None:
             snippet = (joined[:300] if joined else "<empty>")
             raise HTTPException(500, f"AI did not return valid JSON | chars={len(joined)} | head={snippet!r}")
+        # Quality gate — the weak model sometimes returns valid-but-empty JSON or
+        # echoes the schema placeholders. Reject (and don't cache) that garbage.
+        regions = data.get("regions")
+        tz = str(data.get("timezone") or "")
+        if not isinstance(regions, list) or len(regions) < 2 or "如" in tz or "示例" in tz or "IANA" in tz:
+            raise HTTPException(502, "AI returned low-quality data, please retry")
         # Assign card colours server-side (we dropped cls from the prompt to lighten
         # the small model's load) so regions/tips render with varied tags.
         _cls_cycle = ["tag-blue", "tag-amber", "tag-green", "tag-red"]
