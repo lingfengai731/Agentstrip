@@ -1064,6 +1064,18 @@ def _extract_json(text: str):
         return None
 
 
+def _strip_bad_unicode(obj):
+    """Drop lone surrogates / un-encodable chars from all strings in a parsed
+    JSON value (streamed CJK occasionally arrives with a broken codepoint)."""
+    if isinstance(obj, str):
+        return obj.encode("utf-8", "ignore").decode("utf-8", "ignore")
+    if isinstance(obj, list):
+        return [_strip_bad_unicode(x) for x in obj]
+    if isinstance(obj, dict):
+        return {k: _strip_bad_unicode(v) for k, v in obj.items()}
+    return obj
+
+
 @app.post("/api/dest_info")
 async def get_dest_info(req: DestInfoReq, user=Depends(optional_user)):
     """AI生成任意目的地的面板数据：天气/区域/贴士。快模型 + 24h 缓存。"""
@@ -1153,10 +1165,9 @@ async def get_dest_info(req: DestInfoReq, user=Depends(optional_user)):
             joined = "".join(reasoning_parts)
             data = _extract_json(joined)
         if data is None:
-            snippet = (joined[:300] if joined else "<empty>")
-            raise HTTPException(500, f"AI did not return valid JSON | chars={len(joined)} | head={snippet!r}")
-        # Quality gate — the weak model sometimes returns valid-but-empty JSON or
-        # echoes the schema placeholders. Reject (and don't cache) that garbage.
+            raise HTTPException(500, "AI did not return valid JSON")
+        data = _strip_bad_unicode(data)        # drop any stray surrogate/broken chars
+        # Quality gate — reject (and don't cache) empty / placeholder-echo garbage.
         regions = data.get("regions")
         tz = str(data.get("timezone") or "")
         if not isinstance(regions, list) or len(regions) < 2 or "如" in tz or "示例" in tz or "IANA" in tz:
