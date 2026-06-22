@@ -761,6 +761,41 @@ function renderPanelComing(panelId, iconClass, titleSuffix) {
 }
 
 /* ─────────────────── MESSAGES ─────────────────── */
+// Render the lightweight Markdown the AI returns (bold / bullets / headings) into
+// safe HTML, so symbols like ** and * become real formatting instead of clutter.
+function _mdToHtml(src) {
+  const esc = s => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+  const inline = s => esc(s)
+    .replace(/\*\*([^*\n]+)\*\*/g, '<strong>$1</strong>')   // **bold**
+    .replace(/(^|[^*])\*([^*\n]+)\*(?!\*)/g, '$1<em>$2</em>') // *italic*
+    .replace(/`([^`]+)`/g, '<code>$1</code>')               // `code`
+    .replace(/\*+/g, '');                                    // drop any stray * leftovers
+  const lines = String(src).split('\n');
+  let html = '';
+  let inList = false;
+  const closeList = () => { if (inList) { html += '</ul>'; inList = false; } };
+  for (const raw of lines) {
+    const line = raw.replace(/\s+$/, '');
+    const bullet = line.match(/^\s*(?:[*\-•]|\d+\.)\s+(.*)$/);  // *, -, • or "1." bullets
+    const header = line.match(/^\s*#{1,6}\s+(.*)$/);            // ## heading
+    if (bullet) {
+      if (!inList) { html += '<ul class="ws-md-list">'; inList = true; }
+      html += '<li>' + inline(bullet[1]) + '</li>';
+    } else if (header) {
+      closeList();
+      html += '<div class="ws-md-h">' + inline(header[1]) + '</div>';
+    } else if (line.trim() === '') {
+      closeList();
+      html += '<div class="ws-md-gap"></div>';
+    } else {
+      closeList();
+      html += '<div class="ws-md-p">' + inline(line) + '</div>';
+    }
+  }
+  closeList();
+  return html;
+}
+
 function renderMessages() {
   const wrap = $('#ws-messages');
   if (messages.length === 0) {
@@ -796,7 +831,7 @@ function renderMessages() {
     if (m.text === '__typing__') {
       body = `<div class="ws-msg-typing"><span></span><span></span><span></span></div>`;
     } else {
-      body = escapeHtml(m.text).replace(/\n/g, '<br>');
+      body = _mdToHtml(m.text);
     }
     return `
       <div class="ws-msg ai">
