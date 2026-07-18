@@ -203,10 +203,10 @@
 <script src="assets/js/jquery-3.3.1.min.js"></script>
 <script src="assets/js/bootstrap.min.js"></script>
 <script>
-  $(window).on("scroll", function () { var scroll = $(window).scrollTop(); if (scroll >= 80) { $("#site-header").addClass("nav-fixed"); } else { $("#site-header").removeClass("nav-fixed"); } });
-  $(".navbar-toggler").on("click", function () { $("header").toggleClass("active"); });
-  $(document).on("ready", function () { if ($(window).width() > 991) { $("header").removeClass("active"); } $(window).on("resize", function () { if ($(window).width() > 991) { $("header").removeClass("active"); } }); });
-  $('.navbar-toggler').click(function () { $('body').toggleClass('noscroll'); });
+  jQuery(window).on("scroll", function () { var scroll = jQuery(window).scrollTop(); if (scroll >= 80) { jQuery("#site-header").addClass("nav-fixed"); } else { jQuery("#site-header").removeClass("nav-fixed"); } });
+  jQuery(".navbar-toggler").on("click", function () { jQuery("header").toggleClass("active"); });
+  jQuery(document).on("ready", function () { if (jQuery(window).width() > 991) { jQuery("header").removeClass("active"); } jQuery(window).on("resize", function () { if (jQuery(window).width() > 991) { jQuery("header").removeClass("active"); } }); });
+  jQuery('.navbar-toggler').click(function () { jQuery('body').toggleClass('noscroll'); });
 
   // Keep the fixed AI-tool top tabs glued exactly under the navbar, whatever its
   // height (it changes while web fonts load and across breakpoints). We measure
