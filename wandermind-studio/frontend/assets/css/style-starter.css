@@ -12366,16 +12366,124 @@ body.dark .gg-sun, body.dark .gg-moon {
   }
 }
 
-/* On medium desktop (lg, not xl): hide email address text, keep icon only.
-   Frees ~110 px so even Japanese お問い合わせ never pushes the moon off-screen.
-   On xl (≥1200 px) the full address re-appears. */
-@media (min-width: 992px) and (max-width: 1199px) {
+/* Desktop navigation fit: keep primary actions visible without changing the
+   established WanderMind visual language. */
+@media (min-width: 992px) {
+  .w3l-header-4 .container {
+    width: calc(100% - 32px);
+    max-width: 1480px;
+  }
+
+  .w3l-header-4 .navbar {
+    width: 100%;
+    min-width: 0;
+    flex-wrap: nowrap;
+  }
+
+  .w3l-header-4 .navbar > h1 {
+    flex: 0 0 auto;
+  }
+
+  .w3l-header-4 .navbar h1 a.navbar-brand {
+    margin-right: 12px !important;
+    font-size: 26px !important;
+  }
+
+  .w3l-header-4 .navbar-brand .wm-logo-img {
+    width: 36px !important;
+    height: 36px !important;
+  }
+
+  .w3l-header-4 .navbar-collapse {
+    min-width: 0;
+    flex: 1 1 auto;
+  }
+
+  .w3l-header-4 .navbar .navbar-nav .nav-link {
+    padding-left: 7px !important;
+    padding-right: 7px !important;
+  }
+
+  .w3l-header-4 #ws-nav-auth-slot,
+  .w3l-header-4 #ws-login-trigger,
+  .w3l-header-4 #ws-user-menu {
+    flex: 0 0 auto;
+    min-width: max-content;
+    white-space: nowrap;
+  }
+
+  .w3l-header-4 #ws-login-trigger > span:last-child,
+  .w3l-header-4 #ws-user-menu > span:last-child {
+    white-space: nowrap;
+  }
+
+  .w3l-header-4 .mobile-position {
+    margin-left: 8px !important;
+  }
+}
+
+/* Compact the brand to its recognizable compass mark on smaller laptops. */
+@media (min-width: 992px) and (max-width: 1349.98px) {
+  .w3l-header-4 .navbar h1 a.navbar-brand {
+    width: 36px;
+    margin-right: 10px !important;
+    gap: 0 !important;
+    font-size: 0 !important;
+  }
+
+  .w3l-header-4 .navbar-brand small {
+    display: none !important;
+  }
+
+  .w3l-header-4 .navbar-brand .wm-logo-img {
+    width: 34px !important;
+    height: 34px !important;
+  }
+}
+
+/* At the narrowest expanded-navbar widths, keep navigation and account
+   controls ahead of secondary email/search shortcuts. */
+@media (min-width: 992px) and (max-width: 1119.98px) {
+  .w3l-header-4 .container {
+    width: calc(100% - 16px);
+  }
+
+  .w3l-header-4 .navbar .navbar-nav .nav-link {
+    padding-left: 4px !important;
+    padding-right: 4px !important;
+  }
+
+  .w3l-header-4 .navbar .nav-link.phone,
+  .w3l-header-4 .navbar .search-search.nav-link {
+    display: none !important;
+  }
+
+  .w3l-header-4 .lang-picker > .fa-globe,
+  .w3l-header-4 #ws-login-trigger > .fa,
+  .w3l-header-4 #ws-user-menu > .fa {
+    display: none !important;
+  }
+
+  .w3l-header-4 .lang-picker {
+    padding-left: 8px;
+    padding-right: 8px;
+  }
+}
+
+/* On standard desktop widths, the envelope remains as the compact contact
+   affordance; the full address returns on wide screens. */
+@media (min-width: 992px) and (max-width: 1599.98px) {
   .w3l-header-4 .navbar .nav-link.phone {
-    font-size: 0 !important;   /* hide address text */
+    font-size: 0 !important;
     gap: 0 !important;
   }
+
   .w3l-header-4 .navbar .nav-link.phone .fa {
-    font-size: 14px !important; /* keep envelope icon */
+    font-size: 14px !important;
+  }
+
+  .w3l-header-4 #ws-user-menu > span:last-child {
+    max-width: 72px !important;
   }
 }
 
