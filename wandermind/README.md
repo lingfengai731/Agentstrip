@@ -139,15 +139,22 @@ SILICONFLOW_KEY=
 SILICONFLOW_URL=https://api.siliconflow.cn/v1/chat/completions
 SILICONFLOW_MODEL=Qwen/Qwen2.5-7B-Instruct
 
-# 📧 邮件系统（可选，欢迎信 + 密码重置）
+# 📧 邮件系统（线上邮箱注册必填：验证码 + 欢迎信 + 密码重置）
 # 注册：https://resend.com（免费 3000 封/月，100/天）
-# 未配置时邮件功能在开发模式：内容会打印到 stdout，不实际发送
+# 未配置时验证码接口会明确失败，不会向用户假报“已发送”
 RESEND_API_KEY=
 # 发件人。开发期可用 Resend 默认 onboarding@resend.dev（仅能发到注册账号邮箱）。
 # 上线后配置自己的域名后改成 "WanderMind <noreply@你的域名.com>"
 EMAIL_FROM=WanderMind <onboarding@resend.dev>
 # 邮件链接里使用的 base URL。未设置时自动从请求头检测（推荐留空）
 # PUBLIC_URL=https://你的域名.com
+
+# Google 登录（可选）：Google Cloud Console 创建 Web OAuth 客户端后填入
+# 同时把线上域名和本地调试地址加入 Authorized JavaScript origins
+GOOGLE_CLIENT_ID=
+
+# 仅本地验证码联调可设为 1；生产环境必须保持 0 或不设置
+ALLOW_DEV_VERIFICATION_CODE=0
 
 # 🫘 AI 用量限额 + 旅行豆（防滥用）
 # 每位访客（含注册/未注册）默认 5 次免费 AI 问答，用完需充值豆。
@@ -243,10 +250,12 @@ Content-Type: application/json
 2. 在 [Render.com](https://render.com) 创建 Web Service
 3. Build Command: `pip install -r backend/requirements.txt`
 4. Start Command: `cd backend && uvicorn main:app --host 0.0.0.0 --port $PORT`
-5. 在 Render 的 Environment Variables 面板设置所有 `.env` 中的变量
+5. 在 Render 的 Environment Variables 面板设置所有 `.env` 中的变量；邮箱注册至少需要
+   `RESEND_API_KEY`、已验证域名对应的 `EMAIL_FROM`，Google 登录另需 `GOOGLE_CLIENT_ID`
 6. **强烈建议**：配置 `DATABASE_URL` 切换到 PostgreSQL（见下方）
 
 > ⚠️ **安全提示**：API 密钥只能设置在 Render 环境变量中，绝对不能硬编码到代码里或提交到 Git
+> `ALLOW_DEV_VERIFICATION_CODE` 只能用于本地测试，线上不要设为 `1`。
 
 ---
 

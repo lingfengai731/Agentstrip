@@ -16,10 +16,10 @@
     <meta name="twitter:title" content="Find a Bali Driver · WanderMind Studio">
     <meta name="twitter:description" content="Request WanderMind's trusted local Bali driver Dicky.">
     <meta name="twitter:image" content="https://wandermind.cc/assets/images/logo-mark.png">
-    <link rel="icon" type="image/png" href="assets/images/logo-mark.png">
-    <link rel="apple-touch-icon" href="assets/images/logo-mark.png">
-    <link rel="stylesheet" href="assets/css/style-starter.css?v=p43">
-    <link href="//fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+  <link rel="icon" type="image/png" href="assets/images/logo-mark-256.png">
+  <link rel="apple-touch-icon" href="assets/images/logo-mark-256.png">
+    <link rel="stylesheet" href="assets/css/style-starter.css?v=p45">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=optional" rel="stylesheet">
     <style>
       .navbar-brand { font-weight: 700; letter-spacing: .02em; white-space: nowrap; display: inline-flex !important; align-items: center; gap: 8px; }
       .navbar-brand small { font-size: 11px; opacity: .55; font-weight: 400; letter-spacing: .15em; text-transform: uppercase; }
@@ -73,6 +73,14 @@
       .fd-input:focus, .fd-textarea:focus, .fd-num:focus { border-color: var(--fd-teal-lt); }
       .fd-textarea { resize: vertical; min-height: 90px; line-height: 1.6; }
       .fd-hint { font-size: 11.5px; color: #94a3b8; margin-top: 5px; }
+      .fd-service-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+      .fd-service { position: relative; margin: 0; }
+      .fd-service input { position: absolute; opacity: 0; }
+      .fd-service span { min-height: 44px; display: flex; align-items: center; gap: 8px; padding: 9px 11px; border: 1px solid #e2e8f0; border-radius: 10px; color: #475569; font-size: 12.5px; cursor: pointer; }
+      .fd-service input:checked + span { border-color: var(--fd-teal); background: rgba(14,124,107,.07); color: var(--fd-teal); font-weight: 700; }
+      .fd-service input:focus-visible + span { outline: 3px solid rgba(252,191,30,.45); outline-offset: 2px; }
+      body.dark .fd-service span { border-color:#3a3a32; color:#d8d8d2; }
+      @media (max-width:480px) { .fd-service-grid { grid-template-columns:1fr; } }
 
       .fd-source-toggle { display: inline-flex; background: #f1f5f9; border-radius: 10px; padding: 3px; margin-bottom: 10px; }
       body.dark .fd-source-toggle { background: #2a2a25; }
@@ -119,7 +127,7 @@
   <header id="site-header" class="fixed-top">
     <div class="container">
       <nav class="navbar navbar-expand-lg navbar-dark stroke">
-        <h1><a class="navbar-brand" href="index.html"><img src="assets/images/logo-mark.png" alt="WanderMind" class="wm-logo-img"> WanderMind <small>STUDIO</small></a></h1>
+        <h1><a class="navbar-brand" href="index.html"><img src="assets/images/logo-mark-256.png" alt="WanderMind" class="wm-logo-img" width="44" height="44"> WanderMind <small>STUDIO</small></a></h1>
         <button class="navbar-toggler collapsed bg-gradient" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo02">
           <span class="navbar-toggler-icon fa icon-expand fa-bars"></span>
           <span class="navbar-toggler-icon fa icon-close fa-times"></span>
@@ -181,13 +189,64 @@
 
       <div class="fd-row">
         <div class="fd-field">
-          <label class="fd-label">First name <span class="fd-req">*</span></label>
+          <label class="fd-label" data-i18n="fdFirstLabel">First name <span class="fd-req">*</span></label>
           <input type="text" class="fd-input" id="fd-first" data-i18n="fdFirstPh" data-i18n-attr="placeholder" placeholder="First name">
         </div>
         <div class="fd-field">
-          <label class="fd-label">Last name <span class="fd-req">*</span></label>
+          <label class="fd-label" data-i18n="fdLastLabel">Last name <span class="fd-req">*</span></label>
           <input type="text" class="fd-input" id="fd-last" data-i18n="fdLastPh" data-i18n-attr="placeholder" placeholder="Last name">
         </div>
+      </div>
+
+      <div class="fd-row">
+        <div class="fd-field">
+          <label class="fd-label" for="fd-start" data-i18n="fdStartDate">Start date <span class="fd-req">*</span></label>
+          <input type="date" class="fd-input" id="fd-start" required>
+        </div>
+        <div class="fd-field">
+          <label class="fd-label" for="fd-end" data-i18n="fdEndDate">End date <span class="fd-req">*</span></label>
+          <input type="date" class="fd-input" id="fd-end" required>
+        </div>
+      </div>
+
+      <div class="fd-row">
+        <div class="fd-field">
+          <label class="fd-label" for="fd-time" data-i18n="fdPickupTime">Preferred pickup time</label>
+          <input type="time" class="fd-input" id="fd-time">
+        </div>
+        <div class="fd-field">
+          <label class="fd-label" for="fd-pickup" data-i18n="fdPickupLocation">Hotel / pickup location</label>
+          <input type="text" class="fd-input" id="fd-pickup" data-i18n="fdPickupPh" data-i18n-attr="placeholder" placeholder="Hotel or area if known">
+        </div>
+      </div>
+
+      <div class="fd-field">
+        <label class="fd-label" for="fd-budget" data-i18n="fdBudget">Estimated total budget</label>
+        <select class="fd-input" id="fd-budget">
+          <option value="Flexible" data-i18n="fdBudgetFlexible">Flexible / discuss first</option>
+          <option value="Under 5 million IDR" data-i18n="fdBudget1">Under 5 million IDR</option>
+          <option value="5–10 million IDR" data-i18n="fdBudget2">5–10 million IDR</option>
+          <option value="10–20 million IDR" data-i18n="fdBudget3">10–20 million IDR</option>
+          <option value="20+ million IDR" data-i18n="fdBudget4">20+ million IDR</option>
+        </select>
+      </div>
+
+      <div class="fd-field">
+        <label class="fd-label" data-i18n="fdServices">Services to discuss</label>
+        <div class="fd-service-grid">
+          <label class="fd-service"><input type="checkbox" value="Private driver / car" checked><span><i class="fa fa-car"></i><b data-i18n="fdServiceCar">Private driver / car</b></span></label>
+          <label class="fd-service"><input type="checkbox" value="Airport transfer"><span><i class="fa fa-plane"></i><b data-i18n="fdServiceAirport">Airport transfer</b></span></label>
+          <label class="fd-service"><input type="checkbox" value="Hotel suggestions"><span><i class="fa fa-bed"></i><b data-i18n="fdServiceHotel">Hotel suggestions</b></span></label>
+          <label class="fd-service"><input type="checkbox" value="Boat from Sanur"><span><i class="fa fa-ship"></i><b data-i18n="fdServiceBoat">Boat from Sanur</b></span></label>
+          <label class="fd-service"><input type="checkbox" value="Flight coordination"><span><i class="fa fa-clock-o"></i><b data-i18n="fdServiceFlight">Flight coordination</b></span></label>
+          <label class="fd-service"><input type="checkbox" value="Attraction tickets"><span><i class="fa fa-ticket"></i><b data-i18n="fdServiceTickets">Attraction tickets</b></span></label>
+        </div>
+        <div class="fd-hint" data-i18n="fdBundleHint">This is a request for a combined quote, not an instant booking. Availability and providers will be confirmed in the reply.</div>
+      </div>
+
+      <div class="fd-field">
+        <label class="fd-label" for="fd-arrival" data-i18n="fdArrival">Flight, boat or arrival details</label>
+        <textarea class="fd-textarea" id="fd-arrival" data-i18n="fdArrivalPh" data-i18n-attr="placeholder" placeholder="Flight number / arrival time / Sanur boat date, if known"></textarea>
       </div>
 
       <div class="fd-field">
@@ -303,6 +362,16 @@
     var hint = document.getElementById('fd-import-hint');
     var peopleEl = document.getElementById('fd-people');
     var daysEl = document.getElementById('fd-days');
+    var startEl = document.getElementById('fd-start');
+    var endEl = document.getElementById('fd-end');
+
+    var toISO = function (date) { return date.toISOString().slice(0, 10); };
+    var tomorrow = new Date(Date.now() + 86400000);
+    startEl.min = toISO(new Date()); endEl.min = toISO(tomorrow);
+    startEl.addEventListener('change', function () {
+      var minEnd = new Date(startEl.value + 'T00:00:00'); minEnd.setDate(minEnd.getDate() + 1);
+      endEl.min = toISO(minEnd); if (!endEl.value || endEl.value < startEl.value) endEl.value = toISO(minEnd);
+    });
 
     function readPlan() {
       try {
@@ -324,6 +393,8 @@
         if (d.trip) {
           if (d.trip.people && !peopleEl.value) peopleEl.value = d.trip.people;
           if (d.trip.days && !daysEl.value) daysEl.value = d.trip.days;
+          if (d.trip.start) startEl.value = d.trip.start;
+          if (d.trip.end) endEl.value = d.trip.end;
         }
         hint.textContent = L.fdImportOk || 'Imported from your latest AI plan. Feel free to edit.';
         hint.style.display = 'block';
@@ -347,6 +418,7 @@
       var phone = document.getElementById('fd-phone').value.trim();
       if (!first && !last) { msg.className = 'fd-msg err'; msg.textContent = L.fdErrName || 'Please enter your name'; return; }
       if (!wa && !email && !phone) { msg.className = 'fd-msg err'; msg.textContent = L.fdErrContact || 'Please provide at least one contact method'; return; }
+      if (!startEl.value || !endEl.value || endEl.value < startEl.value) { msg.className = 'fd-msg err'; msg.textContent = L.fdErrDates || 'Please enter valid travel dates'; return; }
 
       var payload = {
         first_name: first, last_name: last,
@@ -354,7 +426,15 @@
         contact_whatsapp: wa, contact_email: email, contact_phone: phone,
         num_people: parseInt(peopleEl.value) || null,
         num_days: parseInt(daysEl.value) || null,
-        attractions: places.value.trim()
+        attractions: places.value.trim(),
+        start_date: startEl.value,
+        end_date: endEl.value,
+        preferred_time: document.getElementById('fd-time').value,
+        pickup_location: document.getElementById('fd-pickup').value.trim(),
+        budget_range: document.getElementById('fd-budget').value,
+        requested_services: Array.from(document.querySelectorAll('.fd-service input:checked')).map(function (x) { return x.value; }),
+        arrival_details: document.getElementById('fd-arrival').value.trim(),
+        lang: (document.getElementById('langPicker') || {}).value || 'en'
       };
       btn.disabled = true;
       var old = btn.innerHTML;
@@ -376,7 +456,7 @@
     };
   })();
 </script>
-<script src="assets/js/i18n.js?v=p43"></script>
+<script src="assets/js/i18n.js?v=p45"></script>
 <script>
   // Expose JS-side strings for the dynamic messages (filled after i18n load)
   (function () {
@@ -386,7 +466,7 @@
       var d = LANGS[lang] || LANGS.en;
       window.FD_T = {
         fdImportOk: d.fdImportOk, fdImportNone: d.fdImportNone, fdErrName: d.fdErrName,
-        fdErrContact: d.fdErrContact, fdSending: d.fdSending, fdSuccessTitle: d.fdSuccessTitle,
+        fdErrContact: d.fdErrContact, fdErrDates: d.fdErrDates, fdSending: d.fdSending, fdSuccessTitle: d.fdSuccessTitle,
         fdSuccessSub: d.fdSuccessSub, fdBackBali: d.fdBackBali, fdErrSend: d.fdErrSend
       };
     }

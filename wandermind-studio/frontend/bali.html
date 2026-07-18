@@ -16,10 +16,10 @@
     <meta name="twitter:title" content="Bali Deep Journey · WanderMind Studio">
     <meta name="twitter:description" content="A 12-14 day deep Bali itinerary, curated by WanderMind Studio.">
     <meta name="twitter:image" content="https://wandermind.cc/assets/images/bali-4.jpg">
-    <link rel="icon" type="image/png" href="assets/images/logo-mark.png">
-    <link rel="apple-touch-icon" href="assets/images/logo-mark.png">
-    <link rel="stylesheet" href="assets/css/style-starter.css?v=p43">
-    <link href="//fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+  <link rel="icon" type="image/png" href="assets/images/logo-mark-256.png">
+  <link rel="apple-touch-icon" href="assets/images/logo-mark-256.png">
+    <link rel="stylesheet" href="assets/css/style-starter.css?v=p45">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=optional" rel="stylesheet">
     <style>
       .navbar-brand { font-weight: 700; letter-spacing: .02em; white-space: nowrap; display: inline-flex !important; align-items: center; gap: 8px; }
       .navbar-brand small { font-size: 11px; opacity: .55; font-weight: 400; letter-spacing: .15em; text-transform: uppercase; }
@@ -67,9 +67,18 @@
       body.dark .bali-sec-head h2 { color: #f0f0ec; }
       .bali-sec-head p { font-size: 16px; line-height: 1.7; color: #64748b; margin: 0; }
       body.dark .bali-sec-head p { color: rgba(255,255,255,.6); }
+      .bali-filterbar { display:flex; flex-wrap:wrap; gap:8px; justify-content:center; margin:-14px 0 24px; }
+      .bali-filter { min-height:40px; padding:8px 14px; border:1px solid #e5e2da; border-radius:20px; background:#fff; color:#475569; font:600 12px/1.3 inherit; cursor:pointer; }
+      .bali-filter.active { border-color:#0e7c6b; background:rgba(14,124,107,.08); color:#0e7c6b; }
+      body.dark .bali-filter { background:#232622; border-color:#3a3d38; color:#d1d5db; }
       .bali-gallery { columns: 3; column-gap: 14px; }
-      .bali-gallery img { width: 100%; margin-bottom: 14px; border-radius: 12px; display: block; break-inside: avoid; box-shadow: 0 6px 22px rgba(0,0,0,.10); transition: transform .3s, box-shadow .3s; cursor: pointer; }
-      .bali-gallery img:hover { transform: scale(1.02); box-shadow: 0 14px 40px rgba(0,0,0,.20); }
+      .bali-shot { position:relative; width:100%; padding:0; margin:0 0 14px; border:0; border-radius:12px; overflow:hidden; background:#111; display:block; break-inside:avoid; box-shadow:0 6px 22px rgba(0,0,0,.10); cursor:pointer; text-align:left; }
+      .bali-shot[hidden] { display:none; }
+      .bali-shot img { width:100%; margin:0; display:block; transition:transform .35s, opacity .25s; }
+      .bali-shot:hover img, .bali-shot:focus-visible img { transform:scale(1.025); opacity:.86; }
+      .bali-shot:focus-visible { outline:3px solid var(--bali-gold); outline-offset:3px; }
+      .bali-shot-meta { position:absolute; left:10px; right:10px; bottom:10px; display:flex; flex-wrap:wrap; gap:6px; }
+      .bali-shot-meta span { padding:5px 8px; border-radius:14px; background:rgba(15,23,42,.74); backdrop-filter:blur(6px); color:#fff; font-size:10px; font-weight:700; }
       @media (max-width: 991px) { .bali-gallery { columns: 2; } }
       @media (max-width: 575px) { .bali-gallery { columns: 1; } }
       .bali-timeline { max-width: 920px; margin: 0 auto; position: relative; }
@@ -92,13 +101,33 @@
       .bali-tl-card p { font-size: 14.5px; line-height: 1.7; color: #475569; margin: 6px 0 0; }
       body.dark .bali-tl-card p { color: rgba(255,255,255,.7); }
       .bali-driver-band { background: linear-gradient(135deg, #0e7c6b, #14b8a6); color: #fff; padding: 64px 0; }
-      .bali-driver-inner { max-width: 760px; margin: 0 auto; text-align: center; }
+      .bali-driver-inner { max-width: 960px; margin: 0 auto; text-align: center; }
       .bali-driver-inner h2 { font-size: clamp(26px, 4vw, 38px); font-weight: 800; margin: 0 0 14px; }
       .bali-driver-inner p { font-size: 16px; line-height: 1.7; color: rgba(255,255,255,.92); margin: 0 0 12px; }
       .bali-driver-price { display: inline-flex; flex-wrap: wrap; gap: 10px 22px; justify-content: center; margin: 18px 0 28px; font-size: 14px; }
       .bali-driver-price span { display: inline-flex; align-items: center; gap: 7px; background: rgba(255,255,255,.14); padding: 8px 16px; border-radius: 20px; }
       .bali-driver-band .bali-btn-primary { background: #fff; color: #0e7c6b; }
       .bali-driver-band .bali-btn-primary:hover { box-shadow: 0 12px 30px rgba(0,0,0,.25); color: #0e7c6b; }
+      .bali-driver-grid { display:grid; grid-template-columns:minmax(260px,.9fr) 1.1fr; gap:32px; align-items:center; text-align:left; }
+      .bali-driver-car { width:100%; border-radius:14px; box-shadow:0 18px 44px rgba(0,0,0,.25); }
+      @media(max-width:767px){ .bali-driver-grid{grid-template-columns:1fr;text-align:center}.bali-driver-car{max-width:520px;margin:auto} }
+      .bali-place-modal { position:fixed; inset:0; z-index:10000; display:none; align-items:center; justify-content:center; padding:20px; background:rgba(15,17,20,.68); backdrop-filter:blur(7px); }
+      .bali-place-modal.show { display:flex; }
+      .bali-place-dialog { position:relative; width:min(880px,100%); max-height:90vh; overflow:auto; display:grid; grid-template-columns:1fr 1fr; background:#fff; border-radius:16px; box-shadow:0 24px 70px rgba(0,0,0,.32); }
+      body.dark .bali-place-dialog { background:#1f211e; }
+      .bali-place-dialog > img { width:100%; height:100%; min-height:440px; object-fit:cover; }
+      .bali-place-copy { padding:34px; }
+      .bali-place-copy h3 { color:#1e293b; font-size:26px; margin:10px 0 12px; }
+      body.dark .bali-place-copy h3 { color:#f3f4f6; }
+      .bali-place-copy p { color:#64748b; font-size:14px; line-height:1.7; }
+      .bali-place-purpose { padding:13px 14px; border-left:3px solid #fcbf1e; background:#fffbeb; border-radius:0 9px 9px 0; color:#475569; font-size:13px; line-height:1.6; }
+      body.dark .bali-place-purpose { background:rgba(252,191,30,.08); color:#d1d5db; }
+      .bali-mini-route { margin:18px 0; padding:14px; border:1px solid #e5e2da; border-radius:10px; color:#475569; font-size:13px; line-height:1.65; }
+      body.dark .bali-mini-route { border-color:#3a3d38; color:#d1d5db; }
+      .bali-modal-actions { display:flex; flex-wrap:wrap; gap:9px; }
+      .bali-modal-actions .bali-btn { padding:10px 16px; font-size:12px; }
+      .bali-place-close { position:absolute; top:12px; right:12px; width:40px; height:40px; border:0; border-radius:50%; background:rgba(255,255,255,.9); color:#1e293b; cursor:pointer; z-index:2; box-shadow:0 2px 12px rgba(0,0,0,.15); }
+      @media(max-width:700px){ .bali-place-modal{padding:8px;align-items:flex-end}.bali-place-dialog{grid-template-columns:1fr;max-height:94vh}.bali-place-dialog>img{height:240px;min-height:0}.bali-place-copy{padding:24px 20px}.bali-place-copy h3{font-size:22px} }
       .footer-contact-line { display: flex; align-items: center; gap: 8px; padding: 4px 0; flex-wrap: wrap; }
       .footer-contact-line .fa { color: #fcbf1e !important; width: 18px; text-align: center; flex-shrink: 0; font-size: 15px; }
       .footer-contact-line a { color: #ddd; }
@@ -111,7 +140,7 @@
   <header id="site-header" class="fixed-top">
     <div class="container">
       <nav class="navbar navbar-expand-lg navbar-dark stroke">
-        <h1><a class="navbar-brand" href="index.html"><img src="assets/images/logo-mark.png" alt="WanderMind" class="wm-logo-img"> WanderMind <small>STUDIO</small></a></h1>
+        <h1><a class="navbar-brand" href="index.html"><img src="assets/images/logo-mark-256.png" alt="WanderMind" class="wm-logo-img" width="44" height="44"> WanderMind <small>STUDIO</small></a></h1>
         <button class="navbar-toggler collapsed bg-gradient" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo02">
           <span class="navbar-toggler-icon fa icon-expand fa-bars"></span>
           <span class="navbar-toggler-icon fa icon-close fa-times"></span>
@@ -182,22 +211,30 @@
       <h2 data-i18n="baliGalleryTitle">Moments from the island</h2>
       <p data-i18n="baliGallerySub">Real scenes our travellers experienced - beaches, rice terraces, volcanoes and cliff temples.</p>
     </div>
-    <div class="bali-gallery">
-      <img src="assets/images/bali-5.jpg" alt="Bali" loading="lazy">
-      <img src="assets/images/bali-6.jpg" alt="Bali" loading="lazy">
-      <img src="assets/images/bali-7.jpg" alt="Bali" loading="lazy">
-      <img src="assets/images/bali-8.jpg" alt="Bali" loading="lazy">
-      <img src="assets/images/bali-9.jpg" alt="Bali" loading="lazy">
-      <img src="assets/images/bali-10.jpg" alt="Bali" loading="lazy">
-      <img src="assets/images/bali-11.jpg" alt="Bali" loading="lazy">
-      <img src="assets/images/bali-12.jpg" alt="Bali" loading="lazy">
-      <img src="assets/images/bali-13.jpg" alt="Bali" loading="lazy">
-      <img src="assets/images/bali-14.jpg" alt="Bali" loading="lazy">
-      <img src="assets/images/bali-15.jpg" alt="Bali" loading="lazy">
-      <img src="assets/images/bali-16.jpg" alt="Bali" loading="lazy">
-      <img src="assets/images/bali-17.jpg" alt="Bali" loading="lazy">
-      <img src="assets/images/bali-18.jpg" alt="Bali" loading="lazy">
-      <img src="assets/images/bali-19.jpg" alt="Bali" loading="lazy">
+    <div class="bali-filterbar" role="group" aria-label="Photo filters">
+      <button class="bali-filter active" type="button" data-filter="all" data-i18n="baliFilterAll">All real moments</button>
+      <button class="bali-filter" type="button" data-filter="nature" data-i18n="baliFilterNature">Nature</button>
+      <button class="bali-filter" type="button" data-filter="culture" data-i18n="baliFilterCulture">Culture</button>
+      <button class="bali-filter" type="button" data-filter="experience" data-i18n="baliFilterExperience">Experiences</button>
+      <button class="bali-filter" type="button" data-filter="traveler" data-i18n="baliFilterTraveler">Traveller viewpoint</button>
+      <button class="bali-filter" type="button" data-filter="composed" data-i18n="baliFilterComposed">Composed scenery</button>
+    </div>
+    <div class="bali-gallery" id="bali-gallery-grid">
+      <button class="bali-shot" data-place="batur-jeep" data-tags="nature traveler experience"><img src="assets/images/bali-5.jpg" alt="Mount Batur sunrise jeep viewpoint" loading="lazy"><span class="bali-shot-meta"><span data-i18n="baliTagNature">Nature</span><span data-i18n="baliTagTraveler">Traveller shot</span></span></button>
+      <button class="bali-shot" data-place="batur-ride" data-tags="experience traveler"><img src="assets/images/bali-6.jpg" alt="Batur jeep ride from a passenger viewpoint" loading="lazy"><span class="bali-shot-meta"><span data-i18n="baliTagExperience">Experience</span><span data-i18n="baliTagTraveler">Traveller shot</span></span></button>
+      <button class="bali-shot" data-place="penida-cliff" data-tags="nature composed"><img src="assets/images/bali-7.jpg" alt="Nusa Penida turquoise cliff coast" loading="lazy"><span class="bali-shot-meta"><span data-i18n="baliTagNature">Nature</span><span data-i18n="baliTagComposed">Composed view</span></span></button>
+      <button class="bali-shot" data-place="snorkel" data-tags="experience traveler"><img src="assets/images/bali-8.jpg" alt="Snorkelling with tropical fish" loading="lazy"><span class="bali-shot-meta"><span data-i18n="baliTagExperience">Experience</span><span data-i18n="baliTagTraveler">Traveller shot</span></span></button>
+      <button class="bali-shot" data-place="penida-rock" data-tags="nature composed"><img src="assets/images/bali-9.jpg" alt="Nusa Penida sea stack" loading="lazy"><span class="bali-shot-meta"><span data-i18n="baliTagNature">Nature</span><span data-i18n="baliTagComposed">Composed view</span></span></button>
+      <button class="bali-shot" data-place="coastal-culture" data-tags="culture traveler"><img src="assets/images/bali-10.jpg" alt="Balinese coastal cultural monument" loading="lazy"><span class="bali-shot-meta"><span data-i18n="baliTagCulture">Culture</span><span data-i18n="baliTagTraveler">Traveller shot</span></span></button>
+      <button class="bali-shot" data-place="beach" data-tags="nature traveler"><img src="assets/images/bali-11.jpg" alt="Bali beach from a visitor viewpoint" loading="lazy"><span class="bali-shot-meta"><span data-i18n="baliTagNature">Nature</span><span data-i18n="baliTagTraveler">Traveller shot</span></span></button>
+      <button class="bali-shot" data-place="monkey-forest" data-tags="culture experience traveler"><img src="assets/images/bali-12.jpg" alt="Sacred Monkey Forest entrance in Ubud" loading="lazy"><span class="bali-shot-meta"><span data-i18n="baliTagCulture">Culture</span><span data-i18n="baliTagExperience">Experience</span></span></button>
+      <button class="bali-shot" data-place="ubud-temple" data-tags="culture composed"><img src="assets/images/bali-13.jpg" alt="Balinese temple architecture in Ubud" loading="lazy"><span class="bali-shot-meta"><span data-i18n="baliTagCulture">Culture</span><span data-i18n="baliTagComposed">Composed view</span></span></button>
+      <button class="bali-shot" data-place="coffee-garden" data-tags="nature culture traveler"><img src="assets/images/bali-14.jpg" alt="Coffee garden in the Ubud highlands" loading="lazy"><span class="bali-shot-meta"><span data-i18n="baliTagNature">Nature</span><span data-i18n="baliTagCulture">Culture</span></span></button>
+      <button class="bali-shot" data-place="coffee-roast" data-tags="culture experience composed"><img src="assets/images/bali-15.jpg" alt="Traditional coffee roasting over a fire" loading="lazy"><span class="bali-shot-meta"><span data-i18n="baliTagCulture">Culture</span><span data-i18n="baliTagExperience">Experience</span></span></button>
+      <button class="bali-shot" data-place="batur-dawn" data-tags="nature composed"><img src="assets/images/bali-16.jpg" alt="Dawn above the clouds at Mount Batur" loading="lazy"><span class="bali-shot-meta"><span data-i18n="baliTagNature">Nature</span><span data-i18n="baliTagComposed">Composed view</span></span></button>
+      <button class="bali-shot" data-place="kintamani-stay" data-tags="nature composed"><img src="assets/images/bali-17.jpg" alt="Kintamani stay facing Mount Batur" loading="lazy"><span class="bali-shot-meta"><span data-i18n="baliTagNature">Nature</span><span data-i18n="baliTagComposed">Composed view</span></span></button>
+      <button class="bali-shot" data-place="island-boat" data-tags="experience traveler"><img src="assets/images/bali-18.jpg" alt="Passenger boat for a Bali island crossing" loading="lazy"><span class="bali-shot-meta"><span data-i18n="baliTagExperience">Experience</span><span data-i18n="baliTagTraveler">Traveller shot</span></span></button>
+      <button class="bali-shot" data-place="penida-bay" data-tags="nature composed"><img src="assets/images/bali-19.jpg" alt="Nusa Penida bay and sea stacks" loading="lazy"><span class="bali-shot-meta"><span data-i18n="baliTagNature">Nature</span><span data-i18n="baliTagComposed">Composed view</span></span></button>
     </div>
   </div>
 </section>
@@ -267,17 +304,40 @@
 <section class="bali-driver-band">
   <div class="container">
     <div class="bali-driver-inner">
-      <h2 data-i18n="baliDriverTitle">Get around with a trusted local driver</h2>
-      <p data-i18n="baliDriverSub">Distances in Bali are deceptive and public transport is thin. Our verified local driver Dicky handles airport transfers, hotel pickups and full-day private tours - English-speaking and traveller-approved.</p>
-      <div class="bali-driver-price">
-        <span><span class="fa fa-clock-o"></span> <span data-i18n="baliDriverPrice1">10-12 hour tours</span></span>
-        <span><span class="fa fa-money"></span> <span data-i18n="baliDriverPrice2">~550-650k IDR / day</span></span>
-        <span><span class="fa fa-plane"></span> <span data-i18n="baliDriverPrice3">Airport &amp; hotel pickup</span></span>
+      <div class="bali-driver-grid">
+        <img class="bali-driver-car" src="assets/images/car_photo.jpg" alt="Interior of Dicky's Bali passenger car" loading="lazy">
+        <div>
+          <h2 data-i18n="baliDriverTitle">Get around with a trusted local driver</h2>
+          <p data-i18n="baliDriverSub">Distances in Bali are deceptive and public transport is thin. Our verified local driver Dicky handles airport transfers, hotel pickups and full-day private tours - English-speaking and traveller-approved.</p>
+          <div class="bali-driver-price">
+            <span><span class="fa fa-clock-o"></span> <span data-i18n="baliDriverPrice1">10-12 hour tours</span></span>
+            <span><span class="fa fa-money"></span> <span data-i18n="baliDriverPrice2">~550-650k IDR / day</span></span>
+            <span><span class="fa fa-plane"></span> <span data-i18n="baliDriverPrice3">Airport &amp; hotel pickup</span></span>
+          </div>
+          <a href="find-driver.html" class="bali-btn bali-btn-primary"><span class="fa fa-paper-plane"></span> <span data-i18n="baliDriverBtn">Request this driver</span></a>
+        </div>
       </div>
-      <a href="find-driver.html" class="bali-btn bali-btn-primary"><span class="fa fa-paper-plane"></span> <span data-i18n="baliDriverBtn">Request this driver</span></a>
     </div>
   </div>
 </section>
+
+<div class="bali-place-modal" id="bali-place-modal" aria-hidden="true">
+  <div class="bali-place-dialog" role="dialog" aria-modal="true" aria-labelledby="bali-place-title">
+    <button class="bali-place-close" type="button" aria-label="Close"><span class="fa fa-times"></span></button>
+    <img id="bali-place-image" alt="">
+    <div class="bali-place-copy">
+      <div class="bali-sec-eyebrow" id="bali-place-tags"></div>
+      <h3 id="bali-place-title"></h3>
+      <p id="bali-place-desc"></p>
+      <div class="bali-place-purpose" id="bali-place-purpose"></div>
+      <div class="bali-mini-route"><strong data-i18n="baliMiniRoute">Simple route</strong><br><span id="bali-place-route"></span></div>
+      <div class="bali-modal-actions">
+        <a class="bali-btn bali-btn-primary" id="bali-place-ai" href="ai-tool.html?dest=bali"><span class="fa fa-magic"></span> <span data-i18n="baliAddRoute">Add to my AI route</span></a>
+        <a class="bali-btn" href="find-driver.html" style="border:1px solid #0e7c6b;color:#0e7c6b"><span class="fa fa-car"></span> <span data-i18n="baliAskLocal">Ask a local driver</span></a>
+      </div>
+    </div>
+  </div>
+</div>
 
 <section class="w3l-footer-29-main">
   <div class="footer-29 py-5">
@@ -328,6 +388,54 @@
 <script>
   function topFunction() { document.body.scrollTop = 0; document.documentElement.scrollTop = 0; }
 </script>
-<script src="assets/js/i18n.js?v=p43"></script>
+<script src="assets/js/i18n.js?v=p45"></script>
+<script>
+(function () {
+  var COPY = {
+    en: {
+      batur:['Mount Batur at dawn','A real early-morning view: cool air, rough jeep tracks and changing cloud cover.','Best for atmosphere and landscape photos; the experience matters as much as the final image.','Kintamani stay → pre-dawn jeep pickup → sunrise viewpoint → hot spring or coffee stop'],
+      jeep:['Batur jeep ride','The passenger view shows the bumpy, dusty part that polished photos usually omit.','Choose this for adventure and access, not a quiet luxury transfer.','Kintamani → black-lava track → sunrise stop → local breakfast'],
+      penida:['Nusa Penida cliffs','Bright water and dramatic limestone, with heat, stairs and road time outside the frame.','Best for scenery and photography; allow a full day and a slower pace.','Sanur boat → west or east Penida loop → one main viewpoint → harbour return'],
+      snorkel:['Island snorkelling','A close, active water experience; visibility and sea conditions vary by day.','Best for swimming and marine life rather than posed photos.','Sanur departure → guided snorkel stops → lunch → return before late afternoon'],
+      culture:['Balinese cultural landmark','A visitor-level view of Bali’s symbolic public art and religious visual language.','Best paired with context from a local guide, not treated as a quick photo prop.','South Bali → cultural landmark → temple etiquette stop → sunset coast'],
+      beach:['A real Bali beach day','Umbrellas, flags, surf and other visitors are part of the actual scene.','Best for an easy half-day; beach conditions differ by coast and season.','Hotel → late-morning beach → nearby lunch → sunset walk'],
+      monkey:['Sacred Monkey Forest, Ubud','Forest paths, shrines and free-roaming macaques create a cultural-nature experience.','Best for an active Ubud morning; follow staff guidance around animals.','Ubud centre → Monkey Forest → local lunch → palace or craft streets'],
+      temple:['Ubud temple architecture','Carved stone, brick and ceremonial details reward a slower look.','Best for culture and architectural photography with respectful dress and timing.','Ubud temple → artisan village → rice-field walk → evening performance'],
+      coffee:['Highland coffee experience','Gardens and hand roasting show the process behind a familiar Bali stop.','Best for local craft and conversation, not only a tasting photo.','Ubud → coffee garden → roasting demonstration → Kintamani viewpoint'],
+      stay:['Kintamani mountain stay','A mountain-facing stay trades beach access for cooler air and early volcano views.','Best for slowing down and avoiding a long pre-dawn drive from the south.','Ubud → Kintamani check-in → sunrise → lake or hot spring'],
+      boat:['Island crossing by boat','A practical harbour-and-boat moment: boarding time, luggage and sea conditions matter.','Best for reaching Penida; operator and schedule should be confirmed before payment.','Hotel pickup → Sanur harbour → island crossing → local transfer']
+    },
+    zh: {
+      batur:['巴杜尔火山黎明','真实的清晨现场：气温偏低、吉普路颠簸，云层也会随时变化。','适合感受氛围和拍风景；过程本身和照片同样重要。','金塔马尼住宿 → 凌晨吉普接送 → 日出观景点 → 温泉或咖啡停留'], jeep:['巴杜尔火山吉普体验','游客座位上的视角保留了颠簸和尘土，这是精修照片往往不会展示的部分。','适合冒险与抵达特殊地形，不是安静豪华的接送体验。','金塔马尼 → 黑色熔岩路 → 日出停留 → 本地早餐'], penida:['佩妮达岛悬崖海岸','湛蓝海水与石灰岩很震撼，但画面之外还有炎热、台阶和较长车程。','以风景和摄影为主，建议留出整天并降低赶场节奏。','Sanur 乘船 → 佩妮达西线或东线 → 重点停一个主景点 → 返回码头'], snorkel:['离岛浮潜','近距离、需要参与的水上体验；能见度和海况每天都可能不同。','更适合游泳与观察海洋生物，不以摆拍为主。','Sanur 出发 → 向导带领多个浮潜点 → 午餐 → 下午较早返回'], culture:['巴厘文化地标','这是游客在现场能看到的公共艺术与宗教视觉符号。','适合配合本地讲解理解背景，而不是只当作快速拍照道具。','巴厘岛南部 → 文化地标 → 礼仪说明 → 海岸日落'], beach:['真实的巴厘岛海滩','遮阳伞、旗帜、海浪和其他游客，都是现场本来的样子。','适合轻松半日；不同海岸和季节的海况差异很大。','酒店 → 上午稍晚抵达海滩 → 附近午餐 → 日落散步'], monkey:['乌布圣猴森林','林间道路、神庙与自由活动的猕猴，构成自然和人文并存的体验。','适合安排在乌布上午，并遵循工作人员的动物安全指引。','乌布中心 → 猴林 → 本地午餐 → 皇宫或手工艺街'], temple:['乌布寺庙建筑','石雕、红砖和仪式细节值得慢下来观察。','适合人文和建筑摄影，注意着装与参观时间。','乌布寺庙 → 手工艺村 → 稻田散步 → 晚间表演'], coffee:['高地咖啡体验','咖啡园和手工烘焙展示了常见旅游停留背后的制作过程。','适合了解本地手艺和交流，而不只是拍一张品尝照。','乌布 → 咖啡园 → 烘焙演示 → 金塔马尼观景点'], stay:['金塔马尼山景住宿','用较远的海滩距离，换取清凉空气和清晨火山景色。','适合放慢节奏，也能避免从南部凌晨长途出发。','乌布 → 金塔马尼入住 → 清晨日出 → 火山湖或温泉'], boat:['离岛快船','真实的码头与乘船环节包括登船时间、行李和海况。','适合前往佩妮达；付款前应再次确认运营方、班次与可用性。','酒店接送 → Sanur 码头 → 离岛船程 → 岛上接送']
+    },
+    ja: {}, ko: {}, id: {}
+  };
+  var jaD='写真だけでなく、移動・天候・混雑を含む現地の実際を伝える体験です。', jaP='目的と体力に合わせ、余裕のある時間配分がおすすめです。';
+  COPY.ja={batur:['バトゥール山の夜明け',jaD,jaP,'キンタマーニ宿泊 → 日の出 → 温泉またはコーヒー'],jeep:['バトゥール山ジープ体験',jaD,jaP,'キンタマーニ → 溶岩地帯 → 日の出 → 朝食'],penida:['ヌサ・ペニダの断崖',jaD,jaP,'サヌール発ボート → 島内ルート → 展望地 → 港'],snorkel:['離島シュノーケリング',jaD,jaP,'サヌール → シュノーケル地点 → 昼食 → 帰港'],culture:['バリ文化のランドマーク',jaD,jaP,'南バリ → 文化スポット → 寺院 → 海岸の夕日'],beach:['ありのままのバリのビーチ',jaD,jaP,'ホテル → ビーチ → 昼食 → 夕日散歩'],monkey:['ウブド・モンキーフォレスト',jaD,jaP,'ウブド中心 → モンキーフォレスト → 昼食 → 王宮周辺'],temple:['ウブドの寺院建築',jaD,jaP,'寺院 → 工芸村 → 田園散歩 → 夜の舞踊'],coffee:['高原コーヒー体験',jaD,jaP,'ウブド → コーヒー園 → 焙煎見学 → キンタマーニ'],stay:['キンタマーニ山景ステイ',jaD,jaP,'ウブド → キンタマーニ宿泊 → 日の出 → 湖または温泉'],boat:['離島へのボート移動',jaD,jaP,'ホテル送迎 → サヌール港 → 島へ → 現地送迎']};
+  var koD='사진뿐 아니라 이동, 날씨, 혼잡함까지 포함한 실제 현장 경험입니다.', koP='목적과 체력에 맞춰 여유 있는 일정으로 계획하세요.';
+  COPY.ko={batur:['바투르산 새벽',koD,koP,'킨타마니 숙박 → 일출 → 온천 또는 커피'],jeep:['바투르 지프 체험',koD,koP,'킨타마니 → 용암 지대 → 일출 → 아침 식사'],penida:['누사 페니다 절벽',koD,koP,'사누르 보트 → 섬 코스 → 전망대 → 항구'],snorkel:['섬 스노클링',koD,koP,'사누르 → 스노클링 포인트 → 점심 → 귀항'],culture:['발리 문화 명소',koD,koP,'남부 발리 → 문화 명소 → 사원 → 해안 일몰'],beach:['있는 그대로의 발리 해변',koD,koP,'호텔 → 해변 → 점심 → 일몰 산책'],monkey:['우붓 몽키 포레스트',koD,koP,'우붓 중심 → 몽키 포레스트 → 점심 → 왕궁 주변'],temple:['우붓 사원 건축',koD,koP,'사원 → 공예 마을 → 논 산책 → 저녁 공연'],coffee:['고원 커피 체험',koD,koP,'우붓 → 커피 농원 → 로스팅 체험 → 킨타마니'],stay:['킨타마니 산 전망 숙소',koD,koP,'우붓 → 킨타마니 체크인 → 일출 → 호수 또는 온천'],boat:['섬 이동 보트',koD,koP,'호텔 픽업 → 사누르 항구 → 섬 이동 → 현지 교통']};
+  var idD='Pengalaman nyata di lokasi, termasuk perjalanan, cuaca, dan keramaian di balik foto.', idP='Pilih sesuai tujuan dan energi Anda, dengan waktu yang tidak terburu-buru.';
+  COPY.id={batur:['Fajar di Gunung Batur',idD,idP,'Menginap di Kintamani → matahari terbit → pemandian air panas atau kopi'],jeep:['Pengalaman jip Batur',idD,idP,'Kintamani → jalur lava → matahari terbit → sarapan'],penida:['Tebing Nusa Penida',idD,idP,'Boat dari Sanur → rute pulau → titik pandang → pelabuhan'],snorkel:['Snorkeling antarpulau',idD,idP,'Sanur → titik snorkeling → makan siang → kembali'],culture:['Landmark budaya Bali',idD,idP,'Bali Selatan → landmark budaya → pura → matahari terbenam'],beach:['Pantai Bali apa adanya',idD,idP,'Hotel → pantai → makan siang → jalan saat senja'],monkey:['Monkey Forest Ubud',idD,idP,'Pusat Ubud → Monkey Forest → makan siang → area istana'],temple:['Arsitektur pura Ubud',idD,idP,'Pura → desa kerajinan → jalan sawah → pertunjukan malam'],coffee:['Pengalaman kopi dataran tinggi',idD,idP,'Ubud → kebun kopi → proses sangrai → Kintamani'],stay:['Menginap menghadap gunung Kintamani',idD,idP,'Ubud → check-in Kintamani → matahari terbit → danau atau pemandian'],boat:['Penyeberangan pulau dengan boat',idD,idP,'Jemput hotel → Pelabuhan Sanur → menyeberang → transfer lokal']};
+  var map = { 'batur-jeep':'batur','batur-ride':'jeep','penida-cliff':'penida',snorkel:'snorkel','penida-rock':'penida','coastal-culture':'culture',beach:'beach','monkey-forest':'monkey','ubud-temple':'temple','coffee-garden':'coffee','coffee-roast':'coffee','batur-dawn':'batur','kintamani-stay':'stay','island-boat':'boat','penida-bay':'penida' };
+  var modal = document.getElementById('bali-place-modal');
+  var activeShot = null;
+  function lang() { return (document.getElementById('langPicker') || {}).value || localStorage.getItem('wm_studio_lang') || 'en'; }
+  function renderModal() {
+    if (!activeShot) return;
+    var key = map[activeShot.dataset.place]; var data = (COPY[lang()] || COPY.en)[key] || COPY.en[key];
+    document.getElementById('bali-place-image').src = activeShot.querySelector('img').src;
+    document.getElementById('bali-place-image').alt = activeShot.querySelector('img').alt;
+    document.getElementById('bali-place-tags').textContent = Array.from(activeShot.querySelectorAll('.bali-shot-meta span')).map(function(x){return x.textContent}).join(' · ');
+    document.getElementById('bali-place-title').textContent = data[0]; document.getElementById('bali-place-desc').textContent = data[1];
+    document.getElementById('bali-place-purpose').textContent = data[2]; document.getElementById('bali-place-route').textContent = data[3];
+    document.getElementById('bali-place-ai').href = 'ai-tool.html?dest=bali&place=' + encodeURIComponent(data[0]);
+  }
+  document.querySelectorAll('.bali-filter').forEach(function(btn){ btn.onclick=function(){ document.querySelectorAll('.bali-filter').forEach(function(x){x.classList.toggle('active',x===btn)}); document.querySelectorAll('.bali-shot').forEach(function(x){x.hidden=btn.dataset.filter!=='all' && !x.dataset.tags.split(' ').includes(btn.dataset.filter)}); }; });
+  document.querySelectorAll('.bali-shot').forEach(function(shot){ shot.onclick=function(){ activeShot=shot; renderModal(); modal.classList.add('show'); modal.setAttribute('aria-hidden','false'); document.body.style.overflow='hidden'; modal.querySelector('.bali-place-close').focus(); }; });
+  function close(){ modal.classList.remove('show'); modal.setAttribute('aria-hidden','true'); document.body.style.overflow=''; if(activeShot) activeShot.focus(); }
+  modal.querySelector('.bali-place-close').onclick=close; modal.onclick=function(e){if(e.target===modal)close()}; document.addEventListener('keydown',function(e){if(e.key==='Escape'&&modal.classList.contains('show'))close()});
+  var picker=document.getElementById('langPicker'); if(picker)picker.addEventListener('change',renderModal);
+})();
+</script>
 </body>
 </html>

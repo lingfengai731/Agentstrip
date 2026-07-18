@@ -5,6 +5,7 @@ import re
 import hmac
 import json
 import os
+import secrets
 import time
 import uuid
 from pathlib import Path
@@ -14,12 +15,25 @@ import httpx
 from dotenv import load_dotenv
 from fastapi import Depends, FastAPI, Header, HTTPException, Request
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.middleware.gzip import GZipMiddleware
 from fastapi.responses import HTMLResponse, JSONResponse, PlainTextResponse, Response, StreamingResponse
 from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel
 
 from db import get_db, init_db, IntegrityError, backend_name
-from email_service import send_welcome, send_password_reset, send_driver_request
+from email_service import (
+    send_driver_request,
+    send_password_reset,
+    send_verification_code,
+    send_welcome,
+)
+
+try:
+    from google.auth.transport import requests as google_requests
+    from google.oauth2 import id_token as google_id_token
+except ImportError:  # dependency is installed from requirements in production
+    google_requests = None
+    google_id_token = None
 
 load_dotenv(Path(__file__).parent.parent / ".env")
 
@@ -31,6 +45,7 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+app.add_middleware(GZipMiddleware, minimum_size=1000)
 
 # ─── Database init (SQLite local / PostgreSQL prod via DATABASE_URL) ─
 init_db()
@@ -210,10 +225,17 @@ def consume_quota(user, anon_id):
 
 
 # ─── Request models ──────────────────────────────────────────
+class SendVerificationReq(BaseModel):
+    email: str
+    lang: str = "en"
+
+
 class RegisterReq(BaseModel):
     email: str
     password: str
     name: str
+    code: str
+    lang: str = "en"
 
 
 class LoginReq(BaseModel):
@@ -223,6 +245,12 @@ class LoginReq(BaseModel):
 
 class ForgotPwReq(BaseModel):
     email: str
+    lang: str = "en"
+
+
+class GoogleLoginReq(BaseModel):
+    credential: str
+    lang: str = "en"
 
 
 class ResetPwReq(BaseModel):
@@ -308,6 +336,14 @@ class DriverReq(BaseModel):
     num_people: Optional[int] = None
     num_days: Optional[int] = None
     attractions: str = ""
+    start_date: str = ""
+    end_date: str = ""
+    preferred_time: str = ""
+    pickup_location: str = ""
+    budget_range: str = ""
+    requested_services: List[str] = []
+    arrival_details: str = ""
+    lang: str = "en"
 
 
 # ─── Auth routes ─────────────────────────────────────────────
@@ -322,27 +358,161 @@ def _public_base_url(request: Request) -> str:
     return str(request.base_url).rstrip("/")
 
 
+_SUPPORTED_LANGS = {"zh", "en", "ja", "ko", "id"}
+
+
+def _clean_email(value: str) -> str:
+    email = (value or "").lower().strip()
+    if not re.fullmatch(r"[^\s@]+@[^\s@]+\.[^\s@]+", email):
+        raise HTTPException(400, "Invalid email address")
+    return email
+
+
+def _clean_lang(value: str) -> str:
+    return value if value in _SUPPORTED_LANGS else "en"
+
+
+def _verification_hash(email: str, code: str) -> str:
+    return hmac.new(_SECRET.encode(), f"verify:{email}:{code}".encode(), hashlib.sha256).hexdigest()
+
+
+@app.get("/api/auth/config")
+async def auth_config():
+    """Return public auth configuration. Secrets are never exposed."""
+    return {"google_client_id": os.getenv("GOOGLE_CLIENT_ID", "").strip()}
+
+
+@app.post("/api/auth/send-verification-code")
+async def send_registration_code(data: SendVerificationReq):
+    email = _clean_email(data.email)
+    lang = _clean_lang(data.lang)
+    now = int(time.time())
+    conn = get_db()
+    try:
+        if conn.execute("SELECT 1 FROM users WHERE email=?", (email,)).fetchone():
+            raise HTTPException(400, "Email already registered")
+        current = conn.execute(
+            "SELECT resend_after FROM email_verification_codes WHERE email=?", (email,)
+        ).fetchone()
+        if current and int(current["resend_after"] or 0) > now:
+            raise HTTPException(429, detail={"error": "wait_before_resend", "retry_after": int(current["resend_after"]) - now})
+
+        code = f"{secrets.randbelow(1_000_000):06d}"
+        result = await send_verification_code(email, code, lang)
+        if not result.get("ok"):
+            if os.getenv("ALLOW_DEV_VERIFICATION_CODE", "").strip() == "1":
+                dev_code = code
+            else:
+                raise HTTPException(503, "Verification email could not be sent")
+        else:
+            dev_code = None
+
+        conn.execute(
+            """INSERT INTO email_verification_codes
+               (email,code_hash,expires_at,resend_after,attempts,lang,created_at)
+               VALUES (?,?,?,?,?,?,?)
+               ON CONFLICT(email) DO UPDATE SET
+                 code_hash=excluded.code_hash, expires_at=excluded.expires_at,
+                 resend_after=excluded.resend_after, attempts=0, lang=excluded.lang,
+                 created_at=excluded.created_at""",
+            (email, _verification_hash(email, code), now + 600, now + 60, 0, lang, now),
+        )
+        conn.commit()
+        response = {"ok": True, "expires_in": 600, "resend_in": 60}
+        if dev_code:
+            response["dev_code"] = dev_code
+        return response
+    finally:
+        conn.close()
+
+
 @app.post("/api/auth/register")
 async def register(data: RegisterReq, request: Request):
     if len(data.password) < 6:
         raise HTTPException(400, "Password must be at least 6 characters")
-    if "@" not in data.email:
-        raise HTTPException(400, "Invalid email address")
+    email = _clean_email(data.email)
+    name = data.name.strip()
+    if not name:
+        raise HTTPException(400, "Name is required")
+    code = (data.code or "").strip()
+    if not re.fullmatch(r"\d{6}", code):
+        raise HTTPException(400, "Invalid verification code")
+    lang = _clean_lang(data.lang)
     conn = get_db()
     try:
+        verification = conn.execute(
+            "SELECT * FROM email_verification_codes WHERE email=?", (email,)
+        ).fetchone()
+        now = int(time.time())
+        if not verification or int(verification["expires_at"]) < now:
+            raise HTTPException(400, "Verification code expired")
+        if int(verification["attempts"] or 0) >= 5:
+            raise HTTPException(429, "Too many verification attempts")
+        if not hmac.compare_digest(verification["code_hash"], _verification_hash(email, code)):
+            conn.execute(
+                "UPDATE email_verification_codes SET attempts=attempts+1 WHERE email=?", (email,)
+            )
+            conn.commit()
+            raise HTTPException(400, "Invalid verification code")
         uid = str(uuid.uuid4())
-        email = data.email.lower().strip()
-        name = data.name.strip()
         conn.execute(
-            "INSERT INTO users (id,email,name,password_hash,created_at) VALUES (?,?,?,?,?)",
-            (uid, email, name, hash_pw(data.password), int(time.time())),
+            """INSERT INTO users
+               (id,email,name,password_hash,lang,email_verified,auth_provider,created_at)
+               VALUES (?,?,?,?,?,?,?,?)""",
+            (uid, email, name, hash_pw(data.password), lang, 1, "password", now),
         )
+        conn.execute("DELETE FROM email_verification_codes WHERE email=?", (email,))
         conn.commit()
         # Fire welcome email in background — never block registration on it
-        asyncio.create_task(send_welcome(email, name, _public_base_url(request)))
-        return {"token": make_token(uid, data.email), "user": {"id": uid, "email": data.email, "name": data.name}}
+        asyncio.create_task(send_welcome(email, name, _public_base_url(request), lang))
+        return {"token": make_token(uid, email), "user": {"id": uid, "email": email, "name": name}}
     except IntegrityError:
         raise HTTPException(400, "Email already registered")
+    finally:
+        conn.close()
+
+
+@app.post("/api/auth/google")
+async def google_login(data: GoogleLoginReq):
+    client_id = os.getenv("GOOGLE_CLIENT_ID", "").strip()
+    if not client_id:
+        raise HTTPException(503, "Google sign-in is not configured")
+    if not google_id_token or not google_requests:
+        raise HTTPException(503, "Google sign-in dependency is unavailable")
+    try:
+        info = google_id_token.verify_oauth2_token(
+            data.credential, google_requests.Request(), client_id
+        )
+    except Exception:
+        raise HTTPException(401, "Invalid Google credential")
+    if not info.get("email_verified"):
+        raise HTTPException(401, "Google email is not verified")
+    email = _clean_email(info.get("email", ""))
+    google_sub = str(info.get("sub", "")).strip()
+    if not google_sub:
+        raise HTTPException(401, "Invalid Google account")
+    name = (info.get("name") or email.split("@", 1)[0]).strip()
+    lang = _clean_lang(data.lang)
+    conn = get_db()
+    try:
+        row = conn.execute("SELECT * FROM users WHERE google_sub=?", (google_sub,)).fetchone()
+        if not row:
+            existing = conn.execute("SELECT * FROM users WHERE email=?", (email,)).fetchone()
+            if existing:
+                raise HTTPException(409, "This email already uses password sign-in")
+            uid = str(uuid.uuid4())
+            conn.execute(
+                """INSERT INTO users
+                   (id,email,name,password_hash,lang,email_verified,auth_provider,google_sub,created_at)
+                   VALUES (?,?,?,?,?,?,?,?,?)""",
+                (uid, email, name, "!google", lang, 1, "google", google_sub, int(time.time())),
+            )
+            conn.commit()
+            row = conn.execute("SELECT * FROM users WHERE id=?", (uid,)).fetchone()
+        return {
+            "token": make_token(row["id"], row["email"]),
+            "user": {"id": row["id"], "email": row["email"], "name": row["name"]},
+        }
     finally:
         conn.close()
 
@@ -376,7 +546,9 @@ async def forgot_password(data: ForgotPwReq, request: Request):
             token = make_reset_token(r["id"], r["email"])
             link = f"{_public_base_url(request)}/reset-password?token={token}"
             # Background send; we don't expose success/failure to caller
-            asyncio.create_task(send_password_reset(r["email"], r["name"] or r["email"], link))
+            asyncio.create_task(send_password_reset(
+                r["email"], r["name"] or r["email"], link, _clean_lang(data.lang)
+            ))
         # Always return the same message
         return {"ok": True, "message": "If that email is registered, a reset link has been sent."}
     finally:
@@ -984,15 +1156,19 @@ async def driver_request(data: DriverReq):
         "num_people": data.num_people,
         "num_days": data.num_days,
         "attractions": data.attractions.strip(),
+        "start_date": data.start_date.strip(),
+        "end_date": data.end_date.strip(),
+        "preferred_time": data.preferred_time.strip(),
+        "pickup_location": data.pickup_location.strip(),
+        "budget_range": data.budget_range.strip(),
+        "requested_services": [str(item).strip() for item in data.requested_services if str(item).strip()],
+        "arrival_details": data.arrival_details.strip(),
+        "lang": _clean_lang(data.lang),
     }
     result = await send_driver_request(payload)
-    # In dev mode (no RESEND_API_KEY) result.ok is False but we still return
-    # success so the UX flow is testable; the request was logged to stdout.
-    return {
-        "ok": True,
-        "delivered": bool(result.get("ok")),
-        "note": None if result.get("ok") else "Email service in dev mode — request logged but not delivered.",
-    }
+    if not result.get("ok"):
+        raise HTTPException(503, "Request email could not be delivered. Please retry shortly.")
+    return {"ok": True, "delivered": True}
 
 
 # ─── Dynamic destination info (AI-generated panel data) ──────

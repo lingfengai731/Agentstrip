@@ -113,9 +113,7 @@ const DESTS = {
         tag:{ zh:'亲测靠谱',en:'Trusted',ja:'信頼済み',ko:'검증됨',id:'Terpercaya' },
         desc:{ zh:'本地司机 · 英语 · 机场接送 · 包车',en:'Local · English-speaking · Transfers · Tours',ja:'ローカル · 英語 · 空港送迎 · 貸切',ko:'현지 · 영어 · 픽업 · 전세 투어',id:'Driver lokal · Bisa bahasa Inggris · Jemput bandara · Tur privat' },
         contacts: [
-          { icon:'fa-whatsapp', label:'WhatsApp', value:'+62 898-0532-230', href:'https://wa.me/628980532230' },
-          { icon:'fa-book',     label:'Xiaohongshu', value:'Wander with ky (ID: 18613428065)', href:'https://www.xiaohongshu.com/user/profile/' },
-          { icon:'fa-comment',  label:'WeChat',   value:'wxid_vkzbrp1iyg6t12', href:null }
+          { icon:'fa-paper-plane', label:'WanderMind', value:{ zh:'提交日期与预算需求',en:'Send dates & budget request',ja:'日程と予算を送信',ko:'일정과 예산 요청 보내기',id:'Kirim tanggal & anggaran' }, href:'find-driver.html' }
         ]
       }
     ],
@@ -732,9 +730,10 @@ function renderPanelDest() {
   // Tips
   $('#ws-tip-list').innerHTML = (d.tips || []).map(tip => {
     const contactsHtml = (tip.contacts || []).map(c => {
-      const inner = `<span class="fa ${escapeHtml(c.icon)}" aria-hidden="true"></span><span class="ws-tip-contact-text">${escapeHtml(c.value)}</span>`;
+      const value = typeof c.value === 'object' ? (c.value[currentLang] || c.value.en) : c.value;
+      const inner = `<span class="fa ${escapeHtml(c.icon)}" aria-hidden="true"></span><span class="ws-tip-contact-text">${escapeHtml(value)}</span>`;
       return c.href
-        ? `<a class="ws-tip-contact" href="${escapeHtml(c.href)}" target="_blank" rel="noopener" title="${escapeHtml(c.label)}">${inner}</a>`
+        ? `<a class="ws-tip-contact" href="${escapeHtml(c.href)}" title="${escapeHtml(c.label)}">${inner}</a>`
         : `<div class="ws-tip-contact" title="${escapeHtml(c.label)}">${inner}</div>`;
     }).join('');
     return `
@@ -1038,6 +1037,7 @@ function init() {
   if (mRightBtn) mRightBtn.onclick = () => document.querySelector('.ws-rightpanel').classList.toggle('mobile-open');
 
   attachLangWatcher();
+  setTimeout(hydratePlannerFromQuery, 0);
 }
 
 if (document.readyState === 'loading') {
@@ -2570,6 +2570,15 @@ Object.assign(TOOL_I18N.id, {
   errLoginFail:'Gagal masuk', errRegisterFail:'Gagal daftar'
 });
 
+const AUTH_EXTRA = {
+  en: { authWelcome:'Plan with confidence', authSub:'Save trips, sync preferences and continue on any device.', authEmailLabel:'Email address', authPasswordLabel:'Password', authNameLabel:'Your name', authCodeLabel:'6-digit code', authSendCode:'Send verification code', authSendingCode:'Sending code…', authCodeSent:'Code sent. Check your inbox and spam folder.', authVerifyCreate:'Verify & create account', authResend:'Resend code', authResendIn:'Resend in {n}s', authOr:'or', authGoogle:'Continue with Google', authGoogleUnavailable:'Google sign-in is not configured yet.', authCodeInvalid:'Enter the 6-digit code from your email.', authCodeExpired:'The code is invalid or expired. Request a new one.', authEmailSendFail:'We could not send the email. Please try again later.', authExistingPassword:'This email already uses password sign-in.', authClose:'Close', authPrivacy:'We only use your email to secure and sync your trips.' },
+  zh: { authWelcome:'安心规划每一程', authSub:'保存行程、同步偏好，并在任意设备继续规划。', authEmailLabel:'邮箱地址', authPasswordLabel:'密码', authNameLabel:'你的名字', authCodeLabel:'6 位验证码', authSendCode:'发送邮箱验证码', authSendingCode:'正在发送…', authCodeSent:'验证码已发送，请检查收件箱和垃圾邮件。', authVerifyCreate:'验证并创建账户', authResend:'重新发送验证码', authResendIn:'{n} 秒后可重发', authOr:'或', authGoogle:'使用 Google 继续', authGoogleUnavailable:'Google 登录尚未配置。', authCodeInvalid:'请输入邮箱中的 6 位验证码。', authCodeExpired:'验证码无效或已过期，请重新获取。', authEmailSendFail:'邮件暂时无法发送，请稍后重试。', authExistingPassword:'此邮箱已使用密码登录。', authClose:'关闭', authPrivacy:'邮箱仅用于保护账户并同步你的行程。' },
+  ja: { authWelcome:'安心して旅を計画', authSub:'旅程と好みを保存し、どの端末からでも続けられます。', authEmailLabel:'メールアドレス', authPasswordLabel:'パスワード', authNameLabel:'お名前', authCodeLabel:'6桁コード', authSendCode:'認証コードを送信', authSendingCode:'送信中…', authCodeSent:'コードを送信しました。迷惑メールもご確認ください。', authVerifyCreate:'認証してアカウント作成', authResend:'コードを再送', authResendIn:'{n}秒後に再送', authOr:'または', authGoogle:'Googleで続ける', authGoogleUnavailable:'Googleログインは未設定です。', authCodeInvalid:'メールの6桁コードを入力してください。', authCodeExpired:'コードが無効または期限切れです。再送してください。', authEmailSendFail:'メールを送信できませんでした。後でもう一度お試しください。', authExistingPassword:'このメールはパスワードログインを使用しています。', authClose:'閉じる', authPrivacy:'メールはアカウント保護と旅程同期にのみ使用します。' },
+  ko: { authWelcome:'안심하고 여행 계획', authSub:'여행과 선호를 저장하고 모든 기기에서 이어가세요.', authEmailLabel:'이메일 주소', authPasswordLabel:'비밀번호', authNameLabel:'이름', authCodeLabel:'6자리 코드', authSendCode:'인증 코드 보내기', authSendingCode:'전송 중…', authCodeSent:'코드를 보냈습니다. 스팸함도 확인하세요.', authVerifyCreate:'인증하고 계정 만들기', authResend:'코드 다시 보내기', authResendIn:'{n}초 후 재전송', authOr:'또는', authGoogle:'Google로 계속', authGoogleUnavailable:'Google 로그인이 아직 설정되지 않았습니다.', authCodeInvalid:'이메일의 6자리 코드를 입력하세요.', authCodeExpired:'코드가 잘못되었거나 만료되었습니다. 새로 요청하세요.', authEmailSendFail:'이메일을 보낼 수 없습니다. 나중에 다시 시도하세요.', authExistingPassword:'이 이메일은 비밀번호 로그인을 사용 중입니다.', authClose:'닫기', authPrivacy:'이메일은 계정 보호와 여행 동기화에만 사용합니다.' },
+  id: { authWelcome:'Rencanakan perjalanan dengan tenang', authSub:'Simpan perjalanan, sinkronkan preferensi, dan lanjutkan di perangkat apa pun.', authEmailLabel:'Alamat email', authPasswordLabel:'Kata sandi', authNameLabel:'Nama Anda', authCodeLabel:'Kode 6 digit', authSendCode:'Kirim kode verifikasi', authSendingCode:'Mengirim kode…', authCodeSent:'Kode terkirim. Periksa kotak masuk dan folder spam.', authVerifyCreate:'Verifikasi & buat akun', authResend:'Kirim ulang kode', authResendIn:'Kirim ulang dalam {n}d', authOr:'atau', authGoogle:'Lanjutkan dengan Google', authGoogleUnavailable:'Login Google belum dikonfigurasi.', authCodeInvalid:'Masukkan kode 6 digit dari email.', authCodeExpired:'Kode tidak valid atau kedaluwarsa. Minta kode baru.', authEmailSendFail:'Email tidak dapat dikirim. Coba lagi nanti.', authExistingPassword:'Email ini sudah memakai login kata sandi.', authClose:'Tutup', authPrivacy:'Email hanya digunakan untuk mengamankan akun dan menyinkronkan perjalanan.' }
+};
+Object.keys(AUTH_EXTRA).forEach(lang => Object.assign(TOOL_I18N[lang], AUTH_EXTRA[lang]));
+
 let authToken  = localStorage.getItem('wm_studio_token') || null;
 let authUser   = (() => { try { return JSON.parse(localStorage.getItem('wm_studio_user') || 'null'); } catch(_) { return null; } })();
 let tripList   = [];
@@ -2603,21 +2612,66 @@ async function doLogin(email, password) {
   addLog('success', 'fa-sign-in', _interp(t().logLogin, { name: authUser.name || authUser.email }));
 }
 
-async function doRegister(name, email, password) {
-  const r = await fetch(BACKEND_BASE + '/api/auth/register', {
-    method:'POST', headers:{ 'Content-Type':'application/json' },
-    body: JSON.stringify({ name, email, password })
-  });
-  const data = await r.json();
-  if (!r.ok) throw new Error(data.detail || t().errRegisterFail);
+function completeAuth(data) {
   authToken = data.token;
-  authUser  = data.user;
+  authUser = data.user;
   localStorage.setItem('wm_studio_token', authToken);
   localStorage.setItem('wm_studio_user', JSON.stringify(authUser));
   updateAuthUI();
+}
+
+async function doRegister(name, email, password, code) {
+  const r = await fetch(BACKEND_BASE + '/api/auth/register', {
+    method:'POST', headers:{ 'Content-Type':'application/json' },
+    body: JSON.stringify({ name, email, password, code, lang: currentLang })
+  });
+  const data = await r.json();
+  if (!r.ok) throw new Error(r.status === 429 || /code/i.test(String(data.detail)) ? t().authCodeExpired : t().errRegisterFail);
+  completeAuth(data);
   await loadTrips();
   closeModalEl();
   addLog('success', 'fa-sign-in', _interp(t().logLogin, { name: authUser.name || authUser.email }));
+}
+
+async function sendRegistrationCode(email) {
+  const r = await fetch(BACKEND_BASE + '/api/auth/send-verification-code', {
+    method:'POST', headers:{ 'Content-Type':'application/json' },
+    body: JSON.stringify({ email, lang: currentLang })
+  });
+  const data = await r.json();
+  if (!r.ok) {
+    if (r.status === 429) throw new Error(t().authResendIn.replace('{n}', data.detail?.retry_after || 60));
+    if (r.status === 503) throw new Error(t().authEmailSendFail);
+    if (/already/i.test(String(data.detail))) throw new Error(t().authExistingPassword);
+    throw new Error(t().errRegisterFail);
+  }
+  return data;
+}
+
+async function doGoogleLogin(credential) {
+  const r = await fetch(BACKEND_BASE + '/api/auth/google', {
+    method:'POST', headers:{ 'Content-Type':'application/json' },
+    body: JSON.stringify({ credential, lang: currentLang })
+  });
+  const data = await r.json();
+  if (!r.ok) throw new Error(r.status === 409 ? t().authExistingPassword : t().errLoginFail);
+  completeAuth(data);
+  await loadTrips();
+  closeModalEl();
+  addLog('success', 'fa-google', _interp(t().logLogin, { name: authUser.name || authUser.email }));
+}
+
+function loadGoogleIdentity() {
+  if (window.google?.accounts?.id) return Promise.resolve();
+  return new Promise((resolve, reject) => {
+    const existing = document.querySelector('script[data-wm-google]');
+    if (existing) { existing.addEventListener('load', resolve, { once:true }); existing.addEventListener('error', reject, { once:true }); return; }
+    const script = document.createElement('script');
+    script.src = 'https://accounts.google.com/gsi/client';
+    script.async = true; script.defer = true; script.dataset.wmGoogle = '1';
+    script.onload = resolve; script.onerror = reject;
+    document.head.appendChild(script);
+  });
 }
 
 function doLogout() {
@@ -2638,51 +2692,66 @@ function showAuthModal(tab = 'login') {
   const el = _ensureModal();
   const T = t();
   el.innerHTML = `
-    <div class="ws-modal" style="max-width:440px">
-      <div class="ws-modal-head">
-        <div class="ws-modal-title"><span class="fa fa-user-circle-o"></span> ${escapeHtml(tab === 'login' ? T.authLogin : T.authRegister)}</div>
-        <button class="ws-modal-close"><span class="fa fa-times"></span></button>
-      </div>
+    <div class="ws-modal ws-auth-modal" role="dialog" aria-modal="true" aria-labelledby="ws-auth-title">
+      <button class="ws-modal-close ws-auth-close" type="button" aria-label="${escapeHtml(T.authClose)}"><span class="fa fa-times" aria-hidden="true"></span></button>
       <div class="ws-modal-body">
-        <p style="color:var(--ws-ink-3);font-size:13px;margin:0 0 18px;line-height:1.6">${escapeHtml(T.authLoginCta)}</p>
+      <div class="ws-auth-brand"><img src="assets/images/logo-mark-256.png" alt="WanderMind"><span>WanderMind</span></div>
+        <h2 class="ws-auth-title" id="ws-auth-title">${escapeHtml(T.authWelcome)}</h2>
+        <p class="ws-auth-sub">${escapeHtml(T.authSub)}</p>
         <div class="ws-auth-tabs">
-          <button class="ws-auth-tab ${tab==='login'?'active':''}" data-auth-tab="login">${escapeHtml(T.authLogin)}</button>
-          <button class="ws-auth-tab ${tab==='register'?'active':''}" data-auth-tab="register">${escapeHtml(T.authRegister)}</button>
+          <button class="ws-auth-tab ${tab==='login'?'active':''}" type="button" data-auth-tab="login">${escapeHtml(T.authLogin)}</button>
+          <button class="ws-auth-tab ${tab==='register'?'active':''}" type="button" data-auth-tab="register">${escapeHtml(T.authRegister)}</button>
         </div>
         <div class="ws-auth-form" data-form="login" style="display:${tab==='login'?'block':'none'}">
-          <input type="email" class="ws-form-input ws-auth-input" id="ws-li-email" placeholder="${escapeHtml(T.authEmail)}" autocomplete="email">
-          <input type="password" class="ws-form-input ws-auth-input" id="ws-li-pw" placeholder="${escapeHtml(T.authPassword)}" autocomplete="current-password">
-          <div class="ws-auth-error" id="ws-li-err"></div>
-          <button class="ws-search-btn" id="ws-li-btn"><span class="fa fa-sign-in"></span> ${escapeHtml(T.authLogin)}</button>
-          <div style="text-align:right;margin-top:10px">
-            <a href="#" id="ws-li-forgot" style="font-size:12.5px;color:var(--ws-teal);text-decoration:none">${escapeHtml(T.authForgotLink)}</a>
-          </div>
+          <label class="ws-auth-label" for="ws-li-email">${escapeHtml(T.authEmailLabel)}</label>
+          <input type="email" class="ws-form-input ws-auth-input" id="ws-li-email" autocomplete="email">
+          <div class="ws-auth-label-row"><label class="ws-auth-label" for="ws-li-pw">${escapeHtml(T.authPasswordLabel)}</label><a href="#" id="ws-li-forgot">${escapeHtml(T.authForgotLink)}</a></div>
+          <input type="password" class="ws-form-input ws-auth-input" id="ws-li-pw" autocomplete="current-password">
+          <div class="ws-auth-error" id="ws-li-err" role="alert"></div>
+          <button class="ws-search-btn ws-auth-primary" type="button" id="ws-li-btn"><span class="fa fa-sign-in" aria-hidden="true"></span> ${escapeHtml(T.authLogin)}</button>
         </div>
         <div class="ws-auth-form" data-form="register" style="display:${tab==='register'?'block':'none'}">
-          <input type="text" class="ws-form-input ws-auth-input" id="ws-rg-name" placeholder="${escapeHtml(T.authName)}" autocomplete="name">
-          <input type="email" class="ws-form-input ws-auth-input" id="ws-rg-email" placeholder="${escapeHtml(T.authEmail)}" autocomplete="email">
-          <input type="password" class="ws-form-input ws-auth-input" id="ws-rg-pw" placeholder="${escapeHtml(T.authPassword)} (6+)" autocomplete="new-password">
-          <div class="ws-auth-error" id="ws-rg-err"></div>
-          <button class="ws-search-btn" id="ws-rg-btn"><span class="fa fa-user-plus"></span> ${escapeHtml(T.authRegister)}</button>
-        </div>
-        <div class="ws-auth-form" data-form="forgot" style="display:none">
-          <h3 style="font-size:16px;font-weight:700;margin:0 0 8px;color:var(--ws-ink)">${escapeHtml(T.authForgotTitle)}</h3>
-          <p style="font-size:13px;color:var(--ws-ink-3);margin:0 0 14px;line-height:1.6">${escapeHtml(T.authForgotSub)}</p>
-          <input type="email" class="ws-form-input ws-auth-input" id="ws-fp-email" placeholder="${escapeHtml(T.authEmail)}" autocomplete="email">
-          <div class="ws-auth-error" id="ws-fp-msg"></div>
-          <button class="ws-search-btn" id="ws-fp-btn"><span class="fa fa-paper-plane"></span> ${escapeHtml(T.authForgotBtn)}</button>
-          <div style="text-align:center;margin-top:10px">
-            <a href="#" id="ws-fp-back" style="font-size:12.5px;color:var(--ws-ink-3);text-decoration:none">← ${escapeHtml(T.authForgotBack)}</a>
+          <div class="ws-auth-register-step" data-register-step="email">
+            <label class="ws-auth-label" for="ws-rg-email">${escapeHtml(T.authEmailLabel)}</label>
+            <input type="email" class="ws-form-input ws-auth-input" id="ws-rg-email" autocomplete="email">
+            <div class="ws-auth-error" id="ws-rg-email-err" role="alert"></div>
+            <button class="ws-search-btn ws-auth-primary" type="button" id="ws-code-btn"><span class="fa fa-envelope-o" aria-hidden="true"></span> ${escapeHtml(T.authSendCode)}</button>
+          </div>
+          <div class="ws-auth-register-step" data-register-step="details" hidden>
+            <div class="ws-auth-sent" id="ws-code-sent"></div>
+            <label class="ws-auth-label" for="ws-rg-code">${escapeHtml(T.authCodeLabel)}</label>
+            <input type="text" inputmode="numeric" maxlength="6" pattern="[0-9]{6}" class="ws-form-input ws-auth-input ws-auth-code" id="ws-rg-code" autocomplete="one-time-code">
+            <label class="ws-auth-label" for="ws-rg-name">${escapeHtml(T.authNameLabel)}</label>
+            <input type="text" class="ws-form-input ws-auth-input" id="ws-rg-name" autocomplete="name">
+            <label class="ws-auth-label" for="ws-rg-pw">${escapeHtml(T.authPasswordLabel)}</label>
+            <input type="password" class="ws-form-input ws-auth-input" id="ws-rg-pw" autocomplete="new-password">
+            <div class="ws-auth-error" id="ws-rg-err" role="alert"></div>
+            <button class="ws-search-btn ws-auth-primary" type="button" id="ws-rg-btn"><span class="fa fa-user-plus" aria-hidden="true"></span> ${escapeHtml(T.authVerifyCreate)}</button>
+            <button class="ws-auth-resend" type="button" id="ws-code-resend" disabled>${escapeHtml(T.authResendIn.replace('{n}', '60'))}</button>
           </div>
         </div>
+        <div class="ws-auth-form" data-form="forgot" style="display:none">
+          <h3>${escapeHtml(T.authForgotTitle)}</h3>
+          <p>${escapeHtml(T.authForgotSub)}</p>
+          <label class="ws-auth-label" for="ws-fp-email">${escapeHtml(T.authEmailLabel)}</label>
+          <input type="email" class="ws-form-input ws-auth-input" id="ws-fp-email" autocomplete="email">
+          <div class="ws-auth-error" id="ws-fp-msg" role="alert"></div>
+          <button class="ws-search-btn ws-auth-primary" type="button" id="ws-fp-btn"><span class="fa fa-paper-plane" aria-hidden="true"></span> ${escapeHtml(T.authForgotBtn)}</button>
+          <a href="#" class="ws-auth-back" id="ws-fp-back">← ${escapeHtml(T.authForgotBack)}</a>
+        </div>
+        <div class="ws-auth-social" id="ws-auth-social"><div class="ws-auth-divider"><span>${escapeHtml(T.authOr)}</span></div><div id="ws-google-button"></div></div>
+        <p class="ws-auth-privacy"><span class="fa fa-lock" aria-hidden="true"></span> ${escapeHtml(T.authPrivacy)}</p>
       </div>
     </div>
   `;
   el.querySelector('.ws-modal-close').onclick = closeModalEl;
-  el.querySelectorAll('.ws-auth-tab').forEach(b => b.onclick = () => {
-    el.querySelectorAll('.ws-auth-tab').forEach(x => x.classList.toggle('active', x.dataset.authTab === b.dataset.authTab));
-    el.querySelectorAll('.ws-auth-form').forEach(f => f.style.display = (f.dataset.form === b.dataset.authTab ? 'block' : 'none'));
-  });
+  const social = document.getElementById('ws-auth-social');
+  const switchTab = which => {
+    el.querySelectorAll('.ws-auth-form').forEach(f => f.style.display = (f.dataset.form === which ? 'block' : 'none'));
+    el.querySelectorAll('.ws-auth-tab').forEach(x => x.classList.toggle('active', x.dataset.authTab === which));
+    social.hidden = which === 'forgot';
+  };
+  el.querySelectorAll('.ws-auth-tab').forEach(b => b.onclick = () => switchTab(b.dataset.authTab));
   const liBtn = document.getElementById('ws-li-btn');
   liBtn.onclick = async () => {
     const email = document.getElementById('ws-li-email').value.trim();
@@ -2695,18 +2764,58 @@ function showAuthModal(tab = 'login') {
     try { await doLogin(email, pw); } catch (e) { err.textContent = e.message || T.errLoginFail; }
     liBtn.disabled = false;
   };
+  let verifiedEmail = '';
+  let resendTimer = null;
+  const startResendTimer = seconds => {
+    const resend = document.getElementById('ws-code-resend');
+    clearInterval(resendTimer);
+    let remaining = seconds;
+    resend.disabled = true;
+    resend.textContent = T.authResendIn.replace('{n}', remaining);
+    resendTimer = setInterval(() => {
+      remaining -= 1;
+      resend.textContent = remaining > 0 ? T.authResendIn.replace('{n}', remaining) : T.authResend;
+      if (remaining <= 0) { clearInterval(resendTimer); resend.disabled = false; }
+    }, 1000);
+  };
+  const codeBtn = document.getElementById('ws-code-btn');
+  codeBtn.onclick = async () => {
+    const email = document.getElementById('ws-rg-email').value.trim();
+    const err = document.getElementById('ws-rg-email-err');
+    err.textContent = '';
+    if (!/.+@.+\..+/.test(email)) { err.textContent = T.errInvalidEmail; return; }
+    codeBtn.disabled = true;
+    const oldHtml = codeBtn.innerHTML;
+    codeBtn.innerHTML = `<span class="fa fa-spinner fa-spin"></span> ${escapeHtml(T.authSendingCode)}`;
+    try {
+      await sendRegistrationCode(email);
+      verifiedEmail = email;
+      el.querySelector('[data-register-step="email"]').hidden = true;
+      el.querySelector('[data-register-step="details"]').hidden = false;
+      document.getElementById('ws-code-sent').textContent = T.authCodeSent;
+      document.getElementById('ws-rg-code').focus();
+      startResendTimer(60);
+    } catch (e) { err.textContent = e.message || T.authEmailSendFail; }
+    finally { codeBtn.disabled = false; codeBtn.innerHTML = oldHtml; }
+  };
+  document.getElementById('ws-code-resend').onclick = async () => {
+    const resend = document.getElementById('ws-code-resend');
+    resend.disabled = true;
+    try { await sendRegistrationCode(verifiedEmail); startResendTimer(60); }
+    catch (e) { document.getElementById('ws-rg-err').textContent = e.message || T.authEmailSendFail; resend.disabled = false; }
+  };
   const rgBtn = document.getElementById('ws-rg-btn');
   rgBtn.onclick = async () => {
     const name  = document.getElementById('ws-rg-name').value.trim();
-    const email = document.getElementById('ws-rg-email').value.trim();
     const pw    = document.getElementById('ws-rg-pw').value;
+    const code  = document.getElementById('ws-rg-code').value.trim();
     const err   = document.getElementById('ws-rg-err');
     err.textContent = '';
+    if (!/^\d{6}$/.test(code)) { err.textContent = T.authCodeInvalid; return; }
     if (!name) { err.textContent = T.authName; return; }
-    if (!/.+@.+\..+/.test(email)) { err.textContent = T.errInvalidEmail; return; }
     if (pw.length < 6) { err.textContent = T.errShortPw; return; }
     rgBtn.disabled = true;
-    try { await doRegister(name, email, pw); } catch (e) { err.textContent = e.message || T.errRegisterFail; }
+    try { await doRegister(name, verifiedEmail, pw, code); } catch (e) { err.textContent = e.message || T.errRegisterFail; }
     rgBtn.disabled = false;
   };
   // Enter to submit
@@ -2720,7 +2829,7 @@ function showAuthModal(tab = 'login') {
 
   // Forgot password — show inline panel instead of leaving the modal
   const showForm = which => {
-    el.querySelectorAll('.ws-auth-form').forEach(f => f.style.display = (f.dataset.form === which ? 'block' : 'none'));
+    switchTab(which);
     el.querySelectorAll('.ws-auth-tab').forEach(t => t.style.display = (which === 'forgot' ? 'none' : ''));
   };
   const forgotLink = document.getElementById('ws-li-forgot');
@@ -2732,7 +2841,7 @@ function showAuthModal(tab = 'login') {
     document.getElementById('ws-fp-email').focus();
   };
   const fpBack = document.getElementById('ws-fp-back');
-  if (fpBack) fpBack.onclick = e => { e.preventDefault(); showForm('login'); };
+  if (fpBack) fpBack.onclick = e => { e.preventDefault(); el.querySelectorAll('.ws-auth-tab').forEach(t => t.style.display = ''); showForm('login'); };
   const fpBtn = document.getElementById('ws-fp-btn');
   if (fpBtn) fpBtn.onclick = async () => {
     const email = document.getElementById('ws-fp-email').value.trim();
@@ -2746,7 +2855,7 @@ function showAuthModal(tab = 'login') {
     try {
       await fetch(BACKEND_BASE + '/api/auth/forgot-password', {
         method:'POST', headers:{ 'Content-Type':'application/json' },
-        body: JSON.stringify({ email })
+        body: JSON.stringify({ email, lang: currentLang })
       });
       // Always show success — never leak whether the email exists
       msg.style.color = 'var(--ws-teal)';
@@ -2759,7 +2868,25 @@ function showAuthModal(tab = 'login') {
     }
   };
 
+  fetch(BACKEND_BASE + '/api/auth/config').then(r => r.ok ? r.json() : {}).then(async cfg => {
+    if (!cfg.google_client_id) { social.hidden = true; return; }
+    await loadGoogleIdentity();
+    if (!document.getElementById('ws-google-button')) return;
+    window.google.accounts.id.initialize({
+      client_id: cfg.google_client_id,
+      callback: async response => {
+        const err = document.querySelector('.ws-auth-form:not([style*="none"]) .ws-auth-error') || document.getElementById('ws-li-err');
+        try { await doGoogleLogin(response.credential); } catch (e) { err.textContent = e.message || T.errLoginFail; }
+      }
+    });
+    window.google.accounts.id.renderButton(document.getElementById('ws-google-button'), {
+      type:'standard', theme: document.body.classList.contains('dark') ? 'filled_black' : 'outline',
+      size:'large', text:'continue_with', shape:'rectangular', width:360
+    });
+  }).catch(() => { social.hidden = true; });
+
   el.classList.add('show');
+  setTimeout(() => el.querySelector(tab === 'login' ? '#ws-li-email' : '#ws-rg-email')?.focus(), 50);
 }
 
 async function loadTrips() {
@@ -2849,6 +2976,41 @@ let currentTrip = (() => {
   try { return JSON.parse(localStorage.getItem('wm_studio_currentTrip') || 'null'); }
   catch(_) { return null; }
 })();
+let _entryContext = null;
+
+function hydratePlannerFromQuery() {
+  const q = new URLSearchParams(window.location.search);
+  const place = q.get('place');
+  if (place && !q.get('start') && !q.get('budget')) {
+    currentDest = 'bali';
+    localStorage.setItem('wm_studio_dest', 'bali');
+    const prompts = {
+      zh:`请把“${place}”加入我的巴厘岛路线，并根据交通时间给出一个不过度赶场的简易安排。`,
+      en:`Add “${place}” to my Bali route and suggest a simple, unhurried plan that accounts for travel time.`,
+      ja:`「${place}」をバリのルートに追加し、移動時間を考慮した無理のない簡単なプランを提案してください。`,
+      ko:`“${place}”을(를) 발리 경로에 추가하고 이동 시간을 고려한 여유로운 간단 일정을 제안해 주세요.`,
+      id:`Tambahkan “${place}” ke rute Bali saya dan buat rencana sederhana yang santai dengan mempertimbangkan waktu perjalanan.`
+    };
+    const input = document.getElementById('ws-input');
+    if (input) { input.value = prompts[currentLang] || prompts.en; input.dispatchEvent(new Event('input')); input.focus(); }
+    renderChatHeader(); renderPanelDest();
+    history.replaceState({}, document.title, window.location.pathname);
+    return;
+  }
+  if (!q.get('start') && !q.get('budget') && !q.get('audience')) return;
+  _entryContext = { audience: q.get('audience') || '', goal: q.get('goal') || '' };
+  showNewTripModal();
+  const values = {
+    'ws-nt-dest': q.get('dest'), 'ws-nt-people': q.get('people'),
+    'ws-nt-start': q.get('start'), 'ws-nt-end': q.get('end'),
+    'ws-nt-budget': q.get('budget'), 'ws-nt-style': q.get('style')
+  };
+  Object.keys(values).forEach(id => {
+    const field = document.getElementById(id);
+    if (field && values[id]) field.value = values[id];
+  });
+  history.replaceState({}, document.title, window.location.pathname);
+}
 
 function showNewTripModal() {
   const el = _ensureModal();
@@ -2970,7 +3132,9 @@ async function submitNewTrip() {
     if (typeof fetchDestInfo === 'function') fetchDestInfo(dest);
   }
 
-  currentTrip = { dest, start, end, days, people, budget, style, title };
+  const audience = _entryContext?.audience || '';
+  const goal = _entryContext?.goal || '';
+  currentTrip = { dest, start, end, days, people, budget, style, title, audience, goal };
   localStorage.setItem('wm_studio_currentTrip', JSON.stringify(currentTrip));
   currentTripId = null;
   messages = [];
@@ -2990,7 +3154,17 @@ async function submitNewTrip() {
     ko: `${start}부터 ${days}일, ${people}명, ${destName}, 예산 ${ccy}${budget.toLocaleString()}, ${styleLabel} 스타일. 여행 플래너로서 계획을 시작해 주세요.`,
     id: `Rencanakan ${days} hari ke ${destName} mulai ${start} untuk ${people} orang. Anggaran ${ccy}${budget.toLocaleString()}. Gaya: ${styleLabel}. Mulai sebagai Trip Planner.`
   };
-  sendMessage(kickoffs[currentLang] || kickoffs.en);
+  const entryLabels = {
+    zh: { first:'第一次去巴厘岛', returning:'去过巴厘岛，希望深度体验', easy:'希望少做攻略、旅途更轻松', local:'更重视风土人情和真实体验', photo:'更重视摄影与自然风景', value:'更重视性价比和预算控制' },
+    en: { first:'first Bali visit', returning:'returning visitor seeking a deeper experience', easy:'prioritise an easier trip with less planning', local:'prioritise local culture and real experiences', photo:'prioritise photography and scenery', value:'prioritise value and budget control' },
+    ja: { first:'初めてのバリ旅行', returning:'再訪で深い体験を希望', easy:'計画を減らして楽な旅を重視', local:'文化とリアルな体験を重視', photo:'写真と風景を重視', value:'価格と予算管理を重視' },
+    ko: { first:'첫 발리 여행', returning:'재방문으로 더 깊은 경험 희망', easy:'계획을 줄이고 편한 여행 중시', local:'현지 문화와 실제 경험 중시', photo:'사진과 풍경 중시', value:'가성비와 예산 관리 중시' },
+    id: { first:'kunjungan pertama ke Bali', returning:'pernah datang dan ingin pengalaman lebih mendalam', easy:'mengutamakan perjalanan mudah dengan lebih sedikit rencana', local:'mengutamakan budaya lokal dan pengalaman nyata', photo:'mengutamakan fotografi dan pemandangan', value:'mengutamakan nilai dan kendali anggaran' }
+  };
+  const labels = entryLabels[currentLang] || entryLabels.en;
+  const context = [labels[audience], labels[goal]].filter(Boolean).join(' · ');
+  _entryContext = null;
+  sendMessage((kickoffs[currentLang] || kickoffs.en) + (context ? ` ${context}.` : ''));
 }
 
 function updateTripHeaderChips() {
@@ -3382,6 +3556,7 @@ sendMessage = async function(text) {
 const _origFetch_prefs = window.fetch.bind(window);
 window.fetch = async function(url, opts) {
   const isApi = typeof url === 'string' && url.indexOf('/api/') !== -1;
+  const isQuotaApi = typeof url === 'string' && /\/api\/(chat|chat\/once|chat\/team|generate)$/.test(url);
   if (isApi) {
     opts = opts || {};
     // Inject prefs into chat system prompt
@@ -3398,10 +3573,10 @@ window.fetch = async function(url, opts) {
     opts.headers = Object.assign({}, opts.headers || {}, { 'X-Anon-Id': sessionId });
   }
   const resp = await _origFetch_prefs(url, opts);
-  if (isApi && resp.status === 402) {
+  if (isQuotaApi && resp.status === 402) {
     try { openRechargeModal(); } catch (_) {}
     if (typeof refreshQuota === 'function') refreshQuota();
-  } else if (isApi && resp.ok && /\/api\/(chat|chat\/once|chat\/team|generate)$/.test(url)) {
+  } else if (isQuotaApi && resp.ok) {
     // a use was just consumed — refresh the pill shortly after
     setTimeout(() => { if (typeof refreshQuota === 'function') refreshQuota(); }, 400);
   }

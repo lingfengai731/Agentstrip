@@ -20,12 +20,14 @@
     <meta name="twitter:image" content="https://wandermind.cc/assets/images/logo-mark.png">
 
     <!-- Favicon -->
-    <link rel="icon" type="image/png" href="assets/images/logo-mark.png">
-    <link rel="apple-touch-icon" href="assets/images/logo-mark.png">
+  <link rel="icon" type="image/png" href="assets/images/logo-mark-256.png">
+  <link rel="apple-touch-icon" href="assets/images/logo-mark-256.png">
     <!-- Template CSS -->
-    <link rel="stylesheet" href="assets/css/style-starter.css?v=p43">
-    <link href="//fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
-    <link href="//fonts.googleapis.com/css2?family=Roboto:wght@300;400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="assets/css/style-starter.css?v=p45">
+    <link rel="preload" as="image" href="assets/images/hero-1.jpg" fetchpriority="high">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=optional" rel="stylesheet">
     <!-- Brand override + alignment fixes (only additions, template CSS untouched) -->
     <style>
       /* —— Brand —— */
@@ -238,6 +240,46 @@
         .footer-29 .footer-3 .properties .images-col a img { height: 70px !important; }
       }
 
+      /* Homepage planning brief — stays within the existing warm-paper system. */
+      .wm-brief-form .book-form { row-gap: 16px; }
+      .wm-choice-group { display: grid; grid-template-columns: repeat(2, minmax(0,1fr)); gap: 8px; }
+      .wm-choice { position: relative; margin: 0; }
+      .wm-choice input { position: absolute; opacity: 0; pointer-events: none; }
+      .wm-choice span {
+        min-height: 48px; display: flex; align-items: center; padding: 9px 12px;
+        border: 1px solid #e5e2da; border-radius: 10px; background: #fff;
+        color: #475569; font-size: 13px; line-height: 1.35; cursor: pointer;
+        transition: border-color .2s, background .2s, box-shadow .2s;
+      }
+      .wm-choice input:checked + span { border-color: #0e7c6b; background: rgba(14,124,107,.07); color: #0e7c6b; box-shadow: 0 0 0 2px rgba(14,124,107,.08); font-weight: 700; }
+      .wm-choice input:focus-visible + span { outline: 3px solid rgba(252,191,30,.5); outline-offset: 2px; }
+      .wm-form-note { margin: 12px 0 0; color: #64748b; text-align: center; font-size: 12px; }
+      .wm-brief-form input, .wm-brief-form select { min-height: 48px; }
+      .wm-brief-form .form-input > label, .wm-field-label { color: #4b5563; font-weight: 600; }
+      .wm-field-label { display: block; margin-bottom: 8px; }
+      body:not(.dark) .wm-brief-form input, body:not(.dark) .wm-brief-form select,
+      body:not(.dark) .wm-brief-form .bottom-btn label { color: #374151; }
+      body:not(.dark) .wm-brief-form input { color: #374151 !important; -webkit-text-fill-color: #374151; opacity: 1; }
+      body:not(.dark) .booking-form-content .tiltle-para,
+      body:not(.dark) .w3l-covers-18 .tiltle-para,
+      body:not(.dark) .w3l-covers-18 .para,
+      body:not(.dark) .w3l-covers-18 .blog-date span,
+      body:not(.dark) .w3l-covers-18 .top-gap h5,
+      body:not(.dark) .w3l-covers-18 .top-gap h5 span,
+      body:not(.dark) .w3l-teams-15 .small-title,
+      body:not(.dark) .w3l-teams-15 .para { color: #4b5563; }
+      body:not(.dark) .wm-brief-form .btn-primary { background: #0a695b; border-color: #0a695b; color: #fff; }
+      body:not(.dark) .w3l-teams-15 .action-button { background: #0a695b; border-color: #0a695b; color: #fff; }
+      .w3l-main-slider .owl-one { min-height: 500px; }
+      .w3l-main-slider .owl-one:not(.owl-loaded) { display: block; overflow: hidden; }
+      .w3l-main-slider .owl-one:not(.owl-loaded) .item:not(:first-child) { display: none; }
+      .w3l-main-slider .owl-dot { min-width: 28px; min-height: 28px; }
+      .w3l-main-slider .banner-top1:not(.wm-bg-ready),
+      .w3l-main-slider .banner-top2:not(.wm-bg-ready) { background-image: none; background-color: #304c4a; }
+      body.dark .wm-choice span { background: #1b2026; border-color: #343b43; color: #cbd5e1; }
+      body.dark .wm-choice input:checked + span { background: rgba(20,184,166,.12); border-color: #14b8a6; color: #5eead4; }
+      @media (max-width: 767px) { .wm-choice-group { grid-template-columns: 1fr; } }
+
     </style>
   </head>
   <body id="home">
@@ -250,7 +292,7 @@
 		<div class="container">
 			<nav class="navbar navbar-expand-lg navbar-dark stroke">
 				<h1><a class="navbar-brand" href="index.html">
-					<img src="assets/images/logo-mark.png" alt="WanderMind" class="wm-logo-img"> WanderMind <small>STUDIO</small>
+          <img src="assets/images/logo-mark-256.png" alt="WanderMind" class="wm-logo-img" width="44" height="44"> WanderMind <small>STUDIO</small>
 				</a></h1>
 
 				<button class="navbar-toggler collapsed bg-gradient" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo02" aria-controls="navbarTogglerDemo02" aria-expanded="false" aria-label="Toggle navigation">
@@ -365,62 +407,71 @@ $(function () { $('.navbar-toggler').click(function () { $('body').toggleClass('
 <!-- ════════════════════════════════════════════════════
      SECTION 2 — HERO Slider (3 slides)
      ════════════════════════════════════════════════════ -->
+<main>
 <section class="w3l-main-slider" id="home">
 	<div class="companies20-content">
 		<div class="owl-one owl-carousel owl-theme">
 			<div class="item text-center">
-				<li>
+				<div>
 					<div class="slider-info banner-view bg bg2" data-selector=".bg.bg2">
 						<div class="banner-info">
 							<div class="container">
 								<div class="banner-info-bg mr-auto">
-									<h5 data-i18n="hero1Title">Travel Reimagined<br>by AI</h5>
+									<h5 role="heading" aria-level="1" data-i18n="hero1Title">Travel Reimagined<br>by AI</h5>
 									<p data-i18n="hero1Sub">Six AI agents collaborate to craft your perfect journey — real-time data, personalized recommendations, every detail intelligently planned.</p>
 									<a class="btn btn-theme2 mt-lg-5 mt-4" href="ai-tool.html" data-i18n="hero1Btn">Start Planning</a>
 								</div>
 							</div>
 						</div>
 					</div>
-				</li>
+				</div>
 			</div>
 			<div class="item text-center">
-				<li>
+				<div>
 					<div class="slider-info banner-view banner-top1 bg bg2" data-selector=".bg.bg2">
 						<div class="banner-info">
 							<div class="container">
 								<div class="banner-info-bg mr-auto">
-									<h5 data-i18n="hero2Title">Bali · Kyoto · Paris<br>Santorini</h5>
+									<h5 role="heading" aria-level="2" data-i18n="hero2Title">Bali · Kyoto · Paris<br>Santorini</h5>
 									<p data-i18n="hero2Sub">Explore curated experiences in the world's most stunning destinations — or let our AI craft a complete guide for any city you name.</p>
 									<a class="btn btn-theme2 mt-lg-5 mt-4" href="services.html" data-i18n="hero2Btn">Explore Destinations</a>
 								</div>
 							</div>
 						</div>
 					</div>
-				</li>
+				</div>
 			</div>
 			<div class="item text-center">
-				<li>
+				<div>
 					<div class="slider-info banner-view banner-top2 bg bg2" data-selector=".bg.bg2">
 						<div class="banner-info">
 							<div class="container">
 								<div class="banner-info-bg mr-auto">
-									<h5 data-i18n="hero3Title">Six Expert Agents<br>at Your Service</h5>
+									<h5 role="heading" aria-level="2" data-i18n="hero3Title">Six Expert Agents<br>at Your Service</h5>
 									<p data-i18n="hero3Sub">Trip Planner · Hotel Advisor · Food Explorer · Activity Curator · Budget Manager · Live Search — all working together for you.</p>
 									<a class="btn btn-theme2 mt-lg-5 mt-4" href="about.html" data-i18n="hero3Btn">Meet the Team</a>
 								</div>
 							</div>
 						</div>
 					</div>
-				</li>
+				</div>
 			</div>
 		</div>
 	</div>
 	<script src="assets/js/owl.carousel.js"></script>
 	<script>
 		$(document).ready(function () {
+			var prepareSecondarySlides = function () {
+				$('.owl-one .banner-top1, .owl-one .banner-top2').addClass('wm-bg-ready');
+			};
 			$('.owl-one').owlCarousel({
 				loop: true, margin: 0, nav: false, responsiveClass: true,
-				autoplay: true, autoplayTimeout: 6000, autoplaySpeed: 1200, autoplayHoverPause: true,
+				autoplay: false,
+				onInitialized: function () {
+					$('.owl-one .owl-dot').each(function (index) {
+						this.setAttribute('aria-label', 'Show slide ' + (index + 1));
+					});
+				},
 				responsive: {
 					0:    { items: 1, nav: false },
 					480:  { items: 1, nav: false },
@@ -428,6 +479,7 @@ $(function () { $('.navbar-toggler').click(function () { $('body').toggleClass('
 					1000: { items: 1, nav: true }
 				}
 			})
+			$('.owl-one').on('pointerdown keydown', '.owl-nav button, .owl-dot', prepareSecondarySlides);
 		})
 	</script>
 </section>
@@ -443,55 +495,57 @@ $(function () { $('.navbar-toggler').click(function () { $('body').toggleClass('
 					<h3 class="header-name" data-i18n="formTitle">Let AI experts craft your perfect getaway</h3>
 					<p class="tiltle-para" data-i18n="formSub">Answer a few questions and our six AI agents will instantly generate a custom itinerary tailored to your style, budget, and travel companions.</p>
 				</div>
-				<form action="ai-tool.html" method="get" class="booking-form">
+				<form action="ai-tool.html" method="get" class="booking-form wm-brief-form">
 					<div class="row book-form">
-						<div class="form-input col-md-4">
-							<label data-i18n="formName">Your Name</label>
-							<input type="text" name="name" placeholder="Name" required>
+						<div class="form-input col-lg-6" role="group" aria-labelledby="form-audience-label">
+							<span class="wm-field-label" id="form-audience-label" data-i18n="formAudience">Which Bali trip are you planning?</span>
+							<div class="wm-choice-group">
+								<label class="wm-choice"><input type="radio" name="audience" value="first" checked><span data-i18n="formAudienceFirst">My first Bali trip</span></label>
+								<label class="wm-choice"><input type="radio" name="audience" value="returning"><span data-i18n="formAudienceReturn">I've been before · go deeper</span></label>
+							</div>
 						</div>
+						<div class="form-input col-lg-6" role="group" aria-labelledby="form-goal-label">
+							<span class="wm-field-label" id="form-goal-label" data-i18n="formGoal">What matters most this time?</span>
+							<div class="wm-choice-group">
+								<label class="wm-choice"><input type="radio" name="goal" value="easy" checked><span data-i18n="formGoalEasy">Less planning · an easier trip</span></label>
+								<label class="wm-choice"><input type="radio" name="goal" value="local"><span data-i18n="formGoalLocal">Local culture · real experiences</span></label>
+								<label class="wm-choice"><input type="radio" name="goal" value="photo"><span data-i18n="formGoalPhoto">Photography · scenic moments</span></label>
+								<label class="wm-choice"><input type="radio" name="goal" value="value"><span data-i18n="formGoalValue">Best value · control the budget</span></label>
+							</div>
+						</div>
+						<input type="hidden" name="dest" value="bali">
 						<div class="form-input col-md-4">
-							<label data-i18n="formDest">Destination</label>
-							<select name="dest" class="selectpicker">
-								<option value="" data-i18n="formDestAny">Any</option>
-								<option value="bali">Bali · Indonesia</option>
-								<option value="kyoto">Kyoto · Japan</option>
-								<option value="paris">Paris · France</option>
-								<option value="santorini">Santorini · Greece</option>
-								<option value="custom" data-i18n="formDestCustom">Custom (any city)</option>
+							<label for="form-style" data-i18n="formStyle">Travel Style</label>
+							<select id="form-style" name="style" class="selectpicker">
+								<option value="budget" data-i18n="formTierBudget">Budget-conscious</option>
+								<option value="comfort" selected data-i18n="formTierComfort">Comfort &amp; balance</option>
+								<option value="luxury" data-i18n="formTierLuxury">Premium &amp; private</option>
 							</select>
 						</div>
+						<div class="form-input col-md-2">
+							<label for="form-people" data-i18n="formPeople">Travellers</label>
+							<select id="form-people" name="people" class="selectpicker">
+								<option value="1">1</option><option value="2" selected>2</option><option value="3">3</option><option value="4">4</option><option value="5">5+</option>
+							</select>
+						</div>
+						<div class="form-input col-md-3">
+							<label for="form-start" data-i18n="formStart">Departure date</label>
+							<input id="form-start" type="date" name="start" required>
+						</div>
+						<div class="form-input col-md-3">
+							<label for="form-end" data-i18n="formEnd">Return date</label>
+							<input id="form-end" type="date" name="end" required>
+						</div>
 						<div class="form-input col-md-4">
-							<label data-i18n="formStyle">Travel Style</label>
-							<select name="style" class="selectpicker">
-								<option value="" data-i18n="formStyleAny">Any</option>
-								<option value="city" data-i18n="formStyleCity">City Tours</option>
-								<option value="cultural" data-i18n="formStyleCultural">Cultural &amp; Thematic</option>
-								<option value="family" data-i18n="formStyleFamily">Family Friendly</option>
-								<option value="luxury" data-i18n="formStyleLuxury">Indulgence &amp; Luxury</option>
-								<option value="outdoor" data-i18n="formStyleOutdoor">Outdoor Activities</option>
-								<option value="relax" data-i18n="formStyleRelax">Relaxation</option>
-								<option value="adventure" data-i18n="formStyleAdv">Wild &amp; Adventure</option>
-							</select>
+							<label for="form-budget" data-i18n="formBudget">Total budget</label>
+							<input id="form-budget" type="number" name="budget" min="100" step="100" placeholder="3000" required data-i18n="formBudgetPh" data-i18n-attr="placeholder">
 						</div>
-						<div class="form-input col-md-4 mt-3">
-							<label data-i18n="formDuration">Duration</label>
-							<select name="duration" class="selectpicker">
-								<option value="" data-i18n="formDurAny">Any</option>
-								<option value="1" data-i18n="formDur1">1 Day</option>
-								<option value="2" data-i18n="formDur2">2-4 Days</option>
-								<option value="5" data-i18n="formDur5">5-7 Days</option>
-								<option value="7" data-i18n="formDur7">7+ Days</option>
-							</select>
-						</div>
-						<div class="form-input col-md-4 mt-3">
-							<label data-i18n="formDate">Departure</label>
-							<input type="date" name="date" placeholder="Date" required>
-						</div>
-						<div class="bottom-btn col-md-4 mt-3">
-							<label data-i18n="formSubmitLbl">Submit</label>
-							<button class="btn btn-style btn-primary w-100 btn-style" data-i18n="formSubmitBtn">Get My AI Plan</button>
+						<div class="bottom-btn col-md-8">
+							<label data-i18n="formSubmitLbl">Build your planning brief</label>
+							<button class="btn btn-style btn-primary w-100 btn-style" data-i18n="formSubmitBtn">Continue in AI Planner</button>
 						</div>
 					</div>
+					<p class="wm-form-note" data-i18n="formPrivacyNote">No payment required. Review every detail before contacting a local partner.</p>
 				</form>
 			</div>
 		</div>
@@ -567,46 +621,46 @@ $(function () { $('.navbar-toggler').click(function () { $('body').toggleClass('
 			<div class="gallery-image row">
 				<div class="col-lg-4 col-md-6">
 					<div class="img-box">
-						<img src="assets/images/bali-3.jpg" alt="Bali — Kelingking Beach" class="img-responsive">
-						<h5 class="my-2"><a href="ai-tool.html?dest=bali" data-i18n="sec5BaliName">Bali · Indonesia</a></h5>
+						<img src="assets/images/bali-3.jpg" alt="Bali — Kelingking Beach" class="img-responsive" loading="lazy">
+						<h5 class="my-2" role="heading" aria-level="3"><a href="ai-tool.html?dest=bali" data-i18n="sec5BaliName">Bali · Indonesia</a></h5>
 						<div class="blog-date">
 							<p class="pos-date"><span class="fa fa-clock-o mr-1"></span><span data-i18n="sec5BaliDays">7 Days</span></p>
 							<p class="pos-date text-right"><span class="fa fa-users mr-1"></span><span data-i18n="sec5BaliPeople">2-4 People</span></p>
 						</div>
 						<p class="para" data-i18n="sec5BaliDesc">Sun-soaked beaches, lush rice terraces, ancient temples and a deep spiritual culture.</p>
 						<div class="top-gap">
-							<h5><span data-i18n="sec5From">from</span> ¥4,500</h5>
-							<a href="ai-tool.html?dest=bali" class="icon text-center"><span class="fa fa-chevron-right"></span></a>
+							<h5 role="heading" aria-level="4"><span data-i18n="sec5From">from</span> ¥4,500</h5>
+							<a href="ai-tool.html?dest=bali" class="icon text-center" aria-label="Plan a Bali trip"><span class="fa fa-chevron-right"></span></a>
 						</div>
 					</div>
 				</div>
 				<div class="col-lg-4 col-md-6 top-top2">
 					<div class="img-box">
-						<img src="assets/images/kyoto-2.jpg" alt="Kyoto" class="img-responsive">
-						<h5 class="my-2"><a href="ai-tool.html?dest=kyoto" data-i18n="sec5KyotoName">Kyoto · Japan</a></h5>
+						<img src="assets/images/kyoto-2.jpg" alt="Kyoto" class="img-responsive" loading="lazy">
+						<h5 class="my-2" role="heading" aria-level="3"><a href="ai-tool.html?dest=kyoto" data-i18n="sec5KyotoName">Kyoto · Japan</a></h5>
 						<div class="blog-date">
 							<p class="pos-date"><span class="fa fa-clock-o mr-1"></span><span data-i18n="sec5KyotoDays">5 Days</span></p>
 							<p class="pos-date text-right"><span class="fa fa-users mr-1"></span><span data-i18n="sec5KyotoPeople">2-4 People</span></p>
 						</div>
 						<p class="para" data-i18n="sec5KyotoDesc">Ancient shrines, geisha culture, cherry blossoms and seasonal kaiseki cuisine.</p>
 						<div class="top-gap">
-							<h5><span data-i18n="sec5From2">from</span> ¥6,800</h5>
-							<a href="ai-tool.html?dest=kyoto" class="icon text-center"><span class="fa fa-chevron-right"></span></a>
+							<h5 role="heading" aria-level="4"><span data-i18n="sec5From2">from</span> ¥6,800</h5>
+							<a href="ai-tool.html?dest=kyoto" class="icon text-center" aria-label="Plan a Kyoto trip"><span class="fa fa-chevron-right"></span></a>
 						</div>
 					</div>
 				</div>
 				<div class="col-lg-4 col-md-6 top-top">
 					<div class="img-box">
-						<img src="assets/images/paris-2.jpg" alt="Paris" class="img-responsive">
-						<h5 class="my-2"><a href="ai-tool.html?dest=paris" data-i18n="sec5ParisName">Paris · France</a></h5>
+						<img src="assets/images/paris-2.jpg" alt="Paris" class="img-responsive" loading="lazy">
+						<h5 class="my-2" role="heading" aria-level="3"><a href="ai-tool.html?dest=paris" data-i18n="sec5ParisName">Paris · France</a></h5>
 						<div class="blog-date">
 							<p class="pos-date"><span class="fa fa-clock-o mr-1"></span><span data-i18n="sec5ParisDays">7 Days</span></p>
 							<p class="pos-date text-right"><span class="fa fa-users mr-1"></span><span data-i18n="sec5ParisPeople">2-4 People</span></p>
 						</div>
 						<p class="para" data-i18n="sec5ParisDesc">Romance, world-class art, timeless boulevards and unforgettable patisseries.</p>
 						<div class="top-gap">
-							<h5><span data-i18n="sec5From3">from</span> ¥9,500</h5>
-							<a href="ai-tool.html?dest=paris" class="icon text-center"><span class="fa fa-chevron-right"></span></a>
+							<h5 role="heading" aria-level="4"><span data-i18n="sec5From3">from</span> ¥9,500</h5>
+							<a href="ai-tool.html?dest=paris" class="icon text-center" aria-label="Plan a Paris trip"><span class="fa fa-chevron-right"></span></a>
 						</div>
 					</div>
 				</div>
@@ -623,10 +677,10 @@ $(function () { $('.navbar-toggler').click(function () { $('body').toggleClass('
 		<div class="container">
 			<div class="row">
 				<div class="column2 col-lg-6">
-					<img src="assets/images/studio-feature.jpg" alt="WanderMind Studio" class="img-responsive">
+					<img src="assets/images/studio-feature.jpg" alt="WanderMind Studio" class="img-responsive" loading="lazy">
 				</div>
 				<div class="nature-row coloum4 col-lg-6">
-					<h6 class="small-title" data-i18n="sec6Eyebrow">About WanderMind Studio</h6>
+					<p class="small-title" data-i18n="sec6Eyebrow">About WanderMind Studio</p>
 					<h3 data-i18n="sec6Title">Personalized travel powered by AI multi-agent collaboration.</h3>
 					<p class="para text" data-i18n="sec6Desc">WanderMind Studio combines six specialized AI agents to plan your perfect trip — from itinerary design to real-time hotel pricing, from local food discovery to budget optimization. Available in 5 languages, with intelligent data for any city worldwide.</p>
 					<a href="about.html" class="action-button btn mt-lg-5 mt-4" data-i18n="sec6Btn">Learn more</a>
@@ -651,6 +705,8 @@ $(function () { $('.navbar-toggler').click(function () { $('body').toggleClass('
 	</div>
 </section>
 
+</main>
+
 <!-- ════════════════════════════════════════════════════
      SECTION 8 — Footer
      ════════════════════════════════════════════════════ -->
@@ -665,13 +721,13 @@ $(function () { $('.navbar-toggler').click(function () { $('body').toggleClass('
 						<li class="footer-contact-line"><span class="fa fa-github"></span><a href="https://github.com/lingfengai731/Agentstrip" target="_blank">github.com/lingfengai731/Agentstrip</a></li>
 					</ul>
 					<div class="main-social-footer-29">
-						<a href="https://github.com/lingfengai731/Agentstrip" class="facebook" target="_blank"><span class="fa fa-github"></span></a>
-						<a href="mailto:lfwu22@126.com" class="twitter"><span class="fa fa-envelope"></span></a>
+						<a href="https://github.com/lingfengai731/Agentstrip" class="facebook" target="_blank" aria-label="WanderMind on GitHub"><span class="fa fa-github"></span></a>
+						<a href="mailto:lfwu22@126.com" class="twitter" aria-label="Email WanderMind"><span class="fa fa-envelope"></span></a>
 					</div>
 				</div>
 				<div class="footer-list-29 footer-2">
+					<h2 class="footer-title-29" data-i18n="footFeaturesTitle">Features</h2>
 					<ul>
-						<h6 class="footer-title-29" data-i18n="footFeaturesTitle">Features</h6>
 						<li><a href="ai-tool.html" data-i18n="footFeat1">AI Planning</a></li>
 						<li><a href="ai-tool.html#hotels" data-i18n="footFeat2">Hotels Compare</a></li>
 						<li><a href="ai-tool.html#flights" data-i18n="footFeat3">Flights Compare</a></li>
@@ -681,20 +737,20 @@ $(function () { $('.navbar-toggler').click(function () { $('body').toggleClass('
 				</div>
 				<div class="footer-list-29 footer-3">
 					<div class="properties">
-						<h6 class="footer-title-29" data-i18n="footGalleryTitle">Gallery</h6>
+						<h2 class="footer-title-29" data-i18n="footGalleryTitle">Gallery</h2>
 						<div class="images-col">
-							<a href="services.html"><img src="assets/images/gallery-1.jpg" class="img-responsive" alt=""></a>
-							<a href="services.html"><img src="assets/images/gallery-2.jpg" class="img-responsive" alt=""></a>
-							<a href="services.html"><img src="assets/images/gallery-3.jpg" class="img-responsive" alt=""></a>
-							<a href="services.html"><img src="assets/images/gallery-4.jpg" class="img-responsive" alt=""></a>
-							<a href="services.html"><img src="assets/images/gallery-5.jpg" class="img-responsive" alt=""></a>
-							<a href="services.html"><img src="assets/images/gallery-6.jpg" class="img-responsive" alt=""></a>
+							<a href="services.html" aria-label="Explore destination gallery"><img src="assets/images/gallery-1.jpg" class="img-responsive" alt="" loading="lazy"></a>
+							<a href="services.html" aria-label="Explore destination gallery"><img src="assets/images/gallery-2.jpg" class="img-responsive" alt="" loading="lazy"></a>
+							<a href="services.html" aria-label="Explore destination gallery"><img src="assets/images/gallery-3.jpg" class="img-responsive" alt="" loading="lazy"></a>
+							<a href="services.html" aria-label="Explore destination gallery"><img src="assets/images/gallery-4.jpg" class="img-responsive" alt="" loading="lazy"></a>
+							<a href="services.html" aria-label="Explore destination gallery"><img src="assets/images/gallery-5.jpg" class="img-responsive" alt="" loading="lazy"></a>
+							<a href="services.html" aria-label="Explore destination gallery"><img src="assets/images/gallery-6.jpg" class="img-responsive" alt="" loading="lazy"></a>
 						</div>
 					</div>
 				</div>
 				<div class="footer-list-29 footer-4">
+					<h2 class="footer-title-29" data-i18n="footDestTitle">Top Destinations</h2>
 					<ul>
-						<h6 class="footer-title-29" data-i18n="footDestTitle">Top Destinations</h6>
 						<li><a href="ai-tool.html?dest=bali" data-i18n="footDest1">Bali</a></li>
 						<li><a href="ai-tool.html?dest=kyoto" data-i18n="footDest2">Kyoto</a></li>
 						<li><a href="ai-tool.html?dest=paris" data-i18n="footDest3">Paris</a></li>
@@ -715,6 +771,22 @@ $(function () { $('.navbar-toggler').click(function () { $('body').toggleClass('
 	<span class="fa fa-chevron-up"></span>
 </button>
 <script>
+	document.addEventListener('DOMContentLoaded', function () {
+		var form = document.querySelector('.wm-brief-form');
+		if (!form) return;
+		var start = form.querySelector('[name="start"]');
+		var end = form.querySelector('[name="end"]');
+		var iso = function (date) { return date.toISOString().slice(0, 10); };
+		var tomorrow = new Date(Date.now() + 86400000);
+		var nextWeek = new Date(Date.now() + 8 * 86400000);
+		start.min = iso(new Date()); end.min = iso(tomorrow);
+		if (!start.value) start.value = iso(tomorrow);
+		if (!end.value) end.value = iso(nextWeek);
+		start.addEventListener('change', function () {
+			var minEnd = new Date(start.value + 'T00:00:00'); minEnd.setDate(minEnd.getDate() + 1);
+			end.min = iso(minEnd); if (!end.value || end.value <= start.value) end.value = iso(minEnd);
+		});
+	});
 	window.onscroll = function () { scrollFunction() };
 	function scrollFunction() {
 		if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
@@ -727,7 +799,7 @@ $(function () { $('.navbar-toggler').click(function () { $('body').toggleClass('
 <!-- ════════════════════════════════════════════════════
      i18n — 5-language switcher (en / zh / ja / ko / id)
      ════════════════════════════════════════════════════ -->
-<script src="assets/js/i18n.js?v=p43"></script>
+<script src="assets/js/i18n.js?v=p45"></script>
 
 </body>
 </html>

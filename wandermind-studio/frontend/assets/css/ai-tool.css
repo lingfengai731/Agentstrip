@@ -1483,6 +1483,22 @@ body.dark .ws-error { background: rgba(220,38,38,.08); border-color: rgba(220,38
   border-radius: 12px;
   margin-bottom: 18px;
 }
+.ws-auth-modal {
+  position: relative;
+  max-width: 430px;
+  border: 1px solid var(--ws-line);
+  border-radius: 16px;
+}
+.ws-auth-modal .ws-modal-body { padding: 30px 34px 26px; }
+.ws-auth-close { position: absolute; top: 14px; right: 14px; z-index: 2; }
+.ws-auth-brand {
+  display: flex; align-items: center; justify-content: center; gap: 9px;
+  color: var(--ws-ink); font-size: 14px; font-weight: 800; letter-spacing: .02em;
+  margin-bottom: 18px;
+}
+.ws-auth-brand img { width: 34px; height: 34px; object-fit: contain; }
+.ws-auth-title { margin: 0; color: var(--ws-ink); text-align: center; font-size: 23px; line-height: 1.25; }
+.ws-auth-sub { margin: 8px auto 20px !important; max-width: 330px; text-align: center; color: var(--ws-ink-3) !important; font-size: 13px !important; line-height: 1.55 !important; }
 .ws-auth-tab {
   flex: 1;
   padding: 9px 14px;
@@ -1499,11 +1515,45 @@ body.dark .ws-error { background: rgba(220,38,38,.08); border-color: rgba(220,38
 .ws-auth-tab:hover { color: var(--ws-ink); }
 .ws-auth-tab.active { background: var(--ws-paper); color: var(--ws-teal); box-shadow: 0 1px 4px rgba(0,0,0,.08); }
 
-.ws-auth-form { display: flex; flex-direction: column; gap: 10px; }
+.ws-auth-form { display: flex; flex-direction: column; gap: 8px; }
+.ws-auth-register-step { display: flex; flex-direction: column; gap: 8px; }
+.ws-auth-register-step[hidden] { display: none !important; }
+.ws-auth-label { margin: 4px 0 0; color: var(--ws-ink-2); font-size: 12px; font-weight: 700; line-height: 1.4; }
+.ws-auth-label-row { display: flex; align-items: center; justify-content: space-between; margin-top: 4px; }
+.ws-auth-label-row .ws-auth-label { margin: 0; }
+.ws-auth-label-row a, .ws-auth-back { color: var(--ws-teal); font-size: 12px; font-weight: 600; text-decoration: none; }
+.ws-auth-label-row a:hover, .ws-auth-back:hover { text-decoration: underline; }
 .ws-auth-input {
-  padding: 11px 14px !important;
+  min-height: 44px;
+  padding: 11px 13px !important;
   font-size: 14px !important;
-  border-radius: 10px !important;
+  border-radius: 9px !important;
+}
+.ws-auth-input:focus { border-color: var(--ws-teal) !important; box-shadow: 0 0 0 3px rgba(14,124,107,.12); outline: none; }
+.ws-auth-code { font-size: 20px !important; font-weight: 800; letter-spacing: .3em; text-align: center; }
+.ws-auth-primary { width: 100%; min-height: 44px; margin-top: 4px; justify-content: center; border-radius: 9px; }
+.ws-auth-sent {
+  margin-bottom: 4px; padding: 10px 12px; border: 1px solid rgba(14,124,107,.22);
+  border-radius: 9px; background: rgba(14,124,107,.07); color: var(--ws-teal);
+  font-size: 12px; line-height: 1.5;
+}
+.ws-auth-resend {
+  min-height: 40px; padding: 8px; border: 0; background: transparent; color: var(--ws-teal);
+  font: 600 12px/1.4 inherit; cursor: pointer;
+}
+.ws-auth-resend:disabled { color: var(--ws-ink-3); cursor: default; }
+.ws-auth-divider { display: flex; align-items: center; gap: 10px; margin: 16px 0 12px; color: var(--ws-ink-3); font-size: 11px; text-transform: uppercase; }
+.ws-auth-divider::before, .ws-auth-divider::after { content: ''; height: 1px; flex: 1; background: var(--ws-line); }
+#ws-google-button { min-height: 44px; display: flex; justify-content: center; overflow: hidden; }
+.ws-auth-privacy { margin: 14px 0 0 !important; color: var(--ws-ink-3) !important; text-align: center; font-size: 11px !important; line-height: 1.5 !important; }
+.ws-auth-back { display: block; min-height: 40px; padding: 10px; text-align: center; }
+.ws-auth-form h3 { margin: 0 0 5px !important; font-size: 17px !important; }
+.ws-auth-form > p { margin: 0 0 8px !important; font-size: 12.5px !important; line-height: 1.55 !important; }
+@media (max-width: 520px) {
+  .ws-modal-overlay { padding: 10px; align-items: flex-end; }
+  .ws-auth-modal { max-height: min(92vh, 760px); border-radius: 16px 16px 8px 8px; }
+  .ws-auth-modal .ws-modal-body { padding: 26px 20px 20px; }
+  .ws-auth-title { font-size: 21px; }
 }
 .ws-auth-error {
   font-size: 12px;
@@ -1729,4 +1779,3 @@ body.dark .ws-chip-pick { background: var(--ws-bg-2); }
   color: var(--ws-ink) !important;
 }
 body.dark #ws-prefs-btn { color: var(--ws-ink-2) !important; }
-

@@ -125,6 +125,17 @@ def init_db():
                 created_at    {ts_type} NOT NULL
             )
         """)
+        conn.execute(f"""
+            CREATE TABLE IF NOT EXISTS email_verification_codes (
+                email         TEXT PRIMARY KEY,
+                code_hash     TEXT NOT NULL,
+                expires_at    {ts_type} NOT NULL,
+                resend_after  {ts_type} NOT NULL,
+                attempts      INTEGER DEFAULT 0,
+                lang          TEXT DEFAULT 'en',
+                created_at    {ts_type} NOT NULL
+            )
+        """)
         # Anonymous (not-logged-in) usage quota, keyed by client-generated id
         conn.execute(f"""
             CREATE TABLE IF NOT EXISTS guest_usage (
@@ -192,6 +203,9 @@ def init_db():
             "ALTER TABLE users ADD COLUMN preferences TEXT DEFAULT '{}'",
             "ALTER TABLE users ADD COLUMN free_uses INTEGER DEFAULT 0",
             "ALTER TABLE users ADD COLUMN beans INTEGER DEFAULT 0",
+            "ALTER TABLE users ADD COLUMN email_verified INTEGER DEFAULT 0",
+            "ALTER TABLE users ADD COLUMN auth_provider TEXT DEFAULT 'password'",
+            "ALTER TABLE users ADD COLUMN google_sub TEXT",
         ):
             try:
                 conn.execute(col_sql)
@@ -202,6 +216,15 @@ def init_db():
                     conn.rollback()
                 except Exception:
                     pass
+
+        try:
+            conn.execute("CREATE UNIQUE INDEX IF NOT EXISTS idx_users_google_sub ON users(google_sub)")
+            conn.commit()
+        except Exception:
+            try:
+                conn.rollback()
+            except Exception:
+                pass
 
         conn.commit()
     finally:

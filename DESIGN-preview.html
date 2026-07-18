@@ -1,0 +1,1377 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>DESIGN Preview</title>
+    <meta name="color-scheme" content="light" />
+    <style>
+      :root {
+        --page-bg: #FAFAF7;
+        --page-bg-muted: rgb(247, 246, 241);
+        --surface-bg: #F3F1EA;
+        --surface-bg-muted: rgb(247, 246, 241);
+        --surface-border: #E5E2DA;
+        --surface-border-strong: rgb(219, 219, 216);
+        --surface-shadow: 0 0 0 1px rgba(0, 0, 0, 0.08), 0 2px 2px rgba(0, 0, 0, 0.04), 0 8px 8px -8px rgba(0, 0, 0, 0.04);
+        --surface-shadow-soft: 0 0 0 1px #E5E2DA;
+        --ink: #1A1A1A;
+        --muted: #8A8A8A;
+        --subtle: rgb(147, 147, 145);
+        --accent: #14B8A6;
+        --font-body: -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif;
+        --font-display: -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif;
+        --font-mono: ui-monospace, "SFMono-Regular", "SF Mono", Menlo, monospace;
+        --body-size: 15px;
+        --body-line: 20px;
+        --body-weight: 400;
+        --label-size: 12px;
+        --label-line: 16px;
+        --label-track: 02em;
+        --title-size: 30px;
+        --title-line: 28px;
+        --title-track: -0.03em;
+        --section-size: 30px;
+        --section-line: 24px;
+        --section-track: -0.02em;
+        --source-size: 13px;
+        --source-line: 20px;
+        --space-1: 4px;
+        --space-2: 6px;
+        --space-3: 8px;
+        --space-4: 12px;
+        --space-5: 16px;
+        --space-6: 20px;
+        --radius-panel: 10;
+        --radius-card: 10;
+        --radius-micro: 8px;
+        --radius-pill: 999px;
+        --button-height: 40px;
+        --button-font-size: 12px;
+        --button-weight: 500;
+        --button-radius: 999px;
+        --secondary-button-radius: 999px;
+        --layout-gap: 12px;
+        --page-padding: 12px;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      html {
+        scroll-behavior: smooth;
+      }
+
+      body {
+        margin: 0;
+        min-width: 320px;
+        color: var(--ink);
+        font-family: var(--font-body);
+        font-size: var(--body-size);
+        font-weight: var(--body-weight);
+        line-height: var(--body-line);
+        background:
+          radial-gradient(circle at top, color-mix(in srgb, var(--accent) 8%, transparent), transparent 30%),
+          linear-gradient(180deg, var(--page-bg) 0%, var(--page-bg-muted) 100%);
+      }
+
+      body::before {
+        content: "";
+        position: fixed;
+        inset: 0;
+        z-index: -1;
+        pointer-events: none;
+        background-image:
+          linear-gradient(color-mix(in srgb, var(--surface-border) 56%, transparent) 1px, transparent 1px),
+          linear-gradient(90deg, color-mix(in srgb, var(--surface-border) 56%, transparent) 1px, transparent 1px);
+        background-size: 100% calc(24px), calc(24px) 100%;
+        mask-image: linear-gradient(180deg, rgba(0, 0, 0, 0.3), transparent 88%);
+      }
+
+      a {
+        color: inherit;
+        text-decoration: none;
+      }
+
+      button {
+        font: inherit;
+      }
+
+      .shell {
+        width: min(1440px, calc(100vw - (var(--page-padding) * 2)));
+        margin: 0 auto;
+        padding: var(--page-padding) 0 calc(var(--page-padding) * 1.2);
+      }
+
+      .layout {
+        display: grid;
+        grid-template-columns: minmax(340px, 0.92fr) minmax(420px, 1fr);
+        gap: var(--layout-gap);
+        align-items: start;
+      }
+
+      .stack {
+        display: grid;
+        gap: var(--space-4);
+      }
+
+      .panel {
+        overflow: hidden;
+        border: 1px solid var(--surface-border);
+        border-radius: var(--radius-panel);
+        background: linear-gradient(180deg, color-mix(in srgb, var(--surface-bg) 88%, white) 0%, var(--surface-bg) 100%);
+        box-shadow: var(--surface-shadow);
+      }
+
+      .panel-inner {
+        padding: var(--space-4);
+      }
+
+      .hero-card {
+        position: relative;
+      }
+
+      .hero-card::before {
+        content: "";
+        position: absolute;
+        left: var(--space-4);
+        right: var(--space-4);
+        top: 0;
+        height: 3px;
+        border-radius: 999px;
+        background: linear-gradient(90deg, #FCBF1E 0%, #F59E0B 33%, #0E7C6B 67%, #14B8A6 100%);
+      }
+
+      .eyebrow {
+        margin-bottom: var(--space-2);
+        color: var(--muted);
+        font-size: var(--label-size);
+        line-height: var(--label-line);
+        letter-spacing: var(--label-track);
+        text-transform: uppercase;
+      }
+
+      .site-title,
+      .section-title {
+        margin: 0;
+        color: var(--ink);
+        font-family: var(--font-display);
+        font-weight: 600;
+      }
+
+      .site-title {
+        font-size: var(--title-size);
+        line-height: var(--title-line);
+        letter-spacing: var(--title-track);
+      }
+
+      .descriptor {
+        margin: var(--space-2) 0 0;
+        max-width: 42ch;
+        color: var(--muted);
+        font-size: var(--body-size);
+        line-height: var(--body-line);
+      }
+
+      .summary {
+        margin: var(--space-3) 0 0;
+        max-width: 56ch;
+        color: var(--muted);
+        font-size: var(--body-size);
+        line-height: var(--body-line);
+      }
+
+      .chip-row {
+        display: flex;
+        flex-wrap: wrap;
+        gap: var(--space-2);
+        margin: var(--space-3) 0 0;
+      }
+
+      .chip {
+        display: inline-flex;
+        align-items: center;
+        min-height: calc(4px * 3);
+        padding: 0 var(--space-2);
+        border: 1px solid var(--surface-border);
+        border-radius: var(--radius-pill);
+        background: var(--surface-bg);
+        color: var(--ink);
+        font-size: var(--label-size);
+        line-height: var(--label-line);
+        box-shadow: var(--surface-shadow-soft);
+      }
+
+      .observed-link {
+        display: inline-flex;
+        align-items: center;
+        gap: var(--space-2);
+        margin-top: var(--space-4);
+        padding-top: var(--space-3);
+        border-top: 1px solid var(--surface-border);
+        color: var(--muted);
+        font-size: var(--label-size);
+        overflow-wrap: anywhere;
+      }
+
+      .observed-link::before {
+        content: "";
+        width: 8px;
+        height: 8px;
+        border-radius: 999px;
+        background: var(--accent);
+        box-shadow: 0 0 0 4px color-mix(in srgb, var(--accent) 16%, transparent);
+      }
+
+      .section-title {
+        font-size: var(--section-size);
+        line-height: var(--section-line);
+        letter-spacing: var(--section-track);
+      }
+
+      .section-subtitle {
+        margin: var(--space-2) 0 var(--space-4);
+        color: var(--muted);
+        font-size: var(--body-size);
+        line-height: var(--body-line);
+      }
+
+      .palette-grid,
+      .theme-mode-grid,
+      .type-list,
+      .component-card,
+      .prompt-list,
+      .mini-grid,
+      .token-table {
+        display: grid;
+        gap: var(--space-2);
+      }
+
+      .palette-row {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: var(--space-2);
+      }
+
+      .palette-row.neutral-row {
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+      }
+
+      .theme-mode-grid {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: var(--space-3);
+      }
+
+      .theme-mode-card {
+        display: grid;
+        gap: var(--space-2);
+        padding: var(--space-3);
+        border: 1px solid var(--surface-border);
+        border-radius: var(--radius-card);
+        background: color-mix(in srgb, var(--surface-bg) 92%, white);
+      }
+
+      .theme-mode-card.is-dark {
+        background: #111111;
+        color: #f4f4f4;
+        border-color: rgba(255, 255, 255, 0.12);
+      }
+
+      .theme-mode-head {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: var(--space-2);
+      }
+
+      .theme-mode-label {
+        color: var(--subtle);
+        font-size: var(--label-size);
+        line-height: var(--label-line);
+        letter-spacing: var(--label-track);
+        text-transform: uppercase;
+      }
+
+      .theme-mode-card.is-dark .theme-mode-label {
+        color: rgba(255, 255, 255, 0.7);
+      }
+
+      .theme-mode-note {
+        margin: 0;
+        color: var(--muted);
+        font-size: calc(var(--body-size) - 1px);
+        line-height: calc(var(--body-line) - 4px);
+      }
+
+      .theme-mode-card.is-dark .theme-mode-note {
+        color: rgba(255, 255, 255, 0.82);
+      }
+
+      .theme-swatch-row {
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: var(--space-2);
+      }
+
+      .theme-swatch {
+        display: grid;
+        gap: 6px;
+      }
+
+      .theme-swatch-box {
+        height: 72px;
+        border-radius: calc(var(--radius-card) - 4px);
+        border: 1px solid color-mix(in srgb, var(--surface-border-strong) 75%, transparent);
+      }
+
+      .theme-mode-card.is-dark .theme-swatch-box {
+        border-color: rgba(255, 255, 255, 0.14);
+      }
+
+      .theme-swatch-name {
+        color: inherit;
+        font-size: 12px;
+        line-height: 1.3;
+      }
+
+      .theme-swatch-value {
+        color: var(--subtle);
+        font-size: 11px;
+        line-height: 1.3;
+      }
+
+      .theme-mode-card.is-dark .theme-swatch-value {
+        color: rgba(255, 255, 255, 0.62);
+      }
+
+      .swatch {
+        display: grid;
+        gap: var(--space-2);
+      }
+
+      .swatch-box {
+        min-height: calc(4px * 12);
+        border-radius: var(--radius-card);
+        border: 1px solid color-mix(in srgb, var(--surface-border-strong) 75%, transparent);
+        box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--ink) 4%, transparent);
+      }
+
+      .swatch-label,
+      .token-heading,
+      .prompt-card strong,
+      .card-preview h4 {
+        color: var(--ink);
+        font-family: var(--font-display);
+        font-size: var(--body-size);
+        line-height: var(--body-line);
+        font-weight: 600;
+      }
+
+      .swatch-meta,
+      .type-metrics,
+      .mini-label,
+      .copy-state,
+      .file-tab,
+      .ghost-button,
+      .segmented button {
+        color: var(--muted);
+        font-size: var(--label-size);
+        line-height: var(--label-line);
+      }
+
+      .type-row {
+        display: grid;
+        grid-template-columns: 72px minmax(0, 1fr) auto;
+        gap: var(--space-2);
+        align-items: baseline;
+        padding: var(--space-2) 0;
+        border-top: 1px solid var(--surface-border);
+      }
+
+      .type-row:first-child,
+      .mini-row:first-child,
+      .token-row:first-child {
+        border-top: 0;
+        padding-top: 0;
+      }
+
+      .type-role {
+        color: var(--muted);
+        font-size: var(--label-size);
+        line-height: var(--label-line);
+        letter-spacing: var(--label-track);
+        text-transform: uppercase;
+      }
+
+      .type-sample {
+        color: var(--ink);
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+
+      .split-card {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: var(--space-4);
+      }
+
+      .token-row,
+      .mini-row {
+        display: grid;
+        gap: var(--space-2);
+        align-items: start;
+        padding-top: var(--space-2);
+        border-top: 1px solid var(--surface-border);
+      }
+
+      .token-row {
+        grid-template-columns: 1fr auto;
+      }
+
+      .mini-row {
+        grid-template-columns: 88px minmax(0, 1fr);
+      }
+
+      .mini-content,
+      .prompt-card p,
+      .card-preview p {
+        color: var(--muted);
+        font-size: var(--body-size);
+        line-height: var(--body-line);
+      }
+
+      .radius-grid {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: var(--space-2);
+      }
+
+      .radius-card,
+      .prompt-card {
+        padding: var(--space-3);
+        border: 1px solid var(--surface-border);
+        border-radius: var(--radius-card);
+        background: var(--surface-bg-muted);
+        box-shadow: var(--surface-shadow-soft);
+      }
+
+      .radius-demo {
+        aspect-ratio: 1;
+        width: 100%;
+        border: 1px solid var(--surface-border-strong);
+        background: var(--surface-bg);
+      }
+
+      .radius-name {
+        margin-top: var(--space-2);
+        color: var(--ink);
+        font-size: var(--body-size);
+        line-height: var(--body-line);
+        font-weight: 600;
+      }
+
+      .radius-value {
+        margin-top: 4px;
+        color: var(--muted);
+        font-size: var(--label-size);
+      }
+
+      .button-row {
+        display: flex;
+        flex-wrap: wrap;
+        gap: var(--space-2);
+      }
+
+      .cta {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-height: var(--button-height);
+        padding: 0 var(--space-3);
+        border-radius: var(--button-radius);
+        font-family: var(--font-body);
+        font-size: var(--button-font-size);
+        font-weight: var(--button-weight);
+        line-height: 1;
+        letter-spacing: normal;
+      }
+
+      .cta-primary {
+        border: 1px solid transparent;
+        background: #171717;
+        color: #ffffff;
+        border-radius: 999px;
+      }
+
+      .cta-secondary {
+        border: 1px solid #171717;
+        background: #ffffff;
+        color: #171717;
+        border-radius: 999px;
+        box-shadow: var(--surface-shadow-soft);
+      }
+
+      .card-preview {
+        padding: 8px;
+        border-radius: 10;
+        border: 1px solid color-mix(in srgb, var(--surface-border-strong) 72%, transparent);
+        background: var(--surface-bg);
+        color: var(--ink);
+        box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.08), 0 2px 2px rgba(0, 0, 0, 0.04), 0 8px 8px -8px rgba(0, 0, 0, 0.04);
+      }
+
+      .card-preview h4 {
+        margin: 0 0 var(--space-1);
+      }
+
+      .source-shell {
+        position: sticky;
+        top: var(--page-padding);
+      }
+
+      .source-header {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        justify-content: space-between;
+        gap: var(--space-2);
+        padding: var(--space-3) var(--space-4) var(--space-2);
+        border-bottom: 1px solid var(--surface-border);
+      }
+
+      .file-tabs {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 2px var(--space-3);
+      }
+
+      .file-tab {
+        padding: 0 0 var(--space-2);
+        border-bottom: 2px solid transparent;
+      }
+
+      .file-tab.active {
+        color: var(--ink);
+        border-bottom-color: var(--ink);
+        font-weight: 600;
+      }
+
+      .source-toolbar {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: var(--space-2);
+        padding: var(--space-2) var(--space-4);
+        border-bottom: 1px solid var(--surface-border);
+      }
+
+      .segmented {
+        display: inline-flex;
+        padding: 3px;
+        border: 1px solid var(--surface-border);
+        border-radius: var(--radius-pill);
+        background: var(--surface-bg-muted);
+      }
+
+      .segmented button {
+        border: 0;
+        border-radius: var(--radius-pill);
+        background: transparent;
+        padding: 6px 12px;
+        cursor: pointer;
+      }
+
+      .segmented button.is-active {
+        background: var(--surface-bg);
+        color: var(--ink);
+        box-shadow: var(--surface-shadow-soft);
+      }
+
+      .toolbar-actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: var(--space-2);
+        margin-left: auto;
+      }
+
+      .ghost-button {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 8px 12px;
+        border: 1px solid var(--surface-border);
+        border-radius: 8px;
+        background: var(--surface-bg);
+        box-shadow: var(--surface-shadow-soft);
+        cursor: pointer;
+      }
+
+      .source-body {
+        max-height: calc(100vh - (var(--page-padding) * 2) - 120px);
+        overflow: auto;
+      }
+
+      .source-view,
+      .rendered-view {
+        margin: 0;
+        padding: var(--space-4);
+      }
+
+      .source-view {
+        color: var(--ink);
+        font-family: var(--font-mono);
+        font-size: var(--source-size);
+        line-height: var(--source-line);
+        white-space: pre-wrap;
+        word-break: break-word;
+        background: var(--surface-bg);
+      }
+
+      .rendered-view {
+        color: var(--ink);
+        font-family: var(--font-body);
+        font-size: var(--body-size);
+        line-height: var(--body-line);
+        background: var(--surface-bg);
+      }
+
+      .rendered-view[hidden],
+      .source-view[hidden] {
+        display: none;
+      }
+
+      .rendered-view h2,
+      .rendered-view h3 {
+        margin: var(--space-4) 0 var(--space-2);
+        color: var(--ink);
+        font-family: var(--font-display);
+        font-weight: 600;
+      }
+
+      .rendered-view h2 {
+        font-size: var(--section-size);
+        line-height: var(--section-line);
+        letter-spacing: var(--section-track);
+      }
+
+      .rendered-view h2:first-child {
+        margin-top: 0;
+      }
+
+      .rendered-view h3 {
+        color: var(--muted);
+        font-size: calc(30px - 4px);
+        line-height: calc(28px - 4px);
+      }
+
+      .rendered-view p,
+      .rendered-view li {
+        color: var(--muted);
+      }
+
+      .rendered-view ul,
+      .rendered-view ol {
+        margin: 0 0 var(--space-3) 20px;
+        padding: 0;
+      }
+
+      .rendered-view table {
+        width: 100%;
+        border-collapse: collapse;
+        margin: var(--space-2) 0 var(--space-4);
+      }
+
+      .rendered-view th,
+      .rendered-view td {
+        padding: var(--space-2) var(--space-2);
+        border: 1px solid var(--surface-border);
+        text-align: left;
+        vertical-align: top;
+        font-size: var(--label-size);
+        line-height: var(--label-line);
+      }
+
+      .rendered-view th {
+        color: var(--ink);
+        background: var(--surface-bg-muted);
+      }
+
+      .rendered-view code {
+        padding: 0.14em 0.4em;
+        border-radius: 8px;
+        background: var(--surface-bg-muted);
+        color: var(--ink);
+        font-family: var(--font-mono);
+        font-size: 0.92em;
+      }
+
+      @media (max-width: 1120px) {
+        .layout {
+          grid-template-columns: 1fr;
+        }
+
+        .source-shell {
+          position: relative;
+          top: 0;
+        }
+
+        .source-body {
+          max-height: none;
+        }
+      }
+
+      @media (max-width: 760px) {
+        .shell {
+          width: min(100vw - (6px * 2), 100%);
+          padding-top: 6px;
+        }
+
+        .panel-inner,
+        .source-view,
+        .rendered-view {
+          padding-left: var(--space-3);
+          padding-right: var(--space-3);
+        }
+
+        .palette-row,
+        .palette-row.neutral-row,
+        .theme-mode-grid,
+        .theme-swatch-row,
+        .split-card,
+        .radius-grid {
+          grid-template-columns: 1fr;
+        }
+
+        .type-row,
+        .mini-row {
+          grid-template-columns: 1fr;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <main class="shell">
+      <div class="layout">
+        <section class="stack">
+          <article class="panel hero-card">
+            <div class="panel-inner">
+              <div class="eyebrow">Design Preview</div>
+              <h1 class="site-title">DESIGN</h1>
+              <p class="descriptor">WanderMind Studio is a calm travel-planning studio with an editorial marketing shell and a p...</p>
+              <div class="chip-row"><span class="chip">Full-bleed destination imagery w...</span><span class="chip">Amber for brand recognition and...</span><span class="chip">Thin warm-gray borders and shall...</span><span class="chip">Clear separation between inspira...</span><span class="chip">Five-language parity: changing l...</span></div>
+              <p class="summary">WanderMind Studio is a calm travel-planning studio with an editorial marketing shell and a practical AI workspace. It should feel trustworthy, warm and locally informed rather than like a generic booking marketplace or a futuristic AI demo. Photography carries the emotional weight; interface chrome remains quiet and precise. The established yellow brand mark is the signature, teal communicates functional actions, and ink-on-paper neutrals keep long travel content readable.</p>
+              <a class="observed-link" href="https://wandermind.cc/" target="_blank" rel="noreferrer">https://wandermind.cc/</a>
+            </div>
+          </article>
+
+          <article class="panel">
+            <div class="panel-inner">
+              <h2 class="section-title">Palette</h2>
+              <p class="section-subtitle">Roles and neutrals rendered using the extracted design system rather than a separate display theme.</p>
+              <div class="palette-grid"><div class="palette-row"><div class="swatch">
+    <div class="swatch-box" style="background:#FCBF1E;"></div>
+    <div class="swatch-label">WanderMind Amber</div>
+    <div class="swatch-meta">
+      <span>#FCBF1E</span>
+      <span>Brand</span>
+    </div>
+  </div><div class="swatch">
+    <div class="swatch-box" style="background:#F59E0B;"></div>
+    <div class="swatch-label">Amber Deep</div>
+    <div class="swatch-meta">
+      <span>#F59E0B</span>
+      <span>Brand hover</span>
+    </div>
+  </div><div class="swatch">
+    <div class="swatch-box" style="background:#0E7C6B;"></div>
+    <div class="swatch-label">Island Teal</div>
+    <div class="swatch-meta">
+      <span>#0E7C6B</span>
+      <span>Functional action</span>
+    </div>
+  </div></div><div class="palette-row neutral-row"><div class="swatch">
+    <div class="swatch-box" style="background:#14B8A6;"></div>
+    <div class="swatch-label">Teal Bright</div>
+    <div class="swatch-meta">
+      <span>#14B8A6</span>
+      <span>Functional hover</span>
+    </div>
+  </div><div class="swatch">
+    <div class="swatch-box" style="background:#1A1A1A;"></div>
+    <div class="swatch-label">Studio Ink</div>
+    <div class="swatch-meta">
+      <span>#1A1A1A</span>
+      <span>Primary text</span>
+    </div>
+  </div><div class="swatch">
+    <div class="swatch-box" style="background:#4A4A4A;"></div>
+    <div class="swatch-label">Graphite</div>
+    <div class="swatch-meta">
+      <span>#4A4A4A</span>
+      <span>Secondary text</span>
+    </div>
+  </div><div class="swatch">
+    <div class="swatch-box" style="background:#8A8A8A;"></div>
+    <div class="swatch-label">Stone</div>
+    <div class="swatch-meta">
+      <span>#8A8A8A</span>
+      <span>Muted text</span>
+    </div>
+  </div></div></div>
+            </div>
+          </article>
+
+          <article class="panel">
+            <div class="panel-inner">
+              <h2 class="section-title">Theme Modes</h2>
+              <p class="section-subtitle">If the product supports light and dark themes, both modes should stay visible in the exported design system and preview.</p>
+              <div class="prompt-card"><strong>Single mode detected</strong><p>No explicit <code>Theme Modes</code> section was detected in the markdown. If the product supports both light and dark themes, document both so the preview can render them side by side.</p></div>
+            </div>
+          </article>
+
+          <article class="panel">
+            <div class="panel-inner">
+              <h2 class="section-title">Typography</h2>
+              <p class="section-subtitle">The preview shell itself now uses the extracted typography stack, sizes, line heights, and tracking.</p>
+              <div class="type-list"><div class="type-row">
+        <div class="type-role">Marketing hero</div>
+        <div
+          class="type-sample"
+          style="font-size:42px; line-height:42px; font-weight:600; letter-spacing:normal; font-family:-apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, Arial, sans-serif;"
+        >
+          The quick brown fox jumps
+        </div>
+        <div class="type-metrics">42-58px desktop, 32-38px mobile • 600-700 • 1.08-1.18</div>
+      </div><div class="type-row">
+        <div class="type-role">Section heading</div>
+        <div
+          class="type-sample"
+          style="font-size:30px; line-height:30px; font-weight:600; letter-spacing:normal; font-family:-apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, Arial, sans-serif;"
+        >
+          The quick brown fox jumps
+        </div>
+        <div class="type-metrics">30-40px • 600-700 • 1.2</div>
+      </div><div class="type-row">
+        <div class="type-role">Product panel title</div>
+        <div
+          class="type-sample"
+          style="font-size:18px; line-height:18px; font-weight:700; letter-spacing:normal; font-family:-apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, Arial, sans-serif;"
+        >
+          The quick brown fox jumps
+        </div>
+        <div class="type-metrics">18-22px • 700 • 1.35</div>
+      </div><div class="type-row">
+        <div class="type-role">Body</div>
+        <div
+          class="type-sample"
+          style="font-size:15px; line-height:15px; font-weight:400; letter-spacing:normal; font-family:-apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, Arial, sans-serif;"
+        >
+          The quick brown fox jumps
+        </div>
+        <div class="type-metrics">15-17px • 400 • 1.65-1.75</div>
+      </div><div class="type-row">
+        <div class="type-role">Form label</div>
+        <div
+          class="type-sample"
+          style="font-size:12px; line-height:12px; font-weight:600; letter-spacing:02em; font-family:-apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, Arial, sans-serif;"
+        >
+          The quick brown fox jumps
+        </div>
+        <div class="type-metrics">12-13px • 600-700 • 1.4</div>
+      </div><div class="type-row">
+        <div class="type-role">Eyebrow/meta</div>
+        <div
+          class="type-sample"
+          style="font-size:12px; line-height:12px; font-weight:700; letter-spacing:12em; font-family:-apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, Arial, sans-serif;"
+        >
+          The quick brown fox jumps
+        </div>
+        <div class="type-metrics">10.5-12px • 700 • 1.4</div>
+      </div></div>
+            </div>
+          </article>
+
+          <article class="panel">
+            <div class="panel-inner">
+              <h2 class="section-title">Spacing &amp; Shape</h2>
+              <p class="section-subtitle">Spacing, panel padding, and radius tokens are mapped directly from the layout rules in the markdown.</p>
+              <div class="split-card">
+    <div>
+      <h3 class="token-heading">Spacing</h3>
+      <div class="token-table"><div class="token-row">
+        <span>Base unit</span>
+        <span>4px</span>
+      </div><div class="token-row">
+        <span>Step 2</span>
+        <span>6px</span>
+      </div><div class="token-row">
+        <span>Step 3</span>
+        <span>8px</span>
+      </div><div class="token-row">
+        <span>Step 4</span>
+        <span>12px</span>
+      </div><div class="token-row">
+        <span>Step 5</span>
+        <span>16px</span>
+      </div></div>
+    </div>
+    <div>
+      <h3 class="token-heading">Border Radius</h3>
+      <div class="radius-grid"><div class="radius-card">
+        <div class="radius-demo" style="border-radius:8px;"></div>
+        <div class="radius-name">Micro utility</div>
+        <div class="radius-value">8px</div>
+      </div><div class="radius-card">
+        <div class="radius-demo" style="border-radius:10;"></div>
+        <div class="radius-name">Standard module</div>
+        <div class="radius-value">10</div>
+      </div><div class="radius-card">
+        <div class="radius-demo" style="border-radius:999px;"></div>
+        <div class="radius-name">Category rail</div>
+        <div class="radius-value">999px</div>
+      </div><div class="radius-card">
+        <div class="radius-demo" style="border-radius:999px;"></div>
+        <div class="radius-name">CTA pill</div>
+        <div class="radius-value">999px</div>
+      </div></div>
+    </div>
+  </div>
+            </div>
+          </article>
+
+          <article class="panel">
+            <div class="panel-inner">
+              <h2 class="section-title">Components</h2>
+              <p class="section-subtitle">Buttons and cards use the documented height, weight, radius, colors, and surface treatment.</p>
+              <div class="component-card">
+    <div class="button-row">
+      <span class="cta cta-primary">Start Deploying</span>
+      <span class="cta cta-secondary">Get a Demo</span>
+    </div>
+    <div class="card-preview">
+      <h4>System Card Preview</h4>
+      <p>White framed module with restrained shadow and precise spacing.</p>
+    </div>
+  </div>
+            </div>
+          </article>
+
+          <article class="panel">
+            <div class="panel-inner">
+              <h2 class="section-title">System Notes</h2>
+              <p class="section-subtitle">Responsive behavior and depth rules stay visible while keeping the overall proportions calm and readable.</p>
+              <div class="split-card">
+    <div>
+      <h3 class="token-heading">Breakpoints</h3>
+      <div class="mini-grid"><div class="mini-row">
+            <div class="mini-label">Mobile</div>
+            <div class="mini-content"><strong>&lt;= 575px</strong><br />Single column, 48px controls, compact copy, bottom-safe modals</div>
+          </div><div class="mini-row">
+            <div class="mini-label">Tablet</div>
+            <div class="mini-content"><strong>576-991px</strong><br />Collapsed navigation, stacked forms, AI side panels become drawers</div>
+          </div><div class="mini-row">
+            <div class="mini-label">Desktop</div>
+            <div class="mini-content"><strong>&gt;= 992px</strong><br />Full nav, multi-column planning and paired content/media layouts</div>
+          </div><div class="mini-row">
+            <div class="mini-label">Wide</div>
+            <div class="mini-content"><strong>&gt;= 1200px</strong><br />Full 280/fluid/360 AI workspace and generous editorial spacing</div>
+          </div></div>
+    </div>
+    <div>
+      <h3 class="token-heading">Elevation</h3>
+      <div class="mini-grid"><div class="mini-row">
+            <div class="mini-label">Flat</div>
+            <div class="mini-content"><strong>No shadow, section background</strong><br />Editorial content and timelines</div>
+          </div><div class="mini-row">
+            <div class="mini-label">Ring</div>
+            <div class="mini-content"><strong>1px warm border</strong><br />Inputs, filters and utility cards</div>
+          </div><div class="mini-row">
+            <div class="mini-label">Card</div>
+            <div class="mini-content"><strong>Small/medium shadow</strong><br />Auth, route and service cards</div>
+          </div><div class="mini-row">
+            <div class="mini-label">Modal</div>
+            <div class="mini-content"><strong>Overlay plus large shadow</strong><br />Focused tasks without leaving the page</div>
+          </div></div>
+    </div>
+  </div>
+            </div>
+          </article>
+
+          <article class="panel">
+            <div class="panel-inner">
+              <h2 class="section-title">Prompt Guide</h2>
+              <p class="section-subtitle">Prompt snippets are shown in the same typography and spacing language as the extracted design system.</p>
+              <div class="prompt-list"><div class="prompt-card"><strong>Quick Summary</strong><p>Build a calm, real-world travel studio interface that preserves WanderMind’s yellow mark, teal task actions and ink-on-paper neutrals. Photography provides emotion; structure provides trust. Marketing pages stay editorial and spacious, while the AI workspace is compact and functional. Use light borders, modest radii and very shallow shadows. Every action and state must work in English, Chinese, Japanese, Korean and Indonesian.</p></div><div class="prompt-card">
+            <strong>Auth</strong>
+            <p>“Build a compact in-page authentication modal using the yellow WanderMind mark, visible form labels, teal task buttons, an email-code flow and an official Google sign-in button. Preserve the underlying journey as dimmed context.”</p>
+          </div><div class="prompt-card">
+            <strong>Journey starter</strong>
+            <p>“Create a date, total-budget, traveller-profile and intent selector that feels like a travel studio consultation, not a flight-search clone.”</p>
+          </div><div class="prompt-card">
+            <strong>Bali media</strong>
+            <p>“Create an editorial photo grid whose filters distinguish scenery/culture and camera/traveller-phone images; clicking opens practical place details and a short route.”</p>
+          </div><div class="prompt-card">
+            <strong>Local handoff</strong>
+            <p>“Create a driver/service panel that summarizes selected dates, route and budget before a controlled contact request.”</p>
+          </div><div class="prompt-card"><strong>Ready-to-Use Prompt</strong><p>Use DESIGN.md as a strict visual and interaction contract. Extend the existing WanderMind Studio implementation rather than replacing its identity. Keep amber for brand/current state, teal for task progress, real destination imagery, warm paper surfaces, visible labels, five-language parity, keyboard focus and restrained motion. Do not add unrelated features or generic AI styling.</p></div></div>
+              <div class="split-card" style="margin-top:var(--space-4);">
+    <div>
+      <h3 class="token-heading">Do</h3>
+      <div class="mini-grid"><div class="mini-row"><div class="mini-label">Do</div><div class="mini-content">Preserve the yellow logo, teal task color and existing editorial photography.</div></div><div class="mini-row"><div class="mini-label">Do</div><div class="mini-content">Make every language switch update the full visible interface and document language.</div></div><div class="mini-row"><div class="mini-label">Do</div><div class="mini-content">Explain the difference between inspiration, planning and bookable/local services.</div></div><div class="mini-row"><div class="mini-label">Do</div><div class="mini-content">Carry known dates, budget and route context forward between pages.</div></div></div>
+    </div>
+    <div>
+      <h3 class="token-heading">Don't</h3>
+      <div class="mini-grid"><div class="mini-row"><div class="mini-label">Don't</div><div class="mini-content">Do not copy another product’s logo, purple palette, wording or illustration.</div></div><div class="mini-row"><div class="mini-label">Don't</div><div class="mini-content">Do not invent a new visual identity for individual pages.</div></div><div class="mini-row"><div class="mini-label">Don't</div><div class="mini-content">Do not promise live inventory, bookings or discounts unless the integration is real.</div></div><div class="mini-row"><div class="mini-label">Don't</div><div class="mini-content">Do not expose a local partner’s private contact details outside the controlled request flow.</div></div></div>
+    </div>
+  </div>
+            </div>
+          </article>
+        </section>
+
+        <section class="source-shell">
+          <article class="panel">
+            <div class="source-header">
+              <div class="file-tabs">
+                <span class="file-tab">design-system.md</span>
+                <span class="file-tab active">DESIGN.md</span>
+                <span class="file-tab">Design JSON</span>
+                <span class="file-tab">CSS Variables</span>
+                <span class="file-tab">Design Tokens</span>
+              </div>
+            </div>
+            <div class="source-toolbar">
+              <div class="segmented" role="tablist" aria-label="View Switcher">
+                <button class="is-active" data-view="source" type="button">Source</button>
+                <button data-view="preview" type="button">Preview</button>
+              </div>
+              <div class="toolbar-actions">
+                <button class="ghost-button" id="copyButton" type="button">Copy</button>
+                <a class="ghost-button" href="DESIGN.md" download>Open .md</a>
+                <span class="copy-state" id="copyState"></span>
+              </div>
+            </div>
+            <div class="source-body">
+              <pre class="source-view" id="sourceView"># WanderMind Studio Design System
+
+## 1. Visual Theme &amp; Atmosphere
+
+WanderMind Studio is a calm travel-planning studio with an editorial marketing shell and a practical AI workspace. It should feel trustworthy, warm and locally informed rather than like a generic booking marketplace or a futuristic AI demo. Photography carries the emotional weight; interface chrome remains quiet and precise. The established yellow brand mark is the signature, teal communicates functional actions, and ink-on-paper neutrals keep long travel content readable.
+
+- Overall feeling: warm, capable, grounded and human.
+- Visual density: spacious on marketing pages; compact but orderly inside the AI workspace.
+- Brand posture: a thoughtful travel studio with useful AI and real local partners.
+- Signature motif: the yellow WanderMind mark paired with real, clearly labelled travel photography.
+
+### Key Characteristics
+
+- Full-bleed destination imagery with restrained overlays.
+- Amber for brand recognition and active navigation; teal for functional progress and confirmations.
+- Thin warm-gray borders and shallow shadows instead of floating card stacks.
+- Clear separation between inspiration, planning and local fulfilment.
+- Five-language parity: changing language changes every user-facing label and state.
+
+## 2. Color Palette &amp; Roles
+
+| Role | Semantic Name | Value | Usage |
+| --- | --- | --- | --- |
+| Brand | WanderMind Amber | `#FCBF1E` | Logo emphasis, active tabs, signature highlights |
+| Brand hover | Amber Deep | `#F59E0B` | Hover/pressed amber states |
+| Functional action | Island Teal | `#0E7C6B` | Forms, confirmations, route/contact actions |
+| Functional hover | Teal Bright | `#14B8A6` | Focus and hover feedback |
+| Primary text | Studio Ink | `#1A1A1A` | Headings and important content |
+| Secondary text | Graphite | `#4A4A4A` | Body copy |
+| Muted text | Stone | `#8A8A8A` | Metadata, hints and captions |
+| Page background | Travel Paper | `#FAFAF7` | AI workspace background |
+| Secondary surface | Warm Canvas | `#F3F1EA` | Grouped controls and quiet bands |
+| Card surface | White Paper | `#FFFFFF` | Forms, modal panels and cards |
+| Structural border | Warm Line | `#E5E2DA` | Inputs, panels and separators |
+| Soft divider | Sand Line | `#F0EDE5` | Subtle list and section separation |
+
+### Interactive
+
+- Amber identifies the product and current location; do not use it for every primary form action.
+- Teal identifies actions that advance a task: verify, save, generate, request and contact.
+- Focus rings use `rgba(20, 184, 166, 0.18)` at 3px with a solid teal border.
+- Destructive or blocking errors use a restrained red with explanatory text, never color alone.
+
+### Theme Modes
+
+#### Light Mode
+
+- Background: `#FAFAF7` or white marketing sections.
+- Surface: `#FFFFFF`.
+- Text: `#1A1A1A` / `#4A4A4A`.
+- Accent: amber brand, teal actions.
+- Notes: borders do most of the separation work; shadows remain faint.
+
+#### Dark Mode
+
+- Background: `#15171A`.
+- Secondary background: `#1C1F23`.
+- Surface: `#1F2226`.
+- Text: `#F3F1EA` / `#C9C6BD`.
+- Border: `#2D3036`.
+- Accent: amber and teal stay stable rather than inverting.
+
+### Shadows &amp; Depth
+
+- Small: `0 2px 8px rgba(0,0,0,.04)`.
+- Medium: `0 6px 24px rgba(0,0,0,.06)`.
+- Modal: `0 14px 40px rgba(0,0,0,.10)`.
+- Modal overlay: ink at roughly 60% opacity; keep the underlying journey visible as context.
+
+## 3. Typography Rules
+
+### Font Family
+
+- Primary UI: `Roboto`, system UI, then complete CJK fallbacks.
+- Chinese fallback: `PingFang SC`, `Microsoft YaHei`, `Source Han Sans SC`, `Noto Sans SC`.
+- Japanese and Korean rely on matching system sans fallbacks; do not force a Latin-only face.
+- Font Awesome is for icons only.
+
+### Hierarchy
+
+| Role | Size | Weight | Line Height | Letter Spacing | Notes |
+| --- | --- | --- | --- | --- | --- |
+| Marketing hero | `42-58px` desktop, `32-38px` mobile | 600-700 | 1.08-1.18 | 0 | Short, concrete promise |
+| Section heading | `30-40px` | 600-700 | 1.2 | 0 | One idea per section |
+| Product panel title | `18-22px` | 700 | 1.35 | 0 | Compact and scannable |
+| Body | `15-17px` | 400 | 1.65-1.75 | 0 | Travel explanations and trust copy |
+| Form label | `12-13px` | 600-700 | 1.4 | `.02em` | Sentence case, always visible |
+| Eyebrow/meta | `10.5-12px` | 700 | 1.4 | `.08-.12em` | Use only for genuine taxonomy |
+
+### Principles
+
+- Do not use viewport-scaled type; use explicit responsive steps.
+- Labels remain visible above fields. Placeholders show examples, not labels.
+- Interface text uses plain verbs: “Send code”, “Verify email”, “Build my plan”.
+- Errors state what failed and what the user should do next.
+
+## 4. Component Stylings
+
+### Buttons and Links
+
+- Primary task CTA: teal fill, white text, 10-12px radius, 44-52px height.
+- Brand CTA: amber fill with ink text, used sparingly for the first journey action.
+- Secondary CTA: transparent surface, warm border, ink text.
+- Text links: teal or ink; underline appears on hover/focus where context is not obvious.
+- Hover: small color shift or 1px lift only. No springy or decorative motion.
+
+### Cards and Containers
+
+- Standard radius: 12px; prominent modal or image panel: 16px.
+- Border: 1px solid warm line.
+- Shadow: small or none. Avoid cards inside cards.
+- Internal spacing: 20-28px desktop, 16-20px mobile.
+- Editorial sections stay unframed; cards are reserved for repeated choices, forms and real service units.
+
+### Inputs and Interactive Controls
+
+- Height: at least 44px; mobile targets at least 48px where practical.
+- Background: paper; border: warm line; radius: 10px.
+- Focus: teal border and visible 3px focus ring.
+- Required, invalid, sending, verified and disabled states must have text plus visual feedback.
+- Date, budget and traveller controls use native/semantic inputs and concise helper copy.
+
+### Navigation
+
+- Preserve the existing fixed global header and yellow logo.
+- On scroll, increase surface opacity and add a thin border/shallow shadow.
+- Mobile navigation collapses; keyboard focus and close behaviour remain explicit.
+- The selected page is signalled by both color and state, not color alone.
+
+### Image Treatment
+
+- Use real Bali photography as the first-viewport signal on Bali-facing pages.
+- Every gallery image declares two dimensions: subject (`scenery` / `culture`) and source (`camera` / `traveller phone`).
+- Preserve natural aspect ratio with stable dimensions to prevent layout shift.
+- Do not apply filters that disguise the real appearance of a place.
+
+### Distinctive Components
+
+- Reality lens: paired “camera view” and “traveller view” labels on destination media.
+- Constraint starter: date range, total budget, traveller profile and travel intent in one calm flow.
+- Local fulfilment handoff: carry the selected route into the driver/contact request without retyping.
+- Auth modal: compact in-page panel with yellow mark, email verification and Google sign-in.
+
+## 5. Layout Principles
+
+### Spacing System
+
+- Base unit: 4px.
+- Common gaps: 8, 12, 16, 20, 24, 32, 48, 64 and 96px.
+- Marketing section padding: 72-104px desktop, 48-64px mobile.
+
+### Grid &amp; Container
+
+- Marketing content max width: roughly 1140-1200px.
+- AI workspace max width: 1600px with 280px / fluid / 360px columns.
+- Driver forms use a two-column form/trust layout and collapse to one column below tablet.
+- Gallery grids preserve image rhythm without masonry overlaps or ambiguous click targets.
+
+### Whitespace Philosophy
+
+- Give each section one job and enough space to read it.
+- Do not convert every paragraph into a card.
+- Align copy, filters and CTAs to the same container edges.
+
+### Border Radius Scale
+
+- Micro: 8px.
+- Standard: 10-12px.
+- Large: 16px.
+- Pill: only for filters, tags and compact status controls.
+
+## 6. Depth &amp; Elevation
+
+| Level | Treatment | Use |
+| --- | --- | --- |
+| Flat | No shadow, section background | Editorial content and timelines |
+| Ring | 1px warm border | Inputs, filters and utility cards |
+| Card | Small/medium shadow | Auth, route and service cards |
+| Modal | Overlay plus large shadow | Focused tasks without leaving the page |
+| Focus | Teal ring plus border | Keyboard and field focus |
+
+### Depth Principles
+
+- Depth communicates hierarchy, not decoration.
+- The page background remains visible behind modals to preserve task context.
+- Avoid glass effects beyond the established translucent fixed header.
+
+## 7. Do&#39;s and Don&#39;ts
+
+### Do
+
+- Preserve the yellow logo, teal task color and existing editorial photography.
+- Make every language switch update the full visible interface and document language.
+- Explain the difference between inspiration, planning and bookable/local services.
+- Carry known dates, budget and route context forward between pages.
+- Respect keyboard focus, reduced motion and mobile tap targets.
+
+### Don&#39;t
+
+- Do not copy another product’s logo, purple palette, wording or illustration.
+- Do not invent a new visual identity for individual pages.
+- Do not promise live inventory, bookings or discounts unless the integration is real.
+- Do not expose a local partner’s private contact details outside the controlled request flow.
+- Do not use “AI” as filler when the user-facing benefit is time, clarity or local execution.
+
+## 8. Responsive Behavior
+
+| Name | Width | Key Changes |
+| --- | --- | --- |
+| Mobile | `&lt;= 575px` | Single column, 48px controls, compact copy, bottom-safe modals |
+| Tablet | `576-991px` | Collapsed navigation, stacked forms, AI side panels become drawers |
+| Desktop | `&gt;= 992px` | Full nav, multi-column planning and paired content/media layouts |
+| Wide | `&gt;= 1200px` | Full 280/fluid/360 AI workspace and generous editorial spacing |
+
+### Touch Targets
+
+- Core actions are at least 44x44px; aim for 48px on mobile.
+- Filters may scroll horizontally but must show that more choices exist.
+
+### Collapsing Strategy
+
+- Keep the decision order intact when stacking; never move the primary CTA above required context.
+- Auth modal becomes a near-full-width bottom-safe panel on small screens.
+- Driver trust content follows the form on mobile and stays beside it on desktop.
+
+## 9. Agent Prompt Guide
+
+### Quick Color Reference
+
+- Brand: `#FCBF1E`.
+- Primary task CTA: `#0E7C6B`.
+- Background: `#FAFAF7`.
+- Heading: `#1A1A1A`.
+- Body: `#4A4A4A`.
+- Border: `#E5E2DA`.
+
+### Quick Summary
+
+Build a calm, real-world travel studio interface that preserves WanderMind’s yellow mark, teal task actions and ink-on-paper neutrals. Photography provides emotion; structure provides trust. Marketing pages stay editorial and spacious, while the AI workspace is compact and functional. Use light borders, modest radii and very shallow shadows. Every action and state must work in English, Chinese, Japanese, Korean and Indonesian.
+
+### Example Component Prompts
+
+- Auth: “Build a compact in-page authentication modal using the yellow WanderMind mark, visible form labels, teal task buttons, an email-code flow and an official Google sign-in button. Preserve the underlying journey as dimmed context.”
+- Journey starter: “Create a date, total-budget, traveller-profile and intent selector that feels like a travel studio consultation, not a flight-search clone.”
+- Bali media: “Create an editorial photo grid whose filters distinguish scenery/culture and camera/traveller-phone images; clicking opens practical place details and a short route.”
+- Local handoff: “Create a driver/service panel that summarizes selected dates, route and budget before a controlled contact request.”
+
+### Ready-to-Use Prompt
+
+Use `DESIGN.md` as a strict visual and interaction contract. Extend the existing WanderMind Studio implementation rather than replacing its identity. Keep amber for brand/current state, teal for task progress, real destination imagery, warm paper surfaces, visible labels, five-language parity, keyboard focus and restrained motion. Do not add unrelated features or generic AI styling.
+
+### Iteration Guide
+
+1. Confirm the page’s single user job and preserve existing navigation.
+2. Build with real content, states and mobile behaviour before adding motion.
+3. Audit all five languages, keyboard paths, console errors and visual consistency.
+
+## Appendix: Interaction Patterns
+
+- Scroll: fixed navigation gains opacity; content reveals should be subtle and reduced-motion safe.
+- Hover: one small response per component, normally color, border or 1px elevation.
+- Click: buttons enter an immediate pending state and preserve entered data on recoverable failure.
+- Modal: focus moves inside, Escape closes when safe, focus returns to the trigger.
+
+## Appendix: Content &amp; Messaging Patterns
+
+- Headline pattern: outcome first, destination/context second.
+- CTA language: direct user action, such as “Choose dates and budget” or “Add this stop”.
+- Trust signals: real image source, practical time/cost range, local partner role and privacy handling.
+- Voice: calm, direct and specific. Avoid travel superlatives and vague apologies.
+
+## Appendix: Observed Pages
+
+- `https://wandermind.cc/`: global marketing shell, imagery, navigation and brand voice.
+- `https://wandermind.cc/bali`: editorial destination page, gallery and itinerary rhythm.
+- `https://wandermind.cc/find-driver`: form/trust layout and local handoff.
+- `https://wandermind.cc/ai-tool`: product density, dual theme and planning interactions.
+- CollectUI reference: auth composition only; its branding and visual identity are explicitly excluded.
+</pre>
+              <article class="rendered-view" id="previewView" hidden><section><h2>1. Visual Theme &amp; Atmosphere</h2><p>WanderMind Studio is a calm travel-planning studio with an editorial marketing shell and a practical AI workspace. It should feel trustworthy, warm and locally informed rather than like a generic booking marketplace or a futuristic AI demo. Photography carries the emotional weight; interface chrome remains quiet and precise. The established yellow brand mark is the signature, teal communicates functional actions, and ink-on-paper neutrals keep long travel content readable.</p><ul><li>Overall feeling: warm, capable, grounded and human.</li><li>Visual density: spacious on marketing pages; compact but orderly inside the AI workspace.</li><li>Brand posture: a thoughtful travel studio with useful AI and real local partners.</li><li>Signature motif: the yellow WanderMind mark paired with real, clearly labelled travel photography.</li></ul><h3>Key Characteristics</h3><ul><li>Full-bleed destination imagery with restrained overlays.</li><li>Amber for brand recognition and active navigation; teal for functional progress and confirmations.</li><li>Thin warm-gray borders and shallow shadows instead of floating card stacks.</li><li>Clear separation between inspiration, planning and local fulfilment.</li><li>Five-language parity: changing language changes every user-facing label and state.</li></ul></section><section><h2>2. Color Palette &amp; Roles</h2><table><thead><tr><th>Role</th><th>Semantic Name</th><th>Value</th><th>Usage</th></tr></thead><tbody><tr><td>Brand</td><td>WanderMind Amber</td><td><code>#FCBF1E</code></td><td>Logo emphasis, active tabs, signature highlights</td></tr><tr><td>Brand hover</td><td>Amber Deep</td><td><code>#F59E0B</code></td><td>Hover/pressed amber states</td></tr><tr><td>Functional action</td><td>Island Teal</td><td><code>#0E7C6B</code></td><td>Forms, confirmations, route/contact actions</td></tr><tr><td>Functional hover</td><td>Teal Bright</td><td><code>#14B8A6</code></td><td>Focus and hover feedback</td></tr><tr><td>Primary text</td><td>Studio Ink</td><td><code>#1A1A1A</code></td><td>Headings and important content</td></tr><tr><td>Secondary text</td><td>Graphite</td><td><code>#4A4A4A</code></td><td>Body copy</td></tr><tr><td>Muted text</td><td>Stone</td><td><code>#8A8A8A</code></td><td>Metadata, hints and captions</td></tr><tr><td>Page background</td><td>Travel Paper</td><td><code>#FAFAF7</code></td><td>AI workspace background</td></tr><tr><td>Secondary surface</td><td>Warm Canvas</td><td><code>#F3F1EA</code></td><td>Grouped controls and quiet bands</td></tr><tr><td>Card surface</td><td>White Paper</td><td><code>#FFFFFF</code></td><td>Forms, modal panels and cards</td></tr><tr><td>Structural border</td><td>Warm Line</td><td><code>#E5E2DA</code></td><td>Inputs, panels and separators</td></tr><tr><td>Soft divider</td><td>Sand Line</td><td><code>#F0EDE5</code></td><td>Subtle list and section separation</td></tr></tbody></table><h3>Interactive</h3><ul><li>Amber identifies the product and current location; do not use it for every primary form action.</li><li>Teal identifies actions that advance a task: verify, save, generate, request and contact.</li><li>Focus rings use <code>rgba(20, 184, 166, 0.18)</code> at 3px with a solid teal border.</li><li>Destructive or blocking errors use a restrained red with explanatory text, never color alone.</li></ul><h3>Theme Modes</h3><p>#### Light Mode</p><ul><li>Background: <code>#FAFAF7</code> or white marketing sections.</li><li>Surface: <code>#FFFFFF</code>.</li><li>Text: <code>#1A1A1A</code> / <code>#4A4A4A</code>.</li><li>Accent: amber brand, teal actions.</li><li>Notes: borders do most of the separation work; shadows remain faint.</li></ul><p>#### Dark Mode</p><ul><li>Background: <code>#15171A</code>.</li><li>Secondary background: <code>#1C1F23</code>.</li><li>Surface: <code>#1F2226</code>.</li><li>Text: <code>#F3F1EA</code> / <code>#C9C6BD</code>.</li><li>Border: <code>#2D3036</code>.</li><li>Accent: amber and teal stay stable rather than inverting.</li></ul><h3>Shadows &amp; Depth</h3><ul><li>Small: <code>0 2px 8px rgba(0,0,0,.04)</code>.</li><li>Medium: <code>0 6px 24px rgba(0,0,0,.06)</code>.</li><li>Modal: <code>0 14px 40px rgba(0,0,0,.10)</code>.</li><li>Modal overlay: ink at roughly 60% opacity; keep the underlying journey visible as context.</li></ul></section><section><h2>3. Typography Rules</h2><h3>Font Family</h3><ul><li>Primary UI: <code>Roboto</code>, system UI, then complete CJK fallbacks.</li><li>Chinese fallback: <code>PingFang SC</code>, <code>Microsoft YaHei</code>, <code>Source Han Sans SC</code>, <code>Noto Sans SC</code>.</li><li>Japanese and Korean rely on matching system sans fallbacks; do not force a Latin-only face.</li><li>Font Awesome is for icons only.</li></ul><h3>Hierarchy</h3><table><thead><tr><th>Role</th><th>Size</th><th>Weight</th><th>Line Height</th><th>Letter Spacing</th><th>Notes</th></tr></thead><tbody><tr><td>Marketing hero</td><td><code>42-58px</code> desktop, <code>32-38px</code> mobile</td><td>600-700</td><td>1.08-1.18</td><td>0</td><td>Short, concrete promise</td></tr><tr><td>Section heading</td><td><code>30-40px</code></td><td>600-700</td><td>1.2</td><td>0</td><td>One idea per section</td></tr><tr><td>Product panel title</td><td><code>18-22px</code></td><td>700</td><td>1.35</td><td>0</td><td>Compact and scannable</td></tr><tr><td>Body</td><td><code>15-17px</code></td><td>400</td><td>1.65-1.75</td><td>0</td><td>Travel explanations and trust copy</td></tr><tr><td>Form label</td><td><code>12-13px</code></td><td>600-700</td><td>1.4</td><td><code>.02em</code></td><td>Sentence case, always visible</td></tr><tr><td>Eyebrow/meta</td><td><code>10.5-12px</code></td><td>700</td><td>1.4</td><td><code>.08-.12em</code></td><td>Use only for genuine taxonomy</td></tr></tbody></table><h3>Principles</h3><ul><li>Do not use viewport-scaled type; use explicit responsive steps.</li><li>Labels remain visible above fields. Placeholders show examples, not labels.</li><li>Interface text uses plain verbs: “Send code”, “Verify email”, “Build my plan”.</li><li>Errors state what failed and what the user should do next.</li></ul></section><section><h2>4. Component Stylings</h2><h3>Buttons and Links</h3><ul><li>Primary task CTA: teal fill, white text, 10-12px radius, 44-52px height.</li><li>Brand CTA: amber fill with ink text, used sparingly for the first journey action.</li><li>Secondary CTA: transparent surface, warm border, ink text.</li><li>Text links: teal or ink; underline appears on hover/focus where context is not obvious.</li><li>Hover: small color shift or 1px lift only. No springy or decorative motion.</li></ul><h3>Cards and Containers</h3><ul><li>Standard radius: 12px; prominent modal or image panel: 16px.</li><li>Border: 1px solid warm line.</li><li>Shadow: small or none. Avoid cards inside cards.</li><li>Internal spacing: 20-28px desktop, 16-20px mobile.</li><li>Editorial sections stay unframed; cards are reserved for repeated choices, forms and real service units.</li></ul><h3>Inputs and Interactive Controls</h3><ul><li>Height: at least 44px; mobile targets at least 48px where practical.</li><li>Background: paper; border: warm line; radius: 10px.</li><li>Focus: teal border and visible 3px focus ring.</li><li>Required, invalid, sending, verified and disabled states must have text plus visual feedback.</li><li>Date, budget and traveller controls use native/semantic inputs and concise helper copy.</li></ul><h3>Navigation</h3><ul><li>Preserve the existing fixed global header and yellow logo.</li><li>On scroll, increase surface opacity and add a thin border/shallow shadow.</li><li>Mobile navigation collapses; keyboard focus and close behaviour remain explicit.</li><li>The selected page is signalled by both color and state, not color alone.</li></ul><h3>Image Treatment</h3><ul><li>Use real Bali photography as the first-viewport signal on Bali-facing pages.</li><li>Every gallery image declares two dimensions: subject (<code>scenery</code> / <code>culture</code>) and source (<code>camera</code> / <code>traveller phone</code>).</li><li>Preserve natural aspect ratio with stable dimensions to prevent layout shift.</li><li>Do not apply filters that disguise the real appearance of a place.</li></ul><h3>Distinctive Components</h3><ul><li>Reality lens: paired “camera view” and “traveller view” labels on destination media.</li><li>Constraint starter: date range, total budget, traveller profile and travel intent in one calm flow.</li><li>Local fulfilment handoff: carry the selected route into the driver/contact request without retyping.</li><li>Auth modal: compact in-page panel with yellow mark, email verification and Google sign-in.</li></ul></section><section><h2>5. Layout Principles</h2><h3>Spacing System</h3><ul><li>Base unit: 4px.</li><li>Common gaps: 8, 12, 16, 20, 24, 32, 48, 64 and 96px.</li><li>Marketing section padding: 72-104px desktop, 48-64px mobile.</li></ul><h3>Grid &amp; Container</h3><ul><li>Marketing content max width: roughly 1140-1200px.</li><li>AI workspace max width: 1600px with 280px / fluid / 360px columns.</li><li>Driver forms use a two-column form/trust layout and collapse to one column below tablet.</li><li>Gallery grids preserve image rhythm without masonry overlaps or ambiguous click targets.</li></ul><h3>Whitespace Philosophy</h3><ul><li>Give each section one job and enough space to read it.</li><li>Do not convert every paragraph into a card.</li><li>Align copy, filters and CTAs to the same container edges.</li></ul><h3>Border Radius Scale</h3><ul><li>Micro: 8px.</li><li>Standard: 10-12px.</li><li>Large: 16px.</li><li>Pill: only for filters, tags and compact status controls.</li></ul></section><section><h2>6. Depth &amp; Elevation</h2><table><thead><tr><th>Level</th><th>Treatment</th><th>Use</th></tr></thead><tbody><tr><td>Flat</td><td>No shadow, section background</td><td>Editorial content and timelines</td></tr><tr><td>Ring</td><td>1px warm border</td><td>Inputs, filters and utility cards</td></tr><tr><td>Card</td><td>Small/medium shadow</td><td>Auth, route and service cards</td></tr><tr><td>Modal</td><td>Overlay plus large shadow</td><td>Focused tasks without leaving the page</td></tr><tr><td>Focus</td><td>Teal ring plus border</td><td>Keyboard and field focus</td></tr></tbody></table><h3>Depth Principles</h3><ul><li>Depth communicates hierarchy, not decoration.</li><li>The page background remains visible behind modals to preserve task context.</li><li>Avoid glass effects beyond the established translucent fixed header.</li></ul></section><section><h2>7. Do&#39;s and Don&#39;ts</h2><h3>Do</h3><ul><li>Preserve the yellow logo, teal task color and existing editorial photography.</li><li>Make every language switch update the full visible interface and document language.</li><li>Explain the difference between inspiration, planning and bookable/local services.</li><li>Carry known dates, budget and route context forward between pages.</li><li>Respect keyboard focus, reduced motion and mobile tap targets.</li></ul><h3>Don&#39;t</h3><ul><li>Do not copy another product’s logo, purple palette, wording or illustration.</li><li>Do not invent a new visual identity for individual pages.</li><li>Do not promise live inventory, bookings or discounts unless the integration is real.</li><li>Do not expose a local partner’s private contact details outside the controlled request flow.</li><li>Do not use “AI” as filler when the user-facing benefit is time, clarity or local execution.</li></ul></section><section><h2>8. Responsive Behavior</h2><table><thead><tr><th>Name</th><th>Width</th><th>Key Changes</th></tr></thead><tbody><tr><td>Mobile</td><td><code>&lt;= 575px</code></td><td>Single column, 48px controls, compact copy, bottom-safe modals</td></tr><tr><td>Tablet</td><td><code>576-991px</code></td><td>Collapsed navigation, stacked forms, AI side panels become drawers</td></tr><tr><td>Desktop</td><td><code>&gt;= 992px</code></td><td>Full nav, multi-column planning and paired content/media layouts</td></tr><tr><td>Wide</td><td><code>&gt;= 1200px</code></td><td>Full 280/fluid/360 AI workspace and generous editorial spacing</td></tr></tbody></table><h3>Touch Targets</h3><ul><li>Core actions are at least 44x44px; aim for 48px on mobile.</li><li>Filters may scroll horizontally but must show that more choices exist.</li></ul><h3>Collapsing Strategy</h3><ul><li>Keep the decision order intact when stacking; never move the primary CTA above required context.</li><li>Auth modal becomes a near-full-width bottom-safe panel on small screens.</li><li>Driver trust content follows the form on mobile and stays beside it on desktop.</li></ul></section><section><h2>9. Agent Prompt Guide</h2><h3>Quick Color Reference</h3><ul><li>Brand: <code>#FCBF1E</code>.</li><li>Primary task CTA: <code>#0E7C6B</code>.</li><li>Background: <code>#FAFAF7</code>.</li><li>Heading: <code>#1A1A1A</code>.</li><li>Body: <code>#4A4A4A</code>.</li><li>Border: <code>#E5E2DA</code>.</li></ul><h3>Quick Summary</h3><p>Build a calm, real-world travel studio interface that preserves WanderMind’s yellow mark, teal task actions and ink-on-paper neutrals. Photography provides emotion; structure provides trust. Marketing pages stay editorial and spacious, while the AI workspace is compact and functional. Use light borders, modest radii and very shallow shadows. Every action and state must work in English, Chinese, Japanese, Korean and Indonesian.</p><h3>Example Component Prompts</h3><ul><li>Auth: “Build a compact in-page authentication modal using the yellow WanderMind mark, visible form labels, teal task buttons, an email-code flow and an official Google sign-in button. Preserve the underlying journey as dimmed context.”</li><li>Journey starter: “Create a date, total-budget, traveller-profile and intent selector that feels like a travel studio consultation, not a flight-search clone.”</li><li>Bali media: “Create an editorial photo grid whose filters distinguish scenery/culture and camera/traveller-phone images; clicking opens practical place details and a short route.”</li><li>Local handoff: “Create a driver/service panel that summarizes selected dates, route and budget before a controlled contact request.”</li></ul><h3>Ready-to-Use Prompt</h3><p>Use <code>DESIGN.md</code> as a strict visual and interaction contract. Extend the existing WanderMind Studio implementation rather than replacing its identity. Keep amber for brand/current state, teal for task progress, real destination imagery, warm paper surfaces, visible labels, five-language parity, keyboard focus and restrained motion. Do not add unrelated features or generic AI styling.</p><h3>Iteration Guide</h3><ol><li>Confirm the page’s single user job and preserve existing navigation.</li><li>Build with real content, states and mobile behaviour before adding motion.</li><li>Audit all five languages, keyboard paths, console errors and visual consistency.</li></ol></section><section><h2>Appendix: Interaction Patterns</h2><ul><li>Scroll: fixed navigation gains opacity; content reveals should be subtle and reduced-motion safe.</li><li>Hover: one small response per component, normally color, border or 1px elevation.</li><li>Click: buttons enter an immediate pending state and preserve entered data on recoverable failure.</li><li>Modal: focus moves inside, Escape closes when safe, focus returns to the trigger.</li></ul></section><section><h2>Appendix: Content &amp; Messaging Patterns</h2><ul><li>Headline pattern: outcome first, destination/context second.</li><li>CTA language: direct user action, such as “Choose dates and budget” or “Add this stop”.</li><li>Trust signals: real image source, practical time/cost range, local partner role and privacy handling.</li><li>Voice: calm, direct and specific. Avoid travel superlatives and vague apologies.</li></ul></section><section><h2>Appendix: Observed Pages</h2><ul><li><code>https://wandermind.cc/</code>: global marketing shell, imagery, navigation and brand voice.</li><li><code>https://wandermind.cc/bali</code>: editorial destination page, gallery and itinerary rhythm.</li><li><code>https://wandermind.cc/find-driver</code>: form/trust layout and local handoff.</li><li><code>https://wandermind.cc/ai-tool</code>: product density, dual theme and planning interactions.</li><li>CollectUI reference: auth composition only; its branding and visual identity are explicitly excluded.</li></ul></section></article>
+            </div>
+          </article>
+        </section>
+      </div>
+    </main>
+
+    <script>
+      const sourceView = document.getElementById("sourceView");
+      const previewView = document.getElementById("previewView");
+      const copyButton = document.getElementById("copyButton");
+      const copyState = document.getElementById("copyState");
+      const viewButtons = document.querySelectorAll("[data-view]");
+
+      function setActiveView(view) {
+        const showSource = view === "source";
+        sourceView.hidden = !showSource;
+        previewView.hidden = showSource;
+        viewButtons.forEach((button) => {
+          button.classList.toggle("is-active", button.dataset.view === view);
+        });
+      }
+
+      viewButtons.forEach((button) => {
+        button.addEventListener("click", () => setActiveView(button.dataset.view));
+      });
+
+      copyButton.addEventListener("click", async () => {
+        try {
+          await navigator.clipboard.writeText(sourceView.textContent || "");
+          copyState.textContent = "Copied";
+        } catch (error) {
+          copyState.textContent = "Clipboard unavailable";
+        }
+
+        setTimeout(() => {
+          copyState.textContent = "";
+        }, 1400);
+      });
+    </script>
+  </body>
+</html>
