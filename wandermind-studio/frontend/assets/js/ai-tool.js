@@ -987,6 +987,11 @@ function attachLangWatcher() {
     picker.addEventListener('change', () => {
       setTimeout(() => onLangChange(picker.value), 50);
     });
+    // i18n.js applies the browser/saved language just before this init runs.
+    // Synchronize immediately so a first-time visit does not render a mixed-language UI.
+    if (TOOL_I18N[picker.value] && picker.value !== currentLang) {
+      onLangChange(picker.value);
+    }
   }
   // also poll storage in case another tab changed it
   window.addEventListener('storage', e => {
