@@ -460,9 +460,9 @@
 <script>
   // Expose JS-side strings for the dynamic messages (filled after i18n load)
   (function () {
-    function pull() {
+    function pull(explicitLang) {
       if (typeof LANGS === 'undefined') return;
-      var lang = (localStorage.getItem('wm_studio_lang')) || (navigator.language || 'en').slice(0,2).toLowerCase();
+      var lang = explicitLang || (localStorage.getItem('wm_studio_lang')) || (navigator.language || 'en').slice(0,2).toLowerCase();
       var d = LANGS[lang] || LANGS.en;
       window.FD_T = {
         fdImportOk: d.fdImportOk, fdImportNone: d.fdImportNone, fdErrName: d.fdErrName,
@@ -472,7 +472,7 @@
     }
     pull();
     var picker = document.getElementById('langPicker');
-    if (picker) picker.addEventListener('change', pull);
+    if (picker) picker.addEventListener('change', function () { pull(this.value); });
   })();
 </script>
 </body>
