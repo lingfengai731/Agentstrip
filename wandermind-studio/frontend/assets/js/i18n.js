@@ -1005,6 +1005,79 @@ Object.assign(LANGS.id, {
   formGoal:'Apa yang paling penting kali ini?', formGoalEasy:'Lebih sedikit merencanakan · lebih mudah', formGoalLocal:'Budaya lokal · pengalaman nyata', formGoalPhoto:'Fotografi · pemandangan indah', formGoalValue:'Harga terbaik · kendalikan anggaran',
   formTierBudget:'Hemat', formTierComfort:'Nyaman & seimbang', formTierLuxury:'Premium & privat', formPeople:'Jumlah orang', formStart:'Tanggal berangkat', formEnd:'Tanggal pulang', formBudget:'Anggaran total', formBudgetPh:'mis. 3000', formSubmitLbl:'Buat ringkasan perjalanan', formSubmitBtn:'Lanjutkan di Perencana AI', formPrivacyNote:'Tidak perlu membayar. Tinjau semua detail sebelum menghubungi mitra lokal.'
 });
+
+/* Stage 1 homepage positioning: Bali-first, globally extensible, service-led. */
+Object.assign(LANGS.en, {
+  pageTitle:'WanderMind Studio | Easier Bali Trip Planning',
+  hero1Title:'Plan less.<br>Experience the real Bali.', hero1Sub:'Tell us your time, budget and the kind of trip you actually want. WanderMind helps organise the route, show what places really feel like and connect you with a local driver when you are ready.', hero1Btn:'Start with my trip',
+  hero2Title:'Bali first.<br>The world stays open.', hero2Sub:'Bali is our deepest destination today. Kyoto, Paris, Santorini and any city you name remain part of the same planning path.', hero2Btn:'See all destinations',
+  hero3Title:'A useful plan.<br>A trip you can actually take.', hero3Sub:'AI organises the options. Real images help you decide. Local support helps turn the plan into a workable Bali journey.', hero3Btn:'See how it works',
+  sec4AnyTitle:'Anywhere · Start with your needs', sec4AnyDesc:'Name any city — Tokyo, Marrakech or Reykjavik — and start a planning brief around your own needs.',
+  sec5Title:'One clear path from an idea to Bali', sec5Sub:'Start with what matters, look at the destination without the sales filter, then ask for local help only when you need it.',
+  service1Kicker:'Step 1 · Shape the trip', service1Title:'Start with your time and budget', service1Meta1:'A few questions', service1Meta2:'Your priorities', service1Desc:'Tell us when you are going, how much you want to spend and whether you care more about ease, local culture, photography or value.', service1Btn:'Build my brief', service1Note:'No payment at this step',
+  service2Kicker:'Step 2 · See before you choose', service2Title:'Browse the real Bali first', service2Meta1:'Traveller views', service2Meta2:'More destinations', service2Desc:'See scenery and culture, composed photographs and everyday traveller views. Bali is the default; other destinations stay one tap away.', service2Btn:'Browse Bali', service2Toggle:'Choose another destination', service2Note:'Bali is the default',
+  destBali:'Bali deep guide', destKyoto:'Kyoto planning', destParis:'Paris planning', destSantorini:'Santorini planning', destAny:'Any destination',
+  service3Kicker:'Step 3 · Make it workable', service3Title:'Ask a trusted local driver', service3Meta1:'Local support', service3Meta2:'Confirm first', service3Desc:'Share your dates, route and budget when the plan is ready. The driver confirms availability, providers and the final quote in the reply.', service3Btn:'Contact a driver', service3Note:'Not an instant booking',
+  sec6Title:'AI organises the options. You stay in control.', sec6Desc:'WanderMind turns your dates, budget and preferences into a planning brief you can review. Routes, prices and availability still need confirmation before you travel. Bali has the deepest local path today, while the planner remains open to destinations worldwide.', sec6Btn:'How WanderMind works',
+  sec7Title:'Ready to make Bali<br>easier to plan?', sec7Desc:'Start with your time and budget. Browse the island as it really looks, then contact local support only when your route feels right.', sec7Btn:'Tell us about my trip'
+});
+Object.assign(LANGS.zh, {
+  pageTitle:'WanderMind Studio | 更轻松地定制巴厘岛旅行',
+  hero1Title:'少做攻略，<br>好好感受巴厘岛', hero1Sub:'告诉我们你的时间、预算和真正想要的体验。WanderMind 帮你理清路线与花费、看清景点原本的样子，需要时再联系可靠的当地司机。', hero1Btn:'从我的行程开始',
+  hero2Title:'先看巴厘岛，<br>也不止巴厘岛', hero2Sub:'巴厘岛是目前内容最完整的目的地。京都、巴黎、圣托里尼和你想去的其他城市，仍可使用同一套规划流程。', hero2Btn:'查看所有目的地',
+  hero3Title:'一份能看懂的方案，<br>一趟能落地的旅行', hero3Sub:'AI 帮你整理选择，真实图片帮你判断，必要的本地支持再把巴厘岛行程接到现实。', hero3Btn:'看看具体流程',
+  sec4AnyTitle:'任意目的地 · 从你的需求开始', sec4AnyDesc:'输入东京、马拉喀什、雷克雅未克或其他城市，按自己的需求开始规划。',
+  sec5Title:'从一个想法，到一趟可落地的巴厘岛旅行', sec5Sub:'先说清真正关心的事，再看不加销售滤镜的目的地，最后只在需要时联系当地人。',
+  service1Kicker:'第 1 步 · 理清需求', service1Title:'先说时间和预算', service1Meta1:'几个简单问题', service1Meta2:'按你的优先级', service1Desc:'告诉我们什么时候去、准备花多少，以及你更在意省心、风土人情、摄影出片还是性价比。', service1Btn:'生成规划简报', service1Note:'这一步无需付款',
+  service2Kicker:'第 2 步 · 看过再决定', service2Title:'先看看真实的巴厘岛', service2Meta1:'游客真实视角', service2Meta2:'其他目的地仍保留', service2Desc:'同时看自然与人文、精心构图与游客随手拍。默认浏览巴厘岛，其他目的地随时可以切换。', service2Btn:'浏览巴厘岛', service2Toggle:'选择其他目的地', service2Note:'默认打开巴厘岛',
+  destBali:'巴厘岛深度指南', destKyoto:'规划京都', destParis:'规划巴黎', destSantorini:'规划圣托里尼', destAny:'其他任意目的地',
+  service3Kicker:'第 3 步 · 确认落地', service3Title:'需要时联系可靠的当地司机', service3Meta1:'本地接应', service3Meta2:'先确认再出发', service3Desc:'路线确定后，再提交日期、路线和预算。司机会在回复中确认档期、具体供应方和最终报价。', service3Btn:'联系当地司机', service3Note:'不是即时预订',
+  sec6Title:'AI 负责整理，你始终做决定', sec6Desc:'WanderMind 把日期、预算和偏好整理成一份可以检查的规划简报。路线、价格和档期仍需在出发前确认。目前巴厘岛的本地服务最完整，同时也支持规划全球其他目的地。', sec6Btn:'了解 WanderMind 怎么用',
+  sec7Title:'想让巴厘岛之旅<br>更好安排一点？', sec7Desc:'先告诉我们时间和预算，看看岛上真实的样子。等路线合适了，再联系当地支持。', sec7Btn:'说说我的旅行需求'
+});
+Object.assign(LANGS.ja, {
+  pageTitle:'WanderMind Studio | バリ旅行をもっと楽に計画',
+  hero1Title:'調べすぎず、<br>リアルなバリを楽しむ。', hero1Sub:'日程、予算、本当にしたい体験を教えてください。WanderMindがルートと費用を整理し、現地の実際の雰囲気を見せ、必要なときにローカルドライバーへつなぎます。', hero1Btn:'旅行の条件から始める',
+  hero2Title:'まずはバリ。<br>行き先は世界へ。', hero2Sub:'現在もっとも詳しいのはバリです。京都、パリ、サントリーニ、その他の都市も同じ流れで計画できます。', hero2Btn:'すべての行き先を見る',
+  hero3Title:'読めるプランを、<br>実行できる旅へ。', hero3Sub:'AIが選択肢を整理し、実際の写真が判断を助け、現地サポートがバリ旅行を現実の行程につなげます。', hero3Btn:'使い方を見る',
+  sec4AnyTitle:'どこでも · 希望から始める', sec4AnyDesc:'東京、マラケシュ、レイキャビクなど、都市を入力して希望に合うプラン概要を作れます。',
+  sec5Title:'思いつきから、実行できるバリ旅行へ', sec5Sub:'大切な条件を整理し、売り文句ではなく現地を見て、必要なときだけローカルサポートへ進みます。',
+  service1Kicker:'ステップ1 · 条件を整理', service1Title:'日程と予算から始める', service1Meta1:'いくつかの質問', service1Meta2:'あなたの優先順位', service1Desc:'旅行時期、予算、楽さ・現地文化・写真・費用対効果のどれを重視するか教えてください。', service1Btn:'概要を作る', service1Note:'この段階で支払い不要',
+  service2Kicker:'ステップ2 · 見てから選ぶ', service2Title:'まずリアルなバリを見る', service2Meta1:'旅行者の視点', service2Meta2:'ほかの行き先', service2Desc:'自然と文化、整えた写真と旅行者の日常的な写真を見比べられます。初期設定はバリですが、ほかの行き先も選べます。', service2Btn:'バリを見る', service2Toggle:'別の行き先を選ぶ', service2Note:'初期設定はバリ',
+  destBali:'バリ詳細ガイド', destKyoto:'京都を計画', destParis:'パリを計画', destSantorini:'サントリーニを計画', destAny:'その他の行き先',
+  service3Kicker:'ステップ3 · 現地につなぐ', service3Title:'信頼できる現地ドライバーに相談', service3Meta1:'現地サポート', service3Meta2:'事前に確認', service3Desc:'プランが決まったら、日程、ルート、予算を送ります。空き状況、事業者、最終料金は返信で確認します。', service3Btn:'ドライバーに相談', service3Note:'即時予約ではありません',
+  sec6Title:'AIが整理し、決めるのはあなたです。', sec6Desc:'WanderMindは日程、予算、希望を確認できるプラン概要にまとめます。ルート、料金、空き状況は出発前に確認が必要です。現在はバリの現地導線がもっとも充実していますが、世界の都市も計画できます。', sec6Btn:'WanderMindの使い方',
+  sec7Title:'バリ旅行を<br>もっと楽に計画しませんか？', sec7Desc:'まず日程と予算を入力し、島の実際の姿を見てください。ルートが決まったら現地サポートへ進めます。', sec7Btn:'旅行条件を入力する'
+});
+Object.assign(LANGS.ko, {
+  pageTitle:'WanderMind Studio | 더 쉬운 발리 여행 계획',
+  hero1Title:'계획은 줄이고,<br>진짜 발리를 경험하세요.', hero1Sub:'여행 기간과 예산, 원하는 경험을 알려주세요. WanderMind가 경로와 비용을 정리하고 현지의 실제 모습을 보여드리며, 필요할 때 현지 기사와 연결합니다.', hero1Btn:'내 여행부터 시작',
+  hero2Title:'발리부터 깊게.<br>다른 도시도 그대로.', hero2Sub:'현재 가장 자세한 목적지는 발리입니다. 교토, 파리, 산토리니와 그 밖의 도시도 같은 방식으로 계획할 수 있습니다.', hero2Btn:'모든 목적지 보기',
+  hero3Title:'이해하기 쉬운 계획을,<br>실제로 가능한 여행으로.', hero3Sub:'AI가 선택지를 정리하고 실제 사진이 판단을 돕습니다. 현지 지원은 발리 계획을 현실적인 일정으로 이어 줍니다.', hero3Btn:'이용 방법 보기',
+  sec4AnyTitle:'어디든 · 내 조건부터', sec4AnyDesc:'도쿄, 마라케시, 레이캬비크 등 원하는 도시를 입력하고 내 조건에 맞춰 계획을 시작하세요.',
+  sec5Title:'여행 아이디어를 실제 발리 일정으로', sec5Sub:'중요한 조건부터 정리하고 과장 없는 목적지 모습을 본 뒤, 필요할 때만 현지 도움을 요청하세요.',
+  service1Kicker:'1단계 · 여행 조건 정리', service1Title:'기간과 예산부터 시작', service1Meta1:'몇 가지 질문', service1Meta2:'나의 우선순위', service1Desc:'언제 가는지, 예산은 얼마인지, 편안함·현지 문화·사진·가성비 중 무엇이 중요한지 알려주세요.', service1Btn:'여행 조건 정리', service1Note:'이 단계는 결제 없음',
+  service2Kicker:'2단계 · 보고 선택하기', service2Title:'먼저 진짜 발리를 둘러보기', service2Meta1:'여행자 시점', service2Meta2:'다른 목적지', service2Desc:'자연과 문화, 잘 구성된 사진과 여행자의 일상적인 사진을 함께 볼 수 있습니다. 기본은 발리지만 다른 목적지도 바로 선택할 수 있습니다.', service2Btn:'발리 둘러보기', service2Toggle:'다른 목적지 선택', service2Note:'기본 목적지는 발리',
+  destBali:'발리 상세 가이드', destKyoto:'교토 계획', destParis:'파리 계획', destSantorini:'산토리니 계획', destAny:'다른 목적지',
+  service3Kicker:'3단계 · 현지 실행 확인', service3Title:'믿을 수 있는 현지 기사에게 문의', service3Meta1:'현지 지원', service3Meta2:'먼저 확인', service3Desc:'계획이 준비되면 날짜, 경로, 예산을 보냅니다. 기사가 일정 가능 여부, 제공 업체와 최종 견적을 답변으로 확인합니다.', service3Btn:'현지 기사 문의', service3Note:'즉시 예약 아님',
+  sec6Title:'AI는 정리하고, 결정은 사용자가 합니다.', sec6Desc:'WanderMind는 날짜, 예산, 선호를 검토 가능한 여행 조건으로 정리합니다. 경로, 가격, 이용 가능 여부는 출발 전에 다시 확인해야 합니다. 현재는 발리 현지 연계가 가장 자세하지만 세계 다른 도시도 계획할 수 있습니다.', sec6Btn:'WanderMind 이용 방법',
+  sec7Title:'발리 여행을<br>조금 더 쉽게 준비할까요?', sec7Desc:'기간과 예산부터 알려주세요. 섬의 실제 모습을 확인하고 경로가 맞을 때 현지 지원에 문의하면 됩니다.', sec7Btn:'내 여행 조건 입력'
+});
+Object.assign(LANGS.id, {
+  pageTitle:'WanderMind Studio | Rencanakan Bali dengan Lebih Mudah',
+  hero1Title:'Kurangi waktu merencanakan.<br>Rasakan Bali yang nyata.', hero1Sub:'Beri tahu waktu, anggaran, dan pengalaman yang benar-benar Anda inginkan. WanderMind membantu merapikan rute dan biaya, memperlihatkan kondisi tempat, lalu menghubungkan Anda dengan driver lokal saat dibutuhkan.', hero1Btn:'Mulai dari perjalanan saya',
+  hero2Title:'Bali lebih dulu.<br>Dunia tetap terbuka.', hero2Sub:'Bali adalah tujuan kami yang paling lengkap saat ini. Kyoto, Paris, Santorini, dan kota lain tetap bisa direncanakan lewat alur yang sama.', hero2Btn:'Lihat semua tujuan',
+  hero3Title:'Rencana yang mudah dipahami.<br>Perjalanan yang bisa dijalankan.', hero3Sub:'AI merapikan pilihan, foto nyata membantu Anda memutuskan, dan dukungan lokal membantu mewujudkan perjalanan Bali.', hero3Btn:'Lihat cara kerjanya',
+  sec4AnyTitle:'Di mana saja · Mulai dari kebutuhan Anda', sec4AnyDesc:'Masukkan Tokyo, Marrakesh, Reykjavik, atau kota lain lalu mulai rencana berdasarkan kebutuhan Anda.',
+  sec5Title:'Dari ide menjadi perjalanan Bali yang nyata', sec5Sub:'Mulai dari hal yang penting, lihat tujuan tanpa bahasa penjualan, lalu minta bantuan lokal hanya saat diperlukan.',
+  service1Kicker:'Langkah 1 · Bentuk perjalanan', service1Title:'Mulai dari waktu dan anggaran', service1Meta1:'Beberapa pertanyaan', service1Meta2:'Prioritas Anda', service1Desc:'Beri tahu kapan berangkat, berapa anggaran Anda, dan apakah Anda lebih mementingkan kemudahan, budaya lokal, fotografi, atau harga.', service1Btn:'Buat ringkasan', service1Note:'Belum perlu membayar',
+  service2Kicker:'Langkah 2 · Lihat sebelum memilih', service2Title:'Lihat Bali yang nyata lebih dulu', service2Meta1:'Sudut pandang traveler', service2Meta2:'Tujuan lain', service2Desc:'Lihat alam dan budaya, foto tertata dan foto sehari-hari dari traveler. Bali menjadi pilihan awal, sementara tujuan lain tetap mudah dipilih.', service2Btn:'Jelajahi Bali', service2Toggle:'Pilih tujuan lain', service2Note:'Bali adalah pilihan awal',
+  destBali:'Panduan lengkap Bali', destKyoto:'Rencanakan Kyoto', destParis:'Rencanakan Paris', destSantorini:'Rencanakan Santorini', destAny:'Tujuan lain',
+  service3Kicker:'Langkah 3 · Pastikan bisa dijalankan', service3Title:'Tanya driver lokal tepercaya', service3Meta1:'Dukungan lokal', service3Meta2:'Konfirmasi dulu', service3Desc:'Saat rencana siap, kirim tanggal, rute, dan anggaran Anda. Driver akan mengonfirmasi ketersediaan, penyedia, dan harga akhir dalam balasan.', service3Btn:'Hubungi driver', service3Note:'Bukan pemesanan instan',
+  sec6Title:'AI merapikan pilihan. Anda tetap memutuskan.', sec6Desc:'WanderMind mengubah tanggal, anggaran, dan preferensi menjadi ringkasan yang bisa Anda periksa. Rute, harga, dan ketersediaan tetap perlu dikonfirmasi sebelum berangkat. Jalur lokal Bali paling lengkap saat ini, sementara perencana tetap mendukung kota lain di dunia.', sec6Btn:'Cara memakai WanderMind',
+  sec7Title:'Ingin membuat perjalanan Bali<br>lebih mudah direncanakan?', sec7Desc:'Mulai dari waktu dan anggaran. Lihat kondisi pulau, lalu hubungi dukungan lokal ketika rutenya sudah terasa tepat.', sec7Btn:'Ceritakan perjalanan saya'
+});
+
 Object.assign(LANGS.en, { fdStartDate:'Start date <span class="fd-req">*</span>', fdEndDate:'End date <span class="fd-req">*</span>', fdPickupTime:'Preferred pickup time', fdPickupLocation:'Hotel / pickup location', fdPickupPh:'Hotel or area if known', fdBudget:'Estimated total budget', fdBudgetFlexible:'Flexible / discuss first', fdBudget1:'Under 5 million IDR', fdBudget2:'5–10 million IDR', fdBudget3:'10–20 million IDR', fdBudget4:'20+ million IDR', fdServices:'Services to discuss', fdServiceCar:'Private driver / car', fdServiceAirport:'Airport transfer', fdServiceHotel:'Hotel suggestions', fdServiceBoat:'Boat from Sanur', fdServiceFlight:'Flight coordination', fdServiceTickets:'Attraction tickets', fdBundleHint:'This is a request for a combined quote, not an instant booking. Availability and providers will be confirmed in the reply.', fdArrival:'Flight, boat or arrival details', fdArrivalPh:'Flight number / arrival time / Sanur boat date, if known', fdErrDates:'Please enter valid travel dates' });
 Object.assign(LANGS.zh, { fdStartDate:'开始日期 <span class="fd-req">*</span>', fdEndDate:'结束日期 <span class="fd-req">*</span>', fdPickupTime:'希望接车时间', fdPickupLocation:'酒店 / 接车地点', fdPickupPh:'如已确定，请填写酒店或区域', fdBudget:'预计总预算', fdBudgetFlexible:'预算灵活 / 先沟通', fdBudget1:'500 万印尼盾以内', fdBudget2:'500–1000 万印尼盾', fdBudget3:'1000–2000 万印尼盾', fdBudget4:'2000 万印尼盾以上', fdServices:'希望一起沟通的服务', fdServiceCar:'私人司机 / 用车', fdServiceAirport:'机场接送', fdServiceHotel:'酒店建议', fdServiceBoat:'Sanur 码头船票', fdServiceFlight:'航班衔接', fdServiceTickets:'景点门票', fdBundleHint:'这里提交的是组合报价需求，不是即时预订。司机回复时会确认具体供应方、价格和可用性。', fdArrival:'航班、船班或抵达信息', fdArrivalPh:'如已知，可填写航班号、抵达时间或 Sanur 船班日期', fdErrDates:'请填写有效的旅行日期' });
 Object.assign(LANGS.ja, { fdStartDate:'開始日 <span class="fd-req">*</span>', fdEndDate:'終了日 <span class="fd-req">*</span>', fdPickupTime:'希望の迎車時刻', fdPickupLocation:'ホテル / 迎車場所', fdPickupPh:'わかる場合はホテルまたは地域', fdBudget:'予定総予算', fdBudgetFlexible:'柔軟 / まず相談', fdBudget1:'500万IDR未満', fdBudget2:'500–1,000万IDR', fdBudget3:'1,000–2,000万IDR', fdBudget4:'2,000万IDR以上', fdServices:'相談したいサービス', fdServiceCar:'専用車・ドライバー', fdServiceAirport:'空港送迎', fdServiceHotel:'ホテル提案', fdServiceBoat:'サヌール発ボート', fdServiceFlight:'フライト連携', fdServiceTickets:'観光チケット', fdBundleHint:'これは組み合わせ見積りの依頼で、即時予約ではありません。空き状況と事業者は返信時に確認します。', fdArrival:'フライト・ボート・到着情報', fdArrivalPh:'便名、到着時刻、サヌール発ボートの日付など', fdErrDates:'有効な旅行日を入力してください' });

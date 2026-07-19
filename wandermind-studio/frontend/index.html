@@ -5,25 +5,25 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-    <title data-i18n="pageTitle">WanderMind Studio | AI-Powered Travel Planning</title>
-    <meta name="description" content="WanderMind Studio — Personalized travel powered by six AI multi-agent collaboration. Bali, Kyoto, Paris, Santorini and any city worldwide.">
+    <title data-i18n="pageTitle">WanderMind Studio | Easier Bali Trip Planning</title>
+    <meta name="description" content="Plan an easier, more realistic Bali trip around your time, budget and travel style. Explore Bali first, or start an AI planning brief for Kyoto, Paris, Santorini and other destinations.">
     <link rel="canonical" href="https://wandermind.cc/">
     <meta property="og:type" content="website">
     <meta property="og:site_name" content="WanderMind Studio">
-    <meta property="og:title" content="WanderMind Studio · AI-Powered Travel Planning">
-    <meta property="og:description" content="Personalized travel powered by six AI agents. Bali, Kyoto, Paris, Santorini and any city worldwide.">
+    <meta property="og:title" content="WanderMind Studio · Easier Bali Trip Planning">
+    <meta property="og:description" content="Plan an easier, more realistic Bali trip around your time, budget and travel style. Kyoto, Paris, Santorini and other destinations remain open in the same planner.">
     <meta property="og:url" content="https://wandermind.cc/">
     <meta property="og:image" content="https://wandermind.cc/assets/images/logo-mark.png">
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="WanderMind Studio · AI-Powered Travel Planning">
-    <meta name="twitter:description" content="Personalized travel powered by six AI agents. Bali, Kyoto, Paris, Santorini and any city worldwide.">
+    <meta name="twitter:title" content="WanderMind Studio · Easier Bali Trip Planning">
+    <meta name="twitter:description" content="Plan an easier, more realistic Bali trip around your time, budget and travel style. Kyoto, Paris, Santorini and other destinations remain open in the same planner.">
     <meta name="twitter:image" content="https://wandermind.cc/assets/images/logo-mark.png">
 
     <!-- Favicon -->
   <link rel="icon" type="image/png" href="assets/images/logo-mark-256.png">
   <link rel="apple-touch-icon" href="assets/images/logo-mark-256.png">
     <!-- Template CSS -->
-    <link rel="stylesheet" href="assets/css/style-starter.css?v=p47">
+    <link rel="stylesheet" href="assets/css/style-starter.css?v=p48">
     <link rel="preload" as="image" href="assets/images/hero-1.jpg" fetchpriority="high">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -280,6 +280,71 @@
       body.dark .wm-choice input:checked + span { background: rgba(20,184,166,.12); border-color: #14b8a6; color: #5eead4; }
       @media (max-width: 767px) { .wm-choice-group { grid-template-columns: 1fr; } }
 
+      /* Stage 1 service path — reuse the existing destination-card language. */
+      #trip-brief, #how-it-works { scroll-margin-top: 92px; }
+      .wm-service-card { overflow: visible !important; position: relative; }
+      .wm-service-card > img { border-radius: 10px 10px 0 0; }
+      .wm-card-kicker {
+        display: inline-flex; align-items: center; min-height: 28px; margin: 16px 18px 0;
+        color: #0a695b; font-size: 12px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase;
+      }
+      body.dark .wm-card-kicker { color: #5eead4; }
+      .wm-service-card .blog-date { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .wm-service-card .pos-date { text-align: left !important; }
+      .wm-service-card .top-gap {
+        display: flex; align-items: center; justify-content: space-between; gap: 12px;
+      }
+      .wm-card-link, .wm-destination-primary, .wm-destination-toggle {
+        min-height: 42px; display: inline-flex; align-items: center; justify-content: center;
+        border: 1px solid #0a695b; background: #0a695b; color: #fff !important;
+        font-size: 13px; font-weight: 700; line-height: 1.2; transition: background .2s, border-color .2s, box-shadow .2s;
+      }
+      .wm-card-link { padding: 10px 16px; border-radius: 22px; }
+      .wm-card-link:hover, .wm-destination-primary:hover, .wm-destination-toggle:hover { background: #075348; border-color: #075348; }
+      .wm-card-link:focus-visible, .wm-destination-primary:focus-visible, .wm-destination-toggle:focus-visible,
+      .wm-destination-menu a:focus-visible { outline: 3px solid rgba(252,191,30,.65); outline-offset: 3px; }
+      .wm-card-step { color: #64748b; font-size: 12px; white-space: nowrap; }
+      body.dark .wm-card-step { color: #94a3b8; }
+      .wm-destination-switcher { position: relative; display: inline-flex; z-index: 5; }
+      .wm-destination-primary { padding: 10px 13px 10px 16px; border-radius: 22px 0 0 22px; }
+      .wm-destination-toggle {
+        width: 40px; padding: 0; border-left-color: rgba(255,255,255,.35); border-radius: 0 22px 22px 0; cursor: pointer;
+      }
+      .wm-destination-toggle .fa { transition: transform .2s ease; }
+      .wm-destination-switcher.is-open .wm-destination-toggle .fa { transform: rotate(180deg); }
+      .wm-destination-menu {
+        position: absolute; left: 0; bottom: calc(100% + 9px); width: 220px; padding: 8px;
+        border: 1px solid rgba(15,23,42,.12); border-radius: 12px; background: #fff;
+        box-shadow: 0 18px 44px rgba(15,23,42,.2); opacity: 0; visibility: hidden;
+        transform: translateY(6px); pointer-events: none; transition: opacity .18s ease, transform .18s ease, visibility .18s;
+      }
+      body.dark .wm-destination-menu { background: #1b2026; border-color: #343b43; }
+      .wm-destination-menu a {
+        display: flex; align-items: center; justify-content: space-between; min-height: 40px;
+        padding: 8px 10px; border-radius: 8px; color: #334155; font-size: 13px; font-weight: 600;
+      }
+      body.dark .wm-destination-menu a { color: #e2e8f0; }
+      .wm-destination-menu a:hover { background: rgba(14,124,107,.09); color: #0a695b; }
+      body.dark .wm-destination-menu a:hover { background: rgba(20,184,166,.12); color: #5eead4; }
+      .wm-destination-switcher.is-open .wm-destination-menu {
+        opacity: 1; visibility: visible; transform: translateY(0); pointer-events: auto;
+      }
+      @media (hover: hover) and (pointer: fine) {
+        .wm-destination-switcher:hover .wm-destination-menu { opacity: 1; visibility: visible; transform: translateY(0); pointer-events: auto; }
+      }
+      @media (max-width: 767px) {
+        .wm-service-card .top-gap { align-items: flex-end; }
+        .wm-card-step { white-space: normal; text-align: right; }
+        .wm-destination-menu { left: auto; right: 0; width: min(240px, calc(100vw - 48px)); }
+      }
+      @media (min-width: 768px) and (max-width: 991px) {
+        .w3l-covers-18 .gallery-image .wm-service-card-last { margin-left: auto; margin-right: auto; }
+      }
+      @media (prefers-reduced-motion: reduce) {
+        .wm-card-link, .wm-destination-primary, .wm-destination-toggle,
+        .wm-destination-toggle .fa, .wm-destination-menu { transition: none !important; }
+      }
+
     </style>
   </head>
   <body id="home">
@@ -417,9 +482,9 @@ $(function () { $('.navbar-toggler').click(function () { $('body').toggleClass('
 						<div class="banner-info">
 							<div class="container">
 								<div class="banner-info-bg mr-auto">
-									<h5 role="heading" aria-level="1" data-i18n="hero1Title">Travel Reimagined<br>by AI</h5>
-									<p data-i18n="hero1Sub">Six AI agents collaborate to craft your perfect journey — real-time data, personalized recommendations, every detail intelligently planned.</p>
-									<a class="btn btn-theme2 mt-lg-5 mt-4" href="ai-tool.html" data-i18n="hero1Btn">Start Planning</a>
+									<h5 role="heading" aria-level="1" data-i18n="hero1Title">Plan less.<br>Experience the real Bali.</h5>
+									<p data-i18n="hero1Sub">Tell us your time, budget and the kind of trip you actually want. WanderMind helps organise the route, show what places really feel like and connect you with a local driver when you are ready.</p>
+									<a class="btn btn-theme2 mt-lg-5 mt-4" href="#trip-brief" data-i18n="hero1Btn">Start with my trip</a>
 								</div>
 							</div>
 						</div>
@@ -432,9 +497,9 @@ $(function () { $('.navbar-toggler').click(function () { $('body').toggleClass('
 						<div class="banner-info">
 							<div class="container">
 								<div class="banner-info-bg mr-auto">
-									<h5 role="heading" aria-level="2" data-i18n="hero2Title">Bali · Kyoto · Paris<br>Santorini</h5>
-									<p data-i18n="hero2Sub">Explore curated experiences in the world's most stunning destinations — or let our AI craft a complete guide for any city you name.</p>
-									<a class="btn btn-theme2 mt-lg-5 mt-4" href="services.html" data-i18n="hero2Btn">Explore Destinations</a>
+									<h5 role="heading" aria-level="2" data-i18n="hero2Title">Bali first.<br>The world stays open.</h5>
+									<p data-i18n="hero2Sub">Bali is our deepest destination today. Kyoto, Paris, Santorini and any city you name remain part of the same planning path.</p>
+									<a class="btn btn-theme2 mt-lg-5 mt-4" href="services.html" data-i18n="hero2Btn">See all destinations</a>
 								</div>
 							</div>
 						</div>
@@ -447,9 +512,9 @@ $(function () { $('.navbar-toggler').click(function () { $('body').toggleClass('
 						<div class="banner-info">
 							<div class="container">
 								<div class="banner-info-bg mr-auto">
-									<h5 role="heading" aria-level="2" data-i18n="hero3Title">Six Expert Agents<br>at Your Service</h5>
-									<p data-i18n="hero3Sub">Trip Planner · Hotel Advisor · Food Explorer · Activity Curator · Budget Manager · Live Search — all working together for you.</p>
-									<a class="btn btn-theme2 mt-lg-5 mt-4" href="about.html" data-i18n="hero3Btn">Meet the Team</a>
+									<h5 role="heading" aria-level="2" data-i18n="hero3Title">A useful plan.<br>A trip you can actually take.</h5>
+									<p data-i18n="hero3Sub">AI organises the options. Real images help you decide. Local support helps turn the plan into a workable Bali journey.</p>
+									<a class="btn btn-theme2 mt-lg-5 mt-4" href="#how-it-works" data-i18n="hero3Btn">See how it works</a>
 								</div>
 							</div>
 						</div>
@@ -487,7 +552,7 @@ $(function () { $('.navbar-toggler').click(function () { $('body').toggleClass('
 <!-- ════════════════════════════════════════════════════
      SECTION 3 — Booking Form ("Let AI craft your getaway")
      ════════════════════════════════════════════════════ -->
-<section class="w3l-call-to-action_9">
+<section class="w3l-call-to-action_9" id="trip-brief">
 	<div class="call-w3">
 		<div class="container">
 			<div class="booking-form-content">
@@ -597,7 +662,7 @@ $(function () { $('.navbar-toggler').click(function () { $('body').toggleClass('
 							<div class="ser-bg3">
 								<div class="p-md-5 p-3">
 									<h4><a href="ai-tool.html" data-i18n="sec4AnyTitle">Anywhere · AI Powered</a></h4>
-									<p data-i18n="sec4AnyDesc">Type any city — Tokyo, Marrakech, Reykjavik — AI builds your guide instantly.</p>
+									<p data-i18n="sec4AnyDesc">Name any city — Tokyo, Marrakech or Reykjavik — and start a planning brief around your own needs.</p>
 								</div>
 							</div>
 						</div>
@@ -611,56 +676,69 @@ $(function () { $('.navbar-toggler').click(function () { $('body').toggleClass('
 <!-- ════════════════════════════════════════════════════
      SECTION 5 — Top Destinations (3 cards)
      ════════════════════════════════════════════════════ -->
-<section class="w3l-covers-18">
+<section class="w3l-covers-18" id="how-it-works">
 	<div class="covers-main">
 		<div class="container">
 			<div class="main-titles-head">
-				<h3 class="header-name" data-i18n="sec5Title">Top Travelling Destinations</h3>
-				<p class="tiltle-para" data-i18n="sec5Sub">Hand-picked destinations where our AI agents have deep local intelligence — from hidden food spots to optimal photo timing.</p>
+				<h3 class="header-name" data-i18n="sec5Title">One clear path from an idea to Bali</h3>
+				<p class="tiltle-para" data-i18n="sec5Sub">Start with what matters, look at the destination without the sales filter, then ask for local help only when you need it.</p>
 			</div>
 			<div class="gallery-image row">
 				<div class="col-lg-4 col-md-6">
-					<div class="img-box">
+					<div class="img-box wm-service-card">
 						<img src="assets/images/bali-3.jpg" alt="Bali — Kelingking Beach" class="img-responsive" loading="lazy">
-						<h5 class="my-2" role="heading" aria-level="3"><a href="ai-tool.html?dest=bali" data-i18n="sec5BaliName">Bali · Indonesia</a></h5>
+						<span class="wm-card-kicker" data-i18n="service1Kicker">Step 1 · Shape the trip</span>
+						<h5 class="my-2" role="heading" aria-level="3"><a href="#trip-brief" data-i18n="service1Title">Start with your time and budget</a></h5>
 						<div class="blog-date">
-							<p class="pos-date"><span class="fa fa-clock-o mr-1"></span><span data-i18n="sec5BaliDays">7 Days</span></p>
-							<p class="pos-date text-right"><span class="fa fa-users mr-1"></span><span data-i18n="sec5BaliPeople">2-4 People</span></p>
+							<p class="pos-date"><span class="fa fa-clock-o mr-1"></span><span data-i18n="service1Meta1">A few questions</span></p>
+							<p class="pos-date"><span class="fa fa-sliders mr-1"></span><span data-i18n="service1Meta2">Your priorities</span></p>
 						</div>
-						<p class="para" data-i18n="sec5BaliDesc">Sun-soaked beaches, lush rice terraces, ancient temples and a deep spiritual culture.</p>
+						<p class="para" data-i18n="service1Desc">Tell us when you are going, how much you want to spend and whether you care more about ease, local culture, photography or value.</p>
 						<div class="top-gap">
-							<h5 role="heading" aria-level="4"><span data-i18n="sec5From">from</span> ¥4,500</h5>
-							<a href="ai-tool.html?dest=bali" class="icon text-center" aria-label="Plan a Bali trip"><span class="fa fa-chevron-right"></span></a>
+							<a href="#trip-brief" class="wm-card-link" data-i18n="service1Btn">Build my brief</a>
+							<span class="wm-card-step" data-i18n="service1Note">No payment at this step</span>
 						</div>
 					</div>
 				</div>
 				<div class="col-lg-4 col-md-6 top-top2">
-					<div class="img-box">
-						<img src="assets/images/kyoto-2.jpg" alt="Kyoto" class="img-responsive" loading="lazy">
-						<h5 class="my-2" role="heading" aria-level="3"><a href="ai-tool.html?dest=kyoto" data-i18n="sec5KyotoName">Kyoto · Japan</a></h5>
+					<div class="img-box wm-service-card">
+						<img src="assets/images/bali-4.jpg" alt="Bali volcano landscape" class="img-responsive" loading="lazy">
+						<span class="wm-card-kicker" data-i18n="service2Kicker">Step 2 · See before you choose</span>
+						<h5 class="my-2" role="heading" aria-level="3"><a href="bali.html" data-i18n="service2Title">Browse the real Bali first</a></h5>
 						<div class="blog-date">
-							<p class="pos-date"><span class="fa fa-clock-o mr-1"></span><span data-i18n="sec5KyotoDays">5 Days</span></p>
-							<p class="pos-date text-right"><span class="fa fa-users mr-1"></span><span data-i18n="sec5KyotoPeople">2-4 People</span></p>
+							<p class="pos-date"><span class="fa fa-camera mr-1"></span><span data-i18n="service2Meta1">Traveller views</span></p>
+							<p class="pos-date"><span class="fa fa-globe mr-1"></span><span data-i18n="service2Meta2">More destinations</span></p>
 						</div>
-						<p class="para" data-i18n="sec5KyotoDesc">Ancient shrines, geisha culture, cherry blossoms and seasonal kaiseki cuisine.</p>
+						<p class="para" data-i18n="service2Desc">See scenery and culture, composed photographs and everyday traveller views. Bali is the default; other destinations stay one tap away.</p>
 						<div class="top-gap">
-							<h5 role="heading" aria-level="4"><span data-i18n="sec5From2">from</span> ¥6,800</h5>
-							<a href="ai-tool.html?dest=kyoto" class="icon text-center" aria-label="Plan a Kyoto trip"><span class="fa fa-chevron-right"></span></a>
+							<div class="wm-destination-switcher">
+								<a href="bali.html" class="wm-destination-primary" data-i18n="service2Btn">Browse Bali</a>
+								<button type="button" class="wm-destination-toggle" aria-expanded="false" aria-controls="wm-destination-menu" aria-label="Choose another destination" data-i18n="service2Toggle" data-i18n-attr="aria-label"><span class="fa fa-chevron-down" aria-hidden="true"></span></button>
+								<div class="wm-destination-menu" id="wm-destination-menu">
+									<a href="bali.html"><span data-i18n="destBali">Bali deep guide</span><span class="fa fa-star" aria-hidden="true"></span></a>
+									<a href="ai-tool.html?dest=kyoto"><span data-i18n="destKyoto">Kyoto planning</span><span class="fa fa-chevron-right" aria-hidden="true"></span></a>
+									<a href="ai-tool.html?dest=paris"><span data-i18n="destParis">Paris planning</span><span class="fa fa-chevron-right" aria-hidden="true"></span></a>
+									<a href="ai-tool.html?dest=santorini"><span data-i18n="destSantorini">Santorini planning</span><span class="fa fa-chevron-right" aria-hidden="true"></span></a>
+									<a href="ai-tool.html"><span data-i18n="destAny">Any destination</span><span class="fa fa-plus" aria-hidden="true"></span></a>
+								</div>
+							</div>
+							<span class="wm-card-step" data-i18n="service2Note">Bali is the default</span>
 						</div>
 					</div>
 				</div>
-				<div class="col-lg-4 col-md-6 top-top">
-					<div class="img-box">
-						<img src="assets/images/paris-2.jpg" alt="Paris" class="img-responsive" loading="lazy">
-						<h5 class="my-2" role="heading" aria-level="3"><a href="ai-tool.html?dest=paris" data-i18n="sec5ParisName">Paris · France</a></h5>
+				<div class="col-lg-4 col-md-6 top-top wm-service-card-last">
+					<div class="img-box wm-service-card">
+						<img src="assets/images/car_photo.jpg" alt="Bali driver vehicle interior" class="img-responsive" loading="lazy">
+						<span class="wm-card-kicker" data-i18n="service3Kicker">Step 3 · Make it workable</span>
+						<h5 class="my-2" role="heading" aria-level="3"><a href="find-driver.html" data-i18n="service3Title">Ask a trusted local driver</a></h5>
 						<div class="blog-date">
-							<p class="pos-date"><span class="fa fa-clock-o mr-1"></span><span data-i18n="sec5ParisDays">7 Days</span></p>
-							<p class="pos-date text-right"><span class="fa fa-users mr-1"></span><span data-i18n="sec5ParisPeople">2-4 People</span></p>
+							<p class="pos-date"><span class="fa fa-car mr-1"></span><span data-i18n="service3Meta1">Local support</span></p>
+							<p class="pos-date"><span class="fa fa-check-circle mr-1"></span><span data-i18n="service3Meta2">Confirm first</span></p>
 						</div>
-						<p class="para" data-i18n="sec5ParisDesc">Romance, world-class art, timeless boulevards and unforgettable patisseries.</p>
+						<p class="para" data-i18n="service3Desc">Share your dates, route and budget when the plan is ready. The driver confirms availability, providers and the final quote in the reply.</p>
 						<div class="top-gap">
-							<h5 role="heading" aria-level="4"><span data-i18n="sec5From3">from</span> ¥9,500</h5>
-							<a href="ai-tool.html?dest=paris" class="icon text-center" aria-label="Plan a Paris trip"><span class="fa fa-chevron-right"></span></a>
+							<a href="find-driver.html" class="wm-card-link" data-i18n="service3Btn">Contact a driver</a>
+							<span class="wm-card-step" data-i18n="service3Note">Not an instant booking</span>
 						</div>
 					</div>
 				</div>
@@ -681,9 +759,9 @@ $(function () { $('.navbar-toggler').click(function () { $('body').toggleClass('
 				</div>
 				<div class="nature-row coloum4 col-lg-6">
 					<p class="small-title" data-i18n="sec6Eyebrow">About WanderMind Studio</p>
-					<h3 data-i18n="sec6Title">Personalized travel powered by AI multi-agent collaboration.</h3>
-					<p class="para text" data-i18n="sec6Desc">WanderMind Studio combines six specialized AI agents to plan your perfect trip — from itinerary design to real-time hotel pricing, from local food discovery to budget optimization. Available in 5 languages, with intelligent data for any city worldwide.</p>
-					<a href="about.html" class="action-button btn mt-lg-5 mt-4" data-i18n="sec6Btn">Learn more</a>
+					<h3 data-i18n="sec6Title">AI organises the options. You stay in control.</h3>
+					<p class="para text" data-i18n="sec6Desc">WanderMind turns your dates, budget and preferences into a planning brief you can review. Routes, prices and availability still need confirmation before you travel. Bali has the deepest local path today, while the planner remains open to destinations worldwide.</p>
+					<a href="about.html" class="action-button btn mt-lg-5 mt-4" data-i18n="sec6Btn">How WanderMind works</a>
 				</div>
 			</div>
 		</div>
@@ -697,9 +775,9 @@ $(function () { $('.navbar-toggler').click(function () { $('body').toggleClass('
 	<div class="call-w3">
 		<div class="container text-center">
 			<div class="title-head">
-				<h3 data-i18n="sec7Title">AI experts on duty<br>from planning to landing</h3>
-				<p data-i18n="sec7Desc">From the first idea to the last photograph, our six AI agents support every step of your journey. Real-time data, personalized recommendations, available in five languages.</p>
-				<a class="btn btn-theme2 mt-lg-5 mt-4" href="ai-tool.html" data-i18n="sec7Btn">Start Your Journey</a>
+				<h3 data-i18n="sec7Title">Ready to make Bali<br>easier to plan?</h3>
+				<p data-i18n="sec7Desc">Start with your time and budget. Browse the island as it really looks, then contact local support only when your route feels right.</p>
+				<a class="btn btn-theme2 mt-lg-5 mt-4" href="#trip-brief" data-i18n="sec7Btn">Tell us about my trip</a>
 			</div>
 		</div>
 	</div>
@@ -796,10 +874,40 @@ $(function () { $('.navbar-toggler').click(function () { $('body').toggleClass('
 	function topFunction() { document.body.scrollTop = 0; document.documentElement.scrollTop = 0; }
 </script>
 
+<script>
+	document.addEventListener('DOMContentLoaded', function () {
+		var switcher = document.querySelector('.wm-destination-switcher');
+		if (!switcher) return;
+		var toggle = switcher.querySelector('.wm-destination-toggle');
+		var hoverCapable = window.matchMedia('(hover: hover) and (pointer: fine)');
+		var setOpen = function (open) {
+			switcher.classList.toggle('is-open', open);
+			toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+		};
+		toggle.addEventListener('click', function (event) {
+			event.preventDefault();
+			event.stopPropagation();
+			setOpen(!switcher.classList.contains('is-open'));
+		});
+		switcher.addEventListener('mouseenter', function () { if (hoverCapable.matches) setOpen(true); });
+		switcher.addEventListener('mouseleave', function () { if (hoverCapable.matches) setOpen(false); });
+		switcher.addEventListener('focusout', function () {
+			window.setTimeout(function () { if (!switcher.contains(document.activeElement)) setOpen(false); }, 0);
+		});
+		document.addEventListener('click', function (event) { if (!switcher.contains(event.target)) setOpen(false); });
+		document.addEventListener('keydown', function (event) {
+			if (event.key === 'Escape' && switcher.classList.contains('is-open')) {
+				setOpen(false);
+				toggle.focus();
+			}
+		});
+	});
+</script>
+
 <!-- ════════════════════════════════════════════════════
      i18n — 5-language switcher (en / zh / ja / ko / id)
      ════════════════════════════════════════════════════ -->
-<script src="assets/js/i18n.js?v=p45"></script>
+<script src="assets/js/i18n.js?v=p48"></script>
 
 </body>
 </html>
