@@ -12,3 +12,16 @@ rejected aspects: 不接受把巴黎、京都、圣托里尼等其他目的地�
 reason in reviewer words: 主要聚焦于巴厘岛，但是也不希望落下其他地方；次也就是其他目的地不能去掉
 scope: this project
 recorded at: 2026-07-19
+
+workflow: ui-implementation-workflow-v2
+status: raw
+task: AI 工作台目的地情报故障降级与移动端遮挡修复
+page/surface: WanderMind AI 工作台（目的地面板与移动端抽屉）
+screenshot or artifact: Chrome / Edge / WebKit 的 1440、768、430、412、390、375、360、320 与 844x390 验收截图
+reviewer: 用户
+decision: accepted
+accepted aspects: 保持 ClaudeCode 已建立的网站视觉风格；电脑端与手机端必须同时验收
+rejected aspects: 不接受固定导航或图案在 Safari、常见手机默认浏览器尺寸下遮挡内容；不接受只验收桌面端
+reason in reviewer words: 每次设计不仅仅要考虑电脑端网站效果，还要重新考虑手机端网站，如 Safari、各类手机默认浏览器的尺寸要合适，不能有的图案都被遮挡住了
+scope: this project
+recorded at: 2026-07-27

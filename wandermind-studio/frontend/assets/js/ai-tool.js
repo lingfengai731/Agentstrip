@@ -978,6 +978,7 @@ function onLangChange(newLang) {
   renderPanelBudget();
   renderPanelLog();
   renderMessages();
+  if (_destStatusMode) _setDestStatus(_destStatusMode, _destStatusKey);
 }
 
 /* Watch the lang picker (i18n.js writes localStorage on change) */
@@ -2260,6 +2261,8 @@ Object.assign(TOOL_I18N.id, { liveTag:'LIVE', sampleTag:'SAMPLE', destLoading:'M
 
 let _destInfoCache = {};
 let _destIsLive = {};
+let _destStatusMode = '';
+let _destStatusKey = '';
 
 const _DEST_API_NAMES = {
   bali:'Bali, Indonesia',
@@ -2268,8 +2271,11 @@ const _DEST_API_NAMES = {
   santorini:'Santorini, Greece'
 };
 
-// Show a status banner in the destination panel: 'loading' | 'error' | '' (hide).
+// Show a status banner in the destination panel: 'loading' | 'fallback' | 'error' | '' (hide).
 function _setDestStatus(mode, key) {
+  if (key && key !== currentDest) return;
+  _destStatusMode = mode;
+  _destStatusKey = key;
   const el = document.getElementById('ws-dest-status');
   if (!el) return;
   if (mode === 'loading') {
@@ -2277,10 +2283,18 @@ function _setDestStatus(mode, key) {
     el.className = 'ws-dest-status loading';
     el.innerHTML = `<span class="fa fa-circle-o-notch fa-spin"></span> ${escapeHtml(msg)}`;
     el.style.display = 'flex';
-  } else if (mode === 'error') {
-    const msg = { zh:'情报生成失败', en:'Couldn\'t generate intel', ja:'生成に失敗', ko:'생성 실패', id:'Gagal memuat' }[currentLang] || 'Failed';
+  } else if (mode === 'fallback' || mode === 'error') {
+    const fallbackMsg = {
+      zh:'AI 深度情报暂不可用，已显示基础资料；实时天气独立更新',
+      en:'AI deep intel is temporarily unavailable. Basic information is shown; live weather updates independently.',
+      ja:'AIによる詳細情報は一時的に利用できません。基本情報を表示しています。リアルタイム天気は個別に更新されます。',
+      ko:'AI 심층 정보는 일시적으로 사용할 수 없습니다. 기본 정보를 표시했으며 실시간 날씨는 별도로 업데이트됩니다.',
+      id:'Info mendalam AI sementara tidak tersedia. Info dasar ditampilkan; cuaca langsung diperbarui secara terpisah.'
+    }[currentLang] || 'AI deep intel is temporarily unavailable. Basic information is shown; live weather updates independently.';
+    const errorMsg = { zh:'情报生成失败', en:'Couldn\'t generate intel', ja:'生成に失敗', ko:'생성 실패', id:'Gagal memuat' }[currentLang] || 'Failed';
     const retry = { zh:'重试', en:'Retry', ja:'再試行', ko:'다시', id:'Coba lagi' }[currentLang] || 'Retry';
-    el.className = 'ws-dest-status error';
+    const msg = mode === 'fallback' ? fallbackMsg : errorMsg;
+    el.className = `ws-dest-status ${mode}`;
     el.innerHTML = `<span><span class="fa fa-exclamation-triangle"></span> ${escapeHtml(msg)}</span><button class="ws-dest-retry" id="ws-dest-retry">${escapeHtml(retry)}</button>`;
     el.style.display = 'flex';
     const btn = document.getElementById('ws-dest-retry');
@@ -2293,7 +2307,10 @@ function _setDestStatus(mode, key) {
 
 async function fetchDestInfo(key, force = false) {
   const apiDest = key === 'any' ? (_customDest || '') : _DEST_API_NAMES[key];
-  if (!apiDest) return;
+  if (!apiDest) {
+    if (key === currentDest) _setDestStatus('', key);
+    return;
+  }
   // Weather comes from OpenWeather independently — fire it now so the user sees
   // something fast instead of waiting on the slow AI intel.
   fetchLiveWeather(key);
@@ -2322,7 +2339,7 @@ async function fetchDestInfo(key, force = false) {
     _setDestStatus('', key);
     addLog('success', 'fa-cloud', _interp((currentLang==='zh'?'{d} · 实时数据已加载':'{d} · live data loaded'), { d: apiDest }));
   } catch (err) {
-    _setDestStatus('error', key);
+    _setDestStatus(key === 'any' ? 'error' : 'fallback', key);
     addLog('warn', 'fa-cloud-download', _interp((currentLang==='zh'?'实时数据获取失败: {e}':'Live fetch failed: {e}'), { e: err.message || err }));
   }
 }

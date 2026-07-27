@@ -19,7 +19,7 @@
   <link rel="icon" type="image/png" href="assets/images/logo-mark-256.png">
   <link rel="apple-touch-icon" href="assets/images/logo-mark-256.png">
     <link rel="stylesheet" href="assets/css/style-starter.css?v=p47">
-    <link rel="stylesheet" href="assets/css/ai-tool.css?v=p45">
+    <link rel="stylesheet" href="assets/css/ai-tool.css?v=p49">
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=optional" rel="stylesheet">
     <style>
       /* Header alignment — same as other Studio pages */
@@ -63,6 +63,24 @@
         .navbar-brand small { display: none !important; }
         .navbar-brand { gap: 4px !important; }
         .wm-logo-img { height: 30px !important; width: 30px !important; }
+      }
+      @media (max-width: 420px) {
+        .w3l-header-4 .navbar h1 a.navbar-brand {
+          font-size: 22px !important;
+          letter-spacing: 0 !important;
+          gap: 3px !important;
+        }
+        .w3l-header-4 .navbar-brand .wm-logo-img {
+          height: 26px !important;
+          width: 26px !important;
+        }
+      }
+      @media (max-width: 340px) {
+        .w3l-header-4 .navbar h1 a.navbar-brand { font-size: 19px !important; }
+        .w3l-header-4 .navbar-brand .wm-logo-img {
+          height: 24px !important;
+          width: 24px !important;
+        }
       }
       /* Mobile nav dropdown: dark panel so white nav-link text is readable */
       @media (max-width: 991px) {
@@ -223,6 +241,9 @@
     window.addEventListener('load', syncNavHeight);
     window.addEventListener('resize', syncNavHeight, { passive: true });
     window.addEventListener('scroll', syncNavHeight, { passive: true });
+    if ('ResizeObserver' in window) {
+      new ResizeObserver(syncNavHeight).observe(document.getElementById('site-header'));
+    }
     setTimeout(syncNavHeight, 300);   // after web fonts settle
     setTimeout(syncNavHeight, 1200);
   })();
@@ -317,7 +338,7 @@
 
       <!-- Destination intel -->
       <div class="ws-panel-content active" data-panel="dest">
-        <div class="ws-dest-status" id="ws-dest-status" style="display:none"></div>
+        <div class="ws-dest-status" id="ws-dest-status" role="status" aria-live="polite" aria-atomic="true" style="display:none"></div>
         <div class="ws-panel-section">
           <div class="ws-panel-section-title" id="ws-section-weather">Live Intel</div>
           <div class="ws-weather">
@@ -428,7 +449,7 @@
   function topFunction() { document.body.scrollTop = 0; document.documentElement.scrollTop = 0; }
 </script>
 <script src="assets/js/i18n.js?v=p45"></script>
-<script src="assets/js/ai-tool.js?v=p46"></script>
+<script src="assets/js/ai-tool.js?v=p49"></script>
 <script>
   // Auto-pick destination from ?dest=… query string
   (function() {
