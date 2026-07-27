@@ -39,8 +39,8 @@ body.dark {
   background: var(--ws-bg);
   color: var(--ws-ink);
   min-height: calc(100vh - 80px);
-  /* navbar height is measured live into --ws-nav-h (fallback 70px); + 52px tab bar + 12px gap */
-  padding-top: calc(var(--ws-nav-h, 70px) + 64px);
+  /* Fixed navigation heights are measured live; keep a 12px content gap. */
+  padding-top: calc(var(--ws-nav-h, 70px) + var(--ws-tabs-h, 57px) + 12px);
   font-family: 'Roboto', -apple-system, BlinkMacSystemFont, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Source Han Sans SC", "Noto Sans SC", sans-serif;
 }
 
@@ -59,7 +59,6 @@ body.dark {
   overflow-x: auto;
   scrollbar-width: none;
   box-shadow: 0 1px 4px rgba(0,0,0,.03);
-  transition: top .25s ease;
 }
 body.dark .ws-top-tabs { background: var(--ws-bg-2); border-bottom-color: var(--ws-line); }
 .ws-top-tabs::-webkit-scrollbar { display: none; }
@@ -101,13 +100,13 @@ body.dark .ws-top-tabs { background: var(--ws-bg-2); border-bottom-color: var(--
   .ws-grid { grid-template-columns: 240px 1fr 320px; }
 }
 @media (max-width: 991px) {
-  .ws-aitool { padding-top: calc(var(--ws-nav-h,70px) + 116px); }
+  .ws-aitool { padding-top: calc(var(--ws-nav-h,70px) + var(--ws-tabs-h,57px) + var(--ws-mobile-bar-h,53px) + 12px); }
   .ws-grid { grid-template-columns: 1fr; }
   .ws-sidebar, .ws-rightpanel { display: none; }
   .ws-sidebar.mobile-open, .ws-rightpanel.mobile-open {
     display: block;
     position: fixed;
-    top: calc(var(--ws-nav-h,70px) + 104px);
+    top: calc(var(--ws-nav-h,70px) + var(--ws-tabs-h,57px) + var(--ws-mobile-bar-h,53px));
     bottom: 0;
     width: 85%;
     max-width: 360px;
@@ -980,7 +979,7 @@ body.dark .ws-dest-status.error { background: rgba(220,38,38,.14); border-color:
   gap: 8px;
   justify-content: space-between;
   position: fixed;
-  top: calc(var(--ws-nav-h,70px) + 52px); /* sits flush under the fixed top-tab bar */
+  top: calc(var(--ws-nav-h,70px) + var(--ws-tabs-h,57px)); /* sits flush under the fixed top-tab bar */
   left: 0;
   right: 0;
   z-index: 1019;
