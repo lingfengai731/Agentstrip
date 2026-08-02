@@ -8,6 +8,7 @@ import os
 import secrets
 import time
 import uuid
+from datetime import datetime, timezone
 from pathlib import Path
 from typing import List, Optional
 
@@ -122,6 +123,183 @@ def verify_pw(pw: str, stored: str) -> bool:
         return False
 
 
+def _is_production() -> bool:
+    environment = os.getenv("ENVIRONMENT", "").strip().lower()
+    return environment in {"production", "prod"} or bool(os.getenv("RENDER", "").strip())
+
+
+def _new_referral_code() -> str:
+    return secrets.token_urlsafe(7).replace("-", "").replace("_", "")[:10].upper()
+
+
+def _request_ip_hash(request: Request) -> str:
+    forwarded = (request.headers.get("x-forwarded-for") or "").split(",", 1)[0].strip()
+    host = forwarded or (request.client.host if request.client else "")
+    if not host:
+        return ""
+    return hmac.new(_SECRET.encode(), f"signup-ip:{host}".encode(), hashlib.sha256).hexdigest()
+
+
+def _ensure_referral_code(conn, user_id: str) -> str:
+    row = conn.execute(
+        "SELECT referral_code FROM users WHERE id=?", (user_id,)
+    ).fetchone()
+    if row and dict(row).get("referral_code"):
+        return str(dict(row)["referral_code"])
+    for _ in range(8):
+        code = _new_referral_code()
+        if not conn.execute(
+            "SELECT 1 FROM users WHERE referral_code=?", (code,)
+        ).fetchone():
+            conn.execute(
+                "UPDATE users SET referral_code=? WHERE id=?", (code, user_id)
+            )
+            conn.commit()
+            return code
+    raise HTTPException(503, "Could not allocate referral code")
+
+
+def _month_start_utc(now: int) -> int:
+    current = datetime.fromtimestamp(now, tz=timezone.utc)
+    return int(datetime(current.year, current.month, 1, tzinfo=timezone.utc).timestamp())
+
+
+def _apply_referral(
+    conn,
+    *,
+    referral_code: str,
+    invitee_user_id: str,
+    invitee_ip_hash: str,
+    now: int,
+) -> bool:
+    code = (referral_code or "").strip().upper()
+    if not code:
+        return False
+    inviter_row = conn.execute(
+        "SELECT id,signup_ip_hash FROM users WHERE referral_code=?", (code,)
+    ).fetchone()
+    if not inviter_row:
+        return False
+    inviter = dict(inviter_row)
+    if inviter["id"] == invitee_user_id:
+        return False
+    if invitee_ip_hash and inviter.get("signup_ip_hash") == invitee_ip_hash:
+        return False
+    count_row = conn.execute(
+        """SELECT COUNT(*) AS n FROM referrals
+           WHERE inviter_user_id=? AND created_at>=?""",
+        (inviter["id"], _month_start_utc(now)),
+    ).fetchone()
+    if count_row and int(dict(count_row).get("n") or 0) >= 5:
+        return False
+    try:
+        conn.execute(
+            """INSERT INTO referrals
+               (id,inviter_user_id,invitee_user_id,status,available_at,created_at)
+               VALUES (?,?,?,?,?,?)""",
+            (
+                str(uuid.uuid4()), inviter["id"], invitee_user_id, "pending",
+                now + 86400, now,
+            ),
+        )
+        return True
+    except IntegrityError:
+        conn.rollback()
+        return False
+
+
+def _mature_referrals(conn, user_id: str, now: int) -> None:
+    rows = conn.execute(
+        """SELECT id,inviter_user_id,invitee_user_id FROM referrals
+           WHERE status='pending' AND available_at<=?
+             AND (inviter_user_id=? OR invitee_user_id=?)""",
+        (now, user_id, user_id),
+    ).fetchall()
+    for row in rows:
+        ref = dict(row)
+        for beneficiary, delta, reason in (
+            (ref["inviter_user_id"], 10, "referral_inviter"),
+            (ref["invitee_user_id"], 5, "referral_invitee"),
+        ):
+            conn.execute(
+                """INSERT INTO route_points_ledger
+                   (id,user_id,delta,reason,ref_id,created_at)
+                   VALUES (?,?,?,?,?,?)
+                   ON CONFLICT(user_id,reason,ref_id) DO NOTHING""",
+                (str(uuid.uuid4()), beneficiary, delta, reason, ref["id"], now),
+            )
+        conn.execute(
+            "UPDATE referrals SET status='available' WHERE id=? AND status='pending'",
+            (ref["id"],),
+        )
+        conn.commit()
+
+
+def _points_balance(conn, user_id: str) -> int:
+    row = conn.execute(
+        "SELECT COALESCE(SUM(delta),0) AS balance FROM route_points_ledger WHERE user_id=?",
+        (user_id,),
+    ).fetchone()
+    return int(dict(row).get("balance") or 0) if row else 0
+
+
+def _bootstrap_admin() -> None:
+    """Create the independent admin account without shipping a weak production
+    credential. Local development defaults to admin/123456 by explicit product
+    decision; production requires a strong ADMIN_BOOTSTRAP_PASSWORD env value."""
+    username = os.getenv("ADMIN_USERNAME", "admin").strip().lower() or "admin"
+    email = os.getenv("ADMIN_EMAIL", "admin@localhost").strip().lower() or "admin@localhost"
+    password = os.getenv("ADMIN_BOOTSTRAP_PASSWORD", "").strip()
+
+    if not password and not _is_production():
+        password = "123456"
+    if not password:
+        print("[wandermind] Admin bootstrap skipped: set ADMIN_BOOTSTRAP_PASSWORD")
+        return
+    if _is_production() and (len(password) < 12 or password == "123456"):
+        print("[wandermind] Admin bootstrap skipped: production password must be at least 12 characters")
+        return
+
+    conn = get_db()
+    try:
+        existing = conn.execute(
+            "SELECT id,role FROM users WHERE username=?", (username,)
+        ).fetchone()
+        if existing:
+            if dict(existing).get("role") != "admin":
+                print("[wandermind] Admin bootstrap skipped: username is already occupied")
+            return
+
+        referral_code = _new_referral_code()
+        while conn.execute(
+            "SELECT 1 FROM users WHERE referral_code=?", (referral_code,)
+        ).fetchone():
+            referral_code = _new_referral_code()
+
+        uid = str(uuid.uuid4())
+        try:
+            conn.execute(
+                """INSERT INTO users
+                   (id,email,name,password_hash,lang,email_verified,auth_provider,
+                    username,role,referral_code,created_at)
+                   VALUES (?,?,?,?,?,?,?,?,?,?,?)""",
+                (
+                    uid, email, "admin", hash_pw(password), "zh", 1, "password",
+                    username, "admin", referral_code, int(time.time()),
+                ),
+            )
+            conn.commit()
+            print(f"[wandermind] Admin account created for username '{username}'")
+        except IntegrityError:
+            conn.rollback()
+            print("[wandermind] Admin bootstrap skipped: configured email or username is already in use")
+    finally:
+        conn.close()
+
+
+_bootstrap_admin()
+
+
 # ─── Auth dependency ─────────────────────────────────────────
 async def current_user(authorization: Optional[str] = Header(None)) -> dict:
     if not authorization or not authorization.startswith("Bearer "):
@@ -144,6 +322,27 @@ async def optional_user(authorization: Optional[str] = Header(None)):
         return None
 
 
+def _db_user(conn, token_user: dict) -> dict:
+    row = conn.execute(
+        "SELECT id,email,name,username,role,referral_code FROM users WHERE id=?",
+        (token_user["sub"],),
+    ).fetchone()
+    if not row:
+        raise HTTPException(401, "User account no longer exists")
+    return dict(row)
+
+
+async def current_admin(user=Depends(current_user)) -> dict:
+    conn = get_db()
+    try:
+        db_user = _db_user(conn, user)
+        if db_user.get("role") != "admin":
+            raise HTTPException(403, "Admin access required")
+        return db_user
+    finally:
+        conn.close()
+
+
 # ─── AI usage quota (5 free Q&A, then beans) ─────────────────
 FREE_USE_LIMIT = int(os.getenv("FREE_USE_LIMIT", "5"))
 
@@ -160,9 +359,16 @@ def _quota_snapshot(conn, user, anon_id) -> dict:
     fu = b = 0
     tracked = True
     if user:
-        row = conn.execute("SELECT free_uses, beans FROM users WHERE id=?", (user["sub"],)).fetchone()
+        row = conn.execute("SELECT free_uses, beans, role FROM users WHERE id=?", (user["sub"],)).fetchone()
         if row:
-            d = dict(row); fu = d.get("free_uses") or 0; b = d.get("beans") or 0
+            d = dict(row)
+            if d.get("role") == "admin":
+                return {
+                    "free_used": 0, "free_limit": FREE_USE_LIMIT, "free_left": FREE_USE_LIMIT,
+                    "beans": d.get("beans") or 0, "can_use": True,
+                    "logged_in": True, "tracked": True, "admin_unlimited": True,
+                }
+            fu = d.get("free_uses") or 0; b = d.get("beans") or 0
     elif anon_id:
         row = conn.execute("SELECT free_uses, beans FROM guest_usage WHERE anon_id=?", (anon_id,)).fetchone()
         if row:
@@ -191,9 +397,11 @@ def consume_quota(user, anon_id):
     conn = get_db()
     try:
         if user:
-            row = conn.execute("SELECT free_uses, beans FROM users WHERE id=?", (user["sub"],)).fetchone()
+            row = conn.execute("SELECT free_uses, beans, role FROM users WHERE id=?", (user["sub"],)).fetchone()
             fu = (dict(row).get("free_uses") or 0) if row else 0
             b = (dict(row).get("beans") or 0) if row else 0
+            if row and dict(row).get("role") == "admin":
+                return _quota_snapshot(conn, user, anon_id)
             if fu < FREE_USE_LIMIT:
                 conn.execute("UPDATE users SET free_uses=free_uses+1 WHERE id=?", (user["sub"],))
             elif b > 0:
@@ -236,6 +444,7 @@ class RegisterReq(BaseModel):
     name: str
     code: str
     lang: str = "en"
+    referral_code: str = ""
 
 
 class LoginReq(BaseModel):
@@ -251,6 +460,7 @@ class ForgotPwReq(BaseModel):
 class GoogleLoginReq(BaseModel):
     credential: str
     lang: str = "en"
+    referral_code: str = ""
 
 
 class ResetPwReq(BaseModel):
@@ -270,6 +480,8 @@ class ChatReq(BaseModel):
     destination: str = "bali"
     search: bool = True        # allow frontend to opt-out
     mode: str = "pro"          # "fast" (SiliconFlow Qwen2.5-7B) | "pro" (MiMo)
+    product_trip_id: str = ""
+    trip_action: str = ""
 
 
 class GenerateReq(BaseModel):
@@ -327,6 +539,7 @@ class FuseReq(BaseModel):
 
 
 class DriverReq(BaseModel):
+    driver_id: str = "dicky"
     first_name: str = ""
     last_name: str = ""
     intro: str = ""
@@ -344,6 +557,27 @@ class DriverReq(BaseModel):
     requested_services: List[str] = []
     arrival_details: str = ""
     lang: str = "en"
+
+
+class ProductTripCreateReq(BaseModel):
+    destination: str = "bali"
+    brief: dict = {}
+
+
+class ProductTripUseReq(BaseModel):
+    action: str
+
+
+class ProRouteOrderReq(BaseModel):
+    trip_id: str
+
+
+class ProRouteConfirmReq(BaseModel):
+    payment_reference: str = ""
+
+
+class ReferralRedeemReq(BaseModel):
+    trip_id: str
 
 
 # ─── Auth routes ─────────────────────────────────────────────
@@ -455,17 +689,38 @@ async def register(data: RegisterReq, request: Request):
             conn.commit()
             raise HTTPException(400, "Invalid verification code")
         uid = str(uuid.uuid4())
+        referral_code = _new_referral_code()
+        while conn.execute(
+            "SELECT 1 FROM users WHERE referral_code=?", (referral_code,)
+        ).fetchone():
+            referral_code = _new_referral_code()
+        signup_ip_hash = _request_ip_hash(request)
         conn.execute(
             """INSERT INTO users
-               (id,email,name,password_hash,lang,email_verified,auth_provider,created_at)
-               VALUES (?,?,?,?,?,?,?,?)""",
-            (uid, email, name, hash_pw(data.password), lang, 1, "password", now),
+               (id,email,name,password_hash,lang,email_verified,auth_provider,
+                referral_code,signup_ip_hash,created_at)
+               VALUES (?,?,?,?,?,?,?,?,?,?)""",
+            (
+                uid, email, name, hash_pw(data.password), lang, 1, "password",
+                referral_code, signup_ip_hash, now,
+            ),
+        )
+        referral_applied = _apply_referral(
+            conn,
+            referral_code=data.referral_code,
+            invitee_user_id=uid,
+            invitee_ip_hash=signup_ip_hash,
+            now=now,
         )
         conn.execute("DELETE FROM email_verification_codes WHERE email=?", (email,))
         conn.commit()
         # Fire welcome email in background — never block registration on it
         asyncio.create_task(send_welcome(email, name, _public_base_url(request), lang))
-        return {"token": make_token(uid, email), "user": {"id": uid, "email": email, "name": name}}
+        return {
+            "token": make_token(uid, email),
+            "user": {"id": uid, "email": email, "name": name, "role": "user"},
+            "referral_applied": referral_applied,
+        }
     except IntegrityError:
         raise HTTPException(400, "Email already registered")
     finally:
@@ -473,7 +728,7 @@ async def register(data: RegisterReq, request: Request):
 
 
 @app.post("/api/auth/google")
-async def google_login(data: GoogleLoginReq):
+async def google_login(data: GoogleLoginReq, request: Request):
     client_id = os.getenv("GOOGLE_CLIENT_ID", "").strip()
     if not client_id:
         raise HTTPException(503, "Google sign-in is not configured")
@@ -501,17 +756,38 @@ async def google_login(data: GoogleLoginReq):
             if existing:
                 raise HTTPException(409, "This email already uses password sign-in")
             uid = str(uuid.uuid4())
+            referral_code = _new_referral_code()
+            while conn.execute(
+                "SELECT 1 FROM users WHERE referral_code=?", (referral_code,)
+            ).fetchone():
+                referral_code = _new_referral_code()
+            now = int(time.time())
+            signup_ip_hash = _request_ip_hash(request)
             conn.execute(
                 """INSERT INTO users
-                   (id,email,name,password_hash,lang,email_verified,auth_provider,google_sub,created_at)
-                   VALUES (?,?,?,?,?,?,?,?,?)""",
-                (uid, email, name, "!google", lang, 1, "google", google_sub, int(time.time())),
+                   (id,email,name,password_hash,lang,email_verified,auth_provider,google_sub,
+                    referral_code,signup_ip_hash,created_at)
+                   VALUES (?,?,?,?,?,?,?,?,?,?,?)""",
+                (
+                    uid, email, name, "!google", lang, 1, "google", google_sub,
+                    referral_code, signup_ip_hash, now,
+                ),
+            )
+            _apply_referral(
+                conn,
+                referral_code=data.referral_code,
+                invitee_user_id=uid,
+                invitee_ip_hash=signup_ip_hash,
+                now=now,
             )
             conn.commit()
             row = conn.execute("SELECT * FROM users WHERE id=?", (uid,)).fetchone()
         return {
             "token": make_token(row["id"], row["email"]),
-            "user": {"id": row["id"], "email": row["email"], "name": row["name"]},
+            "user": {
+                "id": row["id"], "email": row["email"], "name": row["name"],
+                "role": dict(row).get("role") or "user",
+            },
         }
     finally:
         conn.close()
@@ -519,12 +795,23 @@ async def google_login(data: GoogleLoginReq):
 
 @app.post("/api/auth/login")
 async def login(data: LoginReq):
+    identifier = (data.email or "").lower().strip()
     conn = get_db()
     try:
-        row = conn.execute("SELECT * FROM users WHERE email=?", (data.email.lower().strip(),)).fetchone()
+        row = conn.execute(
+            "SELECT * FROM users WHERE email=? OR username=?",
+            (identifier, identifier),
+        ).fetchone()
         if not row or not verify_pw(data.password, row["password_hash"]):
             raise HTTPException(401, "Invalid email or password")
-        return {"token": make_token(row["id"], row["email"]), "user": {"id": row["id"], "email": row["email"], "name": row["name"]}}
+        return {
+            "token": make_token(row["id"], row["email"]),
+            "user": {
+                "id": row["id"], "email": row["email"], "name": row["name"],
+                "username": dict(row).get("username"),
+                "role": dict(row).get("role") or "user",
+            },
+        }
     finally:
         conn.close()
 
@@ -684,10 +971,369 @@ async def admin_grant_beans(data: GrantReq):
 async def me(user=Depends(current_user)):
     conn = get_db()
     try:
-        row = conn.execute("SELECT id,email,name,lang FROM users WHERE id=?", (user["sub"],)).fetchone()
+        row = conn.execute(
+            "SELECT id,email,name,lang,username,role,referral_code FROM users WHERE id=?",
+            (user["sub"],),
+        ).fetchone()
         if not row:
             raise HTTPException(404, "User not found")
-        return dict(row)
+        result = dict(row)
+        result["route_points"] = _points_balance(conn, user["sub"])
+        return result
+    finally:
+        conn.close()
+
+
+# ─── Product trips / professional-route access ──────────────
+def _trip_owner(conn, trip_id: str, user, anon_id) -> dict:
+    row = conn.execute(
+        "SELECT * FROM product_trips WHERE id=?", (trip_id,)
+    ).fetchone()
+    if not row:
+        raise HTTPException(404, "Trip not found")
+    trip = dict(row)
+    if user and trip.get("user_id") == user["sub"]:
+        return trip
+    if anon_id and trip.get("anon_id") == anon_id and not trip.get("user_id"):
+        if user:
+            conn.execute(
+                "UPDATE product_trips SET user_id=?,anon_id=NULL,updated_at=? WHERE id=? AND user_id IS NULL",
+                (user["sub"], int(time.time()), trip_id),
+            )
+            conn.commit()
+            trip["user_id"] = user["sub"]
+            trip["anon_id"] = None
+        return trip
+    if user:
+        db_user = _db_user(conn, user)
+        if db_user.get("role") == "admin":
+            return trip
+    raise HTTPException(403, "This trip belongs to another account")
+
+
+def _trip_allowance(conn, trip: dict, user) -> dict:
+    is_admin = False
+    if user:
+        is_admin = _db_user(conn, user).get("role") == "admin"
+    rough_used = int(trip.get("rough_used") or 0)
+    adjustments_used = int(trip.get("adjustments_used") or 0)
+    unlocked = bool(conn.execute(
+        """SELECT 1 FROM professional_route_orders
+           WHERE trip_id=? AND status='confirmed' LIMIT 1""",
+        (trip["id"],),
+    ).fetchone())
+    return {
+        "trip_id": trip["id"],
+        "rough_route": {
+            "used": rough_used,
+            "limit": 1,
+            "remaining": 1 if is_admin else max(0, 1 - rough_used),
+        },
+        "adjustments": {
+            "used": adjustments_used,
+            "limit": 2,
+            "remaining": 2 if is_admin else max(0, 2 - adjustments_used),
+        },
+        "professional_route_unlocked": unlocked or is_admin,
+        "admin_unlimited": is_admin,
+    }
+
+
+def _consume_trip_action(conn, trip: dict, user, action: str) -> dict:
+    action = (action or "").strip().lower()
+    if action not in {"rough_route", "adjustment"}:
+        raise HTTPException(400, "trip_action must be rough_route or adjustment")
+    allowance = _trip_allowance(conn, trip, user)
+    if allowance["admin_unlimited"]:
+        return allowance
+    key = "rough_route" if action == "rough_route" else "adjustments"
+    if allowance[key]["remaining"] <= 0:
+        raise HTTPException(
+            402,
+            detail={
+                "error": "trip_allowance_exhausted",
+                "action": action,
+                "professional_route_price": {"amount": 9.9, "currency": "CNY"},
+            },
+        )
+    column = "rough_used" if action == "rough_route" else "adjustments_used"
+    conn.execute(
+        f"UPDATE product_trips SET {column}={column}+1,updated_at=? WHERE id=?",
+        (int(time.time()), trip["id"]),
+    )
+    conn.commit()
+    refreshed = dict(conn.execute(
+        "SELECT * FROM product_trips WHERE id=?", (trip["id"],)
+    ).fetchone())
+    return _trip_allowance(conn, refreshed, user)
+
+
+@app.post("/api/product-trips")
+async def create_product_trip(
+    data: ProductTripCreateReq,
+    user=Depends(optional_user),
+    anon_id=Depends(anon_id_header),
+):
+    if not user and not anon_id:
+        raise HTTPException(400, "A signed-in account or anonymous session id is required")
+    destination = (data.destination or "bali").strip().lower()[:80] or "bali"
+    now = int(time.time())
+    trip_id = str(uuid.uuid4())
+    conn = get_db()
+    try:
+        conn.execute(
+            """INSERT INTO product_trips
+               (id,user_id,anon_id,destination,brief,rough_used,adjustments_used,created_at,updated_at)
+               VALUES (?,?,?,?,?,?,?,?,?)""",
+            (
+                trip_id, user["sub"] if user else None, None if user else anon_id,
+                destination, json.dumps(data.brief or {}, ensure_ascii=False),
+                0, 0, now, now,
+            ),
+        )
+        conn.commit()
+        trip = dict(conn.execute(
+            "SELECT * FROM product_trips WHERE id=?", (trip_id,)
+        ).fetchone())
+        return {"ok": True, **_trip_allowance(conn, trip, user)}
+    finally:
+        conn.close()
+
+
+@app.get("/api/product-trips/{trip_id}/allowance")
+async def product_trip_allowance(
+    trip_id: str,
+    user=Depends(optional_user),
+    anon_id=Depends(anon_id_header),
+):
+    conn = get_db()
+    try:
+        trip = _trip_owner(conn, trip_id, user, anon_id)
+        return _trip_allowance(conn, trip, user)
+    finally:
+        conn.close()
+
+
+@app.post("/api/product-trips/{trip_id}/consume")
+async def consume_product_trip_allowance(
+    trip_id: str,
+    data: ProductTripUseReq,
+    user=Depends(optional_user),
+    anon_id=Depends(anon_id_header),
+):
+    action = (data.action or "").strip().lower()
+    if action not in {"rough_route", "adjustment"}:
+        raise HTTPException(400, "action must be rough_route or adjustment")
+    conn = get_db()
+    try:
+        trip = _trip_owner(conn, trip_id, user, anon_id)
+        return {"ok": True, **_consume_trip_action(conn, trip, user, action)}
+    finally:
+        conn.close()
+
+
+@app.post("/api/professional-route/orders")
+async def create_professional_route_order(
+    data: ProRouteOrderReq,
+    user=Depends(current_user),
+    anon_id=Depends(anon_id_header),
+):
+    conn = get_db()
+    try:
+        trip = _trip_owner(conn, data.trip_id, user, anon_id)
+        allowance = _trip_allowance(conn, trip, user)
+        if allowance["professional_route_unlocked"]:
+            return {"ok": True, "already_unlocked": True, **allowance}
+        existing = conn.execute(
+            """SELECT * FROM professional_route_orders
+               WHERE trip_id=? AND user_id=? AND status='pending'
+               ORDER BY created_at DESC LIMIT 1""",
+            (data.trip_id, user["sub"]),
+        ).fetchone()
+        if existing:
+            order = dict(existing)
+        else:
+            order = {
+                "id": str(uuid.uuid4()),
+                "trip_id": data.trip_id,
+                "user_id": user["sub"],
+                "amount_cents": 990,
+                "currency": "CNY",
+                "status": "pending",
+                "created_at": int(time.time()),
+            }
+            conn.execute(
+                """INSERT INTO professional_route_orders
+                   (id,trip_id,user_id,amount_cents,currency,status,created_at)
+                   VALUES (?,?,?,?,?,?,?)""",
+                (
+                    order["id"], order["trip_id"], order["user_id"],
+                    order["amount_cents"], order["currency"], order["status"],
+                    order["created_at"],
+                ),
+            )
+            conn.commit()
+        return {
+            "ok": True,
+            "order": {
+                "id": order["id"],
+                "trip_id": order["trip_id"],
+                "status": order["status"],
+                "amount": order["amount_cents"] / 100,
+                "currency": order["currency"],
+                "payment_method": "manual_qr",
+            },
+        }
+    finally:
+        conn.close()
+
+
+@app.get("/api/admin/professional-route/orders")
+async def list_professional_route_orders(
+    status: str = "pending",
+    admin=Depends(current_admin),
+):
+    normalized_status = (status or "pending").strip().lower()
+    if normalized_status not in {"pending", "confirmed"}:
+        raise HTTPException(400, "status must be pending or confirmed")
+    conn = get_db()
+    try:
+        rows = conn.execute(
+            """SELECT o.id,o.trip_id,o.amount_cents,o.currency,o.status,
+                      o.payment_reference,o.created_at,o.confirmed_at,
+                      u.email,u.name,t.destination,t.brief
+               FROM professional_route_orders o
+               JOIN users u ON u.id=o.user_id
+               JOIN product_trips t ON t.id=o.trip_id
+               WHERE o.status=?
+               ORDER BY o.created_at DESC
+               LIMIT 100""",
+            (normalized_status,),
+        ).fetchall()
+        return {
+            "orders": [
+                {
+                    **dict(row),
+                    "amount": int(dict(row)["amount_cents"]) / 100,
+                }
+                for row in rows
+            ]
+        }
+    finally:
+        conn.close()
+
+
+@app.post("/api/admin/professional-route/orders/{order_id}/confirm")
+async def confirm_professional_route_order(
+    order_id: str,
+    data: ProRouteConfirmReq,
+    admin=Depends(current_admin),
+):
+    conn = get_db()
+    try:
+        row = conn.execute(
+            "SELECT * FROM professional_route_orders WHERE id=?", (order_id,)
+        ).fetchone()
+        if not row:
+            raise HTTPException(404, "Order not found")
+        order = dict(row)
+        if order["status"] == "confirmed":
+            return {"ok": True, "already_confirmed": True, "order_id": order_id}
+        if order["status"] != "pending":
+            raise HTTPException(409, "Only pending orders can be confirmed")
+        now = int(time.time())
+        conn.execute(
+            """UPDATE professional_route_orders
+               SET status='confirmed',payment_reference=?,confirmed_at=?,confirmed_by=?
+               WHERE id=? AND status='pending'""",
+            (
+                (data.payment_reference or "").strip()[:120],
+                now, admin["id"], order_id,
+            ),
+        )
+        conn.commit()
+        return {"ok": True, "order_id": order_id, "status": "confirmed"}
+    finally:
+        conn.close()
+
+
+# ─── Referral points (separate from Travel Beans) ───────────
+@app.get("/api/referrals/status")
+async def referral_status(request: Request, user=Depends(current_user)):
+    conn = get_db()
+    try:
+        now = int(time.time())
+        _mature_referrals(conn, user["sub"], now)
+        code = _ensure_referral_code(conn, user["sub"])
+        pending_row = conn.execute(
+            """SELECT COUNT(*) AS n FROM referrals
+               WHERE (inviter_user_id=? OR invitee_user_id=?) AND status='pending'""",
+            (user["sub"], user["sub"]),
+        ).fetchone()
+        month_row = conn.execute(
+            """SELECT COUNT(*) AS n FROM referrals
+               WHERE inviter_user_id=? AND created_at>=?""",
+            (user["sub"], _month_start_utc(now)),
+        ).fetchone()
+        return {
+            "referral_code": code,
+            "share_url": f"{_public_base_url(request)}/ai-tool?ref={code}",
+            "points": _points_balance(conn, user["sub"]),
+            "points_required_per_professional_route": 30,
+            "pending_referrals": int(dict(pending_row).get("n") or 0),
+            "valid_invites_this_month": int(dict(month_row).get("n") or 0),
+            "monthly_invite_limit": 5,
+            "reward_delay_hours": 24,
+        }
+    finally:
+        conn.close()
+
+
+@app.post("/api/referrals/redeem-professional-route")
+async def redeem_referral_points(
+    data: ReferralRedeemReq,
+    user=Depends(current_user),
+    anon_id=Depends(anon_id_header),
+):
+    conn = get_db()
+    try:
+        now = int(time.time())
+        _mature_referrals(conn, user["sub"], now)
+        trip = _trip_owner(conn, data.trip_id, user, anon_id)
+        allowance = _trip_allowance(conn, trip, user)
+        if allowance["professional_route_unlocked"]:
+            return {"ok": True, "already_unlocked": True, **allowance}
+        balance = _points_balance(conn, user["sub"])
+        if balance < 30:
+            raise HTTPException(
+                402,
+                detail={"error": "insufficient_route_points", "required": 30, "balance": balance},
+            )
+        redemption_id = str(uuid.uuid4())
+        conn.execute(
+            """INSERT INTO route_points_ledger
+               (id,user_id,delta,reason,ref_id,created_at)
+               VALUES (?,?,?,?,?,?)""",
+            (str(uuid.uuid4()), user["sub"], -30, "professional_route_redeem", redemption_id, now),
+        )
+        conn.execute(
+            """INSERT INTO professional_route_orders
+               (id,trip_id,user_id,amount_cents,currency,status,payment_reference,
+                created_at,confirmed_at,confirmed_by)
+               VALUES (?,?,?,?,?,?,?,?,?,?)""",
+            (
+                redemption_id, data.trip_id, user["sub"], 0, "POINTS", "confirmed",
+                "route_points:30", now, now, user["sub"],
+            ),
+        )
+        conn.commit()
+        refreshed = _trip_allowance(conn, trip, user)
+        return {
+            "ok": True,
+            "points_spent": 30,
+            "points_remaining": _points_balance(conn, user["sub"]),
+            **refreshed,
+        }
     finally:
         conn.close()
 
@@ -1146,7 +1792,11 @@ async def driver_request(data: DriverReq):
         raise HTTPException(400, "Please provide at least one contact method")
     if not (data.first_name.strip() or data.last_name.strip()):
         raise HTTPException(400, "Please provide your name")
+    driver_id = data.driver_id.strip().lower()
+    if driver_id not in {"dicky", "gede"}:
+        raise HTTPException(400, "Unknown driver")
     payload = {
+        "driver_id": driver_id,
         "first_name": data.first_name.strip(),
         "last_name": data.last_name.strip(),
         "intro": data.intro.strip(),
@@ -1903,7 +2553,29 @@ async def chat(req: ChatReq, user=Depends(optional_user), anon_id=Depends(anon_i
 async def chat_once(req: ChatReq, user=Depends(optional_user), anon_id=Depends(anon_id_header)):
     if not _API_KEY:
         raise HTTPException(500, "API_KEY not set")
-    consume_quota(user, anon_id)
+    product_trip = None
+    product_action = (req.trip_action or "").strip().lower()
+    if req.product_trip_id:
+        conn = get_db()
+        try:
+            product_trip = _trip_owner(conn, req.product_trip_id, user, anon_id)
+            allowance = _trip_allowance(conn, product_trip, user)
+            key = "rough_route" if product_action == "rough_route" else "adjustments"
+            if product_action not in {"rough_route", "adjustment"}:
+                raise HTTPException(400, "trip_action must be rough_route or adjustment")
+            if not allowance["admin_unlimited"] and allowance[key]["remaining"] <= 0:
+                raise HTTPException(
+                    402,
+                    detail={
+                        "error": "trip_allowance_exhausted",
+                        "action": product_action,
+                        "professional_route_price": {"amount": 9.9, "currency": "CNY"},
+                    },
+                )
+        finally:
+            conn.close()
+    else:
+        consume_quota(user, anon_id)
 
     raw_messages = [{"role": m.role, "content": m.content} for m in req.messages]
     chat_url, chat_headers, chat_model, mode_label = _route(req.mode)
@@ -1942,7 +2614,7 @@ async def chat_once(req: ChatReq, user=Depends(optional_user), anon_id=Depends(a
             raise HTTPException(resp.status_code, body)
         data = resp.json()
         text = (data.get("choices") or [{}])[0].get("message", {}).get("content", "")
-        return {
+        result = {
             "text":          text,
             "mode":          mode_label,
             "model":         chat_model,
@@ -1950,6 +2622,16 @@ async def chat_once(req: ChatReq, user=Depends(optional_user), anon_id=Depends(a
             "search_count":  len(search_results),
             "search_results": search_results,
         }
+        if product_trip:
+            conn = get_db()
+            try:
+                owned_trip = _trip_owner(conn, req.product_trip_id, user, anon_id)
+                result["product_allowance"] = _consume_trip_action(
+                    conn, owned_trip, user, product_action
+                )
+            finally:
+                conn.close()
+        return result
     except HTTPException:
         raise
     except Exception as e:

@@ -1,0 +1,92 @@
+{
+  "schema_version": "1.0.0",
+  "updated_at": "2026-08-02",
+  "policy": {
+    "publishable_statuses": [
+      "owned",
+      "user_provided_with_consent",
+      "licensed",
+      "public_domain"
+    ],
+    "blocked_statuses": [
+      "unknown",
+      "watermarked",
+      "merchant_site_unlicensed"
+    ],
+    "rule": "A file is not publishable until source, rights status, subject consent when applicable, and intended use are recorded."
+  },
+  "assets": [
+    {
+      "filename": "Lempuyang Temple.jpg",
+      "category": "places",
+      "tags": ["temple", "G6", "R4"],
+      "capture_style": "unknown",
+      "source": "user_download",
+      "rights_status": "watermarked",
+      "publishable": false,
+      "notes": "Visible Sponsored watermark; do not use."
+    },
+    {
+      "filename": "Dicky1.jpg",
+      "category": "people",
+      "tags": ["driver", "dicky"],
+      "capture_style": "phone_authentic",
+      "source": "user_provided",
+      "rights_status": "user_provided_with_consent",
+      "publishable": true,
+      "notes": "User confirmed driver photos may be used; retain respectful crop and alt text."
+    },
+    {
+      "filename": "Gede nicho.jpg",
+      "category": "people",
+      "tags": ["driver", "gede"],
+      "capture_style": "phone_authentic",
+      "source": "user_provided",
+      "rights_status": "user_provided_with_consent",
+      "publishable": true,
+      "notes": "User confirmed driver photos may be used; spelling/display name still needs final confirmation."
+    },
+    {
+      "filename": "car_photodicky2.jpg",
+      "derived_web_asset": "car_photodicky2-web.jpg",
+      "category": "places",
+      "tags": ["vehicle", "dicky"],
+      "capture_style": "phone_authentic",
+      "source": "user_provided",
+      "rights_status": "user_provided_with_consent",
+      "publishable": true,
+      "notes": "Vehicle details and capacity remain pending supplier confirmation."
+    },
+    {
+      "filename": "car_photoGede.jpg",
+      "derived_web_asset": "car_photoGede-web.jpg",
+      "category": "places",
+      "tags": ["vehicle", "gede"],
+      "capture_style": "phone_authentic",
+      "source": "user_provided",
+      "rights_status": "user_provided_with_consent",
+      "publishable": true,
+      "notes": "Vehicle details and capacity remain pending supplier confirmation."
+    },
+    {
+      "filename": "Dicky_tourist1.jpg",
+      "category": "people",
+      "tags": ["driver", "dicky", "travellers"],
+      "capture_style": "phone_authentic",
+      "source": "user_provided",
+      "rights_status": "user_provided_with_consent",
+      "publishable": true,
+      "notes": "Use only while driver and pictured travellers' publication consent remains valid."
+    },
+    {
+      "filename": "Gede nicho_tourist1.jpg",
+      "category": "people",
+      "tags": ["driver", "gede", "travellers"],
+      "capture_style": "phone_authentic",
+      "source": "user_provided",
+      "rights_status": "user_provided_with_consent",
+      "publishable": true,
+      "notes": "Use only while driver and pictured travellers' publication consent remains valid."
+    }
+  ]
+}

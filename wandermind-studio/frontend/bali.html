@@ -25,6 +25,11 @@
       .navbar-brand small { font-size: 11px; opacity: .55; font-weight: 400; letter-spacing: .15em; text-transform: uppercase; }
       .wm-logo-img { height: 40px; width: 40px; object-fit: contain; flex-shrink: 0; }
       @media (max-width: 1199px) { .wm-logo-img { height: 34px; width: 34px; } }
+      @media (max-width: 767px) {
+        .navbar-brand small { display: none !important; }
+        .navbar-brand { gap: 4px !important; }
+        .wm-logo-img { height: 30px !important; width: 30px !important; }
+      }
       @media (min-width: 992px) {
         .navbar .navbar-nav { display: flex !important; align-items: center !important; }
         .navbar .navbar-nav .nav-link { white-space: nowrap; padding: 8px 9px !important; line-height: 1.2 !important; }
@@ -100,6 +105,43 @@
       body.dark .bali-tl-tag { background: rgba(252,191,30,.2); color: #fcd34d; }
       .bali-tl-card p { font-size: 14.5px; line-height: 1.7; color: #475569; margin: 6px 0 0; }
       body.dark .bali-tl-card p { color: rgba(255,255,255,.7); }
+      .bali-route-family { background: #f7faf8; }
+      body.dark .bali-route-family { background: rgba(255,255,255,.025); }
+      .bali-route-grid { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:18px; }
+      .bali-route-card { position:relative; min-width:0; padding:22px; border:1px solid #e2e8e4; border-radius:16px; background:#fff; color:#1e293b; text-align:left; cursor:pointer; box-shadow:0 6px 22px rgba(15,23,42,.06); transition:transform .18s,border-color .18s,box-shadow .18s; }
+      .bali-route-card:hover, .bali-route-card:focus-visible { transform:translateY(-2px); border-color:#0e7c6b; box-shadow:0 14px 34px rgba(14,124,107,.13); outline:none; }
+      .bali-route-card.active { border:2px solid #0e7c6b; padding:21px; box-shadow:0 14px 34px rgba(14,124,107,.17); }
+      body.dark .bali-route-card { background:#232622; color:#f3f4f6; border-color:#3a3d38; }
+      .bali-route-id { display:flex; align-items:center; justify-content:space-between; gap:12px; color:#0e7c6b; font-size:11px; font-weight:800; letter-spacing:.12em; text-transform:uppercase; }
+      body.dark .bali-route-id { color:#5eead4; }
+      .bali-route-status { padding:4px 8px; border-radius:12px; background:#fef3c7; color:#92400e; font-size:10px; letter-spacing:0; }
+      .bali-route-card h3 { margin:12px 0 8px; font-size:19px; font-weight:800; color:inherit; }
+      .bali-route-card p { margin:0 0 14px; min-height:66px; color:#64748b; font-size:13px; line-height:1.65; }
+      body.dark .bali-route-card p { color:#cbd5e1; }
+      .bali-route-meta { display:flex; flex-wrap:wrap; gap:7px; }
+      .bali-route-meta span { padding:5px 9px; border-radius:13px; background:rgba(14,124,107,.08); color:#0f766e; font-size:10.5px; font-weight:700; }
+      body.dark .bali-route-meta span { background:rgba(45,212,191,.1); color:#99f6e4; }
+      .bali-route-detail { margin-top:24px; padding:28px; border-radius:18px; background:linear-gradient(135deg,#0e7c6b,#0a6659); color:#fff; box-shadow:0 18px 45px rgba(14,124,107,.22); }
+      .bali-route-detail-grid { display:grid; grid-template-columns:minmax(0,1.1fr) minmax(280px,.9fr); gap:28px; align-items:start; }
+      .bali-route-detail h3 { margin:0 0 8px; font-size:clamp(24px,3vw,32px); font-weight:800; }
+      .bali-route-detail p { margin:0; color:rgba(255,255,255,.86); line-height:1.7; }
+      .bali-region-path { display:flex; align-items:center; flex-wrap:wrap; gap:8px; margin:20px 0; }
+      .bali-region-node { padding:8px 12px; border:1px solid rgba(255,255,255,.35); border-radius:16px; background:rgba(255,255,255,.1); font-size:12px; font-weight:800; }
+      .bali-region-arrow { color:#fcbf1e; }
+      .bali-route-value { display:grid; grid-template-columns:1fr 1fr; gap:10px; }
+      .bali-route-value-card { padding:15px; border-radius:12px; background:rgba(255,255,255,.1); }
+      .bali-route-value-card strong { display:block; color:#fff; margin-bottom:5px; }
+      .bali-route-value-card span { display:block; color:rgba(255,255,255,.78); font-size:12px; line-height:1.55; }
+      .bali-day-outline { display:grid; gap:8px; margin:18px 0 20px; }
+      .bali-day-row { display:grid; grid-template-columns:58px 1fr; gap:10px; align-items:center; padding:10px 12px; border-radius:12px; background:rgba(255,255,255,.08); border:1px solid rgba(255,255,255,.16); }
+      .bali-day-row strong { color:#fcbf1e; font-size:12px; letter-spacing:.06em; }
+      .bali-day-row span { color:#fff; font-size:13px; line-height:1.45; }
+      .bali-route-detail-actions { display:flex; flex-wrap:wrap; gap:10px; margin-top:18px; }
+      .bali-route-detail-actions .bali-btn { padding:11px 18px; font-size:13px; }
+      .bali-route-secondary { background:transparent; color:#fff; border:1px solid rgba(255,255,255,.55); }
+      .bali-route-secondary:hover { color:#fff; background:rgba(255,255,255,.1); text-decoration:none; }
+      @media(max-width:991px){ .bali-route-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.bali-route-detail-grid{grid-template-columns:1fr} }
+      @media(max-width:575px){ .bali-route-grid{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;margin-right:-15px;padding:0 15px 12px 0}.bali-route-card{flex:0 0 min(86vw,330px);scroll-snap-align:start}.bali-route-detail{padding:22px 18px}.bali-route-value{grid-template-columns:1fr}.bali-route-card p{min-height:0} }
       .bali-driver-band { background: linear-gradient(135deg, #0e7c6b, #14b8a6); color: #fff; padding: 64px 0; }
       .bali-driver-inner { max-width: 960px; margin: 0 auto; text-align: center; }
       .bali-driver-inner h2 { font-size: clamp(26px, 4vw, 38px); font-weight: 800; margin: 0 0 14px; }
@@ -200,6 +242,20 @@
         <a href="ai-tool.html?dest=bali" class="bali-btn bali-btn-primary"><span class="fa fa-magic"></span> <span data-i18n="baliHeroCtaPlan">Plan with AI</span></a>
         <a href="find-driver.html" class="bali-btn bali-btn-ghost"><span class="fa fa-car"></span> <span data-i18n="baliHeroCtaDriver">Find a local driver</span></a>
       </div>
+    </div>
+  </div>
+</section>
+
+<section class="bali-section bali-route-family" id="route-families">
+  <div class="container">
+    <div class="bali-sec-head">
+      <div class="bali-sec-eyebrow">Six route families · G1–G7</div>
+      <h2>先选你想得到的旅行体验</h2>
+      <p>路线不是景点清单。先选旅行目的，再根据天数、预算、节奏和同行者调整。免费版给完整粗路线，专业版补足可执行细节。</p>
+    </div>
+    <div class="bali-route-grid" id="bali-route-grid" aria-live="polite"></div>
+    <div class="bali-route-detail" id="bali-route-detail" aria-live="polite">
+      <p>正在加载巴厘岛专业路线体系…</p>
     </div>
   </div>
 </section>
@@ -305,13 +361,13 @@
   <div class="container">
     <div class="bali-driver-inner">
       <div class="bali-driver-grid">
-        <img class="bali-driver-car" src="assets/images/car_photo.jpg" alt="Interior of Dicky's Bali passenger car" loading="lazy">
+        <img class="bali-driver-car" src="assets/images/car_photodicky2-web.jpg" alt="Dicky's Bali passenger vehicle" loading="lazy">
         <div>
           <h2 data-i18n="baliDriverTitle">Get around with a trusted local driver</h2>
           <p data-i18n="baliDriverSub">Distances in Bali are deceptive and public transport is thin. Our verified local driver Dicky handles airport transfers, hotel pickups and full-day private tours - English-speaking and traveller-approved.</p>
           <div class="bali-driver-price">
             <span><span class="fa fa-clock-o"></span> <span data-i18n="baliDriverPrice1">10-12 hour tours</span></span>
-            <span><span class="fa fa-money"></span> <span data-i18n="baliDriverPrice2">~550-650k IDR / day</span></span>
+            <span><span class="fa fa-money"></span> <span data-i18n="baliDriverPrice2">Quote confirmed after route review</span></span>
             <span><span class="fa fa-plane"></span> <span data-i18n="baliDriverPrice3">Airport &amp; hotel pickup</span></span>
           </div>
           <a href="find-driver.html" class="bali-btn bali-btn-primary"><span class="fa fa-paper-plane"></span> <span data-i18n="baliDriverBtn">Request this driver</span></a>
@@ -391,6 +447,109 @@
 <script src="assets/js/i18n.js?v=p45"></script>
 <script>
 (function () {
+  var grid = document.getElementById('bali-route-grid');
+  var detail = document.getElementById('bali-route-detail');
+  var regions = {};
+  var routes = [];
+  var activeId = 'R1';
+
+  function language() {
+    var value = (document.getElementById('langPicker') || {}).value || localStorage.getItem('wm_studio_lang') || 'en';
+    return value === 'zh' ? 'zh' : 'en';
+  }
+
+  function text(value) {
+    if (!value) return '';
+    return typeof value === 'string' ? value : (value[language()] || value.en || value.zh || '');
+  }
+
+  function routeMeta(route) {
+    var days = route.recommended_days || {};
+    var dayText = (days.min || 3) + '–' + (days.max || 7) + (language() === 'zh' ? ' 天' : ' days');
+    var pace = String(route.pace || '').replaceAll('_', ' ');
+    var level = String(route.physical_level || '').replaceAll('_', ' ');
+    return [dayText, pace, level];
+  }
+
+  function renderCards() {
+    grid.innerHTML = routes.map(function (route) {
+      var meta = routeMeta(route);
+      return '<button class="bali-route-card ' + (route.id === activeId ? 'active' : '') + '" type="button" data-route-id="' + route.id + '" aria-pressed="' + (route.id === activeId) + '">' +
+        '<span class="bali-route-id"><span>' + route.id + '</span><span class="bali-route-status">' + (language() === 'zh' ? '细节核验中' : 'Details under review') + '</span></span>' +
+        '<h3>' + text(route.name) + '</h3>' +
+        '<p>' + text(route.promise) + '</p>' +
+        '<span class="bali-route-meta">' + meta.map(function (item) { return '<span>' + item + '</span>'; }).join('') + '</span>' +
+      '</button>';
+    }).join('');
+    grid.querySelectorAll('.bali-route-card').forEach(function (card) {
+      card.addEventListener('click', function () {
+        activeId = card.dataset.routeId;
+        renderCards();
+        renderDetail();
+      });
+    });
+  }
+
+  function renderDetail() {
+    var route = routes.find(function (item) { return item.id === activeId; }) || routes[0];
+    if (!route) return;
+    var path = (route.base_regions || []).map(function (id) {
+      var region = regions[id];
+      return '<span class="bali-region-node" title="' + (region ? text(region.name) : id) + '">' + id + ' · ' + (region ? text(region.name) : id) + '</span>';
+    }).join('<span class="fa fa-long-arrow-right bali-region-arrow" aria-hidden="true"></span>');
+    var outline = (route.free_outline || []).map(function (item) {
+      return '<div class="bali-day-row"><strong>' + (language() === 'zh' ? '第 ' + item.day + ' 天' : 'Day ' + item.day) + '</strong><span>' + item.region_id + ' · ' + text(item.theme) + '</span></div>';
+    }).join('');
+    var params = new URLSearchParams({ dest: 'bali', route: route.id });
+    detail.innerHTML =
+      '<div class="bali-route-detail-grid">' +
+        '<div><div class="bali-sec-eyebrow" style="color:#fcbf1e">' + route.id + ' · ' + (language() === 'zh' ? '主题产品层' : 'Experience product') + '</div>' +
+          '<h3>' + text(route.name) + '</h3><p>' + text(route.promise) + '</p>' +
+          '<div class="bali-region-path" aria-label="' + (language() === 'zh' ? '主要区域路径' : 'Core region path') + '">' + path + '</div>' +
+          '<div class="bali-day-outline" aria-label="' + (language() === 'zh' ? '免费路线轮廓' : 'Free route outline') + '">' + outline + '</div>' +
+          '<div class="bali-route-detail-actions">' +
+            '<a class="bali-btn bali-btn-primary" href="ai-tool.html?' + params.toString() + '">' + (language() === 'zh' ? '按我的偏好调整' : 'Adjust to my preferences') + '</a>' +
+            '<a class="bali-btn bali-route-secondary" href="ai-tool.html?' + params.toString() + '&professional=1">' + (language() === 'zh' ? '看专业路线 · ¥9.9' : 'Professional route · ¥9.9') + '</a>' +
+            '<a class="bali-btn bali-route-secondary" href="find-driver.html?route=' + encodeURIComponent(route.id) + '">' + (language() === 'zh' ? '把路线发给司机询价' : 'Send route to a driver') + '</a>' +
+          '</div>' +
+        '</div>' +
+        '<div class="bali-route-value">' +
+          '<div class="bali-route-value-card"><strong>' + (language() === 'zh' ? '免费粗路线' : 'Free rough route') + '</strong><span>' + (language() === 'zh' ? '完整每日主题、区域顺序、基础地图与 2 次调整。' : 'Complete day themes, region order, a basic map and two adjustments.') + '</span></div>' +
+          '<div class="bali-route-value-card"><strong>' + (language() === 'zh' ? '专业可执行路线' : 'Professional executable route') + '</strong><span>' + (language() === 'zh' ? '核验顺序、车程、到达时间、预约事项、雨天备选与司机行程单。' : 'Verified order, drive time, arrival guidance, bookings, rain backup and driver handoff.') + '</span></div>' +
+        '</div>' +
+      '</div>';
+  }
+
+  function useData(data) {
+    routes = data.routes || [];
+    (data.regions || []).forEach(function (region) { regions[region.id] = region; });
+    try {
+      var brief = JSON.parse(localStorage.getItem('wm_studio_trip_brief') || 'null');
+      var goals = (brief && brief.goals) || [];
+      var preferred = brief && brief.audience === 'first' ? 'R1' :
+        (goals.indexOf('local') >= 0 ? 'R4' : (goals.indexOf('photo') >= 0 ? 'R6' : 'R1'));
+      if (routes.some(function (route) { return route.id === preferred; })) activeId = preferred;
+    } catch (_) {}
+    renderCards();
+    renderDetail();
+  }
+
+  fetch('assets/data/bali-travel-data.json?v=20260802')
+    .then(function (response) { if (!response.ok) throw new Error('HTTP ' + response.status); return response.json(); })
+    .then(useData)
+    .catch(function () {
+      detail.innerHTML = '<p>' + (language() === 'zh' ? '路线资料暂时无法加载，请稍后重试或使用 AI 规划。' : 'Route data is temporarily unavailable. Please retry or use AI planning.') + '</p>';
+    });
+
+  var picker = document.getElementById('langPicker');
+  if (picker) picker.addEventListener('change', function () { if (routes.length) { renderCards(); renderDetail(); } });
+
+  var gallery = document.getElementById('gallery');
+  var itinerary = document.getElementById('itinerary');
+  if (gallery && itinerary) itinerary.insertAdjacentElement('afterend', gallery);
+})();
+
+(function () {
   var COPY = {
     en: {
       batur:['Mount Batur at dawn','A real early-morning view: cool air, rough jeep tracks and changing cloud cover.','Best for atmosphere and landscape photos; the experience matters as much as the final image.','Kintamani stay → pre-dawn jeep pickup → sunrise viewpoint → hot spring or coffee stop'],
@@ -437,5 +596,6 @@
   var picker=document.getElementById('langPicker'); if(picker)picker.addEventListener('change',renderModal);
 })();
 </script>
+<script src="assets/js/global-auth.js?v=p52"></script>
 </body>
 </html>

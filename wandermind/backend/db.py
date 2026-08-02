@@ -192,6 +192,76 @@ def init_db():
             "CREATE INDEX IF NOT EXISTS idx_fusion_source ON trip_fusions(source_token)"
         )
 
+        # Product trips — a fresh trip receives one complete rough route and
+        # two free adjustments. Professional-route access is tracked separately
+        # from the legacy AI beans quota.
+        conn.execute(f"""
+            CREATE TABLE IF NOT EXISTS product_trips (
+                id                TEXT PRIMARY KEY,
+                user_id           TEXT,
+                anon_id           TEXT,
+                destination       TEXT DEFAULT 'bali',
+                brief             TEXT DEFAULT '{{}}',
+                rough_used        INTEGER DEFAULT 0,
+                adjustments_used  INTEGER DEFAULT 0,
+                created_at        {ts_type} NOT NULL,
+                updated_at        {ts_type} NOT NULL
+            )
+        """)
+        conn.execute(
+            "CREATE INDEX IF NOT EXISTS idx_product_trips_user ON product_trips(user_id)"
+        )
+
+        conn.execute(f"""
+            CREATE TABLE IF NOT EXISTS professional_route_orders (
+                id                 TEXT PRIMARY KEY,
+                trip_id            TEXT NOT NULL,
+                user_id            TEXT NOT NULL,
+                amount_cents       INTEGER NOT NULL DEFAULT 990,
+                currency           TEXT NOT NULL DEFAULT 'CNY',
+                status             TEXT NOT NULL DEFAULT 'pending',
+                payment_reference  TEXT,
+                created_at         {ts_type} NOT NULL,
+                confirmed_at       {ts_type},
+                confirmed_by       TEXT
+            )
+        """)
+        conn.execute(
+            "CREATE INDEX IF NOT EXISTS idx_pro_orders_user ON professional_route_orders(user_id)"
+        )
+        conn.execute(
+            "CREATE INDEX IF NOT EXISTS idx_pro_orders_trip ON professional_route_orders(trip_id)"
+        )
+
+        conn.execute(f"""
+            CREATE TABLE IF NOT EXISTS referrals (
+                id               TEXT PRIMARY KEY,
+                inviter_user_id  TEXT NOT NULL,
+                invitee_user_id  TEXT UNIQUE NOT NULL,
+                status           TEXT NOT NULL DEFAULT 'pending',
+                available_at     {ts_type} NOT NULL,
+                created_at       {ts_type} NOT NULL
+            )
+        """)
+        conn.execute(
+            "CREATE INDEX IF NOT EXISTS idx_referrals_inviter ON referrals(inviter_user_id)"
+        )
+
+        conn.execute(f"""
+            CREATE TABLE IF NOT EXISTS route_points_ledger (
+                id          TEXT PRIMARY KEY,
+                user_id     TEXT NOT NULL,
+                delta       INTEGER NOT NULL,
+                reason      TEXT NOT NULL,
+                ref_id      TEXT NOT NULL,
+                created_at  {ts_type} NOT NULL,
+                UNIQUE(user_id, reason, ref_id)
+            )
+        """)
+        conn.execute(
+            "CREATE INDEX IF NOT EXISTS idx_route_points_user ON route_points_ledger(user_id)"
+        )
+
         # Commit table/index creation BEFORE running migrations. On Postgres a
         # failing ALTER (e.g. column already exists) aborts the whole transaction;
         # without this commit the subsequent rollback would also undo any table
@@ -206,6 +276,10 @@ def init_db():
             "ALTER TABLE users ADD COLUMN email_verified INTEGER DEFAULT 0",
             "ALTER TABLE users ADD COLUMN auth_provider TEXT DEFAULT 'password'",
             "ALTER TABLE users ADD COLUMN google_sub TEXT",
+            "ALTER TABLE users ADD COLUMN username TEXT",
+            "ALTER TABLE users ADD COLUMN role TEXT DEFAULT 'user'",
+            "ALTER TABLE users ADD COLUMN referral_code TEXT",
+            "ALTER TABLE users ADD COLUMN signup_ip_hash TEXT",
         ):
             try:
                 conn.execute(col_sql)
@@ -219,6 +293,16 @@ def init_db():
 
         try:
             conn.execute("CREATE UNIQUE INDEX IF NOT EXISTS idx_users_google_sub ON users(google_sub)")
+            conn.commit()
+        except Exception:
+            try:
+                conn.rollback()
+            except Exception:
+                pass
+
+        try:
+            conn.execute("CREATE UNIQUE INDEX IF NOT EXISTS idx_users_username ON users(username)")
+            conn.execute("CREATE UNIQUE INDEX IF NOT EXISTS idx_users_referral_code ON users(referral_code)")
             conn.commit()
         except Exception:
             try:

@@ -906,7 +906,9 @@ async function sendMessage(text) {
         agent: currentAgent,
         destination: currentDest,
         mode: currentMode === 'fast' ? 'fast' : 'pro',
-        search: true
+        search: true,
+        product_trip_id: currentTrip?.product_trip_id || '',
+        trip_action: currentTrip?.product_trip_id ? (currentTrip.rough_generated ? 'adjustment' : 'rough_route') : ''
       })
     });
     if (!r.ok) {
@@ -916,6 +918,11 @@ async function sendMessage(text) {
     }
     const data = await r.json();
     const reply = (data && (data.text || data.reply || data.message || data.content)) || (t().sendErr);
+    if (data.product_allowance && currentTrip) {
+      currentTrip.product_allowance = data.product_allowance;
+      currentTrip.rough_generated = true;
+      localStorage.setItem('wm_studio_currentTrip', JSON.stringify(currentTrip));
+    }
     // Replace typing placeholder
     const idx = messages.indexOf(aiPlaceholder);
     if (idx >= 0) messages[idx] = { role:'ai', agent: currentAgent, text: reply, ts: Date.now() };
@@ -2459,7 +2466,7 @@ Object.assign(TOOL_I18N.en, {
   // New-trip wizard
   ntTitle:'New trip', ntIntro:'Fill in the basics — your AI team will plan the rest.',
   ntDest:'Destination', ntPeople:'People', ntStart:'Depart', ntEnd:'Return',
-  ntBudget:'Total budget', ntBudgetPh:'e.g. 3000', ntStyle:'Style',
+  ntCurrency:'Currency', ntBudget:'Total budget', ntBudgetPh:'e.g. 3000', ntStyle:'Style',
   ntStyleBudget:'Budget · backpack', ntStyleComfort:'Comfort · balanced', ntStyleLuxury:'Luxury · premium',
   ntSubmit:'Start planning', ntAnonNote:'Sign in afterwards to save this trip across devices.',
   ntCreatedToast:'New trip: {dest} · {n}d', ntChipDepart:'departure', ntChipDays:'{n} days', ntChipPeople:'{n} people',
@@ -2486,7 +2493,7 @@ Object.assign(TOOL_I18N.en, {
 Object.assign(TOOL_I18N.zh, {
   ntTitle:'新建行程', ntIntro:'填上基础信息 —— 剩下的交给 AI 团队来规划',
   ntDest:'目的地', ntPeople:'人数', ntStart:'出发日期', ntEnd:'返回日期',
-  ntBudget:'总预算', ntBudgetPh:'例：20000', ntStyle:'旅行风格',
+  ntCurrency:'币种', ntBudget:'总预算', ntBudgetPh:'例：20000', ntStyle:'旅行风格',
   ntStyleBudget:'节俭穷游', ntStyleComfort:'舒适平衡', ntStyleLuxury:'奢享高端',
   ntSubmit:'开始规划行程', ntAnonNote:'之后登录即可跨设备保存此行程',
   ntCreatedToast:'新行程：{dest} · {n}天', ntChipDepart:'出发', ntChipDays:'{n} 天', ntChipPeople:'{n} 人',
@@ -2513,7 +2520,7 @@ Object.assign(TOOL_I18N.zh, {
 Object.assign(TOOL_I18N.ja, {
   ntTitle:'新規旅行', ntIntro:'基本情報を入力 — 残りはAIチームが計画',
   ntDest:'目的地', ntPeople:'人数', ntStart:'出発日', ntEnd:'帰着日',
-  ntBudget:'総予算', ntBudgetPh:'例：300000', ntStyle:'旅スタイル',
+  ntCurrency:'通貨', ntBudget:'総予算', ntBudgetPh:'例：300000', ntStyle:'旅スタイル',
   ntStyleBudget:'予算重視 · バックパック', ntStyleComfort:'快適 · バランス', ntStyleLuxury:'豪華 · プレミアム',
   ntSubmit:'プランニング開始', ntAnonNote:'後でログインすると端末間で保存可能',
   ntCreatedToast:'新規旅行: {dest} · {n}日', ntChipDepart:'出発', ntChipDays:'{n} 日', ntChipPeople:'{n} 人',
@@ -2540,7 +2547,7 @@ Object.assign(TOOL_I18N.ja, {
 Object.assign(TOOL_I18N.ko, {
   ntTitle:'새 여행', ntIntro:'기본 정보를 입력하세요 — 나머지는 AI 팀이 계획합니다',
   ntDest:'목적지', ntPeople:'인원', ntStart:'출발일', ntEnd:'귀국일',
-  ntBudget:'총 예산', ntBudgetPh:'예: 3000000', ntStyle:'여행 스타일',
+  ntCurrency:'통화', ntBudget:'총 예산', ntBudgetPh:'예: 3000000', ntStyle:'여행 스타일',
   ntStyleBudget:'알뜰 · 배낭', ntStyleComfort:'편안 · 균형', ntStyleLuxury:'럭셔리 · 프리미엄',
   ntSubmit:'계획 시작', ntAnonNote:'나중에 로그인하여 기기 간 저장 가능',
   ntCreatedToast:'새 여행: {dest} · {n}일', ntChipDepart:'출발', ntChipDays:'{n} 일', ntChipPeople:'{n} 명',
@@ -2567,7 +2574,7 @@ Object.assign(TOOL_I18N.ko, {
 Object.assign(TOOL_I18N.id, {
   ntTitle:'Perjalanan baru', ntIntro:'Isi info dasar — sisanya direncanakan tim AI',
   ntDest:'Tujuan', ntPeople:'Orang', ntStart:'Berangkat', ntEnd:'Pulang',
-  ntBudget:'Anggaran total', ntBudgetPh:'mis: 3000', ntStyle:'Gaya',
+  ntCurrency:'Mata uang', ntBudget:'Anggaran total', ntBudgetPh:'mis: 3000', ntStyle:'Gaya',
   ntStyleBudget:'Hemat · backpack', ntStyleComfort:'Nyaman · seimbang', ntStyleLuxury:'Mewah · premium',
   ntSubmit:'Mulai merencanakan', ntAnonNote:'Masuk nanti untuk menyimpan lintas perangkat',
   ntCreatedToast:'Perjalanan baru: {dest} · {n}h', ntChipDepart:'berangkat', ntChipDays:'{n} hari', ntChipPeople:'{n} orang',
@@ -2593,16 +2600,21 @@ Object.assign(TOOL_I18N.id, {
 });
 
 const AUTH_EXTRA = {
-  en: { authWelcome:'Plan with confidence', authSub:'Save trips, sync preferences and continue on any device.', authEmailLabel:'Email address', authPasswordLabel:'Password', authNameLabel:'Your name', authCodeLabel:'6-digit code', authSendCode:'Send verification code', authSendingCode:'Sending code…', authCodeSent:'Code sent. Check your inbox and spam folder.', authVerifyCreate:'Verify & create account', authResend:'Resend code', authResendIn:'Resend in {n}s', authOr:'or', authGoogle:'Continue with Google', authGoogleUnavailable:'Google sign-in is not configured yet.', authCodeInvalid:'Enter the 6-digit code from your email.', authCodeExpired:'The code is invalid or expired. Request a new one.', authEmailSendFail:'We could not send the email. Please try again later.', authExistingPassword:'This email already uses password sign-in.', authClose:'Close', authPrivacy:'We only use your email to secure and sync your trips.' },
-  zh: { authWelcome:'安心规划每一程', authSub:'保存行程、同步偏好，并在任意设备继续规划。', authEmailLabel:'邮箱地址', authPasswordLabel:'密码', authNameLabel:'你的名字', authCodeLabel:'6 位验证码', authSendCode:'发送邮箱验证码', authSendingCode:'正在发送…', authCodeSent:'验证码已发送，请检查收件箱和垃圾邮件。', authVerifyCreate:'验证并创建账户', authResend:'重新发送验证码', authResendIn:'{n} 秒后可重发', authOr:'或', authGoogle:'使用 Google 继续', authGoogleUnavailable:'Google 登录尚未配置。', authCodeInvalid:'请输入邮箱中的 6 位验证码。', authCodeExpired:'验证码无效或已过期，请重新获取。', authEmailSendFail:'邮件暂时无法发送，请稍后重试。', authExistingPassword:'此邮箱已使用密码登录。', authClose:'关闭', authPrivacy:'邮箱仅用于保护账户并同步你的行程。' },
-  ja: { authWelcome:'安心して旅を計画', authSub:'旅程と好みを保存し、どの端末からでも続けられます。', authEmailLabel:'メールアドレス', authPasswordLabel:'パスワード', authNameLabel:'お名前', authCodeLabel:'6桁コード', authSendCode:'認証コードを送信', authSendingCode:'送信中…', authCodeSent:'コードを送信しました。迷惑メールもご確認ください。', authVerifyCreate:'認証してアカウント作成', authResend:'コードを再送', authResendIn:'{n}秒後に再送', authOr:'または', authGoogle:'Googleで続ける', authGoogleUnavailable:'Googleログインは未設定です。', authCodeInvalid:'メールの6桁コードを入力してください。', authCodeExpired:'コードが無効または期限切れです。再送してください。', authEmailSendFail:'メールを送信できませんでした。後でもう一度お試しください。', authExistingPassword:'このメールはパスワードログインを使用しています。', authClose:'閉じる', authPrivacy:'メールはアカウント保護と旅程同期にのみ使用します。' },
-  ko: { authWelcome:'안심하고 여행 계획', authSub:'여행과 선호를 저장하고 모든 기기에서 이어가세요.', authEmailLabel:'이메일 주소', authPasswordLabel:'비밀번호', authNameLabel:'이름', authCodeLabel:'6자리 코드', authSendCode:'인증 코드 보내기', authSendingCode:'전송 중…', authCodeSent:'코드를 보냈습니다. 스팸함도 확인하세요.', authVerifyCreate:'인증하고 계정 만들기', authResend:'코드 다시 보내기', authResendIn:'{n}초 후 재전송', authOr:'또는', authGoogle:'Google로 계속', authGoogleUnavailable:'Google 로그인이 아직 설정되지 않았습니다.', authCodeInvalid:'이메일의 6자리 코드를 입력하세요.', authCodeExpired:'코드가 잘못되었거나 만료되었습니다. 새로 요청하세요.', authEmailSendFail:'이메일을 보낼 수 없습니다. 나중에 다시 시도하세요.', authExistingPassword:'이 이메일은 비밀번호 로그인을 사용 중입니다.', authClose:'닫기', authPrivacy:'이메일은 계정 보호와 여행 동기화에만 사용합니다.' },
-  id: { authWelcome:'Rencanakan perjalanan dengan tenang', authSub:'Simpan perjalanan, sinkronkan preferensi, dan lanjutkan di perangkat apa pun.', authEmailLabel:'Alamat email', authPasswordLabel:'Kata sandi', authNameLabel:'Nama Anda', authCodeLabel:'Kode 6 digit', authSendCode:'Kirim kode verifikasi', authSendingCode:'Mengirim kode…', authCodeSent:'Kode terkirim. Periksa kotak masuk dan folder spam.', authVerifyCreate:'Verifikasi & buat akun', authResend:'Kirim ulang kode', authResendIn:'Kirim ulang dalam {n}d', authOr:'atau', authGoogle:'Lanjutkan dengan Google', authGoogleUnavailable:'Login Google belum dikonfigurasi.', authCodeInvalid:'Masukkan kode 6 digit dari email.', authCodeExpired:'Kode tidak valid atau kedaluwarsa. Minta kode baru.', authEmailSendFail:'Email tidak dapat dikirim. Coba lagi nanti.', authExistingPassword:'Email ini sudah memakai login kata sandi.', authClose:'Tutup', authPrivacy:'Email hanya digunakan untuk mengamankan akun dan menyinkronkan perjalanan.' }
+  en: { authWelcome:'Plan with confidence', authSub:'Save trips, sync preferences and continue on any device.', authEmailLabel:'Email address', authLoginIdentifierLabel:'Email or admin username', authPasswordLabel:'Password', authNameLabel:'Your name', authCodeLabel:'6-digit code', authSendCode:'Send verification code', authSendingCode:'Sending code…', authCodeSent:'Code sent. Check your inbox and spam folder.', authVerifyCreate:'Verify & create account', authResend:'Resend code', authResendIn:'Resend in {n}s', authOr:'or', authGoogle:'Continue with Google', authGoogleUnavailable:'Google sign-in is not configured yet.', authCodeInvalid:'Enter the 6-digit code from your email.', authCodeExpired:'The code is invalid or expired. Request a new one.', authEmailSendFail:'We could not send the email. Please try again later.', authExistingPassword:'This email already uses password sign-in.', authClose:'Close', authPrivacy:'We only use your email to secure and sync your trips.' },
+  zh: { authWelcome:'安心规划每一程', authSub:'保存行程、同步偏好，并在任意设备继续规划。', authEmailLabel:'邮箱地址', authLoginIdentifierLabel:'邮箱或管理员用户名', authPasswordLabel:'密码', authNameLabel:'你的名字', authCodeLabel:'6 位验证码', authSendCode:'发送邮箱验证码', authSendingCode:'正在发送…', authCodeSent:'验证码已发送，请检查收件箱和垃圾邮件。', authVerifyCreate:'验证并创建账户', authResend:'重新发送验证码', authResendIn:'{n} 秒后可重发', authOr:'或', authGoogle:'使用 Google 继续', authGoogleUnavailable:'Google 登录尚未配置。', authCodeInvalid:'请输入邮箱中的 6 位验证码。', authCodeExpired:'验证码无效或已过期，请重新获取。', authEmailSendFail:'邮件暂时无法发送，请稍后重试。', authExistingPassword:'此邮箱已使用密码登录。', authClose:'关闭', authPrivacy:'邮箱仅用于保护账户并同步你的行程。' },
+  ja: { authWelcome:'安心して旅を計画', authSub:'旅程と好みを保存し、どの端末からでも続けられます。', authEmailLabel:'メールアドレス', authLoginIdentifierLabel:'メールまたは管理者名', authPasswordLabel:'パスワード', authNameLabel:'お名前', authCodeLabel:'6桁コード', authSendCode:'認証コードを送信', authSendingCode:'送信中…', authCodeSent:'コードを送信しました。迷惑メールもご確認ください。', authVerifyCreate:'認証してアカウント作成', authResend:'コードを再送', authResendIn:'{n}秒後に再送', authOr:'または', authGoogle:'Googleで続ける', authGoogleUnavailable:'Googleログインは未設定です。', authCodeInvalid:'メールの6桁コードを入力してください。', authCodeExpired:'コードが無効または期限切れです。再送してください。', authEmailSendFail:'メールを送信できませんでした。後でもう一度お試しください。', authExistingPassword:'このメールはパスワードログインを使用しています。', authClose:'閉じる', authPrivacy:'メールはアカウント保護と旅程同期にのみ使用します。' },
+  ko: { authWelcome:'안심하고 여행 계획', authSub:'여행과 선호를 저장하고 모든 기기에서 이어가세요.', authEmailLabel:'이메일 주소', authLoginIdentifierLabel:'이메일 또는 관리자 이름', authPasswordLabel:'비밀번호', authNameLabel:'이름', authCodeLabel:'6자리 코드', authSendCode:'인증 코드 보내기', authSendingCode:'전송 중…', authCodeSent:'코드를 보냈습니다. 스팸함도 확인하세요.', authVerifyCreate:'인증하고 계정 만들기', authResend:'코드 다시 보내기', authResendIn:'{n}초 후 재전송', authOr:'또는', authGoogle:'Google로 계속', authGoogleUnavailable:'Google 로그인이 아직 설정되지 않았습니다.', authCodeInvalid:'이메일의 6자리 코드를 입력하세요.', authCodeExpired:'코드가 잘못되었거나 만료되었습니다. 새로 요청하세요.', authEmailSendFail:'이메일을 보낼 수 없습니다. 나중에 다시 시도하세요.', authExistingPassword:'이 이메일은 비밀번호 로그인을 사용 중입니다.', authClose:'닫기', authPrivacy:'이메일은 계정 보호와 여행 동기화에만 사용합니다.' },
+  id: { authWelcome:'Rencanakan perjalanan dengan tenang', authSub:'Simpan perjalanan, sinkronkan preferensi, dan lanjutkan di perangkat apa pun.', authEmailLabel:'Alamat email', authLoginIdentifierLabel:'Email atau nama admin', authPasswordLabel:'Kata sandi', authNameLabel:'Nama Anda', authCodeLabel:'Kode 6 digit', authSendCode:'Kirim kode verifikasi', authSendingCode:'Mengirim kode…', authCodeSent:'Kode terkirim. Periksa kotak masuk dan folder spam.', authVerifyCreate:'Verifikasi & buat akun', authResend:'Kirim ulang kode', authResendIn:'Kirim ulang dalam {n}d', authOr:'atau', authGoogle:'Lanjutkan dengan Google', authGoogleUnavailable:'Login Google belum dikonfigurasi.', authCodeInvalid:'Masukkan kode 6 digit dari email.', authCodeExpired:'Kode tidak valid atau kedaluwarsa. Minta kode baru.', authEmailSendFail:'Email tidak dapat dikirim. Coba lagi nanti.', authExistingPassword:'Email ini sudah memakai login kata sandi.', authClose:'Tutup', authPrivacy:'Email hanya digunakan untuk mengamankan akun dan menyinkronkan perjalanan.' }
 };
 Object.keys(AUTH_EXTRA).forEach(lang => Object.assign(TOOL_I18N[lang], AUTH_EXTRA[lang]));
 
 let authToken  = localStorage.getItem('wm_studio_token') || null;
 let authUser   = (() => { try { return JSON.parse(localStorage.getItem('wm_studio_user') || 'null'); } catch(_) { return null; } })();
+const authQuery = new URLSearchParams(window.location.search);
+const incomingReferralCode = (authQuery.get('ref') || '').trim().toUpperCase();
+if (/^[A-Z0-9]{6,16}$/.test(incomingReferralCode)) {
+  localStorage.setItem('wm_studio_referral_code', incomingReferralCode);
+}
 let tripList   = [];
 let currentTripId = null;
 let _saveTimer = null;
@@ -2624,11 +2636,7 @@ async function doLogin(email, password) {
   });
   const data = await r.json();
   if (!r.ok) throw new Error(data.detail || t().errLoginFail);
-  authToken = data.token;
-  authUser  = data.user;
-  localStorage.setItem('wm_studio_token', authToken);
-  localStorage.setItem('wm_studio_user', JSON.stringify(authUser));
-  updateAuthUI();
+  completeAuth(data);
   await loadTrips();
   closeModalEl();
   addLog('success', 'fa-sign-in', _interp(t().logLogin, { name: authUser.name || authUser.email }));
@@ -2639,13 +2647,18 @@ function completeAuth(data) {
   authUser = data.user;
   localStorage.setItem('wm_studio_token', authToken);
   localStorage.setItem('wm_studio_user', JSON.stringify(authUser));
+  localStorage.removeItem('wm_studio_referral_code');
   updateAuthUI();
+  const returnPath = authQuery.get('return') || '';
+  if (returnPath.startsWith('/') && !returnPath.startsWith('//') && !/\/ai-tool(?:\.html)?/.test(returnPath)) {
+    window.location.assign(returnPath);
+  }
 }
 
 async function doRegister(name, email, password, code) {
   const r = await fetch(BACKEND_BASE + '/api/auth/register', {
     method:'POST', headers:{ 'Content-Type':'application/json' },
-    body: JSON.stringify({ name, email, password, code, lang: currentLang })
+    body: JSON.stringify({ name, email, password, code, lang: currentLang, referral_code: localStorage.getItem('wm_studio_referral_code') || '' })
   });
   const data = await r.json();
   if (!r.ok) throw new Error(r.status === 429 || /code/i.test(String(data.detail)) ? t().authCodeExpired : t().errRegisterFail);
@@ -2673,7 +2686,7 @@ async function sendRegistrationCode(email) {
 async function doGoogleLogin(credential) {
   const r = await fetch(BACKEND_BASE + '/api/auth/google', {
     method:'POST', headers:{ 'Content-Type':'application/json' },
-    body: JSON.stringify({ credential, lang: currentLang })
+    body: JSON.stringify({ credential, lang: currentLang, referral_code: localStorage.getItem('wm_studio_referral_code') || '' })
   });
   const data = await r.json();
   if (!r.ok) throw new Error(r.status === 409 ? t().authExistingPassword : t().errLoginFail);
@@ -2725,8 +2738,8 @@ function showAuthModal(tab = 'login') {
           <button class="ws-auth-tab ${tab==='register'?'active':''}" type="button" data-auth-tab="register">${escapeHtml(T.authRegister)}</button>
         </div>
         <div class="ws-auth-form" data-form="login" style="display:${tab==='login'?'block':'none'}">
-          <label class="ws-auth-label" for="ws-li-email">${escapeHtml(T.authEmailLabel)}</label>
-          <input type="email" class="ws-form-input ws-auth-input" id="ws-li-email" autocomplete="email">
+          <label class="ws-auth-label" for="ws-li-email">${escapeHtml(T.authLoginIdentifierLabel || T.authEmailLabel)}</label>
+          <input type="text" class="ws-form-input ws-auth-input" id="ws-li-email" autocomplete="username">
           <div class="ws-auth-label-row"><label class="ws-auth-label" for="ws-li-pw">${escapeHtml(T.authPasswordLabel)}</label><a href="#" id="ws-li-forgot">${escapeHtml(T.authForgotLink)}</a></div>
           <input type="password" class="ws-form-input ws-auth-input" id="ws-li-pw" autocomplete="current-password">
           <div class="ws-auth-error" id="ws-li-err" role="alert"></div>
@@ -2780,7 +2793,7 @@ function showAuthModal(tab = 'login') {
     const pw    = document.getElementById('ws-li-pw').value;
     const err   = document.getElementById('ws-li-err');
     err.textContent = '';
-    if (!/.+@.+\..+/.test(email)) { err.textContent = T.errInvalidEmail; return; }
+    if (email.toLowerCase() !== 'admin' && !/.+@.+\..+/.test(email)) { err.textContent = T.errInvalidEmail; return; }
     if (!pw) { err.textContent = T.authPassword; return; }
     liBtn.disabled = true;
     try { await doLogin(email, pw); } catch (e) { err.textContent = e.message || T.errLoginFail; }
@@ -3002,6 +3015,8 @@ let _entryContext = null;
 
 function hydratePlannerFromQuery() {
   const q = new URLSearchParams(window.location.search);
+  let savedBrief = null;
+  try { savedBrief = JSON.parse(localStorage.getItem('wm_studio_trip_brief') || 'null'); } catch (_) {}
   const place = q.get('place');
   if (place && !q.get('start') && !q.get('budget')) {
     currentDest = 'bali';
@@ -3019,13 +3034,19 @@ function hydratePlannerFromQuery() {
     history.replaceState({}, document.title, window.location.pathname);
     return;
   }
-  if (!q.get('start') && !q.get('budget') && !q.get('audience')) return;
-  _entryContext = { audience: q.get('audience') || '', goal: q.get('goal') || '' };
+  if (!q.get('start') && !q.get('budget') && !q.get('audience') && !q.get('route')) return;
+  _entryContext = {
+    audience: q.get('audience') || savedBrief?.audience || '',
+    goals: q.getAll('goal').length ? q.getAll('goal') : (savedBrief?.goals || []),
+    route: q.get('route') || '',
+    professional: q.get('professional') === '1'
+  };
   showNewTripModal();
   const values = {
-    'ws-nt-dest': q.get('dest'), 'ws-nt-people': q.get('people'),
-    'ws-nt-start': q.get('start'), 'ws-nt-end': q.get('end'),
-    'ws-nt-budget': q.get('budget'), 'ws-nt-style': q.get('style')
+    'ws-nt-dest': q.get('dest') || savedBrief?.dest, 'ws-nt-people': q.get('people') || savedBrief?.people,
+    'ws-nt-start': q.get('start') || savedBrief?.start, 'ws-nt-end': q.get('end') || savedBrief?.end,
+    'ws-nt-budget': q.get('budget') || savedBrief?.budget, 'ws-nt-style': q.get('style') || savedBrief?.style,
+    'ws-nt-currency': q.get('currency') || savedBrief?.currency
   };
   Object.keys(values).forEach(id => {
     const field = document.getElementById(id);
@@ -3081,6 +3102,17 @@ function showNewTripModal() {
           </div>
         </div>
         <div class="ws-form-row">
+          <div class="ws-form-field" style="flex:.7">
+            <label class="ws-form-label">${escapeHtml(T.ntCurrency || 'Currency')}</label>
+            <select class="ws-form-select" id="ws-nt-currency">
+              <option value="CNY">CNY · ¥</option>
+              <option value="USD">USD · $</option>
+              <option value="JPY">JPY · ¥</option>
+              <option value="KRW">KRW · ₩</option>
+              <option value="IDR">IDR · Rp</option>
+              <option value="EUR">EUR · €</option>
+            </select>
+          </div>
           <div class="ws-form-field" style="flex:1">
             <label class="ws-form-label">${escapeHtml(T.ntBudget)}</label>
             <input type="number" class="ws-form-input" id="ws-nt-budget" placeholder="${escapeHtml(T.ntBudgetPh)}" min="500" step="500">
@@ -3102,6 +3134,8 @@ function showNewTripModal() {
   `;
   // Preselect current destination
   document.getElementById('ws-nt-dest').value = (currentDest === 'any' ? 'bali' : currentDest);
+  const defaultCurrencies = { zh:'CNY', en:'USD', ja:'JPY', ko:'KRW', id:'IDR' };
+  document.getElementById('ws-nt-currency').value = currentTrip?.currency || defaultCurrencies[currentLang] || 'USD';
 
   el.querySelector('.ws-modal-close').onclick = closeModalEl;
   document.getElementById('ws-nt-submit').onclick = submitNewTrip;
@@ -3115,6 +3149,7 @@ async function submitNewTrip() {
   const start  = document.getElementById('ws-nt-start').value;
   const end    = document.getElementById('ws-nt-end').value;
   const budget = parseFloat(document.getElementById('ws-nt-budget').value);
+  const currency = document.getElementById('ws-nt-currency').value;
   const style  = document.getElementById('ws-nt-style').value;
   const err    = document.getElementById('ws-nt-err');
   err.textContent = '';
@@ -3140,7 +3175,8 @@ async function submitNewTrip() {
     id: { budget:'hemat',    comfort:'nyaman',   luxury:'mewah'     }[style]
   }[currentLang] || style;
 
-  const ccy = (currentLang === 'en' || currentLang === 'id') ? '$' : '¥';
+  const currencySymbols = { CNY:'¥', USD:'$', JPY:'¥', KRW:'₩', IDR:'Rp', EUR:'€' };
+  const ccy = currencySymbols[currency] || currency;
   const title = `${destName} · ${start} · ${days}d · ${people}p · ${ccy}${budget.toLocaleString()}`;
 
   if (dest !== currentDest) {
@@ -3155,8 +3191,24 @@ async function submitNewTrip() {
   }
 
   const audience = _entryContext?.audience || '';
-  const goal = _entryContext?.goal || '';
-  currentTrip = { dest, start, end, days, people, budget, style, title, audience, goal };
+  const goals = _entryContext?.goals?.length ? _entryContext.goals : [];
+  const routeId = _entryContext?.route || '';
+  const professionalRequested = !!_entryContext?.professional;
+  currentTrip = { dest, start, end, days, people, budget, currency, style, title, audience, goals, route_id: routeId, professional_requested: professionalRequested, rough_generated: false };
+  try {
+    const productResponse = await fetch(BACKEND_BASE + '/api/product-trips', {
+      method: 'POST',
+      headers: Object.assign({ 'Content-Type': 'application/json' }, authHeaders()),
+      body: JSON.stringify({ destination: dest, brief: currentTrip })
+    });
+    const productData = await productResponse.json();
+    if (!productResponse.ok) throw new Error(productData.detail || 'Could not create trip');
+    currentTrip.product_trip_id = productData.trip_id;
+    currentTrip.product_allowance = productData;
+  } catch (createError) {
+    err.textContent = createError.message || T.sendErr;
+    return;
+  }
   localStorage.setItem('wm_studio_currentTrip', JSON.stringify(currentTrip));
   currentTripId = null;
   messages = [];
@@ -3170,11 +3222,11 @@ async function submitNewTrip() {
   // Kickoff message — first turn that tells the AI all trip params and asks
   // it to start planning. Auto-saved 2.5s after AI replies (Phase 3a hook).
   const kickoffs = {
-    zh: `我打算从 ${start} 出发，${days} 天，${people} 个人去${destName}，总预算 ${ccy}${budget.toLocaleString()}，旅行风格${styleLabel}。请你以旅程规划师的身份开始规划。`,
-    en: `Plan a ${days}-day trip to ${destName} starting ${start} for ${people} people. Total budget ${ccy}${budget.toLocaleString()}. Style: ${styleLabel}. Begin as the Trip Planner.`,
-    ja: `${start}から${days}日間、${people}人で${destName}へ。予算${ccy}${budget.toLocaleString()}、${styleLabel}スタイル。旅程プランナーとしてプランニングを開始してください。`,
-    ko: `${start}부터 ${days}일, ${people}명, ${destName}, 예산 ${ccy}${budget.toLocaleString()}, ${styleLabel} 스타일. 여행 플래너로서 계획을 시작해 주세요.`,
-    id: `Rencanakan ${days} hari ke ${destName} mulai ${start} untuk ${people} orang. Anggaran ${ccy}${budget.toLocaleString()}. Gaya: ${styleLabel}. Mulai sebagai Trip Planner.`
+    zh: `我打算从 ${start} 出发，${days} 天，${people} 个人去${destName}，总预算 ${ccy}${budget.toLocaleString()} ${currency}，旅行风格${styleLabel}。请先生成一份完整但较粗的每日路线。`,
+    en: `Plan a ${days}-day trip to ${destName} starting ${start} for ${people} people. Total budget ${ccy}${budget.toLocaleString()} ${currency}. Style: ${styleLabel}. First produce one complete but rough day-by-day route.`,
+    ja: `${start}から${days}日間、${people}人で${destName}へ。予算${ccy}${budget.toLocaleString()} ${currency}、${styleLabel}スタイル。まず完全な概要ルートを作成してください。`,
+    ko: `${start}부터 ${days}일, ${people}명, ${destName}, 예산 ${ccy}${budget.toLocaleString()} ${currency}, ${styleLabel} 스타일. 먼저 완전한 개요 루트를 만들어 주세요.`,
+    id: `Rencanakan ${days} hari ke ${destName} mulai ${start} untuk ${people} orang. Anggaran ${ccy}${budget.toLocaleString()} ${currency}. Gaya: ${styleLabel}. Buat dulu satu rute kasar yang lengkap.`
   };
   const entryLabels = {
     zh: { first:'第一次去巴厘岛', returning:'去过巴厘岛，希望深度体验', easy:'希望少做攻略、旅途更轻松', local:'更重视风土人情和真实体验', photo:'更重视摄影与自然风景', value:'更重视性价比和预算控制' },
@@ -3184,7 +3236,10 @@ async function submitNewTrip() {
     id: { first:'kunjungan pertama ke Bali', returning:'pernah datang dan ingin pengalaman lebih mendalam', easy:'mengutamakan perjalanan mudah dengan lebih sedikit rencana', local:'mengutamakan budaya lokal dan pengalaman nyata', photo:'mengutamakan fotografi dan pemandangan', value:'mengutamakan nilai dan kendali anggaran' }
   };
   const labels = entryLabels[currentLang] || entryLabels.en;
-  const context = [labels[audience], labels[goal]].filter(Boolean).join(' · ');
+  const contextParts = [labels[audience]].concat(goals.map(goal => labels[goal])).filter(Boolean);
+  if (routeId) contextParts.push(`Preferred route family: ${routeId}`);
+  if (professionalRequested) contextParts.push('User is reviewing the professional-route option; do not claim it is unlocked until payment or points are confirmed');
+  const context = contextParts.join(' · ');
   _entryContext = null;
   sendMessage((kickoffs[currentLang] || kickoffs.en) + (context ? ` ${context}.` : ''));
 }
@@ -3192,7 +3247,8 @@ async function submitNewTrip() {
 function updateTripHeaderChips() {
   if (!currentTrip || !currentTrip.start) return;
   const T = t();
-  const ccy = (currentLang === 'en' || currentLang === 'id') ? '$' : '¥';
+  const currencySymbols = { CNY:'¥', USD:'$', JPY:'¥', KRW:'₩', IDR:'Rp', EUR:'€' };
+  const ccy = currencySymbols[currentTrip.currency] || currentTrip.currency || ((currentLang === 'en' || currentLang === 'id') ? '$' : '¥');
   const startM = new Date(currentTrip.start);
   const dateStr = (currentLang === 'zh' || currentLang === 'ja') ?
     `${startM.getMonth()+1}/${startM.getDate()}` : currentTrip.start.slice(5);
@@ -3221,9 +3277,7 @@ function updateAuthUI() {
         <span style="max-width:90px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${escapeHtml(authUser.name || authUser.email)}</span>
       </div>
     `;
-    document.getElementById('ws-user-menu').onclick = () => {
-      if (confirm(t().authLogout + '?')) doLogout();
-    };
+    document.getElementById('ws-user-menu').onclick = openAccountModal;
   } else {
     slot.innerHTML = `
       <div class="lang-picker" id="ws-login-trigger" style="cursor:pointer;font-weight:600;gap:8px">
@@ -3232,6 +3286,114 @@ function updateAuthUI() {
       </div>
     `;
     document.getElementById('ws-login-trigger').onclick = () => showAuthModal('login');
+  }
+}
+
+async function openAccountModal() {
+  const el = _ensureModal();
+  const zh = currentLang === 'zh';
+  el.innerHTML = `
+    <div class="ws-modal" role="dialog" aria-modal="true" aria-labelledby="ws-account-title">
+      <div class="ws-modal-head">
+        <div>
+          <h3 id="ws-account-title">${zh ? '我的账户' : 'My account'}</h3>
+          <p>${escapeHtml(authUser.name || authUser.email)}${authUser.role === 'admin' ? ' · Admin' : ''}</p>
+        </div>
+        <button class="ws-modal-close" type="button" aria-label="Close"><span class="fa fa-times"></span></button>
+      </div>
+      <div class="ws-modal-body">
+        <section id="ws-referral-panel">
+          <strong>${zh ? '邀请好友，兑换专业路线' : 'Invite friends, unlock a professional route'}</strong>
+          <p style="font-size:13px;color:var(--ws-ink-3);margin:6px 0 10px">${zh ? '有效好友注册 24 小时后，你得 10 分、好友得 5 分；30 分可兑换一次。每月最多计 5 位好友。' : 'After 24 hours, a valid signup gives you 10 points and your friend 5. Redeem 30 points for one route; up to 5 valid invites per month.'}</p>
+          <div id="ws-referral-status" style="padding:12px;border:1px solid var(--ws-border);border-radius:12px">${zh ? '正在读取…' : 'Loading…'}</div>
+        </section>
+        ${authUser.role === 'admin' ? `
+          <section style="margin-top:18px">
+            <strong>${zh ? '待确认的专业路线订单' : 'Pending professional-route orders'}</strong>
+            <div id="ws-admin-orders" style="margin-top:10px">${zh ? '正在读取…' : 'Loading…'}</div>
+          </section>` : ''}
+        <button class="ws-action-btn secondary" id="ws-account-logout" style="margin-top:18px"><span class="fa fa-sign-out"></span> ${escapeHtml(t().authLogout)}</button>
+      </div>
+    </div>`;
+  el.classList.add('show');
+  el.querySelector('.ws-modal-close').onclick = closeModalEl;
+  el.querySelector('#ws-account-logout').onclick = () => { closeModalEl(); doLogout(); };
+
+  try {
+    const response = await fetch(BACKEND_BASE + '/api/referrals/status', { headers: authHeaders() });
+    const data = await response.json();
+    if (!response.ok) throw new Error(data.detail || 'Unable to load referral status');
+    const panel = el.querySelector('#ws-referral-status');
+    panel.innerHTML = `
+      <div style="display:flex;gap:16px;flex-wrap:wrap;margin-bottom:9px">
+        <span><strong>${data.points}</strong> ${zh ? '积分' : 'points'}</span>
+        <span>${data.valid_invites_this_month}/${data.monthly_invite_limit} ${zh ? '本月有效邀请' : 'valid invites this month'}</span>
+      </div>
+      <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">
+        <input id="ws-referral-link" value="${escapeHtml(data.share_url)}" readonly style="flex:1;min-width:180px;padding:9px;border:1px solid var(--ws-border);border-radius:8px;background:var(--ws-surface)">
+        <button class="ws-action-btn" id="ws-copy-referral" style="width:auto;margin:0">${zh ? '复制链接' : 'Copy link'}</button>
+      </div>`;
+    panel.querySelector('#ws-copy-referral').onclick = async () => {
+      const input = panel.querySelector('#ws-referral-link');
+      try {
+        await navigator.clipboard.writeText(input.value);
+      } catch (_) {
+        input.select();
+        document.execCommand('copy');
+      }
+      panel.querySelector('#ws-copy-referral').textContent = zh ? '已复制' : 'Copied';
+    };
+  } catch (error) {
+    el.querySelector('#ws-referral-status').textContent = error.message;
+  }
+
+  if (authUser.role === 'admin') loadAdminOrders(el, zh);
+}
+
+async function loadAdminOrders(el, zh) {
+  const host = el.querySelector('#ws-admin-orders');
+  if (!host) return;
+  try {
+    const response = await fetch(BACKEND_BASE + '/api/admin/professional-route/orders?status=pending', { headers: authHeaders() });
+    const data = await response.json();
+    if (!response.ok) throw new Error(data.detail || 'Unable to load orders');
+    if (!data.orders.length) {
+      host.innerHTML = `<p style="font-size:13px;color:var(--ws-ink-3)">${zh ? '当前没有待确认订单。' : 'No pending orders.'}</p>`;
+      return;
+    }
+    host.innerHTML = data.orders.map(order => `
+      <article data-order-id="${escapeHtml(order.id)}" style="padding:12px;border:1px solid var(--ws-border);border-radius:12px;margin-bottom:8px">
+        <div style="font-size:13px"><strong>${escapeHtml(order.name || order.email)}</strong> · ${escapeHtml(order.destination)} · ${escapeHtml(order.currency)} ${Number(order.amount).toFixed(2)}</div>
+        <div style="font-size:11px;color:var(--ws-ink-3);margin:4px 0 9px;overflow-wrap:anywhere">${escapeHtml(order.id)}</div>
+        <div style="display:flex;gap:8px;flex-wrap:wrap">
+          <input class="ws-payment-ref" placeholder="${zh ? '付款备注（可选）' : 'Payment reference (optional)'}" style="flex:1;min-width:150px;padding:8px;border:1px solid var(--ws-border);border-radius:8px;background:var(--ws-surface)">
+          <button class="ws-action-btn ws-confirm-order" style="width:auto;margin:0">${zh ? '确认到账并解锁' : 'Confirm and unlock'}</button>
+        </div>
+      </article>`).join('');
+    host.querySelectorAll('.ws-confirm-order').forEach(button => {
+      button.onclick = async () => {
+        const card = button.closest('[data-order-id]');
+        button.disabled = true;
+        try {
+          const confirmResponse = await fetch(BACKEND_BASE + `/api/admin/professional-route/orders/${encodeURIComponent(card.dataset.orderId)}/confirm`, {
+            method: 'POST',
+            headers: Object.assign({ 'Content-Type': 'application/json' }, authHeaders()),
+            body: JSON.stringify({ payment_reference: card.querySelector('.ws-payment-ref').value.trim() })
+          });
+          const result = await confirmResponse.json();
+          if (!confirmResponse.ok) throw new Error(result.detail || 'Confirmation failed');
+          card.remove();
+          if (!host.querySelector('[data-order-id]')) {
+            host.innerHTML = `<p style="font-size:13px;color:var(--ws-ink-3)">${zh ? '所有待确认订单已处理。' : 'All pending orders processed.'}</p>`;
+          }
+        } catch (error) {
+          button.disabled = false;
+          alert(error.message);
+        }
+      };
+    });
+  } catch (error) {
+    host.textContent = error.message;
   }
 }
 
@@ -3259,6 +3421,9 @@ onLangChange = function(newLang) {
     if (typeof currentDest === 'string') fetchDestInfo(currentDest);
     if (isLoggedIn()) loadPrefs();
     injectPrefsButton();
+    if (authQuery.get('auth') === 'login' && !isLoggedIn()) {
+      setTimeout(() => showAuthModal('login'), 80);
+    }
   }
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', go);
   else setTimeout(go, 50);
@@ -3565,6 +3730,83 @@ function getPrefsSystemPrompt() {
   return parts.length ? `\n\n[User Preferences]\n${parts.join('\n')}` : '';
 }
 
+async function openProfessionalRouteModal() {
+  const el = _ensureModal();
+  const zh = currentLang === 'zh';
+  const tripId = currentTrip?.product_trip_id || '';
+  el.innerHTML = `
+    <div class="ws-modal" role="dialog" aria-modal="true" aria-labelledby="ws-pro-title">
+      <div class="ws-modal-head">
+        <div><h3 id="ws-pro-title">${zh ? '解锁专业可执行路线' : 'Unlock the professional executable route'}</h3>
+        <p>${zh ? '免费粗路线保持完整；¥9.9 解锁核验后的执行细节。' : 'Your free rough route stays complete. ¥9.9 unlocks verified execution details.'}</p></div>
+        <button class="ws-modal-close" type="button" aria-label="Close"><span class="fa fa-times"></span></button>
+      </div>
+      <div class="ws-modal-body">
+        <div style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin-bottom:14px">
+          <div style="padding:13px;border:1px solid var(--ws-border);border-radius:12px"><strong>${zh ? '免费版已有' : 'Already free'}</strong><div style="font-size:12px;color:var(--ws-ink-3);margin-top:5px">${zh ? '完整每日主题、区域顺序和 2 次调整' : 'Complete day themes, region order and two adjustments'}</div></div>
+          <div style="padding:13px;border:1px solid var(--ws-teal);border-radius:12px"><strong>${zh ? '专业版新增' : 'Professional adds'}</strong><div style="font-size:12px;color:var(--ws-ink-3);margin-top:5px">${zh ? '车程、到达时间、预约、预算、雨天备选和司机行程单' : 'Drive time, arrivals, bookings, budget, rain backup and driver handoff'}</div></div>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+          <figure style="margin:0;text-align:center"><img src="assets/images/pay-wechat.jpg" alt="WeChat Pay QR" style="width:100%;max-width:210px;border-radius:12px"><figcaption style="font-size:12px;margin-top:5px">WeChat Pay</figcaption></figure>
+          <figure style="margin:0;text-align:center"><img src="assets/images/pay-alipay.jpg" alt="Alipay QR" style="width:100%;max-width:210px;border-radius:12px"><figcaption style="font-size:12px;margin-top:5px">Alipay</figcaption></figure>
+        </div>
+        <p style="font-size:12px;color:var(--ws-ink-3);line-height:1.6;margin:12px 0">${zh ? '付款 ¥9.9 后点击下方按钮创建待确认订单。WanderMind 人工核对到账后解锁；请勿重复付款。' : 'After paying ¥9.9, create a pending order below. WanderMind unlocks it after manual payment confirmation. Do not pay twice.'}</p>
+        <div id="ws-pro-status" class="ws-auth-error" role="status"></div>
+        <button class="ws-action-btn" id="ws-pro-order" ${tripId ? '' : 'disabled'}><span class="fa fa-check-circle"></span> ${zh ? '我已付款，提交确认' : 'I have paid — submit for confirmation'}</button>
+        <button class="ws-action-btn secondary" id="ws-pro-points" style="margin-top:8px" ${isLoggedIn() && tripId ? '' : 'disabled'}><span class="fa fa-gift"></span> ${zh ? '用 30 推荐积分兑换' : 'Redeem with 30 referral points'}</button>
+        ${!isLoggedIn() ? `<button class="ws-action-btn secondary" id="ws-pro-login" style="margin-top:8px"><span class="fa fa-sign-in"></span> ${zh ? '登录后付款或兑换' : 'Sign in to pay or redeem'}</button>` : ''}
+      </div>
+    </div>`;
+  el.querySelector('.ws-modal-close').onclick = closeModalEl;
+  const status = document.getElementById('ws-pro-status');
+  const orderBtn = document.getElementById('ws-pro-order');
+  const pointsBtn = document.getElementById('ws-pro-points');
+  const loginBtn = document.getElementById('ws-pro-login');
+  if (loginBtn) loginBtn.onclick = () => showAuthModal('login');
+  if (orderBtn) orderBtn.onclick = async () => {
+    if (!isLoggedIn()) { showAuthModal('login'); return; }
+    orderBtn.disabled = true;
+    try {
+      const r = await fetch(BACKEND_BASE + '/api/professional-route/orders', {
+        method:'POST',
+        headers:Object.assign({ 'Content-Type':'application/json' }, authHeaders()),
+        body:JSON.stringify({ trip_id: tripId })
+      });
+      const data = await r.json();
+      if (!r.ok) throw new Error(data.detail || 'Order failed');
+      status.style.color = 'var(--ws-teal)';
+      status.textContent = data.already_unlocked
+        ? (zh ? '该路线已经解锁。' : 'This route is already unlocked.')
+        : (zh ? `待确认订单已创建：${data.order.id}` : `Pending order created: ${data.order.id}`);
+    } catch (error) {
+      status.textContent = error.message || 'Order failed';
+      orderBtn.disabled = false;
+    }
+  };
+  if (pointsBtn) pointsBtn.onclick = async () => {
+    pointsBtn.disabled = true;
+    try {
+      const r = await fetch(BACKEND_BASE + '/api/referrals/redeem-professional-route', {
+        method:'POST',
+        headers:Object.assign({ 'Content-Type':'application/json' }, authHeaders()),
+        body:JSON.stringify({ trip_id: tripId })
+      });
+      const data = await r.json();
+      if (!r.ok) throw new Error(data.detail?.balance != null
+        ? (zh ? `积分不足：当前 ${data.detail.balance} / 30` : `Not enough points: ${data.detail.balance} / 30`)
+        : (data.detail || 'Redeem failed'));
+      currentTrip.product_allowance = Object.assign({}, currentTrip.product_allowance || {}, { professional_route_unlocked:true });
+      localStorage.setItem('wm_studio_currentTrip', JSON.stringify(currentTrip));
+      status.style.color = 'var(--ws-teal)';
+      status.textContent = zh ? '专业路线已用积分解锁。' : 'Professional route unlocked with points.';
+    } catch (error) {
+      status.textContent = error.message || 'Redeem failed';
+      pointsBtn.disabled = false;
+    }
+  };
+  el.classList.add('show');
+}
+
 /* Patch sendMessage system prompt to inject prefs */
 const _origSendMessage_v2 = sendMessage;
 sendMessage = async function(text) {
@@ -3596,7 +3838,13 @@ window.fetch = async function(url, opts) {
   }
   const resp = await _origFetch_prefs(url, opts);
   if (isQuotaApi && resp.status === 402) {
-    try { openRechargeModal(); } catch (_) {}
+    let detail = null;
+    try { detail = (await resp.clone().json()).detail; } catch (_) {}
+    if (detail && detail.error === 'trip_allowance_exhausted') {
+      try { openProfessionalRouteModal(); } catch (_) {}
+    } else {
+      try { openRechargeModal(); } catch (_) {}
+    }
     if (typeof refreshQuota === 'function') refreshQuota();
   } else if (isQuotaApi && resp.ok) {
     // a use was just consumed — refresh the pill shortly after

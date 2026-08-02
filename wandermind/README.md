@@ -153,6 +153,15 @@ EMAIL_FROM=WanderMind <onboarding@resend.dev>
 # 同时把线上域名和本地调试地址加入 Authorized JavaScript origins
 GOOGLE_CLIENT_ID=
 
+# 运行环境。Render 建议显式设为 production
+ENVIRONMENT=production
+
+# 独立管理员。仅本地开发在未配置时会创建 admin / 123456。
+# 生产环境密码必须至少 12 位且不能使用 123456，否则不会创建弱管理员。
+ADMIN_USERNAME=admin
+ADMIN_EMAIL=admin@wandermind.cc
+ADMIN_BOOTSTRAP_PASSWORD=请设置至少12位的独立强密码
+
 # 仅本地验证码联调可设为 1；生产环境必须保持 0 或不设置
 ALLOW_DEV_VERIFICATION_CODE=0
 
@@ -164,6 +173,8 @@ FREE_USE_LIMIT=5
 REDEEM_CODES=
 # 找司机邮件收件人（默认 Dicky）+ 邮件里展示的司机电话
 DRIVER_EMAIL=Dickymahaputramahaputra@gmail.com
+# 若留空，Gede 的请求会先发给站点负责人手动转交
+GEDE_DRIVER_EMAIL=
 DRIVER_PHONE=+62 898-0532-230
 ```
 

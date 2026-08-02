@@ -253,7 +253,13 @@
       }
       .wm-choice input:checked + span { border-color: #0e7c6b; background: rgba(14,124,107,.07); color: #0e7c6b; box-shadow: 0 0 0 2px rgba(14,124,107,.08); font-weight: 700; }
       .wm-choice input:focus-visible + span { outline: 3px solid rgba(252,191,30,.5); outline-offset: 2px; }
-      .wm-form-note { margin: 12px 0 0; color: #64748b; text-align: center; font-size: 12px; }
+		.wm-form-note { margin: 12px 0 0; color: #64748b; text-align: center; font-size: 12px; }
+		.wm-brief-actions { display:grid; grid-template-columns:1.2fr .8fr; gap:10px; }
+		.wm-brief-actions .btn { min-height:48px; white-space:normal; }
+		.wm-brief-actions .wm-professional-btn { background:transparent; color:#0a695b; border:2px solid #0a695b; }
+		.wm-brief-actions .wm-professional-btn:hover { background:rgba(10,105,91,.08); color:#0a695b; }
+		body.dark .wm-brief-actions .wm-professional-btn { color:#5eead4; border-color:#5eead4; }
+		@media(max-width:575px){ .wm-brief-actions{grid-template-columns:1fr} }
       .wm-brief-form input, .wm-brief-form select { min-height: 48px; }
       .wm-brief-form .form-input > label, .wm-field-label { color: #4b5563; font-weight: 600; }
       .wm-field-label { display: block; margin-bottom: 8px; }
@@ -572,10 +578,10 @@ $(function () { $('.navbar-toggler').click(function () { $('body').toggleClass('
 						<div class="form-input col-lg-6" role="group" aria-labelledby="form-goal-label">
 							<span class="wm-field-label" id="form-goal-label" data-i18n="formGoal">What matters most this time?</span>
 							<div class="wm-choice-group">
-								<label class="wm-choice"><input type="radio" name="goal" value="easy" checked><span data-i18n="formGoalEasy">Less planning · an easier trip</span></label>
-								<label class="wm-choice"><input type="radio" name="goal" value="local"><span data-i18n="formGoalLocal">Local culture · real experiences</span></label>
-								<label class="wm-choice"><input type="radio" name="goal" value="photo"><span data-i18n="formGoalPhoto">Photography · scenic moments</span></label>
-								<label class="wm-choice"><input type="radio" name="goal" value="value"><span data-i18n="formGoalValue">Best value · control the budget</span></label>
+								<label class="wm-choice"><input type="checkbox" name="goal" value="easy" checked><span data-i18n="formGoalEasy">Less planning · an easier trip</span></label>
+								<label class="wm-choice"><input type="checkbox" name="goal" value="local"><span data-i18n="formGoalLocal">Local culture · real experiences</span></label>
+								<label class="wm-choice"><input type="checkbox" name="goal" value="photo"><span data-i18n="formGoalPhoto">Photography · scenic moments</span></label>
+								<label class="wm-choice"><input type="checkbox" name="goal" value="value"><span data-i18n="formGoalValue">Best value · control the budget</span></label>
 							</div>
 						</div>
 						<input type="hidden" name="dest" value="bali">
@@ -601,13 +607,27 @@ $(function () { $('.navbar-toggler').click(function () { $('body').toggleClass('
 							<label for="form-end" data-i18n="formEnd">Return date</label>
 							<input id="form-end" type="date" name="end" required>
 						</div>
-						<div class="form-input col-md-4">
+						<div class="form-input col-md-2">
+							<label for="form-currency" data-i18n="formCurrency">Currency</label>
+							<select id="form-currency" name="currency" class="selectpicker">
+								<option value="CNY">CNY · ¥</option>
+								<option value="USD">USD · $</option>
+								<option value="JPY">JPY · ¥</option>
+								<option value="KRW">KRW · ₩</option>
+								<option value="IDR">IDR · Rp</option>
+								<option value="EUR">EUR · €</option>
+							</select>
+						</div>
+						<div class="form-input col-md-2">
 							<label for="form-budget" data-i18n="formBudget">Total budget</label>
 							<input id="form-budget" type="number" name="budget" min="100" step="100" placeholder="3000" required data-i18n="formBudgetPh" data-i18n-attr="placeholder">
 						</div>
 						<div class="bottom-btn col-md-8">
 							<label data-i18n="formSubmitLbl">Build your planning brief</label>
-							<button class="btn btn-style btn-primary w-100 btn-style" data-i18n="formSubmitBtn">Continue in AI Planner</button>
+							<div class="wm-brief-actions">
+								<button class="btn btn-style btn-primary w-100 btn-style" type="submit" data-i18n="formSubmitBtn">Generate free rough route</button>
+								<button class="btn btn-style wm-professional-btn w-100" type="submit" name="professional" value="1" data-i18n="formProfessionalBtn">View professional routes · ¥9.9</button>
+							</div>
 						</div>
 					</div>
 					<p class="wm-form-note" data-i18n="formPrivacyNote">No payment required. Review every detail before contacting a local partner.</p>
@@ -728,7 +748,7 @@ $(function () { $('.navbar-toggler').click(function () { $('body').toggleClass('
 				</div>
 				<div class="col-lg-4 col-md-6 top-top wm-service-card-last">
 					<div class="img-box wm-service-card">
-						<img src="assets/images/car_photo.jpg" alt="Bali driver vehicle interior" class="img-responsive" loading="lazy">
+						<img src="assets/images/car_photodicky2-web.jpg" alt="Dicky's Bali driver vehicle" class="img-responsive" loading="lazy">
 						<span class="wm-card-kicker" data-i18n="service3Kicker">Step 3 · Make it workable</span>
 						<h5 class="my-2" role="heading" aria-level="3"><a href="find-driver.html" data-i18n="service3Title">Ask a trusted local driver</a></h5>
 						<div class="blog-date">
@@ -864,6 +884,37 @@ $(function () { $('.navbar-toggler').click(function () { $('body').toggleClass('
 			var minEnd = new Date(start.value + 'T00:00:00'); minEnd.setDate(minEnd.getDate() + 1);
 			end.min = iso(minEnd); if (!end.value || end.value <= start.value) end.value = iso(minEnd);
 		});
+		var currency = document.getElementById('form-currency');
+		var langPicker = document.getElementById('langPicker');
+		var currencyTouched = false;
+		var defaults = { zh:'CNY', en:'USD', ja:'JPY', ko:'KRW', id:'IDR' };
+		function applyCurrencyDefault() {
+			if (currencyTouched || !currency) return;
+			var lang = (langPicker && langPicker.value) || localStorage.getItem('wm_studio_lang') || 'en';
+			currency.value = defaults[lang] || 'USD';
+		}
+		if (currency) currency.addEventListener('change', function () { currencyTouched = true; });
+		if (langPicker) langPicker.addEventListener('change', applyCurrencyDefault);
+		applyCurrencyDefault();
+		form.addEventListener('submit', function () {
+			var goals = Array.from(form.querySelectorAll('[name="goal"]:checked')).map(function (item) { return item.value; });
+			if (!goals.length) {
+				var fallback = form.querySelector('[name="goal"][value="easy"]');
+				if (fallback) { fallback.checked = true; goals = ['easy']; }
+			}
+			var brief = {
+				dest: 'bali',
+				audience: (form.querySelector('[name="audience"]:checked') || {}).value || 'first',
+				goals: goals,
+				people: Number(document.getElementById('form-people').value || 2),
+				start: start.value,
+				end: end.value,
+				budget: Number(document.getElementById('form-budget').value || 0),
+				currency: currency ? currency.value : 'USD',
+				style: document.getElementById('form-style').value
+			};
+			localStorage.setItem('wm_studio_trip_brief', JSON.stringify(brief));
+		});
 	});
 	window.onscroll = function () { scrollFunction() };
 	function scrollFunction() {
@@ -909,5 +960,6 @@ $(function () { $('.navbar-toggler').click(function () { $('body').toggleClass('
      ════════════════════════════════════════════════════ -->
 <script src="assets/js/i18n.js?v=p48"></script>
 
+<script src="assets/js/global-auth.js?v=p52"></script>
 </body>
 </html>

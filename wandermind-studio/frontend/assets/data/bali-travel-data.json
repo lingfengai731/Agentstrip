@@ -1,0 +1,442 @@
+{
+  "schema_version": "1.0.0",
+  "updated_at": "2026-08-02",
+  "destination": {
+    "id": "bali",
+    "name": {
+      "zh": "巴厘岛",
+      "en": "Bali"
+    },
+    "positioning": "primary"
+  },
+  "verification_states": [
+    "verified",
+    "pending_review",
+    "needs_supplier_confirmation",
+    "retired"
+  ],
+  "regions": [
+    {
+      "id": "G1",
+      "name": {
+        "zh": "西南海岸生活方式圈",
+        "en": "Southwest coast lifestyle"
+      },
+      "nodes": ["seminyak", "canggu", "kerobokan"],
+      "content_types": ["cafes", "shopping", "surf", "beach_club", "sunset", "design_hotel"],
+      "priority": "P0"
+    },
+    {
+      "id": "G2",
+      "name": {
+        "zh": "南部半岛与海岸度假圈",
+        "en": "Southern peninsula and coastal retreat"
+      },
+      "nodes": ["uluwatu", "melasti", "nusa_dua", "jimbaran"],
+      "content_types": ["cliffs", "beaches", "resorts", "surf", "sunset", "water_activities"],
+      "priority": "P0"
+    },
+    {
+      "id": "G3",
+      "name": {
+        "zh": "东南门户与离岛衔接圈",
+        "en": "Southeast gateway and island transfers"
+      },
+      "nodes": ["sanur", "nusa_penida_west", "nusa_penida_east"],
+      "content_types": ["harbour", "sunrise", "island_transfer", "cliffs", "snorkelling"],
+      "priority": "P0"
+    },
+    {
+      "id": "G4",
+      "name": {
+        "zh": "中部乌布文化自然圈",
+        "en": "Central Ubud culture and nature"
+      },
+      "nodes": ["ubud", "tegalalang", "tampaksiring"],
+      "content_types": ["culture", "craft", "temple", "wellness", "yoga", "rice_terrace", "market"],
+      "priority": "P0"
+    },
+    {
+      "id": "G5",
+      "name": {
+        "zh": "中北部山地自然圈",
+        "en": "Central-north highland nature"
+      },
+      "nodes": ["munduk", "bedugul", "twin_lakes"],
+      "content_types": ["mountains", "forest", "waterfall", "lake", "cool_climate"],
+      "priority": "P1"
+    },
+    {
+      "id": "G6",
+      "name": {
+        "zh": "东北火山与东部高地圈",
+        "en": "Northeast volcano and eastern highlands"
+      },
+      "nodes": ["kintamani", "mount_batur", "besakih", "lempuyang"],
+      "content_types": ["volcano", "sunrise_hike", "hot_spring", "temple", "highland"],
+      "priority": "P1"
+    },
+    {
+      "id": "G7",
+      "name": {
+        "zh": "东部海岸与传统村落圈",
+        "en": "Eastern coast and traditional villages"
+      },
+      "nodes": ["sidemen", "candidasa", "amed", "tulamben", "tirta_gangga"],
+      "content_types": ["village", "black_sand", "diving", "snorkelling", "water_palace", "craft"],
+      "priority": "P2"
+    }
+  ],
+  "routes": [
+    {
+      "id": "R1",
+      "slug": "bali-first-journey",
+      "name": {
+        "zh": "初见巴厘岛",
+        "en": "Bali First Journey"
+      },
+      "promise": {
+        "zh": "不用反复做决定，也能看见巴厘岛的自然、文化与海岸。",
+        "en": "See Bali's nature, culture and coast without constant decision-making."
+      },
+      "primary_intent": "first_visit",
+      "secondary_tags": ["balanced", "nature", "culture", "coast"],
+      "base_regions": ["G1", "G2", "G4"],
+      "free_outline": [
+        {"day": 1, "region_id": "G1", "theme": {"zh": "抵达与西南海岸适应", "en": "Arrival and southwest coast"}},
+        {"day": 2, "region_id": "G2", "theme": {"zh": "南部悬崖、海岸与日落", "en": "Southern cliffs, coast and sunset"}},
+        {"day": 3, "region_id": "G4", "theme": {"zh": "转往乌布，文化与绿色景观", "en": "Transfer to Ubud for culture and greenery"}}
+      ],
+      "optional_regions": ["G3", "G6"],
+      "recommended_days": {
+        "min": 5,
+        "ideal": 8,
+        "max": 12
+      },
+      "pace": "balanced",
+      "physical_level": "low_to_medium",
+      "budget_level": ["value", "comfort"],
+      "best_for": ["first_time", "couples", "friends", "families"],
+      "not_recommended_for": ["single_theme_only"],
+      "core_experiences": ["ubud_culture", "south_coast", "sunset", "local_food"],
+      "optional_modules": ["nusa_penida_day", "mount_batur_sunrise", "east_bali"],
+      "preview_days": 3,
+      "driver_supported": true,
+      "verification_status": "pending_review"
+    },
+    {
+      "id": "R2",
+      "slug": "ubud-slow-renewal",
+      "name": {
+        "zh": "乌布慢生活与疗愈",
+        "en": "Ubud Slow Renewal"
+      },
+      "promise": {
+        "zh": "减少移动，把绿色、文化和身心放松集中在乌布周边。",
+        "en": "Move less and focus on greenery, culture and restorative time around Ubud."
+      },
+      "primary_intent": "slow_wellness",
+      "secondary_tags": ["yoga", "spa", "sound", "rice_terrace", "quiet"],
+      "base_regions": ["G4"],
+      "free_outline": [
+        {"day": 1, "region_id": "G4", "theme": {"zh": "乌布落脚与慢节奏散步", "en": "Settle into Ubud and take a slow walk"}},
+        {"day": 2, "region_id": "G4", "theme": {"zh": "瑜伽、声音体验或身心放松", "en": "Yoga, sound experience or restorative time"}},
+        {"day": 3, "region_id": "G4", "theme": {"zh": "稻田、手作与本地餐食", "en": "Rice fields, craft and local food"}}
+      ],
+      "optional_regions": ["G5", "G7"],
+      "recommended_days": {
+        "min": 3,
+        "ideal": 5,
+        "max": 7
+      },
+      "pace": "slow",
+      "physical_level": "low",
+      "budget_level": ["value", "comfort", "premium"],
+      "best_for": ["solo", "couples", "slow_travel", "wellness_interest"],
+      "not_recommended_for": ["nightlife_first", "daily_long_drive"],
+      "core_experiences": ["yoga", "sound_session", "craft", "rice_terrace", "local_food"],
+      "optional_modules": ["munduk_nature", "east_bali_village"],
+      "preview_days": 3,
+      "driver_supported": true,
+      "verification_status": "pending_review",
+      "content_boundary": "Wellness experiences are not medical treatment and must not use health cure claims."
+    },
+    {
+      "id": "R3",
+      "slug": "south-coast-romance",
+      "name": {
+        "zh": "南部浪漫与海岸",
+        "en": "South Coast Romance"
+      },
+      "promise": {
+        "zh": "围绕悬崖、海滩、落日与度假空间安排更少折返的南部行程。",
+        "en": "Build a lower-backtracking south Bali trip around cliffs, beaches, sunsets and retreats."
+      },
+      "primary_intent": "coast_romance",
+      "secondary_tags": ["sunset", "surf", "couples", "beach", "resort"],
+      "base_regions": ["G2"],
+      "free_outline": [
+        {"day": 1, "region_id": "G2", "theme": {"zh": "金巴兰或努沙杜瓦轻松抵达", "en": "Easy arrival in Jimbaran or Nusa Dua"}},
+        {"day": 2, "region_id": "G2", "theme": {"zh": "海滩、悬崖与留白时间", "en": "Beach, cliffs and unplanned time"}},
+        {"day": 3, "region_id": "G2", "theme": {"zh": "乌鲁瓦图文化与日落", "en": "Uluwatu culture and sunset"}}
+      ],
+      "optional_regions": ["G1", "G3"],
+      "recommended_days": {
+        "min": 3,
+        "ideal": 5,
+        "max": 7
+      },
+      "pace": "relaxed",
+      "physical_level": "low_to_medium",
+      "budget_level": ["comfort", "premium"],
+      "best_for": ["couples", "honeymoon", "friends", "beach_interest"],
+      "not_recommended_for": ["culture_depth_only"],
+      "core_experiences": ["cliff_coast", "sunset", "beach", "dining"],
+      "optional_modules": ["nusa_penida_day", "snorkelling", "private_beach"],
+      "preview_days": 3,
+      "driver_supported": true,
+      "verification_status": "pending_review"
+    },
+    {
+      "id": "R4",
+      "slug": "craft-culture-immersion",
+      "name": {
+        "zh": "手作文化与在地深入",
+        "en": "Craft and Culture Immersion"
+      },
+      "promise": {
+        "zh": "不只参观景点，而是用手作、仪式与在地空间理解巴厘文化。",
+        "en": "Understand Balinese culture through making, rituals and local spaces, not sightseeing alone."
+      },
+      "primary_intent": "culture_craft",
+      "secondary_tags": ["woodcarving", "batik", "silver", "temple", "local_market"],
+      "base_regions": ["G4"],
+      "free_outline": [
+        {"day": 1, "region_id": "G4", "theme": {"zh": "乌布文化背景与礼仪", "en": "Ubud context and etiquette"}},
+        {"day": 2, "region_id": "G4", "theme": {"zh": "银饰、蜡染或木雕手作", "en": "Silver, batik or woodcarving workshop"}},
+        {"day": 3, "region_id": "G4", "theme": {"zh": "寺庙、市场与在地空间", "en": "Temple, market and local spaces"}}
+      ],
+      "optional_regions": ["G7"],
+      "recommended_days": {
+        "min": 3,
+        "ideal": 5,
+        "max": 7
+      },
+      "pace": "balanced",
+      "physical_level": "low",
+      "budget_level": ["value", "comfort"],
+      "best_for": ["culture_interest", "families", "repeat_visitors", "makers"],
+      "not_recommended_for": ["beach_only"],
+      "core_experiences": ["craft_class", "temple_etiquette", "local_market", "village"],
+      "optional_modules": ["silver_class", "batik_class", "woodcarving", "east_bali_village"],
+      "preview_days": 3,
+      "driver_supported": true,
+      "verification_status": "pending_review"
+    },
+    {
+      "id": "R5",
+      "slug": "volcano-trails-adventure",
+      "name": {
+        "zh": "火山徒步与户外挑战",
+        "en": "Volcano, Trails and Outdoor Challenge"
+      },
+      "promise": {
+        "zh": "为愿意早起和运动的人安排强度清楚、风险可说明的自然挑战。",
+        "en": "Plan clear-intensity outdoor challenges for travellers comfortable with early starts and exercise."
+      },
+      "primary_intent": "outdoor_challenge",
+      "secondary_tags": ["hiking", "volcano", "sunrise", "waterfall", "adventure"],
+      "base_regions": ["G6"],
+      "free_outline": [
+        {"day": 1, "region_id": "G6", "theme": {"zh": "前往高地并确认天气与装备", "en": "Reach the highlands; check weather and gear"}},
+        {"day": 2, "region_id": "G6", "theme": {"zh": "日出徒步或吉普路线", "en": "Sunrise hike or jeep route"}},
+        {"day": 3, "region_id": "G6", "theme": {"zh": "恢复日：温泉、湖区或短程自然", "en": "Recovery day: hot spring, lake or light nature"}}
+      ],
+      "optional_regions": ["G5", "G7"],
+      "recommended_days": {
+        "min": 3,
+        "ideal": 5,
+        "max": 7
+      },
+      "pace": "active",
+      "physical_level": "medium_to_high",
+      "budget_level": ["value", "comfort"],
+      "best_for": ["active_adults", "hikers", "adventure_interest"],
+      "not_recommended_for": ["mobility_limit", "late_sleep_schedule"],
+      "core_experiences": ["volcano", "sunrise_hike", "highland", "waterfall"],
+      "optional_modules": ["munduk_nature", "east_bali_coast"],
+      "preview_days": 2,
+      "driver_supported": true,
+      "verification_status": "needs_supplier_confirmation",
+      "content_boundary": "Difficulty, weather, access rules and guide requirements must be rechecked before booking."
+    },
+    {
+      "id": "R6",
+      "slug": "visual-island-lifestyle",
+      "name": {
+        "zh": "视觉与岛屿生活方式",
+        "en": "Visual Island Lifestyle"
+      },
+      "promise": {
+        "zh": "按顺路和光线组织摄影、咖啡、设计空间与海岸时刻。",
+        "en": "Organise photography, cafes, design spaces and coastal moments around light and sensible routing."
+      },
+      "primary_intent": "visual_lifestyle",
+      "secondary_tags": ["photography", "cafe", "design", "sunset", "social"],
+      "base_regions": ["G1", "G2"],
+      "free_outline": [
+        {"day": 1, "region_id": "G1", "theme": {"zh": "咖啡、设计空间与傍晚光线", "en": "Cafes, design spaces and evening light"}},
+        {"day": 2, "region_id": "G2", "theme": {"zh": "海岸取景与日落时段", "en": "Coastal viewpoints and sunset timing"}},
+        {"day": 3, "region_id": "G1", "theme": {"zh": "生活方式街区与自由拍摄", "en": "Lifestyle neighbourhoods and free shooting"}}
+      ],
+      "optional_regions": ["G4"],
+      "recommended_days": {
+        "min": 3,
+        "ideal": 5,
+        "max": 7
+      },
+      "pace": "relaxed",
+      "physical_level": "low",
+      "budget_level": ["comfort", "premium"],
+      "best_for": ["photography", "friends", "content_creators", "lifestyle_interest"],
+      "not_recommended_for": ["deep_culture_only"],
+      "core_experiences": ["golden_hour", "cafe", "design_hotel", "coast"],
+      "optional_modules": ["ubud_visual_day", "private_beach", "gallery"],
+      "preview_days": 3,
+      "driver_supported": true,
+      "verification_status": "pending_review"
+    }
+  ],
+  "pois": [
+    {
+      "id": "tirta_empul",
+      "name": "Tirta Empul",
+      "region_id": "G4",
+      "node_id": "tampaksiring",
+      "type": "temple",
+      "tags": ["religion", "purification", "culture"],
+      "route_ids": ["R1", "R4"],
+      "official_url": "",
+      "booking_url": "",
+      "verification_status": "pending_review",
+      "notes": "Ritual etiquette, dress rules, access and opening hours require confirmation."
+    },
+    {
+      "id": "yoga_barn",
+      "name": "The Yoga Barn",
+      "region_id": "G4",
+      "node_id": "ubud",
+      "type": "wellness_venue",
+      "tags": ["yoga", "sound", "wellness"],
+      "route_ids": ["R2"],
+      "official_url": "https://theyogabarn.com/",
+      "booking_url": "",
+      "verification_status": "pending_review",
+      "notes": "Do not make medical or guaranteed wellness claims."
+    },
+    {
+      "id": "pyramids_of_chi",
+      "name": "Pyramids of Chi",
+      "region_id": "G4",
+      "node_id": "ubud",
+      "type": "wellness_venue",
+      "tags": ["sound", "wellness"],
+      "route_ids": ["R2"],
+      "official_url": "",
+      "booking_url": "",
+      "verification_status": "pending_review",
+      "notes": "Confirm official URL, session schedule, image rights and booking terms."
+    },
+    {
+      "id": "heart_space_bali",
+      "name": "Heart Space Bali",
+      "region_id": "G4",
+      "node_id": "ubud",
+      "type": "wellness_venue",
+      "tags": ["sound", "wellness"],
+      "route_ids": ["R2"],
+      "official_url": "https://www.heartspacebali.com/sound-healing-ubud",
+      "booking_url": "",
+      "verification_status": "pending_review",
+      "notes": "User-provided research lead; availability and claims need live verification."
+    },
+    {
+      "id": "intuitive_flow",
+      "name": "Intuitive Flow",
+      "region_id": "G4",
+      "node_id": "ubud",
+      "type": "wellness_venue",
+      "tags": ["yoga", "wellness"],
+      "route_ids": ["R2"],
+      "official_url": "",
+      "booking_url": "",
+      "verification_status": "pending_review",
+      "notes": "Confirm official URL, booking path and image rights."
+    },
+    {
+      "id": "uluwatu_temple",
+      "name": "Pura Luhur Uluwatu",
+      "region_id": "G2",
+      "node_id": "uluwatu",
+      "type": "temple",
+      "tags": ["religion", "cliff", "sunset", "culture"],
+      "route_ids": ["R1", "R3", "R4"],
+      "official_url": "",
+      "booking_url": "",
+      "verification_status": "pending_review",
+      "notes": "Confirm access, dress, performance schedule, safety and ticketing."
+    },
+    {
+      "id": "tanah_lot",
+      "name": "Pura Tanah Lot",
+      "region_id": "G1",
+      "node_id": "canggu",
+      "type": "temple",
+      "tags": ["religion", "coast", "sunset"],
+      "route_ids": ["R1", "R4", "R6"],
+      "official_url": "",
+      "booking_url": "",
+      "verification_status": "pending_review",
+      "notes": "Node assignment is a routing convenience; actual drive time must be calculated."
+    },
+    {
+      "id": "ulun_danu_beratan",
+      "name": "Pura Ulun Danu Beratan",
+      "region_id": "G5",
+      "node_id": "bedugul",
+      "type": "temple",
+      "tags": ["religion", "lake", "highland"],
+      "route_ids": ["R1", "R4"],
+      "official_url": "",
+      "booking_url": "",
+      "verification_status": "pending_review",
+      "notes": "Confirm access and opening hours."
+    },
+    {
+      "id": "besakih_temple",
+      "name": "Pura Besakih",
+      "region_id": "G6",
+      "node_id": "besakih",
+      "type": "temple",
+      "tags": ["religion", "highland", "culture"],
+      "route_ids": ["R4", "R5"],
+      "official_url": "",
+      "booking_url": "",
+      "verification_status": "pending_review",
+      "notes": "Confirm current access, dress, guide rules and transport conditions."
+    },
+    {
+      "id": "gwk",
+      "name": "Garuda Wisnu Kencana Cultural Park",
+      "region_id": "G2",
+      "node_id": "jimbaran",
+      "type": "cultural_park",
+      "tags": ["culture", "performance", "landmark"],
+      "route_ids": ["R1", "R4"],
+      "official_url": "",
+      "booking_url": "",
+      "verification_status": "pending_review",
+      "notes": "A modern cultural park, not a temple; classify under culture/landmark."
+    }
+  ]
+}

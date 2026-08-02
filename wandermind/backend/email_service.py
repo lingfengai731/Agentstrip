@@ -302,6 +302,7 @@ async def send_password_reset(to: str, name: str, reset_link: str, lang: str = "
 # ─── Driver request (Find a Driver → email to Dicky) ──────────────────────
 DRIVER_EMAIL = os.getenv("DRIVER_EMAIL", "Dickymahaputramahaputra@gmail.com").strip()
 DRIVER_PHONE = os.getenv("DRIVER_PHONE", "+62 898-0532-230").strip()
+GEDE_DRIVER_EMAIL = os.getenv("GEDE_DRIVER_EMAIL", "").strip()
 # Silent owner copy on every driver lead — hidden from the driver and traveller
 # (BCC), so the owner always knows when a customer contacts Dicky. Blank disables.
 OWNER_BCC_EMAIL = os.getenv("OWNER_BCC_EMAIL", "wlfyyds666@gmail.com").strip()
@@ -318,7 +319,9 @@ def render_driver_request(data: dict) -> tuple:
     first_name, last_name, intro, contact_whatsapp, contact_email,
     contact_phone, num_people, num_days, attractions."""
     full_name = f"{_esc(data.get('first_name',''))} {_esc(data.get('last_name',''))}".strip() or "A traveller"
-    subject = f"🚗 New Bali driver request from {full_name}"
+    driver_id = str(data.get("driver_id") or "dicky").strip().lower()
+    driver_name = "Gede" if driver_id == "gede" else "Dicky"
+    subject = f"🚗 New Bali driver request for {driver_name} from {full_name}"
 
     def row(label, value):
         if not value:
@@ -338,7 +341,7 @@ def render_driver_request(data: dict) -> tuple:
 
     inner = f"""
       <h1 style="margin:0 0 6px;font-size:22px;font-weight:700;color:#1e293b;">
-        🚗 New driver request
+        🚗 New driver request for {_esc(driver_name)}
       </h1>
       <p style="margin:0 0 20px;font-size:14px;line-height:1.6;color:#475569;">
         A traveller found you through WanderMind and would like to book your driving service in Bali.
@@ -346,6 +349,7 @@ def render_driver_request(data: dict) -> tuple:
       </p>
       <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%"
              style="border-collapse:collapse;background:#f8fafc;border-radius:10px;padding:6px 16px;">
+        {row("Requested driver", driver_name)}
         {row("Name", full_name)}
         {row("Group size", (str(data.get("num_people")) + " people") if data.get("num_people") else "")}
         {row("Duration", (str(data.get("num_days")) + " days in Bali") if data.get("num_days") else "")}
@@ -367,14 +371,12 @@ def render_driver_request(data: dict) -> tuple:
         + _esc(data.get("attractions","")) + "</div></div>") if data.get("attractions") else ""}
 
       <div style="margin-top:24px;padding-top:18px;border-top:1px solid #e5e2d8;font-size:12.5px;color:#94a3b8;line-height:1.7;">
-        <strong style="color:#475569;">Your listed service (for reference):</strong><br>
-        📞 {_esc(DRIVER_PHONE)}<br>
-        🕙 Full-day tours 10–12 hours · ~550–650k IDR/day (10h)<br>
-        ✈️ Airport &amp; hotel pickup / drop-off
+        <strong style="color:#475569;">Quote boundary:</strong><br>
+        The driver reviews the route, dates, pickup area and requested hours before confirming availability and price.
       </div>
     """
     text = (
-        f"New Bali driver request from {full_name}\n\n"
+        f"New Bali driver request for {driver_name} from {full_name}\n\n"
         f"Group: {data.get('num_people','?')} people, {data.get('num_days','?')} days\n"
         + (f"Dates: {data.get('start_date','')} → {data.get('end_date','')}\n" if data.get("start_date") else "")
         + (f"Preferred time: {data.get('preferred_time','')}\n" if data.get("preferred_time") else "")
@@ -385,7 +387,7 @@ def render_driver_request(data: dict) -> tuple:
         + "".join(f"{l}: {v}\n" for l, v in contacts)
         + (f"\nAbout: {data.get('intro','')}\n" if data.get("intro") else "")
         + (f"\nPlaces: {data.get('attractions','')}\n" if data.get("attractions") else "")
-        + f"\nYour service ref: {DRIVER_PHONE} · 10-12h tours · ~550-650k IDR/day · airport & hotel pickup\n"
+        + "\nPrice and availability must be confirmed by the selected driver after reviewing the route.\n"
     )
     return subject, _wrapper(inner, preheader=f"New Bali driver request from {full_name}"), text
 
@@ -394,8 +396,19 @@ async def send_driver_request(data: dict) -> dict:
     """Email the driver. Sets reply_to to the traveller's email when given."""
     subject, html, text = render_driver_request(data)
     reply_to = data.get("contact_email") or None
+    driver_id = str(data.get("driver_id") or "dicky").strip().lower()
+    if driver_id == "gede":
+        # Until Gede supplies a direct email, route the lead to the owner for
+        # manual forwarding rather than guessing a recipient address.
+        recipient = GEDE_DRIVER_EMAIL or OWNER_BCC_EMAIL
+        bcc = OWNER_BCC_EMAIL if GEDE_DRIVER_EMAIL and OWNER_BCC_EMAIL else None
+    else:
+        recipient = DRIVER_EMAIL
+        bcc = OWNER_BCC_EMAIL or None
+    if not recipient:
+        return {"ok": False, "id": None, "reason": "selected driver email is not configured"}
     return await send_email(
-        DRIVER_EMAIL, subject, html, text,
+        recipient, subject, html, text,
         reply_to=reply_to,
-        bcc=OWNER_BCC_EMAIL or None,
+        bcc=bcc,
     )

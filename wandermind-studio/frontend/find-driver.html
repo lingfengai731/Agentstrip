@@ -25,6 +25,11 @@
       .navbar-brand small { font-size: 11px; opacity: .55; font-weight: 400; letter-spacing: .15em; text-transform: uppercase; }
       .wm-logo-img { height: 40px; width: 40px; object-fit: contain; flex-shrink: 0; }
       @media (max-width: 1199px) { .wm-logo-img { height: 34px; width: 34px; } }
+      @media (max-width: 767px) {
+        .navbar-brand small { display: none !important; }
+        .navbar-brand { gap: 4px !important; }
+        .wm-logo-img { height: 30px !important; width: 30px !important; }
+      }
       @media (min-width: 992px) {
         .navbar .navbar-nav { display: flex !important; align-items: center !important; }
         .navbar .navbar-nav .nav-link { white-space: nowrap; padding: 8px 9px !important; line-height: 1.2 !important; }
@@ -110,6 +115,23 @@
       .fd-driver ul { list-style: none; padding: 0; margin: 0 0 18px; }
       .fd-driver li { display: flex; align-items: flex-start; gap: 10px; font-size: 13.5px; line-height: 1.6; padding: 6px 0; color: rgba(255,255,255,.92); }
       .fd-driver li .fa { width: 18px; text-align: center; color: var(--fd-gold); flex-shrink: 0; margin-top: 2px; }
+      .fd-driver-picker { display:grid; grid-template-columns:1fr 1fr; gap:12px; margin:4px 0 24px; }
+      .fd-driver-choice { position:relative; display:grid; grid-template-columns:64px 1fr; gap:12px; align-items:center; min-width:0; padding:12px; border:1px solid var(--fd-border); border-radius:13px; cursor:pointer; background:#fff; transition:border-color .18s,box-shadow .18s; }
+      .fd-driver-choice.selected { border:2px solid var(--fd-teal); padding:11px; box-shadow:0 8px 22px rgba(14,124,107,.13); }
+      body.dark .fd-driver-choice { background:#262825; }
+      .fd-driver-choice input { position:absolute; opacity:0; pointer-events:none; }
+      .fd-driver-choice img { width:64px; height:64px; border-radius:12px; object-fit:cover; }
+      .fd-driver-choice strong { display:block; color:var(--fd-ink); font-size:15px; }
+      body.dark .fd-driver-choice strong { color:#f3f4f6; }
+      .fd-driver-choice span { display:block; margin-top:3px; color:var(--fd-muted); font-size:11.5px; line-height:1.45; }
+      .fd-profile { margin-top:18px; padding-top:18px; border-top:1px solid rgba(255,255,255,.2); }
+      .fd-profile:first-of-type { margin-top:0; padding-top:0; border-top:0; }
+      .fd-profile-head { display:grid; grid-template-columns:62px 1fr; gap:12px; align-items:center; }
+      .fd-profile-head img { width:62px; height:62px; border-radius:12px; object-fit:cover; }
+      .fd-profile-cars { display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-top:12px; }
+      .fd-profile-cars img { width:100%; height:105px; object-fit:cover; border-radius:10px; }
+      .fd-quote-boundary { margin-top:18px; padding:13px; border-radius:10px; background:rgba(255,255,255,.12); font-size:12px; line-height:1.6; color:rgba(255,255,255,.9); }
+      @media(max-width:575px){ .fd-driver-picker{grid-template-columns:1fr}.fd-driver-choice{grid-template-columns:56px 1fr}.fd-driver-choice img{width:56px;height:56px} }
       .fd-price-box { background: rgba(255,255,255,.10); border-radius: 12px; padding: 14px 16px; font-size: 13px; line-height: 1.8; }
       .fd-price-box strong { color: var(--fd-gold); }
       .fd-success { text-align: center; padding: 26px 6px; }
@@ -185,7 +207,21 @@
     <!-- FORM -->
     <div class="fd-card" id="fd-form-card">
       <h2 data-i18n="fdFormTitle">Your trip details</h2>
-      <p class="fd-sub" data-i18n="fdFormSub">Dicky will reply to you directly using the contact you provide.</p>
+      <p class="fd-sub" data-i18n="fdFormSub">Choose a driver, then share your route. Availability and price are confirmed after review.</p>
+
+      <label class="fd-label" data-i18n="fdChooseDriver">Choose a driver</label>
+      <div class="fd-driver-picker" role="radiogroup" aria-label="Choose a driver">
+        <label class="fd-driver-choice">
+          <input type="radio" name="fd-driver" value="dicky" checked>
+          <img src="assets/images/Dicky1.jpg" alt="Dicky, Bali driver" loading="lazy">
+          <span><strong>Dicky</strong><span data-i18n="fdDickyShort">Local driver · profile and vehicle photos available</span></span>
+        </label>
+        <label class="fd-driver-choice">
+          <input type="radio" name="fd-driver" value="gede">
+          <img src="assets/images/Gede nicho.jpg" alt="Gede, Bali driver" loading="lazy">
+          <span><strong>Gede</strong><span data-i18n="fdGedeShort">Local driver · direct contact details pending</span></span>
+        </label>
+      </div>
 
       <div class="fd-row">
         <div class="fd-field">
@@ -288,32 +324,42 @@
         <span data-i18n="fdPrivacy">Your privacy is protected. We forward this request once to the driver by email and never store your contact details on our servers.</span>
       </div>
 
-      <button class="fd-submit" id="fd-submit"><span class="fa fa-paper-plane"></span> <span data-i18n="fdSubmit">Send request to Dicky</span></button>
+      <button class="fd-submit" id="fd-submit"><span class="fa fa-paper-plane"></span> <span data-i18n="fdSubmit">Send driver request</span></button>
       <div class="fd-msg" id="fd-msg"></div>
     </div>
 
     <!-- DRIVER CARD -->
     <div class="fd-driver">
-      <div class="fd-driver-top">
-        <div class="fd-driver-avatar"><span class="fa fa-car"></span></div>
-        <div>
-          <h3>Dicky</h3>
-          <span class="fd-badge" data-i18n="fdBadge">Verified local driver</span>
+      <h3 data-i18n="fdMeetDrivers">Meet the local drivers</h3>
+      <div class="fd-profile">
+        <div class="fd-profile-head">
+          <img src="assets/images/Dicky1.jpg" alt="Dicky" loading="lazy">
+          <div><h3>Dicky</h3><span class="fd-badge" data-i18n="fdProfilePending">Profile details being confirmed</span></div>
+        </div>
+        <ul>
+          <li><span class="fa fa-car"></span> <span data-i18n="fdDickyProfile">Bali driving support, airport pickup and route-based requests.</span></li>
+          <li><span class="fa fa-comments"></span> <span data-i18n="fdLanguageConfirm">Languages and exact vehicle capacity need driver confirmation.</span></li>
+        </ul>
+        <div class="fd-profile-cars">
+          <img src="assets/images/car_photodicky2-web.jpg" alt="Dicky's vehicle" loading="lazy">
+          <img src="assets/images/Dicky_tourist1.jpg" alt="Dicky with travellers" loading="lazy">
         </div>
       </div>
-      <ul>
-        <li><span class="fa fa-check-circle"></span> <span data-i18n="fdFeat1">Local Bali driver, English-speaking</span></li>
-        <li><span class="fa fa-plane"></span> <span data-i18n="fdFeat2">Airport &amp; hotel pickup / drop-off</span></li>
-        <li><span class="fa fa-clock-o"></span> <span data-i18n="fdFeat3">Full-day private tours, 10–12 hours</span></li>
-        <li><span class="fa fa-thumbs-up"></span> <span data-i18n="fdFeat4">Traveller-approved &amp; reliable</span></li>
-      </ul>
-      <div class="fd-price-box">
-        <span data-i18n="fdPriceLine1"><strong>~550–650k IDR</strong> per day (10 hours)</span><br>
-        <span data-i18n="fdPriceNote">Fuel prices in Indonesia have risen recently, so rates reflect that.</span>
+      <div class="fd-profile">
+        <div class="fd-profile-head">
+          <img src="assets/images/Gede nicho.jpg" alt="Gede" loading="lazy">
+          <div><h3>Gede</h3><span class="fd-badge" data-i18n="fdProfilePending">Profile details being confirmed</span></div>
+        </div>
+        <ul>
+          <li><span class="fa fa-car"></span> <span data-i18n="fdGedeProfile">Alternative local driver for route and date availability.</span></li>
+          <li><span class="fa fa-envelope"></span> <span data-i18n="fdGedeForward">Until direct contact is configured, WanderMind forwards the request manually.</span></li>
+        </ul>
+        <div class="fd-profile-cars">
+          <img src="assets/images/car_photoGede-web.jpg" alt="Gede's vehicle" loading="lazy">
+          <img src="assets/images/Gede nicho_tourist1.jpg" alt="Gede with travellers" loading="lazy">
+        </div>
       </div>
-      <div style="margin-top:16px;font-size:13px;color:var(--fd-muted)" data-i18n="fdContactViaForm">
-        Submit the form on the left to reach Dicky — we'll forward your request directly.
-      </div>
+      <div class="fd-quote-boundary" data-i18n="fdQuoteBoundary">No fixed rate is published yet. The selected driver confirms availability, vehicle, hours and the final quote after reviewing your route.</div>
     </div>
 
   </div>
@@ -364,6 +410,16 @@
     var daysEl = document.getElementById('fd-days');
     var startEl = document.getElementById('fd-start');
     var endEl = document.getElementById('fd-end');
+    var driverChoices = Array.from(document.querySelectorAll('.fd-driver-choice'));
+    function syncDriverChoice() {
+      driverChoices.forEach(function (choice) {
+        choice.classList.toggle('selected', !!choice.querySelector('input:checked'));
+      });
+    }
+    driverChoices.forEach(function (choice) {
+      choice.querySelector('input').addEventListener('change', syncDriverChoice);
+    });
+    syncDriverChoice();
 
     var toISO = function (date) { return date.toISOString().slice(0, 10); };
     var tomorrow = new Date(Date.now() + 86400000);
@@ -380,6 +436,21 @@
         return { plan: plan, trip: trip };
       } catch (e) { return { plan: null, trip: null }; }
     }
+    (function hydrateSharedBrief() {
+      try {
+        var current = JSON.parse(localStorage.getItem('wm_studio_currentTrip') || 'null');
+        var brief = current || JSON.parse(localStorage.getItem('wm_studio_trip_brief') || 'null');
+        if (!brief) return;
+        if (brief.people) peopleEl.value = brief.people;
+        if (brief.days) daysEl.value = brief.days;
+        if (brief.start) startEl.value = brief.start;
+        if (brief.end) endEl.value = brief.end;
+        var route = new URLSearchParams(window.location.search).get('route') || brief.route_id;
+        if (route && !places.value) {
+          places.value = route + ' · ' + (brief.title || (brief.dest === 'bali' ? 'Bali route' : 'Travel route'));
+        }
+      } catch (_) {}
+    })();
     manualBtn.onclick = function () {
       manualBtn.classList.add('active'); importBtn.classList.remove('active');
       hint.style.display = 'none';
@@ -421,6 +492,7 @@
       if (!startEl.value || !endEl.value || endEl.value < startEl.value) { msg.className = 'fd-msg err'; msg.textContent = L.fdErrDates || 'Please enter valid travel dates'; return; }
 
       var payload = {
+        driver_id: (document.querySelector('input[name="fd-driver"]:checked') || {}).value || 'dicky',
         first_name: first, last_name: last,
         intro: document.getElementById('fd-intro').value.trim(),
         contact_whatsapp: wa, contact_email: email, contact_phone: phone,
@@ -475,5 +547,6 @@
     if (picker) picker.addEventListener('change', function () { pull(this.value); });
   })();
 </script>
+<script src="assets/js/global-auth.js?v=p52"></script>
 </body>
 </html>
