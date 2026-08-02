@@ -1,0 +1,451 @@
+{
+  "schema_version": 1,
+  "content_version": "2026-08-03.1",
+  "reviewed_at": "2026-08-03",
+  "destinations": {
+    "bali": {
+      "aliases": [
+        "bali",
+        "bali, indonesia",
+        "巴厘岛",
+        "巴厘岛，印度尼西亚",
+        "バリ島",
+        "발리",
+        "pulau bali"
+      ],
+      "timezone": "Asia/Makassar",
+      "currency_code": "IDR",
+      "sources": [
+        {
+          "label": "Indonesia Travel — Weather, Climate & Seasons",
+          "url": "https://www.indonesia.travel/us/en/general-information/weather-climate-seasons"
+        },
+        {
+          "label": "Indonesia Travel — Seminyak",
+          "url": "https://www.indonesia.travel/id/en/destination/bali-nusa-tenggara/bali/seminyak"
+        },
+        {
+          "label": "Indonesia Travel — Uluwatu Temple",
+          "url": "https://www.indonesia.travel/id/id/travel-ideas/pilgrimage/pura-uluwatu"
+        }
+      ],
+      "content": {
+        "zh": {
+          "rate": "IDR · 查看实时汇率",
+          "season": "旱季 / 雨季",
+          "seasonDesc": "通常4–10月较干、11–3月较湿；季节每年会变化，请查看实时天气。",
+          "regions": [
+            {"name": "Ubud", "cls": "tag-blue", "tag": "文化与自然", "desc": "稻田、手作、寺庙与身心体验集中，适合慢节奏停留。"},
+            {"name": "Seminyak–Canggu", "cls": "tag-amber", "tag": "西南海岸", "desc": "海岸、餐饮与生活方式空间密集，交通高峰需留余量。"},
+            {"name": "Uluwatu–Jimbaran", "cls": "tag-green", "tag": "南部半岛", "desc": "悬崖、海滩、文化空间与日落体验，适合按区域顺路安排。"}
+          ],
+          "tips": [
+            {"title": "入境要求", "cls": "tag-blue", "tag": "出发前核验", "desc": "要求取决于护照与出发地，请以印度尼西亚官方渠道为准。"},
+            {"title": "货币与支付", "cls": "tag-amber", "tag": "IDR", "desc": "使用印尼盾；出发前查看实时汇率，并向商家确认支付方式。"}
+          ],
+          "hotelAreas": [
+            {"name": "乌布", "q": "Ubud Bali", "tag": "文化自然"},
+            {"name": "水明漾", "q": "Seminyak Bali", "tag": "海岸生活"},
+            {"name": "金巴兰 / 乌鲁瓦图", "q": "Jimbaran Uluwatu Bali", "tag": "南部度假"}
+          ]
+        },
+        "en": {
+          "rate": "IDR · check live rate",
+          "season": "Dry / wetter seasons",
+          "seasonDesc": "April–October is usually drier and November–March wetter; seasons vary, so check live weather.",
+          "regions": [
+            {"name": "Ubud", "cls": "tag-blue", "tag": "Culture & nature", "desc": "Rice fields, crafts, temples and restorative experiences suit a slower stay."},
+            {"name": "Seminyak–Canggu", "cls": "tag-amber", "tag": "Southwest coast", "desc": "Coast, dining and lifestyle venues are dense; allow extra time in peak traffic."},
+            {"name": "Uluwatu–Jimbaran", "cls": "tag-green", "tag": "Southern peninsula", "desc": "Cliffs, beaches, cultural spaces and sunsets work best in a regional loop."}
+          ],
+          "tips": [
+            {"title": "Entry requirements", "cls": "tag-blue", "tag": "Verify before travel", "desc": "Rules depend on passport and departure point; use official Indonesian channels."},
+            {"title": "Currency & payment", "cls": "tag-amber", "tag": "IDR", "desc": "Indonesia uses rupiah; check a live rate and confirm accepted payment methods."}
+          ],
+          "hotelAreas": [
+            {"name": "Ubud", "q": "Ubud Bali", "tag": "Culture & nature"},
+            {"name": "Seminyak", "q": "Seminyak Bali", "tag": "Coastal lifestyle"},
+            {"name": "Jimbaran / Uluwatu", "q": "Jimbaran Uluwatu Bali", "tag": "Southern retreat"}
+          ]
+        },
+        "ja": {
+          "rate": "IDR · 最新レートを確認",
+          "season": "乾季 / 雨季",
+          "seasonDesc": "通常4～10月は比較的乾燥し、11～3月は雨が多めです。出発前に最新の天気を確認してください。",
+          "regions": [
+            {"name": "Ubud", "cls": "tag-blue", "tag": "文化と自然", "desc": "棚田、工芸、寺院、ウェルネス体験が集まり、ゆっくり滞在するのに向きます。"},
+            {"name": "Seminyak–Canggu", "cls": "tag-amber", "tag": "南西海岸", "desc": "海岸、飲食、ライフスタイル施設が多く、渋滞時間には余裕が必要です。"},
+            {"name": "Uluwatu–Jimbaran", "cls": "tag-green", "tag": "南部半島", "desc": "断崖、ビーチ、文化施設、夕日を地域ごとにまとめると効率的です。"}
+          ],
+          "tips": [
+            {"title": "入国条件", "cls": "tag-blue", "tag": "出発前に確認", "desc": "旅券や出発地で異なるため、インドネシア公式情報を確認してください。"},
+            {"title": "通貨と支払い", "cls": "tag-amber", "tag": "IDR", "desc": "通貨はルピアです。最新レートと利用可能な支払い方法を確認してください。"}
+          ],
+          "hotelAreas": [
+            {"name": "ウブド", "q": "Ubud Bali", "tag": "文化と自然"},
+            {"name": "スミニャック", "q": "Seminyak Bali", "tag": "海岸ライフ"},
+            {"name": "ジンバラン / ウルワツ", "q": "Jimbaran Uluwatu Bali", "tag": "南部リゾート"}
+          ]
+        },
+        "ko": {
+          "rate": "IDR · 실시간 환율 확인",
+          "season": "건기 / 우기",
+          "seasonDesc": "보통 4–10월은 비교적 건조하고 11–3월은 비가 많지만, 출발 전 실시간 날씨를 확인하세요.",
+          "regions": [
+            {"name": "Ubud", "cls": "tag-blue", "tag": "문화와 자연", "desc": "논, 공예, 사원과 웰니스 경험이 모여 있어 느린 체류에 적합합니다."},
+            {"name": "Seminyak–Canggu", "cls": "tag-amber", "tag": "남서 해안", "desc": "해안, 식당과 라이프스타일 공간이 밀집해 교통 혼잡 시간을 고려해야 합니다."},
+            {"name": "Uluwatu–Jimbaran", "cls": "tag-green", "tag": "남부 반도", "desc": "절벽, 해변, 문화 공간과 일몰을 같은 권역으로 묶으면 효율적입니다."}
+          ],
+          "tips": [
+            {"title": "입국 요건", "cls": "tag-blue", "tag": "출발 전 확인", "desc": "여권과 출발지에 따라 다르므로 인도네시아 공식 안내를 확인하세요."},
+            {"title": "통화와 결제", "cls": "tag-amber", "tag": "IDR", "desc": "인도네시아 루피아를 사용하며 실시간 환율과 결제 수단을 확인하세요."}
+          ],
+          "hotelAreas": [
+            {"name": "우붓", "q": "Ubud Bali", "tag": "문화와 자연"},
+            {"name": "스미냑", "q": "Seminyak Bali", "tag": "해안 라이프"},
+            {"name": "짐바란 / 울루와투", "q": "Jimbaran Uluwatu Bali", "tag": "남부 휴양"}
+          ]
+        },
+        "id": {
+          "rate": "IDR · cek kurs langsung",
+          "season": "Musim kering / hujan",
+          "seasonDesc": "April–Oktober biasanya lebih kering dan November–Maret lebih basah; cek cuaca langsung sebelum berangkat.",
+          "regions": [
+            {"name": "Ubud", "cls": "tag-blue", "tag": "Budaya & alam", "desc": "Sawah, kerajinan, pura, dan pengalaman kebugaran cocok untuk tinggal lebih santai."},
+            {"name": "Seminyak–Canggu", "cls": "tag-amber", "tag": "Pesisir barat daya", "desc": "Pantai, kuliner, dan ruang gaya hidup padat; sisakan waktu saat lalu lintas ramai."},
+            {"name": "Uluwatu–Jimbaran", "cls": "tag-green", "tag": "Semenanjung selatan", "desc": "Tebing, pantai, ruang budaya, dan sunset lebih efisien dalam satu lingkar wilayah."}
+          ],
+          "tips": [
+            {"title": "Syarat masuk", "cls": "tag-blue", "tag": "Cek sebelum pergi", "desc": "Aturan bergantung pada paspor dan titik keberangkatan; cek kanal resmi Indonesia."},
+            {"title": "Mata uang & pembayaran", "cls": "tag-amber", "tag": "IDR", "desc": "Gunakan rupiah; cek kurs langsung dan konfirmasi metode pembayaran yang diterima."}
+          ],
+          "hotelAreas": [
+            {"name": "Ubud", "q": "Ubud Bali", "tag": "Budaya & alam"},
+            {"name": "Seminyak", "q": "Seminyak Bali", "tag": "Gaya hidup pesisir"},
+            {"name": "Jimbaran / Uluwatu", "q": "Jimbaran Uluwatu Bali", "tag": "Retret selatan"}
+          ]
+        }
+      }
+    },
+    "kyoto": {
+      "aliases": ["kyoto", "kyoto, japan", "京都", "京都，日本", "京都市", "교토"],
+      "timezone": "Asia/Tokyo",
+      "currency_code": "JPY",
+      "sources": [
+        {"label": "Kyoto City Official Travel Guide — Getting Around", "url": "https://kyoto.travel/en/getting-around/"},
+        {"label": "Kyoto City Official Travel Guide — Seasonal Information", "url": "https://kyoto.travel/en/seasonal-info/"}
+      ],
+      "content": {
+        "zh": {
+          "rate": "JPY · 查看实时汇率",
+          "season": "四季分明",
+          "seasonDesc": "花期、红叶和拥挤程度每年变化，请在出发前查看京都官方季节信息。",
+          "regions": [
+            {"name": "Gion–Higashiyama", "cls": "tag-amber", "tag": "传统文化", "desc": "传统街区、寺社与步行路线密集，适合早晨或傍晚探索。"},
+            {"name": "Kyoto Station–Central", "cls": "tag-blue", "tag": "交通据点", "desc": "铁路换乘方便，适合作为跨区域行程与行李安排的住宿据点。"},
+            {"name": "Arashiyama", "cls": "tag-green", "tag": "西部自然", "desc": "竹林、河岸与西部景点集中，优先铁路可减少公交拥挤。"}
+          ],
+          "tips": [
+            {"title": "入境要求", "cls": "tag-blue", "tag": "出发前核验", "desc": "要求取决于护照与出发地，请以日本官方入境渠道为准。"},
+            {"title": "货币与交通", "cls": "tag-green", "tag": "JPY", "desc": "使用日元；查看实时汇率，并按路线比较铁路、地铁与公交。"}
+          ],
+          "hotelAreas": [
+            {"name": "京都站", "q": "Kyoto Station", "tag": "交通"},
+            {"name": "祇园 / 东山", "q": "Gion Higashiyama Kyoto", "tag": "文化"},
+            {"name": "河原町", "q": "Kawaramachi Kyoto", "tag": "市中心"}
+          ]
+        },
+        "en": {
+          "rate": "JPY · check live rate",
+          "season": "Four distinct seasons",
+          "seasonDesc": "Bloom, foliage and crowd timing changes each year; check Kyoto's official seasonal updates.",
+          "regions": [
+            {"name": "Gion–Higashiyama", "cls": "tag-amber", "tag": "Traditional culture", "desc": "Historic streets, temples and walkable routes suit early or evening exploration."},
+            {"name": "Kyoto Station–Central", "cls": "tag-blue", "tag": "Transport base", "desc": "Rail connections make this practical for cross-city days and luggage logistics."},
+            {"name": "Arashiyama", "cls": "tag-green", "tag": "Western nature", "desc": "Bamboo, riverside and western sights cluster here; rail can avoid crowded buses."}
+          ],
+          "tips": [
+            {"title": "Entry requirements", "cls": "tag-blue", "tag": "Verify before travel", "desc": "Rules depend on passport and departure point; use official Japanese channels."},
+            {"title": "Currency & transit", "cls": "tag-green", "tag": "JPY", "desc": "Japan uses yen; check a live rate and compare rail, subway and bus by route."}
+          ],
+          "hotelAreas": [
+            {"name": "Kyoto Station", "q": "Kyoto Station", "tag": "Transport"},
+            {"name": "Gion / Higashiyama", "q": "Gion Higashiyama Kyoto", "tag": "Culture"},
+            {"name": "Kawaramachi", "q": "Kawaramachi Kyoto", "tag": "Downtown"}
+          ]
+        },
+        "ja": {
+          "rate": "JPY · 最新レートを確認",
+          "season": "四季",
+          "seasonDesc": "開花、紅葉、混雑の時期は毎年変わるため、京都公式の季節情報を確認してください。",
+          "regions": [
+            {"name": "祇園・東山", "cls": "tag-amber", "tag": "伝統文化", "desc": "歴史的な街並み、寺社、徒歩ルートが集まり、朝夕の散策に向きます。"},
+            {"name": "京都駅・市内中心部", "cls": "tag-blue", "tag": "交通拠点", "desc": "鉄道接続がよく、広域移動や荷物のある旅の拠点に便利です。"},
+            {"name": "嵐山", "cls": "tag-green", "tag": "西部の自然", "desc": "竹林、川沿い、西部の名所が集まり、鉄道利用でバス混雑を避けやすくなります。"}
+          ],
+          "tips": [
+            {"title": "入国条件", "cls": "tag-blue", "tag": "出発前に確認", "desc": "旅券や出発地で異なるため、日本の公式情報を確認してください。"},
+            {"title": "通貨と交通", "cls": "tag-green", "tag": "JPY", "desc": "通貨は円です。最新レートを確認し、行程ごとに鉄道・地下鉄・バスを比較してください。"}
+          ],
+          "hotelAreas": [
+            {"name": "京都駅", "q": "Kyoto Station", "tag": "交通"},
+            {"name": "祇園 / 東山", "q": "Gion Higashiyama Kyoto", "tag": "文化"},
+            {"name": "河原町", "q": "Kawaramachi Kyoto", "tag": "中心部"}
+          ]
+        },
+        "ko": {
+          "rate": "JPY · 실시간 환율 확인",
+          "season": "뚜렷한 사계절",
+          "seasonDesc": "개화, 단풍, 혼잡 시기는 매년 달라지므로 교토 공식 계절 정보를 확인하세요.",
+          "regions": [
+            {"name": "Gion–Higashiyama", "cls": "tag-amber", "tag": "전통 문화", "desc": "역사 거리, 사찰과 도보 동선이 모여 있어 아침이나 저녁 탐방에 적합합니다."},
+            {"name": "Kyoto Station–Central", "cls": "tag-blue", "tag": "교통 거점", "desc": "철도 연결이 좋아 지역 간 이동과 짐이 있는 일정의 거점으로 편리합니다."},
+            {"name": "Arashiyama", "cls": "tag-green", "tag": "서부 자연", "desc": "대나무 숲과 강변 명소가 모여 있으며 철도를 이용하면 버스 혼잡을 줄일 수 있습니다."}
+          ],
+          "tips": [
+            {"title": "입국 요건", "cls": "tag-blue", "tag": "출발 전 확인", "desc": "여권과 출발지에 따라 다르므로 일본 공식 안내를 확인하세요."},
+            {"title": "통화와 교통", "cls": "tag-green", "tag": "JPY", "desc": "엔화를 사용하며 실시간 환율과 철도·지하철·버스를 일정별로 비교하세요."}
+          ],
+          "hotelAreas": [
+            {"name": "교토역", "q": "Kyoto Station", "tag": "교통"},
+            {"name": "기온 / 히가시야마", "q": "Gion Higashiyama Kyoto", "tag": "문화"},
+            {"name": "가와라마치", "q": "Kawaramachi Kyoto", "tag": "도심"}
+          ]
+        },
+        "id": {
+          "rate": "JPY · cek kurs langsung",
+          "season": "Empat musim",
+          "seasonDesc": "Waktu bunga, daun musim gugur, dan keramaian berubah tiap tahun; cek info musiman resmi Kyoto.",
+          "regions": [
+            {"name": "Gion–Higashiyama", "cls": "tag-amber", "tag": "Budaya tradisional", "desc": "Jalan bersejarah, kuil, dan rute berjalan cocok dijelajahi pagi atau sore."},
+            {"name": "Kyoto Station–Central", "cls": "tag-blue", "tag": "Basis transportasi", "desc": "Koneksi kereta praktis untuk lintas wilayah dan perjalanan dengan bagasi."},
+            {"name": "Arashiyama", "cls": "tag-green", "tag": "Alam barat", "desc": "Bambu, tepi sungai, dan objek barat berdekatan; kereta membantu menghindari bus padat."}
+          ],
+          "tips": [
+            {"title": "Syarat masuk", "cls": "tag-blue", "tag": "Cek sebelum pergi", "desc": "Aturan bergantung pada paspor dan titik keberangkatan; cek kanal resmi Jepang."},
+            {"title": "Mata uang & transit", "cls": "tag-green", "tag": "JPY", "desc": "Gunakan yen; cek kurs langsung dan bandingkan kereta, subway, dan bus per rute."}
+          ],
+          "hotelAreas": [
+            {"name": "Kyoto Station", "q": "Kyoto Station", "tag": "Transportasi"},
+            {"name": "Gion / Higashiyama", "q": "Gion Higashiyama Kyoto", "tag": "Budaya"},
+            {"name": "Kawaramachi", "q": "Kawaramachi Kyoto", "tag": "Pusat kota"}
+          ]
+        }
+      }
+    },
+    "paris": {
+      "aliases": ["paris", "paris, france", "巴黎", "巴黎，法国", "パリ", "파리"],
+      "timezone": "Europe/Paris",
+      "currency_code": "EUR",
+      "sources": [
+        {"label": "Paris je t'aime — Accommodation by neighbourhood", "url": "https://parisjetaime.com/eng/article/where-to-stay-in-paris-guide-and-directory-of-accommodation-by-neighbourhood-and-arrondissement-a1964"},
+        {"label": "Paris je t'aime — Exploring the Marais", "url": "https://parisjetaime.com/eng/article/exploring-the-marais-a1070"},
+        {"label": "Paris je t'aime — Montmartre", "url": "https://parisjetaime.com/eng/article/montmartre-village-in-paris-a728"}
+      ],
+      "content": {
+        "zh": {
+          "rate": "EUR · 查看实时汇率",
+          "season": "全年城市旅行",
+          "seasonDesc": "日照、降雨、活动与拥挤程度随季节变化，请在出发前核对天气和预约。",
+          "regions": [
+            {"name": "Le Marais", "cls": "tag-blue", "tag": "历史与设计", "desc": "历史街区、博物馆、设计店与餐饮集中，适合步行探索。"},
+            {"name": "Saint-Germain-des-Prés", "cls": "tag-green", "tag": "左岸文化", "desc": "文学、咖啡馆、画廊与塞纳河步行体验集中。"},
+            {"name": "Montmartre", "cls": "tag-amber", "tag": "山丘艺术区", "desc": "坡道、艺术历史与城市视野丰富，安排时需考虑步行强度。"}
+          ],
+          "tips": [
+            {"title": "入境要求", "cls": "tag-blue", "tag": "出发前核验", "desc": "申根入境要求取决于护照与出发地，请以法国官方渠道为准。"},
+            {"title": "货币与预约", "cls": "tag-amber", "tag": "EUR", "desc": "使用欧元；查看实时汇率，并单独核对景点预约与开放信息。"}
+          ],
+          "hotelAreas": [
+            {"name": "玛黑区", "q": "Le Marais Paris", "tag": "中心历史"},
+            {"name": "圣日耳曼", "q": "Saint-Germain-des-Pres Paris", "tag": "左岸文化"},
+            {"name": "蒙马特", "q": "Montmartre Paris", "tag": "艺术山丘"}
+          ]
+        },
+        "en": {
+          "rate": "EUR · check live rate",
+          "season": "Year-round city break",
+          "seasonDesc": "Daylight, rain, events and crowd levels vary by season; verify weather and reservations.",
+          "regions": [
+            {"name": "Le Marais", "cls": "tag-blue", "tag": "History & design", "desc": "Historic streets, museums, design shops and dining make this highly walkable."},
+            {"name": "Saint-Germain-des-Prés", "cls": "tag-green", "tag": "Left Bank culture", "desc": "Literary history, cafes, galleries and Seine walks cluster on the Left Bank."},
+            {"name": "Montmartre", "cls": "tag-amber", "tag": "Artists' hill", "desc": "Slopes, art history and city views are rewarding; account for walking effort."}
+          ],
+          "tips": [
+            {"title": "Entry requirements", "cls": "tag-blue", "tag": "Verify before travel", "desc": "Schengen rules depend on passport and departure point; use official French channels."},
+            {"title": "Currency & booking", "cls": "tag-amber", "tag": "EUR", "desc": "France uses euros; check a live rate and verify reservations and opening information."}
+          ],
+          "hotelAreas": [
+            {"name": "Le Marais", "q": "Le Marais Paris", "tag": "Historic centre"},
+            {"name": "Saint-Germain", "q": "Saint-Germain-des-Pres Paris", "tag": "Left Bank"},
+            {"name": "Montmartre", "q": "Montmartre Paris", "tag": "Artists' hill"}
+          ]
+        },
+        "ja": {
+          "rate": "EUR · 最新レートを確認",
+          "season": "通年の都市旅行",
+          "seasonDesc": "日照、雨、イベント、混雑は季節で変わるため、天気と予約情報を確認してください。",
+          "regions": [
+            {"name": "Le Marais", "cls": "tag-blue", "tag": "歴史とデザイン", "desc": "歴史的な通り、美術館、デザインショップ、飲食店が集まり徒歩散策に向きます。"},
+            {"name": "Saint-Germain-des-Prés", "cls": "tag-green", "tag": "左岸文化", "desc": "文学、カフェ、ギャラリー、セーヌ川沿いの散歩を楽しめます。"},
+            {"name": "Montmartre", "cls": "tag-amber", "tag": "芸術家の丘", "desc": "坂道、芸術史、街の眺望が魅力で、徒歩の負担を考慮してください。"}
+          ],
+          "tips": [
+            {"title": "入国条件", "cls": "tag-blue", "tag": "出発前に確認", "desc": "シェンゲン条件は旅券と出発地で異なるため、フランス公式情報を確認してください。"},
+            {"title": "通貨と予約", "cls": "tag-amber", "tag": "EUR", "desc": "通貨はユーロです。最新レートと予約・営業時間を個別に確認してください。"}
+          ],
+          "hotelAreas": [
+            {"name": "マレ地区", "q": "Le Marais Paris", "tag": "歴史中心"},
+            {"name": "サンジェルマン", "q": "Saint-Germain-des-Pres Paris", "tag": "左岸文化"},
+            {"name": "モンマルトル", "q": "Montmartre Paris", "tag": "芸術の丘"}
+          ]
+        },
+        "ko": {
+          "rate": "EUR · 실시간 환율 확인",
+          "season": "연중 도시 여행",
+          "seasonDesc": "일조, 비, 행사와 혼잡도는 계절마다 달라지므로 날씨와 예약 정보를 확인하세요.",
+          "regions": [
+            {"name": "Le Marais", "cls": "tag-blue", "tag": "역사와 디자인", "desc": "역사 거리, 박물관, 디자인 상점과 식당이 모여 있어 도보 탐방에 적합합니다."},
+            {"name": "Saint-Germain-des-Prés", "cls": "tag-green", "tag": "좌안 문화", "desc": "문학, 카페, 갤러리와 센강 산책을 함께 즐길 수 있습니다."},
+            {"name": "Montmartre", "cls": "tag-amber", "tag": "예술가 언덕", "desc": "경사길, 예술사와 전망이 매력적이며 걷는 강도를 고려해야 합니다."}
+          ],
+          "tips": [
+            {"title": "입국 요건", "cls": "tag-blue", "tag": "출발 전 확인", "desc": "솅겐 요건은 여권과 출발지에 따라 다르므로 프랑스 공식 안내를 확인하세요."},
+            {"title": "통화와 예약", "cls": "tag-amber", "tag": "EUR", "desc": "유로를 사용하며 실시간 환율과 예약·운영 정보를 별도로 확인하세요."}
+          ],
+          "hotelAreas": [
+            {"name": "마레", "q": "Le Marais Paris", "tag": "역사 중심"},
+            {"name": "생제르맹", "q": "Saint-Germain-des-Pres Paris", "tag": "좌안 문화"},
+            {"name": "몽마르트르", "q": "Montmartre Paris", "tag": "예술 언덕"}
+          ]
+        },
+        "id": {
+          "rate": "EUR · cek kurs langsung",
+          "season": "Perjalanan kota sepanjang tahun",
+          "seasonDesc": "Cahaya, hujan, acara, dan keramaian berubah menurut musim; cek cuaca dan reservasi.",
+          "regions": [
+            {"name": "Le Marais", "cls": "tag-blue", "tag": "Sejarah & desain", "desc": "Jalan bersejarah, museum, toko desain, dan kuliner nyaman dijelajahi dengan berjalan kaki."},
+            {"name": "Saint-Germain-des-Prés", "cls": "tag-green", "tag": "Budaya Left Bank", "desc": "Sejarah sastra, kafe, galeri, dan jalan tepi Seine berdekatan."},
+            {"name": "Montmartre", "cls": "tag-amber", "tag": "Bukit seniman", "desc": "Tanjakan, sejarah seni, dan pemandangan kota menarik; perhitungkan tenaga berjalan."}
+          ],
+          "tips": [
+            {"title": "Syarat masuk", "cls": "tag-blue", "tag": "Cek sebelum pergi", "desc": "Aturan Schengen bergantung pada paspor dan titik keberangkatan; cek kanal resmi Prancis."},
+            {"title": "Mata uang & reservasi", "cls": "tag-amber", "tag": "EUR", "desc": "Gunakan euro; cek kurs langsung serta reservasi dan informasi buka secara terpisah."}
+          ],
+          "hotelAreas": [
+            {"name": "Le Marais", "q": "Le Marais Paris", "tag": "Pusat bersejarah"},
+            {"name": "Saint-Germain", "q": "Saint-Germain-des-Pres Paris", "tag": "Left Bank"},
+            {"name": "Montmartre", "q": "Montmartre Paris", "tag": "Bukit seniman"}
+          ]
+        }
+      }
+    },
+    "santorini": {
+      "aliases": ["santorini", "santorini, greece", "thira", "圣托里尼", "圣托里尼，希腊", "サントリーニ", "산토리니"],
+      "timezone": "Europe/Athens",
+      "currency_code": "EUR",
+      "sources": [
+        {"label": "Visit Greece — Cyclades and Santorini", "url": "https://www.visitgreece.gr/islands/cyclades/"},
+        {"label": "Visit Greece — Walking from Fira to Oia", "url": "https://www.visitgreece.gr/blog/travel-tips/916/walking-from-fira-to-oia-santorini/"},
+        {"label": "Visit Greece — Greek island beaches", "url": "https://www.visitgreece.gr/blog/travel-tips/802/top-6-beaches-in-the-greek-islands/"}
+      ],
+      "content": {
+        "zh": {
+          "rate": "EUR · 查看实时汇率",
+          "season": "季节性海岛",
+          "seasonDesc": "渡轮、公共交通、天气与商家开放情况会随季节变化，请逐项核验。",
+          "regions": [
+            {"name": "Fira", "cls": "tag-blue", "tag": "交通与服务", "desc": "岛上服务与交通较集中，适合作为没有租车时的住宿据点。"},
+            {"name": "Oia", "cls": "tag-amber", "tag": "火山口景观", "desc": "悬崖聚落与火山口视野突出，日落时段需预留拥挤余量。"},
+            {"name": "Perissa–Kamari", "cls": "tag-green", "tag": "海滩区域", "desc": "火山海滩与海岸住宿集中，和火山口一侧体验不同。"}
+          ],
+          "tips": [
+            {"title": "入境要求", "cls": "tag-blue", "tag": "出发前核验", "desc": "申根入境要求取决于护照与出发地，请以希腊官方渠道为准。"},
+            {"title": "交通与货币", "cls": "tag-green", "tag": "EUR", "desc": "使用欧元；出发前查看实时汇率，并核验当季渡轮与岛内交通。"}
+          ],
+          "hotelAreas": [
+            {"name": "费拉", "q": "Fira Santorini", "tag": "交通服务"},
+            {"name": "伊亚", "q": "Oia Santorini", "tag": "火山口景观"},
+            {"name": "佩里萨 / 卡马里", "q": "Perissa Kamari Santorini", "tag": "海滩"}
+          ]
+        },
+        "en": {
+          "rate": "EUR · check live rate",
+          "season": "Seasonal island",
+          "seasonDesc": "Ferries, local transport, weather and business availability vary by season; verify each item.",
+          "regions": [
+            {"name": "Fira", "cls": "tag-blue", "tag": "Transport & services", "desc": "Island services and transport cluster here, useful as a base without a car."},
+            {"name": "Oia", "cls": "tag-amber", "tag": "Caldera views", "desc": "Clifftop settlement and caldera views stand out; allow for sunset crowds."},
+            {"name": "Perissa–Kamari", "cls": "tag-green", "tag": "Beach areas", "desc": "Volcanic beaches and coastal stays offer a different experience from the caldera side."}
+          ],
+          "tips": [
+            {"title": "Entry requirements", "cls": "tag-blue", "tag": "Verify before travel", "desc": "Schengen rules depend on passport and departure point; use official Greek channels."},
+            {"title": "Transport & currency", "cls": "tag-green", "tag": "EUR", "desc": "Greece uses euros; check a live rate plus seasonal ferry and island transport."}
+          ],
+          "hotelAreas": [
+            {"name": "Fira", "q": "Fira Santorini", "tag": "Transport & services"},
+            {"name": "Oia", "q": "Oia Santorini", "tag": "Caldera views"},
+            {"name": "Perissa / Kamari", "q": "Perissa Kamari Santorini", "tag": "Beaches"}
+          ]
+        },
+        "ja": {
+          "rate": "EUR · 最新レートを確認",
+          "season": "季節性の島",
+          "seasonDesc": "フェリー、島内交通、天気、店舗営業は季節で変わるため、項目ごとに確認してください。",
+          "regions": [
+            {"name": "Fira", "cls": "tag-blue", "tag": "交通とサービス", "desc": "島内サービスと交通が集まり、車なしの滞在拠点に向きます。"},
+            {"name": "Oia", "cls": "tag-amber", "tag": "カルデラ眺望", "desc": "断崖の集落とカルデラの眺めが特徴で、夕日の混雑を考慮してください。"},
+            {"name": "Perissa–Kamari", "cls": "tag-green", "tag": "ビーチ地域", "desc": "火山性ビーチと海岸宿泊が集まり、カルデラ側とは異なる体験です。"}
+          ],
+          "tips": [
+            {"title": "入国条件", "cls": "tag-blue", "tag": "出発前に確認", "desc": "シェンゲン条件は旅券と出発地で異なるため、ギリシャ公式情報を確認してください。"},
+            {"title": "交通と通貨", "cls": "tag-green", "tag": "EUR", "desc": "通貨はユーロです。最新レート、季節運航のフェリー、島内交通を確認してください。"}
+          ],
+          "hotelAreas": [
+            {"name": "フィラ", "q": "Fira Santorini", "tag": "交通とサービス"},
+            {"name": "イア", "q": "Oia Santorini", "tag": "カルデラ眺望"},
+            {"name": "ペリッサ / カマリ", "q": "Perissa Kamari Santorini", "tag": "ビーチ"}
+          ]
+        },
+        "ko": {
+          "rate": "EUR · 실시간 환율 확인",
+          "season": "계절형 섬 여행",
+          "seasonDesc": "페리, 섬 교통, 날씨와 영업 상황은 계절마다 달라지므로 항목별로 확인하세요.",
+          "regions": [
+            {"name": "Fira", "cls": "tag-blue", "tag": "교통과 서비스", "desc": "섬 서비스와 교통이 모여 있어 차량 없이 머물기 좋은 거점입니다."},
+            {"name": "Oia", "cls": "tag-amber", "tag": "칼데라 전망", "desc": "절벽 마을과 칼데라 전망이 돋보이며 일몰 시간 혼잡을 고려해야 합니다."},
+            {"name": "Perissa–Kamari", "cls": "tag-green", "tag": "해변 지역", "desc": "화산 해변과 해안 숙소가 모여 칼데라 쪽과 다른 경험을 제공합니다."}
+          ],
+          "tips": [
+            {"title": "입국 요건", "cls": "tag-blue", "tag": "출발 전 확인", "desc": "솅겐 요건은 여권과 출발지에 따라 다르므로 그리스 공식 안내를 확인하세요."},
+            {"title": "교통과 통화", "cls": "tag-green", "tag": "EUR", "desc": "유로를 사용하며 실시간 환율, 계절 페리와 섬 교통을 확인하세요."}
+          ],
+          "hotelAreas": [
+            {"name": "피라", "q": "Fira Santorini", "tag": "교통과 서비스"},
+            {"name": "이아", "q": "Oia Santorini", "tag": "칼데라 전망"},
+            {"name": "페리사 / 카마리", "q": "Perissa Kamari Santorini", "tag": "해변"}
+          ]
+        },
+        "id": {
+          "rate": "EUR · cek kurs langsung",
+          "season": "Pulau musiman",
+          "seasonDesc": "Feri, transportasi lokal, cuaca, dan operasional usaha berubah menurut musim; cek satu per satu.",
+          "regions": [
+            {"name": "Fira", "cls": "tag-blue", "tag": "Transportasi & layanan", "desc": "Layanan dan transportasi pulau terpusat di sini, praktis sebagai basis tanpa mobil."},
+            {"name": "Oia", "cls": "tag-amber", "tag": "Pemandangan kaldera", "desc": "Desa tebing dan pemandangan kaldera menonjol; sisakan waktu untuk keramaian sunset."},
+            {"name": "Perissa–Kamari", "cls": "tag-green", "tag": "Area pantai", "desc": "Pantai vulkanik dan penginapan pesisir memberi pengalaman berbeda dari sisi kaldera."}
+          ],
+          "tips": [
+            {"title": "Syarat masuk", "cls": "tag-blue", "tag": "Cek sebelum pergi", "desc": "Aturan Schengen bergantung pada paspor dan titik keberangkatan; cek kanal resmi Yunani."},
+            {"title": "Transportasi & mata uang", "cls": "tag-green", "tag": "EUR", "desc": "Gunakan euro; cek kurs langsung, feri musiman, dan transportasi pulau."}
+          ],
+          "hotelAreas": [
+            {"name": "Fira", "q": "Fira Santorini", "tag": "Transportasi & layanan"},
+            {"name": "Oia", "q": "Oia Santorini", "tag": "Pemandangan kaldera"},
+            {"name": "Perissa / Kamari", "q": "Perissa Kamari Santorini", "tag": "Pantai"}
+          ]
+        }
+      }
+    }
+  }
+}

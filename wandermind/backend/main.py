@@ -8,6 +8,7 @@ import os
 import secrets
 import time
 import uuid
+from copy import deepcopy
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import List, Optional
@@ -497,6 +498,7 @@ class PrefsReq(BaseModel):
 class DestInfoReq(BaseModel):
     destination: str
     lang: str = "zh"
+    enhance: bool = False
 
 
 class HotelSearchReq(BaseModel):
@@ -1848,9 +1850,71 @@ async def driver_request(data: DriverReq):
     return {"ok": True, "delivered": True}
 
 
-# ─── Dynamic destination info (AI-generated panel data) ──────
+# ─── Destination info (curated presets + optional AI draft) ──
 _DEST_INFO_CACHE: dict = {}          # (dest_lower, lang) -> (ts, data)
 _DEST_INFO_TTL = 24 * 3600           # regions/tips/season barely change day-to-day
+_DEST_INFO_LANGS = {"zh", "en", "ja", "ko", "id"}
+_CURATED_DEST_INFO_PATH = Path(__file__).parent / "data" / "destination_intel.json"
+
+
+def _load_curated_destination_intel() -> dict:
+    try:
+        payload = json.loads(_CURATED_DEST_INFO_PATH.read_text(encoding="utf-8"))
+        if payload.get("schema_version") != 1 or not isinstance(payload.get("destinations"), dict):
+            raise ValueError("unsupported destination intel schema")
+        return payload
+    except Exception as exc:
+        print(f"[wandermind] curated destination intel unavailable: {exc}")
+        return {"schema_version": 1, "destinations": {}}
+
+
+_CURATED_DEST_INFO = _load_curated_destination_intel()
+
+
+def _normalize_destination_alias(value: str) -> str:
+    return re.sub(r"\s+", " ", (value or "").strip()).casefold()
+
+
+_CURATED_DEST_ALIAS_INDEX = {
+    _normalize_destination_alias(alias): key
+    for key, entry in _CURATED_DEST_INFO["destinations"].items()
+    for alias in entry.get("aliases", [])
+}
+
+
+def _curated_destination_response(destination: str, lang: str) -> Optional[dict]:
+    destination_key = _CURATED_DEST_ALIAS_INDEX.get(
+        _normalize_destination_alias(destination)
+    )
+    if not destination_key:
+        return None
+
+    entry = _CURATED_DEST_INFO["destinations"][destination_key]
+    content = entry.get("content", {}).get(lang) or entry.get("content", {}).get("en")
+    if not isinstance(content, dict):
+        return None
+
+    response = deepcopy(content)
+    response.update({
+        "destination_key": destination_key,
+        "timezone": entry["timezone"],
+        "currency_code": entry["currency_code"],
+        "source_kind": "curated",
+        "meta": {
+            "language": lang,
+            "content_version": _CURATED_DEST_INFO.get("content_version"),
+            "reviewed_at": _CURATED_DEST_INFO.get("reviewed_at"),
+            "sources": deepcopy(entry.get("sources", [])),
+            "dynamic_fields": [
+                "weather",
+                "exchange_rate",
+                "entry_requirements",
+                "opening_hours",
+                "prices",
+            ],
+        },
+    })
+    return response
 
 
 def _extract_json(text: str):
@@ -1931,31 +1995,41 @@ def _strip_bad_unicode(obj):
 
 @app.post("/api/dest_info")
 async def get_dest_info(req: DestInfoReq, user=Depends(optional_user)):
-    """AI生成任意目的地的面板数据：天气/区域/贴士。快模型 + 24h 缓存。"""
-    # Serve from cache when fresh — makes repeat/preset destinations instant
-    dest_key = (req.destination or "").strip().lower()
-    cache_key = (dest_key, req.lang or "zh")
+    """Serve reviewed presets without AI; custom/enhanced requests use an AI draft."""
+    destination = (req.destination or "").strip()
+    if not destination or len(destination) > 120:
+        raise HTTPException(422, "Destination must contain 1-120 characters")
+    normalized_lang = req.lang if req.lang in _DEST_INFO_LANGS else "en"
+
+    curated = _curated_destination_response(destination, normalized_lang)
+    if curated is not None and not req.enhance:
+        return curated
+
+    # Only authenticated users may spend model budget on custom or enhanced intel.
+    dest_key = _normalize_destination_alias(destination)
+    cache_key = (dest_key, normalized_lang)
+    if not user:
+        raise HTTPException(401, "Sign in is required to generate destination intel")
     now = time.time()
     cached = _DEST_INFO_CACHE.get(cache_key)
     if cached and now - cached[0] < _DEST_INFO_TTL:
         return cached[1]
-    if not user:
-        raise HTTPException(401, "Sign in is required to generate destination intel")
     if not _API_KEY and not _FAST_KEY:
         raise HTTPException(500, "API_KEY not set")
 
     lang_map = {"zh": "中文", "en": "English", "ja": "日本語", "ko": "한국어", "id": "Bahasa Indonesia"}
-    lang_name = lang_map.get(req.lang, "中文")
+    lang_name = lang_map[normalized_lang]
 
-    # One-shot with REAL data — a weak 7B model otherwise echoes the schema text.
+    # The AI result is explicitly a draft. Weather, exchange rates, entry rules,
+    # opening hours and prices belong to independent live/official sources.
     example = """示例（目的地=京都，日本）：
-{"timezone":"Asia/Tokyo","weather":{"temp":"8-16°C","cond":"晴朗微凉","details":"秋季干爽宜出行"},"rate":"1 CNY ≈ 21 JPY","season":"3-5月、10-11月","seasonDesc":"樱花与红叶季最佳","regions":[{"name":"祇园","tag":"古韵","desc":"艺伎与古町，夜晚灯火别致"},{"name":"岚山","tag":"自然","desc":"竹林与渡月桥，秋色尤美"},{"name":"清水寺周边","tag":"古迹","desc":"清水舞台俯瞰全城"}],"tips":[{"title":"免签停留","tag":"签证","desc":"持团签或单次签可入境"},{"title":"现金为主","tag":"货币","desc":"小店多收现金，备好日元"}],"hotelAreas":[{"name":"京都站","q":"Kyoto Station"},{"name":"祇园","q":"Gion"},{"name":"河原町","q":"Kawaramachi"}]}"""
+{"timezone":"Asia/Tokyo","season":"四季分明","seasonDesc":"天气和花期每年变化，出发前核对官方季节信息","regions":[{"name":"祇园与东山","tag":"文化","desc":"传统街区、寺社与步行探索"},{"name":"岚山","tag":"自然","desc":"竹林、河岸与西部景点"},{"name":"京都站周边","tag":"交通","desc":"铁路换乘与城市中部住宿据点"}],"tips":[{"title":"入境要求","tag":"需核验","desc":"按护照和出发地查询日本官方入境要求"},{"title":"货币与支付","tag":"需核验","desc":"使用日元，出发前核对实时汇率和支付方式"}],"hotelAreas":[{"name":"京都站","q":"Kyoto Station"},{"name":"祇园与东山","q":"Gion Kyoto"},{"name":"河原町","q":"Kawaramachi Kyoto"}]}"""
 
-    prompt = f"""你是旅行数据生成器。仿照下面的示例，为目的地「{req.destination}」生成同样结构的JSON，所有文字用{lang_name}，填入该目的地的真实信息（不要照抄示例的京都内容，也不要保留任何"如/示例"字样）。
+    prompt = f"""你是旅行资料草稿生成器。仿照下面的示例，为目的地「{destination}」生成同样结构的JSON，所有文字用{lang_name}。不要声称信息已实时核验，不要输出天气、实时汇率、具体签证结论、营业时间、评分或价格。
 
 {example}
 
-现在为「{req.destination}」生成JSON：regions恰好3条、tips恰好2条(签证/货币)、hotelAreas恰好3条真实街区。只输出JSON对象本身，值简短不重复用字。"""
+现在为「{destination}」生成JSON：regions恰好3条、tips恰好2条（入境核验/货币核验）、hotelAreas恰好3条真实街区。只输出JSON对象本身，值简短，不使用“实时、最新、已核验”等表述。"""
 
     # Use the capable PRO model (MiMo) — the free 7B fast model degenerates on this
     # structured task. Stream it (non-streaming hangs on these providers) and collect
@@ -2026,6 +2100,8 @@ async def get_dest_info(req: DestInfoReq, user=Depends(optional_user)):
         tz = str(data.get("timezone") or "")
         if not isinstance(regions, list) or len(regions) < 2 or "如" in tz or "示例" in tz or "IANA" in tz:
             raise HTTPException(502, "AI returned low-quality data, please retry")
+        data.pop("weather", None)
+        data.pop("rate", None)
         # Assign card colours server-side (we dropped cls from the prompt to lighten
         # the small model's load) so regions/tips render with varied tags.
         _cls_cycle = ["tag-blue", "tag-amber", "tag-green", "tag-red"]
@@ -2035,6 +2111,19 @@ async def get_dest_info(req: DestInfoReq, user=Depends(optional_user)):
         for i, tp in enumerate(data.get("tips") or []):
             if isinstance(tp, dict):
                 tp.setdefault("cls", _cls_cycle[i % len(_cls_cycle)])
+        data["source_kind"] = "ai_generated"
+        data["meta"] = {
+            "language": normalized_lang,
+            "generated_at": int(now),
+            "verification_status": "draft",
+            "dynamic_fields": [
+                "weather",
+                "exchange_rate",
+                "entry_requirements",
+                "opening_hours",
+                "prices",
+            ],
+        }
         _DEST_INFO_CACHE[cache_key] = (now, data)
         return data
     except HTTPException:
@@ -2322,12 +2411,12 @@ async def get_weather(city: str, lang: str = "en", user=Depends(optional_user)):
     is_curated = key in _WEATHER_CITY_ALIAS or city.strip() in _WEATHER_CITY_ALIAS
     normalized_lang = lang if lang in {"zh", "en", "ja", "ko", "id"} else "en"
     cache_key = (q.lower(), normalized_lang)
+    if not user and not is_curated:
+        raise HTTPException(401, "Sign in is required for custom weather searches")
     now = time.time()
     cached = _WEATHER_CACHE.get(cache_key)
     if cached and now - cached[0] < _WEATHER_CACHE_TTL:
         return cached[1]
-    if not user and not is_curated:
-        raise HTTPException(401, "Sign in is required for custom weather searches")
     if not _OPENWEATHER_KEY:
         raise HTTPException(503, "OPENWEATHER_API_KEY not set — set it in Render env to enable live weather")
 

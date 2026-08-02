@@ -601,16 +601,17 @@ function renderChatHeader() {
   }
 }
 
-// Set the custom destination (when dest = 'any'), persist it, and pull live data
+// Set the custom destination (when dest = 'any'), persist it, and pull an AI draft
 // so the right-panel intel + hotel/flight/itinerary tools all activate.
 function setCustomDest(name) {
   _customDest = name;
   localStorage.setItem('wm_studio_customdest', name);
+  if (typeof _resetCustomDestinationData === 'function') _resetCustomDestinationData();
   renderChatHeader();
   addLog('info', 'fa-compass', (currentLang === 'zh' ? '目的地已设为 ' : 'Destination set to ') + name);
-  // Immediate feedback — the AI intel takes a few seconds to come back
+  // Immediate feedback — custom destinations require a signed-in AI draft.
   if (typeof showToast === 'function') {
-    showToast((currentLang === 'zh' ? '正在加载 ' + name + ' 的实时情报…' : 'Loading live intel for ' + name + '…'), 'fa-spinner');
+    showToast((currentLang === 'zh' ? '正在整理 ' + name + ' 的 AI 资料草稿…' : 'Preparing an AI intel draft for ' + name + '…'), 'fa-spinner');
   }
   if (typeof fetchDestInfo === 'function') fetchDestInfo('any', true);
   if (typeof renderPanelCompare === 'function') renderPanelCompare();
@@ -956,8 +957,6 @@ function switchDest(key) {
   renderChatHeader();
   renderPanelDest();
   if (typeof renderPanelCompare === 'function') renderPanelCompare();
-  // Re-activate live intel when returning to a previously-set custom destination
-  if (key === 'any' && _customDest && typeof fetchDestInfo === 'function') fetchDestInfo('any');
   // Focus the custom-dest input so it's obvious the user should type
   if (key === 'any' && !_customDest) {
     setTimeout(() => { const i = document.getElementById('ws-custom-dest-input'); if (i) i.focus(); }, 60);
@@ -2252,7 +2251,7 @@ switchDest = function(key) {
   renderPanelCompare();
   renderPanelItinerary();
   renderPanelBudget();
-  // Phase 2.5: fetch live data for the new destination (silent)
+  // Phase 2.5: load curated preset data or a signed-in custom AI draft.
   if (typeof fetchDestInfo === 'function') fetchDestInfo(key);
 };
 
@@ -2260,16 +2259,41 @@ switchDest = function(key) {
    PHASE 2.5 — Live destination data via /api/dest_info
    ═══════════════════════════════════════════════════════════════════════ */
 
-Object.assign(TOOL_I18N.en, { liveTag:'LIVE', sampleTag:'SAMPLE', destLoading:'Loading live data…' });
-Object.assign(TOOL_I18N.zh, { liveTag:'实时', sampleTag:'示例', destLoading:'加载实时数据…' });
-Object.assign(TOOL_I18N.ja, { liveTag:'ライブ', sampleTag:'サンプル', destLoading:'リアル情報読込中…' });
-Object.assign(TOOL_I18N.ko, { liveTag:'실시간', sampleTag:'샘플', destLoading:'실시간 데이터 로드 중…' });
-Object.assign(TOOL_I18N.id, { liveTag:'LIVE', sampleTag:'SAMPLE', destLoading:'Memuat data langsung…' });
+Object.assign(TOOL_I18N.en, { liveTag:'LIVE WEATHER', curatedTag:'CURATED', aiDraftTag:'AI DRAFT', sampleTag:'SAMPLE', destLoading:'Loading destination data…', rateLbl:'Currency guide' });
+Object.assign(TOOL_I18N.zh, { liveTag:'实时天气', curatedTag:'精选资料', aiDraftTag:'AI 草稿', sampleTag:'示例', destLoading:'加载目的地资料…', rateLbl:'货币提示' });
+Object.assign(TOOL_I18N.ja, { liveTag:'リアル天気', curatedTag:'厳選情報', aiDraftTag:'AI下書き', sampleTag:'サンプル', destLoading:'目的地情報を読込中…', rateLbl:'通貨メモ' });
+Object.assign(TOOL_I18N.ko, { liveTag:'실시간 날씨', curatedTag:'엄선 정보', aiDraftTag:'AI 초안', sampleTag:'샘플', destLoading:'목적지 정보 로드 중…', rateLbl:'통화 안내' });
+Object.assign(TOOL_I18N.id, { liveTag:'CUACA LIVE', curatedTag:'TERKURASI', aiDraftTag:'DRAF AI', sampleTag:'SAMPEL', destLoading:'Memuat info destinasi…', rateLbl:'Panduan mata uang' });
 
 let _destInfoCache = {};
-let _destIsLive = {};
+let _destInfoSource = {};
+let _destInfoPending = new Set();
+let _weatherPending = new Set();
+let _authGeneration = 0;
 let _destStatusMode = '';
 let _destStatusKey = '';
+const _customDestBaseline = JSON.parse(JSON.stringify({
+  weather: DESTS.any.weather,
+  rate: DESTS.any.rate,
+  season: DESTS.any.season,
+  seasonDesc: DESTS.any.seasonDesc,
+  regions: DESTS.any.regions,
+  tips: DESTS.any.tips,
+  hotelAreas: HOTEL_AREAS.custom
+}));
+
+function _resetCustomDestinationData() {
+  DESTS.any.weather = JSON.parse(JSON.stringify(_customDestBaseline.weather));
+  DESTS.any.rate = _customDestBaseline.rate;
+  DESTS.any.season = JSON.parse(JSON.stringify(_customDestBaseline.season));
+  DESTS.any.seasonDesc = JSON.parse(JSON.stringify(_customDestBaseline.seasonDesc));
+  DESTS.any.regions = JSON.parse(JSON.stringify(_customDestBaseline.regions));
+  DESTS.any.tips = JSON.parse(JSON.stringify(_customDestBaseline.tips));
+  HOTEL_AREAS.custom = JSON.parse(JSON.stringify(_customDestBaseline.hotelAreas));
+  DESTS.any._isLive = false;
+  delete DESTS.any._liveUpdatedAt;
+  delete _destInfoSource.any;
+}
 
 const _DEST_API_NAMES = {
   bali:'Bali, Indonesia',
@@ -2278,7 +2302,7 @@ const _DEST_API_NAMES = {
   santorini:'Santorini, Greece'
 };
 
-// Show a status banner in the destination panel: 'loading' | 'fallback' | 'error' | '' (hide).
+// Show a status banner in the destination panel: 'loading' | 'fallback' | 'auth' | 'error' | '' (hide).
 function _setDestStatus(mode, key) {
   if (key && key !== currentDest) return;
   _destStatusMode = mode;
@@ -2286,26 +2310,47 @@ function _setDestStatus(mode, key) {
   const el = document.getElementById('ws-dest-status');
   if (!el) return;
   if (mode === 'loading') {
-    const msg = { zh:'正在生成目的地情报，约 20–40 秒…', en:'Generating destination intel — 20–40s…', ja:'目的地情報を生成中…20〜40秒', ko:'목적지 정보 생성 중… 20–40초', id:'Menyusun info tujuan… 20–40 dtk' }[currentLang] || 'Generating…';
+    const presetMsg = {
+      zh:'正在加载精选目的地资料…', en:'Loading curated destination information…',
+      ja:'厳選した目的地情報を読み込み中…', ko:'엄선 목적지 정보를 불러오는 중…',
+      id:'Memuat info destinasi terkurasi…'
+    }[currentLang] || 'Loading curated destination information…';
+    const customMsg = {
+      zh:'正在生成 AI 资料草稿，约 20–40 秒…', en:'Generating an AI intel draft — 20–40s…',
+      ja:'AI情報の下書きを生成中…20〜40秒', ko:'AI 정보 초안 생성 중… 20–40초',
+      id:'Menyusun draf info AI… 20–40 dtk'
+    }[currentLang] || 'Generating an AI intel draft…';
+    const msg = key === 'any' ? customMsg : presetMsg;
     el.className = 'ws-dest-status loading';
     el.innerHTML = `<span class="fa fa-circle-o-notch fa-spin"></span> ${escapeHtml(msg)}`;
     el.style.display = 'flex';
-  } else if (mode === 'fallback' || mode === 'error') {
+  } else if (mode === 'fallback' || mode === 'auth' || mode === 'error') {
     const fallbackMsg = {
-      zh:'AI 深度情报暂不可用，已显示基础资料；实时天气独立更新',
-      en:'AI deep intel is temporarily unavailable. Basic information is shown; live weather updates independently.',
-      ja:'AIによる詳細情報は一時的に利用できません。基本情報を表示しています。リアルタイム天気は個別に更新されます。',
-      ko:'AI 심층 정보는 일시적으로 사용할 수 없습니다. 기본 정보를 표시했으며 실시간 날씨는 별도로 업데이트됩니다.',
-      id:'Info mendalam AI sementara tidak tersedia. Info dasar ditampilkan; cuaca langsung diperbarui secara terpisah.'
-    }[currentLang] || 'AI deep intel is temporarily unavailable. Basic information is shown; live weather updates independently.';
+      zh:'精选资料服务暂不可用，已显示页面内基础资料；实时天气独立更新',
+      en:'Curated information is temporarily unavailable. Built-in basics remain visible; live weather updates independently.',
+      ja:'厳選情報サービスは一時的に利用できません。内蔵の基本情報を表示し、天気は個別に更新されます。',
+      ko:'엄선 정보 서비스를 일시적으로 사용할 수 없습니다. 기본 정보는 유지되며 날씨는 별도로 업데이트됩니다.',
+      id:'Info terkurasi sementara tidak tersedia. Info dasar tetap tampil; cuaca langsung diperbarui terpisah.'
+    }[currentLang] || 'Curated information is temporarily unavailable. Built-in basics remain visible; live weather updates independently.';
     const errorMsg = { zh:'情报生成失败', en:'Couldn\'t generate intel', ja:'生成に失敗', ko:'생성 실패', id:'Gagal memuat' }[currentLang] || 'Failed';
+    const authMsg = {
+      zh:'登录后可为任意目的地生成 AI 资料草稿',
+      en:'Sign in to generate an AI intel draft for a custom destination',
+      ja:'ログインすると任意の目的地のAI情報下書きを生成できます',
+      ko:'로그인하면 맞춤 목적지 AI 정보 초안을 만들 수 있습니다',
+      id:'Masuk untuk membuat draf info AI bagi destinasi khusus'
+    }[currentLang] || 'Sign in to generate an AI intel draft for a custom destination';
     const retry = { zh:'重试', en:'Retry', ja:'再試行', ko:'다시', id:'Coba lagi' }[currentLang] || 'Retry';
-    const msg = mode === 'fallback' ? fallbackMsg : errorMsg;
+    const login = { zh:'登录', en:'Sign in', ja:'ログイン', ko:'로그인', id:'Masuk' }[currentLang] || 'Sign in';
+    const msg = mode === 'fallback' ? fallbackMsg : (mode === 'auth' ? authMsg : errorMsg);
+    const action = mode === 'auth' ? login : retry;
     el.className = `ws-dest-status ${mode}`;
-    el.innerHTML = `<span><span class="fa fa-exclamation-triangle"></span> ${escapeHtml(msg)}</span><button class="ws-dest-retry" id="ws-dest-retry">${escapeHtml(retry)}</button>`;
+    el.innerHTML = `<span><span class="fa fa-exclamation-triangle"></span> ${escapeHtml(msg)}</span><button class="ws-dest-retry" id="ws-dest-retry">${escapeHtml(action)}</button>`;
     el.style.display = 'flex';
     const btn = document.getElementById('ws-dest-retry');
-    if (btn) btn.onclick = () => fetchDestInfo(key, true);
+    if (btn) btn.onclick = mode === 'auth'
+      ? () => showAuthModal('login')
+      : () => fetchDestInfo(key, true);
   } else {
     el.style.display = 'none';
     el.innerHTML = '';
@@ -2318,46 +2363,77 @@ async function fetchDestInfo(key, force = false) {
     if (key === currentDest) _setDestStatus('', key);
     return;
   }
-  // Weather comes from OpenWeather independently — fire it now so the user sees
-  // something fast instead of waiting on the slow AI intel.
-  fetchLiveWeather(key);
-  const cacheKey = key + ':' + currentLang;
+  const requestLang = currentLang;
+  const requestDest = apiDest.trim();
+  const requestAuthGeneration = _authGeneration;
+  const cacheKey = key + ':' + requestDest.toLowerCase() + ':' + requestLang;
+  const requestIsCurrent = () => key === currentDest
+    && requestLang === currentLang
+    && requestAuthGeneration === _authGeneration
+    && (key !== 'any' || requestDest === _customDest);
+  // Weather comes from OpenWeather independently and is the only live field.
+  fetchLiveWeather(key, requestLang, key === 'any' ? requestDest : key);
   if (!force && _destInfoCache[cacheKey]) {
-    _applyDestInfo(key, _destInfoCache[cacheKey]);
-    _setDestStatus('', key);
+    if (requestIsCurrent()) {
+      _applyDestInfo(key, _destInfoCache[cacheKey], requestLang);
+      _setDestStatus('', key);
+    }
     return;
   }
+  if (_destInfoPending.has(cacheKey)) return;
+  _destInfoPending.add(cacheKey);
   _setDestStatus('loading', key);
-  addLog('info', 'fa-cloud-download', _interp((currentLang==='zh'?'获取 {d} 实时数据':'Fetching live data for {d}'), { d: apiDest }));
+  addLog('info', 'fa-cloud-download', _interp((currentLang==='zh'?'加载 {d} 的目的地资料':'Loading destination information for {d}'), { d: apiDest }));
   try {
     const r = await fetch(BACKEND_BASE + '/api/dest_info', {
       method:'POST',
-      headers:{ 'Content-Type':'application/json' },
-      body: JSON.stringify({ destination: apiDest, lang: currentLang })
+      headers:{ 'Content-Type':'application/json', ...authHeaders() },
+      body: JSON.stringify({ destination: requestDest, lang: requestLang, enhance: key === 'any' })
     });
     if (!r.ok) {
       let detail = 'HTTP ' + r.status;
       try { const e = await r.json(); detail = e.detail || detail; } catch(_) {}
-      throw new Error(detail);
+      const error = new Error(detail);
+      error.status = r.status;
+      throw error;
     }
     const data = await r.json();
+    if (requestAuthGeneration !== _authGeneration) return;
     _destInfoCache[cacheKey] = data;
-    _applyDestInfo(key, data);
-    _setDestStatus('', key);
-    addLog('success', 'fa-cloud', _interp((currentLang==='zh'?'{d} · 实时数据已加载':'{d} · live data loaded'), { d: apiDest }));
+    if (requestIsCurrent()) {
+      _applyDestInfo(key, data, requestLang);
+      _setDestStatus('', key);
+    }
+    const sourceText = data.source_kind === 'curated'
+      ? (currentLang === 'zh' ? '精选资料已加载' : 'curated information loaded')
+      : (currentLang === 'zh' ? 'AI 资料草稿已加载' : 'AI intel draft loaded');
+    addLog('success', 'fa-cloud', `${apiDest} · ${sourceText}`);
   } catch (err) {
-    _setDestStatus(key === 'any' ? 'error' : 'fallback', key);
-    addLog('warn', 'fa-cloud-download', _interp((currentLang==='zh'?'实时数据获取失败: {e}':'Live fetch failed: {e}'), { e: err.message || err }));
+    const mode = key === 'any' && err.status === 401 ? 'auth' : (key === 'any' ? 'error' : 'fallback');
+    if (mode === 'auth' && requestIsCurrent()) {
+      _resetCustomDestinationData();
+      if (key === currentDest) renderPanelDest();
+    }
+    if (requestIsCurrent()) _setDestStatus(mode, key);
+    addLog('warn', 'fa-cloud-download', _interp((currentLang==='zh'?'目的地资料获取失败: {e}':'Destination information failed: {e}'), { e: err.message || err }));
+  } finally {
+    _destInfoPending.delete(cacheKey);
   }
 }
 
 // —— Live weather via OpenWeatherMap (backend /api/weather) ——
 // Silently no-ops if the backend has no OPENWEATHER_API_KEY set.
-async function fetchLiveWeather(key) {
+async function fetchLiveWeather(key, requestLang = currentLang, requestDest = '') {
   // For a custom "any" destination, query the user-typed city (not the literal "any")
-  const apiDest = (key === 'any') ? (_customDest || 'any') : key;
+  const apiDest = requestDest || ((key === 'any') ? (_customDest || 'any') : key);
+  const requestAuthGeneration = _authGeneration;
+  const weatherKey = apiDest.trim().toLowerCase() + ':' + requestLang;
+  if (_weatherPending.has(weatherKey)) return;
+  _weatherPending.add(weatherKey);
   try {
-    const r = await fetch(BACKEND_BASE + '/api/weather?city=' + encodeURIComponent(apiDest) + '&lang=' + currentLang);
+    const r = await fetch(BACKEND_BASE + '/api/weather?city=' + encodeURIComponent(apiDest) + '&lang=' + requestLang, {
+      headers: authHeaders()
+    });
     if (!r.ok) {
       // 503 = no key configured — that's expected and silent
       if (r.status !== 503) {
@@ -2366,13 +2442,17 @@ async function fetchLiveWeather(key) {
       return;
     }
     const w = await r.json();
+    if (requestAuthGeneration !== _authGeneration
+      || key !== currentDest
+      || requestLang !== currentLang
+      || (key === 'any' && apiDest !== _customDest)) return;
     // Overwrite current dest's weather card with real data
     const d = DESTS[key];
     if (!d || !d.weather) return;
     d.weather.temp = w.temp;
     d.weather.details = w.details;
     d.weather.icon = w.icon;  // FA icon class (already mapped backend-side)
-    d.weather.cond = { ...(d.weather.cond || {}), [currentLang]: w.cond };
+    d.weather.cond = { ...(d.weather.cond || {}), [requestLang]: w.cond };
     d._isLive = true;
     d._liveUpdatedAt = w.updated_at || Math.floor(Date.now() / 1000);
     // Repaint dest panel if it's the currently selected destination
@@ -2380,27 +2460,43 @@ async function fetchLiveWeather(key) {
     addLog('success', 'fa-thermometer-half', _interp((currentLang==='zh'?'{d} · 实时天气已更新':'{d} · live weather updated'), { d: apiDest }));
   } catch (_) {
     // Network error — silent (we have static fallback)
+  } finally {
+    _weatherPending.delete(weatherKey);
   }
 }
 
-function _applyDestInfo(key, data) {
+function _applyDestInfo(key, data, dataLang = currentLang) {
   const d = DESTS[key];
   if (!d || !data) return;
   // Weather — backend returns strings already localised since we passed `lang`
   if (data.weather) {
     if (data.weather.temp) d.weather.temp = data.weather.temp;
     if (data.weather.details) d.weather.details = data.weather.details;
-    if (data.weather.cond) d.weather.cond = { ...(d.weather.cond || {}), [currentLang]: data.weather.cond };
+    if (data.weather.cond) d.weather.cond = { ...(d.weather.cond || {}), [dataLang]: data.weather.cond };
+  } else if (!d._isLive) {
+    const weatherWaiting = {
+      zh:'等待实时天气', en:'Waiting for live weather', ja:'リアル天気を待機中',
+      ko:'실시간 날씨 대기 중', id:'Menunggu cuaca langsung'
+    }[currentLang] || 'Waiting for live weather';
+    const weatherNote = {
+      zh:'天气由独立服务更新', en:'Updated by a separate weather service',
+      ja:'天気は別サービスで更新', ko:'날씨는 별도 서비스에서 업데이트',
+      id:'Diperbarui oleh layanan cuaca terpisah'
+    }[currentLang] || 'Updated by a separate weather service';
+    d.weather.temp = '—';
+    d.weather.details = weatherNote;
+    d.weather.cond = { ...(d.weather.cond || {}), [dataLang]: weatherWaiting };
   }
   if (data.rate) d.rate = data.rate;
-  if (data.season) d.season = { ...(d.season || {}), [currentLang]: data.season };
-  if (data.seasonDesc) d.seasonDesc = { ...(d.seasonDesc || {}), [currentLang]: data.seasonDesc };
+  else if (data.currency_code) d.rate = `${data.currency_code} · ${t().rateLbl}`;
+  if (data.season) d.season = { ...(d.season || {}), [dataLang]: data.season };
+  if (data.seasonDesc) d.seasonDesc = { ...(d.seasonDesc || {}), [dataLang]: data.seasonDesc };
   if (Array.isArray(data.regions) && data.regions.length) {
     d.regions = data.regions.map(r => ({
       name: r.name || '—',
       cls: r.cls || 'tag-blue',
-      tag: { [currentLang]: r.tag || '' },
-      desc: { [currentLang]: r.desc || '' }
+      tag: { [dataLang]: r.tag || '' },
+      desc: { [dataLang]: r.desc || '' }
     }));
   }
   if (Array.isArray(data.tips) && data.tips.length) {
@@ -2409,9 +2505,9 @@ function _applyDestInfo(key, data) {
     d.tips = [
       ...data.tips.map(tip => ({
         cls: tip.cls || 'tag-blue',
-        title: { [currentLang]: tip.title || '' },
-        tag: { [currentLang]: tip.tag || '' },
-        desc: { [currentLang]: tip.desc || '' }
+        title: { [dataLang]: tip.title || '' },
+        tag: { [dataLang]: tip.tag || '' },
+        desc: { [dataLang]: tip.desc || '' }
       })),
       ...driverTips
     ];
@@ -2423,13 +2519,13 @@ function _applyDestInfo(key, data) {
       ...data.hotelAreas.map((a, idx) => ({
         key: (a.key || `area-${idx}`).toLowerCase().replace(/\s+/g, '-'),
         q: a.q || a.name || '',
-        name: { [currentLang]: a.name || a.q || `Area ${idx+1}` },
-        tag: { [currentLang]: a.tag || '' }
+        name: { [dataLang]: a.name || a.q || `Area ${idx+1}` },
+        tag: { [dataLang]: a.tag || '' }
       }))
     ];
     _selectedHotelArea = 'all';
   }
-  _destIsLive[key] = true;
+  _destInfoSource[key] = data.source_kind || 'ai_generated';
   // Repaint UI surfaces that use this data
   if (currentDest === key) {
     renderPanelDest();
@@ -2438,23 +2534,22 @@ function _applyDestInfo(key, data) {
   }
 }
 
-// Augment the destination section title with a LIVE chip after each render.
-// Only shown when EITHER dest_info AI data OR OpenWeather real data succeeded.
-// When data is sample (not live), the title stays clean with no badge.
+// Show the provenance of stable destination data separately from live weather.
 const _origRenderPanelDest = renderPanelDest;
 renderPanelDest = function() {
   _origRenderPanelDest();
   const titleEl = document.getElementById('ws-section-weather');
   if (!titleEl) return;
   const d = DESTS[currentDest] || {};
-  const live = !!_destIsLive[currentDest] || !!d._isLive;
-  // Always remove existing chip first (textContent was already reset by _orig)
-  const existing = titleEl.querySelector('.ws-live-chip');
-  if (existing) existing.remove();
-  // Only show badge when data is actually live — no badge for sample data
-  if (live) {
-    titleEl.insertAdjacentHTML('beforeend',
-      ` <span class="ws-live-chip" style="font-size:9px;font-weight:700;padding:2px 6px;border-radius:8px;background:#10b981;color:#fff;letter-spacing:.05em;margin-left:6px;vertical-align:middle">${escapeHtml(t().liveTag)}</span>`);
+  titleEl.querySelectorAll('.ws-data-chip').forEach(chip => chip.remove());
+  const source = _destInfoSource[currentDest];
+  if (source === 'curated') {
+    titleEl.insertAdjacentHTML('beforeend', ` <span class="ws-data-chip curated">${escapeHtml(t().curatedTag)}</span>`);
+  } else if (source === 'ai_generated') {
+    titleEl.insertAdjacentHTML('beforeend', ` <span class="ws-data-chip ai-draft">${escapeHtml(t().aiDraftTag)}</span>`);
+  }
+  if (d._isLive) {
+    titleEl.insertAdjacentHTML('beforeend', ` <span class="ws-data-chip live">${escapeHtml(t().liveTag)}</span>`);
   }
 };
 
@@ -2643,6 +2738,7 @@ async function doLogin(email, password) {
 }
 
 function completeAuth(data) {
+  _authGeneration += 1;
   authToken = data.token;
   authUser = data.user;
   localStorage.setItem('wm_studio_token', authToken);
@@ -2710,16 +2806,25 @@ function loadGoogleIdentity() {
 }
 
 function doLogout() {
+  _authGeneration += 1;
   authToken = null;
   authUser  = null;
   currentTripId = null;
   tripList = [];
   messages = [];
+  _destInfoCache = Object.fromEntries(
+    Object.entries(_destInfoCache).filter(([cacheKey]) => !cacheKey.startsWith('any:'))
+  );
+  _resetCustomDestinationData();
   localStorage.removeItem('wm_studio_token');
   localStorage.removeItem('wm_studio_user');
   updateAuthUI();
   renderSidebar();
   renderMessages();
+  if (currentDest === 'any') {
+    renderPanelDest();
+    _setDestStatus('auth', 'any');
+  }
   addLog('info', 'fa-sign-out', t().logLogout);
 }
 
@@ -3410,6 +3515,7 @@ const _origOnLangChange = onLangChange;
 onLangChange = function(newLang) {
   _origOnLangChange(newLang);
   updateAuthUI();
+  if (typeof currentDest === 'string') fetchDestInfo(currentDest);
 };
 
 // Boot: hydrate auth state, fetch live dest data, render auth UI

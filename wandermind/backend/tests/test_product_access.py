@@ -7,6 +7,7 @@ import time
 import unittest
 import uuid
 from pathlib import Path
+from unittest.mock import patch
 
 import httpx
 from fastapi import HTTPException
@@ -408,7 +409,7 @@ class ProductAccessTests(unittest.TestCase):
                     json={"destination": "Cached Test City", "lang": "en"},
                 )
             )
-            self.assertEqual(cached.status_code, 200, cached.text)
+            self.assertEqual(cached.status_code, 401, cached.text)
         finally:
             main._DEST_INFO_CACHE.pop(cache_key, None)
 
@@ -427,6 +428,117 @@ class ProductAccessTests(unittest.TestCase):
             self.assertEqual(normalized_weather.json()["source"], "cache")
         finally:
             main._WEATHER_CACHE.pop(weather_cache_key, None)
+
+        private_weather_key = ("private test city", "en")
+        main._WEATHER_CACHE[private_weather_key] = (
+            time.time(),
+            {"city": "Private Test City", "source": "cache"},
+        )
+        try:
+            private_weather = self._run(
+                self._request(
+                    "GET",
+                    "/api/weather?city=Private%20Test%20City&lang=en",
+                )
+            )
+            self.assertEqual(private_weather.status_code, 401, private_weather.text)
+        finally:
+            main._WEATHER_CACHE.pop(private_weather_key, None)
+
+    def test_curated_destination_intel_is_public_localized_and_model_free(self):
+        aliases = {
+            "Bali, Indonesia": "bali",
+            "Kyoto, Japan": "kyoto",
+            "Paris, France": "paris",
+            "Santorini, Greece": "santorini",
+        }
+        with patch.object(
+            main,
+            "_route",
+            side_effect=AssertionError("curated destination request called model routing"),
+        ):
+            for destination, expected_key in aliases.items():
+                localized_seasons = set()
+                for lang in ("zh", "en", "ja", "ko", "id"):
+                    response = self._run(
+                        self._request(
+                            "POST",
+                            "/api/dest_info",
+                            json={"destination": destination, "lang": lang},
+                        )
+                    )
+                    self.assertEqual(response.status_code, 200, response.text)
+                    payload = response.json()
+                    self.assertEqual(payload["destination_key"], expected_key)
+                    self.assertEqual(payload["source_kind"], "curated")
+                    self.assertEqual(payload["meta"]["language"], lang)
+                    self.assertEqual(len(payload["regions"]), 3)
+                    self.assertEqual(len(payload["tips"]), 2)
+                    self.assertEqual(len(payload["hotelAreas"]), 3)
+                    self.assertNotIn("weather", payload)
+                    self.assertIn("exchange_rate", payload["meta"]["dynamic_fields"])
+                    self.assertTrue(
+                        all(
+                            source["url"].startswith("https://")
+                            for source in payload["meta"]["sources"]
+                        )
+                    )
+                    localized_seasons.add(payload["season"])
+                self.assertEqual(len(localized_seasons), 5, destination)
+
+        invalid_lang = self._run(
+            self._request(
+                "POST",
+                "/api/dest_info",
+                json={"destination": "Bali", "lang": "attacker-value"},
+            )
+        )
+        self.assertEqual(invalid_lang.status_code, 200, invalid_lang.text)
+        self.assertEqual(invalid_lang.json()["meta"]["language"], "en")
+
+    def test_curated_destination_aliases_do_not_match_custom_places(self):
+        cache_key = ("paris, texas", "en")
+        main._DEST_INFO_CACHE[cache_key] = (
+            time.time(),
+            {"source_kind": "ai_generated", "season": "cached private draft"},
+        )
+        custom = self._run(
+            self._request(
+                "POST",
+                "/api/dest_info",
+                json={"destination": "Paris, Texas", "lang": "en"},
+            )
+        )
+        self.assertEqual(custom.status_code, 401, custom.text)
+        main._DEST_INFO_CACHE.pop(cache_key, None)
+
+        enhanced = self._run(
+            self._request(
+                "POST",
+                "/api/dest_info",
+                json={
+                    "destination": "Bali",
+                    "lang": "en",
+                    "enhance": True,
+                },
+            )
+        )
+        self.assertEqual(enhanced.status_code, 401, enhanced.text)
+
+    def test_curated_destination_dataset_has_complete_language_contract(self):
+        destinations = main._CURATED_DEST_INFO["destinations"]
+        self.assertEqual(set(destinations), {"bali", "kyoto", "paris", "santorini"})
+        for destination_key, entry in destinations.items():
+            self.assertEqual(
+                set(entry["content"]), {"zh", "en", "ja", "ko", "id"},
+                destination_key,
+            )
+            self.assertTrue(entry["aliases"], destination_key)
+            for lang, content in entry["content"].items():
+                self.assertEqual(len(content["regions"]), 3, (destination_key, lang))
+                self.assertEqual(len(content["tips"]), 2, (destination_key, lang))
+                self.assertEqual(len(content["hotelAreas"]), 3, (destination_key, lang))
+                self.assertNotIn("weather", content, (destination_key, lang))
 
     def test_driver_email_has_selected_driver_and_no_unverified_fixed_rate(self):
         _, html, text = render_driver_request(

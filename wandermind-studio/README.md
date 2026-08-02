@@ -126,7 +126,7 @@ https://wandermind.cc/api/*         ← 后端 API
 | POST | `/api/auth/login` | 登录，返回 JWT |
 | POST | `/api/chat` | SSE 流式对话 |
 | POST | `/api/chat/team` | 3 Agent 并行 |
-| POST | `/api/dest_info` | 目的地数据生成 |
+| POST | `/api/dest_info` | 四个预设目的地五语精选资料静态直出；任意目的地登录后生成 AI 草稿，天气由 `/api/weather` 独立更新 |
 | POST | `/api/search/hotels` | Google Hotels 实时价格 |
 | POST | `/api/search/flights` | Google Flights 实时价格 |
 | GET  | `/api/weather` | OpenWeather 实时天气 |
