@@ -3135,12 +3135,20 @@ function hydratePlannerFromQuery() {
   if (place && !q.get('start') && !q.get('budget')) {
     currentDest = 'bali';
     localStorage.setItem('wm_studio_dest', 'bali');
+    const routeId = q.get('route') || '';
+    const routeHints = {
+      zh: routeId ? `，优先参考 ${routeId} 推荐路线` : '',
+      en: routeId ? `, using recommended route ${routeId} as the starting point` : '',
+      ja: routeId ? `。おすすめルート ${routeId} を出発点にしてください` : '',
+      ko: routeId ? `. 추천 경로 ${routeId}을(를) 출발점으로 사용해 주세요` : '',
+      id: routeId ? `, dengan rute rekomendasi ${routeId} sebagai titik awal` : ''
+    };
     const prompts = {
-      zh:`请把“${place}”加入我的巴厘岛路线，并根据交通时间给出一个不过度赶场的简易安排。`,
-      en:`Add “${place}” to my Bali route and suggest a simple, unhurried plan that accounts for travel time.`,
-      ja:`「${place}」をバリのルートに追加し、移動時間を考慮した無理のない簡単なプランを提案してください。`,
-      ko:`“${place}”을(를) 발리 경로에 추가하고 이동 시간을 고려한 여유로운 간단 일정을 제안해 주세요.`,
-      id:`Tambahkan “${place}” ke rute Bali saya dan buat rencana sederhana yang santai dengan mempertimbangkan waktu perjalanan.`
+      zh:`请把“${place}”加入我的巴厘岛路线${routeHints.zh}，并根据交通时间给出一个不过度赶场的简易安排。`,
+      en:`Add “${place}” to my Bali route${routeHints.en} and suggest a simple, unhurried plan that accounts for travel time.`,
+      ja:`「${place}」をバリのルートに追加し、移動時間を考慮した無理のない簡単なプランを提案してください${routeHints.ja}。`,
+      ko:`“${place}”을(를) 발리 경로에 추가하고 이동 시간을 고려한 여유로운 간단 일정을 제안해 주세요${routeHints.ko}.`,
+      id:`Tambahkan “${place}” ke rute Bali saya${routeHints.id} dan buat rencana sederhana yang santai dengan mempertimbangkan waktu perjalanan.`
     };
     const input = document.getElementById('ws-input');
     if (input) { input.value = prompts[currentLang] || prompts.en; input.dispatchEvent(new Event('input')); input.focus(); }

@@ -664,6 +664,23 @@ class ProductAccessTests(unittest.TestCase):
         self.assertIn('data-i18n="baliFilterTheme" data-i18n-attr="aria-label"', html)
         self.assertIn('data-i18n="baliFilterTags" data-i18n-attr="aria-label"', html)
         self.assertIn("categoryMatches && tagMatches", html)
+        self.assertIn('id="bali-place-route-link"', html)
+        self.assertIn("encodeURIComponent(routeId) + '#route-families'", html)
+        self.assertIn('id="bali-place-driver"', html)
+        self.assertIn("source:'gallery'", html)
+        self.assertIn("matchedRouteId(activeShot)", html)
+        self.assertIn("activeId = requestedRoute", html)
+        self.assertIn("window.setTimeout(renderModal, 0)", html)
+
+        driver_html = (frontend_dir / "find-driver.html").read_text(encoding="utf-8")
+        self.assertIn("var requestedPlace = requestParams.get('place')", driver_html)
+        self.assertIn("[requestedRoute, requestedPlace]", driver_html)
+
+        ai_js = (frontend_dir / "assets" / "js" / "ai-tool.js").read_text(
+            encoding="utf-8"
+        )
+        self.assertIn("const routeId = q.get('route') || ''", ai_js)
+        self.assertIn("routeHints", ai_js)
 
     def test_unknown_driver_is_rejected_before_email_delivery(self):
         response = self._run(

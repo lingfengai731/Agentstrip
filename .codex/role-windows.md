@@ -89,6 +89,15 @@
 - Sol first gate: NO-GO with one P1 because the staged CSV mixed hashes from untracked/unstaged source images into the deployment snapshot; the CSV is being removed from the staged release and documented as a local operational ledger. Two P2 items cover the operational-only `people` class boundary and localized filter group labels.
 - Sol final gate: GO; P0/P1/P2 are all 0 after excluding CSV/images from the release snapshot, documenting the `people` boundary, and localizing both filter-group aria labels.
 
+## 2026-08-03 gallery-to-trip handoff callback
+- Scope: medium / L3. `prepare_role_window.py` remained fail-closed because `registry/plugin-packages.json` is absent; no persistent role thread was invented.
+- Product callback: the local WanderMind advisor framework kept the change on the task-flow path: image decision context -> matched R1-R6 route -> AI or driver handoff.
+- UI callback: retained the existing teal + gold portfolio modal, added two compact decision cards and a matched-route row, and converted mobile actions to full-width controls.
+- Development callback: gallery links now carry `place`, `route`, and `source=gallery`; Bali route query selection takes priority over the saved brief; AI prompts include the matched route; driver forms accept a gallery place without requiring stored trip data.
+- Test callback: 13 backend tests, Node syntax, diff checks, Chrome 1440/768/390/320, and WebKit 390 have passed locally; Sol release gate and production verification remain pending.
+- Skill hits: agent-role-orchestrator set the L3 callback contract; ui-implementation-workflow constrained visual variance and responsive repair; browser-automation-router selected deterministic Playwright CLI; the project-local Nuwa-derived advisor framework constrained the structured handoff and fact boundaries.
+- Sol final gate: GO; P0/P1/P2 are all 0. The staged release contains 9 text/code files and no CSV or images; route selection, five-language modal redraw, editable AI input, driver prefill, responsive evidence, and the real `#route-families` target were accepted.
+
 ## 压缩交接卡
 
 - 最近摘要：Google 登录、阶段 1/2、C1–C4 产品额度及六路线空间示意均已验收；108 张图片已具备增量复核、路线/POI 建议和 fail-closed 发布 manifest。

@@ -215,18 +215,31 @@
       .bali-place-dialog { position:relative; width:min(880px,100%); max-height:90vh; overflow:auto; display:grid; grid-template-columns:1fr 1fr; background:#fff; border-radius:16px; box-shadow:0 24px 70px rgba(0,0,0,.32); }
       body.dark .bali-place-dialog { background:#1f211e; }
       .bali-place-dialog > img { width:100%; height:100%; min-height:440px; object-fit:cover; }
-      .bali-place-copy { padding:34px; }
+      .bali-place-copy { align-self:center; padding:34px; }
       .bali-place-copy h3 { color:#1e293b; font-size:26px; margin:10px 0 12px; }
       body.dark .bali-place-copy h3 { color:#f3f4f6; }
       .bali-place-copy p { color:#64748b; font-size:14px; line-height:1.7; }
-      .bali-place-purpose { padding:13px 14px; border-left:3px solid #fcbf1e; background:#fffbeb; border-radius:0 9px 9px 0; color:#475569; font-size:13px; line-height:1.6; }
+      .bali-place-decision { display:grid; grid-template-columns:1fr 1fr; gap:10px; margin:16px 0; }
+      .bali-place-decision-card { min-width:0; padding:13px 14px; border:1px solid #e5e2da; border-radius:10px; background:#f8faf9; }
+      .bali-place-decision-card strong { display:block; margin-bottom:5px; color:#0e7c6b; font-size:10px; font-weight:800; letter-spacing:.08em; text-transform:uppercase; }
+      .bali-place-decision-card p { margin:0; color:#475569; font-size:13px; line-height:1.6; }
+      .bali-place-purpose { border-left:3px solid #fcbf1e; background:#fffbeb; }
+      body.dark .bali-place-decision-card { border-color:#3a3d38; background:rgba(255,255,255,.035); }
+      body.dark .bali-place-decision-card strong { color:#5eead4; }
+      body.dark .bali-place-decision-card p { color:#d1d5db; }
       body.dark .bali-place-purpose { background:rgba(252,191,30,.08); color:#d1d5db; }
-      .bali-mini-route { margin:18px 0; padding:14px; border:1px solid #e5e2da; border-radius:10px; color:#475569; font-size:13px; line-height:1.65; }
+      .bali-route-match { display:flex; align-items:center; justify-content:space-between; gap:12px; margin:0 0 10px; padding:10px 12px; border-radius:10px; background:rgba(14,124,107,.08); color:#0f766e; font-size:12px; font-weight:700; }
+      .bali-route-match:hover { color:#0e7c6b; text-decoration:none; background:rgba(14,124,107,.13); }
+      .bali-route-match span:last-child { text-align:right; }
+      body.dark .bali-route-match { background:rgba(45,212,191,.1); color:#99f6e4; }
+      .bali-mini-route { margin:0 0 16px; padding:14px; border:1px solid #e5e2da; border-radius:10px; color:#475569; font-size:13px; line-height:1.65; }
       body.dark .bali-mini-route { border-color:#3a3d38; color:#d1d5db; }
       .bali-modal-actions { display:flex; flex-wrap:wrap; gap:9px; }
       .bali-modal-actions .bali-btn { padding:10px 16px; font-size:12px; }
+      .bali-modal-actions .bali-btn-outline { border:1px solid #0e7c6b; color:#0e7c6b; background:transparent; }
+      body.dark .bali-modal-actions .bali-btn-outline { border-color:#5eead4; color:#99f6e4; }
       .bali-place-close { position:absolute; top:12px; right:12px; width:40px; height:40px; border:0; border-radius:50%; background:rgba(255,255,255,.9); color:#1e293b; cursor:pointer; z-index:2; box-shadow:0 2px 12px rgba(0,0,0,.15); }
-      @media(max-width:700px){ .bali-place-modal{padding:8px;align-items:flex-end}.bali-place-dialog{grid-template-columns:1fr;max-height:94vh}.bali-place-dialog>img{height:240px;min-height:0}.bali-place-copy{padding:24px 20px}.bali-place-copy h3{font-size:22px} }
+      @media(max-width:700px){ .bali-place-modal{padding:8px;align-items:flex-end}.bali-place-dialog{grid-template-columns:1fr;max-height:94vh}.bali-place-dialog>img{height:240px;min-height:0}.bali-place-copy{padding:24px 20px}.bali-place-copy h3{font-size:22px}.bali-place-decision{grid-template-columns:1fr}.bali-route-match{align-items:flex-start}.bali-modal-actions{display:grid}.bali-modal-actions .bali-btn{width:100%;text-align:center} }
       .footer-contact-line { display: flex; align-items: center; gap: 8px; padding: 4px 0; flex-wrap: wrap; }
       .footer-contact-line .fa { color: #fcbf1e !important; width: 18px; text-align: center; flex-shrink: 0; font-size: 15px; }
       .footer-contact-line a { color: #ddd; }
@@ -451,17 +464,29 @@
 
 <div class="bali-place-modal" id="bali-place-modal" aria-hidden="true">
   <div class="bali-place-dialog" role="dialog" aria-modal="true" aria-labelledby="bali-place-title">
-    <button class="bali-place-close" type="button" aria-label="Close"><span class="fa fa-times"></span></button>
+    <button class="bali-place-close" type="button" aria-label="Close" data-i18n="baliClosePlace" data-i18n-attr="aria-label"><span class="fa fa-times"></span></button>
     <img id="bali-place-image" alt="">
     <div class="bali-place-copy">
       <div class="bali-sec-eyebrow" id="bali-place-tags"></div>
       <h3 id="bali-place-title"></h3>
-      <p id="bali-place-desc"></p>
-      <div class="bali-place-purpose" id="bali-place-purpose"></div>
+      <div class="bali-place-decision">
+        <div class="bali-place-decision-card">
+          <strong data-i18n="baliRealityLabel">What the photo leaves out</strong>
+          <p id="bali-place-desc"></p>
+        </div>
+        <div class="bali-place-decision-card bali-place-purpose">
+          <strong data-i18n="baliPurposeLabel">Best for</strong>
+          <p id="bali-place-purpose"></p>
+        </div>
+      </div>
+      <a class="bali-route-match" id="bali-place-route-link" href="#route-families">
+        <span data-i18n="baliRouteMatch">Matched route</span>
+        <span id="bali-place-route-name" aria-live="polite"></span>
+      </a>
       <div class="bali-mini-route"><strong data-i18n="baliMiniRoute">Simple route</strong><br><span id="bali-place-route"></span></div>
       <div class="bali-modal-actions">
         <a class="bali-btn bali-btn-primary" id="bali-place-ai" href="ai-tool.html?dest=bali"><span class="fa fa-magic"></span> <span data-i18n="baliAddRoute">Add to my AI route</span></a>
-        <a class="bali-btn" href="find-driver.html" style="border:1px solid #0e7c6b;color:#0e7c6b"><span class="fa fa-car"></span> <span data-i18n="baliAskLocal">Ask a local driver</span></a>
+        <a class="bali-btn bali-btn-outline" id="bali-place-driver" href="find-driver.html"><span class="fa fa-car"></span> <span data-i18n="baliSendStopDriver">Send this stop to a driver</span></a>
       </div>
     </div>
   </div>
@@ -933,6 +958,13 @@
     pois = data.pois || [];
     loadRoutePlans();
     (data.regions || []).forEach(function (region) { regions[region.id] = region; });
+    var requestedRoute = new URLSearchParams(window.location.search).get('route');
+    if (requestedRoute && routes.some(function (route) { return route.id === requestedRoute; })) {
+      activeId = requestedRoute;
+      renderCards();
+      renderDetail();
+      return;
+    }
     try {
       var brief = JSON.parse(localStorage.getItem('wm_studio_trip_brief') || 'null');
       var goals = (brief && brief.goals) || [];
@@ -988,17 +1020,41 @@
   var map = { 'batur-jeep':'batur','batur-ride':'jeep','penida-cliff':'penida',snorkel:'snorkel','penida-rock':'penida','coastal-culture':'culture',beach:'beach','monkey-forest':'monkey','ubud-temple':'temple','coffee-garden':'coffee','coffee-roast':'coffee','batur-dawn':'batur','kintamani-stay':'stay','island-boat':'boat','penida-bay':'penida' };
   var modal = document.getElementById('bali-place-modal');
   var activeShot = null;
+  var routeCatalog = {};
   function lang() { return (document.getElementById('langPicker') || {}).value || localStorage.getItem('wm_studio_lang') || 'en'; }
+  function matchedRouteId(shot) {
+    var routeIds = (shot.dataset.routeIds || '').split(/\s+/).filter(Boolean);
+    var requested = new URLSearchParams(window.location.search).get('route');
+    return requested && routeIds.indexOf(requested) >= 0 ? requested : (routeIds[0] || '');
+  }
+  function routeName(routeId) {
+    var route = routeCatalog[routeId];
+    if (!route) return routeId;
+    return routeId + ' · ' + ((route.name || {})[lang()] || (route.name || {}).en || routeId);
+  }
   function renderModal() {
     if (!activeShot) return;
     var key = map[activeShot.dataset.place]; var data = (COPY[lang()] || COPY.en)[key] || COPY.en[key];
+    var routeId = matchedRouteId(activeShot);
+    var placeName = data[0];
+    var handoff = new URLSearchParams({ dest:'bali', place:placeName, route:routeId, source:'gallery' });
     document.getElementById('bali-place-image').src = activeShot.querySelector('img').src;
     document.getElementById('bali-place-image').alt = activeShot.querySelector('img').alt;
     document.getElementById('bali-place-tags').textContent = Array.from(activeShot.querySelectorAll('.bali-shot-meta span')).map(function(x){return x.textContent}).join(' · ');
     document.getElementById('bali-place-title').textContent = data[0]; document.getElementById('bali-place-desc').textContent = data[1];
     document.getElementById('bali-place-purpose').textContent = data[2]; document.getElementById('bali-place-route').textContent = data[3];
-    document.getElementById('bali-place-ai').href = 'ai-tool.html?dest=bali&place=' + encodeURIComponent(data[0]);
+    document.getElementById('bali-place-route-name').textContent = routeName(routeId);
+    document.getElementById('bali-place-route-link').href = 'bali.html?route=' + encodeURIComponent(routeId) + '#route-families';
+    document.getElementById('bali-place-ai').href = 'ai-tool.html?' + handoff.toString();
+    document.getElementById('bali-place-driver').href = 'find-driver.html?route=' + encodeURIComponent(routeId) + '&place=' + encodeURIComponent(placeName) + '&source=gallery';
   }
+  fetch('assets/data/bali-travel-data.json?v=20260802')
+    .then(function(response) { if (!response.ok) throw new Error('HTTP ' + response.status); return response.json(); })
+    .then(function(data) {
+      (data.routes || []).forEach(function(route) { routeCatalog[route.id] = route; });
+      if (activeShot) renderModal();
+    })
+    .catch(function() { routeCatalog = {}; });
   var galleryFilters = { category:'all', tag:'all' };
   function applyGalleryFilters() {
     var visible = 0;
@@ -1038,6 +1094,10 @@
   window.addEventListener('resize', function() { resetMobileFilterScroll(mobileFilterQuery); });
   resetMobileFilterScroll(mobileFilterQuery);
   document.querySelectorAll('.bali-shot').forEach(function(shot){ shot.onclick=function(){ activeShot=shot; renderModal(); modal.classList.add('show'); modal.setAttribute('aria-hidden','false'); document.body.style.overflow='hidden'; modal.querySelector('.bali-place-close').focus(); }; });
+  var galleryLangPicker = document.getElementById('langPicker');
+  if (galleryLangPicker) galleryLangPicker.addEventListener('change', function() {
+    if (activeShot) window.setTimeout(renderModal, 0);
+  });
   function close(){ modal.classList.remove('show'); modal.setAttribute('aria-hidden','true'); document.body.style.overflow=''; if(activeShot) activeShot.focus(); }
   modal.querySelector('.bali-place-close').onclick=close; modal.onclick=function(e){if(e.target===modal)close()}; document.addEventListener('keydown',function(e){if(e.key==='Escape'&&modal.classList.contains('show'))close()});
   var picker=document.getElementById('langPicker'); if(picker)picker.addEventListener('change',renderModal);

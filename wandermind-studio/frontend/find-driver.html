@@ -429,7 +429,9 @@
       endEl.min = toISO(minEnd); if (!endEl.value || endEl.value < startEl.value) endEl.value = toISO(minEnd);
     });
 
-    var requestedRoute = new URLSearchParams(window.location.search).get('route') || '';
+    var requestParams = new URLSearchParams(window.location.search);
+    var requestedRoute = requestParams.get('route') || '';
+    var requestedPlace = requestParams.get('place') || '';
     function readPlan() {
       try {
         var plan = JSON.parse(localStorage.getItem('wm_studio_lastPlan') || 'null');
@@ -441,6 +443,9 @@
       try {
         var current = JSON.parse(localStorage.getItem('wm_studio_currentTrip') || 'null');
         var brief = current || JSON.parse(localStorage.getItem('wm_studio_trip_brief') || 'null');
+        if (requestedPlace && !places.value) {
+          places.value = [requestedRoute, requestedPlace].filter(Boolean).join(' · ');
+        }
         if (!brief) return;
         if (brief.people) peopleEl.value = brief.people;
         if (brief.days) daysEl.value = brief.days;
