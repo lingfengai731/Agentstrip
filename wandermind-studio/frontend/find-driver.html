@@ -429,6 +429,7 @@
       endEl.min = toISO(minEnd); if (!endEl.value || endEl.value < startEl.value) endEl.value = toISO(minEnd);
     });
 
+    var requestedRoute = new URLSearchParams(window.location.search).get('route') || '';
     function readPlan() {
       try {
         var plan = JSON.parse(localStorage.getItem('wm_studio_lastPlan') || 'null');
@@ -445,9 +446,13 @@
         if (brief.days) daysEl.value = brief.days;
         if (brief.start) startEl.value = brief.start;
         if (brief.end) endEl.value = brief.end;
-        var route = new URLSearchParams(window.location.search).get('route') || brief.route_id;
+        var route = requestedRoute || brief.route_id;
         if (route && !places.value) {
-          places.value = route + ' · ' + (brief.title || (brief.dest === 'bali' ? 'Bali route' : 'Travel route'));
+          var imported = readPlan().plan;
+          places.value = imported && imported.source === 'bali-route-editor' &&
+            imported.route_id === route && imported.text
+            ? imported.text
+            : route + ' · ' + (brief.title || (brief.dest === 'bali' ? 'Bali route' : 'Travel route'));
         }
       } catch (_) {}
     })();
@@ -459,7 +464,7 @@
       importBtn.classList.add('active'); manualBtn.classList.remove('active');
       var d = readPlan();
       var L = (window.FD_T || {});
-      if (d.plan && d.plan.text) {
+      if (d.plan && d.plan.text && (!requestedRoute || d.plan.route_id === requestedRoute)) {
         places.value = d.plan.text;
         if (d.trip) {
           if (d.trip.people && !peopleEl.value) peopleEl.value = d.trip.people;

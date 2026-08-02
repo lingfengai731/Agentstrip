@@ -57,9 +57,13 @@
 - 2026-08-03 架构/开发回调：`/api/dest_info` 已拆分为稳定精选资料、独立实时天气和登录后 AI 草稿三层；巴厘岛、京都、巴黎、圣托里尼的五语资料由版本化 JSON 静态直出，不调用模型；任意目的地按城市与语言隔离缓存，精确别名匹配避免 `Paris, Texas` 误命中巴黎。
 - 2026-08-03 UI/测试回调：保持 teal + gold 体系；精选资料、实时天气、AI 草稿分别标注来源；修复五语言切换后资料未同步的问题。1440/768/390 无页面级横向溢出，匿名任意目的地不会泄漏上一目的地资料，并明确引导登录；后端 12 项测试通过。
 - 2026-08-03 QA 终态回调：Sol 首审发现自定义天气缓存鉴权、旧汇率边界、目的地/语言/会话竞态和文档旧口径；全部修复后复审 GO，P0/P1/P2 均为 0。延迟响应测试确认 A→B、语言切换及请求中登出均不会被旧响应覆盖或重新写入受保护缓存。
+- 2026-08-03 开发/UI 回调：六条巴厘岛路线升级为按天编辑器；可调整天序、添加/移除同区域 POI，所选日期与区域地图同步高亮，结构化草稿自动保存在本机并可导入 AI 或司机询价表单；保持现有 teal + gold 视觉。
+- 2026-08-03 测试回调：Chrome 1440/768/390/320 与 WebKit 移动端 402px 均无页面级或路线详情横向溢出；六路线均有可编辑日程和兼容 POI；鼠标、键盘 Enter、移动端 tap、持久化重载及司机表单导入均通过。
+- 2026-08-03 QA 终态回调：Sol 两轮反证推动修复污染计划 fail-closed、跨日 POI 去重、路线语言口径和 AI/司机精确 `route_id` 交接；最终复审 GO，P0/P1/P2 均为 0，暂存区仅含 8 个目标文件。
 
 ## 技能命中
 
+- 2026-08-03 路线编辑器轮实际使用：agent-role-orchestrator、ui-implementation-workflow、browser-automation-router、Playwright CLI；按 medium/L3 路径完成现状审计、既有风格内实现、Chrome/WebKit 响应式交互验证并通过 Sol 最终门禁。WebKit 26.5 安装在 `E:\CodexBrowserCache`，未写入项目仓库。
 - 2026-08-03 本轮实际使用：agent-role-orchestrator、ui-implementation-workflow、browser-automation-router、Playwright CLI；分别约束 L3 角色台账、既有页面风格、确定性浏览器路径以及桌面/平板/手机验收。`prepare_role_window.py` 仍因缺少 `registry/plugin-packages.json` fail-closed，未伪造持久角色窗口；最终复用现有 Sol 审查窗口。
 - 2026-08-03 当前轮影响产出的 skill：agent-role-orchestrator 触发 L3 台账和 Sol 门禁；Sol 的独立反证直接发现并推动修复 3 个 P1。未使用 UI、浏览器、女娲或人物 Perspective，因为没有页面视觉或新商业判断。
 - 2026-08-03 当前轮实际使用：agent-role-orchestrator；按 medium/L3 路径组织开发、测试和 Sol 独立门禁。UI 工作流未使用，因为本轮只改本地素材治理工具、数据与文档，没有页面视觉改动。

@@ -154,16 +154,37 @@
       .bali-route-value-card { padding:15px; border-radius:12px; background:rgba(255,255,255,.1); }
       .bali-route-value-card strong { display:block; color:#fff; margin-bottom:5px; }
       .bali-route-value-card span { display:block; color:rgba(255,255,255,.78); font-size:12px; line-height:1.55; }
-      .bali-day-outline { display:grid; gap:8px; margin:18px 0 20px; }
-      .bali-day-row { display:grid; grid-template-columns:58px 1fr; gap:10px; align-items:center; padding:10px 12px; border-radius:12px; background:rgba(255,255,255,.08); border:1px solid rgba(255,255,255,.16); }
-      .bali-day-row strong { color:#fcbf1e; font-size:12px; letter-spacing:.06em; }
-      .bali-day-row span { color:#fff; font-size:13px; line-height:1.45; }
+      .bali-day-outline { display:grid; gap:9px; margin:18px 0 20px; }
+      .bali-day-row { display:grid; grid-template-columns:minmax(0,1fr) auto; gap:8px 10px; align-items:start; padding:11px 12px; border-radius:12px; background:rgba(255,255,255,.08); border:1px solid rgba(255,255,255,.16); transition:border-color .18s,background .18s; }
+      .bali-day-row.active { border-color:#fcbf1e; background:rgba(252,191,30,.11); }
+      .bali-day-main { display:grid; grid-template-columns:58px minmax(0,1fr); gap:10px; align-items:center; min-width:0; padding:2px 0; border:0; background:transparent; color:#fff; text-align:left; cursor:pointer; }
+      .bali-day-main:focus-visible { outline:2px solid #fcbf1e; outline-offset:3px; border-radius:6px; }
+      .bali-day-main strong { color:#fcbf1e; font-size:12px; letter-spacing:.06em; }
+      .bali-day-main span { color:#fff; font-size:13px; line-height:1.45; }
+      .bali-day-actions { display:flex; gap:5px; }
+      .bali-day-icon-btn { width:30px; height:30px; display:inline-grid; place-items:center; border:1px solid rgba(255,255,255,.3); border-radius:8px; background:rgba(255,255,255,.08); color:#fff; cursor:pointer; }
+      .bali-day-icon-btn:hover, .bali-day-icon-btn:focus-visible { background:rgba(255,255,255,.18); outline:none; }
+      .bali-day-icon-btn:disabled { opacity:.3; cursor:not-allowed; }
+      .bali-day-places, .bali-day-add { grid-column:1/-1; display:flex; flex-wrap:wrap; gap:7px; align-items:center; }
+      .bali-day-place { display:inline-flex; align-items:center; gap:5px; max-width:100%; padding:5px 7px 5px 9px; border-radius:13px; background:rgba(255,255,255,.12); color:#fff; font-size:11px; line-height:1.35; }
+      .bali-day-place button { width:20px; height:20px; padding:0; border:0; border-radius:50%; background:rgba(255,255,255,.16); color:#fff; cursor:pointer; }
+      .bali-day-place button:hover, .bali-day-place button:focus-visible { background:#b91c1c; outline:none; }
+      .bali-day-empty { color:rgba(255,255,255,.62); font-size:11px; }
+      .bali-day-select { min-width:0; flex:1 1 190px; height:34px; border:1px solid rgba(255,255,255,.28); border-radius:9px; padding:0 9px; background:#0a6659; color:#fff; font-size:11px; }
+      .bali-day-select option { background:#fff; color:#1e293b; }
+      .bali-day-add-btn, .bali-day-reset { min-height:34px; border:1px solid rgba(255,255,255,.38); border-radius:9px; padding:6px 11px; background:transparent; color:#fff; font-size:11px; font-weight:700; cursor:pointer; }
+      .bali-day-add-btn:hover, .bali-day-add-btn:focus-visible, .bali-day-reset:hover, .bali-day-reset:focus-visible { background:rgba(255,255,255,.14); outline:none; }
+      .bali-editor-note { display:flex; align-items:center; justify-content:space-between; gap:10px; flex-wrap:wrap; margin-top:-8px; color:rgba(255,255,255,.7); font-size:10.5px; }
+      .bali-map-region.day-active circle { fill:#fff; stroke:#fcbf1e; stroke-width:2.4; }
+      .bali-map-region[data-day-region="true"] { cursor:pointer; }
+      .bali-map-region[data-day-region="true"]:focus { outline:none; }
+      .bali-map-region[data-day-region="true"]:focus circle { stroke:#fff; stroke-width:2.4; }
       .bali-route-detail-actions { display:flex; flex-wrap:wrap; gap:10px; margin-top:18px; }
       .bali-route-detail-actions .bali-btn { padding:11px 18px; font-size:13px; }
       .bali-route-secondary { background:transparent; color:#fff; border:1px solid rgba(255,255,255,.55); }
       .bali-route-secondary:hover { color:#fff; background:rgba(255,255,255,.1); text-decoration:none; }
       @media(max-width:991px){ .bali-route-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.bali-route-detail-grid{grid-template-columns:1fr} }
-      @media(max-width:575px){ .bali-route-grid{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;margin-right:-15px;padding:0 15px 12px 0}.bali-route-card{flex:0 0 min(86vw,330px);scroll-snap-align:start}.bali-route-detail{padding:22px 18px}.bali-route-value{grid-template-columns:1fr}.bali-route-card p{min-height:0}.bali-route-map{padding:13px}.bali-route-map-head{align-items:center}.bali-route-map svg{max-height:250px} }
+      @media(max-width:575px){ .bali-route-grid{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;margin-right:-15px;padding:0 15px 12px 0}.bali-route-card{flex:0 0 min(86vw,330px);scroll-snap-align:start}.bali-route-detail{padding:22px 18px}.bali-route-value{grid-template-columns:1fr}.bali-route-card p{min-height:0}.bali-route-map{padding:13px}.bali-route-map-head{align-items:center}.bali-route-map svg{max-height:250px}.bali-day-main{grid-template-columns:48px minmax(0,1fr)}.bali-day-actions{gap:3px}.bali-day-icon-btn{width:28px;height:28px}.bali-day-select{flex-basis:150px} }
       @media(max-width:360px){ .bali-route-map-head{display:block}.bali-route-map-head span{display:block;margin-top:3px;text-align:left}.bali-route-detail-actions{display:grid}.bali-route-detail-actions .bali-btn{width:100%;text-align:center} }
       .bali-driver-band { background: linear-gradient(135deg, #0e7c6b, #14b8a6); color: #fff; padding: 64px 0; }
       .bali-driver-inner { max-width: 960px; margin: 0 auto; text-align: center; }
@@ -474,7 +495,11 @@
   var detail = document.getElementById('bali-route-detail');
   var regions = {};
   var routes = [];
+  var pois = [];
   var activeId = 'R1';
+  var activeDayIndex = 0;
+  var routePlans = {};
+  var planStorageKey = 'wm_bali_route_plans_v1';
 
   function language() {
     var value = (document.getElementById('langPicker') || {}).value || localStorage.getItem('wm_studio_lang') || 'en';
@@ -513,6 +538,7 @@
     grid.querySelectorAll('.bali-route-card').forEach(function (card) {
       card.addEventListener('click', function () {
         activeId = card.dataset.routeId;
+        activeDayIndex = 0;
         renderCards();
         renderDetail();
       });
@@ -530,8 +556,144 @@
     return String(value || '').replaceAll('_', ' ').replace(/\b\w/g, function (letter) { return letter.toUpperCase(); });
   }
 
-  function renderRouteMap(route) {
-    var coreIds = route.base_regions || [];
+  function loadRoutePlans() {
+    try {
+      var saved = JSON.parse(localStorage.getItem(planStorageKey) || '{}');
+      routePlans = saved && typeof saved === 'object' ? saved : {};
+    } catch (_) {
+      routePlans = {};
+    }
+  }
+
+  function defaultRoutePlan(route) {
+    var days = (route.free_outline || []).map(function (item) {
+      return {
+        region_id: item.region_id,
+        theme: item.theme,
+        place_ids: []
+      };
+    });
+    var regionUse = {};
+    pois.filter(function (poi) {
+      return (poi.route_ids || []).indexOf(route.id) >= 0;
+    }).forEach(function (poi) {
+      var matchingDays = days.map(function (day, index) {
+        return day.region_id === poi.region_id ? index : -1;
+      }).filter(function (index) { return index >= 0; });
+      if (!matchingDays.length) return;
+      var use = regionUse[poi.region_id] || 0;
+      days[matchingDays[use % matchingDays.length]].place_ids.push(poi.id);
+      regionUse[poi.region_id] = use + 1;
+    });
+    return { route_id: route.id, days: days };
+  }
+
+  function discardSavedRoutePlan(route) {
+    delete routePlans[route.id];
+    try { localStorage.setItem(planStorageKey, JSON.stringify(routePlans)); } catch (_) {}
+    return defaultRoutePlan(route);
+  }
+
+  function routePlan(route) {
+    var saved = routePlans[route.id];
+    var outline = route.free_outline || [];
+    if (!saved || saved.route_id !== route.id ||
+        !Array.isArray(saved.days) || saved.days.length !== outline.length ||
+        !saved.days.every(function (day) {
+          return day && typeof day === 'object' && !Array.isArray(day) &&
+            typeof day.region_id === 'string' && Array.isArray(day.place_ids) &&
+            (typeof day.theme === 'string' || (day.theme && typeof day.theme === 'object' && !Array.isArray(day.theme)));
+        })) {
+      return discardSavedRoutePlan(route);
+    }
+    var expectedRegionCounts = outline.reduce(function (counts, day) {
+      counts[day.region_id] = (counts[day.region_id] || 0) + 1;
+      return counts;
+    }, {});
+    var savedRegionCounts = saved.days.reduce(function (counts, day) {
+      counts[day.region_id] = (counts[day.region_id] || 0) + 1;
+      return counts;
+    }, {});
+    if (Object.keys(expectedRegionCounts).some(function (regionId) {
+      return expectedRegionCounts[regionId] !== savedRegionCounts[regionId];
+    }) || Object.keys(savedRegionCounts).some(function (regionId) {
+      return savedRegionCounts[regionId] !== expectedRegionCounts[regionId];
+    })) {
+      return discardSavedRoutePlan(route);
+    }
+    var allowedPoiIds = new Set(pois.filter(function (poi) {
+      return (poi.route_ids || []).indexOf(route.id) >= 0;
+    }).map(function (poi) { return poi.id; }));
+    var seenPoiIds = new Set();
+    var cleanDays = saved.days.map(function (day, index) {
+      var fallback = outline[index] || {};
+      var regionId = day.region_id;
+      return {
+        region_id: regionId,
+        theme: day.theme || fallback.theme,
+        place_ids: Array.from(new Set((day.place_ids || []).filter(function (id) {
+          var poi = pois.find(function (item) { return item.id === id; });
+          if (!allowedPoiIds.has(id) || !poi || poi.region_id !== regionId || seenPoiIds.has(id)) return false;
+          seenPoiIds.add(id);
+          return true;
+        })))
+      };
+    });
+    var cleanPlan = { route_id: route.id, days: cleanDays };
+    if (JSON.stringify(saved) !== JSON.stringify(cleanPlan)) {
+      routePlans[route.id] = cleanPlan;
+      try { localStorage.setItem(planStorageKey, JSON.stringify(routePlans)); } catch (_) {}
+    }
+    return cleanPlan;
+  }
+
+  function saveRoutePlan(route, plan) {
+    routePlans[route.id] = plan;
+    try { localStorage.setItem(planStorageKey, JSON.stringify(routePlans)); } catch (_) {}
+  }
+
+  function poiById(id) {
+    return pois.find(function (poi) { return poi.id === id; });
+  }
+
+  function routePlanText(route, plan) {
+    var lines = plan.days.map(function (day, index) {
+      var names = (day.place_ids || []).map(function (id) {
+        var poi = poiById(id);
+        return poi ? poi.name : '';
+      }).filter(Boolean);
+      return (language() === 'zh' ? '第 ' + (index + 1) + ' 天' : 'Day ' + (index + 1)) +
+        ' · ' + day.region_id + ' · ' + text(day.theme) + (names.length ? ' · ' + names.join(' → ') : '');
+    });
+    return text(route.name) + ' (' + route.id + ')\n' + lines.join('\n');
+  }
+
+  function persistRouteHandoff(route, plan) {
+    var payload = {
+      route_id: route.id,
+      route_name: text(route.name),
+      destination: 'bali',
+      days: plan.days,
+      updated_at: new Date().toISOString()
+    };
+    try {
+      localStorage.setItem('wm_bali_route_draft', JSON.stringify(payload));
+      localStorage.setItem('wm_studio_lastPlan', JSON.stringify({
+        text: routePlanText(route, plan),
+        source: 'bali-route-editor',
+        route_id: route.id
+      }));
+      var trip = JSON.parse(localStorage.getItem('wm_studio_currentTrip') || '{}') || {};
+      trip.dest = 'bali';
+      trip.route_id = route.id;
+      trip.days = plan.days.length;
+      trip.title = text(route.name);
+      localStorage.setItem('wm_studio_currentTrip', JSON.stringify(trip));
+    } catch (_) {}
+  }
+
+  function renderRouteMap(route, plan) {
+    var coreIds = plan.days.map(function (day) { return day.region_id; });
     var optionalIds = route.optional_regions || [];
     var corePoints = coreIds.map(mapPoint).filter(Boolean);
     var coreLine = corePoints.length > 1
@@ -542,15 +704,20 @@
       var point = mapPoint(id);
       return point ? '<line class="bali-map-option-line" x1="' + optionOrigin.x + '" y1="' + optionOrigin.y + '" x2="' + point.x + '" y2="' + point.y + '"></line>' : '';
     }).join('') : '';
+    var dayRegionIds = Array.from(new Set(coreIds));
+    var activeRegionId = (plan.days[activeDayIndex] || {}).region_id;
     var dots = Object.keys(regions).sort().map(function (id) {
       var region = regions[id];
       var point = mapPoint(id);
       if (!point) return '';
       var state = coreIds.indexOf(id) >= 0 ? 'core' : (optionalIds.indexOf(id) >= 0 ? 'optional' : '');
-      return '<g class="bali-map-region ' + state + '" transform="translate(' + point.x + ' ' + point.y + ')">' +
+      if (id === activeRegionId) state += ' day-active';
+      var interactive = dayRegionIds.indexOf(id) >= 0;
+      return '<g class="bali-map-region ' + state + '" data-region-id="' + id + '" data-day-region="' + interactive + '"' +
+        (interactive ? ' role="button" tabindex="0"' : '') + ' transform="translate(' + point.x + ' ' + point.y + ')">' +
         '<title>' + escapeHtml(id + ' · ' + text(region.name)) + '</title><circle r="3.1"></circle><text y="-5">' + escapeHtml(id) + '</text></g>';
     }).join('');
-    var relevant = coreIds.map(function (id) { return { id:id, optional:false }; })
+    var relevant = dayRegionIds.map(function (id) { return { id:id, optional:false }; })
       .concat(optionalIds.map(function (id) { return { id:id, optional:true }; }));
     var corePrefix = language() === 'zh' ? '核心' : 'Core';
     var optionPrefix = language() === 'zh' ? '可选' : 'Optional';
@@ -576,16 +743,137 @@
     '</div>';
   }
 
+  function renderDayOutline(route, plan) {
+    var usedPoiIds = new Set(plan.days.flatMap(function (day) { return day.place_ids || []; }));
+    return plan.days.map(function (day, index) {
+      var placeChips = (day.place_ids || []).map(function (id) {
+        var poi = poiById(id);
+        if (!poi) return '';
+        var removeLabel = language() === 'zh' ? '移除 ' + poi.name : 'Remove ' + poi.name;
+        return '<span class="bali-day-place"><span>' + escapeHtml(poi.name) + '</span>' +
+          '<button type="button" data-remove-place="' + escapeHtml(id) + '" data-day-index="' + index + '" aria-label="' + escapeHtml(removeLabel) + '">×</button></span>';
+      }).join('');
+      var candidates = pois.filter(function (poi) {
+        return poi.region_id === day.region_id &&
+          (poi.route_ids || []).indexOf(route.id) >= 0 &&
+          !usedPoiIds.has(poi.id);
+      });
+      var options = '<option value="">' + (language() === 'zh' ? '添加同区域地点…' : 'Add a place in this area…') + '</option>' +
+        candidates.map(function (poi) {
+          return '<option value="' + escapeHtml(poi.id) + '">' + escapeHtml(poi.name) + '</option>';
+        }).join('');
+      var empty = language() === 'zh' ? '尚未选择具体地点' : 'No specific place selected';
+      var up = language() === 'zh' ? '前移一天' : 'Move one day earlier';
+      var down = language() === 'zh' ? '后移一天' : 'Move one day later';
+      return '<div class="bali-day-row ' + (index === activeDayIndex ? 'active' : '') + '" data-day-index="' + index + '">' +
+        '<button class="bali-day-main" type="button" data-select-day="' + index + '" aria-pressed="' + (index === activeDayIndex) + '">' +
+          '<strong>' + (language() === 'zh' ? '第 ' + (index + 1) + ' 天' : 'Day ' + (index + 1)) + '</strong>' +
+          '<span>' + escapeHtml(day.region_id) + ' · ' + escapeHtml(text(day.theme)) + '</span>' +
+        '</button>' +
+        '<div class="bali-day-actions">' +
+          '<button class="bali-day-icon-btn" type="button" data-move-day="-1" data-day-index="' + index + '" aria-label="' + up + '"' + (index === 0 ? ' disabled' : '') + '><span class="fa fa-arrow-up"></span></button>' +
+          '<button class="bali-day-icon-btn" type="button" data-move-day="1" data-day-index="' + index + '" aria-label="' + down + '"' + (index === plan.days.length - 1 ? ' disabled' : '') + '><span class="fa fa-arrow-down"></span></button>' +
+        '</div>' +
+        '<div class="bali-day-places">' + (placeChips || '<span class="bali-day-empty">' + empty + '</span>') + '</div>' +
+        '<div class="bali-day-add">' +
+          '<select class="bali-day-select" data-place-select="' + index + '" aria-label="' + (language() === 'zh' ? '选择要加入的地点' : 'Choose a place to add') + '">' + options + '</select>' +
+          '<button class="bali-day-add-btn" type="button" data-add-place="' + index + '">' + (language() === 'zh' ? '添加地点' : 'Add place') + '</button>' +
+        '</div>' +
+      '</div>';
+    }).join('');
+  }
+
+  function setActiveDay(plan, index) {
+    activeDayIndex = Math.max(0, Math.min(index, plan.days.length - 1));
+    var activeRegionId = (plan.days[activeDayIndex] || {}).region_id;
+    detail.querySelectorAll('.bali-day-row').forEach(function (row) {
+      var active = Number(row.dataset.dayIndex) === activeDayIndex;
+      row.classList.toggle('active', active);
+      var button = row.querySelector('.bali-day-main');
+      if (button) button.setAttribute('aria-pressed', String(active));
+    });
+    detail.querySelectorAll('.bali-map-region').forEach(function (point) {
+      point.classList.toggle('day-active', point.dataset.regionId === activeRegionId);
+    });
+  }
+
+  function attachRouteEditor(route, plan) {
+    detail.querySelectorAll('[data-select-day]').forEach(function (button) {
+      button.addEventListener('click', function () { setActiveDay(plan, Number(button.dataset.selectDay)); });
+    });
+    detail.querySelectorAll('[data-move-day]').forEach(function (button) {
+      button.addEventListener('click', function () {
+        var from = Number(button.dataset.dayIndex);
+        var to = from + Number(button.dataset.moveDay);
+        if (to < 0 || to >= plan.days.length) return;
+        var moved = plan.days.splice(from, 1)[0];
+        plan.days.splice(to, 0, moved);
+        activeDayIndex = to;
+        saveRoutePlan(route, plan);
+        renderDetail();
+      });
+    });
+    detail.querySelectorAll('[data-remove-place]').forEach(function (button) {
+      button.addEventListener('click', function () {
+        var index = Number(button.dataset.dayIndex);
+        plan.days[index].place_ids = (plan.days[index].place_ids || []).filter(function (id) {
+          return id !== button.dataset.removePlace;
+        });
+        activeDayIndex = index;
+        saveRoutePlan(route, plan);
+        renderDetail();
+      });
+    });
+    detail.querySelectorAll('[data-add-place]').forEach(function (button) {
+      button.addEventListener('click', function () {
+        var index = Number(button.dataset.addPlace);
+        var select = detail.querySelector('[data-place-select="' + index + '"]');
+        var poi = select && poiById(select.value);
+        if (!poi || poi.region_id !== plan.days[index].region_id) return;
+        plan.days[index].place_ids = (plan.days[index].place_ids || []).concat(poi.id);
+        activeDayIndex = index;
+        saveRoutePlan(route, plan);
+        renderDetail();
+      });
+    });
+    detail.querySelectorAll('.bali-map-region[data-day-region="true"]').forEach(function (point) {
+      var activate = function () {
+        var index = plan.days.findIndex(function (day) { return day.region_id === point.dataset.regionId; });
+        if (index >= 0) setActiveDay(plan, index);
+      };
+      point.addEventListener('click', activate);
+      point.addEventListener('keydown', function (event) {
+        if (event.key === 'Enter' || event.key === ' ') {
+          event.preventDefault();
+          activate();
+        }
+      });
+    });
+    var reset = detail.querySelector('[data-reset-route]');
+    if (reset) reset.addEventListener('click', function () {
+      var message = language() === 'zh' ? '恢复这条路线的推荐顺序和地点？' : 'Restore the recommended order and places?';
+      if (!window.confirm(message)) return;
+      delete routePlans[route.id];
+      try { localStorage.setItem(planStorageKey, JSON.stringify(routePlans)); } catch (_) {}
+      activeDayIndex = 0;
+      renderDetail();
+    });
+    detail.querySelectorAll('[data-route-handoff]').forEach(function (link) {
+      link.addEventListener('click', function () { persistRouteHandoff(route, plan); });
+    });
+  }
+
   function renderDetail() {
     var route = routes.find(function (item) { return item.id === activeId; }) || routes[0];
     if (!route) return;
-    var path = (route.base_regions || []).map(function (id) {
+    var plan = routePlan(route);
+    if (activeDayIndex >= plan.days.length) activeDayIndex = 0;
+    var path = plan.days.map(function (day) {
+      var id = day.region_id;
       var region = regions[id];
       return '<span class="bali-region-node" title="' + (region ? text(region.name) : id) + '">' + id + ' · ' + (region ? text(region.name) : id) + '</span>';
     }).join('<span class="fa fa-long-arrow-right bali-region-arrow" aria-hidden="true"></span>');
-    var outline = (route.free_outline || []).map(function (item) {
-      return '<div class="bali-day-row"><strong>' + (language() === 'zh' ? '第 ' + item.day + ' 天' : 'Day ' + item.day) + '</strong><span>' + item.region_id + ' · ' + text(item.theme) + '</span></div>';
-    }).join('');
+    var outline = renderDayOutline(route, plan);
     var params = new URLSearchParams({ dest: 'bali', route: route.id });
     detail.innerHTML =
       '<div class="bali-route-detail-grid">' +
@@ -593,24 +881,29 @@
           '<h3>' + text(route.name) + '</h3><p>' + text(route.promise) + '</p>' +
           '<div class="bali-region-path" aria-label="' + (language() === 'zh' ? '主要区域路径' : 'Core region path') + '">' + path + '</div>' +
           '<div class="bali-day-outline" aria-label="' + (language() === 'zh' ? '免费路线轮廓' : 'Free route outline') + '">' + outline + '</div>' +
+          '<div class="bali-editor-note"><span><span class="fa fa-check-circle"></span> ' + (language() === 'zh' ? '顺序和地点自动保存在本机；时间、车程与开放信息仍需核验。' : 'Order and places save on this device; timing, drive time and opening details still need verification.') + '</span>' +
+            '<button class="bali-day-reset" type="button" data-reset-route>' + (language() === 'zh' ? '恢复推荐' : 'Reset recommendation') + '</button></div>' +
           '<div class="bali-route-detail-actions">' +
-            '<a class="bali-btn bali-btn-primary" href="ai-tool.html?' + params.toString() + '">' + (language() === 'zh' ? '按我的偏好调整' : 'Adjust to my preferences') + '</a>' +
-            '<a class="bali-btn bali-route-secondary" href="ai-tool.html?' + params.toString() + '&professional=1">' + (language() === 'zh' ? '看专业路线 · ¥9.9' : 'Professional route · ¥9.9') + '</a>' +
-            '<a class="bali-btn bali-route-secondary" href="find-driver.html?route=' + encodeURIComponent(route.id) + '">' + (language() === 'zh' ? '把路线发给司机询价' : 'Send route to a driver') + '</a>' +
+            '<a class="bali-btn bali-btn-primary" data-route-handoff href="ai-tool.html?' + params.toString() + '">' + (language() === 'zh' ? '按我的偏好调整' : 'Adjust to my preferences') + '</a>' +
+            '<a class="bali-btn bali-route-secondary" data-route-handoff href="ai-tool.html?' + params.toString() + '&professional=1">' + (language() === 'zh' ? '看专业路线 · ¥9.9' : 'Professional route · ¥9.9') + '</a>' +
+            '<a class="bali-btn bali-route-secondary" data-route-handoff href="find-driver.html?route=' + encodeURIComponent(route.id) + '">' + (language() === 'zh' ? '把路线发给司机询价' : 'Send route to a driver') + '</a>' +
           '</div>' +
         '</div>' +
         '<div class="bali-route-aside">' +
-          renderRouteMap(route) +
+          renderRouteMap(route, plan) +
           '<div class="bali-route-value">' +
             '<div class="bali-route-value-card"><strong>' + (language() === 'zh' ? '免费粗路线' : 'Free rough route') + '</strong><span>' + (language() === 'zh' ? '完整每日主题、区域顺序、基础地图与 2 次调整。' : 'Complete day themes, region order, a basic map and two adjustments.') + '</span></div>' +
             '<div class="bali-route-value-card"><strong>' + (language() === 'zh' ? '专业可执行路线' : 'Professional executable route') + '</strong><span>' + (language() === 'zh' ? '核验顺序、车程、到达时间、预约事项、雨天备选与司机行程单。' : 'Verified order, drive time, arrival guidance, bookings, rain backup and driver handoff.') + '</span></div>' +
           '</div>' +
         '</div>' +
       '</div>';
+    attachRouteEditor(route, plan);
   }
 
   function useData(data) {
     routes = data.routes || [];
+    pois = data.pois || [];
+    loadRoutePlans();
     (data.regions || []).forEach(function (region) { regions[region.id] = region; });
     try {
       var brief = JSON.parse(localStorage.getItem('wm_studio_trip_brief') || 'null');

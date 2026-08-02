@@ -3122,6 +3122,15 @@ function hydratePlannerFromQuery() {
   const q = new URLSearchParams(window.location.search);
   let savedBrief = null;
   try { savedBrief = JSON.parse(localStorage.getItem('wm_studio_trip_brief') || 'null'); } catch (_) {}
+  let editedRouteText = '';
+  try {
+    const savedPlan = JSON.parse(localStorage.getItem('wm_studio_lastPlan') || 'null');
+    if (savedPlan?.source === 'bali-route-editor' &&
+        savedPlan.route_id === q.get('route') &&
+        typeof savedPlan.text === 'string') {
+      editedRouteText = savedPlan.text.slice(0, 4000);
+    }
+  } catch (_) {}
   const place = q.get('place');
   if (place && !q.get('start') && !q.get('budget')) {
     currentDest = 'bali';
@@ -3144,7 +3153,8 @@ function hydratePlannerFromQuery() {
     audience: q.get('audience') || savedBrief?.audience || '',
     goals: q.getAll('goal').length ? q.getAll('goal') : (savedBrief?.goals || []),
     route: q.get('route') || '',
-    professional: q.get('professional') === '1'
+    professional: q.get('professional') === '1',
+    editedRouteText
   };
   showNewTripModal();
   const values = {
@@ -3299,7 +3309,8 @@ async function submitNewTrip() {
   const goals = _entryContext?.goals?.length ? _entryContext.goals : [];
   const routeId = _entryContext?.route || '';
   const professionalRequested = !!_entryContext?.professional;
-  currentTrip = { dest, start, end, days, people, budget, currency, style, title, audience, goals, route_id: routeId, professional_requested: professionalRequested, rough_generated: false };
+  const editedRouteText = _entryContext?.editedRouteText || '';
+  currentTrip = { dest, start, end, days, people, budget, currency, style, title, audience, goals, route_id: routeId, edited_route_text: editedRouteText, professional_requested: professionalRequested, rough_generated: false };
   try {
     const productResponse = await fetch(BACKEND_BASE + '/api/product-trips', {
       method: 'POST',
@@ -3343,6 +3354,7 @@ async function submitNewTrip() {
   const labels = entryLabels[currentLang] || entryLabels.en;
   const contextParts = [labels[audience]].concat(goals.map(goal => labels[goal])).filter(Boolean);
   if (routeId) contextParts.push(`Preferred route family: ${routeId}`);
+  if (editedRouteText) contextParts.push(`User-edited route draft:\n${editedRouteText}`);
   if (professionalRequested) contextParts.push('User is reviewing the professional-route option; do not claim it is unlocked until payment or points are confirmed');
   const context = contextParts.join(' · ');
   _entryContext = null;

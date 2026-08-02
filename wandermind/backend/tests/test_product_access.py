@@ -578,6 +578,33 @@ class ProductAccessTests(unittest.TestCase):
             referenced = set(route.get("base_regions", []))
             referenced.update(route.get("optional_regions", []))
             self.assertTrue(referenced.issubset(region_ids), route["id"])
+            outline = route.get("free_outline", [])
+            self.assertGreaterEqual(len(outline), 2, route["id"])
+            self.assertEqual(
+                [item["day"] for item in outline],
+                list(range(1, len(outline) + 1)),
+                route["id"],
+            )
+            self.assertTrue(
+                {item["region_id"] for item in outline}.issubset(referenced),
+                route["id"],
+            )
+
+        route_ids = {route["id"] for route in data["routes"]}
+        poi_ids = [poi["id"] for poi in data["pois"]]
+        self.assertEqual(len(poi_ids), len(set(poi_ids)))
+        for poi in data["pois"]:
+            self.assertIn(poi["region_id"], region_ids, poi["id"])
+            self.assertTrue(set(poi["route_ids"]).issubset(route_ids), poi["id"])
+        for route in data["routes"]:
+            outline_regions = {item["region_id"] for item in route["free_outline"]}
+            compatible = [
+                poi
+                for poi in data["pois"]
+                if route["id"] in poi["route_ids"]
+                and poi["region_id"] in outline_regions
+            ]
+            self.assertTrue(compatible, route["id"])
 
     def test_unknown_driver_is_rejected_before_email_delivery(self):
         response = self._run(

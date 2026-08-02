@@ -62,6 +62,7 @@ wandermind-studio/
 | **酒店比价** | SerpAPI Google Hotels · 区域 chips 筛选 · 评分 / 缩略图 / 设施 |
 | **机票比价** | SerpAPI Google Flights · 8 城市下拉 + 自由输入 · 往返/单程 |
 | **探索地图** | SVG 交互地图 · POI 按类别着色 · 24h 人流热力图 |
+| **巴厘岛路线编辑器** | R1–R6 按天调整顺序 · 添加/移除同区域 POI · 地图同步高亮 · 本机保存并交接 AI/司机；路线专属内容当前中英双语，其他语言回退英文 |
 | **预算计算器** | 按目的地 / 天数 / 人数 / 风格 / 出发城市估算全程预算 |
 | **平行宇宙** | 同一旅行 3 套方案并排对比（节俭 / 平衡 / 奢华） |
 | **行程管理** | Trip 创建 / 切换 / 持久化（localStorage） |
@@ -69,7 +70,7 @@ wandermind-studio/
 | **游记生成** | AI 一键生成第一人称旅行游记 |
 | **登录注册** | Modal 弹窗，JWT 认证，接入后端 `wandermind.cc` |
 | **深色模式** | CSS 变量切换，记忆用户偏好（localStorage） |
-| **5 语言** | 中文 · English · 日本語 · 한국어 · Bahasa Indonesia，所有 UI 同步 |
+| **5 语言** | 中文 · English · 日本語 · 한국어 · Bahasa Indonesia；全局导航与主要工作台 UI 已覆盖，路线专属内容按各数据集的现有语言回退 |
 
 ---
 
