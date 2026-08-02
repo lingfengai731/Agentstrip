@@ -72,10 +72,15 @@
       body.dark .bali-sec-head h2 { color: #f0f0ec; }
       .bali-sec-head p { font-size: 16px; line-height: 1.7; color: #64748b; margin: 0; }
       body.dark .bali-sec-head p { color: rgba(255,255,255,.6); }
-      .bali-filterbar { display:flex; flex-wrap:wrap; gap:8px; justify-content:center; margin:-14px 0 24px; }
+      .bali-filter-groups { display:grid; gap:12px; margin:-14px auto 24px; max-width:980px; }
+      .bali-filter-row { display:flex; align-items:center; justify-content:center; gap:10px; }
+      .bali-filter-label { flex:0 0 auto; color:#64748b; font-size:11px; font-weight:800; letter-spacing:.08em; text-transform:uppercase; }
+      .bali-filterbar { display:flex; flex-wrap:wrap; gap:8px; justify-content:center; }
       .bali-filter { min-height:40px; padding:8px 14px; border:1px solid #e5e2da; border-radius:20px; background:#fff; color:#475569; font:600 12px/1.3 inherit; cursor:pointer; }
       .bali-filter.active { border-color:#0e7c6b; background:rgba(14,124,107,.08); color:#0e7c6b; }
       body.dark .bali-filter { background:#232622; border-color:#3a3d38; color:#d1d5db; }
+      body.dark .bali-filter-label { color:#a8b0ba; }
+      .bali-gallery-empty { margin:12px 0 0; padding:18px; border:1px dashed #d7d2c7; border-radius:12px; color:#64748b; text-align:center; }
       .bali-gallery { columns: 3; column-gap: 14px; }
       .bali-shot { position:relative; width:100%; padding:0; margin:0 0 14px; border:0; border-radius:12px; overflow:hidden; background:#111; display:block; break-inside:avoid; box-shadow:0 6px 22px rgba(0,0,0,.10); cursor:pointer; text-align:left; }
       .bali-shot[hidden] { display:none; }
@@ -85,7 +90,15 @@
       .bali-shot-meta { position:absolute; left:10px; right:10px; bottom:10px; display:flex; flex-wrap:wrap; gap:6px; }
       .bali-shot-meta span { padding:5px 8px; border-radius:14px; background:rgba(15,23,42,.74); backdrop-filter:blur(6px); color:#fff; font-size:10px; font-weight:700; }
       @media (max-width: 991px) { .bali-gallery { columns: 2; } }
-      @media (max-width: 575px) { .bali-gallery { columns: 1; } }
+      @media (max-width: 575px) {
+        .bali-filter-groups { margin-left:0; margin-right:0; gap:10px; }
+        .bali-filter-row { display:block; }
+        .bali-filter-label { display:block; padding:0 0 6px; }
+        .bali-filterbar { justify-content:flex-start; flex-wrap:nowrap; overflow-x:auto; padding:0 0 4px; scrollbar-width:none; }
+        .bali-filterbar::-webkit-scrollbar { display:none; }
+        .bali-filter { flex:0 0 auto; }
+        .bali-gallery { columns: 1; }
+      }
       .bali-timeline { max-width: 920px; margin: 0 auto; position: relative; }
       .bali-tl-line { position: absolute; left: 28px; top: 8px; bottom: 8px; width: 2px; background: linear-gradient(var(--bali-gold), #d97706); opacity: .35; }
       @media (max-width: 575px) { .bali-tl-line { left: 18px; } }
@@ -311,31 +324,46 @@
       <h2 data-i18n="baliGalleryTitle">Moments from the island</h2>
       <p data-i18n="baliGallerySub">Real scenes our travellers experienced - beaches, rice terraces, volcanoes and cliff temples.</p>
     </div>
-    <div class="bali-filterbar" role="group" aria-label="Photo filters">
-      <button class="bali-filter active" type="button" data-filter="all" data-i18n="baliFilterAll">All real moments</button>
-      <button class="bali-filter" type="button" data-filter="nature" data-i18n="baliFilterNature">Nature</button>
-      <button class="bali-filter" type="button" data-filter="culture" data-i18n="baliFilterCulture">Culture</button>
-      <button class="bali-filter" type="button" data-filter="experience" data-i18n="baliFilterExperience">Experiences</button>
-      <button class="bali-filter" type="button" data-filter="traveler" data-i18n="baliFilterTraveler">Traveller viewpoint</button>
-      <button class="bali-filter" type="button" data-filter="composed" data-i18n="baliFilterComposed">Composed scenery</button>
+    <div class="bali-filter-groups">
+      <div class="bali-filter-row">
+        <span class="bali-filter-label" data-i18n="baliFilterTheme">Travel theme</span>
+        <div class="bali-filterbar" role="group" aria-label="Travel theme" data-i18n="baliFilterTheme" data-i18n-attr="aria-label">
+          <button class="bali-filter active" type="button" data-filter-kind="category" data-filter="all" aria-pressed="true" data-i18n="baliFilterAll">All</button>
+          <button class="bali-filter" type="button" data-filter-kind="category" data-filter="landscapes" aria-pressed="false" data-i18n="baliFilterLandscapes">Landscapes</button>
+          <button class="bali-filter" type="button" data-filter-kind="category" data-filter="culture" aria-pressed="false" data-i18n="baliFilterCulture">Culture</button>
+          <button class="bali-filter" type="button" data-filter-kind="category" data-filter="experiences" aria-pressed="false" data-i18n="baliFilterExperiences">Experiences</button>
+          <button class="bali-filter" type="button" data-filter-kind="category" data-filter="places" aria-pressed="false" data-i18n="baliFilterPlaces">Places</button>
+        </div>
+      </div>
+      <div class="bali-filter-row">
+        <span class="bali-filter-label" data-i18n="baliFilterTags">Photo & travel tags</span>
+        <div class="bali-filterbar" role="group" aria-label="Photo and travel tags" data-i18n="baliFilterTags" data-i18n-attr="aria-label">
+          <button class="bali-filter active" type="button" data-filter-kind="tag" data-filter="all" aria-pressed="true" data-i18n="baliFilterAllTags">All tags</button>
+          <button class="bali-filter" type="button" data-filter-kind="tag" data-filter="traveller-moment" aria-pressed="false" data-i18n="baliTagTravellerMoment">Traveller moment</button>
+          <button class="bali-filter" type="button" data-filter-kind="tag" data-filter="golden-hour" aria-pressed="false" data-i18n="baliTagGoldenHour">Golden hour</button>
+          <button class="bali-filter" type="button" data-filter-kind="tag" data-filter="adventure" aria-pressed="false" data-i18n="baliTagAdventure">Adventure</button>
+          <button class="bali-filter" type="button" data-filter-kind="tag" data-filter="documentary" aria-pressed="false" data-i18n="baliTagDocumentary">Documentary</button>
+        </div>
+      </div>
     </div>
     <div class="bali-gallery" id="bali-gallery-grid">
-      <button class="bali-shot" data-place="batur-jeep" data-tags="nature traveler experience"><img src="assets/images/bali-5.jpg" alt="Mount Batur sunrise jeep viewpoint" loading="lazy"><span class="bali-shot-meta"><span data-i18n="baliTagNature">Nature</span><span data-i18n="baliTagTraveler">Traveller shot</span></span></button>
-      <button class="bali-shot" data-place="batur-ride" data-tags="experience traveler"><img src="assets/images/bali-6.jpg" alt="Batur jeep ride from a passenger viewpoint" loading="lazy"><span class="bali-shot-meta"><span data-i18n="baliTagExperience">Experience</span><span data-i18n="baliTagTraveler">Traveller shot</span></span></button>
-      <button class="bali-shot" data-place="penida-cliff" data-tags="nature composed"><img src="assets/images/bali-7.jpg" alt="Nusa Penida turquoise cliff coast" loading="lazy"><span class="bali-shot-meta"><span data-i18n="baliTagNature">Nature</span><span data-i18n="baliTagComposed">Composed view</span></span></button>
-      <button class="bali-shot" data-place="snorkel" data-tags="experience traveler"><img src="assets/images/bali-8.jpg" alt="Snorkelling with tropical fish" loading="lazy"><span class="bali-shot-meta"><span data-i18n="baliTagExperience">Experience</span><span data-i18n="baliTagTraveler">Traveller shot</span></span></button>
-      <button class="bali-shot" data-place="penida-rock" data-tags="nature composed"><img src="assets/images/bali-9.jpg" alt="Nusa Penida sea stack" loading="lazy"><span class="bali-shot-meta"><span data-i18n="baliTagNature">Nature</span><span data-i18n="baliTagComposed">Composed view</span></span></button>
-      <button class="bali-shot" data-place="coastal-culture" data-tags="culture traveler"><img src="assets/images/bali-10.jpg" alt="Balinese coastal cultural monument" loading="lazy"><span class="bali-shot-meta"><span data-i18n="baliTagCulture">Culture</span><span data-i18n="baliTagTraveler">Traveller shot</span></span></button>
-      <button class="bali-shot" data-place="beach" data-tags="nature traveler"><img src="assets/images/bali-11.jpg" alt="Bali beach from a visitor viewpoint" loading="lazy"><span class="bali-shot-meta"><span data-i18n="baliTagNature">Nature</span><span data-i18n="baliTagTraveler">Traveller shot</span></span></button>
-      <button class="bali-shot" data-place="monkey-forest" data-tags="culture experience traveler"><img src="assets/images/bali-12.jpg" alt="Sacred Monkey Forest entrance in Ubud" loading="lazy"><span class="bali-shot-meta"><span data-i18n="baliTagCulture">Culture</span><span data-i18n="baliTagExperience">Experience</span></span></button>
-      <button class="bali-shot" data-place="ubud-temple" data-tags="culture composed"><img src="assets/images/bali-13.jpg" alt="Balinese temple architecture in Ubud" loading="lazy"><span class="bali-shot-meta"><span data-i18n="baliTagCulture">Culture</span><span data-i18n="baliTagComposed">Composed view</span></span></button>
-      <button class="bali-shot" data-place="coffee-garden" data-tags="nature culture traveler"><img src="assets/images/bali-14.jpg" alt="Coffee garden in the Ubud highlands" loading="lazy"><span class="bali-shot-meta"><span data-i18n="baliTagNature">Nature</span><span data-i18n="baliTagCulture">Culture</span></span></button>
-      <button class="bali-shot" data-place="coffee-roast" data-tags="culture experience composed"><img src="assets/images/bali-15.jpg" alt="Traditional coffee roasting over a fire" loading="lazy"><span class="bali-shot-meta"><span data-i18n="baliTagCulture">Culture</span><span data-i18n="baliTagExperience">Experience</span></span></button>
-      <button class="bali-shot" data-place="batur-dawn" data-tags="nature composed"><img src="assets/images/bali-16.jpg" alt="Dawn above the clouds at Mount Batur" loading="lazy"><span class="bali-shot-meta"><span data-i18n="baliTagNature">Nature</span><span data-i18n="baliTagComposed">Composed view</span></span></button>
-      <button class="bali-shot" data-place="kintamani-stay" data-tags="nature composed"><img src="assets/images/bali-17.jpg" alt="Kintamani stay facing Mount Batur" loading="lazy"><span class="bali-shot-meta"><span data-i18n="baliTagNature">Nature</span><span data-i18n="baliTagComposed">Composed view</span></span></button>
-      <button class="bali-shot" data-place="island-boat" data-tags="experience traveler"><img src="assets/images/bali-18.jpg" alt="Passenger boat for a Bali island crossing" loading="lazy"><span class="bali-shot-meta"><span data-i18n="baliTagExperience">Experience</span><span data-i18n="baliTagTraveler">Traveller shot</span></span></button>
-      <button class="bali-shot" data-place="penida-bay" data-tags="nature composed"><img src="assets/images/bali-19.jpg" alt="Nusa Penida bay and sea stacks" loading="lazy"><span class="bali-shot-meta"><span data-i18n="baliTagNature">Nature</span><span data-i18n="baliTagComposed">Composed view</span></span></button>
+      <button class="bali-shot" data-place="batur-jeep" data-category="experiences" data-sub-category="adventure" data-tags="traveller-moment golden-hour adventure documentary" data-mood="energising" data-season="dry-season" data-route-ids="R5"><img src="assets/images/bali-5.jpg" alt="Mount Batur sunrise jeep viewpoint" loading="lazy"><span class="bali-shot-meta"><span data-i18n="baliFilterExperiences">Experiences</span><span data-i18n="baliSubAdventure">Adventure</span></span></button>
+      <button class="bali-shot" data-place="batur-ride" data-category="experiences" data-sub-category="adventure" data-tags="traveller-moment adventure documentary" data-mood="active" data-season="all-season" data-route-ids="R5"><img src="assets/images/bali-6.jpg" alt="Batur jeep ride from a passenger viewpoint" loading="lazy"><span class="bali-shot-meta"><span data-i18n="baliFilterExperiences">Experiences</span><span data-i18n="baliSubAdventure">Adventure</span></span></button>
+      <button class="bali-shot" data-place="penida-cliff" data-category="landscapes" data-sub-category="ocean-beach" data-tags="adventure" data-mood="dramatic" data-season="dry-season" data-route-ids="R1 R3 R6"><img src="assets/images/bali-7.jpg" alt="Nusa Penida turquoise cliff coast" loading="lazy"><span class="bali-shot-meta"><span data-i18n="baliFilterLandscapes">Landscapes</span><span data-i18n="baliSubOceanBeach">Ocean &amp; Beach</span></span></button>
+      <button class="bali-shot" data-place="snorkel" data-category="experiences" data-sub-category="adventure" data-tags="traveller-moment adventure documentary" data-mood="active" data-season="weather-dependent" data-route-ids="R1 R3"><img src="assets/images/bali-8.jpg" alt="Snorkelling with tropical fish" loading="lazy"><span class="bali-shot-meta"><span data-i18n="baliFilterExperiences">Experiences</span><span data-i18n="baliSubAdventure">Adventure</span></span></button>
+      <button class="bali-shot" data-place="penida-rock" data-category="places" data-sub-category="iconic-attractions" data-tags="adventure" data-mood="dramatic" data-season="dry-season" data-route-ids="R1 R3 R6"><img src="assets/images/bali-9.jpg" alt="Nusa Penida sea stack" loading="lazy"><span class="bali-shot-meta"><span data-i18n="baliFilterPlaces">Places</span><span data-i18n="baliSubIconic">Iconic attraction</span></span></button>
+      <button class="bali-shot" data-place="coastal-culture" data-category="culture" data-sub-category="art-heritage" data-tags="traveller-moment documentary" data-mood="reflective" data-season="all-season" data-route-ids="R1 R4"><img src="assets/images/bali-10.jpg" alt="Balinese coastal cultural monument" loading="lazy"><span class="bali-shot-meta"><span data-i18n="baliFilterCulture">Culture</span><span data-i18n="baliSubArtHeritage">Art &amp; Heritage</span></span></button>
+      <button class="bali-shot" data-place="beach" data-category="landscapes" data-sub-category="ocean-beach" data-tags="traveller-moment documentary" data-mood="relaxed" data-season="all-season" data-route-ids="R1 R3 R6"><img src="assets/images/bali-11.jpg" alt="Bali beach from a visitor viewpoint" loading="lazy"><span class="bali-shot-meta"><span data-i18n="baliFilterLandscapes">Landscapes</span><span data-i18n="baliSubOceanBeach">Ocean &amp; Beach</span></span></button>
+      <button class="bali-shot" data-place="monkey-forest" data-category="places" data-sub-category="iconic-attractions" data-tags="traveller-moment documentary" data-mood="curious" data-season="all-season" data-route-ids="R1 R2 R4"><img src="assets/images/bali-12.jpg" alt="Sacred Monkey Forest entrance in Ubud" loading="lazy"><span class="bali-shot-meta"><span data-i18n="baliFilterPlaces">Places</span><span data-i18n="baliSubIconic">Iconic attraction</span></span></button>
+      <button class="bali-shot" data-place="ubud-temple" data-category="culture" data-sub-category="temples-architecture" data-tags="documentary" data-mood="reflective" data-season="all-season" data-route-ids="R1 R2 R4"><img src="assets/images/bali-13.jpg" alt="Balinese temple architecture in Ubud" loading="lazy"><span class="bali-shot-meta"><span data-i18n="baliFilterCulture">Culture</span><span data-i18n="baliSubTemples">Temples &amp; Architecture</span></span></button>
+      <button class="bali-shot" data-place="coffee-garden" data-category="experiences" data-sub-category="food-journey" data-tags="traveller-moment documentary" data-mood="slow" data-season="all-season" data-route-ids="R2 R4"><img src="assets/images/bali-14.jpg" alt="Coffee garden in the Ubud highlands" loading="lazy"><span class="bali-shot-meta"><span data-i18n="baliFilterExperiences">Experiences</span><span data-i18n="baliSubFoodJourney">Food journey</span></span></button>
+      <button class="bali-shot" data-place="coffee-roast" data-category="culture" data-sub-category="local-lifestyle" data-tags="documentary" data-mood="warm" data-season="all-season" data-route-ids="R2 R4"><img src="assets/images/bali-15.jpg" alt="Traditional coffee roasting over a fire" loading="lazy"><span class="bali-shot-meta"><span data-i18n="baliFilterCulture">Culture</span><span data-i18n="baliSubLocalLifestyle">Local lifestyle</span></span></button>
+      <button class="bali-shot" data-place="batur-dawn" data-category="landscapes" data-sub-category="mountains-volcano" data-tags="golden-hour adventure" data-mood="awe" data-season="dry-season" data-route-ids="R1 R5 R6"><img src="assets/images/bali-16.jpg" alt="Dawn above the clouds at Mount Batur" loading="lazy"><span class="bali-shot-meta"><span data-i18n="baliFilterLandscapes">Landscapes</span><span data-i18n="baliSubMountainsVolcano">Mountains &amp; Volcano</span></span></button>
+      <button class="bali-shot" data-place="kintamani-stay" data-category="places" data-sub-category="hotels-resorts" data-tags="golden-hour" data-mood="restorative" data-season="all-season" data-route-ids="R1 R5 R6"><img src="assets/images/bali-17.jpg" alt="Kintamani stay facing Mount Batur" loading="lazy"><span class="bali-shot-meta"><span data-i18n="baliFilterPlaces">Places</span><span data-i18n="baliSubHotels">Hotels &amp; Resorts</span></span></button>
+      <button class="bali-shot" data-place="island-boat" data-category="experiences" data-sub-category="road-trip" data-tags="traveller-moment documentary" data-mood="practical" data-season="weather-dependent" data-route-ids="R1 R3"><img src="assets/images/bali-18.jpg" alt="Passenger boat for a Bali island crossing" loading="lazy"><span class="bali-shot-meta"><span data-i18n="baliFilterExperiences">Experiences</span><span data-i18n="baliSubRoadTrip">Road trip &amp; transfers</span></span></button>
+      <button class="bali-shot" data-place="penida-bay" data-category="landscapes" data-sub-category="ocean-beach" data-tags="adventure" data-mood="dramatic" data-season="dry-season" data-route-ids="R1 R3 R6"><img src="assets/images/bali-19.jpg" alt="Nusa Penida bay and sea stacks" loading="lazy"><span class="bali-shot-meta"><span data-i18n="baliFilterLandscapes">Landscapes</span><span data-i18n="baliSubOceanBeach">Ocean &amp; Beach</span></span></button>
     </div>
+    <p class="bali-gallery-empty" id="bali-gallery-empty" hidden data-i18n="baliGalleryEmpty">No current image matches both filters. Try another tag.</p>
   </div>
 </section>
 
@@ -971,7 +999,44 @@
     document.getElementById('bali-place-purpose').textContent = data[2]; document.getElementById('bali-place-route').textContent = data[3];
     document.getElementById('bali-place-ai').href = 'ai-tool.html?dest=bali&place=' + encodeURIComponent(data[0]);
   }
-  document.querySelectorAll('.bali-filter').forEach(function(btn){ btn.onclick=function(){ document.querySelectorAll('.bali-filter').forEach(function(x){x.classList.toggle('active',x===btn)}); document.querySelectorAll('.bali-shot').forEach(function(x){x.hidden=btn.dataset.filter!=='all' && !x.dataset.tags.split(' ').includes(btn.dataset.filter)}); }; });
+  var galleryFilters = { category:'all', tag:'all' };
+  function applyGalleryFilters() {
+    var visible = 0;
+    document.querySelectorAll('.bali-shot').forEach(function(shot) {
+      var tags = (shot.dataset.tags || '').split(/\s+/).filter(Boolean);
+      var categoryMatches = galleryFilters.category === 'all' || shot.dataset.category === galleryFilters.category;
+      var tagMatches = galleryFilters.tag === 'all' || tags.indexOf(galleryFilters.tag) >= 0;
+      shot.hidden = !(categoryMatches && tagMatches);
+      if (!shot.hidden) visible += 1;
+    });
+    var empty = document.getElementById('bali-gallery-empty');
+    if (empty) empty.hidden = visible !== 0;
+  }
+  document.querySelectorAll('.bali-filter').forEach(function(btn) {
+    btn.onclick = function() {
+      var kind = btn.dataset.filterKind;
+      galleryFilters[kind] = btn.dataset.filter;
+      document.querySelectorAll('.bali-filter[data-filter-kind="' + kind + '"]').forEach(function(item) {
+        var selected = item === btn;
+        item.classList.toggle('active', selected);
+        item.setAttribute('aria-pressed', selected ? 'true' : 'false');
+      });
+      applyGalleryFilters();
+    };
+  });
+  var mobileFilterQuery = window.matchMedia('(max-width:575px)');
+  function resetMobileFilterScroll(query) {
+    if (!query.matches) return;
+    var reset = function() {
+      document.querySelectorAll('.bali-filterbar').forEach(function(bar) { bar.scrollLeft = 0; });
+    };
+    window.requestAnimationFrame(reset);
+    window.setTimeout(reset, 120);
+  }
+  if (mobileFilterQuery.addEventListener) mobileFilterQuery.addEventListener('change', resetMobileFilterScroll);
+  else mobileFilterQuery.addListener(resetMobileFilterScroll);
+  window.addEventListener('resize', function() { resetMobileFilterScroll(mobileFilterQuery); });
+  resetMobileFilterScroll(mobileFilterQuery);
   document.querySelectorAll('.bali-shot').forEach(function(shot){ shot.onclick=function(){ activeShot=shot; renderModal(); modal.classList.add('show'); modal.setAttribute('aria-hidden','false'); document.body.style.overflow='hidden'; modal.querySelector('.bali-place-close').focus(); }; });
   function close(){ modal.classList.remove('show'); modal.setAttribute('aria-hidden','true'); document.body.style.overflow=''; if(activeShot) activeShot.focus(); }
   modal.querySelector('.bali-place-close').onclick=close; modal.onclick=function(e){if(e.target===modal)close()}; document.addEventListener('keydown',function(e){if(e.key==='Escape'&&modal.classList.contains('show'))close()});

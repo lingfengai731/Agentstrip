@@ -6,6 +6,7 @@ import tempfile
 import time
 import unittest
 import uuid
+from html.parser import HTMLParser
 from pathlib import Path
 from unittest.mock import patch
 
@@ -605,6 +606,64 @@ class ProductAccessTests(unittest.TestCase):
                 and poi["region_id"] in outline_regions
             ]
             self.assertTrue(compatible, route["id"])
+
+    def test_bali_gallery_uses_theme_and_tag_taxonomy(self):
+        frontend_dir = (
+            BACKEND_DIR.parents[1] / "wandermind-studio" / "frontend"
+        )
+        html = (frontend_dir / "bali.html").read_text(encoding="utf-8")
+
+        class GalleryParser(HTMLParser):
+            def __init__(self):
+                super().__init__()
+                self.shots = []
+                self.current = None
+
+            def handle_starttag(self, tag, attrs):
+                values = dict(attrs)
+                classes = values.get("class", "").split()
+                if tag == "button" and "bali-shot" in classes:
+                    self.current = values
+                    self.shots.append(values)
+                elif tag == "img" and self.current is not None:
+                    self.current["image_src"] = values.get("src", "")
+
+            def handle_endtag(self, tag):
+                if tag == "button":
+                    self.current = None
+
+        parser = GalleryParser()
+        parser.feed(html)
+        self.assertEqual(len(parser.shots), 15)
+
+        expected_categories = {
+            "landscapes",
+            "culture",
+            "experiences",
+            "places",
+        }
+        category_counts = {category: 0 for category in expected_categories}
+        valid_routes = {f"R{index}" for index in range(1, 7)}
+        for shot in parser.shots:
+            category = shot.get("data-category")
+            self.assertIn(category, expected_categories)
+            category_counts[category] += 1
+            self.assertTrue(shot.get("data-sub-category"))
+            self.assertTrue(shot.get("data-tags"))
+            self.assertTrue(shot.get("data-mood"))
+            self.assertTrue(shot.get("data-season"))
+            route_ids = set(shot.get("data-route-ids", "").split())
+            self.assertTrue(route_ids)
+            self.assertTrue(route_ids.issubset(valid_routes))
+            image_path = frontend_dir / shot["image_src"]
+            self.assertTrue(image_path.is_file(), image_path)
+
+        self.assertTrue(all(count >= 2 for count in category_counts.values()))
+        self.assertIn('data-filter-kind="category"', html)
+        self.assertIn('data-filter-kind="tag"', html)
+        self.assertIn('data-i18n="baliFilterTheme" data-i18n-attr="aria-label"', html)
+        self.assertIn('data-i18n="baliFilterTags" data-i18n-attr="aria-label"', html)
+        self.assertIn("categoryMatches && tagMatches", html)
 
     def test_unknown_driver_is_rejected_before_email_delivery(self):
         response = self._run(

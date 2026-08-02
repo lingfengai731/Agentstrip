@@ -80,6 +80,15 @@
 - 2026-07-27 实际使用：agent-role-orchestrator、ui-implementation-workflow、browser-automation-router；开发、UI、测试、QA 按角色闭环执行。
 - 2026-07-27 未使用：huashu-nuwa 与人物 Perspective Skill；本轮是已确认根因的可靠性修复，不需要新增产品或商业顾问判断。
 
+## 2026-08-03 Bali visual portfolio callback
+- Scope: medium / L3. The persistent role-window preparation remained fail-closed because `registry/plugin-packages.json` is absent; no thread id was invented.
+- UI callback: retained the existing teal + gold visual system and replaced the mixed gallery filters with an AND-combined travel-theme plus photo/travel-tag taxonomy.
+- Test callback: backend unittest, image-intake tests, Chrome desktop/mobile, and WebKit mobile checks passed locally; the final Sol release gate remains pending.
+- Image governance: 108 source images are listed, 55 have subcategory suggestions, 23 have route suggestions, 15 have POI suggestions, and 0 unconfirmed images enter the publish manifest.
+- Skill hits: agent-role-orchestrator constrained L3 routing and callbacks; ui-implementation-workflow constrained style variance and responsive behavior; browser-automation-router selected deterministic Playwright CLI verification.
+- Sol first gate: NO-GO with one P1 because the staged CSV mixed hashes from untracked/unstaged source images into the deployment snapshot; the CSV is being removed from the staged release and documented as a local operational ledger. Two P2 items cover the operational-only `people` class boundary and localized filter group labels.
+- Sol final gate: GO; P0/P1/P2 are all 0 after excluding CSV/images from the release snapshot, documenting the `people` boundary, and localizing both filter-group aria labels.
+
 ## 压缩交接卡
 
 - 最近摘要：Google 登录、阶段 1/2、C1–C4 产品额度及六路线空间示意均已验收；108 张图片已具备增量复核、路线/POI 建议和 fail-closed 发布 manifest。

@@ -67,6 +67,7 @@ function Get-ImageHints {
 
     $name = $FileName.ToLowerInvariant()
     $category = "unclassified"
+    $subCategory = ""
     $tags = @()
     $captureStyle = "unknown"
     $regions = @()
@@ -86,30 +87,82 @@ function Get-ImageHints {
 
     if ($name -match "dicky|gede|tourist") {
         $category = "people"
+        $subCategory = "driver-trust-asset"
         $captureStyle = "phone_authentic"
         $tags += "driver"
     }
     if ($name -match "car|vehicle") {
         $category = "places"
+        $subCategory = "road-trip"
         $captureStyle = "phone_authentic"
         $tags += "vehicle"
     }
-    if ($name -match "temple|pura|tirta|lempuyang|besakih|uluwatu|tanah lot|ulun danu|saraswati|gwk|garuda") {
+    if ($name -match "temple|pura|tirta|lempuyang|besakih|tanah lot|ulun danu|saraswati|gwk|garuda") {
         $category = "places"
+        $subCategory = "iconic-attractions"
         $tags += "culture", "temple"
     }
     if ($name -match "yoga|chi|healing|intuitive|sound") {
         $category = "experiences"
+        $subCategory = "wellness"
         $tags += "wellness"
     }
     if ($name -match "beach|ocean|sunset|cliff|aerial|shore|coast") {
         if ($category -eq "unclassified") {
             $category = "landscapes"
+            $subCategory = "ocean-beach"
         }
         $tags += "coast"
     }
+    if ($name -match "beach\s*club|sunday\s*beach") {
+        $category = "places"
+        $subCategory = "hidden-gems"
+        $tags += "beach-club"
+    }
+    if ($name -match "mountain|volcano|batur|agung|kintamani") {
+        if ($category -eq "unclassified") {
+            $category = "landscapes"
+            $subCategory = "mountains-volcano"
+        }
+        $tags += "mountain"
+    }
+    if ($name -match "forest|waterfall|jungle") {
+        if ($category -eq "unclassified") {
+            $category = "landscapes"
+            $subCategory = "forest-waterfall"
+        }
+        $tags += "nature"
+    }
+    if ($name -match "rice|terrace|countryside|sawah|jatiluwih|tegalalang") {
+        if ($category -eq "unclassified") {
+            $category = "landscapes"
+            $subCategory = "rice-terrace-countryside"
+        }
+        $tags += "countryside"
+    }
+    if ($name -match "surf|snorkel|diving|hiking|trek|jeep") {
+        $category = "experiences"
+        $subCategory = "adventure"
+        $tags += "adventure"
+    }
+    if ($name -match "food|coffee|cooking|restaurant|cafe") {
+        $category = "experiences"
+        $subCategory = "food-journey"
+        $tags += "food"
+    }
+    if ($name -match "woodcarv|wood carv|batik|silver|jewelry|jewellery|weaving") {
+        $category = "experiences"
+        $subCategory = "creative-workshop"
+        $tags += "craft"
+    }
+    if ($name -match "hotel|resort|villa") {
+        $category = "places"
+        $subCategory = "hotels-resorts"
+        $tags += "stay"
+    }
     if ($name -match "nyepi|galungan") {
         $category = "culture"
+        $subCategory = "traditional-ceremony"
         $tags += "festival"
         $routes += "R4"
     }
@@ -192,6 +245,7 @@ function Get-ImageHints {
 
     [pscustomobject]@{
         Category = $category
+        SubCategory = $subCategory
         Tags = (@($tags) | Select-Object -Unique) -join ";"
         CaptureStyle = $captureStyle
         LocationStatus = $locationStatus
@@ -318,6 +372,7 @@ $rows = foreach ($item in $inventory) {
         Height = $height
         Sha256 = $item.Sha256
         SuggestedCategory = $hints.Category
+        SuggestedSubCategory = $hints.SubCategory
         SuggestedTags = $hints.Tags
         SuggestedCaptureStyle = $hints.CaptureStyle
         SuggestedLocationStatus = $hints.LocationStatus
@@ -350,6 +405,7 @@ $manifestImages = @(
                 relative_path = $_.RelativePath
                 sha256 = $_.Sha256
                 category = $_.SuggestedCategory
+                sub_category = $_.SuggestedSubCategory
                 tags = @($_.SuggestedTags -split ";" | Where-Object { $_ })
                 location_status = $_.SuggestedLocationStatus
                 region_ids = @($_.SuggestedRegionIds -split ";" | Where-Object { $_ })

@@ -37,6 +37,8 @@ try {
     $firstRows = @(Import-Csv -LiteralPath $reviewCsv)
     $firstManifest = Get-Content -LiteralPath $manifestJson -Raw -Encoding UTF8 | ConvertFrom-Json
     Assert-True ($firstRows.Count -eq 1) "first scan should contain one image"
+    Assert-True ($firstRows[0].SuggestedCategory -eq "experiences") "Yoga Barn should use the Experiences theme"
+    Assert-True ($firstRows[0].SuggestedSubCategory -eq "wellness") "Yoga Barn should use the Wellness sub-category"
     Assert-True ($firstRows[0].SuggestedRouteIds -eq "R2") "Yoga Barn should map to R2"
     Assert-True ($firstRows[0].SuggestedPoiIds -eq "yoga_barn") "Yoga Barn should map to its POI"
     Assert-True ($firstRows[0].EligibleForPublish -eq "False") "unreviewed image must not be eligible"
@@ -84,6 +86,7 @@ try {
     $approvedManifest = Get-Content -LiteralPath $manifestJson -Raw -Encoding UTF8 | ConvertFrom-Json
     Assert-True ($approvedRows[0].EligibleForPublish -eq "True") "fully reviewed image should become eligible"
     Assert-True (@($approvedManifest.images).Count -eq 1) "eligible image should enter the manifest"
+    Assert-True ($approvedManifest.images[0].sub_category -eq "wellness") "manifest should retain the visual sub-category"
 
     $duplicatePath = Join-Path $imageRoot "copy.jpg"
     Copy-Item -LiteralPath $renamedPath -Destination $duplicatePath
@@ -127,6 +130,7 @@ try {
     $locationRows = @(Import-Csv -LiteralPath $reviewCsv)
     $nonBaliRow = $locationRows | Where-Object Filename -eq "phuket-uluwatu-temple.jpg"
     Assert-True ($nonBaliRow.SuggestedCategory -eq "places") "non-Bali temple may still be classified by content"
+    Assert-True ($nonBaliRow.SuggestedSubCategory -eq "iconic-attractions") "temple should use the iconic-attractions sub-category"
     Assert-True ($nonBaliRow.SuggestedLocationStatus -eq "non_bali_named") "explicit non-Bali filename should be flagged"
     Assert-True ([string]::IsNullOrWhiteSpace($nonBaliRow.SuggestedRegionIds)) "explicit non-Bali image must not map to a Bali region"
     Assert-True ([string]::IsNullOrWhiteSpace($nonBaliRow.SuggestedRouteIds)) "explicit non-Bali image must not map to a Bali route"
