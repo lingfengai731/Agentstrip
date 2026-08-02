@@ -18,6 +18,7 @@
   "regions": [
     {
       "id": "G1",
+      "map": {"x": 27, "y": 66},
       "name": {
         "zh": "西南海岸生活方式圈",
         "en": "Southwest coast lifestyle"
@@ -28,6 +29,7 @@
     },
     {
       "id": "G2",
+      "map": {"x": 43, "y": 86},
       "name": {
         "zh": "南部半岛与海岸度假圈",
         "en": "Southern peninsula and coastal retreat"
@@ -38,6 +40,7 @@
     },
     {
       "id": "G3",
+      "map": {"x": 62, "y": 73},
       "name": {
         "zh": "东南门户与离岛衔接圈",
         "en": "Southeast gateway and island transfers"
@@ -48,6 +51,7 @@
     },
     {
       "id": "G4",
+      "map": {"x": 47, "y": 49},
       "name": {
         "zh": "中部乌布文化自然圈",
         "en": "Central Ubud culture and nature"
@@ -58,6 +62,7 @@
     },
     {
       "id": "G5",
+      "map": {"x": 42, "y": 28},
       "name": {
         "zh": "中北部山地自然圈",
         "en": "Central-north highland nature"
@@ -68,6 +73,7 @@
     },
     {
       "id": "G6",
+      "map": {"x": 63, "y": 34},
       "name": {
         "zh": "东北火山与东部高地圈",
         "en": "Northeast volcano and eastern highlands"
@@ -78,6 +84,7 @@
     },
     {
       "id": "G7",
+      "map": {"x": 78, "y": 51},
       "name": {
         "zh": "东部海岸与传统村落圈",
         "en": "Eastern coast and traditional villages"

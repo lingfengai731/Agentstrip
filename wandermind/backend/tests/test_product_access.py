@@ -1,4 +1,5 @@
 import asyncio
+import json
 import os
 import sys
 import tempfile
@@ -442,6 +443,29 @@ class ProductAccessTests(unittest.TestCase):
         self.assertIn("Gede", text)
         self.assertNotIn("550", html)
         self.assertNotIn("550", text)
+
+    def test_bali_route_map_has_coordinates_for_every_region(self):
+        data_path = (
+            BACKEND_DIR.parents[1]
+            / "wandermind-studio"
+            / "frontend"
+            / "assets"
+            / "data"
+            / "bali-travel-data.json"
+        )
+        data = json.loads(data_path.read_text(encoding="utf-8"))
+        region_ids = {region["id"] for region in data["regions"]}
+        self.assertEqual(len(region_ids), 7)
+        for region in data["regions"]:
+            self.assertIn("map", region)
+            self.assertGreaterEqual(region["map"]["x"], 0)
+            self.assertLessEqual(region["map"]["x"], 100)
+            self.assertGreaterEqual(region["map"]["y"], 0)
+            self.assertLessEqual(region["map"]["y"], 100)
+        for route in data["routes"]:
+            referenced = set(route.get("base_regions", []))
+            referenced.update(route.get("optional_regions", []))
+            self.assertTrue(referenced.issubset(region_ids), route["id"])
 
     def test_unknown_driver_is_rejected_before_email_delivery(self):
         response = self._run(

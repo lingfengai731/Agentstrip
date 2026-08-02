@@ -105,7 +105,7 @@
       body.dark .bali-tl-tag { background: rgba(252,191,30,.2); color: #fcd34d; }
       .bali-tl-card p { font-size: 14.5px; line-height: 1.7; color: #475569; margin: 6px 0 0; }
       body.dark .bali-tl-card p { color: rgba(255,255,255,.7); }
-      .bali-route-family { background: #f7faf8; }
+      .bali-route-family { background: #f7faf8; scroll-margin-top:80px; }
       body.dark .bali-route-family { background: rgba(255,255,255,.025); }
       .bali-route-grid { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:18px; }
       .bali-route-card { position:relative; min-width:0; padding:22px; border:1px solid #e2e8e4; border-radius:16px; background:#fff; color:#1e293b; text-align:left; cursor:pointer; box-shadow:0 6px 22px rgba(15,23,42,.06); transition:transform .18s,border-color .18s,box-shadow .18s; }
@@ -125,6 +125,28 @@
       .bali-route-detail-grid { display:grid; grid-template-columns:minmax(0,1.1fr) minmax(280px,.9fr); gap:28px; align-items:start; }
       .bali-route-detail h3 { margin:0 0 8px; font-size:clamp(24px,3vw,32px); font-weight:800; }
       .bali-route-detail p { margin:0; color:rgba(255,255,255,.86); line-height:1.7; }
+      .bali-route-aside { display:grid; gap:14px; min-width:0; }
+      .bali-route-map { padding:16px; border:1px solid rgba(255,255,255,.2); border-radius:16px; background:rgba(4,47,46,.24); }
+      .bali-route-map-head { display:flex; justify-content:space-between; align-items:flex-start; gap:12px; margin-bottom:8px; }
+      .bali-route-map-head strong { color:#fff; font-size:14px; }
+      .bali-route-map-head span { color:rgba(255,255,255,.66); font-size:10px; text-align:right; }
+      .bali-route-map svg { display:block; width:100%; height:auto; max-height:285px; overflow:visible; }
+      .bali-map-island { fill:rgba(255,255,255,.08); stroke:rgba(255,255,255,.28); stroke-width:.8; vector-effect:non-scaling-stroke; }
+      .bali-map-islet { fill:rgba(255,255,255,.08); stroke:rgba(255,255,255,.24); stroke-width:.65; vector-effect:non-scaling-stroke; }
+      .bali-map-core-line { fill:none; stroke:#fcbf1e; stroke-width:2.2; stroke-linecap:round; stroke-linejoin:round; vector-effect:non-scaling-stroke; }
+      .bali-map-option-line { stroke:rgba(255,255,255,.72); stroke-width:1.2; stroke-dasharray:4 4; vector-effect:non-scaling-stroke; }
+      .bali-map-region circle { fill:rgba(255,255,255,.24); stroke:rgba(255,255,255,.65); stroke-width:1; vector-effect:non-scaling-stroke; }
+      .bali-map-region text { fill:rgba(255,255,255,.72); font-size:3.4px; font-weight:800; text-anchor:middle; }
+      .bali-map-region.core circle { fill:#fcbf1e; stroke:#fff3c4; }
+      .bali-map-region.core text { fill:#fff; }
+      .bali-map-region.optional circle { fill:#0e7c6b; stroke:#fff; stroke-dasharray:2 2; }
+      .bali-map-legend { display:flex; flex-wrap:wrap; gap:8px 14px; margin-top:7px; color:rgba(255,255,255,.78); font-size:10.5px; }
+      .bali-map-legend span { display:inline-flex; align-items:center; gap:6px; }
+      .bali-map-swatch { width:18px; height:0; border-top:2px solid #fcbf1e; }
+      .bali-map-swatch.optional { border-top:1px dashed rgba(255,255,255,.8); }
+      .bali-map-region-list { display:flex; flex-wrap:wrap; gap:6px; margin-top:10px; }
+      .bali-map-region-list span { padding:5px 8px; border-radius:12px; background:rgba(255,255,255,.1); color:#fff; font-size:10px; line-height:1.35; }
+      .bali-map-region-list span.optional { border:1px dashed rgba(255,255,255,.45); background:transparent; }
       .bali-region-path { display:flex; align-items:center; flex-wrap:wrap; gap:8px; margin:20px 0; }
       .bali-region-node { padding:8px 12px; border:1px solid rgba(255,255,255,.35); border-radius:16px; background:rgba(255,255,255,.1); font-size:12px; font-weight:800; }
       .bali-region-arrow { color:#fcbf1e; }
@@ -141,7 +163,8 @@
       .bali-route-secondary { background:transparent; color:#fff; border:1px solid rgba(255,255,255,.55); }
       .bali-route-secondary:hover { color:#fff; background:rgba(255,255,255,.1); text-decoration:none; }
       @media(max-width:991px){ .bali-route-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.bali-route-detail-grid{grid-template-columns:1fr} }
-      @media(max-width:575px){ .bali-route-grid{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;margin-right:-15px;padding:0 15px 12px 0}.bali-route-card{flex:0 0 min(86vw,330px);scroll-snap-align:start}.bali-route-detail{padding:22px 18px}.bali-route-value{grid-template-columns:1fr}.bali-route-card p{min-height:0} }
+      @media(max-width:575px){ .bali-route-grid{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;margin-right:-15px;padding:0 15px 12px 0}.bali-route-card{flex:0 0 min(86vw,330px);scroll-snap-align:start}.bali-route-detail{padding:22px 18px}.bali-route-value{grid-template-columns:1fr}.bali-route-card p{min-height:0}.bali-route-map{padding:13px}.bali-route-map-head{align-items:center}.bali-route-map svg{max-height:250px} }
+      @media(max-width:360px){ .bali-route-map-head{display:block}.bali-route-map-head span{display:block;margin-top:3px;text-align:left}.bali-route-detail-actions{display:grid}.bali-route-detail-actions .bali-btn{width:100%;text-align:center} }
       .bali-driver-band { background: linear-gradient(135deg, #0e7c6b, #14b8a6); color: #fff; padding: 64px 0; }
       .bali-driver-inner { max-width: 960px; margin: 0 auto; text-align: center; }
       .bali-driver-inner h2 { font-size: clamp(26px, 4vw, 38px); font-weight: 800; margin: 0 0 14px; }
@@ -463,6 +486,12 @@
     return typeof value === 'string' ? value : (value[language()] || value.en || value.zh || '');
   }
 
+  function escapeHtml(value) {
+    return String(value == null ? '' : value).replace(/[&<>"']/g, function (char) {
+      return { '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#39;' }[char];
+    });
+  }
+
   function routeMeta(route) {
     var days = route.recommended_days || {};
     var dayText = (days.min || 3) + '–' + (days.max || 7) + (language() === 'zh' ? ' 天' : ' days');
@@ -490,6 +519,63 @@
     });
   }
 
+  function mapPoint(regionId) {
+    var region = regions[regionId] || {};
+    return region.map && Number.isFinite(region.map.x) && Number.isFinite(region.map.y)
+      ? { x: region.map.x, y: region.map.y }
+      : null;
+  }
+
+  function nodeLabel(value) {
+    return String(value || '').replaceAll('_', ' ').replace(/\b\w/g, function (letter) { return letter.toUpperCase(); });
+  }
+
+  function renderRouteMap(route) {
+    var coreIds = route.base_regions || [];
+    var optionalIds = route.optional_regions || [];
+    var corePoints = coreIds.map(mapPoint).filter(Boolean);
+    var coreLine = corePoints.length > 1
+      ? '<polyline class="bali-map-core-line" points="' + corePoints.map(function (point) { return point.x + ',' + point.y; }).join(' ') + '"></polyline>'
+      : '';
+    var optionOrigin = corePoints[corePoints.length - 1] || corePoints[0];
+    var optionLines = optionOrigin ? optionalIds.map(function (id) {
+      var point = mapPoint(id);
+      return point ? '<line class="bali-map-option-line" x1="' + optionOrigin.x + '" y1="' + optionOrigin.y + '" x2="' + point.x + '" y2="' + point.y + '"></line>' : '';
+    }).join('') : '';
+    var dots = Object.keys(regions).sort().map(function (id) {
+      var region = regions[id];
+      var point = mapPoint(id);
+      if (!point) return '';
+      var state = coreIds.indexOf(id) >= 0 ? 'core' : (optionalIds.indexOf(id) >= 0 ? 'optional' : '');
+      return '<g class="bali-map-region ' + state + '" transform="translate(' + point.x + ' ' + point.y + ')">' +
+        '<title>' + escapeHtml(id + ' · ' + text(region.name)) + '</title><circle r="3.1"></circle><text y="-5">' + escapeHtml(id) + '</text></g>';
+    }).join('');
+    var relevant = coreIds.map(function (id) { return { id:id, optional:false }; })
+      .concat(optionalIds.map(function (id) { return { id:id, optional:true }; }));
+    var corePrefix = language() === 'zh' ? '核心' : 'Core';
+    var optionPrefix = language() === 'zh' ? '可选' : 'Optional';
+    var regionList = relevant.map(function (item) {
+      var region = regions[item.id] || {};
+      var nodes = (region.nodes || []).slice(0, 2).map(nodeLabel).join(' / ');
+      var label = (item.optional ? optionPrefix : corePrefix) + ' · ' + item.id + ' · ' + text(region.name) + (nodes ? ' · ' + nodes : '');
+      return '<span class="' + (item.optional ? 'optional' : '') + '">' + escapeHtml(label) + '</span>';
+    }).join('');
+    var title = language() === 'zh' ? '路线空间示意' : 'Route geography';
+    var note = language() === 'zh' ? '非比例图 · 车程以最终核验为准' : 'Not to scale · drive times need verification';
+    var coreLegend = language() === 'zh' ? '核心顺序' : 'Core order';
+    var optionLegend = language() === 'zh' ? '可选扩展' : 'Optional extension';
+    return '<div class="bali-route-map">' +
+      '<div class="bali-route-map-head"><strong>' + title + '</strong><span>' + note + '</span></div>' +
+      '<svg viewBox="0 0 100 100" role="img" aria-label="' + escapeHtml(text(route.name) + ' · ' + title) + '">' +
+        '<path class="bali-map-island" d="M12 59C18 50 30 48 36 38C42 27 55 20 68 26C82 33 88 45 84 56C80 66 70 70 60 69C52 69 47 75 43 89C38 81 35 74 28 71C21 69 15 66 12 59Z"></path>' +
+        '<ellipse class="bali-map-islet" cx="66" cy="77" rx="7" ry="3.2"></ellipse><ellipse class="bali-map-islet" cx="79" cy="75" rx="4.5" ry="2.3"></ellipse>' +
+        optionLines + coreLine + dots +
+      '</svg>' +
+      '<div class="bali-map-legend"><span><i class="bali-map-swatch"></i>' + coreLegend + '</span><span><i class="bali-map-swatch optional"></i>' + optionLegend + '</span></div>' +
+      '<div class="bali-map-region-list">' + regionList + '</div>' +
+    '</div>';
+  }
+
   function renderDetail() {
     var route = routes.find(function (item) { return item.id === activeId; }) || routes[0];
     if (!route) return;
@@ -513,9 +599,12 @@
             '<a class="bali-btn bali-route-secondary" href="find-driver.html?route=' + encodeURIComponent(route.id) + '">' + (language() === 'zh' ? '把路线发给司机询价' : 'Send route to a driver') + '</a>' +
           '</div>' +
         '</div>' +
-        '<div class="bali-route-value">' +
-          '<div class="bali-route-value-card"><strong>' + (language() === 'zh' ? '免费粗路线' : 'Free rough route') + '</strong><span>' + (language() === 'zh' ? '完整每日主题、区域顺序、基础地图与 2 次调整。' : 'Complete day themes, region order, a basic map and two adjustments.') + '</span></div>' +
-          '<div class="bali-route-value-card"><strong>' + (language() === 'zh' ? '专业可执行路线' : 'Professional executable route') + '</strong><span>' + (language() === 'zh' ? '核验顺序、车程、到达时间、预约事项、雨天备选与司机行程单。' : 'Verified order, drive time, arrival guidance, bookings, rain backup and driver handoff.') + '</span></div>' +
+        '<div class="bali-route-aside">' +
+          renderRouteMap(route) +
+          '<div class="bali-route-value">' +
+            '<div class="bali-route-value-card"><strong>' + (language() === 'zh' ? '免费粗路线' : 'Free rough route') + '</strong><span>' + (language() === 'zh' ? '完整每日主题、区域顺序、基础地图与 2 次调整。' : 'Complete day themes, region order, a basic map and two adjustments.') + '</span></div>' +
+            '<div class="bali-route-value-card"><strong>' + (language() === 'zh' ? '专业可执行路线' : 'Professional executable route') + '</strong><span>' + (language() === 'zh' ? '核验顺序、车程、到达时间、预约事项、雨天备选与司机行程单。' : 'Verified order, drive time, arrival guidance, bookings, rain backup and driver handoff.') + '</span></div>' +
+          '</div>' +
         '</div>' +
       '</div>';
   }
