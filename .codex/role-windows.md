@@ -104,6 +104,7 @@
 - Local verification: Chrome 320px English and WebKit 390px English both report zero document overflow; route R1-R6 and both filter rows remain internally scrollable to their final item.
 - Regression coverage: the Bali static contract rejects the former negative route margin and requires the mobile carousel containment rules; all 13 backend tests, Node syntax checks, and diff checks pass.
 - Sol final gate: GO; P0/P1/P2 are all 0. CSV, image files, and every unrelated user workspace change remain outside the release.
+- Production final gate: commit `6b95616` is live. Chrome 320px English, WebKit 390px English, and Chrome 1440px English report zero document overflow; R5 selection, R6 reachability, gallery modal, AI draft prefill, and driver-place prefill all passed with zero Bali-page console errors.
 
 ## 压缩交接卡
 
