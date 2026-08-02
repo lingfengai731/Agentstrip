@@ -204,6 +204,7 @@ def init_db():
                 brief             TEXT DEFAULT '{{}}',
                 rough_used        INTEGER DEFAULT 0,
                 adjustments_used  INTEGER DEFAULT 0,
+                professional_used INTEGER DEFAULT 0,
                 created_at        {ts_type} NOT NULL,
                 updated_at        {ts_type} NOT NULL
             )
@@ -280,6 +281,7 @@ def init_db():
             "ALTER TABLE users ADD COLUMN role TEXT DEFAULT 'user'",
             "ALTER TABLE users ADD COLUMN referral_code TEXT",
             "ALTER TABLE users ADD COLUMN signup_ip_hash TEXT",
+            "ALTER TABLE product_trips ADD COLUMN professional_used INTEGER DEFAULT 0",
         ):
             try:
                 conn.execute(col_sql)

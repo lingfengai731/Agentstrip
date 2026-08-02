@@ -8,6 +8,7 @@ import uuid
 from pathlib import Path
 
 import httpx
+from fastapi import HTTPException
 
 
 TEST_DIR = tempfile.TemporaryDirectory(prefix="wandermind-product-test-")
@@ -168,6 +169,16 @@ class ProductAccessTests(unittest.TestCase):
 
     def test_only_admin_can_confirm_and_confirmation_is_idempotent(self):
         trip_id = self._new_trip(token=self.user_token)
+        for action in ("rough_route", "adjustment", "adjustment"):
+            consumed = self._run(
+                self._request(
+                    "POST",
+                    f"/api/product-trips/{trip_id}/consume",
+                    token=self.user_token,
+                    json={"action": action},
+                )
+            )
+            self.assertEqual(consumed.status_code, 200, consumed.text)
         order_response = self._run(
             self._request(
                 "POST",
@@ -228,6 +239,31 @@ class ProductAccessTests(unittest.TestCase):
         self.assertEqual(second.status_code, 200, second.text)
         self.assertTrue(second.json()["already_confirmed"])
 
+        professional = self._run(
+            self._request(
+                "POST",
+                f"/api/product-trips/{trip_id}/consume",
+                token=self.user_token,
+                json={"action": "adjustment"},
+            )
+        )
+        self.assertEqual(professional.status_code, 200, professional.text)
+        self.assertEqual(
+            professional.json()["consumed_action"], "professional_route"
+        )
+        self.assertEqual(
+            professional.json()["professional_route"]["remaining"], 0
+        )
+        exhausted = self._run(
+            self._request(
+                "POST",
+                f"/api/product-trips/{trip_id}/consume",
+                token=self.user_token,
+                json={"action": "adjustment"},
+            )
+        )
+        self.assertEqual(exhausted.status_code, 402)
+
     def test_three_mature_invites_unlock_one_route_once(self):
         now = int(time.time())
         for index in range(3):
@@ -282,6 +318,114 @@ class ProductAccessTests(unittest.TestCase):
         )
         self.assertEqual(repeated.status_code, 200, repeated.text)
         self.assertTrue(repeated.json()["already_unlocked"])
+
+        professional = self._run(
+            self._request(
+                "POST",
+                f"/api/product-trips/{trip_id}/consume",
+                token=self.user_token,
+                json={"action": "professional_route"},
+            )
+        )
+        self.assertEqual(professional.status_code, 200, professional.text)
+        self.assertEqual(
+            professional.json()["consumed_action"], "professional_route"
+        )
+
+    def test_anonymous_ai_requires_login_even_with_rotating_session_ids(self):
+        quota = self._run(
+            self._request("GET", "/api/quota", anon_id="rotating_id_000")
+        )
+        self.assertEqual(quota.status_code, 200, quota.text)
+        self.assertTrue(quota.json()["login_required"])
+        self.assertFalse(quota.json()["can_use"])
+
+        for anon_id in ("rotating_id_001", "rotating_id_002", "rotating_id_003"):
+            with self.assertRaises(HTTPException) as denied:
+                main.consume_quota(None, anon_id)
+            self.assertEqual(denied.exception.status_code, 401)
+
+        anonymous_trip = self._new_trip(anon_id="anonymous_trip_001")
+        response = self._run(
+            self._request(
+                "POST",
+                "/api/chat/once",
+                anon_id="anonymous_trip_001",
+                json={
+                    "messages": [{"role": "user", "content": "Plan Bali"}],
+                    "system": "test",
+                    "product_trip_id": anonymous_trip,
+                    "trip_action": "rough_route",
+                },
+            )
+        )
+        self.assertEqual(response.status_code, 401, response.text)
+
+        protected_requests = (
+            ("POST", "/api/dest_info", {"destination": "Uncached Test City", "lang": "en"}),
+            (
+                "POST",
+                "/api/search/flights",
+                {
+                    "origin": "PVG",
+                    "destination": "DPS",
+                    "depart_date": "2026-10-01",
+                    "adults": 1,
+                },
+            ),
+            (
+                "POST",
+                "/api/search/hotels",
+                {
+                    "destination": "Bali",
+                    "check_in": "2026-10-01",
+                    "check_out": "2026-10-03",
+                    "adults": 1,
+                },
+            ),
+            ("POST", "/api/share/ABC123/fuse", {"guest_name": "Guest", "guest_prefs": {}}),
+        )
+        for method, path, payload in protected_requests:
+            denied = self._run(self._request(method, path, json=payload))
+            self.assertEqual(denied.status_code, 401, f"{path}: {denied.text}")
+
+        custom_weather = self._run(
+            self._request("GET", "/api/weather?city=Uncached%20Test%20City&lang=en")
+        )
+        self.assertEqual(custom_weather.status_code, 401, custom_weather.text)
+
+        cache_key = ("cached test city", "en")
+        main._DEST_INFO_CACHE[cache_key] = (
+            time.time(),
+            {"timezone": "UTC", "regions": [{"name": "Public"}]},
+        )
+        try:
+            cached = self._run(
+                self._request(
+                    "POST",
+                    "/api/dest_info",
+                    json={"destination": "Cached Test City", "lang": "en"},
+                )
+            )
+            self.assertEqual(cached.status_code, 200, cached.text)
+        finally:
+            main._DEST_INFO_CACHE.pop(cache_key, None)
+
+        weather_cache_key = ("denpasar,id", "en")
+        main._WEATHER_CACHE[weather_cache_key] = (
+            time.time(),
+            {"city": "Denpasar", "source": "cache"},
+        )
+        try:
+            normalized_weather = self._run(
+                self._request("GET", "/api/weather?city=bali&lang=attacker-value")
+            )
+            self.assertEqual(
+                normalized_weather.status_code, 200, normalized_weather.text
+            )
+            self.assertEqual(normalized_weather.json()["source"], "cache")
+        finally:
+            main._WEATHER_CACHE.pop(weather_cache_key, None)
 
     def test_driver_email_has_selected_driver_and_no_unverified_fixed_rate(self):
         _, html, text = render_driver_request(

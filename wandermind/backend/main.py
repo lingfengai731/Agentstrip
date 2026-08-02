@@ -311,8 +311,7 @@ async def current_user(authorization: Optional[str] = Header(None)) -> dict:
 
 
 # Soft auth: returns the user dict if a valid token is present, else None.
-# Used by public AI endpoints (chat / search / generate) so anonymous
-# WanderMind Studio visitors can use the tool without signing in.
+# Used by public read/product endpoints that may optionally claim account data.
 async def optional_user(authorization: Optional[str] = Header(None)):
     if not authorization or not authorization.startswith("Bearer "):
         return None
@@ -356,6 +355,17 @@ async def anon_id_header(x_anon_id: Optional[str] = Header(None, alias="X-Anon-I
 
 def _quota_snapshot(conn, user, anon_id) -> dict:
     """Read current quota without consuming. Never raises."""
+    if not user:
+        return {
+            "free_used": 0,
+            "free_limit": FREE_USE_LIMIT,
+            "free_left": 0,
+            "beans": 0,
+            "can_use": False,
+            "logged_in": False,
+            "tracked": False,
+            "login_required": True,
+        }
     fu = b = 0
     tracked = True
     if user:
@@ -394,6 +404,8 @@ def quota_status(user, anon_id) -> dict:
 def consume_quota(user, anon_id):
     """Consume one AI use. Raises HTTPException(402) when exhausted.
     Returns the post-consume snapshot."""
+    if not user:
+        raise HTTPException(401, "Sign in is required for AI use")
     conn = get_db()
     try:
         if user:
@@ -409,24 +421,6 @@ def consume_quota(user, anon_id):
             else:
                 raise HTTPException(402, detail={"error": "quota_exhausted", "free_limit": FREE_USE_LIMIT, "beans": 0})
             conn.commit()
-        elif anon_id:
-            now = int(time.time())
-            row = conn.execute("SELECT free_uses, beans FROM guest_usage WHERE anon_id=?", (anon_id,)).fetchone()
-            if not row:
-                conn.execute(
-                    "INSERT INTO guest_usage (anon_id, free_uses, beans, created_at, updated_at) VALUES (?,?,?,?,?)",
-                    (anon_id, 1, 0, now, now),
-                )
-            else:
-                d = dict(row); fu = d.get("free_uses") or 0; b = d.get("beans") or 0
-                if fu < FREE_USE_LIMIT:
-                    conn.execute("UPDATE guest_usage SET free_uses=free_uses+1, updated_at=? WHERE anon_id=?", (now, anon_id))
-                elif b > 0:
-                    conn.execute("UPDATE guest_usage SET beans=beans-1, updated_at=? WHERE anon_id=?", (now, anon_id))
-                else:
-                    raise HTTPException(402, detail={"error": "quota_exhausted", "free_limit": FREE_USE_LIMIT, "beans": 0})
-            conn.commit()
-        # else: no id → cannot meter, allow through (frontend always sends one)
         return _quota_snapshot(conn, user, anon_id)
     finally:
         conn.close()
@@ -906,7 +900,7 @@ async def get_quota(user=Depends(optional_user), anon_id=Depends(anon_id_header)
 
 
 @app.post("/api/quota/redeem")
-async def redeem_code(data: RedeemReq, user=Depends(optional_user), anon_id=Depends(anon_id_header)):
+async def redeem_code(data: RedeemReq, user=Depends(current_user), anon_id=Depends(anon_id_header)):
     """Redeem a top-up code for beans. Owner-issued codes via REDEEM_CODES env."""
     codes = _redeem_codes()
     amount = codes.get((data.code or "").strip())
@@ -1017,6 +1011,7 @@ def _trip_allowance(conn, trip: dict, user) -> dict:
         is_admin = _db_user(conn, user).get("role") == "admin"
     rough_used = int(trip.get("rough_used") or 0)
     adjustments_used = int(trip.get("adjustments_used") or 0)
+    professional_used = int(trip.get("professional_used") or 0)
     unlocked = bool(conn.execute(
         """SELECT 1 FROM professional_route_orders
            WHERE trip_id=? AND status='confirmed' LIMIT 1""",
@@ -1034,19 +1029,43 @@ def _trip_allowance(conn, trip: dict, user) -> dict:
             "limit": 2,
             "remaining": 2 if is_admin else max(0, 2 - adjustments_used),
         },
+        "professional_route": {
+            "used": professional_used,
+            "limit": 1,
+            "remaining": 1 if is_admin else (max(0, 1 - professional_used) if unlocked else 0),
+        },
         "professional_route_unlocked": unlocked or is_admin,
         "admin_unlimited": is_admin,
     }
 
 
-def _consume_trip_action(conn, trip: dict, user, action: str) -> dict:
+def _resolve_trip_action(allowance: dict, action: str) -> str:
     action = (action or "").strip().lower()
-    if action not in {"rough_route", "adjustment"}:
-        raise HTTPException(400, "trip_action must be rough_route or adjustment")
+    if action not in {"rough_route", "adjustment", "professional_route"}:
+        raise HTTPException(
+            400,
+            "trip_action must be rough_route, adjustment, or professional_route",
+        )
+    if (
+        action == "adjustment"
+        and allowance["adjustments"]["remaining"] <= 0
+        and allowance["professional_route"]["remaining"] > 0
+    ):
+        return "professional_route"
+    return action
+
+
+def _consume_trip_action(conn, trip: dict, user, action: str) -> dict:
     allowance = _trip_allowance(conn, trip, user)
+    action = _resolve_trip_action(allowance, action)
     if allowance["admin_unlimited"]:
+        allowance["consumed_action"] = action
         return allowance
-    key = "rough_route" if action == "rough_route" else "adjustments"
+    key = {
+        "rough_route": "rough_route",
+        "adjustment": "adjustments",
+        "professional_route": "professional_route",
+    }[action]
     if allowance[key]["remaining"] <= 0:
         raise HTTPException(
             402,
@@ -1056,7 +1075,11 @@ def _consume_trip_action(conn, trip: dict, user, action: str) -> dict:
                 "professional_route_price": {"amount": 9.9, "currency": "CNY"},
             },
         )
-    column = "rough_used" if action == "rough_route" else "adjustments_used"
+    column = {
+        "rough_route": "rough_used",
+        "adjustment": "adjustments_used",
+        "professional_route": "professional_used",
+    }[action]
     conn.execute(
         f"UPDATE product_trips SET {column}={column}+1,updated_at=? WHERE id=?",
         (int(time.time()), trip["id"]),
@@ -1065,7 +1088,9 @@ def _consume_trip_action(conn, trip: dict, user, action: str) -> dict:
     refreshed = dict(conn.execute(
         "SELECT * FROM product_trips WHERE id=?", (trip["id"],)
     ).fetchone())
-    return _trip_allowance(conn, refreshed, user)
+    result = _trip_allowance(conn, refreshed, user)
+    result["consumed_action"] = action
+    return result
 
 
 @app.post("/api/product-trips")
@@ -1083,12 +1108,12 @@ async def create_product_trip(
     try:
         conn.execute(
             """INSERT INTO product_trips
-               (id,user_id,anon_id,destination,brief,rough_used,adjustments_used,created_at,updated_at)
-               VALUES (?,?,?,?,?,?,?,?,?)""",
+               (id,user_id,anon_id,destination,brief,rough_used,adjustments_used,professional_used,created_at,updated_at)
+               VALUES (?,?,?,?,?,?,?,?,?,?)""",
             (
                 trip_id, user["sub"] if user else None, None if user else anon_id,
                 destination, json.dumps(data.brief or {}, ensure_ascii=False),
-                0, 0, now, now,
+                0, 0, 0, now, now,
             ),
         )
         conn.commit()
@@ -1122,8 +1147,10 @@ async def consume_product_trip_allowance(
     anon_id=Depends(anon_id_header),
 ):
     action = (data.action or "").strip().lower()
-    if action not in {"rough_route", "adjustment"}:
-        raise HTTPException(400, "action must be rough_route or adjustment")
+    if action not in {"rough_route", "adjustment", "professional_route"}:
+        raise HTTPException(
+            400, "action must be rough_route, adjustment, or professional_route"
+        )
     conn = get_db()
     try:
         trip = _trip_owner(conn, trip_id, user, anon_id)
@@ -1630,9 +1657,9 @@ def _format_prefs(prefs: dict, lang: str) -> str:
 
 
 @app.post("/api/share/{token}/fuse")
-async def share_fuse(token: str, data: FuseReq):
+async def share_fuse(token: str, data: FuseReq, user=Depends(current_user)):
     """Guest of a shared trip submits their preferences; AI returns a
-    merged plan that respects both parties. Public — no auth required."""
+    merged plan that respects both parties. Sign-in is required."""
     if not re.fullmatch(r"[A-Za-z0-9]{6,16}", token):
         raise HTTPException(400, "Invalid token")
     conn = get_db()
@@ -1905,9 +1932,6 @@ def _strip_bad_unicode(obj):
 @app.post("/api/dest_info")
 async def get_dest_info(req: DestInfoReq, user=Depends(optional_user)):
     """AI生成任意目的地的面板数据：天气/区域/贴士。快模型 + 24h 缓存。"""
-    if not _API_KEY and not _FAST_KEY:
-        raise HTTPException(500, "API_KEY not set")
-
     # Serve from cache when fresh — makes repeat/preset destinations instant
     dest_key = (req.destination or "").strip().lower()
     cache_key = (dest_key, req.lang or "zh")
@@ -1915,6 +1939,10 @@ async def get_dest_info(req: DestInfoReq, user=Depends(optional_user)):
     cached = _DEST_INFO_CACHE.get(cache_key)
     if cached and now - cached[0] < _DEST_INFO_TTL:
         return cached[1]
+    if not user:
+        raise HTTPException(401, "Sign in is required to generate destination intel")
+    if not _API_KEY and not _FAST_KEY:
+        raise HTTPException(500, "API_KEY not set")
 
     lang_map = {"zh": "中文", "en": "English", "ja": "日本語", "ko": "한국어", "id": "Bahasa Indonesia"}
     lang_name = lang_map.get(req.lang, "中文")
@@ -2085,7 +2113,7 @@ async def resolve_iata(text: str) -> str:
 
 
 @app.post("/api/search/flights")
-async def search_flights(req: FlightSearchReq, user=Depends(optional_user)):
+async def search_flights(req: FlightSearchReq, user=Depends(current_user)):
     """SerpAPI Google Flights 实时航班价格搜索。"""
     if not _SERPAPI_FLIGHTS_KEY:
         raise HTTPException(500, "SERPAPI_FLIGHTS_KEY not configured")
@@ -2174,7 +2202,7 @@ async def search_flights(req: FlightSearchReq, user=Depends(optional_user)):
 
 
 @app.post("/api/search/hotels")
-async def search_hotels(req: HotelSearchReq, user=Depends(optional_user)):
+async def search_hotels(req: HotelSearchReq, user=Depends(current_user)):
     """SerpAPI Google Hotels 实时价格搜索。"""
     if not _SERPAPI_KEY:
         raise HTTPException(500, "SERPAPI_KEY not configured")
@@ -2267,6 +2295,8 @@ def _route(mode: str) -> tuple:
 # Get a free key (1000 calls/day) at https://openweathermap.org/api
 _OPENWEATHER_KEY = os.getenv("OPENWEATHER_API_KEY", "")
 _OPENWEATHER_URL = "https://api.openweathermap.org/data/2.5/weather"
+_WEATHER_CACHE: dict = {}
+_WEATHER_CACHE_TTL = 30 * 60
 
 # Hand-curated city -> canonical name for OpenWeather lookups
 _WEATHER_CITY_ALIAS = {
@@ -2282,19 +2312,27 @@ _WEATHER_CITY_ALIAS = {
 
 
 @app.get("/api/weather")
-async def get_weather(city: str, lang: str = "en"):
+async def get_weather(city: str, lang: str = "en", user=Depends(optional_user)):
     """Live weather for a destination. Gracefully returns 503 with hint
     if OPENWEATHER_API_KEY is not configured, so the frontend can fall
     back to the AI-generated dest_info data."""
-    if not _OPENWEATHER_KEY:
-        raise HTTPException(503, "OPENWEATHER_API_KEY not set — set it in Render env to enable live weather")
-
     # Resolve to a canonical name OpenWeather understands
     key = city.strip().lower()
     q = _WEATHER_CITY_ALIAS.get(key) or _WEATHER_CITY_ALIAS.get(city.strip()) or city.strip()
+    is_curated = key in _WEATHER_CITY_ALIAS or city.strip() in _WEATHER_CITY_ALIAS
+    normalized_lang = lang if lang in {"zh", "en", "ja", "ko", "id"} else "en"
+    cache_key = (q.lower(), normalized_lang)
+    now = time.time()
+    cached = _WEATHER_CACHE.get(cache_key)
+    if cached and now - cached[0] < _WEATHER_CACHE_TTL:
+        return cached[1]
+    if not user and not is_curated:
+        raise HTTPException(401, "Sign in is required for custom weather searches")
+    if not _OPENWEATHER_KEY:
+        raise HTTPException(503, "OPENWEATHER_API_KEY not set — set it in Render env to enable live weather")
 
     # OpenWeather lang code mapping
-    ow_lang = {"zh": "zh_cn", "en": "en", "ja": "ja", "ko": "kr", "id": "id"}.get(lang, "en")
+    ow_lang = {"zh": "zh_cn", "en": "en", "ja": "ja", "ko": "kr", "id": "id"}[normalized_lang]
 
     try:
         async with httpx.AsyncClient(timeout=10.0) as client:
@@ -2351,9 +2389,9 @@ async def get_weather(city: str, lang: str = "en"):
             "ko": f"습도 {main.get('humidity', '?')}% · 풍속 {wind.get('speed', '?')}m/s · 일출 {sunrise}",
             "id": f"Kelembaban {main.get('humidity', '?')}% · Angin {wind.get('speed', '?')}m/s · Matahari terbit {sunrise}",
         }
-        details = details_tpl.get(lang, details_tpl["en"])
+        details = details_tpl[normalized_lang]
 
-        return {
+        result = {
             "temp":     f"{round(main.get('temp', 0))}°C",
             "feels":    f"{round(main.get('feels_like', 0))}°C",
             "cond":     weather_desc.capitalize() if weather_desc else "",
@@ -2368,6 +2406,8 @@ async def get_weather(city: str, lang: str = "en"):
             "country":  sys.get("country", ""),
             "updated_at": int(time.time()),
         }
+        _WEATHER_CACHE[cache_key] = (now, result)
+        return result
     except HTTPException:
         raise
     except Exception as e:
@@ -2448,7 +2488,7 @@ async def tavily_search(query: str, destination: str = "") -> tuple[str, list]:
 
 # ─── Chat (SSE streaming, OpenAI format) ─────────────────────
 @app.post("/api/chat")
-async def chat(req: ChatReq, user=Depends(optional_user), anon_id=Depends(anon_id_header)):
+async def chat(req: ChatReq, user=Depends(current_user), anon_id=Depends(anon_id_header)):
     if not _API_KEY:
         raise HTTPException(500, "API_KEY not set")
     consume_quota(user, anon_id)  # raises 402 when free uses + beans exhausted
@@ -2550,7 +2590,7 @@ async def chat(req: ChatReq, user=Depends(optional_user), anon_id=Depends(anon_i
 # returns the full reply as a single JSON object so the mini program can
 # render it after the await.
 @app.post("/api/chat/once")
-async def chat_once(req: ChatReq, user=Depends(optional_user), anon_id=Depends(anon_id_header)):
+async def chat_once(req: ChatReq, user=Depends(current_user), anon_id=Depends(anon_id_header)):
     if not _API_KEY:
         raise HTTPException(500, "API_KEY not set")
     product_trip = None
@@ -2560,9 +2600,12 @@ async def chat_once(req: ChatReq, user=Depends(optional_user), anon_id=Depends(a
         try:
             product_trip = _trip_owner(conn, req.product_trip_id, user, anon_id)
             allowance = _trip_allowance(conn, product_trip, user)
-            key = "rough_route" if product_action == "rough_route" else "adjustments"
-            if product_action not in {"rough_route", "adjustment"}:
-                raise HTTPException(400, "trip_action must be rough_route or adjustment")
+            product_action = _resolve_trip_action(allowance, product_action)
+            key = {
+                "rough_route": "rough_route",
+                "adjustment": "adjustments",
+                "professional_route": "professional_route",
+            }[product_action]
             if not allowance["admin_unlimited"] and allowance[key]["remaining"] <= 0:
                 raise HTTPException(
                     402,
@@ -2640,7 +2683,7 @@ async def chat_once(req: ChatReq, user=Depends(optional_user), anon_id=Depends(a
 
 # ─── Team mode: 3 agents in parallel, merged output ──────────
 @app.post("/api/chat/team")
-async def chat_team(req: ChatReq, user=Depends(optional_user), anon_id=Depends(anon_id_header)):
+async def chat_team(req: ChatReq, user=Depends(current_user), anon_id=Depends(anon_id_header)):
     """真并行多 Agent：规划师 + 活动策划师 + 预算管家同时回答，合并输出。"""
     if not _API_KEY:
         raise HTTPException(500, "API_KEY not set")
@@ -2719,7 +2762,7 @@ async def chat_team(req: ChatReq, user=Depends(optional_user), anon_id=Depends(a
 
 # ─── One-shot generate (multiverse / budget AI) ──────────────
 @app.post("/api/generate")
-async def generate(req: GenerateReq, user=Depends(optional_user), anon_id=Depends(anon_id_header)):
+async def generate(req: GenerateReq, user=Depends(current_user), anon_id=Depends(anon_id_header)):
     if not _API_KEY:
         raise HTTPException(500, "API_KEY not set")
     consume_quota(user, anon_id)

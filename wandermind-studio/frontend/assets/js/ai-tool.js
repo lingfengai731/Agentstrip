@@ -3821,6 +3821,10 @@ const _origFetch_prefs = window.fetch.bind(window);
 window.fetch = async function(url, opts) {
   const isApi = typeof url === 'string' && url.indexOf('/api/') !== -1;
   const isQuotaApi = typeof url === 'string' && /\/api\/(chat|chat\/once|chat\/team|generate)$/.test(url);
+  const isLoginGateApi = isQuotaApi || (
+    typeof url === 'string' &&
+    (/\/api\/search\/(flights|hotels)$/.test(url) || /\/api\/share\/[^/]+\/fuse$/.test(url))
+  );
   if (isApi) {
     opts = opts || {};
     // Inject prefs into chat system prompt
@@ -3837,7 +3841,12 @@ window.fetch = async function(url, opts) {
     opts.headers = Object.assign({}, opts.headers || {}, { 'X-Anon-Id': sessionId });
   }
   const resp = await _origFetch_prefs(url, opts);
-  if (isQuotaApi && resp.status === 402) {
+  if (isLoginGateApi && resp.status === 401) {
+    try {
+      showToast(t().shareLoginReq || 'Please sign in to use your free AI plan');
+      showAuthModal('login');
+    } catch (_) {}
+  } else if (isQuotaApi && resp.status === 402) {
     let detail = null;
     try { detail = (await resp.clone().json()).detail; } catch (_) {}
     if (detail && detail.error === 'trip_allowance_exhausted') {
@@ -3876,14 +3885,20 @@ function renderQuotaPill() {
     pill = document.createElement('button');
     pill.id = 'ws-quota-pill';
     pill.className = 'ws-quota-pill';
-    pill.onclick = openRechargeModal;
+    pill.onclick = () => {
+      if (_quotaState && _quotaState.login_required) showAuthModal('login');
+      else openRechargeModal();
+    };
     host.insertBefore(pill, host.firstChild);
   }
   const T = t();
   const beans = _quotaState.beans || 0;
   const freeLeft = _quotaState.free_left != null ? _quotaState.free_left : 0;
   let label, cls = '';
-  if (beans > 0) {
+  if (_quotaState.login_required) {
+    label = `<span class="fa fa-user"></span> ${escapeHtml(T.authLogin || 'Sign in')}`;
+    cls = 'low';
+  } else if (beans > 0) {
     label = `<span class="fa fa-circle"></span> ${_interp(T.quotaBeans, { n: beans })}`;
   } else if (freeLeft > 0) {
     label = `<span class="fa fa-bolt"></span> ${_interp(T.quotaFree, { n: freeLeft })}`;

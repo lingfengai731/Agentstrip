@@ -132,7 +132,7 @@ https://wandermind.cc/api/*         ← 后端 API
 | GET  | `/api/weather` | OpenWeather 实时天气 |
 | POST | `/api/user/preferences` | 旅行偏好存取 |
 | POST | `/api/product-trips` | 创建带免费额度的产品行程 |
-| GET/POST | `/api/product-trips/{id}/allowance` / `consume` | 查询或消耗 1 次粗路线 + 2 次调整 |
+| GET/POST | `/api/product-trips/{id}/allowance` / `consume` | 查询或消耗 1 次粗路线 + 2 次调整；解锁后再生成 1 次专业路线 |
 | POST | `/api/professional-route/orders` | 创建 ¥9.9 人工确认订单 |
 | GET/POST | `/api/admin/professional-route/orders` | 管理员查看待办并确认解锁 |
 | GET | `/api/referrals/status` | 推荐码、分享链接和积分余额 |
