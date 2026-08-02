@@ -98,6 +98,13 @@
 - Skill hits: agent-role-orchestrator set the L3 callback contract; ui-implementation-workflow constrained visual variance and responsive repair; browser-automation-router selected deterministic Playwright CLI; the project-local Nuwa-derived advisor framework constrained the structured handoff and fact boundaries.
 - Sol final gate: GO; P0/P1/P2 are all 0. The staged release contains 9 text/code files and no CSV or images; route selection, five-language modal redraw, editable AI input, driver prefill, responsive evidence, and the real `#route-families` target were accepted.
 
+## 2026-08-03 production mobile overflow repair callback
+- Production QA callback: Chrome 320px in English returned NO-GO because the page was 216px wider than the viewport after language switching.
+- Root cause: long English gallery-filter labels expanded a CSS grid item's min-content width; the route and filter carousels now have explicit width, min-width, max-width, and internal horizontal overflow containment.
+- Local verification: Chrome 320px English and WebKit 390px English both report zero document overflow; route R1-R6 and both filter rows remain internally scrollable to their final item.
+- Regression coverage: the Bali static contract rejects the former negative route margin and requires the mobile carousel containment rules; all 13 backend tests, Node syntax checks, and diff checks pass.
+- Sol final gate: GO; P0/P1/P2 are all 0. CSV, image files, and every unrelated user workspace change remain outside the release.
+
 ## 压缩交接卡
 
 - 最近摘要：Google 登录、阶段 1/2、C1–C4 产品额度及六路线空间示意均已验收；108 张图片已具备增量复核、路线/POI 建议和 fail-closed 发布 manifest。

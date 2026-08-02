@@ -91,10 +91,10 @@
       .bali-shot-meta span { padding:5px 8px; border-radius:14px; background:rgba(15,23,42,.74); backdrop-filter:blur(6px); color:#fff; font-size:10px; font-weight:700; }
       @media (max-width: 991px) { .bali-gallery { columns: 2; } }
       @media (max-width: 575px) {
-        .bali-filter-groups { margin-left:0; margin-right:0; gap:10px; }
-        .bali-filter-row { display:block; }
+        .bali-filter-groups { min-width:0; max-width:100%; margin-left:0; margin-right:0; gap:10px; }
+        .bali-filter-row { display:block; min-width:0; max-width:100%; }
         .bali-filter-label { display:block; padding:0 0 6px; }
-        .bali-filterbar { justify-content:flex-start; flex-wrap:nowrap; overflow-x:auto; padding:0 0 4px; scrollbar-width:none; }
+        .bali-filterbar { width:100%; min-width:0; max-width:100%; justify-content:flex-start; flex-wrap:nowrap; overflow-x:auto; overscroll-behavior-x:contain; padding:0 0 4px; scrollbar-width:none; }
         .bali-filterbar::-webkit-scrollbar { display:none; }
         .bali-filter { flex:0 0 auto; }
         .bali-gallery { columns: 1; }
@@ -197,7 +197,7 @@
       .bali-route-secondary { background:transparent; color:#fff; border:1px solid rgba(255,255,255,.55); }
       .bali-route-secondary:hover { color:#fff; background:rgba(255,255,255,.1); text-decoration:none; }
       @media(max-width:991px){ .bali-route-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.bali-route-detail-grid{grid-template-columns:1fr} }
-      @media(max-width:575px){ .bali-route-grid{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;margin-right:-15px;padding:0 15px 12px 0}.bali-route-card{flex:0 0 min(86vw,330px);scroll-snap-align:start}.bali-route-detail{padding:22px 18px}.bali-route-value{grid-template-columns:1fr}.bali-route-card p{min-height:0}.bali-route-map{padding:13px}.bali-route-map-head{align-items:center}.bali-route-map svg{max-height:250px}.bali-day-main{grid-template-columns:48px minmax(0,1fr)}.bali-day-actions{gap:3px}.bali-day-icon-btn{width:28px;height:28px}.bali-day-select{flex-basis:150px} }
+      @media(max-width:575px){ .bali-route-grid{display:flex;width:100%;max-width:100%;min-width:0;overflow-x:auto;overscroll-behavior-x:contain;scroll-snap-type:x mandatory;margin-right:0;padding:0 0 12px}.bali-route-card{flex:0 0 min(calc(100vw - 30px),330px);scroll-snap-align:start}.bali-route-detail{padding:22px 18px}.bali-route-value{grid-template-columns:1fr}.bali-route-card p{min-height:0}.bali-route-map{padding:13px}.bali-route-map-head{align-items:center}.bali-route-map svg{max-height:250px}.bali-day-main{grid-template-columns:48px minmax(0,1fr)}.bali-day-actions{gap:3px}.bali-day-icon-btn{width:28px;height:28px}.bali-day-select{flex-basis:150px} }
       @media(max-width:360px){ .bali-route-map-head{display:block}.bali-route-map-head span{display:block;margin-top:3px;text-align:left}.bali-route-detail-actions{display:grid}.bali-route-detail-actions .bali-btn{width:100%;text-align:center} }
       .bali-driver-band { background: linear-gradient(135deg, #0e7c6b, #14b8a6); color: #fff; padding: 64px 0; }
       .bali-driver-inner { max-width: 960px; margin: 0 auto; text-align: center; }

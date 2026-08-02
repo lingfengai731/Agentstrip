@@ -671,6 +671,15 @@ class ProductAccessTests(unittest.TestCase):
         self.assertIn("matchedRouteId(activeShot)", html)
         self.assertIn("activeId = requestedRoute", html)
         self.assertIn("window.setTimeout(renderModal, 0)", html)
+        self.assertIn(
+            ".bali-route-grid{display:flex;width:100%;max-width:100%;min-width:0;",
+            html,
+        )
+        self.assertNotIn("margin-right:-15px", html)
+        self.assertIn(
+            ".bali-filterbar { width:100%; min-width:0; max-width:100%;",
+            html,
+        )
 
         driver_html = (frontend_dir / "find-driver.html").read_text(encoding="utf-8")
         self.assertIn("var requestedPlace = requestParams.get('place')", driver_html)
