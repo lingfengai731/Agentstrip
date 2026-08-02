@@ -160,6 +160,31 @@ python -m http.server 3000
 
 ---
 
+## 🖼️ 图片自动收件与安全发布
+
+把新图片放入 `frontend/assets/images/` 后，在仓库根目录运行：
+
+```powershell
+powershell -NoProfile -ExecutionPolicy Bypass -File .\tools\image-intake.ps1
+```
+
+脚本会增量更新：
+
+- `frontend/assets/data/image-intake-review.csv`：尺寸、哈希、风景/人文/体验、手机真实/未知拍摄方式、地点冲突、G1–G7、R1–R6 和 POI 建议；
+- `frontend/assets/data/image-publish-manifest.json`：仅包含已经完成人工授权审核、允许发布且来源信息完整的图片。
+
+人工只需在 CSV 中填写或确认 `RightsStatus`、`SourceUrl`、`LicenseOrOwner`、`Publishable`、`HumanConfirmed`、`IntendedUse` 和中英文替代文字。允许的权利状态是 `owned`、`user_provided_with_consent`、`licensed`、`public_domain` 或 `cc0`；外部授权图片还必须填写来源网址。
+
+脚本不会移动、改名、覆盖或删除原图。图片改名时，唯一 SHA-256 会保留已有人工审核；出现重复文件时，新副本不会继承批准。当前发布清单保持为空，直到人工确认完成。
+
+回归测试：
+
+```powershell
+powershell -NoProfile -ExecutionPolicy Bypass -File .\tools\test-image-intake.ps1
+```
+
+---
+
 ## 🌐 部署（已上线，自动）
 
 Studio **已经随 wandermind 后端一起部署**，无需单独配置：
