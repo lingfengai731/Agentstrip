@@ -6,6 +6,14 @@
 [![FastAPI](https://img.shields.io/badge/FastAPI-0.111-009688?logo=fastapi)](https://fastapi.tiangolo.com)
 [![License](https://img.shields.io/badge/License-MIT-green)](LICENSE)
 
+## Current product access contract
+
+The Studio homepage has two separate entry paths. `AI self-plan` opens `ai-tool.html?mode=diy` and keeps the AI allowance at one initial plan plus two AI adjustments. `Get a professional route` opens `bali.html#professional-planner`, where the Bali profile is matched deterministically against the G1–G7 regions and R1–R6 route families. The public preview exposes about 70% of the day cards; the full place order, experience modules and execution notes unlock for ¥9.9 after manual confirmation or for 30 referral points.
+
+Professional-route adjustments have a separate ten-use allowance. Exhausting AI adjustments never silently converts an AI request into a professional route. The legacy `ai-tool.html?professional=1` query remains a compatibility redirect to the Bali professional planner.
+
+The frontend attaches `Authorization: Bearer <token>` to API calls through one shared fetch boundary. When `/api/auth/me` confirms an expired token, the UI opens one login recovery flow and retries the interrupted request after successful login. Product-trip schema migrations add the professional entitlement, adjustment counter and stored route payload without removing legacy columns.
+
 ---
 
 ## 📖 产品简介

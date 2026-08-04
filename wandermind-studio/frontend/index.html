@@ -566,7 +566,7 @@ $(function () { $('.navbar-toggler').click(function () { $('body').toggleClass('
 					<h3 class="header-name" data-i18n="formTitle">Let AI experts craft your perfect getaway</h3>
 					<p class="tiltle-para" data-i18n="formSub">Answer a few questions and our six AI agents will instantly generate a custom itinerary tailored to your style, budget, and travel companions.</p>
 				</div>
-				<form action="ai-tool.html" method="get" class="booking-form wm-brief-form">
+                <form action="ai-tool.html?mode=diy" method="get" class="booking-form wm-brief-form">
 					<div class="row book-form">
 						<div class="form-input col-lg-6" role="group" aria-labelledby="form-audience-label">
 							<span class="wm-field-label" id="form-audience-label" data-i18n="formAudience">Which Bali trip are you planning?</span>
@@ -625,8 +625,8 @@ $(function () { $('.navbar-toggler').click(function () { $('body').toggleClass('
 						<div class="bottom-btn col-md-8">
 							<label data-i18n="formSubmitLbl">Build your planning brief</label>
 							<div class="wm-brief-actions">
-								<button class="btn btn-style btn-primary w-100 btn-style" type="submit" data-i18n="formSubmitBtn">Generate free rough route</button>
-								<button class="btn btn-style wm-professional-btn w-100" type="submit" name="professional" value="1" data-i18n="formProfessionalBtn">View professional routes · ¥9.9</button>
+								<button class="btn btn-style btn-primary w-100 btn-style" type="submit" name="diy" value="1" data-i18n="formSubmitBtn">AI self-plan</button>
+								<button class="btn btn-style wm-professional-btn w-100" type="submit" name="professional" value="1" data-i18n="formProfessionalBtn">Get a professional route</button>
 							</div>
 						</div>
 					</div>
@@ -896,24 +896,44 @@ $(function () { $('.navbar-toggler').click(function () { $('body').toggleClass('
 		if (currency) currency.addEventListener('change', function () { currencyTouched = true; });
 		if (langPicker) langPicker.addEventListener('change', applyCurrencyDefault);
 		applyCurrencyDefault();
-		form.addEventListener('submit', function () {
+		form.addEventListener('submit', function (event) {
+			event.preventDefault();
 			var goals = Array.from(form.querySelectorAll('[name="goal"]:checked')).map(function (item) { return item.value; });
 			if (!goals.length) {
 				var fallback = form.querySelector('[name="goal"][value="easy"]');
 				if (fallback) { fallback.checked = true; goals = ['easy']; }
 			}
-			var brief = {
-				dest: 'bali',
+			var days = Math.max(1, Math.round((new Date(end.value + 'T00:00:00') - new Date(start.value + 'T00:00:00')) / 86400000));
+			var profile = {
 				audience: (form.querySelector('[name="audience"]:checked') || {}).value || 'first',
 				goals: goals,
-				people: Number(document.getElementById('form-people').value || 2),
-				start: start.value,
-				end: end.value,
-				budget: Number(document.getElementById('form-budget').value || 0),
+				travel_style: document.getElementById('form-style').value,
+				travellers: Number(document.getElementById('form-people').value || 2),
+				departure_date: start.value,
+				return_date: end.value,
+				days: days,
 				currency: currency ? currency.value : 'USD',
-				style: document.getElementById('form-style').value
+				budget_range: Number(document.getElementById('form-budget').value || 0),
+				pace: goals.indexOf('easy') >= 0 ? 'slow' : 'balanced',
+				origin_region: ''
+			};
+			var brief = {
+				dest: 'bali',
+				audience: profile.audience,
+				goals: profile.goals,
+				people: profile.travellers,
+				start: profile.departure_date,
+				end: profile.return_date,
+				budget: profile.budget_range,
+				currency: profile.currency,
+				style: profile.travel_style,
+				days: profile.days,
+				trip_profile: profile
 			};
 			localStorage.setItem('wm_studio_trip_brief', JSON.stringify(brief));
+			localStorage.setItem('wm_studio_trip_profile', JSON.stringify(profile));
+			var professional = event.submitter && event.submitter.name === 'professional';
+			window.location.assign(professional ? 'bali.html#professional-planner' : 'ai-tool.html?mode=diy');
 		});
 	});
 	window.onscroll = function () { scrollFunction() };

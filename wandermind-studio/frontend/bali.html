@@ -240,7 +240,53 @@
       body.dark .bali-modal-actions .bali-btn-outline { border-color:#5eead4; color:#99f6e4; }
       .bali-place-close { position:absolute; top:12px; right:12px; width:40px; height:40px; border:0; border-radius:50%; background:rgba(255,255,255,.9); color:#1e293b; cursor:pointer; z-index:2; box-shadow:0 2px 12px rgba(0,0,0,.15); }
       @media(max-width:700px){ .bali-place-modal{padding:8px;align-items:flex-end}.bali-place-dialog{grid-template-columns:1fr;max-height:94vh}.bali-place-dialog>img{height:240px;min-height:0}.bali-place-copy{padding:24px 20px}.bali-place-copy h3{font-size:22px}.bali-place-decision{grid-template-columns:1fr}.bali-route-match{align-items:flex-start}.bali-modal-actions{display:grid}.bali-modal-actions .bali-btn{width:100%;text-align:center} }
-      .footer-contact-line { display: flex; align-items: center; gap: 8px; padding: 4px 0; flex-wrap: wrap; }
+       .bali-professional-section { background: #fffdf7; scroll-margin-top: 80px; }
+       body.dark .bali-professional-section { background: rgba(255,255,255,.018); }
+       .bali-professional-shell { max-width: 1120px; margin: 0 auto; }
+       .bali-professional-empty, .bali-professional-loading, .bali-professional-error { padding: 24px; border: 1px dashed #d7d2c7; border-radius: 16px; background: rgba(255,255,255,.72); color: #64748b; text-align: center; line-height: 1.7; }
+       body.dark .bali-professional-empty, body.dark .bali-professional-loading, body.dark .bali-professional-error { background: rgba(255,255,255,.04); border-color: #3a3d38; color: #cbd5e1; }
+       .bali-professional-layout { display:grid; grid-template-columns:minmax(0,.82fr) minmax(0,1.18fr); gap:20px; align-items:start; }
+       .bali-professional-card { min-width:0; padding:24px; border-radius:18px; background:#fff; border:1px solid #e7e1d6; box-shadow:0 10px 28px rgba(15,23,42,.07); }
+       body.dark .bali-professional-card { background:#232622; border-color:#3a3d38; }
+       .bali-professional-card h3 { margin:0 0 8px; color:var(--bali-ink); font-size:24px; font-weight:800; }
+       body.dark .bali-professional-card h3 { color:#f0f0ec; }
+       .bali-professional-card p { color:#64748b; line-height:1.7; margin:0 0 14px; }
+       body.dark .bali-professional-card p { color:#cbd5e1; }
+       .bali-profile-summary { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:8px; margin:16px 0; }
+       .bali-profile-chip { padding:9px 10px; border-radius:10px; background:rgba(14,124,107,.08); color:#0f766e; font-size:12px; font-weight:700; }
+       body.dark .bali-profile-chip { background:rgba(45,212,191,.1); color:#99f6e4; }
+       .bali-professional-route-label { display:flex; align-items:flex-start; justify-content:space-between; gap:12px; margin-bottom:8px; }
+       .bali-professional-route-label strong { color:#0e7c6b; font-size:13px; letter-spacing:.08em; text-transform:uppercase; }
+       .bali-professional-badge { flex:0 0 auto; padding:5px 9px; border-radius:14px; background:#fef3c7; color:#92400e; font-size:11px; font-weight:800; }
+       .bali-professional-reason { padding:13px 14px; border-left:3px solid var(--bali-gold); border-radius:0 10px 10px 0; background:rgba(252,191,30,.1); color:#475569; font-size:13px; line-height:1.65; }
+       body.dark .bali-professional-reason { color:#e2e8f0; }
+       .bali-professional-days { display:grid; gap:10px; }
+       .bali-professional-day { position:relative; padding:15px 16px 15px 58px; border:1px solid #e5e7eb; border-radius:14px; background:#fff; min-width:0; }
+       body.dark .bali-professional-day { background:#1f2420; border-color:#3a3d38; }
+       .bali-professional-day.is-locked { background:linear-gradient(135deg,rgba(148,163,184,.1),rgba(252,191,30,.08)); }
+       .bali-professional-day-number { position:absolute; left:14px; top:15px; width:30px; height:30px; display:grid; place-items:center; border-radius:50%; background:#0e7c6b; color:#fff; font-size:12px; font-weight:800; }
+       .bali-professional-day.is-locked .bali-professional-day-number { background:#94a3b8; }
+       .bali-professional-day-head { display:flex; align-items:flex-start; justify-content:space-between; gap:12px; }
+       .bali-professional-day-head strong { color:var(--bali-ink); font-size:15px; line-height:1.4; }
+       body.dark .bali-professional-day-head strong { color:#f0f0ec; }
+       .bali-professional-day-head span { flex:0 0 auto; color:#64748b; font-size:11px; }
+       .bali-professional-day p { margin:5px 0 0; font-size:12.5px; }
+       .bali-professional-places { display:flex; flex-wrap:wrap; gap:6px; margin-top:10px; }
+       .bali-professional-place { padding:5px 8px; border-radius:12px; background:rgba(14,124,107,.08); color:#0f766e; font-size:11px; font-weight:700; }
+       .bali-professional-lock-note { color:#92400e; font-size:12px; line-height:1.55; }
+       .bali-professional-actions { display:flex; flex-wrap:wrap; gap:9px; margin-top:18px; }
+       .bali-professional-actions .bali-btn { padding:11px 16px; font-size:13px; }
+       .bali-professional-form { display:grid; gap:10px; margin-top:16px; }
+       .bali-professional-form-row { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:10px; }
+       .bali-professional-form label { display:grid; gap:5px; color:#64748b; font-size:11px; font-weight:700; }
+       .bali-professional-form input, .bali-professional-form select { width:100%; min-width:0; height:38px; padding:0 10px; border:1px solid #d8d5cc; border-radius:9px; background:#fff; color:#1e293b; font:inherit; }
+       body.dark .bali-professional-form input, body.dark .bali-professional-form select { border-color:#4b5563; background:#1f2420; color:#f0f0ec; }
+       .bali-professional-form-note { color:#64748b; font-size:11px; line-height:1.55; }
+       .bali-professional-status { min-height:20px; margin-top:10px; color:#0f766e; font-size:12px; line-height:1.55; }
+       .bali-professional-status.error { color:#b91c1c; }
+       @media(max-width:991px){ .bali-professional-layout{grid-template-columns:1fr} }
+       @media(max-width:575px){ .bali-professional-card{padding:18px}.bali-profile-summary{grid-template-columns:1fr}.bali-professional-form-row{grid-template-columns:1fr}.bali-professional-actions{display:grid}.bali-professional-actions .bali-btn{width:100%;justify-content:center;text-align:center} }
+       .footer-contact-line { display: flex; align-items: center; gap: 8px; padding: 4px 0; flex-wrap: wrap; }
       .footer-contact-line .fa { color: #fcbf1e !important; width: 18px; text-align: center; flex-shrink: 0; font-size: 15px; }
       .footer-contact-line a { color: #ddd; }
       .footer-contact-line a:hover { color: #fcbf1e; }
@@ -309,7 +355,7 @@
       <h1 data-i18n="baliHeroTitle">A <em>Deep</em> Bali Journey,<br>not a checklist tour</h1>
       <p data-i18n="baliHeroSub">12-14 days across Canggu, Ubud, the Kintamani volcanoes, Nusa Penida and Uluwatu - paced so you actually feel the island, not just photograph it.</p>
       <div class="bali-hero-cta">
-        <a href="ai-tool.html?dest=bali" class="bali-btn bali-btn-primary"><span class="fa fa-magic"></span> <span data-i18n="baliHeroCtaPlan">Plan with AI</span></a>
+         <a href="ai-tool.html?dest=bali&amp;mode=diy" class="bali-btn bali-btn-primary"><span class="fa fa-magic"></span> <span data-i18n="baliHeroCtaPlan">Plan with AI</span></a>
         <a href="find-driver.html" class="bali-btn bali-btn-ghost"><span class="fa fa-car"></span> <span data-i18n="baliHeroCtaDriver">Find a local driver</span></a>
       </div>
     </div>
@@ -321,11 +367,24 @@
     <div class="bali-sec-head">
       <div class="bali-sec-eyebrow">Six route families · G1–G7</div>
       <h2>先选你想得到的旅行体验</h2>
-      <p>路线不是景点清单。先选旅行目的，再根据天数、预算、节奏和同行者调整。免费版给完整粗路线，专业版补足可执行细节。</p>
+       <p>公共路线家族免费完整查看。填入你的旅行信息后，我们再从 G1–G7 区域和 R1–R6 路线中匹配一条个性化专业路线。</p>
     </div>
     <div class="bali-route-grid" id="bali-route-grid" aria-live="polite"></div>
     <div class="bali-route-detail" id="bali-route-detail" aria-live="polite">
       <p>正在加载巴厘岛专业路线体系…</p>
+    </div>
+  </div>
+</section>
+
+<section class="bali-section bali-professional-section" id="professional-planner">
+  <div class="container bali-professional-shell">
+    <div class="bali-sec-head">
+      <div class="bali-sec-eyebrow">Personal route layer · Bali foundation</div>
+      <h2>把公共路线，变成你的行程</h2>
+      <p>专业路线先免费预览约 70%。解锁后查看完整地点顺序、体验模块和执行备注；AI 自助规划在另一条路径中使用自己的额度。</p>
+    </div>
+    <div id="bali-professional-app" aria-live="polite">
+      <div class="bali-professional-loading">正在读取你的旅行信息和 Bali 路线基础…</div>
     </div>
   </div>
 </section>
@@ -927,7 +986,7 @@
       return '<span class="bali-region-node" title="' + (region ? text(region.name) : id) + '">' + id + ' · ' + (region ? text(region.name) : id) + '</span>';
     }).join('<span class="fa fa-long-arrow-right bali-region-arrow" aria-hidden="true"></span>');
     var outline = renderDayOutline(route, plan);
-    var params = new URLSearchParams({ dest: 'bali', route: route.id });
+    var params = new URLSearchParams({ dest: 'bali', route: route.id, mode: 'diy' });
     detail.innerHTML =
       '<div class="bali-route-detail-grid">' +
         '<div><div class="bali-sec-eyebrow" style="color:#fcbf1e">' + route.id + ' · ' + (language() === 'zh' ? '主题产品层' : 'Experience product') + '</div>' +
@@ -938,15 +997,15 @@
             '<button class="bali-day-reset" type="button" data-reset-route>' + (language() === 'zh' ? '恢复推荐' : 'Reset recommendation') + '</button></div>' +
           '<div class="bali-route-detail-actions">' +
             '<a class="bali-btn bali-btn-primary" data-route-handoff href="ai-tool.html?' + params.toString() + '">' + (language() === 'zh' ? '按我的偏好调整' : 'Adjust to my preferences') + '</a>' +
-            '<a class="bali-btn bali-route-secondary" data-route-handoff href="ai-tool.html?' + params.toString() + '&professional=1">' + (language() === 'zh' ? '看专业路线 · ¥9.9' : 'Professional route · ¥9.9') + '</a>' +
+             '<a class="bali-btn bali-route-secondary" href="bali.html?route=' + encodeURIComponent(route.id) + '#professional-planner" data-professional-route="' + route.id + '">' + (language() === 'zh' ? '获取个性化专业路线' : 'Get my professional route') + '</a>' +
             '<a class="bali-btn bali-route-secondary" data-route-handoff href="find-driver.html?route=' + encodeURIComponent(route.id) + '">' + (language() === 'zh' ? '把路线发给司机询价' : 'Send route to a driver') + '</a>' +
           '</div>' +
         '</div>' +
         '<div class="bali-route-aside">' +
           renderRouteMap(route, plan) +
           '<div class="bali-route-value">' +
-            '<div class="bali-route-value-card"><strong>' + (language() === 'zh' ? '免费粗路线' : 'Free rough route') + '</strong><span>' + (language() === 'zh' ? '完整每日主题、区域顺序、基础地图与 2 次调整。' : 'Complete day themes, region order, a basic map and two adjustments.') + '</span></div>' +
-            '<div class="bali-route-value-card"><strong>' + (language() === 'zh' ? '专业可执行路线' : 'Professional executable route') + '</strong><span>' + (language() === 'zh' ? '核验顺序、车程、到达时间、预约事项、雨天备选与司机行程单。' : 'Verified order, drive time, arrival guidance, bookings, rain backup and driver handoff.') + '</span></div>' +
+             '<div class="bali-route-value-card"><strong>' + (language() === 'zh' ? '公共路线家族' : 'Public route family') + '</strong><span>' + (language() === 'zh' ? 'R1–R6 的完整主题、区域顺序和基础地图，任何人都可以先浏览。' : 'Browse the complete R1–R6 themes, region order and base maps for free.') + '</span></div>' +
+             '<div class="bali-route-value-card"><strong>' + (language() === 'zh' ? '个性化专业路线' : 'Personal professional route') + '</strong><span>' + (language() === 'zh' ? '根据你的信息匹配；先免费预览，解锁后查看完整地点和执行备注。' : 'Matched to your profile; preview first, then unlock full places and execution notes.') + '</span></div>' +
           '</div>' +
         '</div>' +
       '</div>';
@@ -1037,7 +1096,7 @@
     var key = map[activeShot.dataset.place]; var data = (COPY[lang()] || COPY.en)[key] || COPY.en[key];
     var routeId = matchedRouteId(activeShot);
     var placeName = data[0];
-    var handoff = new URLSearchParams({ dest:'bali', place:placeName, route:routeId, source:'gallery' });
+     var handoff = new URLSearchParams({ dest:'bali', place:placeName, route:routeId, source:'gallery', mode:'diy' });
     document.getElementById('bali-place-image').src = activeShot.querySelector('img').src;
     document.getElementById('bali-place-image').alt = activeShot.querySelector('img').alt;
     document.getElementById('bali-place-tags').textContent = Array.from(activeShot.querySelectorAll('.bali-shot-meta span')).map(function(x){return x.textContent}).join(' · ');
@@ -1103,6 +1162,7 @@
   var picker=document.getElementById('langPicker'); if(picker)picker.addEventListener('change',renderModal);
 })();
 </script>
+<script src="assets/js/bali-professional.js?v=p53"></script>
 <script src="assets/js/global-auth.js?v=p52"></script>
 </body>
 </html>

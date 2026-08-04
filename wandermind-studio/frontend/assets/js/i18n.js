@@ -1004,31 +1004,31 @@ Object.assign(LANGS.en, {
   formTitle:'Start with what matters to you', formSub:'Tell us the shape of your Bali trip. We carry these details into the AI planner, so you spend less time repeating yourself.',
   formAudience:'Which Bali trip are you planning?', formAudienceFirst:'My first Bali trip', formAudienceReturn:"I've been before · go deeper",
   formGoal:'What matters most this time?', formGoalEasy:'Less planning · an easier trip', formGoalLocal:'Local culture · real experiences', formGoalPhoto:'Photography · scenic moments', formGoalValue:'Best value · control the budget',
-  formTierBudget:'Budget-conscious', formTierComfort:'Comfort & balance', formTierLuxury:'Premium & private', formPeople:'Travellers', formStart:'Departure date', formEnd:'Return date', formCurrency:'Currency', formBudget:'Total budget', formBudgetPh:'e.g. 3000', formSubmitLbl:'Build your planning brief', formSubmitBtn:'Generate free rough route', formProfessionalBtn:'View professional routes · ¥9.9', formPrivacyNote:'No payment required for the complete rough route. Review every detail before contacting a local partner.'
+  formTierBudget:'Budget-conscious', formTierComfort:'Comfort & balance', formTierLuxury:'Premium & private', formPeople:'Travellers', formStart:'Departure date', formEnd:'Return date', formCurrency:'Currency', formBudget:'Total budget', formBudgetPh:'e.g. 3000', formSubmitLbl:'Choose how you want to plan', formSubmitBtn:'AI self-plan', formProfessionalBtn:'Get a professional route', formPrivacyNote:'A professional route starts with a free preview. AI self-planning includes its own free allowance.'
 });
 Object.assign(LANGS.zh, {
   formTitle:'先从你真正关心的事开始', formSub:'告诉我们这次巴厘岛之旅的大致需求。信息会自动带入 AI 规划器，免去重复填写。',
   formAudience:'你正在计划哪一种巴厘岛旅行？', formAudienceFirst:'第一次去巴厘岛', formAudienceReturn:'去过巴厘岛 · 想深度体验',
   formGoal:'这次最重要的目标是什么？', formGoalEasy:'少做攻略 · 旅途更轻松', formGoalLocal:'风土人情 · 真实体验', formGoalPhoto:'摄影出片 · 自然风景', formGoalValue:'高性价比 · 控制预算',
-  formTierBudget:'预算优先', formTierComfort:'舒适平衡', formTierLuxury:'高端私享', formPeople:'出行人数', formStart:'出发日期', formEnd:'返回日期', formCurrency:'币种', formBudget:'总预算', formBudgetPh:'例如 20000', formSubmitLbl:'生成你的规划简报', formSubmitBtn:'生成免费粗路线', formProfessionalBtn:'查看专业路线 · ¥9.9', formPrivacyNote:'完整粗路线无需付款。联系本地合作伙伴前，你可以先检查并修改所有细节。'
+  formTierBudget:'预算优先', formTierComfort:'舒适平衡', formTierLuxury:'高端私享', formPeople:'出行人数', formStart:'出发日期', formEnd:'返回日期', formCurrency:'币种', formBudget:'总预算', formBudgetPh:'例如 20000', formSubmitLbl:'选择你的规划方式', formSubmitBtn:'AI 自助规划', formProfessionalBtn:'获取专业路线', formPrivacyNote:'专业路线先免费预览；AI 自助规划也有独立的免费额度。'
 });
 Object.assign(LANGS.ja, {
   formTitle:'大切にしたいことから始めましょう', formSub:'バリ旅行の概要を入力すると、AIプランナーへ自動で引き継がれます。',
   formAudience:'今回のバリ旅行は？', formAudienceFirst:'初めてのバリ旅行', formAudienceReturn:'再訪 · もっと深く体験',
   formGoal:'今回もっとも大切なことは？', formGoalEasy:'計画を減らして楽に', formGoalLocal:'文化とリアルな体験', formGoalPhoto:'写真と美しい風景', formGoalValue:'価格と予算管理',
-  formTierBudget:'予算重視', formTierComfort:'快適・バランス', formTierLuxury:'上質・プライベート', formPeople:'人数', formStart:'出発日', formEnd:'帰着日', formCurrency:'通貨', formBudget:'総予算', formBudgetPh:'例 300000', formSubmitLbl:'プラン概要を作成', formSubmitBtn:'無料の概要ルートを作成', formProfessionalBtn:'専門ルートを見る · ¥9.9', formPrivacyNote:'概要ルートは無料です。現地パートナーへ連絡する前に内容を確認・編集できます。'
+  formTierBudget:'予算重視', formTierComfort:'快適・バランス', formTierLuxury:'上質・プライベート', formPeople:'人数', formStart:'出発日', formEnd:'帰着日', formCurrency:'通貨', formBudget:'総予算', formBudgetPh:'例 300000', formSubmitLbl:'プラン方法を選ぶ', formSubmitBtn:'AIで自分で計画', formProfessionalBtn:'プロルートを受け取る', formPrivacyNote:'プロルートはまず無料でプレビュー。AI自分計画にも独自の無料枠があります。'
 });
 Object.assign(LANGS.ko, {
   formTitle:'여행에서 중요한 것부터 시작하세요', formSub:'발리 여행의 기본 조건을 알려주면 AI 플래너로 자동 전달됩니다.',
   formAudience:'어떤 발리 여행을 계획하나요?', formAudienceFirst:'첫 발리 여행', formAudienceReturn:'재방문 · 더 깊은 경험',
   formGoal:'이번 여행에서 가장 중요한 것은?', formGoalEasy:'계획은 줄이고 더 편하게', formGoalLocal:'현지 문화와 실제 경험', formGoalPhoto:'사진과 아름다운 풍경', formGoalValue:'가성비와 예산 관리',
-  formTierBudget:'예산 우선', formTierComfort:'편안함과 균형', formTierLuxury:'프리미엄·프라이빗', formPeople:'여행 인원', formStart:'출발일', formEnd:'귀국일', formCurrency:'통화', formBudget:'총예산', formBudgetPh:'예: 3000000', formSubmitLbl:'여행 조건 정리', formSubmitBtn:'무료 개요 루트 생성', formProfessionalBtn:'전문 루트 보기 · ¥9.9', formPrivacyNote:'완전한 개요 루트는 무료입니다. 현지 파트너에게 연락하기 전 내용을 확인하고 수정하세요.'
+  formTierBudget:'예산 우선', formTierComfort:'편안함과 균형', formTierLuxury:'프리미엄·프라이빗', formPeople:'여행 인원', formStart:'출발일', formEnd:'귀국일', formCurrency:'통화', formBudget:'총예산', formBudgetPh:'예: 3000000', formSubmitLbl:'계획 방식을 선택하세요', formSubmitBtn:'AI로 직접 계획', formProfessionalBtn:'전문 루트 받기', formPrivacyNote:'전문 루트는 먼저 무료로 미리 봅니다. AI 직접 계획에도 별도의 무료 한도가 있습니다.'
 });
 Object.assign(LANGS.id, {
   formTitle:'Mulai dari hal yang paling penting bagi Anda', formSub:'Beri tahu gambaran perjalanan Bali Anda. Detailnya otomatis dibawa ke perencana AI.',
   formAudience:'Perjalanan Bali seperti apa?', formAudienceFirst:'Pertama kali ke Bali', formAudienceReturn:'Pernah ke Bali · ingin lebih mendalam',
   formGoal:'Apa yang paling penting kali ini?', formGoalEasy:'Lebih sedikit merencanakan · lebih mudah', formGoalLocal:'Budaya lokal · pengalaman nyata', formGoalPhoto:'Fotografi · pemandangan indah', formGoalValue:'Harga terbaik · kendalikan anggaran',
-  formTierBudget:'Hemat', formTierComfort:'Nyaman & seimbang', formTierLuxury:'Premium & privat', formPeople:'Jumlah orang', formStart:'Tanggal berangkat', formEnd:'Tanggal pulang', formCurrency:'Mata uang', formBudget:'Anggaran total', formBudgetPh:'mis. 3000', formSubmitLbl:'Buat ringkasan perjalanan', formSubmitBtn:'Buat rute kasar gratis', formProfessionalBtn:'Lihat rute profesional · ¥9.9', formPrivacyNote:'Rute kasar lengkap gratis. Tinjau semua detail sebelum menghubungi mitra lokal.'
+  formTierBudget:'Hemat', formTierComfort:'Nyaman & seimbang', formTierLuxury:'Premium & privat', formPeople:'Jumlah orang', formStart:'Tanggal berangkat', formEnd:'Tanggal pulang', formCurrency:'Mata uang', formBudget:'Anggaran total', formBudgetPh:'mis. 3000', formSubmitLbl:'Pilih cara merencanakan', formSubmitBtn:'Rencanakan sendiri dengan AI', formProfessionalBtn:'Dapatkan rute profesional', formPrivacyNote:'Rute profesional dimulai dengan pratinjau gratis. Perencana AI memiliki kuota gratisnya sendiri.'
 });
 
 /* Stage 1 homepage positioning: Bali-first, globally extensible, service-led. */

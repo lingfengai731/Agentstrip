@@ -3,11 +3,11 @@
    - 6 AI agents chat with backend /api/chat
    - Destination switcher (5 destinations)
    - 5-language UI
-   - Quick action buttons (toast for Phase 2 features)
+   - AI self-planning workspace with its own usage allowance
    ═══════════════════════════════════════════════════════════════════════ */
 
 /* Same-origin deployment on Render — relative path works.
-   If ever deployed elsewhere, set window.WM_BACKEND = 'https://agentstrip.onrender.com'
+   If ever deployed elsewhere, set window.WM_BACKEND to the API origin
    in a <script> tag before this file loads. */
 const BACKEND_BASE = (typeof window !== 'undefined' && window.WM_BACKEND) || '';
 
@@ -900,7 +900,7 @@ async function sendMessage(text) {
 
     const r = await fetch(BACKEND_BASE + '/api/chat/once', {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: { 'Content-Type': 'application/json', ...authHeaders() },
       body: JSON.stringify({
         messages: history,
         system: systemPrompt,
@@ -1492,7 +1492,7 @@ async function fetchHotels() {
 
   try {
     const r = await fetch(BACKEND_BASE + '/api/search/hotels', {
-      method:'POST', headers:{ 'Content-Type':'application/json' },
+      method:'POST', headers:{ 'Content-Type':'application/json', ...authHeaders() },
       body: JSON.stringify({ destination: queryDest, check_in: checkIn, check_out: checkOut, adults, lang: currentLang })
     });
     const data = await r.json();
@@ -1558,7 +1558,7 @@ async function fetchFlights() {
 
   try {
     const r = await fetch(BACKEND_BASE + '/api/search/flights', {
-      method:'POST', headers:{ 'Content-Type':'application/json' },
+      method:'POST', headers:{ 'Content-Type':'application/json', ...authHeaders() },
       body: JSON.stringify({ origin, destination: destName, depart_date: departDate, return_date: returnDate, adults, lang: currentLang })
     });
     const data = await r.json();
@@ -1742,7 +1742,7 @@ async function aiCustomizeItinerary() {
   try {
     const prompt = _interp(t().qPlanItinerary, { dest: destName });
     const r = await fetch(BACKEND_BASE + '/api/generate', {
-      method:'POST', headers:{ 'Content-Type':'application/json' },
+      method:'POST', headers:{ 'Content-Type':'application/json', ...authHeaders() },
       body: JSON.stringify({ prompt, max_tokens: 1500, lang: currentLang })
     });
     const data = await r.json();
@@ -1877,7 +1877,7 @@ async function askTeam() {
       `IMPORTANT: respond ONLY in ${langLabel}. Combine the three expert viewpoints into one consolidated reply.`;
     const r = await fetch(BACKEND_BASE + '/api/chat/team', {
       method:'POST',
-      headers:{ 'Content-Type':'application/json' },
+      headers:{ 'Content-Type':'application/json', ...authHeaders() },
       body: JSON.stringify({ messages: history, system: teamSys, agent:'team', destination: currentDest, mode:'pro', search:false })
     });
     if (!r.ok) {
@@ -2195,7 +2195,7 @@ async function generateDiary() {
 
   try {
     const r = await fetch(BACKEND_BASE + '/api/generate', {
-      method:'POST', headers:{ 'Content-Type':'application/json' },
+      method:'POST', headers:{ 'Content-Type':'application/json', ...authHeaders() },
       body: JSON.stringify({ prompt: prompts[currentLang] || prompts.en, max_tokens: 1200, lang: currentLang })
     });
     const data = await r.json();
@@ -2713,9 +2713,62 @@ if (/^[A-Z0-9]{6,16}$/.test(incomingReferralCode)) {
 let tripList   = [];
 let currentTripId = null;
 let _saveTimer = null;
+let _authRecoveryPromise = null;
+let _authRecoveryResolve = null;
+let _authRecoveryReject = null;
 
 function isLoggedIn() { return !!authToken && !!authUser; }
 function authHeaders() { return authToken ? { Authorization: 'Bearer ' + authToken } : {}; }
+
+function clearInvalidAuth() {
+  _authGeneration += 1;
+  authToken = null;
+  authUser = null;
+  localStorage.removeItem('wm_studio_token');
+  localStorage.removeItem('wm_studio_user');
+  updateAuthUI();
+}
+
+function requestAuthRecovery() {
+  if (_authRecoveryPromise) return _authRecoveryPromise;
+  _authRecoveryPromise = new Promise((resolve, reject) => {
+    _authRecoveryResolve = resolve;
+    _authRecoveryReject = reject;
+  });
+  try { showAuthModal('login'); } catch (_) { cancelAuthRecovery(); }
+  return _authRecoveryPromise;
+}
+
+function finishAuthRecovery() {
+  const resolve = _authRecoveryResolve;
+  _authRecoveryPromise = null;
+  _authRecoveryResolve = null;
+  _authRecoveryReject = null;
+  if (resolve) resolve(true);
+}
+
+function cancelAuthRecovery() {
+  const reject = _authRecoveryReject;
+  _authRecoveryPromise = null;
+  _authRecoveryResolve = null;
+  _authRecoveryReject = null;
+  if (reject) reject(new Error('Authentication cancelled'));
+}
+
+async function restoreStoredAuth() {
+  if (!authToken) return false;
+  try {
+    const rawFetch = typeof _origFetch_prefs === 'function' ? _origFetch_prefs : window.fetch.bind(window);
+    const response = await rawFetch(BACKEND_BASE + '/api/auth/me', { headers: { Authorization: 'Bearer ' + authToken } });
+    if (response.ok) {
+      authUser = await response.json();
+      localStorage.setItem('wm_studio_user', JSON.stringify(authUser));
+      return true;
+    }
+    if (response.status === 401) clearInvalidAuth();
+  } catch (_) { /* keep the token until the server confirms it is invalid */ }
+  return false;
+}
 
 function _autoTitle() {
   const labels = { bali:'Bali', kyoto:'Kyoto', paris:'Paris', santorini:'Santorini', any:'Custom' };
@@ -2732,8 +2785,9 @@ async function doLogin(email, password) {
   const data = await r.json();
   if (!r.ok) throw new Error(data.detail || t().errLoginFail);
   completeAuth(data);
-  await loadTrips();
   closeModalEl();
+  finishAuthRecovery();
+  await loadTrips();
   addLog('success', 'fa-sign-in', _interp(t().logLogin, { name: authUser.name || authUser.email }));
 }
 
@@ -2759,8 +2813,9 @@ async function doRegister(name, email, password, code) {
   const data = await r.json();
   if (!r.ok) throw new Error(r.status === 429 || /code/i.test(String(data.detail)) ? t().authCodeExpired : t().errRegisterFail);
   completeAuth(data);
-  await loadTrips();
   closeModalEl();
+  finishAuthRecovery();
+  await loadTrips();
   addLog('success', 'fa-sign-in', _interp(t().logLogin, { name: authUser.name || authUser.email }));
 }
 
@@ -2787,8 +2842,9 @@ async function doGoogleLogin(credential) {
   const data = await r.json();
   if (!r.ok) throw new Error(r.status === 409 ? t().authExistingPassword : t().errLoginFail);
   completeAuth(data);
-  await loadTrips();
   closeModalEl();
+  finishAuthRecovery();
+  await loadTrips();
   addLog('success', 'fa-google', _interp(t().logLogin, { name: authUser.name || authUser.email }));
 }
 
@@ -2884,7 +2940,7 @@ function showAuthModal(tab = 'login') {
       </div>
     </div>
   `;
-  el.querySelector('.ws-modal-close').onclick = closeModalEl;
+  el.querySelector('.ws-modal-close').onclick = () => { cancelAuthRecovery(); closeModalEl(); };
   const social = document.getElementById('ws-auth-social');
   const switchTab = which => {
     el.querySelectorAll('.ws-auth-form').forEach(f => f.style.display = (f.dataset.form === which ? 'block' : 'none'));
@@ -3122,6 +3178,13 @@ function hydratePlannerFromQuery() {
   const q = new URLSearchParams(window.location.search);
   let savedBrief = null;
   try { savedBrief = JSON.parse(localStorage.getItem('wm_studio_trip_brief') || 'null'); } catch (_) {}
+  let savedProfile = null;
+  try { savedProfile = JSON.parse(localStorage.getItem('wm_studio_trip_profile') || 'null'); } catch (_) {}
+  if (q.get('professional') === '1') {
+    const routeQuery = q.get('route') ? '?route=' + encodeURIComponent(q.get('route')) : '';
+    window.location.replace('bali.html' + routeQuery + '#professional-planner');
+    return;
+  }
   let editedRouteText = '';
   try {
     const savedPlan = JSON.parse(localStorage.getItem('wm_studio_lastPlan') || 'null');
@@ -3156,20 +3219,19 @@ function hydratePlannerFromQuery() {
     history.replaceState({}, document.title, window.location.pathname);
     return;
   }
-  if (!q.get('start') && !q.get('budget') && !q.get('audience') && !q.get('route')) return;
+  if (!q.get('start') && !q.get('budget') && !q.get('audience') && !q.get('route') && q.get('mode') !== 'diy' && !savedBrief && !savedProfile) return;
   _entryContext = {
-    audience: q.get('audience') || savedBrief?.audience || '',
-    goals: q.getAll('goal').length ? q.getAll('goal') : (savedBrief?.goals || []),
+    audience: q.get('audience') || savedBrief?.audience || savedProfile?.audience || '',
+    goals: q.getAll('goal').length ? q.getAll('goal') : (savedBrief?.goals || savedProfile?.goals || []),
     route: q.get('route') || '',
-    professional: q.get('professional') === '1',
     editedRouteText
   };
   showNewTripModal();
   const values = {
-    'ws-nt-dest': q.get('dest') || savedBrief?.dest, 'ws-nt-people': q.get('people') || savedBrief?.people,
-    'ws-nt-start': q.get('start') || savedBrief?.start, 'ws-nt-end': q.get('end') || savedBrief?.end,
-    'ws-nt-budget': q.get('budget') || savedBrief?.budget, 'ws-nt-style': q.get('style') || savedBrief?.style,
-    'ws-nt-currency': q.get('currency') || savedBrief?.currency
+    'ws-nt-dest': q.get('dest') || savedBrief?.dest || 'bali', 'ws-nt-people': q.get('people') || savedBrief?.people || savedProfile?.travellers,
+    'ws-nt-start': q.get('start') || savedBrief?.start || savedProfile?.departure_date, 'ws-nt-end': q.get('end') || savedBrief?.end || savedProfile?.return_date,
+    'ws-nt-budget': q.get('budget') || savedBrief?.budget || savedProfile?.budget_range, 'ws-nt-style': q.get('style') || savedBrief?.style || savedProfile?.travel_style,
+    'ws-nt-currency': q.get('currency') || savedBrief?.currency || savedProfile?.currency
   };
   Object.keys(values).forEach(id => {
     const field = document.getElementById(id);
@@ -3316,9 +3378,13 @@ async function submitNewTrip() {
   const audience = _entryContext?.audience || '';
   const goals = _entryContext?.goals?.length ? _entryContext.goals : [];
   const routeId = _entryContext?.route || '';
-  const professionalRequested = !!_entryContext?.professional;
   const editedRouteText = _entryContext?.editedRouteText || '';
-  currentTrip = { dest, start, end, days, people, budget, currency, style, title, audience, goals, route_id: routeId, edited_route_text: editedRouteText, professional_requested: professionalRequested, rough_generated: false };
+  const tripProfile = {
+    audience: audience || 'first', goals: goals, travel_style: style, travellers: people,
+    departure_date: start, return_date: end, days: days, currency: currency,
+    budget_range: budget, pace: goals.indexOf('easy') >= 0 ? 'slow' : 'balanced', origin_region: ''
+  };
+  currentTrip = { dest, start, end, days, people, budget, currency, style, title, audience, goals, route_id: routeId, edited_route_text: editedRouteText, trip_profile: tripProfile, rough_generated: false };
   try {
     const productResponse = await fetch(BACKEND_BASE + '/api/product-trips', {
       method: 'POST',
@@ -3363,7 +3429,6 @@ async function submitNewTrip() {
   const contextParts = [labels[audience]].concat(goals.map(goal => labels[goal])).filter(Boolean);
   if (routeId) contextParts.push(`Preferred route family: ${routeId}`);
   if (editedRouteText) contextParts.push(`User-edited route draft:\n${editedRouteText}`);
-  if (professionalRequested) contextParts.push('User is reviewing the professional-route option; do not claim it is unlocked until payment or points are confirmed');
   const context = contextParts.join(' · ');
   _entryContext = null;
   sendMessage((kickoffs[currentLang] || kickoffs.en) + (context ? ` ${context}.` : ''));
@@ -3541,7 +3606,8 @@ onLangChange = function(newLang) {
 // Boot: hydrate auth state, fetch live dest data, render auth UI
 (function bootPhase3() {
   // Delay until DOM is ready and panel slots exist
-  function go() {
+  async function go() {
+    await restoreStoredAuth();
     updateAuthUI();
     if (isLoggedIn()) loadTrips();
     if (typeof currentDest === 'string') fetchDestInfo(currentDest);
@@ -3857,6 +3923,9 @@ function getPrefsSystemPrompt() {
 }
 
 async function openProfessionalRouteModal() {
+  const routeQuery = currentTrip?.route_id ? '?route=' + encodeURIComponent(currentTrip.route_id) : '';
+  window.location.assign('bali.html' + routeQuery + '#professional-planner');
+  return;
   const el = _ensureModal();
   const zh = currentLang === 'zh';
   const tripId = currentTrip?.product_trip_id || '';
@@ -3941,20 +4010,21 @@ sendMessage = async function(text) {
   return _origSendMessage_v2(text);
 };
 // Also patch the actual system prompt builder by overriding fetch.
-// This single override ALSO: (1) injects the X-Anon-Id quota header on every
-// backend call, and (2) catches 402 (quota exhausted) to open the recharge modal.
+// This single override owns the shared auth/header boundary for API calls.
 const _origFetch_prefs = window.fetch.bind(window);
 window.fetch = async function(url, opts) {
-  const isApi = typeof url === 'string' && url.indexOf('/api/') !== -1;
-  const isQuotaApi = typeof url === 'string' && /\/api\/(chat|chat\/once|chat\/team|generate)$/.test(url);
-  const isLoginGateApi = isQuotaApi || (
-    typeof url === 'string' &&
-    (/\/api\/search\/(flights|hotels)$/.test(url) || /\/api\/share\/[^/]+\/fuse$/.test(url))
-  );
+  const requestUrl = typeof url === 'string' ? url : ((url && url.url) || '');
+  const isApi = requestUrl.indexOf('/api/') !== -1;
+  const isAuthEndpoint = /\/api\/auth\//.test(requestUrl);
+  const isQuotaApi = /\/api\/(chat|chat\/once|chat\/team|generate)$/.test(requestUrl);
+  const isProfessionalQuotaApi = /\/api\/bali\/professional-route\/[^/]+\/adjust$/.test(requestUrl);
+  const isLoginGateApi = isApi && !isAuthEndpoint && !/\/api\/quota$/.test(requestUrl);
+  const hadToken = !!authToken;
+  const isAuthRetry = !!(opts && opts._wmAuthRetry);
   if (isApi) {
     opts = opts || {};
     // Inject prefs into chat system prompt
-    if (opts.body && (url.endsWith('/api/chat/once') || url.endsWith('/api/chat/team'))) {
+    if (opts.body && (requestUrl.endsWith('/api/chat/once') || requestUrl.endsWith('/api/chat/team'))) {
       try {
         const body = JSON.parse(opts.body);
         if (body.system && typeof body.system === 'string' && !body.system.includes('[User Preferences]')) {
@@ -3963,24 +4033,55 @@ window.fetch = async function(url, opts) {
         }
       } catch (_) {}
     }
-    // Always attach the anonymous quota id
-    opts.headers = Object.assign({}, opts.headers || {}, { 'X-Anon-Id': sessionId });
+    // Every API call carries the stable anonymous id and the current bearer.
+    opts.headers = Object.assign({}, opts.headers || {}, authHeaders(), { 'X-Anon-Id': sessionId });
+    if (!authToken) delete opts.headers.Authorization;
   }
   const resp = await _origFetch_prefs(url, opts);
-  if (isLoginGateApi && resp.status === 401) {
+  if (isLoginGateApi && resp.status === 401 && !isAuthRetry) {
+    let serverConfirmedInvalid = !hadToken;
+    if (hadToken) {
+      try {
+        const authCheck = await _origFetch_prefs(BACKEND_BASE + '/api/auth/me', {
+          headers: { Authorization: 'Bearer ' + authToken }
+        });
+        serverConfirmedInvalid = authCheck.status === 401;
+      } catch (_) {
+        return resp;
+      }
+      if (serverConfirmedInvalid) clearInvalidAuth();
+    }
+    if (!serverConfirmedInvalid) return resp;
     try {
-      showToast(t().shareLoginReq || 'Please sign in to use your free AI plan');
-      showAuthModal('login');
-    } catch (_) {}
-  } else if (isQuotaApi && resp.status === 402) {
+      await requestAuthRecovery();
+      if (!authToken) return resp;
+      const retryOpts = Object.assign({}, opts, {
+        headers: Object.assign({}, opts.headers || {}, authHeaders(), { 'X-Anon-Id': sessionId })
+      });
+      retryOpts._wmAuthRetry = true;
+      delete retryOpts.headers.Authorization;
+      Object.assign(retryOpts.headers, authHeaders());
+      return await window.fetch(url, retryOpts);
+    } catch (_) {
+      return resp;
+    }
+  } else if ((isQuotaApi || isProfessionalQuotaApi) && resp.status === 402) {
     let detail = null;
     try { detail = (await resp.clone().json()).detail; } catch (_) {}
-    if (detail && detail.error === 'trip_allowance_exhausted') {
-      try { openProfessionalRouteModal(); } catch (_) {}
+    const errorCode = detail && detail.error;
+    if (errorCode === 'professional_route_unlock_required' ||
+        errorCode === 'professional_route_adjustments_exhausted' ||
+        errorCode === 'professional_route_usage_exhausted') {
+      try {
+        showToast(t().professionalRouteCta || 'Open the professional route planner on Bali.');
+        if (window.location.pathname.indexOf('bali.html') === -1) {
+          window.location.assign('bali.html#professional-planner');
+        }
+      } catch (_) {}
     } else {
       try { openRechargeModal(); } catch (_) {}
     }
-    if (typeof refreshQuota === 'function') refreshQuota();
+    if (isQuotaApi && typeof refreshQuota === 'function') refreshQuota();
   } else if (isQuotaApi && resp.ok) {
     // a use was just consumed — refresh the pill shortly after
     setTimeout(() => { if (typeof refreshQuota === 'function') refreshQuota(); }, 400);

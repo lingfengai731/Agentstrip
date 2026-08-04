@@ -170,6 +170,133 @@ class ProductAccessTests(unittest.TestCase):
         finally:
             conn.close()
 
+    def test_professional_route_is_deterministic_and_masks_seven_day_preview(self):
+        profile = {
+            "audience": "first",
+            "goals": ["photo", "local"],
+            "travel_style": "comfort",
+            "travellers": 2,
+            "departure_date": "2026-10-01",
+            "return_date": "2026-10-08",
+            "days": 7,
+            "budget_range": "15000-25000",
+            "pace": "balanced",
+            "origin_region": "Shanghai",
+        }
+        anon_id = "professional_preview_test_123"
+        first = self._run(
+            self._request(
+                "POST",
+                "/api/bali/professional-route",
+                anon_id=anon_id,
+                json={"trip_profile": profile, "lang": "en"},
+            )
+        )
+        self.assertEqual(first.status_code, 200, first.text)
+        first_payload = first.json()
+        route = first_payload["route"]
+        self.assertEqual(route["preview_days"], 5)
+        self.assertEqual(route["locked_days"], 2)
+        self.assertEqual(len(route["days_plan"]), 7)
+        self.assertEqual(sum(1 for day in route["days_plan"] if day["locked"]), 2)
+        self.assertFalse(route["unlocked"])
+
+        second = self._run(
+            self._request(
+                "POST",
+                "/api/bali/professional-route",
+                anon_id=anon_id,
+                json={
+                    "trip_id": first_payload["trip_id"],
+                    "trip_profile": profile,
+                    "lang": "en",
+                },
+            )
+        )
+        self.assertEqual(second.status_code, 200, second.text)
+        self.assertEqual(second.json()["route"]["route_id"], route["route_id"])
+        self.assertEqual(second.json()["route"]["days_plan"], route["days_plan"])
+
+    def test_professional_adjustment_endpoint_is_separate_from_ai_quota(self):
+        profile = {
+            "audience": "first",
+            "goals": ["local"],
+            "travel_style": "comfort",
+            "travellers": 2,
+            "days": 5,
+            "pace": "balanced",
+        }
+        created = self._run(
+            self._request(
+                "POST",
+                "/api/bali/professional-route",
+                token=self.user_token,
+                json={"trip_profile": profile, "lang": "en"},
+            )
+        )
+        self.assertEqual(created.status_code, 200, created.text)
+        trip_id = created.json()["trip_id"]
+        order = self._run(
+            self._request(
+                "POST",
+                "/api/professional-route/orders",
+                token=self.user_token,
+                json={"trip_id": trip_id},
+            )
+        )
+        self.assertEqual(order.status_code, 200, order.text)
+        order_id = order.json()["order"]["id"]
+        confirmed = self._run(
+            self._request(
+                "POST",
+                f"/api/admin/professional-route/orders/{order_id}/confirm",
+                token=self.admin_token,
+                json={"payment_reference": "separate-quota-test"},
+            )
+        )
+        self.assertEqual(confirmed.status_code, 200, confirmed.text)
+
+        for action in ("rough_route", "adjustment", "adjustment"):
+            consumed = self._run(
+                self._request(
+                    "POST",
+                    f"/api/product-trips/{trip_id}/consume",
+                    token=self.user_token,
+                    json={"action": action},
+                )
+            )
+            self.assertEqual(consumed.status_code, 200, consumed.text)
+
+        adjustment = self._run(
+            self._request(
+                "POST",
+                f"/api/bali/professional-route/{trip_id}/adjust",
+                token=self.user_token,
+                json={"trip_profile": profile, "lang": "en"},
+            )
+        )
+        self.assertEqual(adjustment.status_code, 200, adjustment.text)
+        self.assertEqual(
+            adjustment.json()["professional_adjustments_remaining"],
+            main.PROFESSIONAL_ROUTE_ADJUSTMENT_LIMIT - 1,
+        )
+
+    def test_frontend_has_separate_professional_and_ai_entry_contracts(self):
+        frontend_dir = BACKEND_DIR.parents[1] / "wandermind-studio" / "frontend"
+        index_html = (frontend_dir / "index.html").read_text(encoding="utf-8")
+        bali_html = (frontend_dir / "bali.html").read_text(encoding="utf-8")
+        ai_js = (frontend_dir / "assets" / "js" / "ai-tool.js").read_text(
+            encoding="utf-8"
+        )
+        self.assertIn("bali.html#professional-planner", index_html)
+        self.assertIn("ai-tool.html?mode=diy", index_html)
+        self.assertIn('id="professional-planner"', bali_html)
+        self.assertIn("assets/js/bali-professional.js", bali_html)
+        self.assertNotIn("ai-tool.html?professional=1", bali_html)
+        self.assertNotIn("professional_requested", ai_js)
+        self.assertIn("authHeaders()", ai_js)
+        self.assertIn("requestAuthRecovery()", ai_js)
+
     def test_only_admin_can_confirm_and_confirmation_is_idempotent(self):
         trip_id = self._new_trip(token=self.user_token)
         for action in ("rough_route", "adjustment", "adjustment"):
@@ -242,7 +369,21 @@ class ProductAccessTests(unittest.TestCase):
         self.assertEqual(second.status_code, 200, second.text)
         self.assertTrue(second.json()["already_confirmed"])
 
-        professional = self._run(
+        allowance = self._run(
+            self._request(
+                "GET",
+                f"/api/product-trips/{trip_id}/allowance",
+                token=self.user_token,
+            )
+        )
+        self.assertEqual(allowance.status_code, 200, allowance.text)
+        self.assertTrue(allowance.json()["professional_route_entitlement"])
+        self.assertEqual(
+            allowance.json()["professional_adjustments_remaining"],
+            main.PROFESSIONAL_ROUTE_ADJUSTMENT_LIMIT,
+        )
+
+        ai_adjustment = self._run(
             self._request(
                 "POST",
                 f"/api/product-trips/{trip_id}/consume",
@@ -250,10 +391,18 @@ class ProductAccessTests(unittest.TestCase):
                 json={"action": "adjustment"},
             )
         )
-        self.assertEqual(professional.status_code, 200, professional.text)
-        self.assertEqual(
-            professional.json()["consumed_action"], "professional_route"
+        self.assertEqual(ai_adjustment.status_code, 402, ai_adjustment.text)
+        self.assertEqual(ai_adjustment.json()["detail"]["error"], "ai_usage_exhausted")
+
+        professional = self._run(
+            self._request(
+                "POST",
+                f"/api/product-trips/{trip_id}/consume",
+                token=self.user_token,
+                json={"action": "professional_route"},
+            )
         )
+        self.assertEqual(professional.status_code, 200, professional.text)
         self.assertEqual(
             professional.json()["professional_route"]["remaining"], 0
         )
@@ -683,6 +832,8 @@ class ProductAccessTests(unittest.TestCase):
 
         driver_html = (frontend_dir / "find-driver.html").read_text(encoding="utf-8")
         self.assertIn("var requestedPlace = requestParams.get('place')", driver_html)
+        self.assertIn("var requestedBudget = requestParams.get('budget')", driver_html)
+        self.assertIn("var requestedCurrency = requestParams.get('currency')", driver_html)
         self.assertIn("[requestedRoute, requestedPlace]", driver_html)
 
         ai_js = (frontend_dir / "assets" / "js" / "ai-tool.js").read_text(

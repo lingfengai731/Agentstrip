@@ -1,6 +1,7 @@
 import asyncio
 import base64
 import hashlib
+import math
 import re
 import hmac
 import json
@@ -576,6 +577,19 @@ class ReferralRedeemReq(BaseModel):
     trip_id: str
 
 
+class ProfessionalRouteReq(BaseModel):
+    trip_id: str = ""
+    trip_profile: dict = {}
+    route_id: str = ""
+    lang: str = "en"
+
+
+class ProfessionalRouteAdjustReq(BaseModel):
+    trip_profile: dict = {}
+    route_id: str = ""
+    lang: str = "en"
+
+
 # ─── Auth routes ─────────────────────────────────────────────
 def _public_base_url(request: Request) -> str:
     """Pick the externally-visible base URL for email links.
@@ -1007,36 +1021,225 @@ def _trip_owner(conn, trip_id: str, user, anon_id) -> dict:
     raise HTTPException(403, "This trip belongs to another account")
 
 
-def _trip_allowance(conn, trip: dict, user) -> dict:
-    is_admin = False
-    if user:
-        is_admin = _db_user(conn, user).get("role") == "admin"
-    rough_used = int(trip.get("rough_used") or 0)
-    adjustments_used = int(trip.get("adjustments_used") or 0)
-    professional_used = int(trip.get("professional_used") or 0)
-    unlocked = bool(conn.execute(
+_BALI_DATA_PATH = Path(__file__).resolve().parents[2] / "wandermind-studio" / "frontend" / "assets" / "data" / "bali-travel-data.json"
+_BALI_DATA_CACHE = None
+PROFESSIONAL_ROUTE_ADJUSTMENT_LIMIT = int(os.getenv("PROFESSIONAL_ROUTE_ADJUSTMENT_LIMIT", "10"))
+
+
+def _bali_data() -> dict:
+    global _BALI_DATA_CACHE
+    if _BALI_DATA_CACHE is None:
+        try:
+            _BALI_DATA_CACHE = json.loads(_BALI_DATA_PATH.read_text(encoding="utf-8"))
+        except Exception:
+            _BALI_DATA_CACHE = {"regions": [], "routes": [], "pois": []}
+    return _BALI_DATA_CACHE
+
+
+def _normalise_trip_profile(profile: dict) -> dict:
+    source = profile if isinstance(profile, dict) else {}
+    goals = source.get("goals") or source.get("goal") or []
+    if isinstance(goals, str):
+        goals = [goals]
+    try:
+        days = int(source.get("days") or 0)
+    except (TypeError, ValueError):
+        days = 0
+    if days <= 0:
+        start = source.get("departure_date") or source.get("start")
+        end = source.get("return_date") or source.get("end")
+        try:
+            days = max(1, (datetime.fromisoformat(end) - datetime.fromisoformat(start)).days)
+        except (TypeError, ValueError):
+            days = 5
+    return {
+        "audience": str(source.get("audience") or "first"),
+        "goals": [str(goal) for goal in goals if str(goal).strip()],
+        "travel_style": str(source.get("travel_style") or source.get("style") or "comfort"),
+        "travellers": int(source.get("travellers") or source.get("people") or 2),
+        "departure_date": str(source.get("departure_date") or source.get("start") or ""),
+        "return_date": str(source.get("return_date") or source.get("end") or ""),
+        "days": min(21, max(1, days)),
+        "currency": str(source.get("currency") or "CNY"),
+        "budget_range": source.get("budget_range") if source.get("budget_range") is not None else source.get("budget", ""),
+        "pace": str(source.get("pace") or "balanced"),
+        "origin_region": str(source.get("origin_region") or ""),
+    }
+
+
+def _route_score(route: dict, profile: dict) -> int:
+    goals = set(profile.get("goals") or [])
+    score = 0
+    intent_map = {
+        "first": "first_visit",
+        "returning": "deep_experience",
+        "easy": "slow_wellness",
+        "local": "local_culture",
+        "photo": "photography",
+        "value": "budget_control",
+    }
+    if route.get("primary_intent") == intent_map.get(profile.get("audience")):
+        score += 5
+    route_tags = set(route.get("secondary_tags") or [])
+    goal_tags = {
+        "local": {"culture", "local", "village"},
+        "photo": {"scenery", "nature", "coast", "sunset"},
+        "easy": {"quiet", "wellness", "balanced"},
+        "value": {"value", "budget"},
+    }
+    for goal in goals:
+        score += len(route_tags & goal_tags.get(goal, set()))
+    if profile.get("pace") == route.get("pace"):
+        score += 2
+    if profile.get("travel_style") in (route.get("budget_level") or []):
+        score += 2
+    if profile.get("days", 5) >= (route.get("recommended_days") or {}).get("min", 1):
+        score += 1
+    return score
+
+
+def _localized(value, lang: str, fallback: str = "") -> str:
+    if isinstance(value, dict):
+        return str(value.get(lang) or value.get("en") or value.get("zh") or fallback)
+    return str(value or fallback)
+
+
+def _professional_route_document(profile: dict, route_id: str = "", lang: str = "en") -> dict:
+    data = _bali_data()
+    routes = data.get("routes") or []
+    regions = {item.get("id"): item for item in data.get("regions") or []}
+    pois = data.get("pois") or []
+    route = next((item for item in routes if item.get("id") == route_id), None)
+    if route is None:
+        route = max(routes, key=lambda item: _route_score(item, profile), default={})
+    if not route:
+        raise HTTPException(503, "Bali route data is unavailable")
+    days = int(profile.get("days") or 5)
+    preview_days = days if days <= 1 else min(days, max(1, math.ceil(days * 0.7)))
+    outline = route.get("free_outline") or []
+    region_ids = list(route.get("base_regions") or []) + list(route.get("optional_regions") or [])
+    if not region_ids:
+        region_ids = list(regions)
+    full_days = []
+    for index in range(days):
+        outline_item = outline[index] if index < len(outline) else {}
+        region_id = outline_item.get("region_id") or region_ids[index % len(region_ids)]
+        region = regions.get(region_id, {})
+        region_name = _localized(region.get("name"), lang, region_id)
+        theme = _localized(outline_item.get("theme"), lang)
+        if not theme:
+            experiences = route.get("core_experiences") or ["Bali experience"]
+            theme = f"{region_name} · {experiences[index % len(experiences)].replace('_', ' ')}"
+        route_pois = [
+            poi for poi in pois
+            if poi.get("region_id") == region_id and route.get("id") in (poi.get("route_ids") or [])
+        ][:3]
+        full_days.append({
+            "day": index + 1,
+            "region_id": region_id,
+            "region_name": region_name,
+            "theme": theme,
+            "places": [
+                {
+                    "id": poi.get("id", ""),
+                    "name": poi.get("name", ""),
+                    "type": poi.get("type", ""),
+                    "verification_status": poi.get("verification_status", "pending_review"),
+                }
+                for poi in route_pois
+            ],
+            "experience_tags": list(route.get("secondary_tags") or [])[:4],
+            "route_note": "Structured route layer; access, timing and availability still require confirmation.",
+        })
+    reasons = {
+        "zh": "根据你的天数、同行者、旅行目标、预算和节奏，从 Bali 的 G1–G7 区域事实与 R1–R6 路线家族中匹配。",
+        "en": "Matched from Bali's G1–G7 geography and R1–R6 route families using your dates, group, goals, budget and pace.",
+        "ja": "日数、同行者、目的、予算、ペースをもとに、Bali の G1–G7 地理と R1–R6 ルートから提案しています。",
+        "ko": "여행 기간, 동행자, 목표, 예산과 속도를 바탕으로 Bali G1–G7 지리와 R1–R6 경로를 매칭했습니다.",
+        "id": "Rute ini dicocokkan dari geografi Bali G1–G7 dan keluarga rute R1–R6 berdasarkan tanggal, rombongan, tujuan, anggaran, dan tempo Anda.",
+    }
+    return {
+        "route_id": route.get("id"),
+        "route_name": _localized(route.get("name"), lang, route.get("id", "Bali route")),
+        "route_promise": _localized(route.get("promise"), lang),
+        "recommendation_reason": reasons.get(lang, reasons["en"]),
+        "days": days,
+        "preview_days": preview_days,
+        "locked_days": max(0, days - preview_days),
+        "full_days": full_days,
+        "profile": profile,
+    }
+
+
+def _public_professional_route(document: dict, unlocked: bool, lang: str) -> dict:
+    result = {key: value for key, value in document.items() if key not in {"full_days", "profile"}}
+    visible_days = []
+    for index, day in enumerate(document.get("full_days") or []):
+        if unlocked or index < int(document.get("preview_days") or 0):
+            visible_days.append({**day, "locked": False})
+        else:
+            visible_days.append({
+                "day": day.get("day"),
+                "region_id": day.get("region_id"),
+                "region_name": day.get("region_name"),
+                "theme": day.get("theme"),
+                "locked": True,
+                "lock_reason": {
+                    "zh": "完成预览。解锁后查看地点顺序、体验模块和执行备注。",
+                    "en": "Preview shown. Unlock to see places, experience modules and execution notes.",
+                    "ja": "プレビューです。解放すると場所、体験モジュール、実行メモを確認できます。",
+                    "ko": "미리보기입니다. 잠금 해제 후 장소, 체험 모듈과 실행 메모를 볼 수 있습니다.",
+                    "id": "Ini adalah pratinjau. Buka kunci untuk melihat tempat, modul pengalaman, dan catatan pelaksanaan.",
+                }.get(lang, "Preview shown. Unlock to see the complete details."),
+            })
+    result["days_plan"] = visible_days
+    result["unlocked"] = bool(unlocked)
+    return result
+
+
+def _professional_route_unlocked(conn, trip: dict) -> bool:
+    if int(trip.get("professional_route_entitlement") or 0):
+        return True
+    return bool(conn.execute(
         """SELECT 1 FROM professional_route_orders
            WHERE trip_id=? AND status='confirmed' LIMIT 1""",
         (trip["id"],),
     ).fetchone())
+
+
+def _trip_allowance(conn, trip: dict, user) -> dict:
+    is_admin = bool(user and _db_user(conn, user).get("role") == "admin")
+    rough_used = int(trip.get("rough_used") or 0)
+    adjustments_used = int(trip.get("adjustments_used") or 0)
+    professional_used = int(trip.get("professional_used") or 0)
+    professional_adjustments_used = int(trip.get("professional_adjustments_used") or 0)
+    unlocked = _professional_route_unlocked(conn, trip)
+    professional_entitlement = unlocked or is_admin
+    ai_plan_remaining = 1 if is_admin else max(0, 1 - rough_used)
+    ai_adjustments_remaining = 2 if is_admin else max(0, 2 - adjustments_used)
+    professional_adjustments_remaining = PROFESSIONAL_ROUTE_ADJUSTMENT_LIMIT if is_admin else (
+        max(0, PROFESSIONAL_ROUTE_ADJUSTMENT_LIMIT - professional_adjustments_used)
+        if professional_entitlement else 0
+    )
+    professional_route_remaining = 1 if is_admin else (
+        max(0, 1 - professional_used) if professional_entitlement else 0
+    )
     return {
         "trip_id": trip["id"],
-        "rough_route": {
-            "used": rough_used,
-            "limit": 1,
-            "remaining": 1 if is_admin else max(0, 1 - rough_used),
-        },
-        "adjustments": {
-            "used": adjustments_used,
-            "limit": 2,
-            "remaining": 2 if is_admin else max(0, 2 - adjustments_used),
-        },
+        "rough_route": {"used": rough_used, "limit": 1, "remaining": ai_plan_remaining},
+        "adjustments": {"used": adjustments_used, "limit": 2, "remaining": ai_adjustments_remaining},
+        "ai_plan_generations_remaining": ai_plan_remaining,
+        "ai_adjustments_remaining": ai_adjustments_remaining,
         "professional_route": {
             "used": professional_used,
             "limit": 1,
-            "remaining": 1 if is_admin else (max(0, 1 - professional_used) if unlocked else 0),
+            "remaining": professional_route_remaining,
         },
-        "professional_route_unlocked": unlocked or is_admin,
+        "professional_route_entitlement": bool(professional_entitlement),
+        "professional_route_unlocked": bool(professional_entitlement),
+        "professional_adjustments_used": professional_adjustments_used,
+        "professional_adjustments_remaining": professional_adjustments_remaining,
+        "professional_adjustment_limit": PROFESSIONAL_ROUTE_ADJUSTMENT_LIMIT,
         "admin_unlimited": is_admin,
     }
 
@@ -1044,16 +1247,7 @@ def _trip_allowance(conn, trip: dict, user) -> dict:
 def _resolve_trip_action(allowance: dict, action: str) -> str:
     action = (action or "").strip().lower()
     if action not in {"rough_route", "adjustment", "professional_route"}:
-        raise HTTPException(
-            400,
-            "trip_action must be rough_route, adjustment, or professional_route",
-        )
-    if (
-        action == "adjustment"
-        and allowance["adjustments"]["remaining"] <= 0
-        and allowance["professional_route"]["remaining"] > 0
-    ):
-        return "professional_route"
+        raise HTTPException(400, "trip_action must be rough_route, adjustment, or professional_route")
     return action
 
 
@@ -1063,17 +1257,29 @@ def _consume_trip_action(conn, trip: dict, user, action: str) -> dict:
     if allowance["admin_unlimited"]:
         allowance["consumed_action"] = action
         return allowance
-    key = {
+    if action == "professional_route" and not allowance["professional_route_entitlement"]:
+        raise HTTPException(
+            402,
+            detail={
+                "error": "professional_route_unlock_required",
+                "action": action,
+                "payment_reason": "professional_route_unlock",
+                "professional_route_price": {"amount": 9.9, "currency": "CNY"},
+            },
+        )
+    quota_key = {
         "rough_route": "rough_route",
         "adjustment": "adjustments",
         "professional_route": "professional_route",
     }[action]
-    if allowance[key]["remaining"] <= 0:
+    if allowance[quota_key]["remaining"] <= 0:
+        error = "ai_usage_exhausted" if action in {"rough_route", "adjustment"} else "professional_route_usage_exhausted"
         raise HTTPException(
             402,
             detail={
-                "error": "trip_allowance_exhausted",
+                "error": error,
                 "action": action,
+                "payment_reason": "ai_usage_exhausted" if action in {"rough_route", "adjustment"} else "professional_route_adjustment",
                 "professional_route_price": {"amount": 9.9, "currency": "CNY"},
             },
         )
@@ -1087,9 +1293,7 @@ def _consume_trip_action(conn, trip: dict, user, action: str) -> dict:
         (int(time.time()), trip["id"]),
     )
     conn.commit()
-    refreshed = dict(conn.execute(
-        "SELECT * FROM product_trips WHERE id=?", (trip["id"],)
-    ).fetchone())
+    refreshed = dict(conn.execute("SELECT * FROM product_trips WHERE id=?", (trip["id"],)).fetchone())
     result = _trip_allowance(conn, refreshed, user)
     result["consumed_action"] = action
     return result
@@ -1123,6 +1327,133 @@ async def create_product_trip(
             "SELECT * FROM product_trips WHERE id=?", (trip_id,)
         ).fetchone())
         return {"ok": True, **_trip_allowance(conn, trip, user)}
+    finally:
+        conn.close()
+
+
+def _stored_trip_profile(trip: dict) -> dict:
+    try:
+        brief = json.loads(trip.get("brief") or "{}")
+    except (TypeError, ValueError):
+        brief = {}
+    return _normalise_trip_profile(brief.get("trip_profile") or brief)
+
+
+def _professional_route_response(conn, trip: dict, user, document: dict, lang: str) -> dict:
+    allowance = _trip_allowance(conn, trip, user)
+    return {
+        "ok": True,
+        "route": _public_professional_route(
+            document,
+            bool(allowance.get("professional_route_entitlement")),
+            lang,
+        ),
+        "profile": document.get("profile") or {},
+        **allowance,
+    }
+
+
+@app.post("/api/bali/professional-route")
+async def create_bali_professional_route(
+    data: ProfessionalRouteReq,
+    user=Depends(optional_user),
+    anon_id=Depends(anon_id_header),
+):
+    if not user and not anon_id:
+        raise HTTPException(400, "A signed-in account or anonymous session id is required")
+    profile = _normalise_trip_profile(data.trip_profile)
+    route_id = (data.route_id or "").strip().upper()
+    lang = (data.lang or "en").strip().lower()
+    conn = get_db()
+    try:
+        if data.trip_id:
+            trip = _trip_owner(conn, data.trip_id, user, anon_id)
+        else:
+            trip_id = str(uuid.uuid4())
+            now = int(time.time())
+            brief = {"trip_profile": profile, "route_id": route_id}
+            conn.execute(
+                """INSERT INTO product_trips
+                   (id,user_id,anon_id,destination,brief,rough_used,adjustments_used,professional_used,created_at,updated_at)
+                   VALUES (?,?,?,?,?,?,?,?,?,?)""",
+                (
+                    trip_id, user["sub"] if user else None, None if user else anon_id,
+                    "bali", json.dumps(brief, ensure_ascii=False), 0, 0, 0, now, now,
+                ),
+            )
+            conn.commit()
+            trip = dict(conn.execute("SELECT * FROM product_trips WHERE id=?", (trip_id,)).fetchone())
+        unlocked = _professional_route_unlocked(conn, trip) or bool(user and _db_user(conn, user).get("role") == "admin")
+        document = _professional_route_document(profile, route_id, lang)
+        try:
+            brief = json.loads(trip.get("brief") or "{}")
+        except (TypeError, ValueError):
+            brief = {}
+        brief["trip_profile"] = profile
+        brief["route_id"] = document["route_id"]
+        payload = json.dumps(document, ensure_ascii=False)
+        conn.execute(
+            """UPDATE product_trips
+               SET brief=?,professional_route_payload=?,updated_at=?
+               WHERE id=?""",
+            (json.dumps(brief, ensure_ascii=False), payload, int(time.time()), trip["id"]),
+        )
+        conn.commit()
+        trip = dict(conn.execute("SELECT * FROM product_trips WHERE id=?", (trip["id"],)).fetchone())
+        return _professional_route_response(conn, trip, user, document, lang)
+    finally:
+        conn.close()
+
+
+@app.post("/api/bali/professional-route/{trip_id}/adjust")
+async def adjust_bali_professional_route(
+    trip_id: str,
+    data: ProfessionalRouteAdjustReq,
+    user=Depends(current_user),
+    anon_id=Depends(anon_id_header),
+):
+    profile = _normalise_trip_profile(data.trip_profile)
+    route_id = (data.route_id or "").strip().upper()
+    lang = (data.lang or "en").strip().lower()
+    conn = get_db()
+    try:
+        trip = _trip_owner(conn, trip_id, user, anon_id)
+        allowance = _trip_allowance(conn, trip, user)
+        if not allowance["professional_route_entitlement"]:
+            raise HTTPException(402, detail={"error": "professional_route_unlock_required"})
+        if not allowance["admin_unlimited"] and allowance["professional_adjustments_remaining"] <= 0:
+            raise HTTPException(
+                402,
+                detail={
+                    "error": "professional_route_adjustments_exhausted",
+                    "payment_reason": "professional_route_adjustment",
+                    "limit": PROFESSIONAL_ROUTE_ADJUSTMENT_LIMIT,
+                },
+            )
+        if not data.trip_profile:
+            profile = _stored_trip_profile(trip)
+        document = _professional_route_document(profile, route_id, lang)
+        try:
+            brief = json.loads(trip.get("brief") or "{}")
+        except (TypeError, ValueError):
+            brief = {}
+        brief["trip_profile"] = profile
+        brief["route_id"] = document["route_id"]
+        used = int(trip.get("professional_adjustments_used") or 0)
+        conn.execute(
+            """UPDATE product_trips
+               SET brief=?,professional_route_payload=?,professional_adjustments_used=?,updated_at=?
+               WHERE id=?""",
+            (
+                json.dumps(brief, ensure_ascii=False),
+                json.dumps(document, ensure_ascii=False),
+                used if allowance["admin_unlimited"] else used + 1,
+                int(time.time()), trip_id,
+            ),
+        )
+        conn.commit()
+        refreshed = dict(conn.execute("SELECT * FROM product_trips WHERE id=?", (trip_id,)).fetchone())
+        return _professional_route_response(conn, refreshed, user, document, lang)
     finally:
         conn.close()
 
@@ -1280,6 +1611,10 @@ async def confirm_professional_route_order(
                 now, admin["id"], order_id,
             ),
         )
+        conn.execute(
+            "UPDATE product_trips SET professional_route_entitlement=1,updated_at=? WHERE id=?",
+            (now, order["trip_id"]),
+        )
         conn.commit()
         return {"ok": True, "order_id": order_id, "status": "confirmed"}
     finally:
@@ -1354,6 +1689,10 @@ async def redeem_referral_points(
                 redemption_id, data.trip_id, user["sub"], 0, "POINTS", "confirmed",
                 "route_points:30", now, now, user["sub"],
             ),
+        )
+        conn.execute(
+            "UPDATE product_trips SET professional_route_entitlement=1,updated_at=? WHERE id=?",
+            (now, data.trip_id),
         )
         conn.commit()
         refreshed = _trip_allowance(conn, trip, user)
