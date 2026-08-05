@@ -537,6 +537,7 @@ class FuseReq(BaseModel):
 
 class DriverReq(BaseModel):
     driver_id: str = "dicky"
+    route_id: str = ""
     first_name: str = ""
     last_name: str = ""
     intro: str = ""
@@ -1023,7 +1024,7 @@ def _trip_owner(conn, trip_id: str, user, anon_id) -> dict:
 
 _BALI_DATA_PATH = Path(__file__).resolve().parents[2] / "wandermind-studio" / "frontend" / "assets" / "data" / "bali-travel-data.json"
 _BALI_DATA_CACHE = None
-PROFESSIONAL_ROUTE_ADJUSTMENT_LIMIT = int(os.getenv("PROFESSIONAL_ROUTE_ADJUSTMENT_LIMIT", "10"))
+PROFESSIONAL_ROUTE_ADJUSTMENT_LIMIT = int(os.getenv("PROFESSIONAL_ROUTE_ADJUSTMENT_LIMIT", "3"))
 
 
 def _bali_data() -> dict:
@@ -1115,7 +1116,7 @@ def _professional_route_document(profile: dict, route_id: str = "", lang: str = 
     if not route:
         raise HTTPException(503, "Bali route data is unavailable")
     days = int(profile.get("days") or 5)
-    preview_days = days if days <= 1 else min(days, max(1, math.ceil(days * 0.7)))
+    preview_days = days if days <= 1 else min(days - 1, max(1, math.ceil(days * 0.7)))
     outline = route.get("free_outline") or []
     region_ids = list(route.get("base_regions") or []) + list(route.get("optional_regions") or [])
     if not region_ids:
@@ -1207,6 +1208,22 @@ def _professional_route_unlocked(conn, trip: dict) -> bool:
     ).fetchone())
 
 
+def _professional_adjustment_limit(conn, trip: dict, unlocked: bool) -> int:
+    stored_limit = int(trip.get("professional_adjustment_limit") or 0)
+    if stored_limit > 0:
+        return stored_limit
+    # A confirmed order created before this per-trip field existed was sold under
+    # the former 10-adjustment promise. Preserve that entitlement; newly
+    # confirmed payment and points unlocks persist the current limit below.
+    if unlocked and conn.execute(
+        """SELECT 1 FROM professional_route_orders
+           WHERE trip_id=? AND status='confirmed' LIMIT 1""",
+        (trip["id"],),
+    ).fetchone():
+        return 10
+    return PROFESSIONAL_ROUTE_ADJUSTMENT_LIMIT
+
+
 def _trip_allowance(conn, trip: dict, user) -> dict:
     is_admin = bool(user and _db_user(conn, user).get("role") == "admin")
     rough_used = int(trip.get("rough_used") or 0)
@@ -1214,11 +1231,12 @@ def _trip_allowance(conn, trip: dict, user) -> dict:
     professional_used = int(trip.get("professional_used") or 0)
     professional_adjustments_used = int(trip.get("professional_adjustments_used") or 0)
     unlocked = _professional_route_unlocked(conn, trip)
+    professional_adjustment_limit = _professional_adjustment_limit(conn, trip, unlocked)
     professional_entitlement = unlocked or is_admin
     ai_plan_remaining = 1 if is_admin else max(0, 1 - rough_used)
     ai_adjustments_remaining = 2 if is_admin else max(0, 2 - adjustments_used)
-    professional_adjustments_remaining = PROFESSIONAL_ROUTE_ADJUSTMENT_LIMIT if is_admin else (
-        max(0, PROFESSIONAL_ROUTE_ADJUSTMENT_LIMIT - professional_adjustments_used)
+    professional_adjustments_remaining = professional_adjustment_limit if is_admin else (
+        max(0, professional_adjustment_limit - professional_adjustments_used)
         if professional_entitlement else 0
     )
     professional_route_remaining = 1 if is_admin else (
@@ -1239,7 +1257,7 @@ def _trip_allowance(conn, trip: dict, user) -> dict:
         "professional_route_unlocked": bool(professional_entitlement),
         "professional_adjustments_used": professional_adjustments_used,
         "professional_adjustments_remaining": professional_adjustments_remaining,
-        "professional_adjustment_limit": PROFESSIONAL_ROUTE_ADJUSTMENT_LIMIT,
+        "professional_adjustment_limit": professional_adjustment_limit,
         "admin_unlimited": is_admin,
     }
 
@@ -1339,6 +1357,14 @@ def _stored_trip_profile(trip: dict) -> dict:
     return _normalise_trip_profile(brief.get("trip_profile") or brief)
 
 
+def _stored_trip_route_id(trip: dict) -> str:
+    try:
+        brief = json.loads(trip.get("brief") or "{}")
+    except (TypeError, ValueError):
+        brief = {}
+    return str(brief.get("route_id") or "").strip().upper()
+
+
 def _professional_route_response(conn, trip: dict, user, document: dict, lang: str) -> dict:
     allowance = _trip_allowance(conn, trip, user)
     return {
@@ -1384,6 +1410,18 @@ async def create_bali_professional_route(
             conn.commit()
             trip = dict(conn.execute("SELECT * FROM product_trips WHERE id=?", (trip_id,)).fetchone())
         unlocked = _professional_route_unlocked(conn, trip) or bool(user and _db_user(conn, user).get("role") == "admin")
+        if unlocked:
+            stored_profile = _stored_trip_profile(trip)
+            stored_route_id = _stored_trip_route_id(trip)
+            if profile != stored_profile or (
+                route_id and stored_route_id and route_id != stored_route_id
+            ):
+                raise HTTPException(
+                    409,
+                    detail={"error": "professional_route_adjustment_required"},
+                )
+            profile = stored_profile
+            route_id = stored_route_id or route_id
         document = _professional_route_document(profile, route_id, lang)
         try:
             brief = json.loads(trip.get("brief") or "{}")
@@ -1427,7 +1465,7 @@ async def adjust_bali_professional_route(
                 detail={
                     "error": "professional_route_adjustments_exhausted",
                     "payment_reason": "professional_route_adjustment",
-                    "limit": PROFESSIONAL_ROUTE_ADJUSTMENT_LIMIT,
+                    "limit": allowance["professional_adjustment_limit"],
                 },
             )
         if not data.trip_profile:
@@ -1612,8 +1650,10 @@ async def confirm_professional_route_order(
             ),
         )
         conn.execute(
-            "UPDATE product_trips SET professional_route_entitlement=1,updated_at=? WHERE id=?",
-            (now, order["trip_id"]),
+            """UPDATE product_trips
+               SET professional_route_entitlement=1,professional_adjustment_limit=?,updated_at=?
+               WHERE id=?""",
+            (PROFESSIONAL_ROUTE_ADJUSTMENT_LIMIT, now, order["trip_id"]),
         )
         conn.commit()
         return {"ok": True, "order_id": order_id, "status": "confirmed"}
@@ -1691,9 +1731,12 @@ async def redeem_referral_points(
             ),
         )
         conn.execute(
-            "UPDATE product_trips SET professional_route_entitlement=1,updated_at=? WHERE id=?",
-            (now, data.trip_id),
+            """UPDATE product_trips
+               SET professional_route_entitlement=1,professional_adjustment_limit=?,updated_at=?
+               WHERE id=?""",
+            (PROFESSIONAL_ROUTE_ADJUSTMENT_LIMIT, now, data.trip_id),
         )
+        trip["professional_adjustment_limit"] = PROFESSIONAL_ROUTE_ADJUSTMENT_LIMIT
         conn.commit()
         refreshed = _trip_allowance(conn, trip, user)
         return {
@@ -2165,6 +2208,7 @@ async def driver_request(data: DriverReq):
         raise HTTPException(400, "Unknown driver")
     payload = {
         "driver_id": driver_id,
+        "route_id": data.route_id.strip().upper(),
         "first_name": data.first_name.strip(),
         "last_name": data.last_name.strip(),
         "intro": data.intro.strip(),

@@ -207,6 +207,7 @@ def init_db():
                  professional_used INTEGER DEFAULT 0,
                  professional_route_entitlement INTEGER DEFAULT 0,
                  professional_adjustments_used INTEGER DEFAULT 0,
+                 professional_adjustment_limit INTEGER,
                  professional_route_payload TEXT DEFAULT '{{}}',
                  created_at        {ts_type} NOT NULL,
                 updated_at        {ts_type} NOT NULL
@@ -287,6 +288,7 @@ def init_db():
             "ALTER TABLE product_trips ADD COLUMN professional_used INTEGER DEFAULT 0",
             "ALTER TABLE product_trips ADD COLUMN professional_route_entitlement INTEGER DEFAULT 0",
             "ALTER TABLE product_trips ADD COLUMN professional_adjustments_used INTEGER DEFAULT 0",
+            "ALTER TABLE product_trips ADD COLUMN professional_adjustment_limit INTEGER",
             "ALTER TABLE product_trips ADD COLUMN professional_route_payload TEXT DEFAULT '{}'",
         ):
             try:

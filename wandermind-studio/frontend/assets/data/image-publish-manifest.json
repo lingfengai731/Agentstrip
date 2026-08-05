@@ -1,7 +1,2921 @@
-﻿{
-    "schema_version":  1,
-    "policy":  "Only HumanConfirmed + Publishable images with approved rights and provenance are included.",
-    "images":  [
-
-               ]
+{
+  "schema_version": 2,
+  "policy": "User-global approval is recorded for current project images; automatically exclude watermarked, damaged, duplicate, sensitive, or provenance-anomalous files.",
+  "approval": {
+    "approval_source": "user_global_confirmation",
+    "approval_date": "2026-08-05",
+    "portrait_consent": "approved",
+    "usage_permission": "approved",
+    "manual_review": "approved"
+  },
+  "images": [
+    {
+      "relative_path": "assets/images/about-banner.jpg",
+      "web_optimized_path": "assets/images/web/4b955bec1d23cff5.webp",
+      "sha256": "4b955bec1d23cff5d807de5ad022dce6e789950ed644f0958b5ca6f514aba228",
+      "category": "unclassified",
+      "sub_category": "project-library",
+      "tags": [
+        "project-library"
+      ],
+      "location_status": "unknown",
+      "region_ids": [],
+      "route_ids": [],
+      "poi_ids": [],
+      "intended_use": "WanderMind approved project image library; connect only where its destination/category metadata matches.",
+      "alt_text": {
+        "zh": "WanderMind ?????about banner",
+        "en": "WanderMind project image: about banner"
+      },
+      "rights": {
+        "status": "user_provided_with_consent",
+        "source": "user_global_confirmation",
+        "approval_date": "2026-08-05",
+        "license_or_owner": "WanderMind user global confirmation"
+      }
+    },
+    {
+      "relative_path": "assets/images/about-stats.jpg",
+      "web_optimized_path": "assets/images/web/298a8429bf39532c.webp",
+      "sha256": "298a8429bf39532c5c558a1983e5b221f21bb4f4bdd9441818c46d69bea229c7",
+      "category": "unclassified",
+      "sub_category": "project-library",
+      "tags": [
+        "project-library"
+      ],
+      "location_status": "unknown",
+      "region_ids": [],
+      "route_ids": [],
+      "poi_ids": [],
+      "intended_use": "WanderMind approved project image library; connect only where its destination/category metadata matches.",
+      "alt_text": {
+        "zh": "WanderMind ?????about stats",
+        "en": "WanderMind project image: about stats"
+      },
+      "rights": {
+        "status": "user_provided_with_consent",
+        "source": "user_global_confirmation",
+        "approval_date": "2026-08-05",
+        "license_or_owner": "WanderMind user global confirmation"
+      }
+    },
+    {
+      "relative_path": "assets/images/about-stats1.jpg",
+      "web_optimized_path": "assets/images/web/3290f773514eb325.webp",
+      "sha256": "3290f773514eb32527c4a2271fc4fec781b39d2e6a366a8ec57731275dcaff4a",
+      "category": "unclassified",
+      "sub_category": "project-library",
+      "tags": [
+        "project-library"
+      ],
+      "location_status": "unknown",
+      "region_ids": [],
+      "route_ids": [],
+      "poi_ids": [],
+      "intended_use": "WanderMind approved project image library; connect only where its destination/category metadata matches.",
+      "alt_text": {
+        "zh": "WanderMind ?????about stats1",
+        "en": "WanderMind project image: about stats1"
+      },
+      "rights": {
+        "status": "user_provided_with_consent",
+        "source": "user_global_confirmation",
+        "approval_date": "2026-08-05",
+        "license_or_owner": "WanderMind user global confirmation"
+      }
+    },
+    {
+      "relative_path": "assets/images/about-story.jpg",
+      "web_optimized_path": "assets/images/web/17e8c8445020af50.webp",
+      "sha256": "17e8c8445020af50729d45bc74c1e88218ae87435fc00d841d46850de8048298",
+      "category": "unclassified",
+      "sub_category": "project-library",
+      "tags": [
+        "project-library"
+      ],
+      "location_status": "unknown",
+      "region_ids": [],
+      "route_ids": [],
+      "poi_ids": [],
+      "intended_use": "WanderMind approved project image library; connect only where its destination/category metadata matches.",
+      "alt_text": {
+        "zh": "WanderMind ?????about story",
+        "en": "WanderMind project image: about story"
+      },
+      "rights": {
+        "status": "user_provided_with_consent",
+        "source": "user_global_confirmation",
+        "approval_date": "2026-08-05",
+        "license_or_owner": "WanderMind user global confirmation"
+      }
+    },
+    {
+      "relative_path": "assets/images/about-story1.jpg",
+      "web_optimized_path": "assets/images/web/7e10de6ab9018705.webp",
+      "sha256": "7e10de6ab901870543201466d2ae4c0cc65df90051e60da820fad81f99f7ccb2",
+      "category": "unclassified",
+      "sub_category": "project-library",
+      "tags": [
+        "project-library"
+      ],
+      "location_status": "unknown",
+      "region_ids": [],
+      "route_ids": [],
+      "poi_ids": [],
+      "intended_use": "WanderMind approved project image library; connect only where its destination/category metadata matches.",
+      "alt_text": {
+        "zh": "WanderMind ?????about story1",
+        "en": "WanderMind project image: about story1"
+      },
+      "rights": {
+        "status": "user_provided_with_consent",
+        "source": "user_global_confirmation",
+        "approval_date": "2026-08-05",
+        "license_or_owner": "WanderMind user global confirmation"
+      }
+    },
+    {
+      "relative_path": "assets/images/aerial-view-lush-green-rock-islands-palau-turquoise-waters.jpg",
+      "web_optimized_path": "assets/images/web/5468daf5ecfe98e3.webp",
+      "sha256": "5468daf5ecfe98e3b8c931d01b0999d8c58833a1749a126d5c6908c8333300f4",
+      "category": "landscapes",
+      "sub_category": "ocean-beach",
+      "tags": [
+        "location_conflict",
+        "coast"
+      ],
+      "location_status": "non_bali_named",
+      "region_ids": [],
+      "route_ids": [],
+      "poi_ids": [],
+      "intended_use": "WanderMind approved project image library; connect only where its destination/category metadata matches.",
+      "alt_text": {
+        "zh": "???????",
+        "en": "Bali landscape scene"
+      },
+      "rights": {
+        "status": "user_provided_with_consent",
+        "source": "user_global_confirmation",
+        "approval_date": "2026-08-05",
+        "license_or_owner": "WanderMind user global confirmation"
+      }
+    },
+    {
+      "relative_path": "assets/images/aerial-view-tropical-beach-with-turquoise-ocean-waves.jpg",
+      "web_optimized_path": "assets/images/web/d992de13088fce76.webp",
+      "sha256": "d992de13088fce760891bd8278d032b3689fb3acbcd464b55430bb22ec3a4ccb",
+      "category": "landscapes",
+      "sub_category": "bali-landscape",
+      "tags": [
+        "bali",
+        "landscape"
+      ],
+      "location_status": "bali-named",
+      "region_ids": [],
+      "route_ids": [],
+      "poi_ids": [],
+      "intended_use": "WanderMind approved project image library; connect only where its destination/category metadata matches.",
+      "alt_text": {
+        "zh": "???????",
+        "en": "Bali landscape scene"
+      },
+      "rights": {
+        "status": "user_provided_with_consent",
+        "source": "user_global_confirmation",
+        "approval_date": "2026-08-05",
+        "license_or_owner": "WanderMind user global confirmation"
+      }
+    },
+    {
+      "relative_path": "assets/images/aerial-view-turquoise-water-boats-phuket-beach-thailand.jpg",
+      "web_optimized_path": "assets/images/web/176722c00a1b6aba.webp",
+      "sha256": "176722c00a1b6aba46f87f23730fa544e3f01f5dd75e727347a2ead39544d476",
+      "category": "landscapes",
+      "sub_category": "bali-landscape",
+      "tags": [
+        "bali",
+        "landscape"
+      ],
+      "location_status": "bali-named",
+      "region_ids": [],
+      "route_ids": [],
+      "poi_ids": [],
+      "intended_use": "WanderMind approved project image library; connect only where its destination/category metadata matches.",
+      "alt_text": {
+        "zh": "???????",
+        "en": "Bali landscape scene"
+      },
+      "rights": {
+        "status": "user_provided_with_consent",
+        "source": "user_global_confirmation",
+        "approval_date": "2026-08-05",
+        "license_or_owner": "WanderMind user global confirmation"
+      }
+    },
+    {
+      "relative_path": "assets/images/aesthetic-summer-holidays.jpg",
+      "web_optimized_path": "assets/images/web/591f65d9c030955f.webp",
+      "sha256": "591f65d9c030955ff0762795c222351280c5c9c073c346204554264f3a79c3dc",
+      "category": "unclassified",
+      "sub_category": "project-library",
+      "tags": [
+        "project-library"
+      ],
+      "location_status": "unknown",
+      "region_ids": [],
+      "route_ids": [],
+      "poi_ids": [],
+      "intended_use": "WanderMind approved project image library; connect only where its destination/category metadata matches.",
+      "alt_text": {
+        "zh": "WanderMind ?????aesthetic summer holidays",
+        "en": "WanderMind project image: aesthetic summer holidays"
+      },
+      "rights": {
+        "status": "user_provided_with_consent",
+        "source": "user_global_confirmation",
+        "approval_date": "2026-08-05",
+        "license_or_owner": "WanderMind user global confirmation"
+      }
+    },
+    {
+      "relative_path": "assets/images/bali-1.jpg",
+      "web_optimized_path": "assets/images/web/51ab7ab45565e4b5.webp",
+      "sha256": "51ab7ab45565e4b5238bda9a7991263b8fdbf31dd4c076242bd4b3ef58eb0966",
+      "category": "landscapes",
+      "sub_category": "bali-landscape",
+      "tags": [
+        "bali",
+        "landscape"
+      ],
+      "location_status": "bali-named",
+      "region_ids": [],
+      "route_ids": [],
+      "poi_ids": [],
+      "intended_use": "WanderMind approved project image library; connect only where its destination/category metadata matches.",
+      "alt_text": {
+        "zh": "???????",
+        "en": "Bali landscape scene"
+      },
+      "rights": {
+        "status": "user_provided_with_consent",
+        "source": "user_global_confirmation",
+        "approval_date": "2026-08-05",
+        "license_or_owner": "WanderMind user global confirmation"
+      }
+    },
+    {
+      "relative_path": "assets/images/bali-10.jpg",
+      "web_optimized_path": "assets/images/web/6e8cc0274dcff01f.webp",
+      "sha256": "6e8cc0274dcff01f70a2d1a5a22632fbc3550a603a3582a0902d1abf2cfd0073",
+      "category": "landscapes",
+      "sub_category": "bali-landscape",
+      "tags": [
+        "bali",
+        "landscape"
+      ],
+      "location_status": "bali-named",
+      "region_ids": [],
+      "route_ids": [],
+      "poi_ids": [],
+      "intended_use": "WanderMind approved project image library; connect only where its destination/category metadata matches.",
+      "alt_text": {
+        "zh": "???????",
+        "en": "Bali landscape scene"
+      },
+      "rights": {
+        "status": "user_provided_with_consent",
+        "source": "user_global_confirmation",
+        "approval_date": "2026-08-05",
+        "license_or_owner": "WanderMind user global confirmation"
+      }
+    },
+    {
+      "relative_path": "assets/images/bali-11.jpg",
+      "web_optimized_path": "assets/images/web/9455a6e3607e34b2.webp",
+      "sha256": "9455a6e3607e34b27ea7e79c91e5f1e2c3a647b75d7c3d4a5a0fc2e95a8a3b5e",
+      "category": "landscapes",
+      "sub_category": "bali-landscape",
+      "tags": [
+        "bali",
+        "landscape"
+      ],
+      "location_status": "bali-named",
+      "region_ids": [],
+      "route_ids": [],
+      "poi_ids": [],
+      "intended_use": "WanderMind approved project image library; connect only where its destination/category metadata matches.",
+      "alt_text": {
+        "zh": "???????",
+        "en": "Bali landscape scene"
+      },
+      "rights": {
+        "status": "user_provided_with_consent",
+        "source": "user_global_confirmation",
+        "approval_date": "2026-08-05",
+        "license_or_owner": "WanderMind user global confirmation"
+      }
+    },
+    {
+      "relative_path": "assets/images/bali-12.jpg",
+      "web_optimized_path": "assets/images/web/3d75af3a6b693c12.webp",
+      "sha256": "3d75af3a6b693c122721ed8c0ab8a01be453a641f7daf06482af4cc2cea217e8",
+      "category": "landscapes",
+      "sub_category": "bali-landscape",
+      "tags": [
+        "bali",
+        "landscape"
+      ],
+      "location_status": "bali-named",
+      "region_ids": [],
+      "route_ids": [],
+      "poi_ids": [],
+      "intended_use": "WanderMind approved project image library; connect only where its destination/category metadata matches.",
+      "alt_text": {
+        "zh": "???????",
+        "en": "Bali landscape scene"
+      },
+      "rights": {
+        "status": "user_provided_with_consent",
+        "source": "user_global_confirmation",
+        "approval_date": "2026-08-05",
+        "license_or_owner": "WanderMind user global confirmation"
+      }
+    },
+    {
+      "relative_path": "assets/images/bali-13.jpg",
+      "web_optimized_path": "assets/images/web/4671473d0993bb44.webp",
+      "sha256": "4671473d0993bb4488856f1aca1e259840ab5771a418eb1bfac4e0ab5e36b7bf",
+      "category": "landscapes",
+      "sub_category": "bali-landscape",
+      "tags": [
+        "bali",
+        "landscape"
+      ],
+      "location_status": "bali-named",
+      "region_ids": [],
+      "route_ids": [],
+      "poi_ids": [],
+      "intended_use": "WanderMind approved project image library; connect only where its destination/category metadata matches.",
+      "alt_text": {
+        "zh": "???????",
+        "en": "Bali landscape scene"
+      },
+      "rights": {
+        "status": "user_provided_with_consent",
+        "source": "user_global_confirmation",
+        "approval_date": "2026-08-05",
+        "license_or_owner": "WanderMind user global confirmation"
+      }
+    },
+    {
+      "relative_path": "assets/images/bali-14.jpg",
+      "web_optimized_path": "assets/images/web/90284f633c68bb89.webp",
+      "sha256": "90284f633c68bb89ac7e89eaa02981acd9ec3fc2f05bd83e861b95cc310a7949",
+      "category": "landscapes",
+      "sub_category": "bali-landscape",
+      "tags": [
+        "bali",
+        "landscape"
+      ],
+      "location_status": "bali-named",
+      "region_ids": [],
+      "route_ids": [],
+      "poi_ids": [],
+      "intended_use": "WanderMind approved project image library; connect only where its destination/category metadata matches.",
+      "alt_text": {
+        "zh": "???????",
+        "en": "Bali landscape scene"
+      },
+      "rights": {
+        "status": "user_provided_with_consent",
+        "source": "user_global_confirmation",
+        "approval_date": "2026-08-05",
+        "license_or_owner": "WanderMind user global confirmation"
+      }
+    },
+    {
+      "relative_path": "assets/images/bali-15.jpg",
+      "web_optimized_path": "assets/images/web/6258d4a12b1cb8f6.webp",
+      "sha256": "6258d4a12b1cb8f62ad89feb1fbf42907a2c1f193e29bb2f6e3ef29c6a2e53b7",
+      "category": "landscapes",
+      "sub_category": "bali-landscape",
+      "tags": [
+        "bali",
+        "landscape"
+      ],
+      "location_status": "bali-named",
+      "region_ids": [],
+      "route_ids": [],
+      "poi_ids": [],
+      "intended_use": "WanderMind approved project image library; connect only where its destination/category metadata matches.",
+      "alt_text": {
+        "zh": "???????",
+        "en": "Bali landscape scene"
+      },
+      "rights": {
+        "status": "user_provided_with_consent",
+        "source": "user_global_confirmation",
+        "approval_date": "2026-08-05",
+        "license_or_owner": "WanderMind user global confirmation"
+      }
+    },
+    {
+      "relative_path": "assets/images/bali-16.jpg",
+      "web_optimized_path": "assets/images/web/4f8f83b5fce5b55f.webp",
+      "sha256": "4f8f83b5fce5b55fab50c3a89245bfe0e0c6973a95177f9e21fbdc4bc641fe3c",
+      "category": "landscapes",
+      "sub_category": "bali-landscape",
+      "tags": [
+        "bali",
+        "landscape"
+      ],
+      "location_status": "bali-named",
+      "region_ids": [],
+      "route_ids": [],
+      "poi_ids": [],
+      "intended_use": "WanderMind approved project image library; connect only where its destination/category metadata matches.",
+      "alt_text": {
+        "zh": "???????",
+        "en": "Bali landscape scene"
+      },
+      "rights": {
+        "status": "user_provided_with_consent",
+        "source": "user_global_confirmation",
+        "approval_date": "2026-08-05",
+        "license_or_owner": "WanderMind user global confirmation"
+      }
+    },
+    {
+      "relative_path": "assets/images/bali-17.jpg",
+      "web_optimized_path": "assets/images/web/8955be34cbcf96c6.webp",
+      "sha256": "8955be34cbcf96c6b121ab509ee4c9c14057e1227b377abad1c9e8c0fb6548a3",
+      "category": "landscapes",
+      "sub_category": "bali-landscape",
+      "tags": [
+        "bali",
+        "landscape"
+      ],
+      "location_status": "bali-named",
+      "region_ids": [],
+      "route_ids": [],
+      "poi_ids": [],
+      "intended_use": "WanderMind approved project image library; connect only where its destination/category metadata matches.",
+      "alt_text": {
+        "zh": "???????",
+        "en": "Bali landscape scene"
+      },
+      "rights": {
+        "status": "user_provided_with_consent",
+        "source": "user_global_confirmation",
+        "approval_date": "2026-08-05",
+        "license_or_owner": "WanderMind user global confirmation"
+      }
+    },
+    {
+      "relative_path": "assets/images/bali-18.jpg",
+      "web_optimized_path": "assets/images/web/c987ff171a0833ca.webp",
+      "sha256": "c987ff171a0833cad04a3ea20cb9cae6fa7f17934a5521bb3e125c04764417de",
+      "category": "landscapes",
+      "sub_category": "bali-landscape",
+      "tags": [
+        "bali",
+        "landscape"
+      ],
+      "location_status": "bali-named",
+      "region_ids": [],
+      "route_ids": [],
+      "poi_ids": [],
+      "intended_use": "WanderMind approved project image library; connect only where its destination/category metadata matches.",
+      "alt_text": {
+        "zh": "???????",
+        "en": "Bali landscape scene"
+      },
+      "rights": {
+        "status": "user_provided_with_consent",
+        "source": "user_global_confirmation",
+        "approval_date": "2026-08-05",
+        "license_or_owner": "WanderMind user global confirmation"
+      }
+    },
+    {
+      "relative_path": "assets/images/bali-19.jpg",
+      "web_optimized_path": "assets/images/web/682e4b7b296cd26a.webp",
+      "sha256": "682e4b7b296cd26ab17609f94ab49eca20ff66ec857153c936b64c993fd0c697",
+      "category": "landscapes",
+      "sub_category": "bali-landscape",
+      "tags": [
+        "bali",
+        "landscape"
+      ],
+      "location_status": "bali-named",
+      "region_ids": [],
+      "route_ids": [],
+      "poi_ids": [],
+      "intended_use": "WanderMind approved project image library; connect only where its destination/category metadata matches.",
+      "alt_text": {
+        "zh": "???????",
+        "en": "Bali landscape scene"
+      },
+      "rights": {
+        "status": "user_provided_with_consent",
+        "source": "user_global_confirmation",
+        "approval_date": "2026-08-05",
+        "license_or_owner": "WanderMind user global confirmation"
+      }
+    },
+    {
+      "relative_path": "assets/images/bali-2.jpg",
+      "web_optimized_path": "assets/images/web/94036e2811302fc8.webp",
+      "sha256": "94036e2811302fc80417370f6ca64f13a6d85b667a1c222751d8b0f6f5bd6d90",
+      "category": "landscapes",
+      "sub_category": "bali-landscape",
+      "tags": [
+        "bali",
+        "landscape"
+      ],
+      "location_status": "bali-named",
+      "region_ids": [],
+      "route_ids": [],
+      "poi_ids": [],
+      "intended_use": "WanderMind approved project image library; connect only where its destination/category metadata matches.",
+      "alt_text": {
+        "zh": "???????",
+        "en": "Bali landscape scene"
+      },
+      "rights": {
+        "status": "user_provided_with_consent",
+        "source": "user_global_confirmation",
+        "approval_date": "2026-08-05",
+        "license_or_owner": "WanderMind user global confirmation"
+      }
+    },
+    {
+      "relative_path": "assets/images/bali-3.jpg",
+      "web_optimized_path": "assets/images/web/c11a45dfcccc8767.webp",
+      "sha256": "c11a45dfcccc8767d48929e159242a184b9521a295b07498684e1df04265a857",
+      "category": "landscapes",
+      "sub_category": "bali-landscape",
+      "tags": [
+        "bali",
+        "landscape"
+      ],
+      "location_status": "bali-named",
+      "region_ids": [],
+      "route_ids": [],
+      "poi_ids": [],
+      "intended_use": "WanderMind approved project image library; connect only where its destination/category metadata matches.",
+      "alt_text": {
+        "zh": "???????",
+        "en": "Bali landscape scene"
+      },
+      "rights": {
+        "status": "user_provided_with_consent",
+        "source": "user_global_confirmation",
+        "approval_date": "2026-08-05",
+        "license_or_owner": "WanderMind user global confirmation"
+      }
+    },
+    {
+      "relative_path": "assets/images/bali-4.jpg",
+      "web_optimized_path": "assets/images/web/353e3b2879150547.webp",
+      "sha256": "353e3b2879150547b42f7ee92518a6423416effa123b045c4fea5805e3502fad",
+      "category": "landscapes",
+      "sub_category": "bali-landscape",
+      "tags": [
+        "bali",
+        "landscape"
+      ],
+      "location_status": "bali-named",
+      "region_ids": [],
+      "route_ids": [],
+      "poi_ids": [],
+      "intended_use": "WanderMind approved project image library; connect only where its destination/category metadata matches.",
+      "alt_text": {
+        "zh": "???????",
+        "en": "Bali landscape scene"
+      },
+      "rights": {
+        "status": "user_provided_with_consent",
+        "source": "user_global_confirmation",
+        "approval_date": "2026-08-05",
+        "license_or_owner": "WanderMind user global confirmation"
+      }
+    },
+    {
+      "relative_path": "assets/images/bali-5.jpg",
+      "web_optimized_path": "assets/images/web/15c41f6a0fe7fec3.webp",
+      "sha256": "15c41f6a0fe7fec360fe5ce8ff3b3b9166ae28bcd6b0e556dafc999bee5d6da5",
+      "category": "landscapes",
+      "sub_category": "bali-landscape",
+      "tags": [
+        "bali",
+        "landscape"
+      ],
+      "location_status": "bali-named",
+      "region_ids": [],
+      "route_ids": [],
+      "poi_ids": [],
+      "intended_use": "WanderMind approved project image library; connect only where its destination/category metadata matches.",
+      "alt_text": {
+        "zh": "???????",
+        "en": "Bali landscape scene"
+      },
+      "rights": {
+        "status": "user_provided_with_consent",
+        "source": "user_global_confirmation",
+        "approval_date": "2026-08-05",
+        "license_or_owner": "WanderMind user global confirmation"
+      }
+    },
+    {
+      "relative_path": "assets/images/bali-6.jpg",
+      "web_optimized_path": "assets/images/web/c0298c79fcf3616a.webp",
+      "sha256": "c0298c79fcf3616a2cde5919fa858aa382e2e52a811ff6649f742f9d194a6f71",
+      "category": "landscapes",
+      "sub_category": "bali-landscape",
+      "tags": [
+        "bali",
+        "landscape"
+      ],
+      "location_status": "bali-named",
+      "region_ids": [],
+      "route_ids": [],
+      "poi_ids": [],
+      "intended_use": "WanderMind approved project image library; connect only where its destination/category metadata matches.",
+      "alt_text": {
+        "zh": "???????",
+        "en": "Bali landscape scene"
+      },
+      "rights": {
+        "status": "user_provided_with_consent",
+        "source": "user_global_confirmation",
+        "approval_date": "2026-08-05",
+        "license_or_owner": "WanderMind user global confirmation"
+      }
+    },
+    {
+      "relative_path": "assets/images/bali-7.jpg",
+      "web_optimized_path": "assets/images/web/7cf7c3dd8615bea9.webp",
+      "sha256": "7cf7c3dd8615bea9176572197e18501190a76239df2312b3587682db38916363",
+      "category": "landscapes",
+      "sub_category": "bali-landscape",
+      "tags": [
+        "bali",
+        "landscape"
+      ],
+      "location_status": "bali-named",
+      "region_ids": [],
+      "route_ids": [],
+      "poi_ids": [],
+      "intended_use": "WanderMind approved project image library; connect only where its destination/category metadata matches.",
+      "alt_text": {
+        "zh": "???????",
+        "en": "Bali landscape scene"
+      },
+      "rights": {
+        "status": "user_provided_with_consent",
+        "source": "user_global_confirmation",
+        "approval_date": "2026-08-05",
+        "license_or_owner": "WanderMind user global confirmation"
+      }
+    },
+    {
+      "relative_path": "assets/images/bali-8.jpg",
+      "web_optimized_path": "assets/images/web/ee5a7046b62327d5.webp",
+      "sha256": "ee5a7046b62327d549675210375617eae6b5a65cd4f9e879c3c946b4b33328cd",
+      "category": "landscapes",
+      "sub_category": "bali-landscape",
+      "tags": [
+        "bali",
+        "landscape"
+      ],
+      "location_status": "bali-named",
+      "region_ids": [],
+      "route_ids": [],
+      "poi_ids": [],
+      "intended_use": "WanderMind approved project image library; connect only where its destination/category metadata matches.",
+      "alt_text": {
+        "zh": "???????",
+        "en": "Bali landscape scene"
+      },
+      "rights": {
+        "status": "user_provided_with_consent",
+        "source": "user_global_confirmation",
+        "approval_date": "2026-08-05",
+        "license_or_owner": "WanderMind user global confirmation"
+      }
+    },
+    {
+      "relative_path": "assets/images/bali-9.jpg",
+      "web_optimized_path": "assets/images/web/96a75cd30d5a6e07.webp",
+      "sha256": "96a75cd30d5a6e075382b9dbbcc190f10a82c9fbc664d5da856667d4bea29307",
+      "category": "landscapes",
+      "sub_category": "bali-landscape",
+      "tags": [
+        "bali",
+        "landscape"
+      ],
+      "location_status": "bali-named",
+      "region_ids": [],
+      "route_ids": [],
+      "poi_ids": [],
+      "intended_use": "WanderMind approved project image library; connect only where its destination/category metadata matches.",
+      "alt_text": {
+        "zh": "???????",
+        "en": "Bali landscape scene"
+      },
+      "rights": {
+        "status": "user_provided_with_consent",
+        "source": "user_global_confirmation",
+        "approval_date": "2026-08-05",
+        "license_or_owner": "WanderMind user global confirmation"
+      }
+    },
+    {
+      "relative_path": "assets/images/beautiful-beach-view-koh-chang-island-seascape-trad-province-eastern-thailand-blue-sky-background.jpg",
+      "web_optimized_path": "assets/images/web/19a20376933d7922.webp",
+      "sha256": "19a20376933d7922172d08a502a3ce3deb3464fe0f982f4ef86bc69de9414d25",
+      "category": "landscapes",
+      "sub_category": "bali-landscape",
+      "tags": [
+        "bali",
+        "landscape"
+      ],
+      "location_status": "bali-named",
+      "region_ids": [],
+      "route_ids": [],
+      "poi_ids": [],
+      "intended_use": "WanderMind approved project image library; connect only where its destination/category metadata matches.",
+      "alt_text": {
+        "zh": "???????",
+        "en": "Bali landscape scene"
+      },
+      "rights": {
+        "status": "user_provided_with_consent",
+        "source": "user_global_confirmation",
+        "approval_date": "2026-08-05",
+        "license_or_owner": "WanderMind user global confirmation"
+      }
+    },
+    {
+      "relative_path": "assets/images/car_photodicky.jpg",
+      "web_optimized_path": "assets/images/web/341d6a5b224519a4.webp",
+      "sha256": "341d6a5b224519a4dc154b37e64050eb923b80ddefdc2300a10a6508222a1f8c",
+      "category": "people",
+      "sub_category": "driver-moments",
+      "tags": [
+        "driver",
+        "travellers"
+      ],
+      "location_status": "global-consent",
+      "region_ids": [],
+      "route_ids": [],
+      "poi_ids": [],
+      "intended_use": "Find Driver: profile, vehicle or Driver Moments",
+      "alt_text": {
+        "zh": "?????????????",
+        "en": "Service moment with a Bali driver and travellers"
+      },
+      "rights": {
+        "status": "user_provided_with_consent",
+        "source": "user_global_confirmation",
+        "approval_date": "2026-08-05",
+        "license_or_owner": "WanderMind user global confirmation"
+      }
+    },
+    {
+      "relative_path": "assets/images/car_photodicky2-web.jpg",
+      "web_optimized_path": "assets/images/web/7bb50e6252cf6125.webp",
+      "sha256": "7bb50e6252cf6125b457f7c360e4fe9ea2975f6ee597d1291e1c082366b1aa0e",
+      "category": "people",
+      "sub_category": "driver-moments",
+      "tags": [
+        "driver",
+        "travellers"
+      ],
+      "location_status": "global-consent",
+      "region_ids": [],
+      "route_ids": [],
+      "poi_ids": [],
+      "intended_use": "Find Driver: profile, vehicle or Driver Moments",
+      "alt_text": {
+        "zh": "?????????????",
+        "en": "Service moment with a Bali driver and travellers"
+      },
+      "rights": {
+        "status": "user_provided_with_consent",
+        "source": "user_global_confirmation",
+        "approval_date": "2026-08-05",
+        "license_or_owner": "WanderMind user global confirmation"
+      }
+    },
+    {
+      "relative_path": "assets/images/car_photodicky2.jpg",
+      "web_optimized_path": "assets/images/web/a48af15fa860fa24.webp",
+      "sha256": "a48af15fa860fa24d234ab136c45ae419fa429e7c541085ee77444a81813f451",
+      "category": "people",
+      "sub_category": "driver-moments",
+      "tags": [
+        "driver",
+        "travellers"
+      ],
+      "location_status": "global-consent",
+      "region_ids": [],
+      "route_ids": [],
+      "poi_ids": [],
+      "intended_use": "Find Driver: profile, vehicle or Driver Moments",
+      "alt_text": {
+        "zh": "?????????????",
+        "en": "Service moment with a Bali driver and travellers"
+      },
+      "rights": {
+        "status": "user_provided_with_consent",
+        "source": "user_global_confirmation",
+        "approval_date": "2026-08-05",
+        "license_or_owner": "WanderMind user global confirmation"
+      }
+    },
+    {
+      "relative_path": "assets/images/car_photoGede-web.jpg",
+      "web_optimized_path": "assets/images/web/888fef90456d4604.webp",
+      "sha256": "888fef90456d460444c893686fa8555e8fb30c1ce6e36f05ea040049a9c1ce2f",
+      "category": "people",
+      "sub_category": "driver-moments",
+      "tags": [
+        "driver",
+        "travellers"
+      ],
+      "location_status": "global-consent",
+      "region_ids": [],
+      "route_ids": [],
+      "poi_ids": [],
+      "intended_use": "Find Driver: profile, vehicle or Driver Moments",
+      "alt_text": {
+        "zh": "?????????????",
+        "en": "Service moment with a Bali driver and travellers"
+      },
+      "rights": {
+        "status": "user_provided_with_consent",
+        "source": "user_global_confirmation",
+        "approval_date": "2026-08-05",
+        "license_or_owner": "WanderMind user global confirmation"
+      }
+    },
+    {
+      "relative_path": "assets/images/car_photoGede.jpg",
+      "web_optimized_path": "assets/images/web/db8f00b5993de231.webp",
+      "sha256": "db8f00b5993de231543f422de8277e8f030d1ecfb3d82ba3b9ebba2550083a04",
+      "category": "people",
+      "sub_category": "driver-moments",
+      "tags": [
+        "driver",
+        "travellers"
+      ],
+      "location_status": "global-consent",
+      "region_ids": [],
+      "route_ids": [],
+      "poi_ids": [],
+      "intended_use": "Find Driver: profile, vehicle or Driver Moments",
+      "alt_text": {
+        "zh": "?????????????",
+        "en": "Service moment with a Bali driver and travellers"
+      },
+      "rights": {
+        "status": "user_provided_with_consent",
+        "source": "user_global_confirmation",
+        "approval_date": "2026-08-05",
+        "license_or_owner": "WanderMind user global confirmation"
+      }
+    },
+    {
+      "relative_path": "assets/images/cta-bg.jpg",
+      "web_optimized_path": "assets/images/web/3b6f7f17c49088f0.webp",
+      "sha256": "3b6f7f17c49088f0d6564573a2744a5a031c98387e74bd4ae6401c567c410d77",
+      "category": "unclassified",
+      "sub_category": "project-library",
+      "tags": [
+        "project-library"
+      ],
+      "location_status": "unknown",
+      "region_ids": [],
+      "route_ids": [],
+      "poi_ids": [],
+      "intended_use": "WanderMind approved project image library; connect only where its destination/category metadata matches.",
+      "alt_text": {
+        "zh": "WanderMind ?????cta bg",
+        "en": "WanderMind project image: cta bg"
+      },
+      "rights": {
+        "status": "user_provided_with_consent",
+        "source": "user_global_confirmation",
+        "approval_date": "2026-08-05",
+        "license_or_owner": "WanderMind user global confirmation"
+      }
+    },
+    {
+      "relative_path": "assets/images/Dicky1.jpg",
+      "web_optimized_path": "assets/images/web/b47e5dbf32902c06.webp",
+      "sha256": "b47e5dbf32902c06009f79966a2e395ddbebeb1f65a20074ec4575c7b01dbb6c",
+      "category": "people",
+      "sub_category": "driver-moments",
+      "tags": [
+        "driver",
+        "travellers"
+      ],
+      "location_status": "global-consent",
+      "region_ids": [],
+      "route_ids": [],
+      "poi_ids": [],
+      "intended_use": "Find Driver: profile, vehicle or Driver Moments",
+      "alt_text": {
+        "zh": "?????????????",
+        "en": "Service moment with a Bali driver and travellers"
+      },
+      "rights": {
+        "status": "user_provided_with_consent",
+        "source": "user_global_confirmation",
+        "approval_date": "2026-08-05",
+        "license_or_owner": "WanderMind user global confirmation"
+      }
+    },
+    {
+      "relative_path": "assets/images/Dicky2.jpg",
+      "web_optimized_path": "assets/images/web/facc454ac572f04b.webp",
+      "sha256": "facc454ac572f04b9ecedee13d6d1fa8c399b2ef4a13688d14390a9ff02bbda3",
+      "category": "people",
+      "sub_category": "driver-moments",
+      "tags": [
+        "driver",
+        "travellers"
+      ],
+      "location_status": "global-consent",
+      "region_ids": [],
+      "route_ids": [],
+      "poi_ids": [],
+      "intended_use": "Find Driver: profile, vehicle or Driver Moments",
+      "alt_text": {
+        "zh": "?????????????",
+        "en": "Service moment with a Bali driver and travellers"
+      },
+      "rights": {
+        "status": "user_provided_with_consent",
+        "source": "user_global_confirmation",
+        "approval_date": "2026-08-05",
+        "license_or_owner": "WanderMind user global confirmation"
+      }
+    },
+    {
+      "relative_path": "assets/images/Dicky_tourist1.jpg",
+      "web_optimized_path": "assets/images/web/1d5e9b853c78ca4c.webp",
+      "sha256": "1d5e9b853c78ca4c1561d75ded9fdf3de7d7d18ee91b7b4b96d3f75fc6988ff5",
+      "category": "people",
+      "sub_category": "driver-moments",
+      "tags": [
+        "driver",
+        "travellers"
+      ],
+      "location_status": "global-consent",
+      "region_ids": [],
+      "route_ids": [],
+      "poi_ids": [],
+      "intended_use": "Find Driver: profile, vehicle or Driver Moments",
+      "alt_text": {
+        "zh": "?????????????",
+        "en": "Service moment with a Bali driver and travellers"
+      },
+      "rights": {
+        "status": "user_provided_with_consent",
+        "source": "user_global_confirmation",
+        "approval_date": "2026-08-05",
+        "license_or_owner": "WanderMind user global confirmation"
+      }
+    },
+    {
+      "relative_path": "assets/images/Dicky_tourist2.jpg",
+      "web_optimized_path": "assets/images/web/abeac1a74e159aec.webp",
+      "sha256": "abeac1a74e159aec2767c06627f0bc8a7b17eb7a58af984a35c2222ab287e47e",
+      "category": "people",
+      "sub_category": "driver-moments",
+      "tags": [
+        "driver",
+        "travellers"
+      ],
+      "location_status": "global-consent",
+      "region_ids": [],
+      "route_ids": [],
+      "poi_ids": [],
+      "intended_use": "Find Driver: profile, vehicle or Driver Moments",
+      "alt_text": {
+        "zh": "?????????????",
+        "en": "Service moment with a Bali driver and travellers"
+      },
+      "rights": {
+        "status": "user_provided_with_consent",
+        "source": "user_global_confirmation",
+        "approval_date": "2026-08-05",
+        "license_or_owner": "WanderMind user global confirmation"
+      }
+    },
+    {
+      "relative_path": "assets/images/Dicky_tourist3.jpg",
+      "web_optimized_path": "assets/images/web/d3b7edb7de06c74e.webp",
+      "sha256": "d3b7edb7de06c74eb04754f30391ce230c09f0941f4c608be49d5161929703a1",
+      "category": "people",
+      "sub_category": "driver-moments",
+      "tags": [
+        "driver",
+        "travellers"
+      ],
+      "location_status": "global-consent",
+      "region_ids": [],
+      "route_ids": [],
+      "poi_ids": [],
+      "intended_use": "Find Driver: profile, vehicle or Driver Moments",
+      "alt_text": {
+        "zh": "?????????????",
+        "en": "Service moment with a Bali driver and travellers"
+      },
+      "rights": {
+        "status": "user_provided_with_consent",
+        "source": "user_global_confirmation",
+        "approval_date": "2026-08-05",
+        "license_or_owner": "WanderMind user global confirmation"
+      }
+    },
+    {
+      "relative_path": "assets/images/Dicky_tourist4.jpg",
+      "web_optimized_path": "assets/images/web/f0b485842d63b8dc.webp",
+      "sha256": "f0b485842d63b8dcb26f20bf143b5629c5283f59406a09acb156deb30a8aa9f7",
+      "category": "people",
+      "sub_category": "driver-moments",
+      "tags": [
+        "driver",
+        "travellers"
+      ],
+      "location_status": "global-consent",
+      "region_ids": [],
+      "route_ids": [],
+      "poi_ids": [],
+      "intended_use": "Find Driver: profile, vehicle or Driver Moments",
+      "alt_text": {
+        "zh": "?????????????",
+        "en": "Service moment with a Bali driver and travellers"
+      },
+      "rights": {
+        "status": "user_provided_with_consent",
+        "source": "user_global_confirmation",
+        "approval_date": "2026-08-05",
+        "license_or_owner": "WanderMind user global confirmation"
+      }
+    },
+    {
+      "relative_path": "assets/images/Dicky_tourist5.jpg",
+      "web_optimized_path": "assets/images/web/3cc41350bbbe9784.webp",
+      "sha256": "3cc41350bbbe9784ebb9bce8478da7cfd9dd4450e15d21008612e6e73d6b6522",
+      "category": "people",
+      "sub_category": "driver-moments",
+      "tags": [
+        "driver",
+        "travellers"
+      ],
+      "location_status": "global-consent",
+      "region_ids": [],
+      "route_ids": [],
+      "poi_ids": [],
+      "intended_use": "Find Driver: profile, vehicle or Driver Moments",
+      "alt_text": {
+        "zh": "?????????????",
+        "en": "Service moment with a Bali driver and travellers"
+      },
+      "rights": {
+        "status": "user_provided_with_consent",
+        "source": "user_global_confirmation",
+        "approval_date": "2026-08-05",
+        "license_or_owner": "WanderMind user global confirmation"
+      }
+    },
+    {
+      "relative_path": "assets/images/Dicky_tourist6.jpg",
+      "web_optimized_path": "assets/images/web/c9f2502862c2d45e.webp",
+      "sha256": "c9f2502862c2d45e377a27cbdd1a4b94367104c13eb369c13644e345c56bd7bf",
+      "category": "people",
+      "sub_category": "driver-moments",
+      "tags": [
+        "driver",
+        "travellers"
+      ],
+      "location_status": "global-consent",
+      "region_ids": [],
+      "route_ids": [],
+      "poi_ids": [],
+      "intended_use": "Find Driver: profile, vehicle or Driver Moments",
+      "alt_text": {
+        "zh": "?????????????",
+        "en": "Service moment with a Bali driver and travellers"
+      },
+      "rights": {
+        "status": "user_provided_with_consent",
+        "source": "user_global_confirmation",
+        "approval_date": "2026-08-05",
+        "license_or_owner": "WanderMind user global confirmation"
+      }
+    },
+    {
+      "relative_path": "assets/images/DickyandGede nicho _tourist1.jpg",
+      "web_optimized_path": "assets/images/web/0a69d27439db0163.webp",
+      "sha256": "0a69d27439db0163a626c97d7dd9b0036964c2db06139f9acbc5c0cad611e218",
+      "category": "people",
+      "sub_category": "driver-moments",
+      "tags": [
+        "driver",
+        "travellers"
+      ],
+      "location_status": "global-consent",
+      "region_ids": [],
+      "route_ids": [],
+      "poi_ids": [],
+      "intended_use": "Find Driver: profile, vehicle or Driver Moments",
+      "alt_text": {
+        "zh": "?????????????",
+        "en": "Service moment with a Bali driver and travellers"
+      },
+      "rights": {
+        "status": "user_provided_with_consent",
+        "source": "user_global_confirmation",
+        "approval_date": "2026-08-05",
+        "license_or_owner": "WanderMind user global confirmation"
+      }
+    },
+    {
+      "relative_path": "assets/images/DickyandGede nicho _tourist2.jpg",
+      "web_optimized_path": "assets/images/web/f0b47b2e36049c9a.webp",
+      "sha256": "f0b47b2e36049c9a2fb9ad75248846fdb7e4d9970302db33086e14e53ec54c7d",
+      "category": "people",
+      "sub_category": "driver-moments",
+      "tags": [
+        "driver",
+        "travellers"
+      ],
+      "location_status": "global-consent",
+      "region_ids": [],
+      "route_ids": [],
+      "poi_ids": [],
+      "intended_use": "Find Driver: profile, vehicle or Driver Moments",
+      "alt_text": {
+        "zh": "?????????????",
+        "en": "Service moment with a Bali driver and travellers"
+      },
+      "rights": {
+        "status": "user_provided_with_consent",
+        "source": "user_global_confirmation",
+        "approval_date": "2026-08-05",
+        "license_or_owner": "WanderMind user global confirmation"
+      }
+    },
+    {
+      "relative_path": "assets/images/down.png",
+      "web_optimized_path": "assets/images/web/73a46249c796b78c.webp",
+      "sha256": "73a46249c796b78cb0914f6e0c75bf380cead7f14ade558f91d0fdd5a591210a",
+      "category": "unclassified",
+      "sub_category": "project-library",
+      "tags": [
+        "project-library"
+      ],
+      "location_status": "unknown",
+      "region_ids": [],
+      "route_ids": [],
+      "poi_ids": [],
+      "intended_use": "WanderMind approved project image library; connect only where its destination/category metadata matches.",
+      "alt_text": {
+        "zh": "WanderMind ?????down",
+        "en": "WanderMind project image: down"
+      },
+      "rights": {
+        "status": "user_provided_with_consent",
+        "source": "user_global_confirmation",
+        "approval_date": "2026-08-05",
+        "license_or_owner": "WanderMind user global confirmation"
+      }
+    },
+    {
+      "relative_path": "assets/images/gallery-1.jpg",
+      "web_optimized_path": "assets/images/web/db0771f7214d6b4e.webp",
+      "sha256": "db0771f7214d6b4e2da1d35ce232cc39d0a76fc5caf2bf0940989e194587ae0b",
+      "category": "unclassified",
+      "sub_category": "project-library",
+      "tags": [
+        "project-library"
+      ],
+      "location_status": "unknown",
+      "region_ids": [],
+      "route_ids": [],
+      "poi_ids": [],
+      "intended_use": "WanderMind approved project image library; connect only where its destination/category metadata matches.",
+      "alt_text": {
+        "zh": "WanderMind ?????gallery 1",
+        "en": "WanderMind project image: gallery 1"
+      },
+      "rights": {
+        "status": "user_provided_with_consent",
+        "source": "user_global_confirmation",
+        "approval_date": "2026-08-05",
+        "license_or_owner": "WanderMind user global confirmation"
+      }
+    },
+    {
+      "relative_path": "assets/images/gallery-2.jpg",
+      "web_optimized_path": "assets/images/web/bb5b6f6565106679.webp",
+      "sha256": "bb5b6f656510667902ffc7cc9279eb2be1073b0c3c3bdb826bb32d2a0c1d5195",
+      "category": "unclassified",
+      "sub_category": "project-library",
+      "tags": [
+        "project-library"
+      ],
+      "location_status": "unknown",
+      "region_ids": [],
+      "route_ids": [],
+      "poi_ids": [],
+      "intended_use": "WanderMind approved project image library; connect only where its destination/category metadata matches.",
+      "alt_text": {
+        "zh": "WanderMind ?????gallery 2",
+        "en": "WanderMind project image: gallery 2"
+      },
+      "rights": {
+        "status": "user_provided_with_consent",
+        "source": "user_global_confirmation",
+        "approval_date": "2026-08-05",
+        "license_or_owner": "WanderMind user global confirmation"
+      }
+    },
+    {
+      "relative_path": "assets/images/gallery-3.jpg",
+      "web_optimized_path": "assets/images/web/63840a71df0d035b.webp",
+      "sha256": "63840a71df0d035bf45ae4419a16d953a58d3f846d949e96f74ae4fabdf8150c",
+      "category": "unclassified",
+      "sub_category": "project-library",
+      "tags": [
+        "project-library"
+      ],
+      "location_status": "unknown",
+      "region_ids": [],
+      "route_ids": [],
+      "poi_ids": [],
+      "intended_use": "WanderMind approved project image library; connect only where its destination/category metadata matches.",
+      "alt_text": {
+        "zh": "WanderMind ?????gallery 3",
+        "en": "WanderMind project image: gallery 3"
+      },
+      "rights": {
+        "status": "user_provided_with_consent",
+        "source": "user_global_confirmation",
+        "approval_date": "2026-08-05",
+        "license_or_owner": "WanderMind user global confirmation"
+      }
+    },
+    {
+      "relative_path": "assets/images/gallery-4.jpg",
+      "web_optimized_path": "assets/images/web/b86b93c2e39fabdb.webp",
+      "sha256": "b86b93c2e39fabdbf42d203ae85ad03a236ee75491a2da199e2c5f5df853091c",
+      "category": "unclassified",
+      "sub_category": "project-library",
+      "tags": [
+        "project-library"
+      ],
+      "location_status": "unknown",
+      "region_ids": [],
+      "route_ids": [],
+      "poi_ids": [],
+      "intended_use": "WanderMind approved project image library; connect only where its destination/category metadata matches.",
+      "alt_text": {
+        "zh": "WanderMind ?????gallery 4",
+        "en": "WanderMind project image: gallery 4"
+      },
+      "rights": {
+        "status": "user_provided_with_consent",
+        "source": "user_global_confirmation",
+        "approval_date": "2026-08-05",
+        "license_or_owner": "WanderMind user global confirmation"
+      }
+    },
+    {
+      "relative_path": "assets/images/gallery-5.jpg",
+      "web_optimized_path": "assets/images/web/2a7a6666dd325a95.webp",
+      "sha256": "2a7a6666dd325a9569a63435c6dda5ab3d64bf5f6c55fb587595e9bb9c630879",
+      "category": "unclassified",
+      "sub_category": "project-library",
+      "tags": [
+        "project-library"
+      ],
+      "location_status": "unknown",
+      "region_ids": [],
+      "route_ids": [],
+      "poi_ids": [],
+      "intended_use": "WanderMind approved project image library; connect only where its destination/category metadata matches.",
+      "alt_text": {
+        "zh": "WanderMind ?????gallery 5",
+        "en": "WanderMind project image: gallery 5"
+      },
+      "rights": {
+        "status": "user_provided_with_consent",
+        "source": "user_global_confirmation",
+        "approval_date": "2026-08-05",
+        "license_or_owner": "WanderMind user global confirmation"
+      }
+    },
+    {
+      "relative_path": "assets/images/gallery-6.jpg",
+      "web_optimized_path": "assets/images/web/432dcc056d82b047.webp",
+      "sha256": "432dcc056d82b0479573eba968995cd431d1af08b47c5abcf2c22c61d0aa019c",
+      "category": "unclassified",
+      "sub_category": "project-library",
+      "tags": [
+        "project-library"
+      ],
+      "location_status": "unknown",
+      "region_ids": [],
+      "route_ids": [],
+      "poi_ids": [],
+      "intended_use": "WanderMind approved project image library; connect only where its destination/category metadata matches.",
+      "alt_text": {
+        "zh": "WanderMind ?????gallery 6",
+        "en": "WanderMind project image: gallery 6"
+      },
+      "rights": {
+        "status": "user_provided_with_consent",
+        "source": "user_global_confirmation",
+        "approval_date": "2026-08-05",
+        "license_or_owner": "WanderMind user global confirmation"
+      }
+    },
+    {
+      "relative_path": "assets/images/Galungan.jpg",
+      "web_optimized_path": "assets/images/web/a637d36cf0e9f53a.webp",
+      "sha256": "a637d36cf0e9f53a7b940cdff9787e5581af61cdfcd7882c03d87c3ba0591006",
+      "category": "culture",
+      "sub_category": "balinese-culture",
+      "tags": [
+        "culture",
+        "temple"
+      ],
+      "location_status": "bali-named",
+      "region_ids": [],
+      "route_ids": [
+        "R4"
+      ],
+      "poi_ids": [],
+      "intended_use": "WanderMind approved project image library; connect only where its destination/category metadata matches.",
+      "alt_text": {
+        "zh": "??????????",
+        "en": "Bali culture or temple scene"
+      },
+      "rights": {
+        "status": "user_provided_with_consent",
+        "source": "user_global_confirmation",
+        "approval_date": "2026-08-05",
+        "license_or_owner": "WanderMind user global confirmation"
+      }
+    },
+    {
+      "relative_path": "assets/images/Garuda Wisnu Kencana.jpg",
+      "web_optimized_path": "assets/images/web/5606be88ad794ba6.webp",
+      "sha256": "5606be88ad794ba6b04a056bb26342d67997a351fbc84e060fbff5b94bb347ff",
+      "category": "culture",
+      "sub_category": "balinese-culture",
+      "tags": [
+        "culture",
+        "temple"
+      ],
+      "location_status": "bali-named",
+      "region_ids": [
+        "G2"
+      ],
+      "route_ids": [
+        "R1",
+        "R3",
+        "R4"
+      ],
+      "poi_ids": [
+        "gwk"
+      ],
+      "intended_use": "WanderMind approved project image library; connect only where its destination/category metadata matches.",
+      "alt_text": {
+        "zh": "??????????",
+        "en": "Bali culture or temple scene"
+      },
+      "rights": {
+        "status": "user_provided_with_consent",
+        "source": "user_global_confirmation",
+        "approval_date": "2026-08-05",
+        "license_or_owner": "WanderMind user global confirmation"
+      }
+    },
+    {
+      "relative_path": "assets/images/Gede nicho.jpg",
+      "web_optimized_path": "assets/images/web/b0a4861a2a414f15.webp",
+      "sha256": "b0a4861a2a414f15545311a6100cbbe40e13f5a9a2c4887f75bb40e2bb2be5f0",
+      "category": "people",
+      "sub_category": "driver-moments",
+      "tags": [
+        "driver",
+        "travellers"
+      ],
+      "location_status": "global-consent",
+      "region_ids": [],
+      "route_ids": [],
+      "poi_ids": [],
+      "intended_use": "Find Driver: profile, vehicle or Driver Moments",
+      "alt_text": {
+        "zh": "?????????????",
+        "en": "Service moment with a Bali driver and travellers"
+      },
+      "rights": {
+        "status": "user_provided_with_consent",
+        "source": "user_global_confirmation",
+        "approval_date": "2026-08-05",
+        "license_or_owner": "WanderMind user global confirmation"
+      }
+    },
+    {
+      "relative_path": "assets/images/Gede nicho_tourist1.jpg",
+      "web_optimized_path": "assets/images/web/801293f7fbcc9dca.webp",
+      "sha256": "801293f7fbcc9dcaf41a5549b3caeeb94549dbcfda2dfc07b4f1785b1398317b",
+      "category": "people",
+      "sub_category": "driver-moments",
+      "tags": [
+        "driver",
+        "travellers"
+      ],
+      "location_status": "global-consent",
+      "region_ids": [],
+      "route_ids": [],
+      "poi_ids": [],
+      "intended_use": "Find Driver: profile, vehicle or Driver Moments",
+      "alt_text": {
+        "zh": "?????????????",
+        "en": "Service moment with a Bali driver and travellers"
+      },
+      "rights": {
+        "status": "user_provided_with_consent",
+        "source": "user_global_confirmation",
+        "approval_date": "2026-08-05",
+        "license_or_owner": "WanderMind user global confirmation"
+      }
+    },
+    {
+      "relative_path": "assets/images/Gede nicho_tourist2.jpg",
+      "web_optimized_path": "assets/images/web/4d8f28299b04d044.webp",
+      "sha256": "4d8f28299b04d044acfe2f0fab5b884b7e04f1210af546bc07ce32041132c8f4",
+      "category": "people",
+      "sub_category": "driver-moments",
+      "tags": [
+        "driver",
+        "travellers"
+      ],
+      "location_status": "global-consent",
+      "region_ids": [],
+      "route_ids": [],
+      "poi_ids": [],
+      "intended_use": "Find Driver: profile, vehicle or Driver Moments",
+      "alt_text": {
+        "zh": "?????????????",
+        "en": "Service moment with a Bali driver and travellers"
+      },
+      "rights": {
+        "status": "user_provided_with_consent",
+        "source": "user_global_confirmation",
+        "approval_date": "2026-08-05",
+        "license_or_owner": "WanderMind user global confirmation"
+      }
+    },
+    {
+      "relative_path": "assets/images/Gede nicho_tourist3.jpg",
+      "web_optimized_path": "assets/images/web/f9ec4045b132fbd0.webp",
+      "sha256": "f9ec4045b132fbd01384110835640e3c3fb11a90c30a713dce5276927ee0f13e",
+      "category": "people",
+      "sub_category": "driver-moments",
+      "tags": [
+        "driver",
+        "travellers"
+      ],
+      "location_status": "global-consent",
+      "region_ids": [],
+      "route_ids": [],
+      "poi_ids": [],
+      "intended_use": "Find Driver: profile, vehicle or Driver Moments",
+      "alt_text": {
+        "zh": "?????????????",
+        "en": "Service moment with a Bali driver and travellers"
+      },
+      "rights": {
+        "status": "user_provided_with_consent",
+        "source": "user_global_confirmation",
+        "approval_date": "2026-08-05",
+        "license_or_owner": "WanderMind user global confirmation"
+      }
+    },
+    {
+      "relative_path": "assets/images/Gede nicho_tourist4.jpg",
+      "web_optimized_path": "assets/images/web/328a49e16467fef1.webp",
+      "sha256": "328a49e16467fef17a9e59f91eaa448e4b66b0314ad539c1a676de81f68144ff",
+      "category": "people",
+      "sub_category": "driver-moments",
+      "tags": [
+        "driver",
+        "travellers"
+      ],
+      "location_status": "global-consent",
+      "region_ids": [],
+      "route_ids": [],
+      "poi_ids": [],
+      "intended_use": "Find Driver: profile, vehicle or Driver Moments",
+      "alt_text": {
+        "zh": "?????????????",
+        "en": "Service moment with a Bali driver and travellers"
+      },
+      "rights": {
+        "status": "user_provided_with_consent",
+        "source": "user_global_confirmation",
+        "approval_date": "2026-08-05",
+        "license_or_owner": "WanderMind user global confirmation"
+      }
+    },
+    {
+      "relative_path": "assets/images/Gede nicho_tourist5.jpg",
+      "web_optimized_path": "assets/images/web/98f9b02d6233e8b3.webp",
+      "sha256": "98f9b02d6233e8b328fdf39b6a7939d2f211a01fde63681089f9c74ad6e13cfb",
+      "category": "people",
+      "sub_category": "driver-moments",
+      "tags": [
+        "driver",
+        "travellers"
+      ],
+      "location_status": "global-consent",
+      "region_ids": [],
+      "route_ids": [],
+      "poi_ids": [],
+      "intended_use": "Find Driver: profile, vehicle or Driver Moments",
+      "alt_text": {
+        "zh": "?????????????",
+        "en": "Service moment with a Bali driver and travellers"
+      },
+      "rights": {
+        "status": "user_provided_with_consent",
+        "source": "user_global_confirmation",
+        "approval_date": "2026-08-05",
+        "license_or_owner": "WanderMind user global confirmation"
+      }
+    },
+    {
+      "relative_path": "assets/images/Gede nicho_tourist6.jpg",
+      "web_optimized_path": "assets/images/web/a053b92cc599adb2.webp",
+      "sha256": "a053b92cc599adb2ec17c161b5b4b0b18c2e4e60f2f16b0b14cee7aa90ff7136",
+      "category": "people",
+      "sub_category": "driver-moments",
+      "tags": [
+        "driver",
+        "travellers"
+      ],
+      "location_status": "global-consent",
+      "region_ids": [],
+      "route_ids": [],
+      "poi_ids": [],
+      "intended_use": "Find Driver: profile, vehicle or Driver Moments",
+      "alt_text": {
+        "zh": "?????????????",
+        "en": "Service moment with a Bali driver and travellers"
+      },
+      "rights": {
+        "status": "user_provided_with_consent",
+        "source": "user_global_confirmation",
+        "approval_date": "2026-08-05",
+        "license_or_owner": "WanderMind user global confirmation"
+      }
+    },
+    {
+      "relative_path": "assets/images/hero-1.jpg",
+      "web_optimized_path": "assets/images/web/18029bd74c32ef72.webp",
+      "sha256": "18029bd74c32ef720365cb1052b3c1add486845b768cfa0261166b4259353e1c",
+      "category": "unclassified",
+      "sub_category": "project-library",
+      "tags": [
+        "project-library"
+      ],
+      "location_status": "unknown",
+      "region_ids": [],
+      "route_ids": [],
+      "poi_ids": [],
+      "intended_use": "WanderMind approved project image library; connect only where its destination/category metadata matches.",
+      "alt_text": {
+        "zh": "WanderMind ?????hero 1",
+        "en": "WanderMind project image: hero 1"
+      },
+      "rights": {
+        "status": "user_provided_with_consent",
+        "source": "user_global_confirmation",
+        "approval_date": "2026-08-05",
+        "license_or_owner": "WanderMind user global confirmation"
+      }
+    },
+    {
+      "relative_path": "assets/images/hero-2.jpg",
+      "web_optimized_path": "assets/images/web/62381e0bf8496a50.webp",
+      "sha256": "62381e0bf8496a50ce199ccd5be71e3e6c34439aef4cb130c8fba61c8e5862bf",
+      "category": "unclassified",
+      "sub_category": "project-library",
+      "tags": [
+        "project-library"
+      ],
+      "location_status": "unknown",
+      "region_ids": [],
+      "route_ids": [],
+      "poi_ids": [],
+      "intended_use": "WanderMind approved project image library; connect only where its destination/category metadata matches.",
+      "alt_text": {
+        "zh": "WanderMind ?????hero 2",
+        "en": "WanderMind project image: hero 2"
+      },
+      "rights": {
+        "status": "user_provided_with_consent",
+        "source": "user_global_confirmation",
+        "approval_date": "2026-08-05",
+        "license_or_owner": "WanderMind user global confirmation"
+      }
+    },
+    {
+      "relative_path": "assets/images/hero-3.jpg",
+      "web_optimized_path": "assets/images/web/409b19e56f9ec0d6.webp",
+      "sha256": "409b19e56f9ec0d630d976dd1f097d810bd2a14a6e82c94775a280eac04c579f",
+      "category": "unclassified",
+      "sub_category": "project-library",
+      "tags": [
+        "project-library"
+      ],
+      "location_status": "unknown",
+      "region_ids": [],
+      "route_ids": [],
+      "poi_ids": [],
+      "intended_use": "WanderMind approved project image library; connect only where its destination/category metadata matches.",
+      "alt_text": {
+        "zh": "WanderMind ?????hero 3",
+        "en": "WanderMind project image: hero 3"
+      },
+      "rights": {
+        "status": "user_provided_with_consent",
+        "source": "user_global_confirmation",
+        "approval_date": "2026-08-05",
+        "license_or_owner": "WanderMind user global confirmation"
+      }
+    },
+    {
+      "relative_path": "assets/images/hero-4.jpg",
+      "web_optimized_path": "assets/images/web/0228a3ffddeee271.webp",
+      "sha256": "0228a3ffddeee27172ddaa3cd29639e1b32d1bf042298c5b42843819676e02d5",
+      "category": "unclassified",
+      "sub_category": "project-library",
+      "tags": [
+        "project-library"
+      ],
+      "location_status": "unknown",
+      "region_ids": [],
+      "route_ids": [],
+      "poi_ids": [],
+      "intended_use": "WanderMind approved project image library; connect only where its destination/category metadata matches.",
+      "alt_text": {
+        "zh": "WanderMind ?????hero 4",
+        "en": "WanderMind project image: hero 4"
+      },
+      "rights": {
+        "status": "user_provided_with_consent",
+        "source": "user_global_confirmation",
+        "approval_date": "2026-08-05",
+        "license_or_owner": "WanderMind user global confirmation"
+      }
+    },
+    {
+      "relative_path": "assets/images/high-angle-shot-beautiful-foggy-cliffs-calm-blue-ocean-captured-kauai-hawaii.jpg",
+      "web_optimized_path": "assets/images/web/a160499c580427a8.webp",
+      "sha256": "a160499c580427a84a1d81d1163527093051171fa523878a6ccefeb7e3cb4c0e",
+      "category": "landscapes",
+      "sub_category": "bali-landscape",
+      "tags": [
+        "bali",
+        "landscape"
+      ],
+      "location_status": "bali-named",
+      "region_ids": [],
+      "route_ids": [],
+      "poi_ids": [],
+      "intended_use": "WanderMind approved project image library; connect only where its destination/category metadata matches.",
+      "alt_text": {
+        "zh": "???????",
+        "en": "Bali landscape scene"
+      },
+      "rights": {
+        "status": "user_provided_with_consent",
+        "source": "user_global_confirmation",
+        "approval_date": "2026-08-05",
+        "license_or_owner": "WanderMind user global confirmation"
+      }
+    },
+    {
+      "relative_path": "assets/images/Intuitive Flow1.jpg",
+      "web_optimized_path": "assets/images/web/b22399d29ef1b1f2.webp",
+      "sha256": "b22399d29ef1b1f264b791f0a29ca4431cf13bd405a1a5653c7e7decde5885ee",
+      "category": "experiences",
+      "sub_category": "wellness-leisure",
+      "tags": [
+        "wellness",
+        "experience"
+      ],
+      "location_status": "bali-named",
+      "region_ids": [
+        "G4"
+      ],
+      "route_ids": [
+        "R2"
+      ],
+      "poi_ids": [
+        "intuitive_flow"
+      ],
+      "intended_use": "WanderMind approved project image library; connect only where its destination/category metadata matches.",
+      "alt_text": {
+        "zh": "?????????",
+        "en": "Bali travel experience scene"
+      },
+      "rights": {
+        "status": "user_provided_with_consent",
+        "source": "user_global_confirmation",
+        "approval_date": "2026-08-05",
+        "license_or_owner": "WanderMind user global confirmation"
+      }
+    },
+    {
+      "relative_path": "assets/images/kyoto-1.jpg",
+      "web_optimized_path": "assets/images/web/ea9382023285d36a.webp",
+      "sha256": "ea9382023285d36aa97e2f960dec3a885433f21be6e7d4d8dbe166bff8ebdfd0",
+      "category": "unclassified",
+      "sub_category": "project-library",
+      "tags": [
+        "project-library"
+      ],
+      "location_status": "unknown",
+      "region_ids": [],
+      "route_ids": [],
+      "poi_ids": [],
+      "intended_use": "WanderMind approved project image library; connect only where its destination/category metadata matches.",
+      "alt_text": {
+        "zh": "WanderMind ?????kyoto 1",
+        "en": "WanderMind project image: kyoto 1"
+      },
+      "rights": {
+        "status": "user_provided_with_consent",
+        "source": "user_global_confirmation",
+        "approval_date": "2026-08-05",
+        "license_or_owner": "WanderMind user global confirmation"
+      }
+    },
+    {
+      "relative_path": "assets/images/kyoto-2.jpg",
+      "web_optimized_path": "assets/images/web/4c4cfc92a07881d6.webp",
+      "sha256": "4c4cfc92a07881d628957d6811d5224d5c6e71cdffcf13a42abc06c3d5fbc760",
+      "category": "unclassified",
+      "sub_category": "project-library",
+      "tags": [
+        "project-library"
+      ],
+      "location_status": "unknown",
+      "region_ids": [],
+      "route_ids": [],
+      "poi_ids": [],
+      "intended_use": "WanderMind approved project image library; connect only where its destination/category metadata matches.",
+      "alt_text": {
+        "zh": "WanderMind ?????kyoto 2",
+        "en": "WanderMind project image: kyoto 2"
+      },
+      "rights": {
+        "status": "user_provided_with_consent",
+        "source": "user_global_confirmation",
+        "approval_date": "2026-08-05",
+        "license_or_owner": "WanderMind user global confirmation"
+      }
+    },
+    {
+      "relative_path": "assets/images/logo-mark-256.png",
+      "web_optimized_path": "assets/images/web/c409ddb66fd59221.webp",
+      "sha256": "c409ddb66fd59221a7b015d051f281b3859a25c52914c1a57aef03991ee4c7e9",
+      "category": "unclassified",
+      "sub_category": "project-library",
+      "tags": [
+        "project-library"
+      ],
+      "location_status": "unknown",
+      "region_ids": [],
+      "route_ids": [],
+      "poi_ids": [],
+      "intended_use": "WanderMind approved project image library; connect only where its destination/category metadata matches.",
+      "alt_text": {
+        "zh": "WanderMind ?????logo mark 256",
+        "en": "WanderMind project image: logo mark 256"
+      },
+      "rights": {
+        "status": "user_provided_with_consent",
+        "source": "user_global_confirmation",
+        "approval_date": "2026-08-05",
+        "license_or_owner": "WanderMind user global confirmation"
+      }
+    },
+    {
+      "relative_path": "assets/images/logo-mark.png",
+      "web_optimized_path": "assets/images/web/2351b9ebfe19deb2.webp",
+      "sha256": "2351b9ebfe19deb27a861b38bbb2ecca45f8855ad40dcef62a8a196fcd85cb54",
+      "category": "unclassified",
+      "sub_category": "project-library",
+      "tags": [
+        "project-library"
+      ],
+      "location_status": "unknown",
+      "region_ids": [],
+      "route_ids": [],
+      "poi_ids": [],
+      "intended_use": "WanderMind approved project image library; connect only where its destination/category metadata matches.",
+      "alt_text": {
+        "zh": "WanderMind ?????logo mark",
+        "en": "WanderMind project image: logo mark"
+      },
+      "rights": {
+        "status": "user_provided_with_consent",
+        "source": "user_global_confirmation",
+        "approval_date": "2026-08-05",
+        "license_or_owner": "WanderMind user global confirmation"
+      }
+    },
+    {
+      "relative_path": "assets/images/mesmerizing-view-calm-ocean-trees-shore-sunset-indonesia.jpg",
+      "web_optimized_path": "assets/images/web/fd97a6818cd9bd7b.webp",
+      "sha256": "fd97a6818cd9bd7bf6e7e819714a76f36d80881b363057d2ee960afb52c959ac",
+      "category": "landscapes",
+      "sub_category": "bali-landscape",
+      "tags": [
+        "bali",
+        "landscape"
+      ],
+      "location_status": "bali-named",
+      "region_ids": [],
+      "route_ids": [],
+      "poi_ids": [],
+      "intended_use": "WanderMind approved project image library; connect only where its destination/category metadata matches.",
+      "alt_text": {
+        "zh": "???????",
+        "en": "Bali landscape scene"
+      },
+      "rights": {
+        "status": "user_provided_with_consent",
+        "source": "user_global_confirmation",
+        "approval_date": "2026-08-05",
+        "license_or_owner": "WanderMind user global confirmation"
+      }
+    },
+    {
+      "relative_path": "assets/images/Nyepi.jpg",
+      "web_optimized_path": "assets/images/web/5ea1261626ebac26.webp",
+      "sha256": "5ea1261626ebac26342958d6ca299cfff578f8f01ec04c41a1281f05ced1a550",
+      "category": "culture",
+      "sub_category": "balinese-culture",
+      "tags": [
+        "culture",
+        "temple"
+      ],
+      "location_status": "bali-named",
+      "region_ids": [],
+      "route_ids": [
+        "R4"
+      ],
+      "poi_ids": [],
+      "intended_use": "WanderMind approved project image library; connect only where its destination/category metadata matches.",
+      "alt_text": {
+        "zh": "??????????",
+        "en": "Bali culture or temple scene"
+      },
+      "rights": {
+        "status": "user_provided_with_consent",
+        "source": "user_global_confirmation",
+        "approval_date": "2026-08-05",
+        "license_or_owner": "WanderMind user global confirmation"
+      }
+    },
+    {
+      "relative_path": "assets/images/paris-1.jpg",
+      "web_optimized_path": "assets/images/web/388bc0b1c0e1648d.webp",
+      "sha256": "388bc0b1c0e1648d47fb89eba5c7a77e293ae51c7e48c9e9da50c794b48e4e3c",
+      "category": "unclassified",
+      "sub_category": "project-library",
+      "tags": [
+        "project-library"
+      ],
+      "location_status": "unknown",
+      "region_ids": [],
+      "route_ids": [],
+      "poi_ids": [],
+      "intended_use": "WanderMind approved project image library; connect only where its destination/category metadata matches.",
+      "alt_text": {
+        "zh": "WanderMind ?????paris 1",
+        "en": "WanderMind project image: paris 1"
+      },
+      "rights": {
+        "status": "user_provided_with_consent",
+        "source": "user_global_confirmation",
+        "approval_date": "2026-08-05",
+        "license_or_owner": "WanderMind user global confirmation"
+      }
+    },
+    {
+      "relative_path": "assets/images/paris-2.jpg",
+      "web_optimized_path": "assets/images/web/107fa7fb5c18247e.webp",
+      "sha256": "107fa7fb5c18247e8fba1b0997da6a431452afa0d41615cd80d0e0d9cb089c13",
+      "category": "unclassified",
+      "sub_category": "project-library",
+      "tags": [
+        "project-library"
+      ],
+      "location_status": "unknown",
+      "region_ids": [],
+      "route_ids": [],
+      "poi_ids": [],
+      "intended_use": "WanderMind approved project image library; connect only where its destination/category metadata matches.",
+      "alt_text": {
+        "zh": "WanderMind ?????paris 2",
+        "en": "WanderMind project image: paris 2"
+      },
+      "rights": {
+        "status": "user_provided_with_consent",
+        "source": "user_global_confirmation",
+        "approval_date": "2026-08-05",
+        "license_or_owner": "WanderMind user global confirmation"
+      }
+    },
+    {
+      "relative_path": "assets/images/pay-alipay.jpg",
+      "web_optimized_path": "assets/images/web/ef71179d6e7e4624.webp",
+      "sha256": "ef71179d6e7e46246d5228afc57420d3db78bb4272e51f4a0222739e5971a7bb",
+      "category": "unclassified",
+      "sub_category": "project-library",
+      "tags": [
+        "project-library"
+      ],
+      "location_status": "unknown",
+      "region_ids": [],
+      "route_ids": [],
+      "poi_ids": [],
+      "intended_use": "WanderMind approved project image library; connect only where its destination/category metadata matches.",
+      "alt_text": {
+        "zh": "WanderMind ?????pay alipay",
+        "en": "WanderMind project image: pay alipay"
+      },
+      "rights": {
+        "status": "user_provided_with_consent",
+        "source": "user_global_confirmation",
+        "approval_date": "2026-08-05",
+        "license_or_owner": "WanderMind user global confirmation"
+      }
+    },
+    {
+      "relative_path": "assets/images/pay-wechat.jpg",
+      "web_optimized_path": "assets/images/web/e4709cf80bbc893d.webp",
+      "sha256": "e4709cf80bbc893d1b6e7e00a18b40cf87ad3c74978f7ef076ac073b0ad5081a",
+      "category": "unclassified",
+      "sub_category": "project-library",
+      "tags": [
+        "project-library"
+      ],
+      "location_status": "unknown",
+      "region_ids": [],
+      "route_ids": [],
+      "poi_ids": [],
+      "intended_use": "WanderMind approved project image library; connect only where its destination/category metadata matches.",
+      "alt_text": {
+        "zh": "WanderMind ?????pay wechat",
+        "en": "WanderMind project image: pay wechat"
+      },
+      "rights": {
+        "status": "user_provided_with_consent",
+        "source": "user_global_confirmation",
+        "approval_date": "2026-08-05",
+        "license_or_owner": "WanderMind user global confirmation"
+      }
+    },
+    {
+      "relative_path": "assets/images/Pura Besakih1.png",
+      "web_optimized_path": "assets/images/web/428ea37c1c091836.webp",
+      "sha256": "428ea37c1c0918366d97759258ed715828d430e6d2399a9e1eb92e7cd345f286",
+      "category": "culture",
+      "sub_category": "balinese-culture",
+      "tags": [
+        "culture",
+        "temple"
+      ],
+      "location_status": "bali-named",
+      "region_ids": [
+        "G6"
+      ],
+      "route_ids": [
+        "R4",
+        "R5"
+      ],
+      "poi_ids": [
+        "besakih_temple"
+      ],
+      "intended_use": "WanderMind approved project image library; connect only where its destination/category metadata matches.",
+      "alt_text": {
+        "zh": "??????????",
+        "en": "Bali culture or temple scene"
+      },
+      "rights": {
+        "status": "user_provided_with_consent",
+        "source": "user_global_confirmation",
+        "approval_date": "2026-08-05",
+        "license_or_owner": "WanderMind user global confirmation"
+      }
+    },
+    {
+      "relative_path": "assets/images/Pura Besakih2.png",
+      "web_optimized_path": "assets/images/web/0ee069026ef64d7f.webp",
+      "sha256": "0ee069026ef64d7f5ffce46be37aa2fb877ffe9db5ef6c7e5de0efde67018040",
+      "category": "culture",
+      "sub_category": "balinese-culture",
+      "tags": [
+        "culture",
+        "temple"
+      ],
+      "location_status": "bali-named",
+      "region_ids": [
+        "G6"
+      ],
+      "route_ids": [
+        "R4",
+        "R5"
+      ],
+      "poi_ids": [
+        "besakih_temple"
+      ],
+      "intended_use": "WanderMind approved project image library; connect only where its destination/category metadata matches.",
+      "alt_text": {
+        "zh": "??????????",
+        "en": "Bali culture or temple scene"
+      },
+      "rights": {
+        "status": "user_provided_with_consent",
+        "source": "user_global_confirmation",
+        "approval_date": "2026-08-05",
+        "license_or_owner": "WanderMind user global confirmation"
+      }
+    },
+    {
+      "relative_path": "assets/images/Pura Besakih3.png",
+      "web_optimized_path": "assets/images/web/29de3c2fb9bba0e2.webp",
+      "sha256": "29de3c2fb9bba0e2933df0b0cd24b3eadb4e936697572bbf10d0f8e787f7f64c",
+      "category": "culture",
+      "sub_category": "balinese-culture",
+      "tags": [
+        "culture",
+        "temple"
+      ],
+      "location_status": "bali-named",
+      "region_ids": [
+        "G6"
+      ],
+      "route_ids": [
+        "R4",
+        "R5"
+      ],
+      "poi_ids": [
+        "besakih_temple"
+      ],
+      "intended_use": "WanderMind approved project image library; connect only where its destination/category metadata matches.",
+      "alt_text": {
+        "zh": "??????????",
+        "en": "Bali culture or temple scene"
+      },
+      "rights": {
+        "status": "user_provided_with_consent",
+        "source": "user_global_confirmation",
+        "approval_date": "2026-08-05",
+        "license_or_owner": "WanderMind user global confirmation"
+      }
+    },
+    {
+      "relative_path": "assets/images/Pura Besakih4.png",
+      "web_optimized_path": "assets/images/web/0d506b671814e0ab.webp",
+      "sha256": "0d506b671814e0ab18fdf71f68decc298fd222f25c054d0a727c3d51456d7be7",
+      "category": "culture",
+      "sub_category": "balinese-culture",
+      "tags": [
+        "culture",
+        "temple"
+      ],
+      "location_status": "bali-named",
+      "region_ids": [
+        "G6"
+      ],
+      "route_ids": [
+        "R4",
+        "R5"
+      ],
+      "poi_ids": [
+        "besakih_temple"
+      ],
+      "intended_use": "WanderMind approved project image library; connect only where its destination/category metadata matches.",
+      "alt_text": {
+        "zh": "??????????",
+        "en": "Bali culture or temple scene"
+      },
+      "rights": {
+        "status": "user_provided_with_consent",
+        "source": "user_global_confirmation",
+        "approval_date": "2026-08-05",
+        "license_or_owner": "WanderMind user global confirmation"
+      }
+    },
+    {
+      "relative_path": "assets/images/Pura Luhur Uluwatu1.jpg",
+      "web_optimized_path": "assets/images/web/acd8a19f6733e4aa.webp",
+      "sha256": "acd8a19f6733e4aa8998bb189a69abbe638bdb1bbfeaca613bdaa0f9751540f9",
+      "category": "culture",
+      "sub_category": "balinese-culture",
+      "tags": [
+        "culture",
+        "temple"
+      ],
+      "location_status": "bali-named",
+      "region_ids": [
+        "G2"
+      ],
+      "route_ids": [
+        "R1",
+        "R3",
+        "R4"
+      ],
+      "poi_ids": [
+        "uluwatu_temple"
+      ],
+      "intended_use": "WanderMind approved project image library; connect only where its destination/category metadata matches.",
+      "alt_text": {
+        "zh": "??????????",
+        "en": "Bali culture or temple scene"
+      },
+      "rights": {
+        "status": "user_provided_with_consent",
+        "source": "user_global_confirmation",
+        "approval_date": "2026-08-05",
+        "license_or_owner": "WanderMind user global confirmation"
+      }
+    },
+    {
+      "relative_path": "assets/images/Pura Luhur Uluwatu2.jpg",
+      "web_optimized_path": "assets/images/web/42b78576f468c0bd.webp",
+      "sha256": "42b78576f468c0bd109847627476ad0ab2799e78caae5f6745a6981c35e14760",
+      "category": "culture",
+      "sub_category": "balinese-culture",
+      "tags": [
+        "culture",
+        "temple"
+      ],
+      "location_status": "bali-named",
+      "region_ids": [
+        "G2"
+      ],
+      "route_ids": [
+        "R1",
+        "R3",
+        "R4"
+      ],
+      "poi_ids": [
+        "uluwatu_temple"
+      ],
+      "intended_use": "WanderMind approved project image library; connect only where its destination/category metadata matches.",
+      "alt_text": {
+        "zh": "??????????",
+        "en": "Bali culture or temple scene"
+      },
+      "rights": {
+        "status": "user_provided_with_consent",
+        "source": "user_global_confirmation",
+        "approval_date": "2026-08-05",
+        "license_or_owner": "WanderMind user global confirmation"
+      }
+    },
+    {
+      "relative_path": "assets/images/Pura Taman Ayun.jpg",
+      "web_optimized_path": "assets/images/web/1a8f10505d9638bd.webp",
+      "sha256": "1a8f10505d9638bd624a4254b54986c8a534482395960597432c5a426735210a",
+      "category": "culture",
+      "sub_category": "balinese-culture",
+      "tags": [
+        "culture",
+        "temple"
+      ],
+      "location_status": "bali-named",
+      "region_ids": [],
+      "route_ids": [
+        "R4"
+      ],
+      "poi_ids": [],
+      "intended_use": "WanderMind approved project image library; connect only where its destination/category metadata matches.",
+      "alt_text": {
+        "zh": "??????????",
+        "en": "Bali culture or temple scene"
+      },
+      "rights": {
+        "status": "user_provided_with_consent",
+        "source": "user_global_confirmation",
+        "approval_date": "2026-08-05",
+        "license_or_owner": "WanderMind user global confirmation"
+      }
+    },
+    {
+      "relative_path": "assets/images/Pura Taman Saraswati1.jpg",
+      "web_optimized_path": "assets/images/web/c1fb58324abc9d99.webp",
+      "sha256": "c1fb58324abc9d994653876a158983336437dfb5f12cc3a982c8baf22d19724b",
+      "category": "culture",
+      "sub_category": "balinese-culture",
+      "tags": [
+        "culture",
+        "temple"
+      ],
+      "location_status": "bali-named",
+      "region_ids": [
+        "G4"
+      ],
+      "route_ids": [
+        "R4"
+      ],
+      "poi_ids": [],
+      "intended_use": "WanderMind approved project image library; connect only where its destination/category metadata matches.",
+      "alt_text": {
+        "zh": "??????????",
+        "en": "Bali culture or temple scene"
+      },
+      "rights": {
+        "status": "user_provided_with_consent",
+        "source": "user_global_confirmation",
+        "approval_date": "2026-08-05",
+        "license_or_owner": "WanderMind user global confirmation"
+      }
+    },
+    {
+      "relative_path": "assets/images/Pura Taman Saraswati2.jpg",
+      "web_optimized_path": "assets/images/web/958a849b74bf16e2.webp",
+      "sha256": "958a849b74bf16e240ed161e1a147b172e12246a29fac4c9bb3cca672625782a",
+      "category": "culture",
+      "sub_category": "balinese-culture",
+      "tags": [
+        "culture",
+        "temple"
+      ],
+      "location_status": "bali-named",
+      "region_ids": [
+        "G4"
+      ],
+      "route_ids": [
+        "R4"
+      ],
+      "poi_ids": [],
+      "intended_use": "WanderMind approved project image library; connect only where its destination/category metadata matches.",
+      "alt_text": {
+        "zh": "??????????",
+        "en": "Bali culture or temple scene"
+      },
+      "rights": {
+        "status": "user_provided_with_consent",
+        "source": "user_global_confirmation",
+        "approval_date": "2026-08-05",
+        "license_or_owner": "WanderMind user global confirmation"
+      }
+    },
+    {
+      "relative_path": "assets/images/Pura Tanah Lot.jpg",
+      "web_optimized_path": "assets/images/web/f7cd422d0d2322bc.webp",
+      "sha256": "f7cd422d0d2322bcb90cb2a7b4c5538441ecdc1cf61715860b9949a4e74967cf",
+      "category": "culture",
+      "sub_category": "balinese-culture",
+      "tags": [
+        "culture",
+        "temple"
+      ],
+      "location_status": "bali-named",
+      "region_ids": [
+        "G1"
+      ],
+      "route_ids": [
+        "R1",
+        "R4",
+        "R6"
+      ],
+      "poi_ids": [
+        "tanah_lot"
+      ],
+      "intended_use": "WanderMind approved project image library; connect only where its destination/category metadata matches.",
+      "alt_text": {
+        "zh": "??????????",
+        "en": "Bali culture or temple scene"
+      },
+      "rights": {
+        "status": "user_provided_with_consent",
+        "source": "user_global_confirmation",
+        "approval_date": "2026-08-05",
+        "license_or_owner": "WanderMind user global confirmation"
+      }
+    },
+    {
+      "relative_path": "assets/images/Pura Ulun Danu.jpg",
+      "web_optimized_path": "assets/images/web/d88c9dbefc6f7316.webp",
+      "sha256": "d88c9dbefc6f73169ae807576febaf5c4fd7a484d62757ed51f7550ac051941a",
+      "category": "culture",
+      "sub_category": "balinese-culture",
+      "tags": [
+        "culture",
+        "temple"
+      ],
+      "location_status": "bali-named",
+      "region_ids": [
+        "G5"
+      ],
+      "route_ids": [
+        "R1",
+        "R4"
+      ],
+      "poi_ids": [
+        "ulun_danu_beratan"
+      ],
+      "intended_use": "WanderMind approved project image library; connect only where its destination/category metadata matches.",
+      "alt_text": {
+        "zh": "??????????",
+        "en": "Bali culture or temple scene"
+      },
+      "rights": {
+        "status": "user_provided_with_consent",
+        "source": "user_global_confirmation",
+        "approval_date": "2026-08-05",
+        "license_or_owner": "WanderMind user global confirmation"
+      }
+    },
+    {
+      "relative_path": "assets/images/Pyramids_Of_Chi音疗1.jpg",
+      "web_optimized_path": "assets/images/web/e01a06997abce63b.webp",
+      "sha256": "e01a06997abce63b1e7e35fe83d624aff80fde99b1ec162082fdb12591354f99",
+      "category": "experiences",
+      "sub_category": "wellness-leisure",
+      "tags": [
+        "wellness",
+        "experience"
+      ],
+      "location_status": "bali-named",
+      "region_ids": [
+        "G4"
+      ],
+      "route_ids": [
+        "R2"
+      ],
+      "poi_ids": [
+        "pyramids_of_chi"
+      ],
+      "intended_use": "WanderMind approved project image library; connect only where its destination/category metadata matches.",
+      "alt_text": {
+        "zh": "?????????",
+        "en": "Bali travel experience scene"
+      },
+      "rights": {
+        "status": "user_provided_with_consent",
+        "source": "user_global_confirmation",
+        "approval_date": "2026-08-05",
+        "license_or_owner": "WanderMind user global confirmation"
+      }
+    },
+    {
+      "relative_path": "assets/images/Pyramids_Of_Chi音疗2.jpg",
+      "web_optimized_path": "assets/images/web/6041280b5b63473b.webp",
+      "sha256": "6041280b5b63473ba03e351d50a3b8ff1a590bc9ad8d1b185b62223e10cc0458",
+      "category": "experiences",
+      "sub_category": "wellness-leisure",
+      "tags": [
+        "wellness",
+        "experience"
+      ],
+      "location_status": "bali-named",
+      "region_ids": [
+        "G4"
+      ],
+      "route_ids": [
+        "R2"
+      ],
+      "poi_ids": [
+        "pyramids_of_chi"
+      ],
+      "intended_use": "WanderMind approved project image library; connect only where its destination/category metadata matches.",
+      "alt_text": {
+        "zh": "?????????",
+        "en": "Bali travel experience scene"
+      },
+      "rights": {
+        "status": "user_provided_with_consent",
+        "source": "user_global_confirmation",
+        "approval_date": "2026-08-05",
+        "license_or_owner": "WanderMind user global confirmation"
+      }
+    },
+    {
+      "relative_path": "assets/images/rock-ocean-landscape.jpg",
+      "web_optimized_path": "assets/images/web/3f9cb8e70c34e9f8.webp",
+      "sha256": "3f9cb8e70c34e9f87f90749921672cc4cc620129eb052846821c4f6f3807186d",
+      "category": "landscapes",
+      "sub_category": "bali-landscape",
+      "tags": [
+        "bali",
+        "landscape"
+      ],
+      "location_status": "bali-named",
+      "region_ids": [],
+      "route_ids": [],
+      "poi_ids": [],
+      "intended_use": "WanderMind approved project image library; connect only where its destination/category metadata matches.",
+      "alt_text": {
+        "zh": "???????",
+        "en": "Bali landscape scene"
+      },
+      "rights": {
+        "status": "user_provided_with_consent",
+        "source": "user_global_confirmation",
+        "approval_date": "2026-08-05",
+        "license_or_owner": "WanderMind user global confirmation"
+      }
+    },
+    {
+      "relative_path": "assets/images/santorini-1.jpg",
+      "web_optimized_path": "assets/images/web/7ede1e61fcad44f9.webp",
+      "sha256": "7ede1e61fcad44f94fc9c1821b89956ab4fc1533c0719ffd3b750be39279c1eb",
+      "category": "unclassified",
+      "sub_category": "project-library",
+      "tags": [
+        "project-library"
+      ],
+      "location_status": "unknown",
+      "region_ids": [],
+      "route_ids": [],
+      "poi_ids": [],
+      "intended_use": "WanderMind approved project image library; connect only where its destination/category metadata matches.",
+      "alt_text": {
+        "zh": "WanderMind ?????santorini 1",
+        "en": "WanderMind project image: santorini 1"
+      },
+      "rights": {
+        "status": "user_provided_with_consent",
+        "source": "user_global_confirmation",
+        "approval_date": "2026-08-05",
+        "license_or_owner": "WanderMind user global confirmation"
+      }
+    },
+    {
+      "relative_path": "assets/images/santorini-2.jpg",
+      "web_optimized_path": "assets/images/web/0a3d30ede739501f.webp",
+      "sha256": "0a3d30ede739501f5b27e05904c4d5191d920f03812e62e533747eafc8781e11",
+      "category": "unclassified",
+      "sub_category": "project-library",
+      "tags": [
+        "project-library"
+      ],
+      "location_status": "unknown",
+      "region_ids": [],
+      "route_ids": [],
+      "poi_ids": [],
+      "intended_use": "WanderMind approved project image library; connect only where its destination/category metadata matches.",
+      "alt_text": {
+        "zh": "WanderMind ?????santorini 2",
+        "en": "WanderMind project image: santorini 2"
+      },
+      "rights": {
+        "status": "user_provided_with_consent",
+        "source": "user_global_confirmation",
+        "approval_date": "2026-08-05",
+        "license_or_owner": "WanderMind user global confirmation"
+      }
+    },
+    {
+      "relative_path": "assets/images/studio-feature.jpg",
+      "web_optimized_path": "assets/images/web/c1217ee4623e4ade.webp",
+      "sha256": "c1217ee4623e4ade34240561d1828c11fb44b64fd99d7ffb8e5cb8b717b35027",
+      "category": "unclassified",
+      "sub_category": "project-library",
+      "tags": [
+        "project-library"
+      ],
+      "location_status": "unknown",
+      "region_ids": [],
+      "route_ids": [],
+      "poi_ids": [],
+      "intended_use": "WanderMind approved project image library; connect only where its destination/category metadata matches.",
+      "alt_text": {
+        "zh": "WanderMind ?????studio feature",
+        "en": "WanderMind project image: studio feature"
+      },
+      "rights": {
+        "status": "user_provided_with_consent",
+        "source": "user_global_confirmation",
+        "approval_date": "2026-08-05",
+        "license_or_owner": "WanderMind user global confirmation"
+      }
+    },
+    {
+      "relative_path": "assets/images/team-1.jpg",
+      "web_optimized_path": "assets/images/web/42a33f76f1eeb0a1.webp",
+      "sha256": "42a33f76f1eeb0a1535196f8d0563d9c3b8e5fe744ce90086bcabdc57e3b6fca",
+      "category": "unclassified",
+      "sub_category": "project-library",
+      "tags": [
+        "project-library"
+      ],
+      "location_status": "unknown",
+      "region_ids": [],
+      "route_ids": [],
+      "poi_ids": [],
+      "intended_use": "WanderMind approved project image library; connect only where its destination/category metadata matches.",
+      "alt_text": {
+        "zh": "WanderMind ?????team 1",
+        "en": "WanderMind project image: team 1"
+      },
+      "rights": {
+        "status": "user_provided_with_consent",
+        "source": "user_global_confirmation",
+        "approval_date": "2026-08-05",
+        "license_or_owner": "WanderMind user global confirmation"
+      }
+    },
+    {
+      "relative_path": "assets/images/team-2.jpg",
+      "web_optimized_path": "assets/images/web/ec93f66cbddf7a52.webp",
+      "sha256": "ec93f66cbddf7a52d8e2f6dca7ae4ff09643051ef168c548c03b6647e91c539d",
+      "category": "unclassified",
+      "sub_category": "project-library",
+      "tags": [
+        "project-library"
+      ],
+      "location_status": "unknown",
+      "region_ids": [],
+      "route_ids": [],
+      "poi_ids": [],
+      "intended_use": "WanderMind approved project image library; connect only where its destination/category metadata matches.",
+      "alt_text": {
+        "zh": "WanderMind ?????team 2",
+        "en": "WanderMind project image: team 2"
+      },
+      "rights": {
+        "status": "user_provided_with_consent",
+        "source": "user_global_confirmation",
+        "approval_date": "2026-08-05",
+        "license_or_owner": "WanderMind user global confirmation"
+      }
+    },
+    {
+      "relative_path": "assets/images/team-3.jpg",
+      "web_optimized_path": "assets/images/web/9fb99df7748682eb.webp",
+      "sha256": "9fb99df7748682eb4991d445d0329167ddcdcc127a8b59b6858435deb555f0f1",
+      "category": "unclassified",
+      "sub_category": "project-library",
+      "tags": [
+        "project-library"
+      ],
+      "location_status": "unknown",
+      "region_ids": [],
+      "route_ids": [],
+      "poi_ids": [],
+      "intended_use": "WanderMind approved project image library; connect only where its destination/category metadata matches.",
+      "alt_text": {
+        "zh": "WanderMind ?????team 3",
+        "en": "WanderMind project image: team 3"
+      },
+      "rights": {
+        "status": "user_provided_with_consent",
+        "source": "user_global_confirmation",
+        "approval_date": "2026-08-05",
+        "license_or_owner": "WanderMind user global confirmation"
+      }
+    },
+    {
+      "relative_path": "assets/images/team-4.jpg",
+      "web_optimized_path": "assets/images/web/8c15e8c18158203b.webp",
+      "sha256": "8c15e8c18158203b3b65d7c27f11f6f5759c7ab9633fc2bd9be7d7c2a5841867",
+      "category": "unclassified",
+      "sub_category": "project-library",
+      "tags": [
+        "project-library"
+      ],
+      "location_status": "unknown",
+      "region_ids": [],
+      "route_ids": [],
+      "poi_ids": [],
+      "intended_use": "WanderMind approved project image library; connect only where its destination/category metadata matches.",
+      "alt_text": {
+        "zh": "WanderMind ?????team 4",
+        "en": "WanderMind project image: team 4"
+      },
+      "rights": {
+        "status": "user_provided_with_consent",
+        "source": "user_global_confirmation",
+        "approval_date": "2026-08-05",
+        "license_or_owner": "WanderMind user global confirmation"
+      }
+    },
+    {
+      "relative_path": "assets/images/Tirta Empul Water Purification Temple.jpg",
+      "web_optimized_path": "assets/images/web/bf353bdc35abb350.webp",
+      "sha256": "bf353bdc35abb35028d85484b62105a0953bf10927f937448d5f69c85bf1a1f4",
+      "category": "culture",
+      "sub_category": "balinese-culture",
+      "tags": [
+        "culture",
+        "temple"
+      ],
+      "location_status": "bali-named",
+      "region_ids": [
+        "G4"
+      ],
+      "route_ids": [
+        "R1",
+        "R4"
+      ],
+      "poi_ids": [
+        "tirta_empul"
+      ],
+      "intended_use": "WanderMind approved project image library; connect only where its destination/category metadata matches.",
+      "alt_text": {
+        "zh": "??????????",
+        "en": "Bali culture or temple scene"
+      },
+      "rights": {
+        "status": "user_provided_with_consent",
+        "source": "user_global_confirmation",
+        "approval_date": "2026-08-05",
+        "license_or_owner": "WanderMind user global confirmation"
+      }
+    },
+    {
+      "relative_path": "assets/images/travelling-china.jpg",
+      "web_optimized_path": "assets/images/web/4348599958d17b23.webp",
+      "sha256": "4348599958d17b231357eb9ac5f66a9fe0f9c311db187104b63d537c6a6b986c",
+      "category": "experiences",
+      "sub_category": "wellness-leisure",
+      "tags": [
+        "wellness",
+        "experience"
+      ],
+      "location_status": "bali-named",
+      "region_ids": [],
+      "route_ids": [],
+      "poi_ids": [],
+      "intended_use": "WanderMind approved project image library; connect only where its destination/category metadata matches.",
+      "alt_text": {
+        "zh": "?????????",
+        "en": "Bali travel experience scene"
+      },
+      "rights": {
+        "status": "user_provided_with_consent",
+        "source": "user_global_confirmation",
+        "approval_date": "2026-08-05",
+        "license_or_owner": "WanderMind user global confirmation"
+      }
+    },
+    {
+      "relative_path": "assets/images/ubud yogabarn1.jpg",
+      "web_optimized_path": "assets/images/web/3dbbb9c3f2873236.webp",
+      "sha256": "3dbbb9c3f28732364c0e51bd39b4c0ce65d0104a8af9e9a86594ff0bd87d3f11",
+      "category": "experiences",
+      "sub_category": "wellness-leisure",
+      "tags": [
+        "wellness",
+        "experience"
+      ],
+      "location_status": "bali-named",
+      "region_ids": [
+        "G4"
+      ],
+      "route_ids": [
+        "R2"
+      ],
+      "poi_ids": [
+        "yoga_barn"
+      ],
+      "intended_use": "WanderMind approved project image library; connect only where its destination/category metadata matches.",
+      "alt_text": {
+        "zh": "?????????",
+        "en": "Bali travel experience scene"
+      },
+      "rights": {
+        "status": "user_provided_with_consent",
+        "source": "user_global_confirmation",
+        "approval_date": "2026-08-05",
+        "license_or_owner": "WanderMind user global confirmation"
+      }
+    },
+    {
+      "relative_path": "assets/images/ubud yogabarn2.jpg",
+      "web_optimized_path": "assets/images/web/aa067adb970c08b1.webp",
+      "sha256": "aa067adb970c08b1b5ae9fbf87ab540e0f455362d1166bb7e88492d52ecde153",
+      "category": "experiences",
+      "sub_category": "wellness-leisure",
+      "tags": [
+        "wellness",
+        "experience"
+      ],
+      "location_status": "bali-named",
+      "region_ids": [
+        "G4"
+      ],
+      "route_ids": [
+        "R2"
+      ],
+      "poi_ids": [
+        "yoga_barn"
+      ],
+      "intended_use": "WanderMind approved project image library; connect only where its destination/category metadata matches.",
+      "alt_text": {
+        "zh": "?????????",
+        "en": "Bali travel experience scene"
+      },
+      "rights": {
+        "status": "user_provided_with_consent",
+        "source": "user_global_confirmation",
+        "approval_date": "2026-08-05",
+        "license_or_owner": "WanderMind user global confirmation"
+      }
+    },
+    {
+      "relative_path": "assets/images/uluwatu_sunday beach club1.jpg",
+      "web_optimized_path": "assets/images/web/9e500f1e79a63ed8.webp",
+      "sha256": "9e500f1e79a63ed8fc27b74f39873b9664d11af19e07c5f40f8c37bf42ec46aa",
+      "category": "experiences",
+      "sub_category": "wellness-leisure",
+      "tags": [
+        "wellness",
+        "experience"
+      ],
+      "location_status": "bali-named",
+      "region_ids": [
+        "G2"
+      ],
+      "route_ids": [
+        "R3",
+        "R6"
+      ],
+      "poi_ids": [],
+      "intended_use": "WanderMind approved project image library; connect only where its destination/category metadata matches.",
+      "alt_text": {
+        "zh": "?????????",
+        "en": "Bali travel experience scene"
+      },
+      "rights": {
+        "status": "user_provided_with_consent",
+        "source": "user_global_confirmation",
+        "approval_date": "2026-08-05",
+        "license_or_owner": "WanderMind user global confirmation"
+      }
+    },
+    {
+      "relative_path": "assets/images/uluwatu_sunday beach club2.jpg",
+      "web_optimized_path": "assets/images/web/5edfe367fc23ca02.webp",
+      "sha256": "5edfe367fc23ca02d11396783faf2e94359e3113c8acce7315b98967ca440f28",
+      "category": "experiences",
+      "sub_category": "wellness-leisure",
+      "tags": [
+        "wellness",
+        "experience"
+      ],
+      "location_status": "bali-named",
+      "region_ids": [
+        "G2"
+      ],
+      "route_ids": [
+        "R3",
+        "R6"
+      ],
+      "poi_ids": [],
+      "intended_use": "WanderMind approved project image library; connect only where its destination/category metadata matches.",
+      "alt_text": {
+        "zh": "?????????",
+        "en": "Bali travel experience scene"
+      },
+      "rights": {
+        "status": "user_provided_with_consent",
+        "source": "user_global_confirmation",
+        "approval_date": "2026-08-05",
+        "license_or_owner": "WanderMind user global confirmation"
+      }
+    },
+    {
+      "relative_path": "assets/images/vertical-overhead-shot-beautiful-shoreline-sea-with-blue-clean-water-sandy-beach.jpg",
+      "web_optimized_path": "assets/images/web/58c0f69c2ed452d3.webp",
+      "sha256": "58c0f69c2ed452d3a5f0847d2ccb0ae780d91752b66d1b6c4f4fbd4769708fb1",
+      "category": "landscapes",
+      "sub_category": "bali-landscape",
+      "tags": [
+        "bali",
+        "landscape"
+      ],
+      "location_status": "bali-named",
+      "region_ids": [],
+      "route_ids": [],
+      "poi_ids": [],
+      "intended_use": "WanderMind approved project image library; connect only where its destination/category metadata matches.",
+      "alt_text": {
+        "zh": "???????",
+        "en": "Bali landscape scene"
+      },
+      "rights": {
+        "status": "user_provided_with_consent",
+        "source": "user_global_confirmation",
+        "approval_date": "2026-08-05",
+        "license_or_owner": "WanderMind user global confirmation"
+      }
+    },
+    {
+      "relative_path": "assets/images/wide-angle-shot-aegean-sea-rocky-coast-with-greenery-around-bushes-trees-hills-mountain-blue-water-with-waves-view-from-drone-greece.jpg",
+      "web_optimized_path": "assets/images/web/8abc72de751b5a6f.webp",
+      "sha256": "8abc72de751b5a6f82f9affd1504428978beff235447d50143c74d63afc70eb4",
+      "category": "landscapes",
+      "sub_category": "bali-landscape",
+      "tags": [
+        "bali",
+        "landscape"
+      ],
+      "location_status": "bali-named",
+      "region_ids": [],
+      "route_ids": [],
+      "poi_ids": [],
+      "intended_use": "WanderMind approved project image library; connect only where its destination/category metadata matches.",
+      "alt_text": {
+        "zh": "???????",
+        "en": "Bali landscape scene"
+      },
+      "rights": {
+        "status": "user_provided_with_consent",
+        "source": "user_global_confirmation",
+        "approval_date": "2026-08-05",
+        "license_or_owner": "WanderMind user global confirmation"
+      }
+    },
+    {
+      "relative_path": "assets/images/world-1.jpg",
+      "web_optimized_path": "assets/images/web/cb8410da9a66867d.webp",
+      "sha256": "cb8410da9a66867d3a20e4535ae1ed3c84f8620ecbafc27d3556987faaed91ae",
+      "category": "unclassified",
+      "sub_category": "project-library",
+      "tags": [
+        "project-library"
+      ],
+      "location_status": "unknown",
+      "region_ids": [],
+      "route_ids": [],
+      "poi_ids": [],
+      "intended_use": "WanderMind approved project image library; connect only where its destination/category metadata matches.",
+      "alt_text": {
+        "zh": "WanderMind ?????world 1",
+        "en": "WanderMind project image: world 1"
+      },
+      "rights": {
+        "status": "user_provided_with_consent",
+        "source": "user_global_confirmation",
+        "approval_date": "2026-08-05",
+        "license_or_owner": "WanderMind user global confirmation"
+      }
+    },
+    {
+      "relative_path": "assets/images/Lempuyang Temple.jpg",
+      "web_optimized_path": "assets/images/web/90b2d9be2187fd87.webp",
+      "thumbnail_path": "assets/images/thumbs/90b2d9be2187fd87.webp",
+      "sha256": "90b2d9be2187fd871790d4fc5e84abf5f75bc0127991723ab4c8dec199a436e9",
+      "category": "culture",
+      "sub_category": "balinese-culture",
+      "tags": [
+        "culture",
+        "temple"
+      ],
+      "location_status": "bali-named",
+      "region_ids": [
+        "G6"
+      ],
+      "route_ids": [
+        "R4",
+        "R5"
+      ],
+      "poi_ids": [],
+      "intended_use": "Approved Bali culture portfolio image after user-confirmed manual watermark removal.",
+      "alt_text": {
+        "zh": "????????????",
+        "en": "Lempuyang Temple gates framing Mount Agung in Bali"
+      },
+      "rights": {
+        "status": "user_provided_with_consent",
+        "source": "user_global_confirmation",
+        "approval_date": "2026-08-05",
+        "license_or_owner": "WanderMind user global confirmation"
+      }
+    }
+  ]
 }

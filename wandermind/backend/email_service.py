@@ -354,6 +354,7 @@ def render_driver_request(data: dict) -> tuple:
         {row("Group size", (str(data.get("num_people")) + " people") if data.get("num_people") else "")}
         {row("Duration", (str(data.get("num_days")) + " days in Bali") if data.get("num_days") else "")}
         {row("Travel dates", (str(data.get("start_date")) + " → " + str(data.get("end_date"))) if data.get("start_date") else "")}
+        {row("Route ID", data.get("route_id"))}
         {row("Preferred pickup time", data.get("preferred_time"))}
         {row("Pickup / hotel", data.get("pickup_location"))}
         {row("Budget range", data.get("budget_range"))}
@@ -379,6 +380,7 @@ def render_driver_request(data: dict) -> tuple:
         f"New Bali driver request for {driver_name} from {full_name}\n\n"
         f"Group: {data.get('num_people','?')} people, {data.get('num_days','?')} days\n"
         + (f"Dates: {data.get('start_date','')} → {data.get('end_date','')}\n" if data.get("start_date") else "")
+        + (f"Route ID: {data.get('route_id','')}\n" if data.get("route_id") else "")
         + (f"Preferred time: {data.get('preferred_time','')}\n" if data.get("preferred_time") else "")
         + (f"Pickup / hotel: {data.get('pickup_location','')}\n" if data.get("pickup_location") else "")
         + (f"Budget: {data.get('budget_range','')}\n" if data.get("budget_range") else "")

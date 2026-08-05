@@ -1,3 +1,10 @@
+/* Driver page: both drivers now have public profile, vehicle and service-moment assets. */
+Object.assign(LANGS.en, { fdGedeShort:'Local driver · profile, vehicle and service-moment photos available' });
+Object.assign(LANGS.zh, { fdGedeShort:'本地司机 · 已有人像、车辆与服务实拍' });
+Object.assign(LANGS.ja, { fdGedeShort:'現地ドライバー・本人、車両、サービス写真あり' });
+Object.assign(LANGS.ko, { fdGedeShort:'현지 기사 · 본인, 차량 및 서비스 사진 제공' });
+Object.assign(LANGS.id, { fdGedeShort:'Driver lokal · foto profil, kendaraan, dan momen layanan tersedia' });
+
 /* ──────────────────────────────────────────────────────
    i18n.js — WanderMind Studio 5-language switcher
    Languages: en / zh / ja / ko / id
@@ -188,7 +195,7 @@ const LANGS = {
     fdMeetDrivers: 'Meet the local drivers', fdProfilePending: 'Profile details being confirmed',
     fdDickyProfile: 'Bali driving support, airport pickup and route-based requests.', fdGedeProfile: 'Alternative local driver for route and date availability.',
     fdLanguageConfirm: 'Languages and exact vehicle capacity need driver confirmation.', fdGedeForward: 'Until direct contact is configured, WanderMind forwards the request manually.',
-    fdQuoteBoundary: 'No fixed rate is published yet. The selected driver confirms availability, vehicle, hours and the final quote after reviewing your route.',
+    fdQuoteBoundary: '<strong>From IDR 750k</strong> for a private full-day tour (up to 10 hours), or <strong>from IDR 550k</strong> for a private half-day tour (up to 6 hours). Includes car, fuel, driver-guide, mineral water, parking and tolls. Additional time is IDR 75k per hour after 10 hours. Airport transfers and hotel changes are quoted by distance; the final route-specific quote is confirmed before booking.',
     fdFirstPh: 'First name', fdLastPh: 'Last name',
     fdIntro: 'A little about you', fdIntroPh: 'e.g. A couple on honeymoon, love photography and beaches…',
     fdPeople: 'How many people', fdDays: 'Days in Bali',
@@ -385,7 +392,7 @@ const LANGS = {
     fdMeetDrivers: '认识本地司机', fdProfilePending: '资料细节确认中',
     fdDickyProfile: '提供巴厘岛用车、机场接送和按路线询价。', fdGedeProfile: '作为另一位本地司机，根据路线与日期确认档期。',
     fdLanguageConfirm: '语言能力和准确载客量仍需司机确认。', fdGedeForward: '在直接联系方式配置完成前，由 WanderMind 人工转发需求。',
-    fdQuoteBoundary: '目前不公开未经确认的固定价。司机会看过路线、日期、车辆和时长后确认档期与最终报价。',
+    fdQuoteBoundary: '私人全天包车 <strong>IDR 750k 起</strong>（最多 10 小时）；私人半日包车 <strong>IDR 550k 起</strong>（最多 6 小时）。含车辆、燃油、司机兼导游、矿泉水、停车费和高速费。全天超过 10 小时后每小时 IDR 75k；接送机和换酒店按距离报价。预订前会确认路线对应的最终报价。',
     fdFirstPh: '名', fdLastPh: '姓',
     fdIntro: '简单介绍一下你', fdIntroPh: '例如：蜜月情侣，喜欢摄影和海滩……',
     fdPeople: '多少人', fdDays: '在巴厘岛玩几天',
@@ -582,7 +589,7 @@ const LANGS = {
     fdMeetDrivers: '現地ドライバー紹介', fdProfilePending: 'プロフィール詳細を確認中',
     fdDickyProfile: 'バリ島内の移動、空港送迎、ルート別の依頼に対応。', fdGedeProfile: 'ルートと日程に応じた別の現地ドライバー候補。',
     fdLanguageConfirm: '対応言語と正確な乗車定員はドライバー確認が必要です。', fdGedeForward: '直接連絡先の設定まではWanderMindが手動で転送します。',
-    fdQuoteBoundary: '未確認の固定料金は掲載していません。ルート、日程、車両、時間を確認後、最終見積もりを回答します。',
+    fdQuoteBoundary: 'プライベート終日ツアーは <strong>IDR 750k〜</strong>（最長10時間）、半日ツアーは <strong>IDR 550k〜</strong>（最長6時間）。車両、燃料、ドライバー兼ガイド、ミネラルウォーター、駐車料金、高速料金を含みます。終日ツアーは10時間を超えると1時間あたり IDR 75k。空港送迎・ホテル移動は距離により見積もり、予約前にルート別の最終料金を確認します。',
     fdFirstPh: '名', fdLastPh: '姓',
     fdIntro: 'あなたについて少し', fdIntroPh: '例：ハネムーンのカップル、写真とビーチが好き…',
     fdPeople: '人数', fdDays: 'バリ島滞在日数',
@@ -779,7 +786,7 @@ const LANGS = {
     fdMeetDrivers: '현지 기사 소개', fdProfilePending: '프로필 세부 정보 확인 중',
     fdDickyProfile: '발리 이동, 공항 픽업, 루트 기반 요청을 지원합니다.', fdGedeProfile: '루트와 날짜 가능 여부에 따른 다른 현지 기사 옵션입니다.',
     fdLanguageConfirm: '언어와 정확한 차량 정원은 기사 확인이 필요합니다.', fdGedeForward: '직접 연락처 설정 전까지 WanderMind가 수동 전달합니다.',
-    fdQuoteBoundary: '확인되지 않은 고정 요금은 게시하지 않습니다. 기사 검토 후 일정, 차량, 시간, 최종 견적을 확인합니다.',
+    fdQuoteBoundary: '프라이빗 종일 투어는 <strong>IDR 750k부터</strong>(최대 10시간), 반일 투어는 <strong>IDR 550k부터</strong>(최대 6시간)입니다. 차량, 연료, 드라이버 겸 가이드, 생수, 주차비와 통행료가 포함됩니다. 종일 투어는 10시간 이후 시간당 IDR 75k가 추가됩니다. 공항 이동과 호텔 간 이동은 거리에 따라 견적을 내며, 예약 전에 경로별 최종 가격을 확인합니다.',
     fdFirstPh: '이름', fdLastPh: '성',
     fdIntro: '간단한 자기소개', fdIntroPh: '예: 신혼여행 커플, 사진과 해변을 좋아함…',
     fdPeople: '인원수', fdDays: '발리 체류 일수',
@@ -976,7 +983,7 @@ const LANGS = {
     fdMeetDrivers: 'Kenali driver lokal', fdProfilePending: 'Detail profil sedang dikonfirmasi',
     fdDickyProfile: 'Dukungan berkendara di Bali, jemput bandara, dan permintaan berbasis rute.', fdGedeProfile: 'Alternatif driver lokal berdasarkan rute dan tanggal.',
     fdLanguageConfirm: 'Bahasa dan kapasitas kendaraan perlu dikonfirmasi driver.', fdGedeForward: 'Sebelum kontak langsung tersedia, WanderMind meneruskan permintaan secara manual.',
-    fdQuoteBoundary: 'Belum ada tarif tetap yang belum terkonfirmasi. Driver meninjau rute, tanggal, kendaraan, dan durasi sebelum memberi harga akhir.',
+    fdQuoteBoundary: 'Tur privat seharian mulai <strong>IDR 750k</strong> (hingga 10 jam), atau tur privat setengah hari mulai <strong>IDR 550k</strong> (hingga 6 jam). Termasuk mobil, bahan bakar, driver sekaligus pemandu, air mineral, parkir, dan tol. Setelah 10 jam, tambahan IDR 75k per jam. Antar-jemput bandara dan pindah hotel dihitung menurut jarak; harga akhir sesuai rute dikonfirmasi sebelum pemesanan.',
     fdFirstPh: 'Nama depan', fdLastPh: 'Nama belakang',
     fdIntro: 'Sedikit tentang Anda', fdIntroPh: 'cth: Pasangan bulan madu, suka fotografi dan pantai…',
     fdPeople: 'Berapa orang', fdDays: 'Hari di Bali',
@@ -1001,31 +1008,31 @@ const LANGS = {
 };
 
 Object.assign(LANGS.en, {
-  formTitle:'Start with what matters to you', formSub:'Tell us the shape of your Bali trip. We carry these details into the AI planner, so you spend less time repeating yourself.',
+  formTitle:'Start with what matters to you', formSub:'We use these details for AI self-planning or to match a professional route, so you do not have to enter them twice.',
   formAudience:'Which Bali trip are you planning?', formAudienceFirst:'My first Bali trip', formAudienceReturn:"I've been before · go deeper",
   formGoal:'What matters most this time?', formGoalEasy:'Less planning · an easier trip', formGoalLocal:'Local culture · real experiences', formGoalPhoto:'Photography · scenic moments', formGoalValue:'Best value · control the budget',
   formTierBudget:'Budget-conscious', formTierComfort:'Comfort & balance', formTierLuxury:'Premium & private', formPeople:'Travellers', formStart:'Departure date', formEnd:'Return date', formCurrency:'Currency', formBudget:'Total budget', formBudgetPh:'e.g. 3000', formSubmitLbl:'Choose how you want to plan', formSubmitBtn:'AI self-plan', formProfessionalBtn:'Get a professional route', formPrivacyNote:'A professional route starts with a free preview. AI self-planning includes its own free allowance.'
 });
 Object.assign(LANGS.zh, {
-  formTitle:'先从你真正关心的事开始', formSub:'告诉我们这次巴厘岛之旅的大致需求。信息会自动带入 AI 规划器，免去重复填写。',
+  formTitle:'先从你真正关心的事开始', formSub:'信息会用于 AI 自助规划，或据此匹配专业路线，免去重复填写。',
   formAudience:'你正在计划哪一种巴厘岛旅行？', formAudienceFirst:'第一次去巴厘岛', formAudienceReturn:'去过巴厘岛 · 想深度体验',
   formGoal:'这次最重要的目标是什么？', formGoalEasy:'少做攻略 · 旅途更轻松', formGoalLocal:'风土人情 · 真实体验', formGoalPhoto:'摄影出片 · 自然风景', formGoalValue:'高性价比 · 控制预算',
   formTierBudget:'预算优先', formTierComfort:'舒适平衡', formTierLuxury:'高端私享', formPeople:'出行人数', formStart:'出发日期', formEnd:'返回日期', formCurrency:'币种', formBudget:'总预算', formBudgetPh:'例如 20000', formSubmitLbl:'选择你的规划方式', formSubmitBtn:'AI 自助规划', formProfessionalBtn:'获取专业路线', formPrivacyNote:'专业路线先免费预览；AI 自助规划也有独立的免费额度。'
 });
 Object.assign(LANGS.ja, {
-  formTitle:'大切にしたいことから始めましょう', formSub:'バリ旅行の概要を入力すると、AIプランナーへ自動で引き継がれます。',
+  formTitle:'大切にしたいことから始めましょう', formSub:'この情報は AI での自主プラン、またはプロルートの提案に使われるため、同じ内容を再入力する必要はありません。',
   formAudience:'今回のバリ旅行は？', formAudienceFirst:'初めてのバリ旅行', formAudienceReturn:'再訪 · もっと深く体験',
   formGoal:'今回もっとも大切なことは？', formGoalEasy:'計画を減らして楽に', formGoalLocal:'文化とリアルな体験', formGoalPhoto:'写真と美しい風景', formGoalValue:'価格と予算管理',
   formTierBudget:'予算重視', formTierComfort:'快適・バランス', formTierLuxury:'上質・プライベート', formPeople:'人数', formStart:'出発日', formEnd:'帰着日', formCurrency:'通貨', formBudget:'総予算', formBudgetPh:'例 300000', formSubmitLbl:'プラン方法を選ぶ', formSubmitBtn:'AIで自分で計画', formProfessionalBtn:'プロルートを受け取る', formPrivacyNote:'プロルートはまず無料でプレビュー。AI自分計画にも独自の無料枠があります。'
 });
 Object.assign(LANGS.ko, {
-  formTitle:'여행에서 중요한 것부터 시작하세요', formSub:'발리 여행의 기본 조건을 알려주면 AI 플래너로 자동 전달됩니다.',
+  formTitle:'여행에서 중요한 것부터 시작하세요', formSub:'이 정보는 AI 직접 계획이나 전문 루트 매칭에 사용되어 같은 내용을 다시 입력할 필요가 없습니다.',
   formAudience:'어떤 발리 여행을 계획하나요?', formAudienceFirst:'첫 발리 여행', formAudienceReturn:'재방문 · 더 깊은 경험',
   formGoal:'이번 여행에서 가장 중요한 것은?', formGoalEasy:'계획은 줄이고 더 편하게', formGoalLocal:'현지 문화와 실제 경험', formGoalPhoto:'사진과 아름다운 풍경', formGoalValue:'가성비와 예산 관리',
   formTierBudget:'예산 우선', formTierComfort:'편안함과 균형', formTierLuxury:'프리미엄·프라이빗', formPeople:'여행 인원', formStart:'출발일', formEnd:'귀국일', formCurrency:'통화', formBudget:'총예산', formBudgetPh:'예: 3000000', formSubmitLbl:'계획 방식을 선택하세요', formSubmitBtn:'AI로 직접 계획', formProfessionalBtn:'전문 루트 받기', formPrivacyNote:'전문 루트는 먼저 무료로 미리 봅니다. AI 직접 계획에도 별도의 무료 한도가 있습니다.'
 });
 Object.assign(LANGS.id, {
-  formTitle:'Mulai dari hal yang paling penting bagi Anda', formSub:'Beri tahu gambaran perjalanan Bali Anda. Detailnya otomatis dibawa ke perencana AI.',
+  formTitle:'Mulai dari hal yang paling penting bagi Anda', formSub:'Detail ini digunakan untuk perencanaan mandiri dengan AI atau untuk mencocokkan rute profesional, jadi Anda tidak perlu mengisinya lagi.',
   formAudience:'Perjalanan Bali seperti apa?', formAudienceFirst:'Pertama kali ke Bali', formAudienceReturn:'Pernah ke Bali · ingin lebih mendalam',
   formGoal:'Apa yang paling penting kali ini?', formGoalEasy:'Lebih sedikit merencanakan · lebih mudah', formGoalLocal:'Budaya lokal · pengalaman nyata', formGoalPhoto:'Fotografi · pemandangan indah', formGoalValue:'Harga terbaik · kendalikan anggaran',
   formTierBudget:'Hemat', formTierComfort:'Nyaman & seimbang', formTierLuxury:'Premium & privat', formPeople:'Jumlah orang', formStart:'Tanggal berangkat', formEnd:'Tanggal pulang', formCurrency:'Mata uang', formBudget:'Anggaran total', formBudgetPh:'mis. 3000', formSubmitLbl:'Pilih cara merencanakan', formSubmitBtn:'Rencanakan sendiri dengan AI', formProfessionalBtn:'Dapatkan rute profesional', formPrivacyNote:'Rute profesional dimulai dengan pratinjau gratis. Perencana AI memiliki kuota gratisnya sendiri.'
@@ -1123,11 +1130,21 @@ Object.assign(LANGS.zh, { baliFilterTheme:'旅行内容', baliFilterTags:'拍摄
 Object.assign(LANGS.ja, { baliFilterTheme:'旅のテーマ', baliFilterTags:'写真・旅行タグ', baliFilterLandscapes:'自然風景', baliFilterExperiences:'旅行体験', baliFilterPlaces:'注目スポット', baliFilterAllTags:'すべてのタグ', baliTagTravellerMoment:'旅人のリアルな瞬間', baliTagGoldenHour:'朝夕の光', baliTagAdventure:'アドベンチャー', baliTagDocumentary:'ドキュメンタリー', baliSubAdventure:'アドベンチャー', baliSubOceanBeach:'海とビーチ', baliSubIconic:'代表的スポット', baliSubArtHeritage:'芸術と文化遺産', baliSubTemples:'寺院と建築', baliSubFoodJourney:'食とコーヒー', baliSubLocalLifestyle:'地元の暮らし', baliSubMountainsVolcano:'山と火山', baliSubHotels:'宿泊とリゾート', baliSubRoadTrip:'ロードトリップと移動', baliGalleryEmpty:'両方の条件に合う写真はまだありません。別のタグをお試しください。' });
 Object.assign(LANGS.ko, { baliFilterTheme:'여행 주제', baliFilterTags:'사진·여행 태그', baliFilterLandscapes:'자연 풍경', baliFilterExperiences:'여행 체험', baliFilterPlaces:'추천 장소', baliFilterAllTags:'모든 태그', baliTagTravellerMoment:'여행자의 실제 순간', baliTagGoldenHour:'아침·저녁 빛', baliTagAdventure:'모험', baliTagDocumentary:'다큐멘터리', baliSubAdventure:'모험', baliSubOceanBeach:'바다와 해변', baliSubIconic:'대표 명소', baliSubArtHeritage:'예술과 문화유산', baliSubTemples:'사원과 건축', baliSubFoodJourney:'음식과 커피', baliSubLocalLifestyle:'현지 생활', baliSubMountainsVolcano:'산과 화산', baliSubHotels:'숙소와 리조트', baliSubRoadTrip:'로드 트립과 이동', baliGalleryEmpty:'두 조건에 모두 맞는 사진이 아직 없습니다. 다른 태그를 선택해 주세요.' });
 Object.assign(LANGS.id, { baliFilterTheme:'Tema perjalanan', baliFilterTags:'Tag foto & perjalanan', baliFilterLandscapes:'Bentang alam', baliFilterExperiences:'Pengalaman', baliFilterPlaces:'Tempat pilihan', baliFilterAllTags:'Semua tag', baliTagTravellerMoment:'Momen nyata traveler', baliTagGoldenHour:'Cahaya pagi & senja', baliTagAdventure:'Petualangan', baliTagDocumentary:'Dokumenter', baliSubAdventure:'Petualangan', baliSubOceanBeach:'Laut & pantai', baliSubIconic:'Tempat ikonik', baliSubArtHeritage:'Seni & warisan', baliSubTemples:'Pura & arsitektur', baliSubFoodJourney:'Kuliner & kopi', baliSubLocalLifestyle:'Kehidupan lokal', baliSubMountainsVolcano:'Gunung & vulkan', baliSubHotels:'Hotel & resor', baliSubRoadTrip:'Perjalanan darat & transfer', baliGalleryEmpty:'Belum ada foto yang cocok dengan kedua filter. Coba tag lain.' });
+Object.assign(LANGS.en, { baliSubWellness:'Wellness & movement' });
+Object.assign(LANGS.zh, { baliSubWellness:'疗愈与身心活动' });
+Object.assign(LANGS.ja, { baliSubWellness:'ウェルネスと運動' });
+Object.assign(LANGS.ko, { baliSubWellness:'웰니스와 움직임' });
+Object.assign(LANGS.id, { baliSubWellness:'Wellness & aktivitas' });
 Object.assign(LANGS.en, { baliClosePlace:'Close place details', baliRealityLabel:'What the photo leaves out', baliPurposeLabel:'Best for', baliRouteMatch:'Matched route', baliSendStopDriver:'Send this stop to a driver' });
 Object.assign(LANGS.zh, { baliClosePlace:'关闭地点详情', baliRealityLabel:'画面之外的现实', baliPurposeLabel:'更适合什么目的', baliRouteMatch:'关联推荐路线', baliSendStopDriver:'把这个地点发给司机' });
 Object.assign(LANGS.ja, { baliClosePlace:'スポット詳細を閉じる', baliRealityLabel:'写真に写らない現実', baliPurposeLabel:'こんな目的に最適', baliRouteMatch:'関連するおすすめルート', baliSendStopDriver:'このスポットをドライバーに送る' });
 Object.assign(LANGS.ko, { baliClosePlace:'장소 상세 닫기', baliRealityLabel:'사진 밖의 실제 모습', baliPurposeLabel:'이런 목적에 적합', baliRouteMatch:'연결된 추천 경로', baliSendStopDriver:'이 장소를 기사에게 보내기' });
 Object.assign(LANGS.id, { baliClosePlace:'Tutup detail tempat', baliRealityLabel:'Hal nyata di balik foto', baliPurposeLabel:'Paling cocok untuk', baliRouteMatch:'Rute rekomendasi terkait', baliSendStopDriver:'Kirim tempat ini ke pengemudi' });
+Object.assign(LANGS.en, { baliRouteSectionEyebrow:'Free route library', baliRouteSectionTitle:'Browse complete public routes for free', baliRouteSectionSub:'The public route families are fully available to browse for free. A personalised professional route first reveals about 70%; unlock it to see the complete place order and execution details.', baliProfessionalEyebrow:'Personalised professional route', baliProfessionalTitle:'Match a route from your trip profile', baliProfessionalSub:'This is separate from AI self-planning and uses its own professional-route entitlement and adjustment allowance.' });
+Object.assign(LANGS.zh, { baliRouteSectionEyebrow:'免费公共路线', baliRouteSectionTitle:'公共路线家族可免费完整浏览', baliRouteSectionSub:'公共路线家族可免费完整浏览；根据你的需求生成的个性化专业路线先开放约 70%，解锁后查看完整地点顺序和执行细节。', baliProfessionalEyebrow:'个性化专业路线', baliProfessionalTitle:'根据旅行信息匹配专业路线', baliProfessionalSub:'专业路线与 AI 自助规划相互独立，使用独立的专业路线权益和调整次数。' });
+Object.assign(LANGS.ja, { baliRouteSectionEyebrow:'無料の公開ルート', baliRouteSectionTitle:'公開ルートはすべて無料で閲覧できます', baliRouteSectionSub:'公開ルートはすべて無料で閲覧できます。ご希望に合わせた個別プロルートは最初に約70%を公開し、解除後に場所の完全な順序と実行詳細を確認できます。', baliProfessionalEyebrow:'個別プロルート', baliProfessionalTitle:'旅行情報からプロルートを提案', baliProfessionalSub:'プロルートはAIセルフプランニングとは独立し、専用の権利と調整回数を使用します。' });
+Object.assign(LANGS.ko, { baliRouteSectionEyebrow:'무료 공개 경로', baliRouteSectionTitle:'공개 경로 전체를 무료로 둘러보세요', baliRouteSectionSub:'공개 경로는 전체를 무료로 볼 수 있습니다. 요청에 맞춘 개인 전문 경로는 약 70%를 먼저 공개하며, 잠금 해제 후 전체 장소 순서와 실행 세부 정보를 확인할 수 있습니다.', baliProfessionalEyebrow:'개인 맞춤 전문 경로', baliProfessionalTitle:'여행 정보로 전문 경로 매칭', baliProfessionalSub:'전문 경로는 AI 셀프 플래닝과 별개이며 전용 이용 권한과 조정 횟수를 사용합니다.' });
+Object.assign(LANGS.id, { baliRouteSectionEyebrow:'Rute publik gratis', baliRouteSectionTitle:'Jelajahi seluruh rute publik secara gratis', baliRouteSectionSub:'Seluruh keluarga rute publik dapat dilihat gratis. Rute profesional yang dipersonalisasi membuka sekitar 70% terlebih dahulu; buka akses untuk melihat urutan tempat dan detail pelaksanaan lengkap.', baliProfessionalEyebrow:'Rute profesional personal', baliProfessionalTitle:'Cocokkan rute dari profil perjalananmu', baliProfessionalSub:'Rute profesional terpisah dari perencanaan mandiri AI serta memakai hak akses dan kuota penyesuaian tersendiri.' });
 
 /* ──────────────────────────────────────────────────────
    apply / persist / wire up the picker

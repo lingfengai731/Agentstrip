@@ -1,92 +1,2034 @@
 {
-  "schema_version": "1.0.0",
-  "updated_at": "2026-08-02",
+  "schema_version": "2.0.0",
+  "updated_at": "2026-08-05",
   "policy": {
-    "publishable_statuses": [
-      "owned",
-      "user_provided_with_consent",
-      "licensed",
-      "public_domain"
-    ],
-    "blocked_statuses": [
-      "unknown",
-      "watermarked",
-      "merchant_site_unlicensed"
-    ],
-    "rule": "A file is not publishable until source, rights status, subject consent when applicable, and intended use are recorded."
+    "rule": "User-global approval applies to current project candidates; automatic exclusions remain mandatory.",
+    "approval_source": "user_global_confirmation",
+    "approval_date": "2026-08-05",
+    "portrait_consent": "approved",
+    "usage_permission": "approved",
+    "manual_review": "approved"
   },
   "assets": [
     {
-      "filename": "Lempuyang Temple.jpg",
-      "category": "places",
-      "tags": ["temple", "G6", "R4"],
-      "capture_style": "unknown",
-      "source": "user_download",
-      "rights_status": "watermarked",
-      "publishable": false,
-      "notes": "Visible Sponsored watermark; do not use."
-    },
-    {
-      "filename": "Dicky1.jpg",
-      "category": "people",
-      "tags": ["driver", "dicky"],
-      "capture_style": "phone_authentic",
-      "source": "user_provided",
+      "filename": "about-banner.jpg",
+      "original_asset": "assets/images/about-banner.jpg",
+      "derived_web_asset": "assets/images/web/4b955bec1d23cff5.webp",
+      "category": "unclassified",
+      "tags": [
+        "project-library"
+      ],
+      "source": "user_global_confirmation",
+      "approval_source": "user_global_confirmation",
+      "approval_date": "2026-08-05",
+      "portrait_consent": "approved",
+      "usage_permission": "approved",
+      "manual_review": "approved",
       "rights_status": "user_provided_with_consent",
       "publishable": true,
-      "notes": "User confirmed driver photos may be used; retain respectful crop and alt text."
+      "notes": "approval_source=user_global_confirmation; approval_date=2026-08-05; portrait_consent=approved; usage_permission=approved; manual_review=approved"
     },
     {
-      "filename": "Gede nicho.jpg",
-      "category": "people",
-      "tags": ["driver", "gede"],
-      "capture_style": "phone_authentic",
-      "source": "user_provided",
+      "filename": "about-stats.jpg",
+      "original_asset": "assets/images/about-stats.jpg",
+      "derived_web_asset": "assets/images/web/298a8429bf39532c.webp",
+      "category": "unclassified",
+      "tags": [
+        "project-library"
+      ],
+      "source": "user_global_confirmation",
+      "approval_source": "user_global_confirmation",
+      "approval_date": "2026-08-05",
+      "portrait_consent": "approved",
+      "usage_permission": "approved",
+      "manual_review": "approved",
       "rights_status": "user_provided_with_consent",
       "publishable": true,
-      "notes": "User confirmed driver photos may be used; spelling/display name still needs final confirmation."
+      "notes": "approval_source=user_global_confirmation; approval_date=2026-08-05; portrait_consent=approved; usage_permission=approved; manual_review=approved"
+    },
+    {
+      "filename": "about-stats1.jpg",
+      "original_asset": "assets/images/about-stats1.jpg",
+      "derived_web_asset": "assets/images/web/3290f773514eb325.webp",
+      "category": "unclassified",
+      "tags": [
+        "project-library"
+      ],
+      "source": "user_global_confirmation",
+      "approval_source": "user_global_confirmation",
+      "approval_date": "2026-08-05",
+      "portrait_consent": "approved",
+      "usage_permission": "approved",
+      "manual_review": "approved",
+      "rights_status": "user_provided_with_consent",
+      "publishable": true,
+      "notes": "approval_source=user_global_confirmation; approval_date=2026-08-05; portrait_consent=approved; usage_permission=approved; manual_review=approved"
+    },
+    {
+      "filename": "about-story.jpg",
+      "original_asset": "assets/images/about-story.jpg",
+      "derived_web_asset": "assets/images/web/17e8c8445020af50.webp",
+      "category": "unclassified",
+      "tags": [
+        "project-library"
+      ],
+      "source": "user_global_confirmation",
+      "approval_source": "user_global_confirmation",
+      "approval_date": "2026-08-05",
+      "portrait_consent": "approved",
+      "usage_permission": "approved",
+      "manual_review": "approved",
+      "rights_status": "user_provided_with_consent",
+      "publishable": true,
+      "notes": "approval_source=user_global_confirmation; approval_date=2026-08-05; portrait_consent=approved; usage_permission=approved; manual_review=approved"
+    },
+    {
+      "filename": "about-story1.jpg",
+      "original_asset": "assets/images/about-story1.jpg",
+      "derived_web_asset": "assets/images/web/7e10de6ab9018705.webp",
+      "category": "unclassified",
+      "tags": [
+        "project-library"
+      ],
+      "source": "user_global_confirmation",
+      "approval_source": "user_global_confirmation",
+      "approval_date": "2026-08-05",
+      "portrait_consent": "approved",
+      "usage_permission": "approved",
+      "manual_review": "approved",
+      "rights_status": "user_provided_with_consent",
+      "publishable": true,
+      "notes": "approval_source=user_global_confirmation; approval_date=2026-08-05; portrait_consent=approved; usage_permission=approved; manual_review=approved"
+    },
+    {
+      "filename": "aerial-view-lush-green-rock-islands-palau-turquoise-waters.jpg",
+      "original_asset": "assets/images/aerial-view-lush-green-rock-islands-palau-turquoise-waters.jpg",
+      "derived_web_asset": "assets/images/web/5468daf5ecfe98e3.webp",
+      "category": "landscapes",
+      "tags": [
+        "location_conflict",
+        "coast"
+      ],
+      "source": "user_global_confirmation",
+      "approval_source": "user_global_confirmation",
+      "approval_date": "2026-08-05",
+      "portrait_consent": "approved",
+      "usage_permission": "approved",
+      "manual_review": "approved",
+      "rights_status": "user_provided_with_consent",
+      "publishable": true,
+      "notes": "approval_source=user_global_confirmation; approval_date=2026-08-05; portrait_consent=approved; usage_permission=approved; manual_review=approved"
+    },
+    {
+      "filename": "aerial-view-tropical-beach-with-turquoise-ocean-waves.jpg",
+      "original_asset": "assets/images/aerial-view-tropical-beach-with-turquoise-ocean-waves.jpg",
+      "derived_web_asset": "assets/images/web/d992de13088fce76.webp",
+      "category": "landscapes",
+      "tags": [
+        "bali",
+        "landscape"
+      ],
+      "source": "user_global_confirmation",
+      "approval_source": "user_global_confirmation",
+      "approval_date": "2026-08-05",
+      "portrait_consent": "approved",
+      "usage_permission": "approved",
+      "manual_review": "approved",
+      "rights_status": "user_provided_with_consent",
+      "publishable": true,
+      "notes": "approval_source=user_global_confirmation; approval_date=2026-08-05; portrait_consent=approved; usage_permission=approved; manual_review=approved"
+    },
+    {
+      "filename": "aerial-view-turquoise-water-boats-phuket-beach-thailand.jpg",
+      "original_asset": "assets/images/aerial-view-turquoise-water-boats-phuket-beach-thailand.jpg",
+      "derived_web_asset": "assets/images/web/176722c00a1b6aba.webp",
+      "category": "landscapes",
+      "tags": [
+        "bali",
+        "landscape"
+      ],
+      "source": "user_global_confirmation",
+      "approval_source": "user_global_confirmation",
+      "approval_date": "2026-08-05",
+      "portrait_consent": "approved",
+      "usage_permission": "approved",
+      "manual_review": "approved",
+      "rights_status": "user_provided_with_consent",
+      "publishable": true,
+      "notes": "approval_source=user_global_confirmation; approval_date=2026-08-05; portrait_consent=approved; usage_permission=approved; manual_review=approved"
+    },
+    {
+      "filename": "aesthetic-summer-holidays.jpg",
+      "original_asset": "assets/images/aesthetic-summer-holidays.jpg",
+      "derived_web_asset": "assets/images/web/591f65d9c030955f.webp",
+      "category": "unclassified",
+      "tags": [
+        "project-library"
+      ],
+      "source": "user_global_confirmation",
+      "approval_source": "user_global_confirmation",
+      "approval_date": "2026-08-05",
+      "portrait_consent": "approved",
+      "usage_permission": "approved",
+      "manual_review": "approved",
+      "rights_status": "user_provided_with_consent",
+      "publishable": true,
+      "notes": "approval_source=user_global_confirmation; approval_date=2026-08-05; portrait_consent=approved; usage_permission=approved; manual_review=approved"
+    },
+    {
+      "filename": "bali-1.jpg",
+      "original_asset": "assets/images/bali-1.jpg",
+      "derived_web_asset": "assets/images/web/51ab7ab45565e4b5.webp",
+      "category": "landscapes",
+      "tags": [
+        "bali",
+        "landscape"
+      ],
+      "source": "user_global_confirmation",
+      "approval_source": "user_global_confirmation",
+      "approval_date": "2026-08-05",
+      "portrait_consent": "approved",
+      "usage_permission": "approved",
+      "manual_review": "approved",
+      "rights_status": "user_provided_with_consent",
+      "publishable": true,
+      "notes": "approval_source=user_global_confirmation; approval_date=2026-08-05; portrait_consent=approved; usage_permission=approved; manual_review=approved"
+    },
+    {
+      "filename": "bali-10.jpg",
+      "original_asset": "assets/images/bali-10.jpg",
+      "derived_web_asset": "assets/images/web/6e8cc0274dcff01f.webp",
+      "category": "landscapes",
+      "tags": [
+        "bali",
+        "landscape"
+      ],
+      "source": "user_global_confirmation",
+      "approval_source": "user_global_confirmation",
+      "approval_date": "2026-08-05",
+      "portrait_consent": "approved",
+      "usage_permission": "approved",
+      "manual_review": "approved",
+      "rights_status": "user_provided_with_consent",
+      "publishable": true,
+      "notes": "approval_source=user_global_confirmation; approval_date=2026-08-05; portrait_consent=approved; usage_permission=approved; manual_review=approved"
+    },
+    {
+      "filename": "bali-11.jpg",
+      "original_asset": "assets/images/bali-11.jpg",
+      "derived_web_asset": "assets/images/web/9455a6e3607e34b2.webp",
+      "category": "landscapes",
+      "tags": [
+        "bali",
+        "landscape"
+      ],
+      "source": "user_global_confirmation",
+      "approval_source": "user_global_confirmation",
+      "approval_date": "2026-08-05",
+      "portrait_consent": "approved",
+      "usage_permission": "approved",
+      "manual_review": "approved",
+      "rights_status": "user_provided_with_consent",
+      "publishable": true,
+      "notes": "approval_source=user_global_confirmation; approval_date=2026-08-05; portrait_consent=approved; usage_permission=approved; manual_review=approved"
+    },
+    {
+      "filename": "bali-12.jpg",
+      "original_asset": "assets/images/bali-12.jpg",
+      "derived_web_asset": "assets/images/web/3d75af3a6b693c12.webp",
+      "category": "landscapes",
+      "tags": [
+        "bali",
+        "landscape"
+      ],
+      "source": "user_global_confirmation",
+      "approval_source": "user_global_confirmation",
+      "approval_date": "2026-08-05",
+      "portrait_consent": "approved",
+      "usage_permission": "approved",
+      "manual_review": "approved",
+      "rights_status": "user_provided_with_consent",
+      "publishable": true,
+      "notes": "approval_source=user_global_confirmation; approval_date=2026-08-05; portrait_consent=approved; usage_permission=approved; manual_review=approved"
+    },
+    {
+      "filename": "bali-13.jpg",
+      "original_asset": "assets/images/bali-13.jpg",
+      "derived_web_asset": "assets/images/web/4671473d0993bb44.webp",
+      "category": "landscapes",
+      "tags": [
+        "bali",
+        "landscape"
+      ],
+      "source": "user_global_confirmation",
+      "approval_source": "user_global_confirmation",
+      "approval_date": "2026-08-05",
+      "portrait_consent": "approved",
+      "usage_permission": "approved",
+      "manual_review": "approved",
+      "rights_status": "user_provided_with_consent",
+      "publishable": true,
+      "notes": "approval_source=user_global_confirmation; approval_date=2026-08-05; portrait_consent=approved; usage_permission=approved; manual_review=approved"
+    },
+    {
+      "filename": "bali-14.jpg",
+      "original_asset": "assets/images/bali-14.jpg",
+      "derived_web_asset": "assets/images/web/90284f633c68bb89.webp",
+      "category": "landscapes",
+      "tags": [
+        "bali",
+        "landscape"
+      ],
+      "source": "user_global_confirmation",
+      "approval_source": "user_global_confirmation",
+      "approval_date": "2026-08-05",
+      "portrait_consent": "approved",
+      "usage_permission": "approved",
+      "manual_review": "approved",
+      "rights_status": "user_provided_with_consent",
+      "publishable": true,
+      "notes": "approval_source=user_global_confirmation; approval_date=2026-08-05; portrait_consent=approved; usage_permission=approved; manual_review=approved"
+    },
+    {
+      "filename": "bali-15.jpg",
+      "original_asset": "assets/images/bali-15.jpg",
+      "derived_web_asset": "assets/images/web/6258d4a12b1cb8f6.webp",
+      "category": "landscapes",
+      "tags": [
+        "bali",
+        "landscape"
+      ],
+      "source": "user_global_confirmation",
+      "approval_source": "user_global_confirmation",
+      "approval_date": "2026-08-05",
+      "portrait_consent": "approved",
+      "usage_permission": "approved",
+      "manual_review": "approved",
+      "rights_status": "user_provided_with_consent",
+      "publishable": true,
+      "notes": "approval_source=user_global_confirmation; approval_date=2026-08-05; portrait_consent=approved; usage_permission=approved; manual_review=approved"
+    },
+    {
+      "filename": "bali-16.jpg",
+      "original_asset": "assets/images/bali-16.jpg",
+      "derived_web_asset": "assets/images/web/4f8f83b5fce5b55f.webp",
+      "category": "landscapes",
+      "tags": [
+        "bali",
+        "landscape"
+      ],
+      "source": "user_global_confirmation",
+      "approval_source": "user_global_confirmation",
+      "approval_date": "2026-08-05",
+      "portrait_consent": "approved",
+      "usage_permission": "approved",
+      "manual_review": "approved",
+      "rights_status": "user_provided_with_consent",
+      "publishable": true,
+      "notes": "approval_source=user_global_confirmation; approval_date=2026-08-05; portrait_consent=approved; usage_permission=approved; manual_review=approved"
+    },
+    {
+      "filename": "bali-17.jpg",
+      "original_asset": "assets/images/bali-17.jpg",
+      "derived_web_asset": "assets/images/web/8955be34cbcf96c6.webp",
+      "category": "landscapes",
+      "tags": [
+        "bali",
+        "landscape"
+      ],
+      "source": "user_global_confirmation",
+      "approval_source": "user_global_confirmation",
+      "approval_date": "2026-08-05",
+      "portrait_consent": "approved",
+      "usage_permission": "approved",
+      "manual_review": "approved",
+      "rights_status": "user_provided_with_consent",
+      "publishable": true,
+      "notes": "approval_source=user_global_confirmation; approval_date=2026-08-05; portrait_consent=approved; usage_permission=approved; manual_review=approved"
+    },
+    {
+      "filename": "bali-18.jpg",
+      "original_asset": "assets/images/bali-18.jpg",
+      "derived_web_asset": "assets/images/web/c987ff171a0833ca.webp",
+      "category": "landscapes",
+      "tags": [
+        "bali",
+        "landscape"
+      ],
+      "source": "user_global_confirmation",
+      "approval_source": "user_global_confirmation",
+      "approval_date": "2026-08-05",
+      "portrait_consent": "approved",
+      "usage_permission": "approved",
+      "manual_review": "approved",
+      "rights_status": "user_provided_with_consent",
+      "publishable": true,
+      "notes": "approval_source=user_global_confirmation; approval_date=2026-08-05; portrait_consent=approved; usage_permission=approved; manual_review=approved"
+    },
+    {
+      "filename": "bali-19.jpg",
+      "original_asset": "assets/images/bali-19.jpg",
+      "derived_web_asset": "assets/images/web/682e4b7b296cd26a.webp",
+      "category": "landscapes",
+      "tags": [
+        "bali",
+        "landscape"
+      ],
+      "source": "user_global_confirmation",
+      "approval_source": "user_global_confirmation",
+      "approval_date": "2026-08-05",
+      "portrait_consent": "approved",
+      "usage_permission": "approved",
+      "manual_review": "approved",
+      "rights_status": "user_provided_with_consent",
+      "publishable": true,
+      "notes": "approval_source=user_global_confirmation; approval_date=2026-08-05; portrait_consent=approved; usage_permission=approved; manual_review=approved"
+    },
+    {
+      "filename": "bali-2.jpg",
+      "original_asset": "assets/images/bali-2.jpg",
+      "derived_web_asset": "assets/images/web/94036e2811302fc8.webp",
+      "category": "landscapes",
+      "tags": [
+        "bali",
+        "landscape"
+      ],
+      "source": "user_global_confirmation",
+      "approval_source": "user_global_confirmation",
+      "approval_date": "2026-08-05",
+      "portrait_consent": "approved",
+      "usage_permission": "approved",
+      "manual_review": "approved",
+      "rights_status": "user_provided_with_consent",
+      "publishable": true,
+      "notes": "approval_source=user_global_confirmation; approval_date=2026-08-05; portrait_consent=approved; usage_permission=approved; manual_review=approved"
+    },
+    {
+      "filename": "bali-3.jpg",
+      "original_asset": "assets/images/bali-3.jpg",
+      "derived_web_asset": "assets/images/web/c11a45dfcccc8767.webp",
+      "category": "landscapes",
+      "tags": [
+        "bali",
+        "landscape"
+      ],
+      "source": "user_global_confirmation",
+      "approval_source": "user_global_confirmation",
+      "approval_date": "2026-08-05",
+      "portrait_consent": "approved",
+      "usage_permission": "approved",
+      "manual_review": "approved",
+      "rights_status": "user_provided_with_consent",
+      "publishable": true,
+      "notes": "approval_source=user_global_confirmation; approval_date=2026-08-05; portrait_consent=approved; usage_permission=approved; manual_review=approved"
+    },
+    {
+      "filename": "bali-4.jpg",
+      "original_asset": "assets/images/bali-4.jpg",
+      "derived_web_asset": "assets/images/web/353e3b2879150547.webp",
+      "category": "landscapes",
+      "tags": [
+        "bali",
+        "landscape"
+      ],
+      "source": "user_global_confirmation",
+      "approval_source": "user_global_confirmation",
+      "approval_date": "2026-08-05",
+      "portrait_consent": "approved",
+      "usage_permission": "approved",
+      "manual_review": "approved",
+      "rights_status": "user_provided_with_consent",
+      "publishable": true,
+      "notes": "approval_source=user_global_confirmation; approval_date=2026-08-05; portrait_consent=approved; usage_permission=approved; manual_review=approved"
+    },
+    {
+      "filename": "bali-5.jpg",
+      "original_asset": "assets/images/bali-5.jpg",
+      "derived_web_asset": "assets/images/web/15c41f6a0fe7fec3.webp",
+      "category": "landscapes",
+      "tags": [
+        "bali",
+        "landscape"
+      ],
+      "source": "user_global_confirmation",
+      "approval_source": "user_global_confirmation",
+      "approval_date": "2026-08-05",
+      "portrait_consent": "approved",
+      "usage_permission": "approved",
+      "manual_review": "approved",
+      "rights_status": "user_provided_with_consent",
+      "publishable": true,
+      "notes": "approval_source=user_global_confirmation; approval_date=2026-08-05; portrait_consent=approved; usage_permission=approved; manual_review=approved"
+    },
+    {
+      "filename": "bali-6.jpg",
+      "original_asset": "assets/images/bali-6.jpg",
+      "derived_web_asset": "assets/images/web/c0298c79fcf3616a.webp",
+      "category": "landscapes",
+      "tags": [
+        "bali",
+        "landscape"
+      ],
+      "source": "user_global_confirmation",
+      "approval_source": "user_global_confirmation",
+      "approval_date": "2026-08-05",
+      "portrait_consent": "approved",
+      "usage_permission": "approved",
+      "manual_review": "approved",
+      "rights_status": "user_provided_with_consent",
+      "publishable": true,
+      "notes": "approval_source=user_global_confirmation; approval_date=2026-08-05; portrait_consent=approved; usage_permission=approved; manual_review=approved"
+    },
+    {
+      "filename": "bali-7.jpg",
+      "original_asset": "assets/images/bali-7.jpg",
+      "derived_web_asset": "assets/images/web/7cf7c3dd8615bea9.webp",
+      "category": "landscapes",
+      "tags": [
+        "bali",
+        "landscape"
+      ],
+      "source": "user_global_confirmation",
+      "approval_source": "user_global_confirmation",
+      "approval_date": "2026-08-05",
+      "portrait_consent": "approved",
+      "usage_permission": "approved",
+      "manual_review": "approved",
+      "rights_status": "user_provided_with_consent",
+      "publishable": true,
+      "notes": "approval_source=user_global_confirmation; approval_date=2026-08-05; portrait_consent=approved; usage_permission=approved; manual_review=approved"
+    },
+    {
+      "filename": "bali-8.jpg",
+      "original_asset": "assets/images/bali-8.jpg",
+      "derived_web_asset": "assets/images/web/ee5a7046b62327d5.webp",
+      "category": "landscapes",
+      "tags": [
+        "bali",
+        "landscape"
+      ],
+      "source": "user_global_confirmation",
+      "approval_source": "user_global_confirmation",
+      "approval_date": "2026-08-05",
+      "portrait_consent": "approved",
+      "usage_permission": "approved",
+      "manual_review": "approved",
+      "rights_status": "user_provided_with_consent",
+      "publishable": true,
+      "notes": "approval_source=user_global_confirmation; approval_date=2026-08-05; portrait_consent=approved; usage_permission=approved; manual_review=approved"
+    },
+    {
+      "filename": "bali-9.jpg",
+      "original_asset": "assets/images/bali-9.jpg",
+      "derived_web_asset": "assets/images/web/96a75cd30d5a6e07.webp",
+      "category": "landscapes",
+      "tags": [
+        "bali",
+        "landscape"
+      ],
+      "source": "user_global_confirmation",
+      "approval_source": "user_global_confirmation",
+      "approval_date": "2026-08-05",
+      "portrait_consent": "approved",
+      "usage_permission": "approved",
+      "manual_review": "approved",
+      "rights_status": "user_provided_with_consent",
+      "publishable": true,
+      "notes": "approval_source=user_global_confirmation; approval_date=2026-08-05; portrait_consent=approved; usage_permission=approved; manual_review=approved"
+    },
+    {
+      "filename": "beautiful-beach-view-koh-chang-island-seascape-trad-province-eastern-thailand-blue-sky-background.jpg",
+      "original_asset": "assets/images/beautiful-beach-view-koh-chang-island-seascape-trad-province-eastern-thailand-blue-sky-background.jpg",
+      "derived_web_asset": "assets/images/web/19a20376933d7922.webp",
+      "category": "landscapes",
+      "tags": [
+        "bali",
+        "landscape"
+      ],
+      "source": "user_global_confirmation",
+      "approval_source": "user_global_confirmation",
+      "approval_date": "2026-08-05",
+      "portrait_consent": "approved",
+      "usage_permission": "approved",
+      "manual_review": "approved",
+      "rights_status": "user_provided_with_consent",
+      "publishable": true,
+      "notes": "approval_source=user_global_confirmation; approval_date=2026-08-05; portrait_consent=approved; usage_permission=approved; manual_review=approved"
+    },
+    {
+      "filename": "car_photodicky.jpg",
+      "original_asset": "assets/images/car_photodicky.jpg",
+      "derived_web_asset": "assets/images/web/341d6a5b224519a4.webp",
+      "category": "people",
+      "tags": [
+        "driver",
+        "travellers"
+      ],
+      "source": "user_global_confirmation",
+      "approval_source": "user_global_confirmation",
+      "approval_date": "2026-08-05",
+      "portrait_consent": "approved",
+      "usage_permission": "approved",
+      "manual_review": "approved",
+      "rights_status": "user_provided_with_consent",
+      "publishable": true,
+      "notes": "approval_source=user_global_confirmation; approval_date=2026-08-05; portrait_consent=approved; usage_permission=approved; manual_review=approved"
+    },
+    {
+      "filename": "car_photodicky2-web.jpg",
+      "original_asset": "assets/images/car_photodicky2-web.jpg",
+      "derived_web_asset": "assets/images/web/7bb50e6252cf6125.webp",
+      "category": "people",
+      "tags": [
+        "driver",
+        "travellers"
+      ],
+      "source": "user_global_confirmation",
+      "approval_source": "user_global_confirmation",
+      "approval_date": "2026-08-05",
+      "portrait_consent": "approved",
+      "usage_permission": "approved",
+      "manual_review": "approved",
+      "rights_status": "user_provided_with_consent",
+      "publishable": true,
+      "notes": "approval_source=user_global_confirmation; approval_date=2026-08-05; portrait_consent=approved; usage_permission=approved; manual_review=approved"
     },
     {
       "filename": "car_photodicky2.jpg",
-      "derived_web_asset": "car_photodicky2-web.jpg",
-      "category": "places",
-      "tags": ["vehicle", "dicky"],
-      "capture_style": "phone_authentic",
-      "source": "user_provided",
+      "original_asset": "assets/images/car_photodicky2.jpg",
+      "derived_web_asset": "assets/images/web/a48af15fa860fa24.webp",
+      "category": "people",
+      "tags": [
+        "driver",
+        "travellers"
+      ],
+      "source": "user_global_confirmation",
+      "approval_source": "user_global_confirmation",
+      "approval_date": "2026-08-05",
+      "portrait_consent": "approved",
+      "usage_permission": "approved",
+      "manual_review": "approved",
       "rights_status": "user_provided_with_consent",
       "publishable": true,
-      "notes": "Vehicle details and capacity remain pending supplier confirmation."
+      "notes": "approval_source=user_global_confirmation; approval_date=2026-08-05; portrait_consent=approved; usage_permission=approved; manual_review=approved"
+    },
+    {
+      "filename": "car_photoGede-web.jpg",
+      "original_asset": "assets/images/car_photoGede-web.jpg",
+      "derived_web_asset": "assets/images/web/888fef90456d4604.webp",
+      "category": "people",
+      "tags": [
+        "driver",
+        "travellers"
+      ],
+      "source": "user_global_confirmation",
+      "approval_source": "user_global_confirmation",
+      "approval_date": "2026-08-05",
+      "portrait_consent": "approved",
+      "usage_permission": "approved",
+      "manual_review": "approved",
+      "rights_status": "user_provided_with_consent",
+      "publishable": true,
+      "notes": "approval_source=user_global_confirmation; approval_date=2026-08-05; portrait_consent=approved; usage_permission=approved; manual_review=approved"
     },
     {
       "filename": "car_photoGede.jpg",
-      "derived_web_asset": "car_photoGede-web.jpg",
-      "category": "places",
-      "tags": ["vehicle", "gede"],
-      "capture_style": "phone_authentic",
-      "source": "user_provided",
+      "original_asset": "assets/images/car_photoGede.jpg",
+      "derived_web_asset": "assets/images/web/db8f00b5993de231.webp",
+      "category": "people",
+      "tags": [
+        "driver",
+        "travellers"
+      ],
+      "source": "user_global_confirmation",
+      "approval_source": "user_global_confirmation",
+      "approval_date": "2026-08-05",
+      "portrait_consent": "approved",
+      "usage_permission": "approved",
+      "manual_review": "approved",
       "rights_status": "user_provided_with_consent",
       "publishable": true,
-      "notes": "Vehicle details and capacity remain pending supplier confirmation."
+      "notes": "approval_source=user_global_confirmation; approval_date=2026-08-05; portrait_consent=approved; usage_permission=approved; manual_review=approved"
+    },
+    {
+      "filename": "cta-bg.jpg",
+      "original_asset": "assets/images/cta-bg.jpg",
+      "derived_web_asset": "assets/images/web/3b6f7f17c49088f0.webp",
+      "category": "unclassified",
+      "tags": [
+        "project-library"
+      ],
+      "source": "user_global_confirmation",
+      "approval_source": "user_global_confirmation",
+      "approval_date": "2026-08-05",
+      "portrait_consent": "approved",
+      "usage_permission": "approved",
+      "manual_review": "approved",
+      "rights_status": "user_provided_with_consent",
+      "publishable": true,
+      "notes": "approval_source=user_global_confirmation; approval_date=2026-08-05; portrait_consent=approved; usage_permission=approved; manual_review=approved"
+    },
+    {
+      "filename": "Dicky1.jpg",
+      "original_asset": "assets/images/Dicky1.jpg",
+      "derived_web_asset": "assets/images/web/b47e5dbf32902c06.webp",
+      "category": "people",
+      "tags": [
+        "driver",
+        "travellers"
+      ],
+      "source": "user_global_confirmation",
+      "approval_source": "user_global_confirmation",
+      "approval_date": "2026-08-05",
+      "portrait_consent": "approved",
+      "usage_permission": "approved",
+      "manual_review": "approved",
+      "rights_status": "user_provided_with_consent",
+      "publishable": true,
+      "notes": "approval_source=user_global_confirmation; approval_date=2026-08-05; portrait_consent=approved; usage_permission=approved; manual_review=approved"
+    },
+    {
+      "filename": "Dicky2.jpg",
+      "original_asset": "assets/images/Dicky2.jpg",
+      "derived_web_asset": "assets/images/web/facc454ac572f04b.webp",
+      "category": "people",
+      "tags": [
+        "driver",
+        "travellers"
+      ],
+      "source": "user_global_confirmation",
+      "approval_source": "user_global_confirmation",
+      "approval_date": "2026-08-05",
+      "portrait_consent": "approved",
+      "usage_permission": "approved",
+      "manual_review": "approved",
+      "rights_status": "user_provided_with_consent",
+      "publishable": true,
+      "notes": "approval_source=user_global_confirmation; approval_date=2026-08-05; portrait_consent=approved; usage_permission=approved; manual_review=approved"
     },
     {
       "filename": "Dicky_tourist1.jpg",
+      "original_asset": "assets/images/Dicky_tourist1.jpg",
+      "derived_web_asset": "assets/images/web/1d5e9b853c78ca4c.webp",
       "category": "people",
-      "tags": ["driver", "dicky", "travellers"],
-      "capture_style": "phone_authentic",
-      "source": "user_provided",
+      "tags": [
+        "driver",
+        "travellers"
+      ],
+      "source": "user_global_confirmation",
+      "approval_source": "user_global_confirmation",
+      "approval_date": "2026-08-05",
+      "portrait_consent": "approved",
+      "usage_permission": "approved",
+      "manual_review": "approved",
       "rights_status": "user_provided_with_consent",
       "publishable": true,
-      "notes": "Use only while driver and pictured travellers' publication consent remains valid."
+      "notes": "approval_source=user_global_confirmation; approval_date=2026-08-05; portrait_consent=approved; usage_permission=approved; manual_review=approved"
+    },
+    {
+      "filename": "Dicky_tourist2.jpg",
+      "original_asset": "assets/images/Dicky_tourist2.jpg",
+      "derived_web_asset": "assets/images/web/abeac1a74e159aec.webp",
+      "category": "people",
+      "tags": [
+        "driver",
+        "travellers"
+      ],
+      "source": "user_global_confirmation",
+      "approval_source": "user_global_confirmation",
+      "approval_date": "2026-08-05",
+      "portrait_consent": "approved",
+      "usage_permission": "approved",
+      "manual_review": "approved",
+      "rights_status": "user_provided_with_consent",
+      "publishable": true,
+      "notes": "approval_source=user_global_confirmation; approval_date=2026-08-05; portrait_consent=approved; usage_permission=approved; manual_review=approved"
+    },
+    {
+      "filename": "Dicky_tourist3.jpg",
+      "original_asset": "assets/images/Dicky_tourist3.jpg",
+      "derived_web_asset": "assets/images/web/d3b7edb7de06c74e.webp",
+      "category": "people",
+      "tags": [
+        "driver",
+        "travellers"
+      ],
+      "source": "user_global_confirmation",
+      "approval_source": "user_global_confirmation",
+      "approval_date": "2026-08-05",
+      "portrait_consent": "approved",
+      "usage_permission": "approved",
+      "manual_review": "approved",
+      "rights_status": "user_provided_with_consent",
+      "publishable": true,
+      "notes": "approval_source=user_global_confirmation; approval_date=2026-08-05; portrait_consent=approved; usage_permission=approved; manual_review=approved"
+    },
+    {
+      "filename": "Dicky_tourist4.jpg",
+      "original_asset": "assets/images/Dicky_tourist4.jpg",
+      "derived_web_asset": "assets/images/web/f0b485842d63b8dc.webp",
+      "category": "people",
+      "tags": [
+        "driver",
+        "travellers"
+      ],
+      "source": "user_global_confirmation",
+      "approval_source": "user_global_confirmation",
+      "approval_date": "2026-08-05",
+      "portrait_consent": "approved",
+      "usage_permission": "approved",
+      "manual_review": "approved",
+      "rights_status": "user_provided_with_consent",
+      "publishable": true,
+      "notes": "approval_source=user_global_confirmation; approval_date=2026-08-05; portrait_consent=approved; usage_permission=approved; manual_review=approved"
+    },
+    {
+      "filename": "Dicky_tourist5.jpg",
+      "original_asset": "assets/images/Dicky_tourist5.jpg",
+      "derived_web_asset": "assets/images/web/3cc41350bbbe9784.webp",
+      "category": "people",
+      "tags": [
+        "driver",
+        "travellers"
+      ],
+      "source": "user_global_confirmation",
+      "approval_source": "user_global_confirmation",
+      "approval_date": "2026-08-05",
+      "portrait_consent": "approved",
+      "usage_permission": "approved",
+      "manual_review": "approved",
+      "rights_status": "user_provided_with_consent",
+      "publishable": true,
+      "notes": "approval_source=user_global_confirmation; approval_date=2026-08-05; portrait_consent=approved; usage_permission=approved; manual_review=approved"
+    },
+    {
+      "filename": "Dicky_tourist6.jpg",
+      "original_asset": "assets/images/Dicky_tourist6.jpg",
+      "derived_web_asset": "assets/images/web/c9f2502862c2d45e.webp",
+      "category": "people",
+      "tags": [
+        "driver",
+        "travellers"
+      ],
+      "source": "user_global_confirmation",
+      "approval_source": "user_global_confirmation",
+      "approval_date": "2026-08-05",
+      "portrait_consent": "approved",
+      "usage_permission": "approved",
+      "manual_review": "approved",
+      "rights_status": "user_provided_with_consent",
+      "publishable": true,
+      "notes": "approval_source=user_global_confirmation; approval_date=2026-08-05; portrait_consent=approved; usage_permission=approved; manual_review=approved"
+    },
+    {
+      "filename": "DickyandGede nicho _tourist1.jpg",
+      "original_asset": "assets/images/DickyandGede nicho _tourist1.jpg",
+      "derived_web_asset": "assets/images/web/0a69d27439db0163.webp",
+      "category": "people",
+      "tags": [
+        "driver",
+        "travellers"
+      ],
+      "source": "user_global_confirmation",
+      "approval_source": "user_global_confirmation",
+      "approval_date": "2026-08-05",
+      "portrait_consent": "approved",
+      "usage_permission": "approved",
+      "manual_review": "approved",
+      "rights_status": "user_provided_with_consent",
+      "publishable": true,
+      "notes": "approval_source=user_global_confirmation; approval_date=2026-08-05; portrait_consent=approved; usage_permission=approved; manual_review=approved"
+    },
+    {
+      "filename": "DickyandGede nicho _tourist2.jpg",
+      "original_asset": "assets/images/DickyandGede nicho _tourist2.jpg",
+      "derived_web_asset": "assets/images/web/f0b47b2e36049c9a.webp",
+      "category": "people",
+      "tags": [
+        "driver",
+        "travellers"
+      ],
+      "source": "user_global_confirmation",
+      "approval_source": "user_global_confirmation",
+      "approval_date": "2026-08-05",
+      "portrait_consent": "approved",
+      "usage_permission": "approved",
+      "manual_review": "approved",
+      "rights_status": "user_provided_with_consent",
+      "publishable": true,
+      "notes": "approval_source=user_global_confirmation; approval_date=2026-08-05; portrait_consent=approved; usage_permission=approved; manual_review=approved"
+    },
+    {
+      "filename": "down.png",
+      "original_asset": "assets/images/down.png",
+      "derived_web_asset": "assets/images/web/73a46249c796b78c.webp",
+      "category": "unclassified",
+      "tags": [
+        "project-library"
+      ],
+      "source": "user_global_confirmation",
+      "approval_source": "user_global_confirmation",
+      "approval_date": "2026-08-05",
+      "portrait_consent": "approved",
+      "usage_permission": "approved",
+      "manual_review": "approved",
+      "rights_status": "user_provided_with_consent",
+      "publishable": true,
+      "notes": "approval_source=user_global_confirmation; approval_date=2026-08-05; portrait_consent=approved; usage_permission=approved; manual_review=approved"
+    },
+    {
+      "filename": "gallery-1.jpg",
+      "original_asset": "assets/images/gallery-1.jpg",
+      "derived_web_asset": "assets/images/web/db0771f7214d6b4e.webp",
+      "category": "unclassified",
+      "tags": [
+        "project-library"
+      ],
+      "source": "user_global_confirmation",
+      "approval_source": "user_global_confirmation",
+      "approval_date": "2026-08-05",
+      "portrait_consent": "approved",
+      "usage_permission": "approved",
+      "manual_review": "approved",
+      "rights_status": "user_provided_with_consent",
+      "publishable": true,
+      "notes": "approval_source=user_global_confirmation; approval_date=2026-08-05; portrait_consent=approved; usage_permission=approved; manual_review=approved"
+    },
+    {
+      "filename": "gallery-2.jpg",
+      "original_asset": "assets/images/gallery-2.jpg",
+      "derived_web_asset": "assets/images/web/bb5b6f6565106679.webp",
+      "category": "unclassified",
+      "tags": [
+        "project-library"
+      ],
+      "source": "user_global_confirmation",
+      "approval_source": "user_global_confirmation",
+      "approval_date": "2026-08-05",
+      "portrait_consent": "approved",
+      "usage_permission": "approved",
+      "manual_review": "approved",
+      "rights_status": "user_provided_with_consent",
+      "publishable": true,
+      "notes": "approval_source=user_global_confirmation; approval_date=2026-08-05; portrait_consent=approved; usage_permission=approved; manual_review=approved"
+    },
+    {
+      "filename": "gallery-3.jpg",
+      "original_asset": "assets/images/gallery-3.jpg",
+      "derived_web_asset": "assets/images/web/63840a71df0d035b.webp",
+      "category": "unclassified",
+      "tags": [
+        "project-library"
+      ],
+      "source": "user_global_confirmation",
+      "approval_source": "user_global_confirmation",
+      "approval_date": "2026-08-05",
+      "portrait_consent": "approved",
+      "usage_permission": "approved",
+      "manual_review": "approved",
+      "rights_status": "user_provided_with_consent",
+      "publishable": true,
+      "notes": "approval_source=user_global_confirmation; approval_date=2026-08-05; portrait_consent=approved; usage_permission=approved; manual_review=approved"
+    },
+    {
+      "filename": "gallery-4.jpg",
+      "original_asset": "assets/images/gallery-4.jpg",
+      "derived_web_asset": "assets/images/web/b86b93c2e39fabdb.webp",
+      "category": "unclassified",
+      "tags": [
+        "project-library"
+      ],
+      "source": "user_global_confirmation",
+      "approval_source": "user_global_confirmation",
+      "approval_date": "2026-08-05",
+      "portrait_consent": "approved",
+      "usage_permission": "approved",
+      "manual_review": "approved",
+      "rights_status": "user_provided_with_consent",
+      "publishable": true,
+      "notes": "approval_source=user_global_confirmation; approval_date=2026-08-05; portrait_consent=approved; usage_permission=approved; manual_review=approved"
+    },
+    {
+      "filename": "gallery-5.jpg",
+      "original_asset": "assets/images/gallery-5.jpg",
+      "derived_web_asset": "assets/images/web/2a7a6666dd325a95.webp",
+      "category": "unclassified",
+      "tags": [
+        "project-library"
+      ],
+      "source": "user_global_confirmation",
+      "approval_source": "user_global_confirmation",
+      "approval_date": "2026-08-05",
+      "portrait_consent": "approved",
+      "usage_permission": "approved",
+      "manual_review": "approved",
+      "rights_status": "user_provided_with_consent",
+      "publishable": true,
+      "notes": "approval_source=user_global_confirmation; approval_date=2026-08-05; portrait_consent=approved; usage_permission=approved; manual_review=approved"
+    },
+    {
+      "filename": "gallery-6.jpg",
+      "original_asset": "assets/images/gallery-6.jpg",
+      "derived_web_asset": "assets/images/web/432dcc056d82b047.webp",
+      "category": "unclassified",
+      "tags": [
+        "project-library"
+      ],
+      "source": "user_global_confirmation",
+      "approval_source": "user_global_confirmation",
+      "approval_date": "2026-08-05",
+      "portrait_consent": "approved",
+      "usage_permission": "approved",
+      "manual_review": "approved",
+      "rights_status": "user_provided_with_consent",
+      "publishable": true,
+      "notes": "approval_source=user_global_confirmation; approval_date=2026-08-05; portrait_consent=approved; usage_permission=approved; manual_review=approved"
+    },
+    {
+      "filename": "Galungan.jpg",
+      "original_asset": "assets/images/Galungan.jpg",
+      "derived_web_asset": "assets/images/web/a637d36cf0e9f53a.webp",
+      "category": "culture",
+      "tags": [
+        "culture",
+        "temple"
+      ],
+      "source": "user_global_confirmation",
+      "approval_source": "user_global_confirmation",
+      "approval_date": "2026-08-05",
+      "portrait_consent": "approved",
+      "usage_permission": "approved",
+      "manual_review": "approved",
+      "rights_status": "user_provided_with_consent",
+      "publishable": true,
+      "notes": "approval_source=user_global_confirmation; approval_date=2026-08-05; portrait_consent=approved; usage_permission=approved; manual_review=approved"
+    },
+    {
+      "filename": "Garuda Wisnu Kencana.jpg",
+      "original_asset": "assets/images/Garuda Wisnu Kencana.jpg",
+      "derived_web_asset": "assets/images/web/5606be88ad794ba6.webp",
+      "category": "culture",
+      "tags": [
+        "culture",
+        "temple"
+      ],
+      "source": "user_global_confirmation",
+      "approval_source": "user_global_confirmation",
+      "approval_date": "2026-08-05",
+      "portrait_consent": "approved",
+      "usage_permission": "approved",
+      "manual_review": "approved",
+      "rights_status": "user_provided_with_consent",
+      "publishable": true,
+      "notes": "approval_source=user_global_confirmation; approval_date=2026-08-05; portrait_consent=approved; usage_permission=approved; manual_review=approved"
+    },
+    {
+      "filename": "Gede nicho.jpg",
+      "original_asset": "assets/images/Gede nicho.jpg",
+      "derived_web_asset": "assets/images/web/b0a4861a2a414f15.webp",
+      "category": "people",
+      "tags": [
+        "driver",
+        "travellers"
+      ],
+      "source": "user_global_confirmation",
+      "approval_source": "user_global_confirmation",
+      "approval_date": "2026-08-05",
+      "portrait_consent": "approved",
+      "usage_permission": "approved",
+      "manual_review": "approved",
+      "rights_status": "user_provided_with_consent",
+      "publishable": true,
+      "notes": "approval_source=user_global_confirmation; approval_date=2026-08-05; portrait_consent=approved; usage_permission=approved; manual_review=approved"
     },
     {
       "filename": "Gede nicho_tourist1.jpg",
+      "original_asset": "assets/images/Gede nicho_tourist1.jpg",
+      "derived_web_asset": "assets/images/web/801293f7fbcc9dca.webp",
       "category": "people",
-      "tags": ["driver", "gede", "travellers"],
-      "capture_style": "phone_authentic",
-      "source": "user_provided",
+      "tags": [
+        "driver",
+        "travellers"
+      ],
+      "source": "user_global_confirmation",
+      "approval_source": "user_global_confirmation",
+      "approval_date": "2026-08-05",
+      "portrait_consent": "approved",
+      "usage_permission": "approved",
+      "manual_review": "approved",
       "rights_status": "user_provided_with_consent",
       "publishable": true,
-      "notes": "Use only while driver and pictured travellers' publication consent remains valid."
+      "notes": "approval_source=user_global_confirmation; approval_date=2026-08-05; portrait_consent=approved; usage_permission=approved; manual_review=approved"
+    },
+    {
+      "filename": "Gede nicho_tourist2.jpg",
+      "original_asset": "assets/images/Gede nicho_tourist2.jpg",
+      "derived_web_asset": "assets/images/web/4d8f28299b04d044.webp",
+      "category": "people",
+      "tags": [
+        "driver",
+        "travellers"
+      ],
+      "source": "user_global_confirmation",
+      "approval_source": "user_global_confirmation",
+      "approval_date": "2026-08-05",
+      "portrait_consent": "approved",
+      "usage_permission": "approved",
+      "manual_review": "approved",
+      "rights_status": "user_provided_with_consent",
+      "publishable": true,
+      "notes": "approval_source=user_global_confirmation; approval_date=2026-08-05; portrait_consent=approved; usage_permission=approved; manual_review=approved"
+    },
+    {
+      "filename": "Gede nicho_tourist3.jpg",
+      "original_asset": "assets/images/Gede nicho_tourist3.jpg",
+      "derived_web_asset": "assets/images/web/f9ec4045b132fbd0.webp",
+      "category": "people",
+      "tags": [
+        "driver",
+        "travellers"
+      ],
+      "source": "user_global_confirmation",
+      "approval_source": "user_global_confirmation",
+      "approval_date": "2026-08-05",
+      "portrait_consent": "approved",
+      "usage_permission": "approved",
+      "manual_review": "approved",
+      "rights_status": "user_provided_with_consent",
+      "publishable": true,
+      "notes": "approval_source=user_global_confirmation; approval_date=2026-08-05; portrait_consent=approved; usage_permission=approved; manual_review=approved"
+    },
+    {
+      "filename": "Gede nicho_tourist4.jpg",
+      "original_asset": "assets/images/Gede nicho_tourist4.jpg",
+      "derived_web_asset": "assets/images/web/328a49e16467fef1.webp",
+      "category": "people",
+      "tags": [
+        "driver",
+        "travellers"
+      ],
+      "source": "user_global_confirmation",
+      "approval_source": "user_global_confirmation",
+      "approval_date": "2026-08-05",
+      "portrait_consent": "approved",
+      "usage_permission": "approved",
+      "manual_review": "approved",
+      "rights_status": "user_provided_with_consent",
+      "publishable": true,
+      "notes": "approval_source=user_global_confirmation; approval_date=2026-08-05; portrait_consent=approved; usage_permission=approved; manual_review=approved"
+    },
+    {
+      "filename": "Gede nicho_tourist5.jpg",
+      "original_asset": "assets/images/Gede nicho_tourist5.jpg",
+      "derived_web_asset": "assets/images/web/98f9b02d6233e8b3.webp",
+      "category": "people",
+      "tags": [
+        "driver",
+        "travellers"
+      ],
+      "source": "user_global_confirmation",
+      "approval_source": "user_global_confirmation",
+      "approval_date": "2026-08-05",
+      "portrait_consent": "approved",
+      "usage_permission": "approved",
+      "manual_review": "approved",
+      "rights_status": "user_provided_with_consent",
+      "publishable": true,
+      "notes": "approval_source=user_global_confirmation; approval_date=2026-08-05; portrait_consent=approved; usage_permission=approved; manual_review=approved"
+    },
+    {
+      "filename": "Gede nicho_tourist6.jpg",
+      "original_asset": "assets/images/Gede nicho_tourist6.jpg",
+      "derived_web_asset": "assets/images/web/a053b92cc599adb2.webp",
+      "category": "people",
+      "tags": [
+        "driver",
+        "travellers"
+      ],
+      "source": "user_global_confirmation",
+      "approval_source": "user_global_confirmation",
+      "approval_date": "2026-08-05",
+      "portrait_consent": "approved",
+      "usage_permission": "approved",
+      "manual_review": "approved",
+      "rights_status": "user_provided_with_consent",
+      "publishable": true,
+      "notes": "approval_source=user_global_confirmation; approval_date=2026-08-05; portrait_consent=approved; usage_permission=approved; manual_review=approved"
+    },
+    {
+      "filename": "hero-1.jpg",
+      "original_asset": "assets/images/hero-1.jpg",
+      "derived_web_asset": "assets/images/web/18029bd74c32ef72.webp",
+      "category": "unclassified",
+      "tags": [
+        "project-library"
+      ],
+      "source": "user_global_confirmation",
+      "approval_source": "user_global_confirmation",
+      "approval_date": "2026-08-05",
+      "portrait_consent": "approved",
+      "usage_permission": "approved",
+      "manual_review": "approved",
+      "rights_status": "user_provided_with_consent",
+      "publishable": true,
+      "notes": "approval_source=user_global_confirmation; approval_date=2026-08-05; portrait_consent=approved; usage_permission=approved; manual_review=approved"
+    },
+    {
+      "filename": "hero-2.jpg",
+      "original_asset": "assets/images/hero-2.jpg",
+      "derived_web_asset": "assets/images/web/62381e0bf8496a50.webp",
+      "category": "unclassified",
+      "tags": [
+        "project-library"
+      ],
+      "source": "user_global_confirmation",
+      "approval_source": "user_global_confirmation",
+      "approval_date": "2026-08-05",
+      "portrait_consent": "approved",
+      "usage_permission": "approved",
+      "manual_review": "approved",
+      "rights_status": "user_provided_with_consent",
+      "publishable": true,
+      "notes": "approval_source=user_global_confirmation; approval_date=2026-08-05; portrait_consent=approved; usage_permission=approved; manual_review=approved"
+    },
+    {
+      "filename": "hero-3.jpg",
+      "original_asset": "assets/images/hero-3.jpg",
+      "derived_web_asset": "assets/images/web/409b19e56f9ec0d6.webp",
+      "category": "unclassified",
+      "tags": [
+        "project-library"
+      ],
+      "source": "user_global_confirmation",
+      "approval_source": "user_global_confirmation",
+      "approval_date": "2026-08-05",
+      "portrait_consent": "approved",
+      "usage_permission": "approved",
+      "manual_review": "approved",
+      "rights_status": "user_provided_with_consent",
+      "publishable": true,
+      "notes": "approval_source=user_global_confirmation; approval_date=2026-08-05; portrait_consent=approved; usage_permission=approved; manual_review=approved"
+    },
+    {
+      "filename": "hero-4.jpg",
+      "original_asset": "assets/images/hero-4.jpg",
+      "derived_web_asset": "assets/images/web/0228a3ffddeee271.webp",
+      "category": "unclassified",
+      "tags": [
+        "project-library"
+      ],
+      "source": "user_global_confirmation",
+      "approval_source": "user_global_confirmation",
+      "approval_date": "2026-08-05",
+      "portrait_consent": "approved",
+      "usage_permission": "approved",
+      "manual_review": "approved",
+      "rights_status": "user_provided_with_consent",
+      "publishable": true,
+      "notes": "approval_source=user_global_confirmation; approval_date=2026-08-05; portrait_consent=approved; usage_permission=approved; manual_review=approved"
+    },
+    {
+      "filename": "high-angle-shot-beautiful-foggy-cliffs-calm-blue-ocean-captured-kauai-hawaii.jpg",
+      "original_asset": "assets/images/high-angle-shot-beautiful-foggy-cliffs-calm-blue-ocean-captured-kauai-hawaii.jpg",
+      "derived_web_asset": "assets/images/web/a160499c580427a8.webp",
+      "category": "landscapes",
+      "tags": [
+        "bali",
+        "landscape"
+      ],
+      "source": "user_global_confirmation",
+      "approval_source": "user_global_confirmation",
+      "approval_date": "2026-08-05",
+      "portrait_consent": "approved",
+      "usage_permission": "approved",
+      "manual_review": "approved",
+      "rights_status": "user_provided_with_consent",
+      "publishable": true,
+      "notes": "approval_source=user_global_confirmation; approval_date=2026-08-05; portrait_consent=approved; usage_permission=approved; manual_review=approved"
+    },
+    {
+      "filename": "Intuitive Flow1.jpg",
+      "original_asset": "assets/images/Intuitive Flow1.jpg",
+      "derived_web_asset": "assets/images/web/b22399d29ef1b1f2.webp",
+      "category": "experiences",
+      "tags": [
+        "wellness",
+        "experience"
+      ],
+      "source": "user_global_confirmation",
+      "approval_source": "user_global_confirmation",
+      "approval_date": "2026-08-05",
+      "portrait_consent": "approved",
+      "usage_permission": "approved",
+      "manual_review": "approved",
+      "rights_status": "user_provided_with_consent",
+      "publishable": true,
+      "notes": "approval_source=user_global_confirmation; approval_date=2026-08-05; portrait_consent=approved; usage_permission=approved; manual_review=approved"
+    },
+    {
+      "filename": "kyoto-1.jpg",
+      "original_asset": "assets/images/kyoto-1.jpg",
+      "derived_web_asset": "assets/images/web/ea9382023285d36a.webp",
+      "category": "unclassified",
+      "tags": [
+        "project-library"
+      ],
+      "source": "user_global_confirmation",
+      "approval_source": "user_global_confirmation",
+      "approval_date": "2026-08-05",
+      "portrait_consent": "approved",
+      "usage_permission": "approved",
+      "manual_review": "approved",
+      "rights_status": "user_provided_with_consent",
+      "publishable": true,
+      "notes": "approval_source=user_global_confirmation; approval_date=2026-08-05; portrait_consent=approved; usage_permission=approved; manual_review=approved"
+    },
+    {
+      "filename": "kyoto-2.jpg",
+      "original_asset": "assets/images/kyoto-2.jpg",
+      "derived_web_asset": "assets/images/web/4c4cfc92a07881d6.webp",
+      "category": "unclassified",
+      "tags": [
+        "project-library"
+      ],
+      "source": "user_global_confirmation",
+      "approval_source": "user_global_confirmation",
+      "approval_date": "2026-08-05",
+      "portrait_consent": "approved",
+      "usage_permission": "approved",
+      "manual_review": "approved",
+      "rights_status": "user_provided_with_consent",
+      "publishable": true,
+      "notes": "approval_source=user_global_confirmation; approval_date=2026-08-05; portrait_consent=approved; usage_permission=approved; manual_review=approved"
+    },
+    {
+      "filename": "logo-mark-256.png",
+      "original_asset": "assets/images/logo-mark-256.png",
+      "derived_web_asset": "assets/images/web/c409ddb66fd59221.webp",
+      "category": "unclassified",
+      "tags": [
+        "project-library"
+      ],
+      "source": "user_global_confirmation",
+      "approval_source": "user_global_confirmation",
+      "approval_date": "2026-08-05",
+      "portrait_consent": "approved",
+      "usage_permission": "approved",
+      "manual_review": "approved",
+      "rights_status": "user_provided_with_consent",
+      "publishable": true,
+      "notes": "approval_source=user_global_confirmation; approval_date=2026-08-05; portrait_consent=approved; usage_permission=approved; manual_review=approved"
+    },
+    {
+      "filename": "logo-mark.png",
+      "original_asset": "assets/images/logo-mark.png",
+      "derived_web_asset": "assets/images/web/2351b9ebfe19deb2.webp",
+      "category": "unclassified",
+      "tags": [
+        "project-library"
+      ],
+      "source": "user_global_confirmation",
+      "approval_source": "user_global_confirmation",
+      "approval_date": "2026-08-05",
+      "portrait_consent": "approved",
+      "usage_permission": "approved",
+      "manual_review": "approved",
+      "rights_status": "user_provided_with_consent",
+      "publishable": true,
+      "notes": "approval_source=user_global_confirmation; approval_date=2026-08-05; portrait_consent=approved; usage_permission=approved; manual_review=approved"
+    },
+    {
+      "filename": "mesmerizing-view-calm-ocean-trees-shore-sunset-indonesia.jpg",
+      "original_asset": "assets/images/mesmerizing-view-calm-ocean-trees-shore-sunset-indonesia.jpg",
+      "derived_web_asset": "assets/images/web/fd97a6818cd9bd7b.webp",
+      "category": "landscapes",
+      "tags": [
+        "bali",
+        "landscape"
+      ],
+      "source": "user_global_confirmation",
+      "approval_source": "user_global_confirmation",
+      "approval_date": "2026-08-05",
+      "portrait_consent": "approved",
+      "usage_permission": "approved",
+      "manual_review": "approved",
+      "rights_status": "user_provided_with_consent",
+      "publishable": true,
+      "notes": "approval_source=user_global_confirmation; approval_date=2026-08-05; portrait_consent=approved; usage_permission=approved; manual_review=approved"
+    },
+    {
+      "filename": "Nyepi.jpg",
+      "original_asset": "assets/images/Nyepi.jpg",
+      "derived_web_asset": "assets/images/web/5ea1261626ebac26.webp",
+      "category": "culture",
+      "tags": [
+        "culture",
+        "temple"
+      ],
+      "source": "user_global_confirmation",
+      "approval_source": "user_global_confirmation",
+      "approval_date": "2026-08-05",
+      "portrait_consent": "approved",
+      "usage_permission": "approved",
+      "manual_review": "approved",
+      "rights_status": "user_provided_with_consent",
+      "publishable": true,
+      "notes": "approval_source=user_global_confirmation; approval_date=2026-08-05; portrait_consent=approved; usage_permission=approved; manual_review=approved"
+    },
+    {
+      "filename": "paris-1.jpg",
+      "original_asset": "assets/images/paris-1.jpg",
+      "derived_web_asset": "assets/images/web/388bc0b1c0e1648d.webp",
+      "category": "unclassified",
+      "tags": [
+        "project-library"
+      ],
+      "source": "user_global_confirmation",
+      "approval_source": "user_global_confirmation",
+      "approval_date": "2026-08-05",
+      "portrait_consent": "approved",
+      "usage_permission": "approved",
+      "manual_review": "approved",
+      "rights_status": "user_provided_with_consent",
+      "publishable": true,
+      "notes": "approval_source=user_global_confirmation; approval_date=2026-08-05; portrait_consent=approved; usage_permission=approved; manual_review=approved"
+    },
+    {
+      "filename": "paris-2.jpg",
+      "original_asset": "assets/images/paris-2.jpg",
+      "derived_web_asset": "assets/images/web/107fa7fb5c18247e.webp",
+      "category": "unclassified",
+      "tags": [
+        "project-library"
+      ],
+      "source": "user_global_confirmation",
+      "approval_source": "user_global_confirmation",
+      "approval_date": "2026-08-05",
+      "portrait_consent": "approved",
+      "usage_permission": "approved",
+      "manual_review": "approved",
+      "rights_status": "user_provided_with_consent",
+      "publishable": true,
+      "notes": "approval_source=user_global_confirmation; approval_date=2026-08-05; portrait_consent=approved; usage_permission=approved; manual_review=approved"
+    },
+    {
+      "filename": "pay-alipay.jpg",
+      "original_asset": "assets/images/pay-alipay.jpg",
+      "derived_web_asset": "assets/images/web/ef71179d6e7e4624.webp",
+      "category": "unclassified",
+      "tags": [
+        "project-library"
+      ],
+      "source": "user_global_confirmation",
+      "approval_source": "user_global_confirmation",
+      "approval_date": "2026-08-05",
+      "portrait_consent": "approved",
+      "usage_permission": "approved",
+      "manual_review": "approved",
+      "rights_status": "user_provided_with_consent",
+      "publishable": true,
+      "notes": "approval_source=user_global_confirmation; approval_date=2026-08-05; portrait_consent=approved; usage_permission=approved; manual_review=approved"
+    },
+    {
+      "filename": "pay-wechat.jpg",
+      "original_asset": "assets/images/pay-wechat.jpg",
+      "derived_web_asset": "assets/images/web/e4709cf80bbc893d.webp",
+      "category": "unclassified",
+      "tags": [
+        "project-library"
+      ],
+      "source": "user_global_confirmation",
+      "approval_source": "user_global_confirmation",
+      "approval_date": "2026-08-05",
+      "portrait_consent": "approved",
+      "usage_permission": "approved",
+      "manual_review": "approved",
+      "rights_status": "user_provided_with_consent",
+      "publishable": true,
+      "notes": "approval_source=user_global_confirmation; approval_date=2026-08-05; portrait_consent=approved; usage_permission=approved; manual_review=approved"
+    },
+    {
+      "filename": "Pura Besakih1.png",
+      "original_asset": "assets/images/Pura Besakih1.png",
+      "derived_web_asset": "assets/images/web/428ea37c1c091836.webp",
+      "category": "culture",
+      "tags": [
+        "culture",
+        "temple"
+      ],
+      "source": "user_global_confirmation",
+      "approval_source": "user_global_confirmation",
+      "approval_date": "2026-08-05",
+      "portrait_consent": "approved",
+      "usage_permission": "approved",
+      "manual_review": "approved",
+      "rights_status": "user_provided_with_consent",
+      "publishable": true,
+      "notes": "approval_source=user_global_confirmation; approval_date=2026-08-05; portrait_consent=approved; usage_permission=approved; manual_review=approved"
+    },
+    {
+      "filename": "Pura Besakih2.png",
+      "original_asset": "assets/images/Pura Besakih2.png",
+      "derived_web_asset": "assets/images/web/0ee069026ef64d7f.webp",
+      "category": "culture",
+      "tags": [
+        "culture",
+        "temple"
+      ],
+      "source": "user_global_confirmation",
+      "approval_source": "user_global_confirmation",
+      "approval_date": "2026-08-05",
+      "portrait_consent": "approved",
+      "usage_permission": "approved",
+      "manual_review": "approved",
+      "rights_status": "user_provided_with_consent",
+      "publishable": true,
+      "notes": "approval_source=user_global_confirmation; approval_date=2026-08-05; portrait_consent=approved; usage_permission=approved; manual_review=approved"
+    },
+    {
+      "filename": "Pura Besakih3.png",
+      "original_asset": "assets/images/Pura Besakih3.png",
+      "derived_web_asset": "assets/images/web/29de3c2fb9bba0e2.webp",
+      "category": "culture",
+      "tags": [
+        "culture",
+        "temple"
+      ],
+      "source": "user_global_confirmation",
+      "approval_source": "user_global_confirmation",
+      "approval_date": "2026-08-05",
+      "portrait_consent": "approved",
+      "usage_permission": "approved",
+      "manual_review": "approved",
+      "rights_status": "user_provided_with_consent",
+      "publishable": true,
+      "notes": "approval_source=user_global_confirmation; approval_date=2026-08-05; portrait_consent=approved; usage_permission=approved; manual_review=approved"
+    },
+    {
+      "filename": "Pura Besakih4.png",
+      "original_asset": "assets/images/Pura Besakih4.png",
+      "derived_web_asset": "assets/images/web/0d506b671814e0ab.webp",
+      "category": "culture",
+      "tags": [
+        "culture",
+        "temple"
+      ],
+      "source": "user_global_confirmation",
+      "approval_source": "user_global_confirmation",
+      "approval_date": "2026-08-05",
+      "portrait_consent": "approved",
+      "usage_permission": "approved",
+      "manual_review": "approved",
+      "rights_status": "user_provided_with_consent",
+      "publishable": true,
+      "notes": "approval_source=user_global_confirmation; approval_date=2026-08-05; portrait_consent=approved; usage_permission=approved; manual_review=approved"
+    },
+    {
+      "filename": "Pura Luhur Uluwatu1.jpg",
+      "original_asset": "assets/images/Pura Luhur Uluwatu1.jpg",
+      "derived_web_asset": "assets/images/web/acd8a19f6733e4aa.webp",
+      "category": "culture",
+      "tags": [
+        "culture",
+        "temple"
+      ],
+      "source": "user_global_confirmation",
+      "approval_source": "user_global_confirmation",
+      "approval_date": "2026-08-05",
+      "portrait_consent": "approved",
+      "usage_permission": "approved",
+      "manual_review": "approved",
+      "rights_status": "user_provided_with_consent",
+      "publishable": true,
+      "notes": "approval_source=user_global_confirmation; approval_date=2026-08-05; portrait_consent=approved; usage_permission=approved; manual_review=approved"
+    },
+    {
+      "filename": "Pura Luhur Uluwatu2.jpg",
+      "original_asset": "assets/images/Pura Luhur Uluwatu2.jpg",
+      "derived_web_asset": "assets/images/web/42b78576f468c0bd.webp",
+      "category": "culture",
+      "tags": [
+        "culture",
+        "temple"
+      ],
+      "source": "user_global_confirmation",
+      "approval_source": "user_global_confirmation",
+      "approval_date": "2026-08-05",
+      "portrait_consent": "approved",
+      "usage_permission": "approved",
+      "manual_review": "approved",
+      "rights_status": "user_provided_with_consent",
+      "publishable": true,
+      "notes": "approval_source=user_global_confirmation; approval_date=2026-08-05; portrait_consent=approved; usage_permission=approved; manual_review=approved"
+    },
+    {
+      "filename": "Pura Taman Ayun.jpg",
+      "original_asset": "assets/images/Pura Taman Ayun.jpg",
+      "derived_web_asset": "assets/images/web/1a8f10505d9638bd.webp",
+      "category": "culture",
+      "tags": [
+        "culture",
+        "temple"
+      ],
+      "source": "user_global_confirmation",
+      "approval_source": "user_global_confirmation",
+      "approval_date": "2026-08-05",
+      "portrait_consent": "approved",
+      "usage_permission": "approved",
+      "manual_review": "approved",
+      "rights_status": "user_provided_with_consent",
+      "publishable": true,
+      "notes": "approval_source=user_global_confirmation; approval_date=2026-08-05; portrait_consent=approved; usage_permission=approved; manual_review=approved"
+    },
+    {
+      "filename": "Pura Taman Saraswati1.jpg",
+      "original_asset": "assets/images/Pura Taman Saraswati1.jpg",
+      "derived_web_asset": "assets/images/web/c1fb58324abc9d99.webp",
+      "category": "culture",
+      "tags": [
+        "culture",
+        "temple"
+      ],
+      "source": "user_global_confirmation",
+      "approval_source": "user_global_confirmation",
+      "approval_date": "2026-08-05",
+      "portrait_consent": "approved",
+      "usage_permission": "approved",
+      "manual_review": "approved",
+      "rights_status": "user_provided_with_consent",
+      "publishable": true,
+      "notes": "approval_source=user_global_confirmation; approval_date=2026-08-05; portrait_consent=approved; usage_permission=approved; manual_review=approved"
+    },
+    {
+      "filename": "Pura Taman Saraswati2.jpg",
+      "original_asset": "assets/images/Pura Taman Saraswati2.jpg",
+      "derived_web_asset": "assets/images/web/958a849b74bf16e2.webp",
+      "category": "culture",
+      "tags": [
+        "culture",
+        "temple"
+      ],
+      "source": "user_global_confirmation",
+      "approval_source": "user_global_confirmation",
+      "approval_date": "2026-08-05",
+      "portrait_consent": "approved",
+      "usage_permission": "approved",
+      "manual_review": "approved",
+      "rights_status": "user_provided_with_consent",
+      "publishable": true,
+      "notes": "approval_source=user_global_confirmation; approval_date=2026-08-05; portrait_consent=approved; usage_permission=approved; manual_review=approved"
+    },
+    {
+      "filename": "Pura Tanah Lot.jpg",
+      "original_asset": "assets/images/Pura Tanah Lot.jpg",
+      "derived_web_asset": "assets/images/web/f7cd422d0d2322bc.webp",
+      "category": "culture",
+      "tags": [
+        "culture",
+        "temple"
+      ],
+      "source": "user_global_confirmation",
+      "approval_source": "user_global_confirmation",
+      "approval_date": "2026-08-05",
+      "portrait_consent": "approved",
+      "usage_permission": "approved",
+      "manual_review": "approved",
+      "rights_status": "user_provided_with_consent",
+      "publishable": true,
+      "notes": "approval_source=user_global_confirmation; approval_date=2026-08-05; portrait_consent=approved; usage_permission=approved; manual_review=approved"
+    },
+    {
+      "filename": "Pura Ulun Danu.jpg",
+      "original_asset": "assets/images/Pura Ulun Danu.jpg",
+      "derived_web_asset": "assets/images/web/d88c9dbefc6f7316.webp",
+      "category": "culture",
+      "tags": [
+        "culture",
+        "temple"
+      ],
+      "source": "user_global_confirmation",
+      "approval_source": "user_global_confirmation",
+      "approval_date": "2026-08-05",
+      "portrait_consent": "approved",
+      "usage_permission": "approved",
+      "manual_review": "approved",
+      "rights_status": "user_provided_with_consent",
+      "publishable": true,
+      "notes": "approval_source=user_global_confirmation; approval_date=2026-08-05; portrait_consent=approved; usage_permission=approved; manual_review=approved"
+    },
+    {
+      "filename": "Pyramids_Of_Chi音疗1.jpg",
+      "original_asset": "assets/images/Pyramids_Of_Chi音疗1.jpg",
+      "derived_web_asset": "assets/images/web/e01a06997abce63b.webp",
+      "category": "experiences",
+      "tags": [
+        "wellness",
+        "experience"
+      ],
+      "source": "user_global_confirmation",
+      "approval_source": "user_global_confirmation",
+      "approval_date": "2026-08-05",
+      "portrait_consent": "approved",
+      "usage_permission": "approved",
+      "manual_review": "approved",
+      "rights_status": "user_provided_with_consent",
+      "publishable": true,
+      "notes": "approval_source=user_global_confirmation; approval_date=2026-08-05; portrait_consent=approved; usage_permission=approved; manual_review=approved"
+    },
+    {
+      "filename": "Pyramids_Of_Chi音疗2.jpg",
+      "original_asset": "assets/images/Pyramids_Of_Chi音疗2.jpg",
+      "derived_web_asset": "assets/images/web/6041280b5b63473b.webp",
+      "category": "experiences",
+      "tags": [
+        "wellness",
+        "experience"
+      ],
+      "source": "user_global_confirmation",
+      "approval_source": "user_global_confirmation",
+      "approval_date": "2026-08-05",
+      "portrait_consent": "approved",
+      "usage_permission": "approved",
+      "manual_review": "approved",
+      "rights_status": "user_provided_with_consent",
+      "publishable": true,
+      "notes": "approval_source=user_global_confirmation; approval_date=2026-08-05; portrait_consent=approved; usage_permission=approved; manual_review=approved"
+    },
+    {
+      "filename": "rock-ocean-landscape.jpg",
+      "original_asset": "assets/images/rock-ocean-landscape.jpg",
+      "derived_web_asset": "assets/images/web/3f9cb8e70c34e9f8.webp",
+      "category": "landscapes",
+      "tags": [
+        "bali",
+        "landscape"
+      ],
+      "source": "user_global_confirmation",
+      "approval_source": "user_global_confirmation",
+      "approval_date": "2026-08-05",
+      "portrait_consent": "approved",
+      "usage_permission": "approved",
+      "manual_review": "approved",
+      "rights_status": "user_provided_with_consent",
+      "publishable": true,
+      "notes": "approval_source=user_global_confirmation; approval_date=2026-08-05; portrait_consent=approved; usage_permission=approved; manual_review=approved"
+    },
+    {
+      "filename": "santorini-1.jpg",
+      "original_asset": "assets/images/santorini-1.jpg",
+      "derived_web_asset": "assets/images/web/7ede1e61fcad44f9.webp",
+      "category": "unclassified",
+      "tags": [
+        "project-library"
+      ],
+      "source": "user_global_confirmation",
+      "approval_source": "user_global_confirmation",
+      "approval_date": "2026-08-05",
+      "portrait_consent": "approved",
+      "usage_permission": "approved",
+      "manual_review": "approved",
+      "rights_status": "user_provided_with_consent",
+      "publishable": true,
+      "notes": "approval_source=user_global_confirmation; approval_date=2026-08-05; portrait_consent=approved; usage_permission=approved; manual_review=approved"
+    },
+    {
+      "filename": "santorini-2.jpg",
+      "original_asset": "assets/images/santorini-2.jpg",
+      "derived_web_asset": "assets/images/web/0a3d30ede739501f.webp",
+      "category": "unclassified",
+      "tags": [
+        "project-library"
+      ],
+      "source": "user_global_confirmation",
+      "approval_source": "user_global_confirmation",
+      "approval_date": "2026-08-05",
+      "portrait_consent": "approved",
+      "usage_permission": "approved",
+      "manual_review": "approved",
+      "rights_status": "user_provided_with_consent",
+      "publishable": true,
+      "notes": "approval_source=user_global_confirmation; approval_date=2026-08-05; portrait_consent=approved; usage_permission=approved; manual_review=approved"
+    },
+    {
+      "filename": "studio-feature.jpg",
+      "original_asset": "assets/images/studio-feature.jpg",
+      "derived_web_asset": "assets/images/web/c1217ee4623e4ade.webp",
+      "category": "unclassified",
+      "tags": [
+        "project-library"
+      ],
+      "source": "user_global_confirmation",
+      "approval_source": "user_global_confirmation",
+      "approval_date": "2026-08-05",
+      "portrait_consent": "approved",
+      "usage_permission": "approved",
+      "manual_review": "approved",
+      "rights_status": "user_provided_with_consent",
+      "publishable": true,
+      "notes": "approval_source=user_global_confirmation; approval_date=2026-08-05; portrait_consent=approved; usage_permission=approved; manual_review=approved"
+    },
+    {
+      "filename": "team-1.jpg",
+      "original_asset": "assets/images/team-1.jpg",
+      "derived_web_asset": "assets/images/web/42a33f76f1eeb0a1.webp",
+      "category": "unclassified",
+      "tags": [
+        "project-library"
+      ],
+      "source": "user_global_confirmation",
+      "approval_source": "user_global_confirmation",
+      "approval_date": "2026-08-05",
+      "portrait_consent": "approved",
+      "usage_permission": "approved",
+      "manual_review": "approved",
+      "rights_status": "user_provided_with_consent",
+      "publishable": true,
+      "notes": "approval_source=user_global_confirmation; approval_date=2026-08-05; portrait_consent=approved; usage_permission=approved; manual_review=approved"
+    },
+    {
+      "filename": "team-2.jpg",
+      "original_asset": "assets/images/team-2.jpg",
+      "derived_web_asset": "assets/images/web/ec93f66cbddf7a52.webp",
+      "category": "unclassified",
+      "tags": [
+        "project-library"
+      ],
+      "source": "user_global_confirmation",
+      "approval_source": "user_global_confirmation",
+      "approval_date": "2026-08-05",
+      "portrait_consent": "approved",
+      "usage_permission": "approved",
+      "manual_review": "approved",
+      "rights_status": "user_provided_with_consent",
+      "publishable": true,
+      "notes": "approval_source=user_global_confirmation; approval_date=2026-08-05; portrait_consent=approved; usage_permission=approved; manual_review=approved"
+    },
+    {
+      "filename": "team-3.jpg",
+      "original_asset": "assets/images/team-3.jpg",
+      "derived_web_asset": "assets/images/web/9fb99df7748682eb.webp",
+      "category": "unclassified",
+      "tags": [
+        "project-library"
+      ],
+      "source": "user_global_confirmation",
+      "approval_source": "user_global_confirmation",
+      "approval_date": "2026-08-05",
+      "portrait_consent": "approved",
+      "usage_permission": "approved",
+      "manual_review": "approved",
+      "rights_status": "user_provided_with_consent",
+      "publishable": true,
+      "notes": "approval_source=user_global_confirmation; approval_date=2026-08-05; portrait_consent=approved; usage_permission=approved; manual_review=approved"
+    },
+    {
+      "filename": "team-4.jpg",
+      "original_asset": "assets/images/team-4.jpg",
+      "derived_web_asset": "assets/images/web/8c15e8c18158203b.webp",
+      "category": "unclassified",
+      "tags": [
+        "project-library"
+      ],
+      "source": "user_global_confirmation",
+      "approval_source": "user_global_confirmation",
+      "approval_date": "2026-08-05",
+      "portrait_consent": "approved",
+      "usage_permission": "approved",
+      "manual_review": "approved",
+      "rights_status": "user_provided_with_consent",
+      "publishable": true,
+      "notes": "approval_source=user_global_confirmation; approval_date=2026-08-05; portrait_consent=approved; usage_permission=approved; manual_review=approved"
+    },
+    {
+      "filename": "Tirta Empul Water Purification Temple.jpg",
+      "original_asset": "assets/images/Tirta Empul Water Purification Temple.jpg",
+      "derived_web_asset": "assets/images/web/bf353bdc35abb350.webp",
+      "category": "culture",
+      "tags": [
+        "culture",
+        "temple"
+      ],
+      "source": "user_global_confirmation",
+      "approval_source": "user_global_confirmation",
+      "approval_date": "2026-08-05",
+      "portrait_consent": "approved",
+      "usage_permission": "approved",
+      "manual_review": "approved",
+      "rights_status": "user_provided_with_consent",
+      "publishable": true,
+      "notes": "approval_source=user_global_confirmation; approval_date=2026-08-05; portrait_consent=approved; usage_permission=approved; manual_review=approved"
+    },
+    {
+      "filename": "travelling-china.jpg",
+      "original_asset": "assets/images/travelling-china.jpg",
+      "derived_web_asset": "assets/images/web/4348599958d17b23.webp",
+      "category": "experiences",
+      "tags": [
+        "wellness",
+        "experience"
+      ],
+      "source": "user_global_confirmation",
+      "approval_source": "user_global_confirmation",
+      "approval_date": "2026-08-05",
+      "portrait_consent": "approved",
+      "usage_permission": "approved",
+      "manual_review": "approved",
+      "rights_status": "user_provided_with_consent",
+      "publishable": true,
+      "notes": "approval_source=user_global_confirmation; approval_date=2026-08-05; portrait_consent=approved; usage_permission=approved; manual_review=approved"
+    },
+    {
+      "filename": "ubud yogabarn1.jpg",
+      "original_asset": "assets/images/ubud yogabarn1.jpg",
+      "derived_web_asset": "assets/images/web/3dbbb9c3f2873236.webp",
+      "category": "experiences",
+      "tags": [
+        "wellness",
+        "experience"
+      ],
+      "source": "user_global_confirmation",
+      "approval_source": "user_global_confirmation",
+      "approval_date": "2026-08-05",
+      "portrait_consent": "approved",
+      "usage_permission": "approved",
+      "manual_review": "approved",
+      "rights_status": "user_provided_with_consent",
+      "publishable": true,
+      "notes": "approval_source=user_global_confirmation; approval_date=2026-08-05; portrait_consent=approved; usage_permission=approved; manual_review=approved"
+    },
+    {
+      "filename": "ubud yogabarn2.jpg",
+      "original_asset": "assets/images/ubud yogabarn2.jpg",
+      "derived_web_asset": "assets/images/web/aa067adb970c08b1.webp",
+      "category": "experiences",
+      "tags": [
+        "wellness",
+        "experience"
+      ],
+      "source": "user_global_confirmation",
+      "approval_source": "user_global_confirmation",
+      "approval_date": "2026-08-05",
+      "portrait_consent": "approved",
+      "usage_permission": "approved",
+      "manual_review": "approved",
+      "rights_status": "user_provided_with_consent",
+      "publishable": true,
+      "notes": "approval_source=user_global_confirmation; approval_date=2026-08-05; portrait_consent=approved; usage_permission=approved; manual_review=approved"
+    },
+    {
+      "filename": "uluwatu_sunday beach club1.jpg",
+      "original_asset": "assets/images/uluwatu_sunday beach club1.jpg",
+      "derived_web_asset": "assets/images/web/9e500f1e79a63ed8.webp",
+      "category": "experiences",
+      "tags": [
+        "wellness",
+        "experience"
+      ],
+      "source": "user_global_confirmation",
+      "approval_source": "user_global_confirmation",
+      "approval_date": "2026-08-05",
+      "portrait_consent": "approved",
+      "usage_permission": "approved",
+      "manual_review": "approved",
+      "rights_status": "user_provided_with_consent",
+      "publishable": true,
+      "notes": "approval_source=user_global_confirmation; approval_date=2026-08-05; portrait_consent=approved; usage_permission=approved; manual_review=approved"
+    },
+    {
+      "filename": "uluwatu_sunday beach club2.jpg",
+      "original_asset": "assets/images/uluwatu_sunday beach club2.jpg",
+      "derived_web_asset": "assets/images/web/5edfe367fc23ca02.webp",
+      "category": "experiences",
+      "tags": [
+        "wellness",
+        "experience"
+      ],
+      "source": "user_global_confirmation",
+      "approval_source": "user_global_confirmation",
+      "approval_date": "2026-08-05",
+      "portrait_consent": "approved",
+      "usage_permission": "approved",
+      "manual_review": "approved",
+      "rights_status": "user_provided_with_consent",
+      "publishable": true,
+      "notes": "approval_source=user_global_confirmation; approval_date=2026-08-05; portrait_consent=approved; usage_permission=approved; manual_review=approved"
+    },
+    {
+      "filename": "vertical-overhead-shot-beautiful-shoreline-sea-with-blue-clean-water-sandy-beach.jpg",
+      "original_asset": "assets/images/vertical-overhead-shot-beautiful-shoreline-sea-with-blue-clean-water-sandy-beach.jpg",
+      "derived_web_asset": "assets/images/web/58c0f69c2ed452d3.webp",
+      "category": "landscapes",
+      "tags": [
+        "bali",
+        "landscape"
+      ],
+      "source": "user_global_confirmation",
+      "approval_source": "user_global_confirmation",
+      "approval_date": "2026-08-05",
+      "portrait_consent": "approved",
+      "usage_permission": "approved",
+      "manual_review": "approved",
+      "rights_status": "user_provided_with_consent",
+      "publishable": true,
+      "notes": "approval_source=user_global_confirmation; approval_date=2026-08-05; portrait_consent=approved; usage_permission=approved; manual_review=approved"
+    },
+    {
+      "filename": "wide-angle-shot-aegean-sea-rocky-coast-with-greenery-around-bushes-trees-hills-mountain-blue-water-with-waves-view-from-drone-greece.jpg",
+      "original_asset": "assets/images/wide-angle-shot-aegean-sea-rocky-coast-with-greenery-around-bushes-trees-hills-mountain-blue-water-with-waves-view-from-drone-greece.jpg",
+      "derived_web_asset": "assets/images/web/8abc72de751b5a6f.webp",
+      "category": "landscapes",
+      "tags": [
+        "bali",
+        "landscape"
+      ],
+      "source": "user_global_confirmation",
+      "approval_source": "user_global_confirmation",
+      "approval_date": "2026-08-05",
+      "portrait_consent": "approved",
+      "usage_permission": "approved",
+      "manual_review": "approved",
+      "rights_status": "user_provided_with_consent",
+      "publishable": true,
+      "notes": "approval_source=user_global_confirmation; approval_date=2026-08-05; portrait_consent=approved; usage_permission=approved; manual_review=approved"
+    },
+    {
+      "filename": "world-1.jpg",
+      "original_asset": "assets/images/world-1.jpg",
+      "derived_web_asset": "assets/images/web/cb8410da9a66867d.webp",
+      "category": "unclassified",
+      "tags": [
+        "project-library"
+      ],
+      "source": "user_global_confirmation",
+      "approval_source": "user_global_confirmation",
+      "approval_date": "2026-08-05",
+      "portrait_consent": "approved",
+      "usage_permission": "approved",
+      "manual_review": "approved",
+      "rights_status": "user_provided_with_consent",
+      "publishable": true,
+      "notes": "approval_source=user_global_confirmation; approval_date=2026-08-05; portrait_consent=approved; usage_permission=approved; manual_review=approved"
+    },
+    {
+      "filename": "Lempuyang Temple.jpg",
+      "original_asset": "assets/images/Lempuyang Temple.jpg",
+      "derived_web_asset": "assets/images/web/90b2d9be2187fd87.webp",
+      "derived_thumbnail_asset": "assets/images/thumbs/90b2d9be2187fd87.webp",
+      "sha256": "90b2d9be2187fd871790d4fc5e84abf5f75bc0127991723ab4c8dec199a436e9",
+      "category": "culture",
+      "tags": [
+        "culture",
+        "temple"
+      ],
+      "source": "user_global_confirmation",
+      "approval_source": "user_global_confirmation",
+      "approval_date": "2026-08-05",
+      "portrait_consent": "approved",
+      "usage_permission": "approved",
+      "manual_review": "approved",
+      "rights_status": "user_provided_with_consent",
+      "publishable": true,
+      "notes": "approval_source=user_global_confirmation; approval_date=2026-08-05; portrait_consent=approved; usage_permission=approved; manual_review=approved; watermark manually removed by user; re-reviewed against replacement source."
     }
   ]
 }

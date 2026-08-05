@@ -4,17 +4,17 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title data-i18n="fdPageTitle">Find a Bali Driver | WanderMind Studio</title>
-    <meta name="description" content="Request WanderMind's trusted local Bali driver Dicky — airport transfers, hotel pickups and full-day private tours.">
+    <meta name="description" content="Request a trusted local Bali driver from WanderMind — airport transfers, hotel pickups and full-day private tours with Dicky or Gede Nico.">
     <link rel="canonical" href="https://wandermind.cc/find-driver">
     <meta property="og:type" content="website">
     <meta property="og:site_name" content="WanderMind Studio">
     <meta property="og:title" content="Find a Bali Driver · WanderMind Studio">
-    <meta property="og:description" content="Request WanderMind's trusted local Bali driver Dicky.">
+    <meta property="og:description" content="Request a trusted local Bali driver from WanderMind: Dicky or Gede Nico.">
     <meta property="og:url" content="https://wandermind.cc/find-driver">
     <meta property="og:image" content="https://wandermind.cc/assets/images/logo-mark.png">
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="Find a Bali Driver · WanderMind Studio">
-    <meta name="twitter:description" content="Request WanderMind's trusted local Bali driver Dicky.">
+    <meta name="twitter:description" content="Request a trusted local Bali driver from WanderMind: Dicky or Gede Nico.">
     <meta name="twitter:image" content="https://wandermind.cc/assets/images/logo-mark.png">
   <link rel="icon" type="image/png" href="assets/images/logo-mark-256.png">
   <link rel="apple-touch-icon" href="assets/images/logo-mark-256.png">
@@ -126,10 +126,19 @@
       .fd-driver-choice span { display:block; margin-top:3px; color:var(--fd-muted); font-size:11.5px; line-height:1.45; }
       .fd-profile { margin-top:18px; padding-top:18px; border-top:1px solid rgba(255,255,255,.2); }
       .fd-profile:first-of-type { margin-top:0; padding-top:0; border-top:0; }
-      .fd-profile-head { display:grid; grid-template-columns:62px 1fr; gap:12px; align-items:center; }
-      .fd-profile-head img { width:62px; height:62px; border-radius:12px; object-fit:cover; }
-      .fd-profile-cars { display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-top:12px; }
-      .fd-profile-cars img { width:100%; height:105px; object-fit:cover; border-radius:10px; }
+      .fd-profile-head { display:grid; grid-template-columns:72px 1fr; gap:13px; align-items:center; }
+      .fd-profile-head img { width:72px; height:72px; border-radius:14px; object-fit:cover; }
+      .fd-profile-name { margin:0; font-size:20px; color:#fff; }
+      .fd-profile-role { margin:4px 0 0; color:rgba(255,255,255,.78); font-size:12px; line-height:1.45; }
+      .fd-profile-intro { margin:16px 0 0; color:rgba(255,255,255,.94); font-size:13.5px; line-height:1.72; white-space:pre-line; }
+      .fd-vehicle-title, .fd-moments-title { margin:20px 0 9px; color:var(--fd-gold); font-size:12px; font-weight:700; letter-spacing:.08em; text-transform:uppercase; }
+      .fd-vehicles { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:10px; }
+      .fd-vehicle { margin:0; padding:7px; border-radius:12px; background:rgba(255,255,255,.11); min-width:0; }
+      .fd-vehicle img { display:block; width:100%; aspect-ratio:4/3; object-fit:contain; object-position:center bottom; border-radius:8px; background:rgba(5,52,45,.55); }
+      .fd-vehicle figcaption { margin-top:6px; color:rgba(255,255,255,.84); font-size:11px; line-height:1.4; }
+      .fd-moments { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:8px; }
+      .fd-moment { margin:0; min-width:0; }
+      .fd-moment img { display:block; width:100%; aspect-ratio:1/1; object-fit:cover; border-radius:9px; background:rgba(5,52,45,.55); }
       .fd-quote-boundary { margin-top:18px; padding:13px; border-radius:10px; background:rgba(255,255,255,.12); font-size:12px; line-height:1.6; color:rgba(255,255,255,.9); }
       @media(max-width:575px){ .fd-driver-picker{grid-template-columns:1fr}.fd-driver-choice{grid-template-columns:56px 1fr}.fd-driver-choice img{width:56px;height:56px} }
       .fd-price-box { background: rgba(255,255,255,.10); border-radius: 12px; padding: 14px 16px; font-size: 13px; line-height: 1.8; }
@@ -197,7 +206,7 @@
 <section class="fd-hero">
   <div class="container">
     <h1 data-i18n="fdTitle">Request a trusted Bali driver</h1>
-    <p data-i18n="fdSub">Tell us about your trip and we'll forward your request directly to Dicky, our verified local driver. He handles airport transfers, hotel pickups and full-day private tours.</p>
+      <p data-i18n="fdSub">Choose Dicky or Gede Nico, then share your route. The selected driver confirms availability, vehicle details, hours and the final quote after review.</p>
   </div>
 </section>
 
@@ -213,13 +222,13 @@
       <div class="fd-driver-picker" role="radiogroup" aria-label="Choose a driver">
         <label class="fd-driver-choice">
           <input type="radio" name="fd-driver" value="dicky" checked>
-          <img src="assets/images/Dicky1.jpg" alt="Dicky, Bali driver" loading="lazy">
+          <img src="assets/images/web/b47e5dbf32902c06.webp" alt="Dicky, Bali driver" loading="lazy">
           <span><strong>Dicky</strong><span data-i18n="fdDickyShort">Local driver · profile and vehicle photos available</span></span>
         </label>
         <label class="fd-driver-choice">
           <input type="radio" name="fd-driver" value="gede">
-          <img src="assets/images/Gede nicho.jpg" alt="Gede, Bali driver" loading="lazy">
-          <span><strong>Gede</strong><span data-i18n="fdGedeShort">Local driver · direct contact details pending</span></span>
+          <img src="assets/images/web/b0a4861a2a414f15.webp" alt="Gede Nico, Bali driver" loading="lazy">
+          <span><strong>Gede Nico</strong><span data-i18n="fdGedeShort">Local driver · profile, vehicle and service-moment photos available</span></span>
         </label>
       </div>
 
@@ -303,7 +312,7 @@
 
       <div class="fd-field">
         <label class="fd-label" data-i18n="fdContact">Your contact <span class="fd-req">*</span></label>
-        <div class="fd-hint" style="margin-top:0;margin-bottom:8px" data-i18n="fdContactHint">Provide at least one so Dicky can reach you.</div>
+        <div class="fd-hint" style="margin-top:0;margin-bottom:8px" data-i18n="fdContactHint">Provide at least one so the selected driver can reach you.</div>
         <input type="text" class="fd-input" id="fd-wa" style="margin-bottom:10px" data-i18n="fdWaPh" data-i18n-attr="placeholder" placeholder="WhatsApp number">
         <input type="email" class="fd-input" id="fd-email" style="margin-bottom:10px" data-i18n="fdEmailPh" data-i18n-attr="placeholder" placeholder="Email address">
         <input type="text" class="fd-input" id="fd-phone" data-i18n="fdPhonePh" data-i18n-attr="placeholder" placeholder="Phone number">
@@ -331,35 +340,8 @@
     <!-- DRIVER CARD -->
     <div class="fd-driver">
       <h3 data-i18n="fdMeetDrivers">Meet the local drivers</h3>
-      <div class="fd-profile">
-        <div class="fd-profile-head">
-          <img src="assets/images/Dicky1.jpg" alt="Dicky" loading="lazy">
-          <div><h3>Dicky</h3><span class="fd-badge" data-i18n="fdProfilePending">Profile details being confirmed</span></div>
-        </div>
-        <ul>
-          <li><span class="fa fa-car"></span> <span data-i18n="fdDickyProfile">Bali driving support, airport pickup and route-based requests.</span></li>
-          <li><span class="fa fa-comments"></span> <span data-i18n="fdLanguageConfirm">Languages and exact vehicle capacity need driver confirmation.</span></li>
-        </ul>
-        <div class="fd-profile-cars">
-          <img src="assets/images/car_photodicky2-web.jpg" alt="Dicky's vehicle" loading="lazy">
-          <img src="assets/images/Dicky_tourist1.jpg" alt="Dicky with travellers" loading="lazy">
-        </div>
-      </div>
-      <div class="fd-profile">
-        <div class="fd-profile-head">
-          <img src="assets/images/Gede nicho.jpg" alt="Gede" loading="lazy">
-          <div><h3>Gede</h3><span class="fd-badge" data-i18n="fdProfilePending">Profile details being confirmed</span></div>
-        </div>
-        <ul>
-          <li><span class="fa fa-car"></span> <span data-i18n="fdGedeProfile">Alternative local driver for route and date availability.</span></li>
-          <li><span class="fa fa-envelope"></span> <span data-i18n="fdGedeForward">Until direct contact is configured, WanderMind forwards the request manually.</span></li>
-        </ul>
-        <div class="fd-profile-cars">
-          <img src="assets/images/car_photoGede-web.jpg" alt="Gede's vehicle" loading="lazy">
-          <img src="assets/images/Gede nicho_tourist1.jpg" alt="Gede with travellers" loading="lazy">
-        </div>
-      </div>
-      <div class="fd-quote-boundary" data-i18n="fdQuoteBoundary">No fixed rate is published yet. The selected driver confirms availability, vehicle, hours and the final quote after reviewing your route.</div>
+      <div class="fd-profile" id="fd-driver-detail" aria-live="polite"></div>
+      <div class="fd-price-box fd-quote-boundary" data-i18n="fdQuoteBoundary"><strong>From IDR 750k</strong> for a private full-day tour (up to 10 hours), or <strong>from IDR 550k</strong> for a private half-day tour (up to 6 hours). Includes car, fuel, driver-guide, mineral water, parking and tolls. Additional time is IDR 75k per hour after 10 hours. Airport transfers and hotel changes are quoted by distance; the final route-specific quote is confirmed before booking.</div>
     </div>
 
   </div>
@@ -412,15 +394,75 @@
     var endEl = document.getElementById('fd-end');
     var budgetEl = document.getElementById('fd-budget');
     var driverChoices = Array.from(document.querySelectorAll('.fd-driver-choice'));
+    var driverDetail = document.getElementById('fd-driver-detail');
+    var DRIVER_UI = {
+      en: { role:'Local Bali guide & driver', vehicle:'Vehicle', moments:'Driver Moments', vehicleCaption:'Vehicle photo', momentAlt:'Service moment with travellers' },
+      zh: { role:'巴厘岛本地导游与司机', vehicle:'车辆展示', moments:'过往服务瞬间', vehicleCaption:'车辆实拍', momentAlt:'与游客的服务瞬间' },
+      ja: { role:'バリ島のローカルガイド兼ドライバー', vehicle:'車両', moments:'サービスの思い出', vehicleCaption:'車両写真', momentAlt:'旅行者とのサービスの瞬間' },
+      ko: { role:'발리 현지 가이드 겸 기사', vehicle:'차량', moments:'서비스 순간', vehicleCaption:'차량 사진', momentAlt:'여행자와 함께한 서비스 순간' },
+      id: { role:'Pemandu dan driver lokal Bali', vehicle:'Kendaraan', moments:'Momen Layanan', vehicleCaption:'Foto kendaraan', momentAlt:'Momen layanan bersama wisatawan' }
+    };
+    var DRIVER_PROFILES = {
+      dicky: {
+        name:'Dicky', image:'assets/images/web/b47e5dbf32902c06.webp', vehicle:'assets/images/web/7bb50e6252cf6125.webp',
+        moments:['web/1d5e9b853c78ca4c.webp','web/abeac1a74e159aec.webp','web/d3b7edb7de06c74e.webp','web/f0b485842d63b8dc.webp','web/3cc41350bbbe9784.webp','web/c9f2502862c2d45e.webp','web/0a69d27439db0163.webp','web/f0b47b2e36049c9a.webp'],
+        intro:{
+          en:'Om Swastyastu. Warm greetings from Bali!\n\nMy name is I Kadek Dicky Maha Putra, but you can call me Dicky. I will be your tour guide and driver during your time here in paradise.\n\nI’m excited to share the rich culture, stunning landscapes, and best-kept hidden gems of Bali with you. My priority is to make sure your trip is safe, comfortable, and unforgettable. If you need anything or have any questions along the way, please don’t hesitate to ask. Sit back, relax, and enjoy the island!',
+          zh:'Om Swastyastu，来自巴厘岛的温暖问候！\n\n我叫 I Kadek Dicky Maha Putra，你可以叫我 Dicky。在这片天堂般的岛屿旅行期间，我会担任你的导游和司机。\n\n我很期待带你认识巴厘岛丰富的文化、壮丽的景色和值得慢慢发现的私藏地点。我的首要任务是让旅程安全、舒适、难忘。途中如果你需要帮助或有任何问题，请随时告诉我。请放松下来，享受这座岛。',
+          ja:'Om Swastyastu。バリ島から心を込めてご挨拶します。\n\n私は I Kadek Dicky Maha Putra、Dicky と呼んでください。この島での滞在中、皆さまのガイド兼ドライバーを務めます。\n\nバリの豊かな文化、美しい景色、まだあまり知られていない場所をご案内できることを楽しみにしています。安全で快適、そして忘れられない旅にすることが私の一番の仕事です。途中で必要なことや質問があれば、どうぞ遠慮なく声をかけてください。くつろいで、この島を楽しんでください。',
+          ko:'Om Swastyastu. 발리에서 따뜻한 인사를 전합니다!\n\n제 이름은 I Kadek Dicky Maha Putra이고, Dicky라고 불러 주세요. 이 천국 같은 섬에 머무는 동안 여러분의 가이드이자 기사가 되겠습니다.\n\n발리의 풍부한 문화, 아름다운 풍경, 그리고 잘 알려지지 않은 장소들을 함께 소개하고 싶습니다. 안전하고 편안하며 오래 기억될 여행을 만드는 것이 가장 중요한 일입니다. 여행 중 필요한 것이 있거나 궁금한 점이 있으면 언제든 말씀해 주세요. 편히 쉬면서 이 섬을 즐기세요!',
+          id:'Om Swastyastu. Salam hangat dari Bali!\n\nNama saya I Kadek Dicky Maha Putra, tetapi Anda bisa memanggil saya Dicky. Saya akan menjadi pemandu wisata dan driver Anda selama berada di pulau ini.\n\nSaya senang berbagi budaya Bali yang kaya, pemandangan yang indah, dan tempat-tempat menarik yang belum banyak diketahui. Prioritas saya adalah membuat perjalanan Anda aman, nyaman, dan berkesan. Jika Anda membutuhkan sesuatu atau punya pertanyaan di perjalanan, jangan ragu untuk bertanya. Duduk santai, rileks, dan nikmati pulau ini!'
+        }
+      },
+      gede: {
+        name:'Gede Nico', image:'assets/images/web/b0a4861a2a414f15.webp', vehicle:'assets/images/web/888fef90456d4604.webp',
+        moments:['web/801293f7fbcc9dca.webp','web/4d8f28299b04d044.webp','web/f9ec4045b132fbd0.webp','web/328a49e16467fef1.webp','web/98f9b02d6233e8b3.webp','web/a053b92cc599adb2.webp','web/0a69d27439db0163.webp','web/f0b47b2e36049c9a.webp'],
+        intro:{
+          en:'Hello, let me introduce myself, I am Gede Nico, a local Balinese guide and have been working in this field for 7 years. I really like meeting many foreign tourists and enjoy exchanging ideas about many things. Bali has many beautiful things, delicious local culture and food that I will introduce to all of you. But not only that, Bali also has many fun games and various classes that you can try. So what are you waiting for? See you in Bali.',
+          zh:'你好，我是 Gede Nico，一名巴厘岛本地导游，已经从业 7 年。我很喜欢认识来自不同国家的游客，也喜欢交流彼此的想法。巴厘岛有美丽的风景、丰富的当地文化和美食，我很愿意带你一一了解。这里还有许多有趣的活动和不同的课程可以体验。还在等什么？巴厘岛见。',
+          ja:'こんにちは。自己紹介をさせてください。私は Gede Nico、バリ島出身のガイドで、この仕事を 7 年続けています。さまざまな国から来る旅行者と出会い、いろいろな話をすることが好きです。バリには美しい場所、豊かな文化、そしておいしい料理があります。楽しいアクティビティや体験クラスもご案内できます。バリでお会いしましょう。',
+          ko:'안녕하세요. 저는 Gede Nico이며, 발리 현지 가이드로 7년 동안 일하고 있습니다. 여러 나라에서 온 여행자를 만나 다양한 이야기를 나누는 것을 좋아합니다. 발리에는 아름다운 곳, 풍부한 현지 문화, 맛있는 음식이 많고 이를 여러분께 소개하고 싶습니다. 즐길 수 있는 재미있는 활동과 다양한 클래스도 있습니다. 발리에서 만나요.',
+          id:'Halo, perkenalkan nama saya Gede Nico. Saya pemandu lokal Bali dan sudah bekerja di bidang ini selama 7 tahun. Saya sangat suka bertemu wisatawan dari berbagai negara dan bertukar cerita tentang banyak hal. Bali memiliki banyak tempat indah, budaya lokal yang kaya, dan makanan yang lezat untuk saya perkenalkan kepada Anda. Ada juga banyak aktivitas seru dan kelas yang bisa dicoba. Jadi, sampai jumpa di Bali.'
+        }
+      }
+    };
+    function currentDriverLanguage() {
+      var picker = document.getElementById('langPicker');
+      var lang = (picker && picker.value) || localStorage.getItem('wm_studio_lang') || 'en';
+      return DRIVER_UI[lang] ? lang : 'en';
+    }
+    function renderDriverDetail(driverId) {
+      if (!driverDetail) return;
+      var profile = DRIVER_PROFILES[driverId] || DRIVER_PROFILES.dicky;
+      var lang = currentDriverLanguage();
+      var ui = DRIVER_UI[lang];
+      var photos = profile.moments.map(function (filename, index) {
+        return '<figure class="fd-moment"><img src="assets/images/' + filename + '" alt="' + profile.name + ' — ' + ui.momentAlt + ' ' + (index + 1) + '" loading="lazy"></figure>';
+      }).join('');
+      driverDetail.innerHTML =
+        '<div class="fd-profile-head"><img src="' + profile.image + '" alt="' + profile.name + ', Bali driver" loading="lazy"><div><h3 class="fd-profile-name">' + profile.name + '</h3><p class="fd-profile-role">' + ui.role + '</p></div></div>' +
+        '<p class="fd-profile-intro">' + profile.intro[lang] + '</p>' +
+        '<h4 class="fd-vehicle-title">' + ui.vehicle + '</h4><div class="fd-vehicles one"><figure class="fd-vehicle"><img src="' + profile.vehicle + '" alt="' + profile.name + ' ' + ui.vehicleCaption + '" loading="lazy"><figcaption>' + ui.vehicleCaption + '</figcaption></figure></div>' +
+        '<h4 class="fd-moments-title">' + ui.moments + '</h4><div class="fd-moments">' + photos + '</div>';
+    }
     function syncDriverChoice() {
       driverChoices.forEach(function (choice) {
         choice.classList.toggle('selected', !!choice.querySelector('input:checked'));
+        var profile = DRIVER_PROFILES[choice.querySelector('input').value];
+        if (profile) choice.querySelector('strong').textContent = profile.name;
       });
+      var selected = document.querySelector('input[name="fd-driver"]:checked');
+      renderDriverDetail((selected && selected.value) || 'dicky');
     }
     driverChoices.forEach(function (choice) {
       choice.querySelector('input').addEventListener('change', syncDriverChoice);
     });
     syncDriverChoice();
+    var driverLanguagePicker = document.getElementById('langPicker');
+    if (driverLanguagePicker) driverLanguagePicker.addEventListener('change', function () {
+      var selected = document.querySelector('input[name="fd-driver"]:checked');
+      renderDriverDetail((selected && selected.value) || 'dicky');
+    });
 
     var toISO = function (date) { return date.toISOString().slice(0, 10); };
     var tomorrow = new Date(Date.now() + 86400000);
@@ -526,6 +568,7 @@
 
       var payload = {
         driver_id: (document.querySelector('input[name="fd-driver"]:checked') || {}).value || 'dicky',
+        route_id: requestedRoute || (readPlan().plan && readPlan().plan.route_id) || '',
         first_name: first, last_name: last,
         intro: document.getElementById('fd-intro').value.trim(),
         contact_whatsapp: wa, contact_email: email, contact_phone: phone,
@@ -551,7 +594,7 @@
         document.getElementById('fd-form-card').innerHTML =
           '<div class="fd-success"><div><span class="fa fa-check-circle"></span></div>' +
           '<h2>' + (L.fdSuccessTitle || 'Request sent!') + '</h2>' +
-          '<p class="fd-sub" style="margin-top:8px">' + (L.fdSuccessSub || 'Dicky will get back to you soon using the contact you provided. Selamat jalan!') + '</p>' +
+          '<p class="fd-sub" style="margin-top:8px">' + (L.fdSuccessSub || 'Your selected driver or WanderMind will reply using the contact you provided.') + '</p>' +
           '<a href="bali.html" class="fd-submit" style="display:inline-flex;width:auto;padding:12px 26px;text-decoration:none;margin-top:8px">' + (L.fdBackBali || 'Back to Bali') + '</a></div>';
         window.scrollTo({ top: 0, behavior: 'smooth' });
       } catch (e) {
@@ -561,7 +604,7 @@
     };
   })();
 </script>
-<script src="assets/js/i18n.js?v=p45"></script>
+<script src="assets/js/i18n.js?v=p56"></script>
 <script>
   // Expose JS-side strings for the dynamic messages (filled after i18n load)
   (function () {

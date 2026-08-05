@@ -7,7 +7,7 @@ The homepage now exposes two intentionally separate planning products:
 - `AI self-plan` (`ai-tool.html?mode=diy`): the existing AI workspace with one initial plan and two AI adjustments per product trip.
 - `Get a professional route` (`bali.html#professional-planner`): deterministic Bali matching across G1–G7 and R1–R6. It shows an approximately 70% preview, then unlocks the full place order, experience modules and execution notes for ¥9.9 or 30 referral points.
 
-The professional route has its own ten-adjustment allowance and does not consume or replace the AI allowance. The legacy `ai-tool.html?professional=1` entry is retained as a compatibility redirect to the Bali professional section. Authenticated API requests use the stored Bearer token; after an expired session is confirmed by `/api/auth/me`, one login can resume the interrupted request.
+Unlocking the current professional route includes three parameter adjustments for that same trip and does not consume or replace the AI allowance. The three adjustments are not human deep customization and cannot be treated as three new travel orders. The legacy `ai-tool.html?professional=1` entry is retained as a compatibility redirect to the Bali professional section. Authenticated API requests use the stored Bearer token; after an expired session is confirmed by `/api/auth/me`, one login can resume the interrupted request.
 
 The professional Bali UI is implemented in `frontend/assets/js/bali-professional.js` and hands an unlocked route to `find-driver.html` with the selected driver, route, dates, people and budget.
 
