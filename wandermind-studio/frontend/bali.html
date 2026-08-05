@@ -143,20 +143,7 @@
       .bali-route-map-head { display:flex; justify-content:space-between; align-items:flex-start; gap:12px; margin-bottom:8px; }
       .bali-route-map-head strong { color:#fff; font-size:14px; }
       .bali-route-map-head span { color:rgba(255,255,255,.66); font-size:10px; text-align:right; }
-      .bali-route-map svg { display:block; width:100%; height:auto; max-height:285px; overflow:visible; }
-      .bali-map-island { fill:rgba(255,255,255,.08); stroke:rgba(255,255,255,.28); stroke-width:.8; vector-effect:non-scaling-stroke; }
-      .bali-map-islet { fill:rgba(255,255,255,.08); stroke:rgba(255,255,255,.24); stroke-width:.65; vector-effect:non-scaling-stroke; }
-      .bali-map-core-line { fill:none; stroke:#fcbf1e; stroke-width:2.2; stroke-linecap:round; stroke-linejoin:round; vector-effect:non-scaling-stroke; }
-      .bali-map-option-line { stroke:rgba(255,255,255,.72); stroke-width:1.2; stroke-dasharray:4 4; vector-effect:non-scaling-stroke; }
-      .bali-map-region circle { fill:rgba(255,255,255,.24); stroke:rgba(255,255,255,.65); stroke-width:1; vector-effect:non-scaling-stroke; }
-      .bali-map-region text { fill:rgba(255,255,255,.72); font-size:3.4px; font-weight:800; text-anchor:middle; }
-      .bali-map-region.core circle { fill:#fcbf1e; stroke:#fff3c4; }
-      .bali-map-region.core text { fill:#fff; }
-      .bali-map-region.optional circle { fill:#0e7c6b; stroke:#fff; stroke-dasharray:2 2; }
-      .bali-map-legend { display:flex; flex-wrap:wrap; gap:8px 14px; margin-top:7px; color:rgba(255,255,255,.78); font-size:10.5px; }
-      .bali-map-legend span { display:inline-flex; align-items:center; gap:6px; }
-      .bali-map-swatch { width:18px; height:0; border-top:2px solid #fcbf1e; }
-      .bali-map-swatch.optional { border-top:1px dashed rgba(255,255,255,.8); }
+      .bali-route-map-frame { display:block; width:100%; height:260px; border:0; border-radius:11px; background:#dce8e5; filter:saturate(.88) contrast(1.04); }
       .bali-map-region-list { display:flex; flex-wrap:wrap; gap:6px; margin-top:10px; }
       .bali-map-region-list span { padding:5px 8px; border-radius:12px; background:rgba(255,255,255,.1); color:#fff; font-size:10px; line-height:1.35; }
       .bali-map-region-list span.optional { border:1px dashed rgba(255,255,255,.45); background:transparent; }
@@ -188,16 +175,12 @@
       .bali-day-add-btn, .bali-day-reset { min-height:34px; border:1px solid rgba(255,255,255,.38); border-radius:9px; padding:6px 11px; background:transparent; color:#fff; font-size:11px; font-weight:700; cursor:pointer; }
       .bali-day-add-btn:hover, .bali-day-add-btn:focus-visible, .bali-day-reset:hover, .bali-day-reset:focus-visible { background:rgba(255,255,255,.14); outline:none; }
       .bali-editor-note { display:flex; align-items:center; justify-content:space-between; gap:10px; flex-wrap:wrap; margin-top:-8px; color:rgba(255,255,255,.7); font-size:10.5px; }
-      .bali-map-region.day-active circle { fill:#fff; stroke:#fcbf1e; stroke-width:2.4; }
-      .bali-map-region[data-day-region="true"] { cursor:pointer; }
-      .bali-map-region[data-day-region="true"]:focus { outline:none; }
-      .bali-map-region[data-day-region="true"]:focus circle { stroke:#fff; stroke-width:2.4; }
       .bali-route-detail-actions { display:flex; flex-wrap:wrap; gap:10px; margin-top:18px; }
       .bali-route-detail-actions .bali-btn { padding:11px 18px; font-size:13px; }
       .bali-route-secondary { background:transparent; color:#fff; border:1px solid rgba(255,255,255,.55); }
       .bali-route-secondary:hover { color:#fff; background:rgba(255,255,255,.1); text-decoration:none; }
       @media(max-width:991px){ .bali-route-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.bali-route-detail-grid{grid-template-columns:1fr} }
-      @media(max-width:575px){ .bali-route-grid{display:flex;width:100%;max-width:100%;min-width:0;overflow-x:auto;overscroll-behavior-x:contain;scroll-snap-type:x mandatory;margin-right:0;padding:0 0 12px}.bali-route-card{flex:0 0 min(calc(100vw - 30px),330px);scroll-snap-align:start}.bali-route-detail{padding:22px 18px}.bali-route-value{grid-template-columns:1fr}.bali-route-card p{min-height:0}.bali-route-map{padding:13px}.bali-route-map-head{align-items:center}.bali-route-map svg{max-height:250px}.bali-day-main{grid-template-columns:48px minmax(0,1fr)}.bali-day-actions{gap:3px}.bali-day-icon-btn{width:28px;height:28px}.bali-day-select{flex-basis:150px} }
+      @media(max-width:575px){ .bali-route-grid{display:flex;width:100%;max-width:100%;min-width:0;overflow-x:auto;overscroll-behavior-x:contain;scroll-snap-type:x mandatory;margin-right:0;padding:0 0 12px}.bali-route-card{flex:0 0 min(calc(100vw - 30px),330px);scroll-snap-align:start}.bali-route-detail{padding:22px 18px}.bali-route-value{grid-template-columns:1fr}.bali-route-card p{min-height:0}.bali-route-map{padding:13px}.bali-route-map-head{align-items:center}.bali-route-map-frame{height:230px}.bali-day-main{grid-template-columns:48px minmax(0,1fr)}.bali-day-actions{gap:3px}.bali-day-icon-btn{width:28px;height:28px}.bali-day-select{flex-basis:150px} }
       @media(max-width:360px){ .bali-route-map-head{display:block}.bali-route-map-head span{display:block;margin-top:3px;text-align:left}.bali-route-detail-actions{display:grid}.bali-route-detail-actions .bali-btn{width:100%;text-align:center} }
       .bali-driver-band { background: linear-gradient(135deg, #0e7c6b, #14b8a6); color: #fff; padding: 64px 0; }
       .bali-driver-inner { max-width: 960px; margin: 0 auto; text-align: center; }
@@ -526,16 +509,16 @@
   <div class="container">
     <div class="bali-driver-inner">
       <div class="bali-driver-grid">
-        <img class="bali-driver-car" src="assets/images/car_photodicky2-web.jpg" alt="Dicky's Bali passenger vehicle" loading="lazy">
+						<img class="bali-driver-car" src="assets/images/car_photodicky2-web.jpg" alt="Private Bali tour vehicle" loading="lazy">
         <div>
-          <h2 data-i18n="baliDriverTitle">Get around with a trusted local driver</h2>
-          <p data-i18n="baliDriverSub">Distances in Bali are deceptive and public transport is thin. Our verified local driver Dicky handles airport transfers, hotel pickups and full-day private tours - English-speaking and traveller-approved.</p>
+						<h2 data-i18n="baliDriverTitle">Make your route workable with a local driver</h2>
+						<p data-i18n="baliDriverSub">Distances in Bali are deceptive and public transport is thin. Send one private request with your dates and route; you can choose a driver after availability and the final quote are reviewed.</p>
           <div class="bali-driver-price">
             <span><span class="fa fa-clock-o"></span> <span data-i18n="baliDriverPrice1">10-12 hour tours</span></span>
             <span><span class="fa fa-money"></span> <span data-i18n="baliDriverPrice2">Quote confirmed after route review</span></span>
             <span><span class="fa fa-plane"></span> <span data-i18n="baliDriverPrice3">Airport &amp; hotel pickup</span></span>
           </div>
-          <a href="find-driver.html" class="bali-btn bali-btn-primary"><span class="fa fa-paper-plane"></span> <span data-i18n="baliDriverBtn">Request this driver</span></a>
+						<a href="find-driver.html" class="bali-btn bali-btn-primary"><span class="fa fa-paper-plane"></span> <span data-i18n="baliDriverBtn">Open a private driver request</span></a>
         </div>
       </div>
     </div>
@@ -621,7 +604,7 @@
 <script>
   function topFunction() { document.body.scrollTop = 0; document.documentElement.scrollTop = 0; }
 </script>
-<script src="assets/js/i18n.js?v=p56"></script>
+<script src="assets/js/i18n.js?v=p57"></script>
 <script>
 (function () {
   var grid = document.getElementById('bali-route-grid');
@@ -676,13 +659,6 @@
         renderDetail();
       });
     });
-  }
-
-  function mapPoint(regionId) {
-    var region = regions[regionId] || {};
-    return region.map && Number.isFinite(region.map.x) && Number.isFinite(region.map.y)
-      ? { x: region.map.x, y: region.map.y }
-      : null;
   }
 
   function nodeLabel(value) {
@@ -828,28 +804,7 @@
   function renderRouteMap(route, plan) {
     var coreIds = plan.days.map(function (day) { return day.region_id; });
     var optionalIds = route.optional_regions || [];
-    var corePoints = coreIds.map(mapPoint).filter(Boolean);
-    var coreLine = corePoints.length > 1
-      ? '<polyline class="bali-map-core-line" points="' + corePoints.map(function (point) { return point.x + ',' + point.y; }).join(' ') + '"></polyline>'
-      : '';
-    var optionOrigin = corePoints[corePoints.length - 1] || corePoints[0];
-    var optionLines = optionOrigin ? optionalIds.map(function (id) {
-      var point = mapPoint(id);
-      return point ? '<line class="bali-map-option-line" x1="' + optionOrigin.x + '" y1="' + optionOrigin.y + '" x2="' + point.x + '" y2="' + point.y + '"></line>' : '';
-    }).join('') : '';
     var dayRegionIds = Array.from(new Set(coreIds));
-    var activeRegionId = (plan.days[activeDayIndex] || {}).region_id;
-    var dots = Object.keys(regions).sort().map(function (id) {
-      var region = regions[id];
-      var point = mapPoint(id);
-      if (!point) return '';
-      var state = coreIds.indexOf(id) >= 0 ? 'core' : (optionalIds.indexOf(id) >= 0 ? 'optional' : '');
-      if (id === activeRegionId) state += ' day-active';
-      var interactive = dayRegionIds.indexOf(id) >= 0;
-      return '<g class="bali-map-region ' + state + '" data-region-id="' + id + '" data-day-region="' + interactive + '"' +
-        (interactive ? ' role="button" tabindex="0"' : '') + ' transform="translate(' + point.x + ' ' + point.y + ')">' +
-        '<title>' + escapeHtml(id + ' · ' + text(region.name)) + '</title><circle r="3.1"></circle><text y="-5">' + escapeHtml(id) + '</text></g>';
-    }).join('');
     var relevant = dayRegionIds.map(function (id) { return { id:id, optional:false }; })
       .concat(optionalIds.map(function (id) { return { id:id, optional:true }; }));
     var corePrefix = language() === 'zh' ? '核心' : 'Core';
@@ -861,17 +816,10 @@
       return '<span class="' + (item.optional ? 'optional' : '') + '">' + escapeHtml(label) + '</span>';
     }).join('');
     var title = language() === 'zh' ? '路线空间示意' : 'Route geography';
-    var note = language() === 'zh' ? '非比例图 · 车程以最终核验为准' : 'Not to scale · drive times need verification';
-    var coreLegend = language() === 'zh' ? '核心顺序' : 'Core order';
-    var optionLegend = language() === 'zh' ? '可选扩展' : 'Optional extension';
+    var note = language() === 'zh' ? '真实地理底图 · 车程以最终核验为准' : 'Real geographic basemap · drive times need verification';
     return '<div class="bali-route-map">' +
       '<div class="bali-route-map-head"><strong>' + title + '</strong><span>' + note + '</span></div>' +
-      '<svg viewBox="0 0 100 100" role="img" aria-label="' + escapeHtml(text(route.name) + ' · ' + title) + '">' +
-        '<path class="bali-map-island" d="M12 59C18 50 30 48 36 38C42 27 55 20 68 26C82 33 88 45 84 56C80 66 70 70 60 69C52 69 47 75 43 89C38 81 35 74 28 71C21 69 15 66 12 59Z"></path>' +
-        '<ellipse class="bali-map-islet" cx="66" cy="77" rx="7" ry="3.2"></ellipse><ellipse class="bali-map-islet" cx="79" cy="75" rx="4.5" ry="2.3"></ellipse>' +
-        optionLines + coreLine + dots +
-      '</svg>' +
-      '<div class="bali-map-legend"><span><i class="bali-map-swatch"></i>' + coreLegend + '</span><span><i class="bali-map-swatch optional"></i>' + optionLegend + '</span></div>' +
+      '<iframe class="bali-route-map-frame" title="' + escapeHtml((language() === 'zh' ? '巴厘岛真实地理底图' : 'Bali geographic basemap')) + '" loading="lazy" scrolling="no" src="https://www.openstreetmap.org/export/embed.html?bbox=114.95%2C-8.88%2C115.72%2C-8.03&amp;layer=mapnik"></iframe>' +
       '<div class="bali-map-region-list">' + regionList + '</div>' +
     '</div>';
   }
@@ -967,19 +915,6 @@
         activeDayIndex = index;
         saveRoutePlan(route, plan);
         renderDetail();
-      });
-    });
-    detail.querySelectorAll('.bali-map-region[data-day-region="true"]').forEach(function (point) {
-      var activate = function () {
-        var index = plan.days.findIndex(function (day) { return day.region_id === point.dataset.regionId; });
-        if (index >= 0) setActiveDay(plan, index);
-      };
-      point.addEventListener('click', activate);
-      point.addEventListener('keydown', function (event) {
-        if (event.key === 'Enter' || event.key === ' ') {
-          event.preventDefault();
-          activate();
-        }
       });
     });
     var reset = detail.querySelector('[data-reset-route]');

@@ -1007,6 +1007,8 @@ class ProductAccessTests(unittest.TestCase):
         self.assertIn("encodeURIComponent(routeId) + '#route-families'", html)
         self.assertIn('id="bali-place-driver"', html)
         self.assertIn("source:'gallery'", html)
+        self.assertIn("openstreetmap.org/export/embed.html", html)
+        self.assertIn("Real geographic basemap", html)
         self.assertIn("matchedRouteId(activeShot)", html)
         self.assertIn("activeId = requestedRoute", html)
         self.assertIn("window.setTimeout(renderModal, 0)", html)
@@ -1035,10 +1037,28 @@ class ProductAccessTests(unittest.TestCase):
         self.assertIn("888fef90456d4604.webp", driver_html)
         self.assertIn("profile.moments.map", driver_html)
         self.assertIn("DRIVER_PROFILES[choice.querySelector('input').value]", driver_html)
-        self.assertIn("From IDR 750k", driver_html)
-        self.assertIn("from IDR 550k", driver_html)
+        self.assertIn("IDR 700k base + IDR 50k per guest", driver_html)
+        self.assertIn("IDR 500k base + IDR 50k per guest", driver_html)
         self.assertIn("IDR 75k per hour", driver_html)
+        self.assertIn("Daihatsu Xenia — 7 Seater", driver_html)
+        self.assertIn("Comfortable for up to 6 guests with one driver", driver_html)
         self.assertNotIn("direct contact details pending", driver_html)
+
+        i18n_js = (frontend_dir / "assets" / "js" / "i18n.js").read_text(
+            encoding="utf-8"
+        )
+        dictionary_start = i18n_js.index("const LANGS =")
+        first_override = i18n_js.index("Object.assign(LANGS.en")
+        self.assertGreater(first_override, dictionary_start)
+        for language in ("en", "zh", "ja", "ko", "id"):
+            self.assertIn(f"Object.assign(LANGS.{language}", i18n_js)
+        self.assertIn("fdQuoteBoundary", i18n_js)
+
+        about_html = (frontend_dir / "about.html").read_text(encoding="utf-8")
+        contact_html = (frontend_dir / "contact.html").read_text(encoding="utf-8")
+        self.assertNotIn("wxid_vkzbrp1iyg6t12", about_html)
+        self.assertNotIn("Xiaohongshu: Wander with ky", about_html)
+        self.assertNotIn("Dicky · trusted local driver", contact_html)
 
         ai_js = (frontend_dir / "assets" / "js" / "ai-tool.js").read_text(
             encoding="utf-8"

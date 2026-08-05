@@ -1,10 +1,3 @@
-/* Driver page: both drivers now have public profile, vehicle and service-moment assets. */
-Object.assign(LANGS.en, { fdGedeShort:'Local driver · profile, vehicle and service-moment photos available' });
-Object.assign(LANGS.zh, { fdGedeShort:'本地司机 · 已有人像、车辆与服务实拍' });
-Object.assign(LANGS.ja, { fdGedeShort:'現地ドライバー・本人、車両、サービス写真あり' });
-Object.assign(LANGS.ko, { fdGedeShort:'현지 기사 · 본인, 차량 및 서비스 사진 제공' });
-Object.assign(LANGS.id, { fdGedeShort:'Driver lokal · foto profil, kendaraan, dan momen layanan tersedia' });
-
 /* ──────────────────────────────────────────────────────
    i18n.js — WanderMind Studio 5-language switcher
    Languages: en / zh / ja / ko / id
@@ -1145,6 +1138,38 @@ Object.assign(LANGS.zh, { baliRouteSectionEyebrow:'免费公共路线', baliRout
 Object.assign(LANGS.ja, { baliRouteSectionEyebrow:'無料の公開ルート', baliRouteSectionTitle:'公開ルートはすべて無料で閲覧できます', baliRouteSectionSub:'公開ルートはすべて無料で閲覧できます。ご希望に合わせた個別プロルートは最初に約70%を公開し、解除後に場所の完全な順序と実行詳細を確認できます。', baliProfessionalEyebrow:'個別プロルート', baliProfessionalTitle:'旅行情報からプロルートを提案', baliProfessionalSub:'プロルートはAIセルフプランニングとは独立し、専用の権利と調整回数を使用します。' });
 Object.assign(LANGS.ko, { baliRouteSectionEyebrow:'무료 공개 경로', baliRouteSectionTitle:'공개 경로 전체를 무료로 둘러보세요', baliRouteSectionSub:'공개 경로는 전체를 무료로 볼 수 있습니다. 요청에 맞춘 개인 전문 경로는 약 70%를 먼저 공개하며, 잠금 해제 후 전체 장소 순서와 실행 세부 정보를 확인할 수 있습니다.', baliProfessionalEyebrow:'개인 맞춤 전문 경로', baliProfessionalTitle:'여행 정보로 전문 경로 매칭', baliProfessionalSub:'전문 경로는 AI 셀프 플래닝과 별개이며 전용 이용 권한과 조정 횟수를 사용합니다.' });
 Object.assign(LANGS.id, { baliRouteSectionEyebrow:'Rute publik gratis', baliRouteSectionTitle:'Jelajahi seluruh rute publik secara gratis', baliRouteSectionSub:'Seluruh keluarga rute publik dapat dilihat gratis. Rute profesional yang dipersonalisasi membuka sekitar 70% terlebih dahulu; buka akses untuk melihat urutan tempat dan detail pelaksanaan lengkap.', baliProfessionalEyebrow:'Rute profesional personal', baliProfessionalTitle:'Cocokkan rute dari profil perjalananmu', baliProfessionalSub:'Rute profesional terpisah dari perencanaan mandiri AI serta memakai hak akses dan kuota penyesuaian tersendiri.' });
+
+/* Private driver requests are public; individual contact accounts are not. */
+Object.assign(LANGS.en, {
+  partnerTitle:'Private local support, when you need it', partnerSub:'A route is only useful when it can work on the ground. For Bali, requests are handled privately through WanderMind — no personal driver accounts are published here.', partnerDickyEyebrow:'Bali · private request channel', partnerDickyName:'Choose a driver only when your route is ready', partnerDickyRole:'Airport transfers, full-day private tours and route-based requests.', partnerDickyDesc:'Share your dates, route and travel details through the private driver request. WanderMind forwards the request for availability and a final quote; individual contact accounts stay private.', partnerDickyCta:'Open a private driver request →',
+  contactDriverTitle:'Find a Bali Driver', contactDriverValue:'Private request · choose a driver in the form', contactDriverTag:'We forward the request privately after review',
+  baliDriverTitle:'Make your route workable with a local driver', baliDriverSub:'Distances in Bali are deceptive and public transport is thin. Send one private request with your dates and route; you can choose a driver after availability and the final quote are reviewed.', baliDriverBtn:'Open a private driver request',
+  fdGedeShort:'Local driver · profile, vehicle and service-moment photos available', fdQuoteBoundary:'<strong>Full day: IDR 700k base + IDR 50k per guest</strong> (up to 10 hours), or <strong>half day: IDR 500k base + IDR 50k per guest</strong> (up to 6 hours). Includes car, fuel, driver-guide, mineral water, parking and tolls. Additional time is IDR 75k per hour after 10 hours. Airport transfers and hotel changes are quoted by distance; the final route-specific quote is confirmed before booking.'
+});
+Object.assign(LANGS.zh, {
+  partnerTitle:'需要时再启用的私密本地支持', partnerSub:'路线能在当地顺利执行才有价值。巴厘岛需求通过 WanderMind 私密处理；本站不会公开司机个人账号。', partnerDickyEyebrow:'巴厘岛 · 私密需求通道', partnerDickyName:'路线准备好后再选择司机', partnerDickyRole:'机场接送、全天私人包车与按路线提交的需求。', partnerDickyDesc:'通过私密司机需求提交日期、路线和旅行信息。WanderMind 会转交以确认档期和最终报价；个人联系方式保持私密。', partnerDickyCta:'发起私密司机需求 →',
+  contactDriverTitle:'寻找巴厘岛司机', contactDriverValue:'私密需求 · 在表单中选择司机', contactDriverTag:'审核后我们会私密转交需求',
+  baliDriverTitle:'让本地司机协助路线落地', baliDriverSub:'巴厘岛看似距离不远，实际车程常被低估，公共交通也有限。提交一次包含日期和路线的私密需求；确认档期和最终报价后再选择司机。', baliDriverBtn:'发起私密司机需求',
+  fdGedeShort:'本地司机 · 已有人像、车辆与服务实拍', fdQuoteBoundary:'<strong>全天：基础价 70 万印尼盾 + 每位游客 5 万印尼盾</strong>（最多 10 小时）；或 <strong>半天：基础价 50 万印尼盾 + 每位游客 5 万印尼盾</strong>（最多 6 小时）。包含车辆、燃油、司机兼导游、矿泉水、停车费和过路费。超过 10 小时后每小时加收 7.5 万印尼盾。机场接送和换酒店按距离报价；预订前确认最终路线报价。'
+});
+Object.assign(LANGS.ja, {
+  partnerTitle:'必要な時だけ使える、プライベートな現地サポート', partnerSub:'現地で実行できてこそルートには価値があります。バリの依頼は WanderMind を通じて非公開で扱い、個人ドライバーのアカウントは公開しません。', partnerDickyEyebrow:'バリ島 · 非公開の依頼窓口', partnerDickyName:'ルートが決まってからドライバーを選ぶ', partnerDickyRole:'空港送迎、終日プライベートツアー、ルートに基づく依頼。', partnerDickyDesc:'日程、ルート、旅行情報を非公開の依頼フォームから送信してください。WanderMind が空き状況と最終見積もりのために転送し、個人の連絡先は非公開のままです。', partnerDickyCta:'非公開のドライバー依頼を開始 →',
+  contactDriverTitle:'バリのドライバーを探す', contactDriverValue:'非公開の依頼 · フォームでドライバーを選択', contactDriverTag:'確認後、依頼を非公開で転送します',
+  baliDriverTitle:'現地ドライバーと、実行できるルートへ', baliDriverSub:'バリ島は見た目以上に移動時間がかかり、公共交通も限られます。日程とルートを含む非公開の依頼を一度送信し、空き状況と最終見積もりの確認後にドライバーを選べます。', baliDriverBtn:'非公開のドライバー依頼を開始',
+  fdGedeShort:'現地ドライバー · プロフィール、車両、サービス写真あり', fdQuoteBoundary:'<strong>終日：基本 70万 IDR + 1名につき 5万 IDR</strong>（最長10時間）、または <strong>半日：基本 50万 IDR + 1名につき 5万 IDR</strong>（最長6時間）。車、燃料、ドライバー兼ガイド、ミネラルウォーター、駐車料、通行料を含みます。10時間を超える場合は1時間につき 7.5万 IDR の追加です。空港送迎とホテル移動は距離により見積もり、予約前にルート別の最終料金を確認します。'
+});
+Object.assign(LANGS.ko, {
+  partnerTitle:'필요할 때만 쓰는 비공개 현지 지원', partnerSub:'현지에서 실행할 수 있어야 경로가 의미 있습니다. 발리 요청은 WanderMind를 통해 비공개로 처리하며 개인 기사 계정은 공개하지 않습니다.', partnerDickyEyebrow:'발리 · 비공개 요청 채널', partnerDickyName:'경로가 준비된 뒤 기사를 선택하세요', partnerDickyRole:'공항 이동, 종일 프라이빗 투어와 경로 기반 요청.', partnerDickyDesc:'비공개 기사 요청으로 날짜, 경로와 여행 정보를 보내세요. WanderMind가 가능 일정과 최종 견적 확인을 위해 전달하며, 개인 연락처는 비공개로 유지됩니다.', partnerDickyCta:'비공개 기사 요청 시작 →',
+  contactDriverTitle:'발리 기사 찾기', contactDriverValue:'비공개 요청 · 양식에서 기사 선택', contactDriverTag:'검토 후 요청을 비공개로 전달합니다',
+  baliDriverTitle:'현지 기사와 실행 가능한 경로 만들기', baliDriverSub:'발리는 보이는 것보다 이동 시간이 길고 대중교통이 제한적입니다. 날짜와 경로가 담긴 비공개 요청을 한 번 보내고, 가능 일정과 최종 견적을 확인한 뒤 기사를 선택하세요.', baliDriverBtn:'비공개 기사 요청 시작',
+  fdGedeShort:'현지 기사 · 프로필, 차량 및 서비스 사진 제공', fdQuoteBoundary:'<strong>종일: 기본 70만 IDR + 1인당 5만 IDR</strong>(최대 10시간), 또는 <strong>반일: 기본 50만 IDR + 1인당 5만 IDR</strong>(최대 6시간)입니다. 차량, 연료, 기사 겸 가이드, 생수, 주차료와 통행료가 포함됩니다. 10시간 초과 시 시간당 7.5만 IDR가 추가됩니다. 공항 이동과 호텔 변경은 거리에 따라 견적을 내며, 예약 전 경로별 최종 금액을 확인합니다.'
+});
+Object.assign(LANGS.id, {
+  partnerTitle:'Dukungan lokal privat, saat Anda membutuhkannya', partnerSub:'Rute baru berguna jika bisa dijalankan di lapangan. Untuk Bali, permintaan ditangani secara privat melalui WanderMind — akun pribadi driver tidak dipublikasikan di sini.', partnerDickyEyebrow:'Bali · kanal permintaan privat', partnerDickyName:'Pilih driver setelah rute Anda siap', partnerDickyRole:'Antar-jemput bandara, tur privat seharian, dan permintaan berbasis rute.', partnerDickyDesc:'Kirim tanggal, rute, dan detail perjalanan melalui permintaan driver privat. WanderMind meneruskannya untuk ketersediaan dan harga akhir; kontak pribadi tetap privat.', partnerDickyCta:'Mulai permintaan driver privat →',
+  contactDriverTitle:'Cari Driver Bali', contactDriverValue:'Permintaan privat · pilih driver di formulir', contactDriverTag:'Kami meneruskan permintaan secara privat setelah ditinjau',
+  baliDriverTitle:'Jadikan rute Anda bisa dijalankan bersama driver lokal', baliDriverSub:'Jarak di Bali sering terasa lebih singkat daripada waktu tempuhnya dan transportasi umum terbatas. Kirim satu permintaan privat berisi tanggal dan rute; Anda dapat memilih driver setelah ketersediaan dan harga akhir ditinjau.', baliDriverBtn:'Mulai permintaan driver privat',
+  fdGedeShort:'Driver lokal · foto profil, kendaraan, dan momen layanan tersedia', fdQuoteBoundary:'<strong>Seharian: dasar IDR 700k + IDR 50k per tamu</strong> (maks. 10 jam), atau <strong>setengah hari: dasar IDR 500k + IDR 50k per tamu</strong> (maks. 6 jam). Termasuk mobil, bahan bakar, driver sekaligus pemandu, air mineral, parkir, dan tol. Setelah 10 jam dikenakan tambahan IDR 75k per jam. Antar-jemput bandara dan pindah hotel dihitung berdasarkan jarak; harga akhir sesuai rute dikonfirmasi sebelum pemesanan.'
+});
 
 /* ──────────────────────────────────────────────────────
    apply / persist / wire up the picker

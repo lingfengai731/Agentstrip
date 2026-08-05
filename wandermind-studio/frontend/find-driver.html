@@ -341,7 +341,7 @@
     <div class="fd-driver">
       <h3 data-i18n="fdMeetDrivers">Meet the local drivers</h3>
       <div class="fd-profile" id="fd-driver-detail" aria-live="polite"></div>
-      <div class="fd-price-box fd-quote-boundary" data-i18n="fdQuoteBoundary"><strong>From IDR 750k</strong> for a private full-day tour (up to 10 hours), or <strong>from IDR 550k</strong> for a private half-day tour (up to 6 hours). Includes car, fuel, driver-guide, mineral water, parking and tolls. Additional time is IDR 75k per hour after 10 hours. Airport transfers and hotel changes are quoted by distance; the final route-specific quote is confirmed before booking.</div>
+<div class="fd-price-box fd-quote-boundary" data-i18n="fdQuoteBoundary"><strong>Full day: IDR 700k base + IDR 50k per guest</strong> (up to 10 hours), or <strong>half day: IDR 500k base + IDR 50k per guest</strong> (up to 6 hours). Includes car, fuel, driver-guide, mineral water, parking and tolls. Additional time is IDR 75k per hour after 10 hours. Airport transfers and hotel changes are quoted by distance; the final route-specific quote is confirmed before booking.</div>
     </div>
 
   </div>
@@ -396,15 +396,15 @@
     var driverChoices = Array.from(document.querySelectorAll('.fd-driver-choice'));
     var driverDetail = document.getElementById('fd-driver-detail');
     var DRIVER_UI = {
-      en: { role:'Local Bali guide & driver', vehicle:'Vehicle', moments:'Driver Moments', vehicleCaption:'Vehicle photo', momentAlt:'Service moment with travellers' },
-      zh: { role:'巴厘岛本地导游与司机', vehicle:'车辆展示', moments:'过往服务瞬间', vehicleCaption:'车辆实拍', momentAlt:'与游客的服务瞬间' },
-      ja: { role:'バリ島のローカルガイド兼ドライバー', vehicle:'車両', moments:'サービスの思い出', vehicleCaption:'車両写真', momentAlt:'旅行者とのサービスの瞬間' },
-      ko: { role:'발리 현지 가이드 겸 기사', vehicle:'차량', moments:'서비스 순간', vehicleCaption:'차량 사진', momentAlt:'여행자와 함께한 서비스 순간' },
-      id: { role:'Pemandu dan driver lokal Bali', vehicle:'Kendaraan', moments:'Momen Layanan', vehicleCaption:'Foto kendaraan', momentAlt:'Momen layanan bersama wisatawan' }
+      en: { role:'Local Bali guide & driver', vehicle:'Vehicle', moments:'Driver Moments', vehicleCaption:'Vehicle photo', momentAlt:'Service moment with travellers', vehicleModel:'Daihatsu Xenia — 7 Seater', vehicleCapacity:'Comfortable for up to 6 guests with one driver.', luggageAdvice:'For bulky luggage, 3–4 guests travel more comfortably.', white:'White', black:'Black' },
+      zh: { role:'巴厘岛本地导游与司机', vehicle:'车辆展示', moments:'过往服务瞬间', vehicleCaption:'车辆实拍', momentAlt:'与游客的服务瞬间', vehicleModel:'Daihatsu Xenia · 7 座', vehicleCapacity:'可舒适乘坐 6 位游客和 1 位司机。', luggageAdvice:'若携带较多或大型行李，建议 3–4 位游客出行更舒适。', white:'白色', black:'黑色' },
+      ja: { role:'バリ島のローカルガイド兼ドライバー', vehicle:'車両', moments:'サービスの思い出', vehicleCaption:'車両写真', momentAlt:'旅行者とのサービスの瞬間', vehicleModel:'ダイハツ・セニア（7人乗り）', vehicleCapacity:'ドライバー1名に加え、最大6名まで快適に乗車できます。', luggageAdvice:'大きな荷物が多い場合は、3〜4名での利用がより快適です。', white:'ホワイト', black:'ブラック' },
+      ko: { role:'발리 현지 가이드 겸 기사', vehicle:'차량', moments:'서비스 순간', vehicleCaption:'차량 사진', momentAlt:'여행자와 함께한 서비스 순간', vehicleModel:'다이하쓰 세니아 — 7인승', vehicleCapacity:'기사 1명과 최대 6명의 여행객이 편안하게 이용할 수 있습니다.', luggageAdvice:'큰 짐이 많다면 3~4명이 더 편안합니다.', white:'화이트', black:'블랙' },
+      id: { role:'Pemandu dan driver lokal Bali', vehicle:'Kendaraan', moments:'Momen Layanan', vehicleCaption:'Foto kendaraan', momentAlt:'Momen layanan bersama wisatawan', vehicleModel:'Daihatsu Xenia — 7 Seater', vehicleCapacity:'Nyaman untuk hingga 6 tamu dengan satu driver.', luggageAdvice:'Untuk banyak atau bagasi besar, 3–4 tamu lebih nyaman.', white:'Putih', black:'Hitam' }
     };
     var DRIVER_PROFILES = {
       dicky: {
-        name:'Dicky', image:'assets/images/web/b47e5dbf32902c06.webp', vehicle:'assets/images/web/7bb50e6252cf6125.webp',
+        name:'Dicky', image:'assets/images/web/b47e5dbf32902c06.webp', vehicle:'assets/images/web/7bb50e6252cf6125.webp', vehicleColor:'white',
         moments:['web/1d5e9b853c78ca4c.webp','web/abeac1a74e159aec.webp','web/d3b7edb7de06c74e.webp','web/f0b485842d63b8dc.webp','web/3cc41350bbbe9784.webp','web/c9f2502862c2d45e.webp','web/0a69d27439db0163.webp','web/f0b47b2e36049c9a.webp'],
         intro:{
           en:'Om Swastyastu. Warm greetings from Bali!\n\nMy name is I Kadek Dicky Maha Putra, but you can call me Dicky. I will be your tour guide and driver during your time here in paradise.\n\nI’m excited to share the rich culture, stunning landscapes, and best-kept hidden gems of Bali with you. My priority is to make sure your trip is safe, comfortable, and unforgettable. If you need anything or have any questions along the way, please don’t hesitate to ask. Sit back, relax, and enjoy the island!',
@@ -415,7 +415,7 @@
         }
       },
       gede: {
-        name:'Gede Nico', image:'assets/images/web/b0a4861a2a414f15.webp', vehicle:'assets/images/web/888fef90456d4604.webp',
+        name:'Gede Nico', image:'assets/images/web/b0a4861a2a414f15.webp', vehicle:'assets/images/web/888fef90456d4604.webp', vehicleColor:'black',
         moments:['web/801293f7fbcc9dca.webp','web/4d8f28299b04d044.webp','web/f9ec4045b132fbd0.webp','web/328a49e16467fef1.webp','web/98f9b02d6233e8b3.webp','web/a053b92cc599adb2.webp','web/0a69d27439db0163.webp','web/f0b47b2e36049c9a.webp'],
         intro:{
           en:'Hello, let me introduce myself, I am Gede Nico, a local Balinese guide and have been working in this field for 7 years. I really like meeting many foreign tourists and enjoy exchanging ideas about many things. Bali has many beautiful things, delicious local culture and food that I will introduce to all of you. But not only that, Bali also has many fun games and various classes that you can try. So what are you waiting for? See you in Bali.',
@@ -442,7 +442,7 @@
       driverDetail.innerHTML =
         '<div class="fd-profile-head"><img src="' + profile.image + '" alt="' + profile.name + ', Bali driver" loading="lazy"><div><h3 class="fd-profile-name">' + profile.name + '</h3><p class="fd-profile-role">' + ui.role + '</p></div></div>' +
         '<p class="fd-profile-intro">' + profile.intro[lang] + '</p>' +
-        '<h4 class="fd-vehicle-title">' + ui.vehicle + '</h4><div class="fd-vehicles one"><figure class="fd-vehicle"><img src="' + profile.vehicle + '" alt="' + profile.name + ' ' + ui.vehicleCaption + '" loading="lazy"><figcaption>' + ui.vehicleCaption + '</figcaption></figure></div>' +
+        '<h4 class="fd-vehicle-title">' + ui.vehicle + '</h4><div class="fd-vehicles one"><figure class="fd-vehicle"><img src="' + profile.vehicle + '" alt="' + profile.name + ' ' + ui[profile.vehicleColor] + ' ' + ui.vehicleModel + '" loading="lazy"><figcaption><strong>' + ui[profile.vehicleColor] + ' ' + ui.vehicleModel + '</strong><br>' + ui.vehicleCapacity + '<br><span>' + ui.luggageAdvice + '</span></figcaption></figure></div>' +
         '<h4 class="fd-moments-title">' + ui.moments + '</h4><div class="fd-moments">' + photos + '</div>';
     }
     function syncDriverChoice() {
@@ -604,7 +604,7 @@
     };
   })();
 </script>
-<script src="assets/js/i18n.js?v=p56"></script>
+<script src="assets/js/i18n.js?v=p57"></script>
 <script>
   // Expose JS-side strings for the dynamic messages (filled after i18n load)
   (function () {
