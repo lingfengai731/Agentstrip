@@ -879,11 +879,11 @@
         return poi.region_id === day.region_id && !usedPoiIds.has(poi.id);
       });
       var labels = {
-        en:{choose:'Add a place in this area…',none:'No more places are available in this area yet',add:'Add place',empty:'No specific place selected',up:'Move one day earlier',down:'Move one day later',aria:'Choose a place to add'},
-        zh:{choose:'添加同区域地点…',none:'此区域暂时没有更多可添加地点',add:'添加地点',empty:'尚未选择具体地点',up:'前移一天',down:'后移一天',aria:'选择要加入的地点'},
-        ja:{choose:'このエリアの場所を追加…',none:'このエリアには追加できる場所がありません',add:'場所を追加',empty:'具体的な場所は未選択',up:'1日前へ移動',down:'1日後へ移動',aria:'追加する場所を選択'},
-        ko:{choose:'이 지역 장소 추가…',none:'이 지역에 추가할 장소가 없습니다',add:'장소 추가',empty:'구체적인 장소가 선택되지 않았습니다',up:'하루 앞당기기',down:'하루 늦추기',aria:'추가할 장소 선택'},
-        id:{choose:'Tambahkan tempat di area ini…',none:'Belum ada tempat lain yang dapat ditambahkan di area ini',add:'Tambah tempat',empty:'Belum ada tempat spesifik yang dipilih',up:'Pindah satu hari lebih awal',down:'Pindah satu hari lebih lambat',aria:'Pilih tempat untuk ditambahkan'}
+        en:{choose:'Add a place in this area…',none:'No more places are available in this area yet',add:'Add place',empty:'No specific place selected',up:'Move one day earlier',down:'Move one day later',aria:'Choose a place to add',day:function(number){ return 'Day ' + number; }},
+        zh:{choose:'添加同区域地点…',none:'此区域暂时没有更多可添加地点',add:'添加地点',empty:'尚未选择具体地点',up:'前移一天',down:'后移一天',aria:'选择要加入的地点',day:function(number){ return '第 ' + number + ' 天'; }},
+        ja:{choose:'このエリアの場所を追加…',none:'このエリアには追加できる場所がありません',add:'場所を追加',empty:'具体的な場所は未選択',up:'1日前へ移動',down:'1日後へ移動',aria:'追加する場所を選択',day:function(number){ return number + '日目'; }},
+        ko:{choose:'이 지역 장소 추가…',none:'이 지역에 추가할 장소가 없습니다',add:'장소 추가',empty:'구체적인 장소가 선택되지 않았습니다',up:'하루 앞당기기',down:'하루 늦추기',aria:'추가할 장소 선택',day:function(number){ return number + '일차'; }},
+        id:{choose:'Tambahkan tempat di area ini…',none:'Belum ada tempat lain yang dapat ditambahkan di area ini',add:'Tambah tempat',empty:'Belum ada tempat spesifik yang dipilih',up:'Pindah satu hari lebih awal',down:'Pindah satu hari lebih lambat',aria:'Pilih tempat untuk ditambahkan',day:function(number){ return 'Hari ' + number; }}
       }[language()] || {};
       var options = '<option value="">' + (candidates.length ? labels.choose : labels.none) + '</option>' +
         candidates.map(function (poi) {
@@ -891,7 +891,7 @@
         }).join('');
       return '<div class="bali-day-row ' + (index === activeDayIndex ? 'active' : '') + '" data-day-index="' + index + '">' +
         '<button class="bali-day-main" type="button" data-select-day="' + index + '" aria-pressed="' + (index === activeDayIndex) + '">' +
-          '<strong>' + (language() === 'zh' ? '第 ' + (index + 1) + ' 天' : 'Day ' + (index + 1)) + '</strong>' +
+          '<strong>' + labels.day(index + 1) + '</strong>' +
           '<span>' + escapeHtml(day.region_id) + ' · ' + escapeHtml(text(day.theme)) + '</span>' +
         '</button>' +
         '<div class="bali-day-actions">' +
@@ -1050,7 +1050,7 @@
     renderDetail();
   }
 
-    fetch('assets/data/bali-travel-data.json?v=20260806r3')
+    fetch('assets/data/bali-travel-data.json?v=20260806r4')
     .then(function (response) { if (!response.ok) throw new Error('HTTP ' + response.status); return response.json(); })
     .then(useData)
     .catch(function () {
@@ -1136,7 +1136,7 @@
     document.getElementById('bali-place-ai').href = 'ai-tool.html?' + handoff.toString();
     document.getElementById('bali-place-driver').href = 'find-driver.html?route=' + encodeURIComponent(routeId) + '&place=' + encodeURIComponent(placeName) + '&source=gallery';
   }
-  fetch('assets/data/bali-travel-data.json?v=20260806r3')
+    fetch('assets/data/bali-travel-data.json?v=20260806r4')
     .then(function(response) { if (!response.ok) throw new Error('HTTP ' + response.status); return response.json(); })
     .then(function(data) {
       (data.routes || []).forEach(function(route) { routeCatalog[route.id] = route; });

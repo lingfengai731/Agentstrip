@@ -942,11 +942,26 @@ class ProductAccessTests(unittest.TestCase):
         self.assertEqual(len(region_ids), 7)
         for region in data["regions"]:
             self.assertIn("map", region)
+            self.assertEqual(
+                set(region["name"]),
+                {"zh", "en", "ja", "ko", "id"},
+                region["id"],
+            )
             self.assertGreaterEqual(region["map"]["x"], 0)
             self.assertLessEqual(region["map"]["x"], 100)
             self.assertGreaterEqual(region["map"]["y"], 0)
             self.assertLessEqual(region["map"]["y"], 100)
         for route in data["routes"]:
+            self.assertEqual(
+                set(route["name"]),
+                {"zh", "en", "ja", "ko", "id"},
+                route["id"],
+            )
+            self.assertEqual(
+                set(route["promise"]),
+                {"zh", "en", "ja", "ko", "id"},
+                route["id"],
+            )
             referenced = set(route.get("base_regions", []))
             referenced.update(route.get("optional_regions", []))
             self.assertTrue(referenced.issubset(region_ids), route["id"])
@@ -985,6 +1000,11 @@ class ProductAccessTests(unittest.TestCase):
             )
             suggested_ids = []
             for day in route["free_outline"]:
+                self.assertEqual(
+                    set(day["theme"]),
+                    {"zh", "en", "ja", "ko", "id"},
+                    (route["id"], day["day"]),
+                )
                 self.assertIn("suggested_poi_ids", day, (route["id"], day["day"]))
                 self.assertGreaterEqual(len(day["suggested_poi_ids"]), 1)
                 self.assertLessEqual(len(day["suggested_poi_ids"]), 2)
