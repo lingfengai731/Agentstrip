@@ -555,6 +555,8 @@ class DriverReq(BaseModel):
     requested_services: List[str] = []
     arrival_details: str = ""
     lang: str = "en"
+    privacy_consent: bool = False
+    website: str = ""
 
 
 class ProductTripCreateReq(BaseModel):
@@ -2196,8 +2198,31 @@ async def fusion_get(token: str):
 # ─── Find a Driver → email the request to the driver ──────────
 # Privacy by design: we do NOT persist any of the traveller's contact
 # details. The request is relayed once by email and never stored in the DB.
+_DRIVER_REQUEST_WINDOW_SECONDS = 30 * 60
+_DRIVER_REQUEST_LIMIT = 5
+_driver_request_attempts: dict[str, list[float]] = {}
+
+
+def _check_driver_request_rate_limit(request: Request) -> None:
+    """Keep a short-lived per-client counter; traveller details are never persisted."""
+    client_key = (request.client.host if request.client else "unknown")[:128]
+    now = time.time()
+    attempts = [stamp for stamp in _driver_request_attempts.get(client_key, []) if now - stamp < _DRIVER_REQUEST_WINDOW_SECONDS]
+    if len(attempts) >= _DRIVER_REQUEST_LIMIT:
+        _driver_request_attempts[client_key] = attempts
+        raise HTTPException(429, "Too many requests. Please wait before sending another request.")
+    attempts.append(now)
+    _driver_request_attempts[client_key] = attempts
+
+
 @app.post("/api/driver-request")
-async def driver_request(data: DriverReq):
+async def driver_request(data: DriverReq, request: Request):
+    _check_driver_request_rate_limit(request)
+    if data.website.strip():
+        # Honeypot bots receive an indistinguishable acknowledgement, but no mail is sent.
+        return {"ok": True, "delivered": False}
+    if not data.privacy_consent:
+        raise HTTPException(400, "Please confirm that WanderMind may forward this request to the selected driver")
     # Require at least one contact method so the driver can respond
     if not (data.contact_whatsapp.strip() or data.contact_email.strip() or data.contact_phone.strip()):
         raise HTTPException(400, "Please provide at least one contact method")

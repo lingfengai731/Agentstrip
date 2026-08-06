@@ -44,6 +44,9 @@ class ProductAccessTests(unittest.TestCase):
         finally:
             conn.close()
 
+    def setUp(self):
+        main._driver_request_attempts.clear()
+
     @staticmethod
     def _create_user(email: str, name: str) -> str:
         uid = str(uuid.uuid4())
@@ -871,6 +874,7 @@ class ProductAccessTests(unittest.TestCase):
                         "start_date": "2026-10-01",
                         "end_date": "2026-10-08",
                         "budget_range": "USD 6000",
+                        "privacy_consent": True,
                     },
                 )
             )
@@ -883,6 +887,46 @@ class ProductAccessTests(unittest.TestCase):
         self.assertEqual(payload["end_date"], "2026-10-08")
         self.assertEqual(payload["budget_range"], "USD 6000")
         self.assertIn("Day 2: Sidemen", payload["attractions"])
+
+    def test_driver_request_requires_explicit_privacy_consent(self):
+        with patch.object(main, "send_driver_request", new_callable=AsyncMock) as send:
+            response = self._run(
+                self._request(
+                    "POST", "/api/driver-request", json={
+                        "driver_id": "dicky", "first_name": "Test",
+                        "contact_email": "traveller@example.test",
+                    }
+                )
+            )
+        self.assertEqual(response.status_code, 400, response.text)
+        send.assert_not_awaited()
+
+    def test_driver_request_honeypot_does_not_deliver_email(self):
+        with patch.object(main, "send_driver_request", new_callable=AsyncMock) as send:
+            response = self._run(
+                self._request(
+                    "POST", "/api/driver-request", json={
+                        "driver_id": "dicky", "first_name": "Test",
+                        "contact_email": "traveller@example.test",
+                        "privacy_consent": True, "website": "https://spam.example",
+                    }
+                )
+            )
+        self.assertEqual(response.status_code, 200, response.text)
+        self.assertEqual(response.json(), {"ok": True, "delivered": False})
+        send.assert_not_awaited()
+
+    def test_driver_request_rate_limit_blocks_sixth_attempt(self):
+        payload = {
+            "driver_id": "dicky", "first_name": "Test",
+            "contact_email": "traveller@example.test", "privacy_consent": True,
+        }
+        with patch.object(main, "send_driver_request", new_callable=AsyncMock) as send:
+            send.return_value = {"ok": True}
+            responses = [self._run(self._request("POST", "/api/driver-request", json=payload)) for _ in range(6)]
+        self.assertEqual([response.status_code for response in responses[:5]], [200] * 5)
+        self.assertEqual(responses[5].status_code, 429, responses[5].text)
+        self.assertEqual(send.await_count, 5)
 
     def test_bali_route_map_has_coordinates_for_every_region(self):
         data_path = (
@@ -1008,7 +1052,8 @@ class ProductAccessTests(unittest.TestCase):
         self.assertIn('id="bali-place-driver"', html)
         self.assertIn("source:'gallery'", html)
         self.assertIn("openstreetmap.org/export/embed.html", html)
-        self.assertIn("Real geographic basemap", html)
+        self.assertIn("Real basemap", html)
+        self.assertIn("bali-map-overlay", html)
         self.assertIn("matchedRouteId(activeShot)", html)
         self.assertIn("activeId = requestedRoute", html)
         self.assertIn("window.setTimeout(renderModal, 0)", html)
@@ -1075,6 +1120,7 @@ class ProductAccessTests(unittest.TestCase):
                     "driver_id": "invented-driver",
                     "first_name": "Test",
                     "contact_email": "traveller@example.test",
+                    "privacy_consent": True,
                 },
             )
         )

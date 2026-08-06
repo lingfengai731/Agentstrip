@@ -97,6 +97,10 @@
       .fd-privacy .fa { color: var(--fd-teal); font-size: 16px; margin-top: 2px; flex-shrink: 0; }
       .fd-privacy span { font-size: 12.5px; color: #475569; line-height: 1.6; }
       body.dark .fd-privacy span { color: rgba(255,255,255,.7); }
+      .fd-consent { display:flex; align-items:flex-start; gap:9px; margin:-8px 0 18px; color:#475569; font-size:12.5px; line-height:1.55; cursor:pointer; }
+      .fd-consent input { margin-top:3px; accent-color:var(--fd-teal); }
+      body.dark .fd-consent { color:rgba(255,255,255,.76); }
+      .fd-honeypot { position:absolute !important; width:1px !important; height:1px !important; overflow:hidden !important; clip:rect(1px,1px,1px,1px) !important; white-space:nowrap !important; }
 
       .fd-submit { width: 100%; padding: 14px; background: linear-gradient(135deg, var(--fd-gold), var(--fd-gold-dk)); color: #fff; border: none; border-radius: 11px; font-size: 15px; font-weight: 700; cursor: pointer; font-family: inherit; display: inline-flex; align-items: center; justify-content: center; gap: 8px; transition: transform .15s, box-shadow .2s; }
       .fd-submit:hover { transform: translateY(-1px); box-shadow: 0 8px 22px rgba(252,191,30,.4); }
@@ -223,12 +227,12 @@
         <label class="fd-driver-choice">
           <input type="radio" name="fd-driver" value="dicky" checked>
           <img src="assets/images/web/b47e5dbf32902c06.webp" alt="Dicky, Bali driver" loading="lazy">
-          <span><strong>Dicky</strong><span data-i18n="fdDickyShort">Local driver · profile and vehicle photos available</span></span>
+          <span><strong>Dicky</strong><span data-i18n="fdDickyShort">Local Bali driver · availability confirmed privately</span></span>
         </label>
         <label class="fd-driver-choice">
           <input type="radio" name="fd-driver" value="gede">
           <img src="assets/images/web/b0a4861a2a414f15.webp" alt="Gede Nico, Bali driver" loading="lazy">
-          <span><strong>Gede Nico</strong><span data-i18n="fdGedeShort">Local driver · profile, vehicle and service-moment photos available</span></span>
+          <span><strong>Gede Nico</strong><span data-i18n="fdGedeShort">Local Bali driver · availability confirmed privately</span></span>
         </label>
       </div>
 
@@ -332,6 +336,8 @@
         <span class="fa fa-lock"></span>
         <span data-i18n="fdPrivacy">Your privacy is protected. We forward this request once to the driver by email and never store your contact details on our servers.</span>
       </div>
+      <div class="fd-honeypot" aria-hidden="true"><label for="fd-website">Website</label><input id="fd-website" type="text" tabindex="-1" autocomplete="off"></div>
+      <label class="fd-consent"><input id="fd-consent" type="checkbox" required><span data-i18n="fdConsent">I agree that WanderMind may forward this request and the contact details I entered to my selected driver to arrange a reply.</span></label>
 
       <button class="fd-submit" id="fd-submit"><span class="fa fa-paper-plane"></span> <span data-i18n="fdSubmit">Send driver request</span></button>
       <div class="fd-msg" id="fd-msg"></div>
@@ -565,6 +571,7 @@
       if (!first && !last) { msg.className = 'fd-msg err'; msg.textContent = L.fdErrName || 'Please enter your name'; return; }
       if (!wa && !email && !phone) { msg.className = 'fd-msg err'; msg.textContent = L.fdErrContact || 'Please provide at least one contact method'; return; }
       if (!startEl.value || !endEl.value || endEl.value < startEl.value) { msg.className = 'fd-msg err'; msg.textContent = L.fdErrDates || 'Please enter valid travel dates'; return; }
+      if (!document.getElementById('fd-consent').checked) { msg.className = 'fd-msg err'; msg.textContent = L.fdErrConsent || 'Please confirm that we may forward this request to your selected driver'; return; }
 
       var payload = {
         driver_id: (document.querySelector('input[name="fd-driver"]:checked') || {}).value || 'dicky',
@@ -582,7 +589,9 @@
         budget_range: document.getElementById('fd-budget').value,
         requested_services: Array.from(document.querySelectorAll('.fd-service input:checked')).map(function (x) { return x.value; }),
         arrival_details: document.getElementById('fd-arrival').value.trim(),
-        lang: (document.getElementById('langPicker') || {}).value || 'en'
+        lang: (document.getElementById('langPicker') || {}).value || 'en',
+        privacy_consent: true,
+        website: document.getElementById('fd-website').value.trim()
       };
       btn.disabled = true;
       var old = btn.innerHTML;
@@ -604,7 +613,7 @@
     };
   })();
 </script>
-<script src="assets/js/i18n.js?v=p57"></script>
+<script src="assets/js/i18n.js?v=p58"></script>
 <script>
   // Expose JS-side strings for the dynamic messages (filled after i18n load)
   (function () {
@@ -614,7 +623,7 @@
       var d = LANGS[lang] || LANGS.en;
       window.FD_T = {
         fdImportOk: d.fdImportOk, fdImportNone: d.fdImportNone, fdErrName: d.fdErrName,
-        fdErrContact: d.fdErrContact, fdErrDates: d.fdErrDates, fdSending: d.fdSending, fdSuccessTitle: d.fdSuccessTitle,
+        fdErrContact: d.fdErrContact, fdErrDates: d.fdErrDates, fdErrConsent: d.fdErrConsent, fdSending: d.fdSending, fdSuccessTitle: d.fdSuccessTitle,
         fdSuccessSub: d.fdSuccessSub, fdBackBali: d.fdBackBali, fdErrSend: d.fdErrSend
       };
     }

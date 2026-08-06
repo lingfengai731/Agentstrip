@@ -143,7 +143,15 @@
       .bali-route-map-head { display:flex; justify-content:space-between; align-items:flex-start; gap:12px; margin-bottom:8px; }
       .bali-route-map-head strong { color:#fff; font-size:14px; }
       .bali-route-map-head span { color:rgba(255,255,255,.66); font-size:10px; text-align:right; }
-      .bali-route-map-frame { display:block; width:100%; height:260px; border:0; border-radius:11px; background:#dce8e5; filter:saturate(.88) contrast(1.04); }
+      .bali-route-map-canvas { position:relative; overflow:hidden; height:260px; border-radius:11px; background:#dce8e5; }
+      .bali-route-map-frame { display:block; width:100%; height:100%; border:0; background:#dce8e5; filter:saturate(.88) contrast(1.04); }
+      .bali-map-overlay { position:absolute; inset:0; width:100%; height:100%; pointer-events:none; z-index:1; }
+      .bali-map-line { fill:none; stroke:#fcbf1e; stroke-width:1.4; stroke-linecap:round; stroke-linejoin:round; filter:drop-shadow(0 1px 1px rgba(0,0,0,.58)); }
+      .bali-map-line.optional { stroke:rgba(255,255,255,.82); stroke-dasharray:2.6 2.3; stroke-width:1; }
+      .bali-map-region { position:absolute; transform:translate(-50%,-50%); z-index:2; width:29px; height:29px; padding:0; border:2px solid #fff; border-radius:50%; background:#0e7c6b; color:#fff; font-size:10px; font-weight:900; line-height:1; box-shadow:0 2px 8px rgba(0,0,0,.48); cursor:pointer; pointer-events:auto; }
+      .bali-map-region.optional { background:#475569; border-style:dashed; }
+      .bali-map-region.day-active, .bali-map-region:focus-visible { background:#fcbf1e; color:#083d37; outline:3px solid rgba(252,191,30,.38); outline-offset:2px; }
+      .bali-map-region:hover { transform:translate(-50%,-50%) scale(1.13); }
       .bali-map-region-list { display:flex; flex-wrap:wrap; gap:6px; margin-top:10px; }
       .bali-map-region-list span { padding:5px 8px; border-radius:12px; background:rgba(255,255,255,.1); color:#fff; font-size:10px; line-height:1.35; }
       .bali-map-region-list span.optional { border:1px dashed rgba(255,255,255,.45); background:transparent; }
@@ -180,7 +188,7 @@
       .bali-route-secondary { background:transparent; color:#fff; border:1px solid rgba(255,255,255,.55); }
       .bali-route-secondary:hover { color:#fff; background:rgba(255,255,255,.1); text-decoration:none; }
       @media(max-width:991px){ .bali-route-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.bali-route-detail-grid{grid-template-columns:1fr} }
-      @media(max-width:575px){ .bali-route-grid{display:flex;width:100%;max-width:100%;min-width:0;overflow-x:auto;overscroll-behavior-x:contain;scroll-snap-type:x mandatory;margin-right:0;padding:0 0 12px}.bali-route-card{flex:0 0 min(calc(100vw - 30px),330px);scroll-snap-align:start}.bali-route-detail{padding:22px 18px}.bali-route-value{grid-template-columns:1fr}.bali-route-card p{min-height:0}.bali-route-map{padding:13px}.bali-route-map-head{align-items:center}.bali-route-map-frame{height:230px}.bali-day-main{grid-template-columns:48px minmax(0,1fr)}.bali-day-actions{gap:3px}.bali-day-icon-btn{width:28px;height:28px}.bali-day-select{flex-basis:150px} }
+      @media(max-width:575px){ .bali-route-grid{display:flex;width:100%;max-width:100%;min-width:0;overflow-x:auto;overscroll-behavior-x:contain;scroll-snap-type:x mandatory;margin-right:0;padding:0 0 12px}.bali-route-card{flex:0 0 min(calc(100vw - 30px),330px);scroll-snap-align:start}.bali-route-detail{padding:22px 18px}.bali-route-value{grid-template-columns:1fr}.bali-route-card p{min-height:0}.bali-route-map{padding:13px}.bali-route-map-head{align-items:center}.bali-route-map-canvas{height:230px}.bali-day-main{grid-template-columns:48px minmax(0,1fr)}.bali-day-actions{gap:3px}.bali-day-icon-btn{width:28px;height:28px}.bali-day-select{flex-basis:150px} }
       @media(max-width:360px){ .bali-route-map-head{display:block}.bali-route-map-head span{display:block;margin-top:3px;text-align:left}.bali-route-detail-actions{display:grid}.bali-route-detail-actions .bali-btn{width:100%;text-align:center} }
       .bali-driver-band { background: linear-gradient(135deg, #0e7c6b, #14b8a6); color: #fff; padding: 64px 0; }
       .bali-driver-inner { max-width: 960px; margin: 0 auto; text-align: center; }
@@ -619,7 +627,7 @@
 
   function language() {
     var value = (document.getElementById('langPicker') || {}).value || localStorage.getItem('wm_studio_lang') || 'en';
-    return value === 'zh' ? 'zh' : 'en';
+    return ['zh', 'en', 'ja', 'ko', 'id'].indexOf(value) >= 0 ? value : 'en';
   }
 
   function text(value) {
@@ -635,17 +643,44 @@
 
   function routeMeta(route) {
     var days = route.recommended_days || {};
-    var dayText = (days.min || 3) + '–' + (days.max || 7) + (language() === 'zh' ? ' 天' : ' days');
-    var pace = String(route.pace || '').replaceAll('_', ' ');
-    var level = String(route.physical_level || '').replaceAll('_', ' ');
-    return [dayText, pace, level];
+    var lang = language();
+    var labels = {
+      en:{days:'Recommended ' + (days.ideal || 5) + ' days · ' + (days.min || 3) + '–' + (days.max || 7) + ' possible', pace:'Pace: ', activity:'Activity: '},
+      zh:{days:'推荐 ' + (days.ideal || 5) + ' 天 · 可调整为 ' + (days.min || 3) + '–' + (days.max || 7) + ' 天', pace:'节奏：', activity:'体力：'},
+      ja:{days:'おすすめ ' + (days.ideal || 5) + ' 日 · ' + (days.min || 3) + '–' + (days.max || 7) + ' 日で調整可', pace:'ペース：', activity:'体力：'},
+      ko:{days:'권장 ' + (days.ideal || 5) + '일 · ' + (days.min || 3) + '–' + (days.max || 7) + '일 조정 가능', pace:'속도: ', activity:'활동량: '},
+      id:{days:'Rekomendasi ' + (days.ideal || 5) + ' hari · dapat disesuaikan ' + (days.min || 3) + '–' + (days.max || 7) + ' hari', pace:'Tempo: ', activity:'Aktivitas: '}
+    }[lang];
+    var words = {
+      balanced:{en:'balanced',zh:'均衡',ja:'バランス型',ko:'균형형',id:'seimbang'},
+      slow:{en:'slow',zh:'慢节奏',ja:'ゆったり',ko:'느긋함',id:'santai'},
+      relaxed:{en:'relaxed',zh:'轻松',ja:'ゆったり',ko:'여유로움',id:'rileks'},
+      active:{en:'active',zh:'积极探索',ja:'アクティブ',ko:'활동적',id:'aktif'},
+      low:{en:'easy',zh:'轻度',ja:'軽め',ko:'가벼움',id:'ringan'},
+      medium:{en:'moderate',zh:'中等',ja:'中程度',ko:'보통',id:'sedang'},
+      low_to_medium:{en:'easy–moderate',zh:'轻度至中等',ja:'軽め〜中程度',ko:'가벼움–보통',id:'ringan–sedang'},
+      medium_to_high:{en:'moderate–high',zh:'中等至较高',ja:'中程度〜高め',ko:'보통–높음',id:'sedang–tinggi'}
+    };
+    var pace = words[route.pace] || {en:String(route.pace || ''),zh:String(route.pace || ''),ja:String(route.pace || ''),ko:String(route.pace || ''),id:String(route.pace || '')};
+    var level = words[route.physical_level] || {en:String(route.physical_level || ''),zh:String(route.physical_level || ''),ja:String(route.physical_level || ''),ko:String(route.physical_level || ''),id:String(route.physical_level || '')};
+    return [labels.days, labels.pace + (pace[lang] || pace.en), labels.activity + (level[lang] || level.en)];
+  }
+
+  function routeStatus(route) {
+    var lang = language();
+    var state = route.verification_status || 'pending_review';
+    var labels = {
+      pending_review:{en:'Planning details being verified',zh:'路线细节核验中',ja:'計画の詳細を確認中',ko:'일정 세부사항 확인 중',id:'Detail rencana sedang diverifikasi'},
+      needs_supplier_confirmation:{en:'Supplier confirmation needed',zh:'需供应商确认',ja:'事業者の確認が必要',ko:'공급업체 확인 필요',id:'Perlu konfirmasi penyedia'}
+    };
+    return (labels[state] || labels.pending_review)[lang] || labels.pending_review.en;
   }
 
   function renderCards() {
     grid.innerHTML = routes.map(function (route) {
       var meta = routeMeta(route);
       return '<button class="bali-route-card ' + (route.id === activeId ? 'active' : '') + '" type="button" data-route-id="' + route.id + '" aria-pressed="' + (route.id === activeId) + '">' +
-        '<span class="bali-route-id"><span>' + route.id + '</span><span class="bali-route-status">' + (language() === 'zh' ? '细节核验中' : 'Details under review') + '</span></span>' +
+        '<span class="bali-route-id"><span>' + route.id + '</span><span class="bali-route-status">' + routeStatus(route) + '</span></span>' +
         '<h3>' + text(route.name) + '</h3>' +
         '<p>' + text(route.promise) + '</p>' +
         '<span class="bali-route-meta">' + meta.map(function (item) { return '<span>' + item + '</span>'; }).join('') + '</span>' +
@@ -691,7 +726,8 @@
       }).filter(function (index) { return index >= 0; });
       if (!matchingDays.length) return;
       var use = regionUse[poi.region_id] || 0;
-      days[matchingDays[use % matchingDays.length]].place_ids.push(poi.id);
+      var day = days[matchingDays[use % matchingDays.length]];
+      if (day.place_ids.length < 2) day.place_ids.push(poi.id);
       regionUse[poi.region_id] = use + 1;
     });
     return { route_id: route.id, days: days };
@@ -730,8 +766,9 @@
     })) {
       return discardSavedRoutePlan(route);
     }
+    var allowedRegionIds = new Set(outline.map(function (day) { return day.region_id; }));
     var allowedPoiIds = new Set(pois.filter(function (poi) {
-      return (poi.route_ids || []).indexOf(route.id) >= 0;
+      return allowedRegionIds.has(poi.region_id);
     }).map(function (poi) { return poi.id; }));
     var seenPoiIds = new Set();
     var cleanDays = saved.days.map(function (day, index) {
@@ -815,11 +852,25 @@
       var label = (item.optional ? optionPrefix : corePrefix) + ' · ' + item.id + ' · ' + text(region.name) + (nodes ? ' · ' + nodes : '');
       return '<span class="' + (item.optional ? 'optional' : '') + '">' + escapeHtml(label) + '</span>';
     }).join('');
-    var title = language() === 'zh' ? '路线空间示意' : 'Route geography';
-    var note = language() === 'zh' ? '真实地理底图 · 车程以最终核验为准' : 'Real geographic basemap · drive times need verification';
+    var title = {zh:'路线地理',en:'Route geography',ja:'ルート地理',ko:'경로 지도',id:'Geografi rute'}[language()] || 'Route geography';
+    var note = {zh:'真实地理底图 · 点位为规划锚点，车程以最终核验为准',en:'Real basemap · points are planning anchors; verify drive times',ja:'実地図 · 地点は計画の目安。所要時間は最終確認',ko:'실제 지도 · 지점은 계획 기준이며 이동시간은 최종 확인',id:'Peta nyata · titik adalah acuan rencana; waktu perjalanan perlu dikonfirmasi'}[language()] || 'Real basemap · points are planning anchors; verify drive times';
+    var corePoints = coreIds.map(function (id) { return (regions[id] || {}).map; }).filter(Boolean);
+    var coreLine = corePoints.map(function (point) { return point.x + ',' + point.y; }).join(' ');
+    var tail = corePoints[corePoints.length - 1];
+    var optionalLines = tail ? optionalIds.map(function (id) {
+      var point = (regions[id] || {}).map;
+      return point ? '<line class="bali-map-line optional" x1="' + tail.x + '" y1="' + tail.y + '" x2="' + point.x + '" y2="' + point.y + '"></line>' : '';
+    }).join('') : '';
+    var markers = relevant.map(function (item) {
+      var region = regions[item.id] || {};
+      var point = region.map || {};
+      var label = item.id + ' · ' + text(region.name);
+      return '<button type="button" class="bali-map-region' + (item.optional ? ' optional' : '') + '" data-region-id="' + item.id + '" data-map-region="true" aria-label="' + escapeHtml(label) + '" title="' + escapeHtml(label) + '" style="left:' + Number(point.x || 50) + '%;top:' + Number(point.y || 50) + '%">' + item.id + '</button>';
+    }).join('');
     return '<div class="bali-route-map">' +
       '<div class="bali-route-map-head"><strong>' + title + '</strong><span>' + note + '</span></div>' +
-      '<iframe class="bali-route-map-frame" title="' + escapeHtml((language() === 'zh' ? '巴厘岛真实地理底图' : 'Bali geographic basemap')) + '" loading="lazy" scrolling="no" src="https://www.openstreetmap.org/export/embed.html?bbox=114.95%2C-8.88%2C115.72%2C-8.03&amp;layer=mapnik"></iframe>' +
+      '<div class="bali-route-map-canvas"><iframe class="bali-route-map-frame" title="' + escapeHtml((language() === 'zh' ? '巴厘岛真实地理底图' : 'Bali geographic basemap')) + '" loading="lazy" scrolling="no" src="https://www.openstreetmap.org/export/embed.html?bbox=114.95%2C-8.88%2C115.72%2C-8.03&amp;layer=mapnik"></iframe>' +
+      '<svg class="bali-map-overlay" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">' + (coreLine ? '<polyline class="bali-map-line" points="' + coreLine + '"></polyline>' : '') + optionalLines + '</svg>' + markers + '</div>' +
       '<div class="bali-map-region-list">' + regionList + '</div>' +
     '</div>';
   }
@@ -835,30 +886,32 @@
           '<button type="button" data-remove-place="' + escapeHtml(id) + '" data-day-index="' + index + '" aria-label="' + escapeHtml(removeLabel) + '">×</button></span>';
       }).join('');
       var candidates = pois.filter(function (poi) {
-        return poi.region_id === day.region_id &&
-          (poi.route_ids || []).indexOf(route.id) >= 0 &&
-          !usedPoiIds.has(poi.id);
+        return poi.region_id === day.region_id && !usedPoiIds.has(poi.id);
       });
-      var options = '<option value="">' + (language() === 'zh' ? '添加同区域地点…' : 'Add a place in this area…') + '</option>' +
+      var labels = {
+        en:{choose:'Add a place in this area…',none:'No more places are available in this area yet',add:'Add place',empty:'No specific place selected',up:'Move one day earlier',down:'Move one day later',aria:'Choose a place to add'},
+        zh:{choose:'添加同区域地点…',none:'此区域暂时没有更多可添加地点',add:'添加地点',empty:'尚未选择具体地点',up:'前移一天',down:'后移一天',aria:'选择要加入的地点'},
+        ja:{choose:'このエリアの場所を追加…',none:'このエリアには追加できる場所がありません',add:'場所を追加',empty:'具体的な場所は未選択',up:'1日前へ移動',down:'1日後へ移動',aria:'追加する場所を選択'},
+        ko:{choose:'이 지역 장소 추가…',none:'이 지역에 추가할 장소가 없습니다',add:'장소 추가',empty:'구체적인 장소가 선택되지 않았습니다',up:'하루 앞당기기',down:'하루 늦추기',aria:'추가할 장소 선택'},
+        id:{choose:'Tambahkan tempat di area ini…',none:'Belum ada tempat lain yang dapat ditambahkan di area ini',add:'Tambah tempat',empty:'Belum ada tempat spesifik yang dipilih',up:'Pindah satu hari lebih awal',down:'Pindah satu hari lebih lambat',aria:'Pilih tempat untuk ditambahkan'}
+      }[language()] || {};
+      var options = '<option value="">' + (candidates.length ? labels.choose : labels.none) + '</option>' +
         candidates.map(function (poi) {
           return '<option value="' + escapeHtml(poi.id) + '">' + escapeHtml(poi.name) + '</option>';
         }).join('');
-      var empty = language() === 'zh' ? '尚未选择具体地点' : 'No specific place selected';
-      var up = language() === 'zh' ? '前移一天' : 'Move one day earlier';
-      var down = language() === 'zh' ? '后移一天' : 'Move one day later';
       return '<div class="bali-day-row ' + (index === activeDayIndex ? 'active' : '') + '" data-day-index="' + index + '">' +
         '<button class="bali-day-main" type="button" data-select-day="' + index + '" aria-pressed="' + (index === activeDayIndex) + '">' +
           '<strong>' + (language() === 'zh' ? '第 ' + (index + 1) + ' 天' : 'Day ' + (index + 1)) + '</strong>' +
           '<span>' + escapeHtml(day.region_id) + ' · ' + escapeHtml(text(day.theme)) + '</span>' +
         '</button>' +
         '<div class="bali-day-actions">' +
-          '<button class="bali-day-icon-btn" type="button" data-move-day="-1" data-day-index="' + index + '" aria-label="' + up + '"' + (index === 0 ? ' disabled' : '') + '><span class="fa fa-arrow-up"></span></button>' +
-          '<button class="bali-day-icon-btn" type="button" data-move-day="1" data-day-index="' + index + '" aria-label="' + down + '"' + (index === plan.days.length - 1 ? ' disabled' : '') + '><span class="fa fa-arrow-down"></span></button>' +
+          '<button class="bali-day-icon-btn" type="button" data-move-day="-1" data-day-index="' + index + '" aria-label="' + labels.up + '"' + (index === 0 ? ' disabled' : '') + '><span class="fa fa-arrow-up"></span></button>' +
+          '<button class="bali-day-icon-btn" type="button" data-move-day="1" data-day-index="' + index + '" aria-label="' + labels.down + '"' + (index === plan.days.length - 1 ? ' disabled' : '') + '><span class="fa fa-arrow-down"></span></button>' +
         '</div>' +
-        '<div class="bali-day-places">' + (placeChips || '<span class="bali-day-empty">' + empty + '</span>') + '</div>' +
+        '<div class="bali-day-places">' + (placeChips || '<span class="bali-day-empty">' + labels.empty + '</span>') + '</div>' +
         '<div class="bali-day-add">' +
-          '<select class="bali-day-select" data-place-select="' + index + '" aria-label="' + (language() === 'zh' ? '选择要加入的地点' : 'Choose a place to add') + '">' + options + '</select>' +
-          '<button class="bali-day-add-btn" type="button" data-add-place="' + index + '">' + (language() === 'zh' ? '添加地点' : 'Add place') + '</button>' +
+          '<select class="bali-day-select" data-place-select="' + index + '" aria-label="' + labels.aria + '"' + (!candidates.length ? ' disabled' : '') + '>' + options + '</select>' +
+          '<button class="bali-day-add-btn" type="button" data-add-place="' + index + '"' + (!candidates.length ? ' disabled' : '') + '>' + labels.add + '</button>' +
         '</div>' +
       '</div>';
     }).join('');
@@ -915,6 +968,13 @@
         activeDayIndex = index;
         saveRoutePlan(route, plan);
         renderDetail();
+      });
+    });
+    detail.querySelectorAll('[data-map-region="true"]').forEach(function (point) {
+      point.addEventListener('click', function () {
+        var regionId = point.dataset.regionId;
+        var index = plan.days.findIndex(function (day) { return day.region_id === regionId; });
+        if (index >= 0) setActiveDay(plan, index);
       });
     });
     var reset = detail.querySelector('[data-reset-route]');
@@ -991,7 +1051,7 @@
     renderDetail();
   }
 
-  fetch('assets/data/bali-travel-data.json?v=20260802')
+    fetch('assets/data/bali-travel-data.json?v=20260806')
     .then(function (response) { if (!response.ok) throw new Error('HTTP ' + response.status); return response.json(); })
     .then(useData)
     .catch(function () {
@@ -1077,7 +1137,7 @@
     document.getElementById('bali-place-ai').href = 'ai-tool.html?' + handoff.toString();
     document.getElementById('bali-place-driver').href = 'find-driver.html?route=' + encodeURIComponent(routeId) + '&place=' + encodeURIComponent(placeName) + '&source=gallery';
   }
-  fetch('assets/data/bali-travel-data.json?v=20260802')
+  fetch('assets/data/bali-travel-data.json?v=20260806')
     .then(function(response) { if (!response.ok) throw new Error('HTTP ' + response.status); return response.json(); })
     .then(function(data) {
       (data.routes || []).forEach(function(route) { routeCatalog[route.id] = route; });

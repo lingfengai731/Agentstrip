@@ -184,7 +184,7 @@ const LANGS = {
     fdTitle: 'Request a trusted Bali driver',
     fdSub: "Choose Dicky or Gede, then share your route. The selected driver confirms availability, vehicle details, hours and the final quote after review.",
     fdFormTitle: 'Your trip details', fdFormSub: 'Choose a driver, then share your route. Availability and price are confirmed after review.',
-    fdChooseDriver: 'Choose a driver', fdDickyShort: 'Local driver · profile and vehicle photos available', fdGedeShort: 'Local driver · direct contact details pending',
+    fdChooseDriver: 'Choose a driver', fdDickyShort: 'Local Bali driver · availability confirmed privately', fdGedeShort: 'Local Bali driver · availability confirmed privately',
     fdMeetDrivers: 'Meet the local drivers', fdProfilePending: 'Profile details being confirmed',
     fdDickyProfile: 'Bali driving support, airport pickup and route-based requests.', fdGedeProfile: 'Alternative local driver for route and date availability.',
     fdLanguageConfirm: 'Languages and exact vehicle capacity need driver confirmation.', fdGedeForward: 'Until direct contact is configured, WanderMind forwards the request manually.',
@@ -197,6 +197,7 @@ const LANGS = {
     fdPlaces: "Places you'd like to visit", fdSrcManual: 'Write manually', fdSrcImport: 'Import from my AI plan',
     fdPlacesPh: 'e.g. Nusa Penida, Ubud rice terraces, Uluwatu temple…',
     fdPrivacy: 'Your privacy is protected. We forward this request once to the driver by email and never store your contact details on our servers.',
+    fdConsent: 'I agree that WanderMind may forward this request and the contact details I entered to my selected driver to arrange a reply.', fdErrConsent: 'Please confirm that we may forward this request to your selected driver.',
     fdSubmit: 'Send driver request',
     fdBadge: 'Verified local driver',
     fdFeat1: 'Local Bali driver, English-speaking', fdFeat2: 'Airport & hotel pickup / drop-off',
@@ -381,7 +382,7 @@ const LANGS = {
     fdTitle: '预约可信赖的巴厘岛司机',
     fdSub: '选择 Dicky 或 Gede，再提交你的路线。司机看过日期、车辆需求和用车时长后确认是否可接，并给出最终报价。',
     fdFormTitle: '你的行程信息', fdFormSub: '先选择司机，再提交路线；是否可接和价格都由司机看过行程后确认。',
-    fdChooseDriver: '选择司机', fdDickyShort: '本地司机 · 已有个人与车辆实拍', fdGedeShort: '本地司机 · 直接联系方式待补充',
+    fdChooseDriver: '选择司机', fdDickyShort: '巴厘岛本地司机 · 私密确认档期', fdGedeShort: '巴厘岛本地司机 · 私密确认档期',
     fdMeetDrivers: '认识本地司机', fdProfilePending: '资料细节确认中',
     fdDickyProfile: '提供巴厘岛用车、机场接送和按路线询价。', fdGedeProfile: '作为另一位本地司机，根据路线与日期确认档期。',
     fdLanguageConfirm: '语言能力和准确载客量仍需司机确认。', fdGedeForward: '在直接联系方式配置完成前，由 WanderMind 人工转发需求。',
@@ -394,6 +395,7 @@ const LANGS = {
     fdPlaces: '你想去的景点', fdSrcManual: '手动填写', fdSrcImport: '从我的 AI 行程导入',
     fdPlacesPh: '例如：佩妮达岛、乌布梯田、乌鲁瓦图神庙……',
     fdPrivacy: '你的隐私受到保护。我们只会通过邮件把这条需求转发给司机一次，绝不会在服务器上保存你的联系方式。',
+    fdConsent: '我同意 WanderMind 将本次需求及我填写的联系方式转发给所选司机，以便其回复。', fdErrConsent: '请确认同意将本次需求转发给所选司机。',
     fdSubmit: '发送司机询价需求',
     fdBadge: '认证本地司机',
     fdFeat1: '巴厘岛本地司机，会讲英语', fdFeat2: '机场与酒店接送',
@@ -578,7 +580,7 @@ const LANGS = {
     fdTitle: '信頼できるバリ島ドライバーを予約',
     fdSub: 'DickyまたはGedeを選び、ルートを送信してください。空き状況、車両、時間、最終料金は確認後に回答します。',
     fdFormTitle: 'ご旅行の詳細', fdFormSub: 'ドライバーを選び、ルートを共有してください。空き状況と料金は確認後に決まります。',
-    fdChooseDriver: 'ドライバーを選ぶ', fdDickyShort: '現地ドライバー・本人と車両の写真あり', fdGedeShort: '現地ドライバー・直接連絡先は確認中',
+    fdChooseDriver: 'ドライバーを選ぶ', fdDickyShort: 'バリ島の現地ドライバー・空き状況は非公開で確認', fdGedeShort: 'バリ島の現地ドライバー・空き状況は非公開で確認',
     fdMeetDrivers: '現地ドライバー紹介', fdProfilePending: 'プロフィール詳細を確認中',
     fdDickyProfile: 'バリ島内の移動、空港送迎、ルート別の依頼に対応。', fdGedeProfile: 'ルートと日程に応じた別の現地ドライバー候補。',
     fdLanguageConfirm: '対応言語と正確な乗車定員はドライバー確認が必要です。', fdGedeForward: '直接連絡先の設定まではWanderMindが手動で転送します。',
@@ -591,6 +593,7 @@ const LANGS = {
     fdPlaces: '行きたい場所', fdSrcManual: '手動で入力', fdSrcImport: 'AIプランから取り込む',
     fdPlacesPh: '例：ヌサペニダ、ウブドの棚田、ウルワツ寺院…',
     fdPrivacy: 'プライバシーは保護されます。このリクエストはメールでドライバーに一度だけ転送され、連絡先がサーバーに保存されることはありません。',
+    fdConsent: '返信のため、WanderMind がこの依頼と入力した連絡先を選択したドライバーへ転送することに同意します。', fdErrConsent: '選択したドライバーへの転送に同意してください。',
     fdSubmit: 'ドライバー依頼を送信',
     fdBadge: '認証済み現地ドライバー',
     fdFeat1: 'バリ島現地ドライバー、英語対応', fdFeat2: '空港・ホテル送迎',
@@ -775,7 +778,7 @@ const LANGS = {
     fdTitle: '믿을 수 있는 발리 기사 예약',
     fdSub: 'Dicky 또는 Gede를 선택한 뒤 루트를 보내세요. 가능 일정, 차량, 시간, 최종 견적은 검토 후 확인됩니다.',
     fdFormTitle: '여행 정보', fdFormSub: '기사를 선택하고 루트를 공유하세요. 가능 여부와 가격은 검토 후 확인됩니다.',
-    fdChooseDriver: '기사 선택', fdDickyShort: '현지 기사 · 본인 및 차량 사진 있음', fdGedeShort: '현지 기사 · 직접 연락처 확인 중',
+    fdChooseDriver: '기사 선택', fdDickyShort: '발리 현지 기사 · 가능 일정은 비공개로 확인', fdGedeShort: '발리 현지 기사 · 가능 일정은 비공개로 확인',
     fdMeetDrivers: '현지 기사 소개', fdProfilePending: '프로필 세부 정보 확인 중',
     fdDickyProfile: '발리 이동, 공항 픽업, 루트 기반 요청을 지원합니다.', fdGedeProfile: '루트와 날짜 가능 여부에 따른 다른 현지 기사 옵션입니다.',
     fdLanguageConfirm: '언어와 정확한 차량 정원은 기사 확인이 필요합니다.', fdGedeForward: '직접 연락처 설정 전까지 WanderMind가 수동 전달합니다.',
@@ -788,6 +791,7 @@ const LANGS = {
     fdPlaces: '가고 싶은 장소', fdSrcManual: '직접 작성', fdSrcImport: 'AI 플랜에서 가져오기',
     fdPlacesPh: '예: 누사페니다, 우붓 계단식 논, 울루와뚜 사원…',
     fdPrivacy: '귀하의 개인정보는 보호됩니다. 이 요청은 이메일로 기사에게 한 번만 전달되며, 연락처는 서버에 저장되지 않습니다.',
+    fdConsent: '답변을 위해 WanderMind가 이 요청과 입력한 연락처를 선택한 기사에게 전달하는 데 동의합니다.', fdErrConsent: '선택한 기사에게 요청을 전달하는 데 동의해 주세요.',
     fdSubmit: '기사 요청 보내기',
     fdBadge: '검증된 현지 기사',
     fdFeat1: '발리 현지 기사, 영어 가능', fdFeat2: '공항·호텔 픽업/드롭',
@@ -972,7 +976,7 @@ const LANGS = {
     fdTitle: 'Pesan driver Bali tepercaya',
     fdSub: 'Pilih Dicky atau Gede lalu kirim rute Anda. Ketersediaan, kendaraan, durasi, dan harga akhir dikonfirmasi setelah ditinjau.',
     fdFormTitle: 'Detail perjalanan Anda', fdFormSub: 'Pilih driver lalu bagikan rute. Ketersediaan dan harga dikonfirmasi setelah ditinjau.',
-    fdChooseDriver: 'Pilih driver', fdDickyShort: 'Driver lokal · foto profil dan kendaraan tersedia', fdGedeShort: 'Driver lokal · kontak langsung masih dikonfirmasi',
+    fdChooseDriver: 'Pilih driver', fdDickyShort: 'Driver lokal Bali · ketersediaan dikonfirmasi secara privat', fdGedeShort: 'Driver lokal Bali · ketersediaan dikonfirmasi secara privat',
     fdMeetDrivers: 'Kenali driver lokal', fdProfilePending: 'Detail profil sedang dikonfirmasi',
     fdDickyProfile: 'Dukungan berkendara di Bali, jemput bandara, dan permintaan berbasis rute.', fdGedeProfile: 'Alternatif driver lokal berdasarkan rute dan tanggal.',
     fdLanguageConfirm: 'Bahasa dan kapasitas kendaraan perlu dikonfirmasi driver.', fdGedeForward: 'Sebelum kontak langsung tersedia, WanderMind meneruskan permintaan secara manual.',
@@ -985,6 +989,7 @@ const LANGS = {
     fdPlaces: 'Tempat yang ingin dikunjungi', fdSrcManual: 'Tulis manual', fdSrcImport: 'Impor dari plan AI saya',
     fdPlacesPh: 'cth: Nusa Penida, sawah Ubud, pura Uluwatu…',
     fdPrivacy: 'Privasi Anda terlindungi. Kami meneruskan permintaan ini sekali ke driver via email dan tidak pernah menyimpan kontak Anda di server kami.',
+    fdConsent: 'Saya setuju WanderMind meneruskan permintaan ini dan kontak yang saya isi kepada driver pilihan saya untuk mengatur balasan.', fdErrConsent: 'Harap setujui pengiriman permintaan kepada driver pilihan Anda.',
     fdSubmit: 'Kirim permintaan driver',
     fdBadge: 'Driver lokal terverifikasi',
     fdFeat1: 'Driver lokal Bali, bisa bahasa Inggris', fdFeat2: 'Jemput/antar bandara & hotel',
@@ -1144,31 +1149,31 @@ Object.assign(LANGS.en, {
   partnerTitle:'Private local support, when you need it', partnerSub:'A route is only useful when it can work on the ground. For Bali, requests are handled privately through WanderMind — no personal driver accounts are published here.', partnerDickyEyebrow:'Bali · private request channel', partnerDickyName:'Choose a driver only when your route is ready', partnerDickyRole:'Airport transfers, full-day private tours and route-based requests.', partnerDickyDesc:'Share your dates, route and travel details through the private driver request. WanderMind forwards the request for availability and a final quote; individual contact accounts stay private.', partnerDickyCta:'Open a private driver request →',
   contactDriverTitle:'Find a Bali Driver', contactDriverValue:'Private request · choose a driver in the form', contactDriverTag:'We forward the request privately after review',
   baliDriverTitle:'Make your route workable with a local driver', baliDriverSub:'Distances in Bali are deceptive and public transport is thin. Send one private request with your dates and route; you can choose a driver after availability and the final quote are reviewed.', baliDriverBtn:'Open a private driver request',
-  fdGedeShort:'Local driver · profile, vehicle and service-moment photos available', fdQuoteBoundary:'<strong>Full day: IDR 700k base + IDR 50k per guest</strong> (up to 10 hours), or <strong>half day: IDR 500k base + IDR 50k per guest</strong> (up to 6 hours). Includes car, fuel, driver-guide, mineral water, parking and tolls. Additional time is IDR 75k per hour after 10 hours. Airport transfers and hotel changes are quoted by distance; the final route-specific quote is confirmed before booking.'
+  fdDickyShort:'Local Bali driver · availability confirmed privately', fdGedeShort:'Local Bali driver · availability confirmed privately', fdQuoteBoundary:'<strong>Full day: IDR 700k base + IDR 50k per guest</strong> (up to 10 hours), or <strong>half day: IDR 500k base + IDR 50k per guest</strong> (up to 6 hours). Includes car, fuel, driver-guide, mineral water, parking and tolls. Additional time is IDR 75k per hour after 10 hours. Airport transfers and hotel changes are quoted by distance; the final route-specific quote is confirmed before booking.'
 });
 Object.assign(LANGS.zh, {
   partnerTitle:'需要时再启用的私密本地支持', partnerSub:'路线能在当地顺利执行才有价值。巴厘岛需求通过 WanderMind 私密处理；本站不会公开司机个人账号。', partnerDickyEyebrow:'巴厘岛 · 私密需求通道', partnerDickyName:'路线准备好后再选择司机', partnerDickyRole:'机场接送、全天私人包车与按路线提交的需求。', partnerDickyDesc:'通过私密司机需求提交日期、路线和旅行信息。WanderMind 会转交以确认档期和最终报价；个人联系方式保持私密。', partnerDickyCta:'发起私密司机需求 →',
   contactDriverTitle:'寻找巴厘岛司机', contactDriverValue:'私密需求 · 在表单中选择司机', contactDriverTag:'审核后我们会私密转交需求',
   baliDriverTitle:'让本地司机协助路线落地', baliDriverSub:'巴厘岛看似距离不远，实际车程常被低估，公共交通也有限。提交一次包含日期和路线的私密需求；确认档期和最终报价后再选择司机。', baliDriverBtn:'发起私密司机需求',
-  fdGedeShort:'本地司机 · 已有人像、车辆与服务实拍', fdQuoteBoundary:'<strong>全天：基础价 70 万印尼盾 + 每位游客 5 万印尼盾</strong>（最多 10 小时）；或 <strong>半天：基础价 50 万印尼盾 + 每位游客 5 万印尼盾</strong>（最多 6 小时）。包含车辆、燃油、司机兼导游、矿泉水、停车费和过路费。超过 10 小时后每小时加收 7.5 万印尼盾。机场接送和换酒店按距离报价；预订前确认最终路线报价。'
+  fdDickyShort:'巴厘岛本地司机 · 私密确认档期', fdGedeShort:'巴厘岛本地司机 · 私密确认档期', fdQuoteBoundary:'<strong>全天：基础价 70 万印尼盾 + 每位游客 5 万印尼盾</strong>（最多 10 小时）；或 <strong>半天：基础价 50 万印尼盾 + 每位游客 5 万印尼盾</strong>（最多 6 小时）。包含车辆、燃油、司机兼导游、矿泉水、停车费和过路费。超过 10 小时后每小时加收 7.5 万印尼盾。机场接送和换酒店按距离报价；预订前确认最终路线报价。'
 });
 Object.assign(LANGS.ja, {
   partnerTitle:'必要な時だけ使える、プライベートな現地サポート', partnerSub:'現地で実行できてこそルートには価値があります。バリの依頼は WanderMind を通じて非公開で扱い、個人ドライバーのアカウントは公開しません。', partnerDickyEyebrow:'バリ島 · 非公開の依頼窓口', partnerDickyName:'ルートが決まってからドライバーを選ぶ', partnerDickyRole:'空港送迎、終日プライベートツアー、ルートに基づく依頼。', partnerDickyDesc:'日程、ルート、旅行情報を非公開の依頼フォームから送信してください。WanderMind が空き状況と最終見積もりのために転送し、個人の連絡先は非公開のままです。', partnerDickyCta:'非公開のドライバー依頼を開始 →',
   contactDriverTitle:'バリのドライバーを探す', contactDriverValue:'非公開の依頼 · フォームでドライバーを選択', contactDriverTag:'確認後、依頼を非公開で転送します',
   baliDriverTitle:'現地ドライバーと、実行できるルートへ', baliDriverSub:'バリ島は見た目以上に移動時間がかかり、公共交通も限られます。日程とルートを含む非公開の依頼を一度送信し、空き状況と最終見積もりの確認後にドライバーを選べます。', baliDriverBtn:'非公開のドライバー依頼を開始',
-  fdGedeShort:'現地ドライバー · プロフィール、車両、サービス写真あり', fdQuoteBoundary:'<strong>終日：基本 70万 IDR + 1名につき 5万 IDR</strong>（最長10時間）、または <strong>半日：基本 50万 IDR + 1名につき 5万 IDR</strong>（最長6時間）。車、燃料、ドライバー兼ガイド、ミネラルウォーター、駐車料、通行料を含みます。10時間を超える場合は1時間につき 7.5万 IDR の追加です。空港送迎とホテル移動は距離により見積もり、予約前にルート別の最終料金を確認します。'
+  fdDickyShort:'バリ島の現地ドライバー・空き状況は非公開で確認', fdGedeShort:'バリ島の現地ドライバー・空き状況は非公開で確認', fdQuoteBoundary:'<strong>終日：基本 70万 IDR + 1名につき 5万 IDR</strong>（最長10時間）、または <strong>半日：基本 50万 IDR + 1名につき 5万 IDR</strong>（最長6時間）。車、燃料、ドライバー兼ガイド、ミネラルウォーター、駐車料、通行料を含みます。10時間を超える場合は1時間につき 7.5万 IDR の追加です。空港送迎とホテル移動は距離により見積もり、予約前にルート別の最終料金を確認します。'
 });
 Object.assign(LANGS.ko, {
   partnerTitle:'필요할 때만 쓰는 비공개 현지 지원', partnerSub:'현지에서 실행할 수 있어야 경로가 의미 있습니다. 발리 요청은 WanderMind를 통해 비공개로 처리하며 개인 기사 계정은 공개하지 않습니다.', partnerDickyEyebrow:'발리 · 비공개 요청 채널', partnerDickyName:'경로가 준비된 뒤 기사를 선택하세요', partnerDickyRole:'공항 이동, 종일 프라이빗 투어와 경로 기반 요청.', partnerDickyDesc:'비공개 기사 요청으로 날짜, 경로와 여행 정보를 보내세요. WanderMind가 가능 일정과 최종 견적 확인을 위해 전달하며, 개인 연락처는 비공개로 유지됩니다.', partnerDickyCta:'비공개 기사 요청 시작 →',
   contactDriverTitle:'발리 기사 찾기', contactDriverValue:'비공개 요청 · 양식에서 기사 선택', contactDriverTag:'검토 후 요청을 비공개로 전달합니다',
   baliDriverTitle:'현지 기사와 실행 가능한 경로 만들기', baliDriverSub:'발리는 보이는 것보다 이동 시간이 길고 대중교통이 제한적입니다. 날짜와 경로가 담긴 비공개 요청을 한 번 보내고, 가능 일정과 최종 견적을 확인한 뒤 기사를 선택하세요.', baliDriverBtn:'비공개 기사 요청 시작',
-  fdGedeShort:'현지 기사 · 프로필, 차량 및 서비스 사진 제공', fdQuoteBoundary:'<strong>종일: 기본 70만 IDR + 1인당 5만 IDR</strong>(최대 10시간), 또는 <strong>반일: 기본 50만 IDR + 1인당 5만 IDR</strong>(최대 6시간)입니다. 차량, 연료, 기사 겸 가이드, 생수, 주차료와 통행료가 포함됩니다. 10시간 초과 시 시간당 7.5만 IDR가 추가됩니다. 공항 이동과 호텔 변경은 거리에 따라 견적을 내며, 예약 전 경로별 최종 금액을 확인합니다.'
+  fdDickyShort:'발리 현지 기사 · 가능 일정은 비공개로 확인', fdGedeShort:'발리 현지 기사 · 가능 일정은 비공개로 확인', fdQuoteBoundary:'<strong>종일: 기본 70만 IDR + 1인당 5만 IDR</strong>(최대 10시간), 또는 <strong>반일: 기본 50만 IDR + 1인당 5만 IDR</strong>(최대 6시간)입니다. 차량, 연료, 기사 겸 가이드, 생수, 주차료와 통행료가 포함됩니다. 10시간 초과 시 시간당 7.5만 IDR가 추가됩니다. 공항 이동과 호텔 변경은 거리에 따라 견적을 내며, 예약 전 경로별 최종 금액을 확인합니다.'
 });
 Object.assign(LANGS.id, {
   partnerTitle:'Dukungan lokal privat, saat Anda membutuhkannya', partnerSub:'Rute baru berguna jika bisa dijalankan di lapangan. Untuk Bali, permintaan ditangani secara privat melalui WanderMind — akun pribadi driver tidak dipublikasikan di sini.', partnerDickyEyebrow:'Bali · kanal permintaan privat', partnerDickyName:'Pilih driver setelah rute Anda siap', partnerDickyRole:'Antar-jemput bandara, tur privat seharian, dan permintaan berbasis rute.', partnerDickyDesc:'Kirim tanggal, rute, dan detail perjalanan melalui permintaan driver privat. WanderMind meneruskannya untuk ketersediaan dan harga akhir; kontak pribadi tetap privat.', partnerDickyCta:'Mulai permintaan driver privat →',
   contactDriverTitle:'Cari Driver Bali', contactDriverValue:'Permintaan privat · pilih driver di formulir', contactDriverTag:'Kami meneruskan permintaan secara privat setelah ditinjau',
   baliDriverTitle:'Jadikan rute Anda bisa dijalankan bersama driver lokal', baliDriverSub:'Jarak di Bali sering terasa lebih singkat daripada waktu tempuhnya dan transportasi umum terbatas. Kirim satu permintaan privat berisi tanggal dan rute; Anda dapat memilih driver setelah ketersediaan dan harga akhir ditinjau.', baliDriverBtn:'Mulai permintaan driver privat',
-  fdGedeShort:'Driver lokal · foto profil, kendaraan, dan momen layanan tersedia', fdQuoteBoundary:'<strong>Seharian: dasar IDR 700k + IDR 50k per tamu</strong> (maks. 10 jam), atau <strong>setengah hari: dasar IDR 500k + IDR 50k per tamu</strong> (maks. 6 jam). Termasuk mobil, bahan bakar, driver sekaligus pemandu, air mineral, parkir, dan tol. Setelah 10 jam dikenakan tambahan IDR 75k per jam. Antar-jemput bandara dan pindah hotel dihitung berdasarkan jarak; harga akhir sesuai rute dikonfirmasi sebelum pemesanan.'
+  fdDickyShort:'Driver lokal Bali · ketersediaan dikonfirmasi secara privat', fdGedeShort:'Driver lokal Bali · ketersediaan dikonfirmasi secara privat', fdQuoteBoundary:'<strong>Seharian: dasar IDR 700k + IDR 50k per tamu</strong> (maks. 10 jam), atau <strong>setengah hari: dasar IDR 500k + IDR 50k per tamu</strong> (maks. 6 jam). Termasuk mobil, bahan bakar, driver sekaligus pemandu, air mineral, parkir, dan tol. Setelah 10 jam dikenakan tambahan IDR 75k per jam. Antar-jemput bandara dan pindah hotel dihitung berdasarkan jarak; harga akhir sesuai rute dikonfirmasi sebelum pemesanan.'
 });
 
 /* ──────────────────────────────────────────────────────
