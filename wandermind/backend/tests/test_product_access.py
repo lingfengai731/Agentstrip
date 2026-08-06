@@ -964,6 +964,7 @@ class ProductAccessTests(unittest.TestCase):
 
         route_ids = {route["id"] for route in data["routes"]}
         poi_ids = [poi["id"] for poi in data["pois"]]
+        poi_by_id = {poi["id"]: poi for poi in data["pois"]}
         self.assertEqual(len(poi_ids), len(set(poi_ids)))
         for poi in data["pois"]:
             self.assertIn(poi["region_id"], region_ids, poi["id"])
@@ -977,6 +978,21 @@ class ProductAccessTests(unittest.TestCase):
                 and poi["region_id"] in outline_regions
             ]
             self.assertTrue(compatible, route["id"])
+            self.assertEqual(
+                len(route["free_outline"]),
+                route["recommended_days"]["ideal"],
+                route["id"],
+            )
+            suggested_ids = []
+            for day in route["free_outline"]:
+                self.assertIn("suggested_poi_ids", day, (route["id"], day["day"]))
+                self.assertGreaterEqual(len(day["suggested_poi_ids"]), 1)
+                self.assertLessEqual(len(day["suggested_poi_ids"]), 2)
+                for poi_id in day["suggested_poi_ids"]:
+                    self.assertIn(poi_id, poi_by_id, poi_id)
+                    self.assertEqual(poi_by_id[poi_id]["region_id"], day["region_id"])
+                    suggested_ids.append(poi_id)
+            self.assertEqual(len(suggested_ids), len(set(suggested_ids)), route["id"])
 
     def test_bali_gallery_uses_theme_and_tag_taxonomy(self):
         frontend_dir = (
@@ -1053,6 +1069,7 @@ class ProductAccessTests(unittest.TestCase):
         self.assertIn("source:'gallery'", html)
         self.assertIn("openstreetmap.org/export/embed.html", html)
         self.assertIn("Real basemap", html)
+        self.assertIn("item.suggested_poi_ids || []", html)
         self.assertIn("bali-map-overlay", html)
         self.assertIn("matchedRouteId(activeShot)", html)
         self.assertIn("activeId = requestedRoute", html)

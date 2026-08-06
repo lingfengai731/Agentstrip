@@ -714,21 +714,11 @@
       return {
         region_id: item.region_id,
         theme: item.theme,
-        place_ids: []
+        place_ids: (item.suggested_poi_ids || []).filter(function (id) {
+          var poi = poiById(id);
+          return poi && poi.region_id === item.region_id;
+        })
       };
-    });
-    var regionUse = {};
-    pois.filter(function (poi) {
-      return (poi.route_ids || []).indexOf(route.id) >= 0;
-    }).forEach(function (poi) {
-      var matchingDays = days.map(function (day, index) {
-        return day.region_id === poi.region_id ? index : -1;
-      }).filter(function (index) { return index >= 0; });
-      if (!matchingDays.length) return;
-      var use = regionUse[poi.region_id] || 0;
-      var day = days[matchingDays[use % matchingDays.length]];
-      if (day.place_ids.length < 2) day.place_ids.push(poi.id);
-      regionUse[poi.region_id] = use + 1;
     });
     return { route_id: route.id, days: days };
   }
@@ -996,8 +986,17 @@
     if (!route) return;
     var plan = routePlan(route);
     if (activeDayIndex >= plan.days.length) activeDayIndex = 0;
-    var path = plan.days.map(function (day) {
-      var id = day.region_id;
+    var words = {
+      en:{layer:'Experience product',path:'Regional journey',days:'Recommended day sequence',note:'Order and places save on this device; timing, drive time and opening details still need verification.',reset:'Reset recommendation',adjust:'Adjust to my preferences',professional:'Get my professional route',driver:'Send route to a driver',publicTitle:'Public recommended route',publicBody:'Browse the full recommended R1–R6 day sequence, region order and map for free.',proTitle:'Personal professional route',proBody:'Matched to your profile; preview first, then unlock full places and execution notes.'},
+      zh:{layer:'主题产品层',path:'区域行程路径',days:'推荐日程',note:'顺序和地点自动保存在本机；时间、车程与开放信息仍需核验。',reset:'恢复推荐',adjust:'按我的偏好调整',professional:'获取个性化专业路线',driver:'把路线发给司机询价',publicTitle:'公共推荐路线',publicBody:'R1–R6 的推荐日程、区域顺序和地图可免费完整浏览。',proTitle:'个性化专业路线',proBody:'根据你的信息匹配；先免费预览，解锁后查看完整地点和执行备注。'},
+      ja:{layer:'体験ルート',path:'地域の旅程',days:'おすすめ日程',note:'順序と場所はこの端末に保存されます。時間・移動・営業情報は再確認してください。',reset:'おすすめに戻す',adjust:'好みに合わせて調整',professional:'個別プロルートを見る',driver:'ドライバーに見積もりを依頼',publicTitle:'公開おすすめルート',publicBody:'R1–R6 のおすすめ日程、地域順、地図を無料で確認できます。',proTitle:'個別プロルート',proBody:'あなたの条件に合わせて提案。まずプレビューし、解除後に場所と実行メモを確認します。'},
+      ko:{layer:'체험 루트',path:'지역 여정',days:'추천 일정',note:'순서와 장소는 이 기기에 저장됩니다. 시간, 이동 및 운영 정보는 다시 확인해 주세요.',reset:'추천 일정으로 복원',adjust:'내 취향에 맞게 조정',professional:'개인 전문 루트 보기',driver:'기사에게 견적 요청',publicTitle:'공개 추천 루트',publicBody:'R1–R6의 추천 일정, 지역 순서와 지도를 무료로 확인할 수 있습니다.',proTitle:'개인 전문 루트',proBody:'조건에 맞춰 제안합니다. 미리 본 뒤 잠금을 해제하면 장소와 실행 메모를 확인할 수 있습니다.'},
+      id:{layer:'Rute pengalaman',path:'Alur perjalanan kawasan',days:'Urutan hari rekomendasi',note:'Urutan dan tempat disimpan di perangkat ini; waktu, perjalanan, dan informasi buka perlu dikonfirmasi lagi.',reset:'Pulihkan rekomendasi',adjust:'Sesuaikan dengan preferensi saya',professional:'Lihat rute profesional saya',driver:'Kirim rute ke driver',publicTitle:'Rute rekomendasi publik',publicBody:'Telusuri urutan hari rekomendasi R1–R6, urutan kawasan, dan peta secara gratis.',proTitle:'Rute profesional pribadi',proBody:'Disesuaikan dengan profil Anda; lihat pratinjau dulu, lalu buka lokasi dan catatan pelaksanaan lengkap.'}
+    }[language()] || {};
+    var routePath = plan.days.map(function (day) { return day.region_id; }).filter(function (id, index, ids) {
+      return index === 0 || ids[index - 1] !== id;
+    });
+    var path = routePath.map(function (id) {
       var region = regions[id];
       return '<span class="bali-region-node" title="' + (region ? text(region.name) : id) + '">' + id + ' · ' + (region ? text(region.name) : id) + '</span>';
     }).join('<span class="fa fa-long-arrow-right bali-region-arrow" aria-hidden="true"></span>');
@@ -1005,23 +1004,23 @@
     var params = new URLSearchParams({ dest: 'bali', route: route.id, mode: 'diy' });
     detail.innerHTML =
       '<div class="bali-route-detail-grid">' +
-        '<div><div class="bali-sec-eyebrow" style="color:#fcbf1e">' + route.id + ' · ' + (language() === 'zh' ? '主题产品层' : 'Experience product') + '</div>' +
+        '<div><div class="bali-sec-eyebrow" style="color:#fcbf1e">' + route.id + ' · ' + words.layer + '</div>' +
           '<h3>' + text(route.name) + '</h3><p>' + text(route.promise) + '</p>' +
-          '<div class="bali-region-path" aria-label="' + (language() === 'zh' ? '主要区域路径' : 'Core region path') + '">' + path + '</div>' +
-          '<div class="bali-day-outline" aria-label="' + (language() === 'zh' ? '免费路线轮廓' : 'Free route outline') + '">' + outline + '</div>' +
-          '<div class="bali-editor-note"><span><span class="fa fa-check-circle"></span> ' + (language() === 'zh' ? '顺序和地点自动保存在本机；时间、车程与开放信息仍需核验。' : 'Order and places save on this device; timing, drive time and opening details still need verification.') + '</span>' +
-            '<button class="bali-day-reset" type="button" data-reset-route>' + (language() === 'zh' ? '恢复推荐' : 'Reset recommendation') + '</button></div>' +
+          '<div class="bali-region-path" aria-label="' + words.path + '">' + path + '</div>' +
+          '<div class="bali-day-outline" aria-label="' + words.days + '">' + outline + '</div>' +
+          '<div class="bali-editor-note"><span><span class="fa fa-check-circle"></span> ' + words.note + '</span>' +
+            '<button class="bali-day-reset" type="button" data-reset-route>' + words.reset + '</button></div>' +
           '<div class="bali-route-detail-actions">' +
-            '<a class="bali-btn bali-btn-primary" data-route-handoff href="ai-tool.html?' + params.toString() + '">' + (language() === 'zh' ? '按我的偏好调整' : 'Adjust to my preferences') + '</a>' +
-             '<a class="bali-btn bali-route-secondary" href="bali.html?route=' + encodeURIComponent(route.id) + '#professional-planner" data-professional-route="' + route.id + '">' + (language() === 'zh' ? '获取个性化专业路线' : 'Get my professional route') + '</a>' +
-            '<a class="bali-btn bali-route-secondary" data-route-handoff href="find-driver.html?route=' + encodeURIComponent(route.id) + '">' + (language() === 'zh' ? '把路线发给司机询价' : 'Send route to a driver') + '</a>' +
+            '<a class="bali-btn bali-btn-primary" data-route-handoff href="ai-tool.html?' + params.toString() + '">' + words.adjust + '</a>' +
+             '<a class="bali-btn bali-route-secondary" href="bali.html?route=' + encodeURIComponent(route.id) + '#professional-planner" data-professional-route="' + route.id + '">' + words.professional + '</a>' +
+            '<a class="bali-btn bali-route-secondary" data-route-handoff href="find-driver.html?route=' + encodeURIComponent(route.id) + '">' + words.driver + '</a>' +
           '</div>' +
         '</div>' +
         '<div class="bali-route-aside">' +
           renderRouteMap(route, plan) +
           '<div class="bali-route-value">' +
-             '<div class="bali-route-value-card"><strong>' + (language() === 'zh' ? '公共路线家族' : 'Public route family') + '</strong><span>' + (language() === 'zh' ? 'R1–R6 的完整主题、区域顺序和基础地图，任何人都可以先浏览。' : 'Browse the complete R1–R6 themes, region order and base maps for free.') + '</span></div>' +
-             '<div class="bali-route-value-card"><strong>' + (language() === 'zh' ? '个性化专业路线' : 'Personal professional route') + '</strong><span>' + (language() === 'zh' ? '根据你的信息匹配；先免费预览，解锁后查看完整地点和执行备注。' : 'Matched to your profile; preview first, then unlock full places and execution notes.') + '</span></div>' +
+             '<div class="bali-route-value-card"><strong>' + words.publicTitle + '</strong><span>' + words.publicBody + '</span></div>' +
+             '<div class="bali-route-value-card"><strong>' + words.proTitle + '</strong><span>' + words.proBody + '</span></div>' +
           '</div>' +
         '</div>' +
       '</div>';
@@ -1051,7 +1050,7 @@
     renderDetail();
   }
 
-    fetch('assets/data/bali-travel-data.json?v=20260806')
+    fetch('assets/data/bali-travel-data.json?v=20260806r3')
     .then(function (response) { if (!response.ok) throw new Error('HTTP ' + response.status); return response.json(); })
     .then(useData)
     .catch(function () {
@@ -1137,7 +1136,7 @@
     document.getElementById('bali-place-ai').href = 'ai-tool.html?' + handoff.toString();
     document.getElementById('bali-place-driver').href = 'find-driver.html?route=' + encodeURIComponent(routeId) + '&place=' + encodeURIComponent(placeName) + '&source=gallery';
   }
-  fetch('assets/data/bali-travel-data.json?v=20260806')
+  fetch('assets/data/bali-travel-data.json?v=20260806r3')
     .then(function(response) { if (!response.ok) throw new Error('HTTP ' + response.status); return response.json(); })
     .then(function(data) {
       (data.routes || []).forEach(function(route) { routeCatalog[route.id] = route; });

@@ -110,9 +110,14 @@
       "secondary_tags": ["balanced", "nature", "culture", "coast"],
       "base_regions": ["G1", "G2", "G4"],
       "free_outline": [
-        {"day": 1, "region_id": "G1", "theme": {"zh": "抵达与西南海岸适应", "en": "Arrival and southwest coast"}},
-        {"day": 2, "region_id": "G2", "theme": {"zh": "南部悬崖、海岸与日落", "en": "Southern cliffs, coast and sunset"}},
-        {"day": 3, "region_id": "G4", "theme": {"zh": "转往乌布，文化与绿色景观", "en": "Transfer to Ubud for culture and greenery"}}
+        {"day": 1, "region_id": "G1", "theme": {"zh": "抵达与西南海岸适应", "en": "Arrival and southwest coast"}, "suggested_poi_ids": ["seminyak_beach", "tanah_lot"]},
+        {"day": 2, "region_id": "G2", "theme": {"zh": "南部文化地标与海湾晚餐", "en": "South Bali landmark and bay evening"}, "suggested_poi_ids": ["gwk", "jimbaran_bay"]},
+        {"day": 3, "region_id": "G2", "theme": {"zh": "悬崖海岸与日落", "en": "Cliff coast and sunset"}, "suggested_poi_ids": ["melasti_beach", "uluwatu_temple"]},
+        {"day": 4, "region_id": "G4", "theme": {"zh": "乌布中心的文化与市场", "en": "Ubud centre, culture and market"}, "suggested_poi_ids": ["ubud_palace", "ubud_art_market"]},
+        {"day": 5, "region_id": "G4", "theme": {"zh": "稻田、泉水与乡间", "en": "Rice terraces, springs and countryside"}, "suggested_poi_ids": ["tegalalang_rice_terrace", "tirta_empul"]},
+        {"day": 6, "region_id": "G4", "theme": {"zh": "森林步道与自然文化", "en": "Forest walk and cultural nature"}, "suggested_poi_ids": ["ubud_monkey_forest", "campuhan_ridge_walk"]},
+        {"day": 7, "region_id": "G3", "theme": {"zh": "萨努尔日出与岛屿前奏", "en": "Sanur sunrise and island gateway"}, "suggested_poi_ids": ["sanur_beach", "mertasari_beach"]},
+        {"day": 8, "region_id": "G6", "theme": {"zh": "高地、火山与寺庙选择", "en": "Highlands, volcano and temple options"}, "suggested_poi_ids": ["besakih_temple", "mount_batur_jeep"]}
       ],
       "optional_regions": ["G3", "G6"],
       "recommended_days": {
@@ -146,9 +151,11 @@
       "secondary_tags": ["yoga", "spa", "sound", "rice_terrace", "quiet"],
       "base_regions": ["G4"],
       "free_outline": [
-        {"day": 1, "region_id": "G4", "theme": {"zh": "乌布落脚与慢节奏散步", "en": "Settle into Ubud and take a slow walk"}},
-        {"day": 2, "region_id": "G4", "theme": {"zh": "瑜伽、声音体验或身心放松", "en": "Yoga, sound experience or restorative time"}},
-        {"day": 3, "region_id": "G4", "theme": {"zh": "稻田、手作与本地餐食", "en": "Rice fields, craft and local food"}}
+        {"day": 1, "region_id": "G4", "theme": {"zh": "乌布落脚与慢节奏散步", "en": "Settle into Ubud and take a slow walk"}, "suggested_poi_ids": ["ubud_palace", "ubud_art_market"]},
+        {"day": 2, "region_id": "G4", "theme": {"zh": "瑜伽、声音体验或身心放松", "en": "Yoga, sound experience or restorative time"}, "suggested_poi_ids": ["yoga_barn", "pyramids_of_chi"]},
+        {"day": 3, "region_id": "G4", "theme": {"zh": "稻田与轻松步道", "en": "Rice fields and an easy walk"}, "suggested_poi_ids": ["tegalalang_rice_terrace", "campuhan_ridge_walk"]},
+        {"day": 4, "region_id": "G4", "theme": {"zh": "泉水、寺庙与安静时段", "en": "Springs, temple context and quiet time"}, "suggested_poi_ids": ["tirta_empul", "goa_gajah"]},
+        {"day": 5, "region_id": "G4", "theme": {"zh": "瀑布或自由恢复日", "en": "Waterfall option or a free recovery day"}, "suggested_poi_ids": ["tibumana_waterfall", "kanto_lampo_waterfall"]}
       ],
       "optional_regions": ["G5", "G7"],
       "recommended_days": {
@@ -183,9 +190,11 @@
       "secondary_tags": ["sunset", "surf", "couples", "beach", "resort"],
       "base_regions": ["G2"],
       "free_outline": [
-        {"day": 1, "region_id": "G2", "theme": {"zh": "金巴兰或努沙杜瓦轻松抵达", "en": "Easy arrival in Jimbaran or Nusa Dua"}},
-        {"day": 2, "region_id": "G2", "theme": {"zh": "海滩、悬崖与留白时间", "en": "Beach, cliffs and unplanned time"}},
-        {"day": 3, "region_id": "G2", "theme": {"zh": "乌鲁瓦图文化与日落", "en": "Uluwatu culture and sunset"}}
+        {"day": 1, "region_id": "G2", "theme": {"zh": "金巴兰或努沙杜瓦轻松抵达", "en": "Easy arrival in Jimbaran or Nusa Dua"}, "suggested_poi_ids": ["nusa_dua_beach", "jimbaran_bay"]},
+        {"day": 2, "region_id": "G2", "theme": {"zh": "海滩、悬崖与留白时间", "en": "Beach, cliffs and unplanned time"}, "suggested_poi_ids": ["melasti_beach", "padang_padang_beach"]},
+        {"day": 3, "region_id": "G2", "theme": {"zh": "冲浪海岸与慢午后", "en": "Surf coast and a slow afternoon"}, "suggested_poi_ids": ["bingin_beach", "gwk"]},
+        {"day": 4, "region_id": "G2", "theme": {"zh": "乌鲁瓦图文化与日落", "en": "Uluwatu culture and sunset"}, "suggested_poi_ids": ["uluwatu_temple"]},
+        {"day": 5, "region_id": "G2", "theme": {"zh": "海岸放松与返程缓冲", "en": "Coast relaxation and departure buffer"}, "suggested_poi_ids": ["pandawa_beach"]}
       ],
       "optional_regions": ["G1", "G3"],
       "recommended_days": {
@@ -219,9 +228,11 @@
       "secondary_tags": ["woodcarving", "batik", "silver", "temple", "local_market"],
       "base_regions": ["G4"],
       "free_outline": [
-        {"day": 1, "region_id": "G4", "theme": {"zh": "乌布文化背景与礼仪", "en": "Ubud context and etiquette"}},
-        {"day": 2, "region_id": "G4", "theme": {"zh": "银饰、蜡染或木雕手作", "en": "Silver, batik or woodcarving workshop"}},
-        {"day": 3, "region_id": "G4", "theme": {"zh": "寺庙、市场与在地空间", "en": "Temple, market and local spaces"}}
+        {"day": 1, "region_id": "G4", "theme": {"zh": "乌布文化背景与礼仪", "en": "Ubud context and etiquette"}, "suggested_poi_ids": ["ubud_palace", "ubud_art_market"]},
+        {"day": 2, "region_id": "G4", "theme": {"zh": "寺庙与泉水的文化脉络", "en": "Temple and spring cultural context"}, "suggested_poi_ids": ["goa_gajah", "tirta_empul"]},
+        {"day": 3, "region_id": "G4", "theme": {"zh": "市场、手作线索与在地空间", "en": "Market, craft leads and local spaces"}, "suggested_poi_ids": ["kanto_lampo_waterfall", "tegalalang_rice_terrace"]},
+        {"day": 4, "region_id": "G4", "theme": {"zh": "森林与稻田之间的慢观察", "en": "Slow observation between forest and rice fields"}, "suggested_poi_ids": ["ubud_monkey_forest", "campuhan_ridge_walk"]},
+        {"day": 5, "region_id": "G7", "theme": {"zh": "东部村落与水宫扩展日", "en": "Eastern village and water-palace extension"}, "suggested_poi_ids": ["sidemen_valley", "tirta_gangga"]}
       ],
       "optional_regions": ["G7"],
       "recommended_days": {
@@ -255,9 +266,11 @@
       "secondary_tags": ["hiking", "volcano", "sunrise", "waterfall", "adventure"],
       "base_regions": ["G6"],
       "free_outline": [
-        {"day": 1, "region_id": "G6", "theme": {"zh": "前往高地并确认天气与装备", "en": "Reach the highlands; check weather and gear"}},
-        {"day": 2, "region_id": "G6", "theme": {"zh": "日出徒步或吉普路线", "en": "Sunrise hike or jeep route"}},
-        {"day": 3, "region_id": "G6", "theme": {"zh": "恢复日：温泉、湖区或短程自然", "en": "Recovery day: hot spring, lake or light nature"}}
+        {"day": 1, "region_id": "G6", "theme": {"zh": "前往高地并确认天气与装备", "en": "Reach the highlands; check weather and gear"}, "suggested_poi_ids": ["mount_batur_jeep", "besakih_temple"]},
+        {"day": 2, "region_id": "G6", "theme": {"zh": "日出徒步或吉普路线", "en": "Sunrise hike or jeep route"}, "suggested_poi_ids": ["mount_batur_trailhead"]},
+        {"day": 3, "region_id": "G6", "theme": {"zh": "恢复日：温泉、湖区或短程自然", "en": "Recovery day: hot spring, lake or light nature"}, "suggested_poi_ids": ["batur_hot_springs", "tukad_cepung_waterfall"]},
+        {"day": 4, "region_id": "G5", "theme": {"zh": "北部高地瀑布扩展", "en": "Northern highland waterfall extension"}, "suggested_poi_ids": ["banyumala_waterfall", "tamblingan_lake"]},
+        {"day": 5, "region_id": "G7", "theme": {"zh": "东部海岸的低强度收尾", "en": "Low-intensity eastern coast finish"}, "suggested_poi_ids": ["amed_beach", "tirta_gangga"]}
       ],
       "optional_regions": ["G5", "G7"],
       "recommended_days": {
@@ -292,9 +305,11 @@
       "secondary_tags": ["photography", "cafe", "design", "sunset", "social"],
       "base_regions": ["G1", "G2"],
       "free_outline": [
-        {"day": 1, "region_id": "G1", "theme": {"zh": "咖啡、设计空间与傍晚光线", "en": "Cafes, design spaces and evening light"}},
-        {"day": 2, "region_id": "G2", "theme": {"zh": "海岸取景与日落时段", "en": "Coastal viewpoints and sunset timing"}},
-        {"day": 3, "region_id": "G1", "theme": {"zh": "生活方式街区与自由拍摄", "en": "Lifestyle neighbourhoods and free shooting"}}
+        {"day": 1, "region_id": "G1", "theme": {"zh": "咖啡、设计空间与傍晚光线", "en": "Cafes, design spaces and evening light"}, "suggested_poi_ids": ["seminyak_beach", "petitenget_temple"]},
+        {"day": 2, "region_id": "G1", "theme": {"zh": "仓古海岸与日落节奏", "en": "Canggu coast and sunset rhythm"}, "suggested_poi_ids": ["batu_bolong_beach", "echo_beach"]},
+        {"day": 3, "region_id": "G2", "theme": {"zh": "海岸取景与日落时段", "en": "Coastal viewpoints and sunset timing"}, "suggested_poi_ids": ["melasti_beach", "padang_padang_beach"]},
+        {"day": 4, "region_id": "G2", "theme": {"zh": "乌鲁瓦图悬崖与文化时刻", "en": "Uluwatu cliffs and a cultural moment"}, "suggested_poi_ids": ["uluwatu_temple", "bingin_beach"]},
+        {"day": 5, "region_id": "G4", "theme": {"zh": "乌布绿色取景扩展", "en": "Ubud greenery visual extension"}, "suggested_poi_ids": ["tegalalang_rice_terrace", "campuhan_ridge_walk"]}
       ],
       "optional_regions": ["G4"],
       "recommended_days": {
@@ -451,6 +466,7 @@
     {"id":"petitenget_temple","name":"Pura Petitenget","region_id":"G1","node_id":"seminyak","type":"temple","tags":["culture","temple","coast"],"route_ids":["R1","R4","R6"],"official_url":"","booking_url":"","verification_status":"pending_review","notes":"Planning anchor; respect local ceremony access and dress guidance."},
     {"id":"padang_padang_beach","name":"Padang Padang Beach","region_id":"G2","node_id":"uluwatu","type":"beach","tags":["beach","coast","swim"],"route_ids":["R1","R3","R6"],"official_url":"","booking_url":"","verification_status":"pending_review","notes":"Planning anchor; confirm tide, surf and access conditions before travel."},
     {"id":"melasti_beach","name":"Melasti Beach","region_id":"G2","node_id":"ungasan","type":"beach","tags":["beach","cliff","coast"],"route_ids":["R1","R3","R6"],"official_url":"","booking_url":"","verification_status":"pending_review","notes":"Planning anchor; confirm access and beach conditions before travel."},
+    {"id":"pandawa_beach","name":"Pandawa Beach","region_id":"G2","node_id":"kutuh","type":"beach","tags":["beach","coast","relaxed"],"route_ids":["R1","R3","R6"],"official_url":"","booking_url":"","verification_status":"pending_review","notes":"Planning anchor; confirm access, traffic and beach conditions before travel."},
     {"id":"bingin_beach","name":"Bingin Beach","region_id":"G2","node_id":"uluwatu","type":"beach","tags":["beach","cliff","surf"],"route_ids":["R3","R6"],"official_url":"","booking_url":"","verification_status":"pending_review","notes":"Planning anchor; stairs and surf conditions need traveller-specific checking."},
     {"id":"jimbaran_bay","name":"Jimbaran Bay","region_id":"G2","node_id":"jimbaran","type":"coast","tags":["seafood","sunset","coast"],"route_ids":["R1","R3"],"official_url":"","booking_url":"","verification_status":"pending_review","notes":"Planning anchor; choose dining and pickup timing after confirming traffic."},
     {"id":"nusa_dua_beach","name":"Nusa Dua Beach","region_id":"G2","node_id":"nusa_dua","type":"beach","tags":["beach","resort","relaxed"],"route_ids":["R1","R3"],"official_url":"","booking_url":"","verification_status":"pending_review","notes":"Planning anchor; confirm access and current beach conditions before travel."},
