@@ -1036,9 +1036,23 @@ class ProductAccessTests(unittest.TestCase):
         poi_ids = [poi["id"] for poi in data["pois"]]
         poi_by_id = {poi["id"]: poi for poi in data["pois"]}
         self.assertEqual(len(poi_ids), len(set(poi_ids)))
+        verification_states = {
+            "verified",
+            "pending_review",
+            "needs_supplier_confirmation",
+            "retired",
+        }
         for poi in data["pois"]:
             self.assertIn(poi["region_id"], region_ids, poi["id"])
             self.assertTrue(set(poi["route_ids"]).issubset(route_ids), poi["id"])
+            self.assertIsInstance(poi["name"], str, poi["id"])
+            self.assertTrue(poi["name"].strip(), poi["id"])
+            self.assertIn(poi["verification_status"], verification_states, poi["id"])
+        self.assertEqual(
+            {poi["verification_status"] for poi in data["pois"]},
+            {"pending_review"},
+            "No Bali POI should be presented as verified before source review",
+        )
         for route in data["routes"]:
             outline_regions = {item["region_id"] for item in route["free_outline"]}
             compatible = [
@@ -1158,6 +1172,22 @@ class ProductAccessTests(unittest.TestCase):
         self.assertIn("item.suggested_poi_ids || []", html)
         self.assertIn("bali-map-overlay", html)
         self.assertIn("function routeUiCopy()", html)
+        self.assertIn("function poiCanonicalName(poi)", html)
+        self.assertIn("function poiDisplayName(poi)", html)
+        self.assertIn("function poiStatusLabel(poi)", html)
+        self.assertIn("function poiIsAvailable(poi)", html)
+        self.assertIn("poiStatusKey(poi) !== 'retired'", html)
+        self.assertIn('data-verification-status="', html)
+        self.assertIn("place_verification: placeVerification", html)
+        self.assertIn("verification_summary: verificationSummary", html)
+        for localized_status in (
+            "Planning anchor · verify details",
+            "规划参考 · 细节待核验",
+            "計画用候補 · 最新情報を要確認",
+            "일정 참고 · 최신 정보 확인 필요",
+            "Titik rencana · verifikasi detail",
+        ):
+            self.assertIn(localized_status, html)
         for localized_route_copy in (
             "おすすめの順序と場所に戻しますか？",
             "추천 순서와 장소로 복원할까요?",
