@@ -3,6 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#083d37">
   <meta name="robots" content="noindex,nofollow">
   <title>Portfolio Content Manager | WanderMind Studio</title>
   <link rel="icon" type="image/png" href="../assets/images/logo-mark-256.png">
@@ -13,6 +14,8 @@
     button,input,select,textarea{font:inherit}
     button,a{touch-action:manipulation}
     button{cursor:pointer}
+    .wm-skip-link{position:fixed;left:12px;top:8px;z-index:100;transform:translateY(-150%);border-radius:8px;background:#fff;color:var(--ink);padding:10px 14px;font-weight:800;box-shadow:var(--shadow)}
+    .wm-skip-link:focus{transform:translateY(0)}
     button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible{outline:3px solid rgba(217,155,0,.42);outline-offset:2px}
     .wm-admin-header{position:sticky;top:0;z-index:20;border-bottom:1px solid rgba(255,255,255,.14);background:#083d37;color:#fff}
     .wm-admin-header-inner{width:min(1240px,calc(100% - 32px));min-height:68px;margin:auto;display:flex;align-items:center;justify-content:space-between;gap:18px}
@@ -45,6 +48,7 @@
     .wm-btn-primary{background:var(--teal);color:#fff}
     .wm-btn-primary:hover{background:var(--teal-dark)}
     .wm-btn-secondary{border-color:#b8c8c3;background:#fff;color:var(--ink)}
+    .wm-btn-secondary:hover{border-color:var(--teal);background:#f3faf8}
     .wm-btn-danger{border-color:#e5bbb6;background:#fff7f6;color:var(--danger)}
     .wm-btn:disabled{cursor:not-allowed;opacity:.5}
     .wm-fields{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:18px}
@@ -59,11 +63,15 @@
     .wm-locales-grid{display:grid;gap:12px;padding:0 12px 14px}
     .wm-actions{display:flex;flex-wrap:wrap;gap:9px;margin-top:18px}
     .wm-queue{display:grid;gap:10px;margin-top:16px}
-    .wm-queue-item{display:grid;grid-template-columns:58px minmax(0,1fr);gap:10px;align-items:center;padding:9px;border:1px solid #dfe6e2;border-radius:10px}
+    .wm-queue-item{display:grid;grid-template-columns:58px minmax(0,1fr);gap:10px;align-items:start;padding:9px;border:1px solid #dfe6e2;border-radius:10px}
     .wm-queue-item img{width:58px;height:58px;object-fit:cover;border-radius:8px;background:#edf2f0}
     .wm-queue-main{min-width:0}
+    .wm-queue-head{display:flex;align-items:flex-start;justify-content:space-between;gap:9px}
     .wm-queue-name{display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:.83rem;font-weight:780}
     .wm-queue-meta{color:var(--muted);font-size:.72rem}
+    .wm-queue-badges{display:flex;flex-wrap:wrap;gap:5px;margin-top:6px}
+    .wm-queue-actions{display:flex;flex-wrap:wrap;gap:7px;margin-top:8px}
+    .wm-queue-actions .wm-btn{min-height:40px;padding:6px 10px;font-size:.74rem}
     .wm-progress{height:6px;margin-top:7px;overflow:hidden;border-radius:999px;background:#e7ece9}
     .wm-progress span{display:block;width:0;height:100%;background:var(--teal)}
     .wm-queue-state{margin-top:4px;color:var(--muted);font-size:.72rem}
@@ -71,20 +79,21 @@
     .wm-assets-toolbar input,.wm-assets-toolbar select{min-height:44px;border:1px solid #c7d2ce;border-radius:8px;background:#fff;padding:8px 10px}
     .wm-assets{display:grid;gap:12px}
     .wm-empty{padding:34px 20px;border:1px dashed #cbd6d2;border-radius:12px;color:var(--muted);text-align:center}
-    .wm-asset{display:grid;grid-template-columns:112px minmax(0,1fr);gap:14px;padding:12px;border:1px solid #dce4e0;border-radius:12px;background:#fff}
+    .wm-asset{display:grid;grid-template-columns:112px minmax(0,1fr);gap:14px;padding:12px;border:1px solid #dce4e0;border-radius:12px;background:#fff;content-visibility:auto;contain-intrinsic-size:120px}
     .wm-asset[draggable="true"]{cursor:grab}
-    .wm-asset.is-dragging{opacity:.48}
+    .wm-asset.is-dragging{opacity:.48;user-select:none}
     .wm-asset img{width:112px;height:94px;object-fit:cover;border-radius:9px;background:#e9efec}
     .wm-asset-top{display:flex;justify-content:space-between;gap:12px}
     .wm-asset h3{margin:0;font-size:1rem}
     .wm-asset p{margin:3px 0;color:var(--muted);font-size:.78rem}
     .wm-chip{display:inline-flex;border-radius:999px;padding:4px 8px;background:#edf4f1;color:#31534c;font-size:.69rem;font-weight:760}
-    .wm-chip[data-status="published"]{background:#dff3e9;color:#17613f}
+    .wm-chip[data-status="published"],.wm-chip[data-status="manifest-matched"]{background:#dff3e9;color:#17613f}
+    .wm-chip[data-status="manifest-unmatched"]{background:#fff0d7;color:#7c4b0a}
     .wm-chip[data-status="hidden"]{background:#eceff3;color:#46515d}
     .wm-chip[data-status="archived"]{background:#f1e8e6;color:#7b423c}
     .wm-asset-actions{display:flex;flex-wrap:wrap;gap:7px;margin-top:9px}
     .wm-asset-actions .wm-btn{min-height:38px;padding:6px 10px;font-size:.75rem}
-    dialog{width:min(760px,calc(100% - 28px));max-height:90vh;overflow:auto;border:0;border-radius:16px;padding:0;box-shadow:0 30px 80px rgba(4,34,30,.28)}
+    dialog{width:min(760px,calc(100% - 28px));max-height:90vh;overflow:auto;overscroll-behavior:contain;border:0;border-radius:16px;padding:0;box-shadow:0 30px 80px rgba(4,34,30,.28)}
     dialog::backdrop{background:rgba(3,28,25,.62)}
     .wm-dialog-head{position:sticky;top:0;z-index:2;display:flex;justify-content:space-between;gap:16px;padding:18px 20px;border-bottom:1px solid #e3e8e5;background:#fff}
     .wm-dialog-head h2{margin:0;font-size:1.1rem}
@@ -97,10 +106,11 @@
   </style>
 </head>
 <body>
+  <a class="wm-skip-link" href="#mainContent" data-copy="skipContent">Skip to content</a>
   <header class="wm-admin-header">
     <div class="wm-admin-header-inner">
       <a class="wm-admin-brand" href="../index.html" aria-label="WanderMind Studio home">
-        <img src="../assets/images/logo-mark-256.png" alt=""><span>WanderMind · Portfolio</span>
+        <img src="../assets/images/logo-mark-256.png" width="34" height="34" alt=""><span>WanderMind · Portfolio</span>
       </a>
       <div class="wm-admin-tools">
         <a href="../bali.html#gallery" data-copy="viewPortfolio">View Bali Portfolio</a>
@@ -111,7 +121,7 @@
       </div>
     </div>
   </header>
-  <main>
+  <main id="mainContent">
     <div class="wm-page-head">
       <div><p class="wm-eyebrow" data-copy="eyebrow">Editorial workspace</p><h1 data-copy="title">Portfolio Content Manager</h1><p data-copy="subtitle">Upload approved images, confirm metadata, and publish to Bali without redeploying the website.</p></div>
       <span class="wm-status" id="storageStatus" data-state="checking" data-copy="checking">Checking storage…</span>
@@ -125,6 +135,7 @@
             <span><strong data-copy="dropTitle">Drop images here or choose files</strong><span data-copy="dropSub">JPG, PNG, WebP, AVIF or HEIC · up to 25 MB each</span></span>
             <input id="fileInput" type="file" accept=".jpg,.jpeg,.png,.webp,.avif,.heic,image/*" multiple>
           </label>
+          <p class="wm-help" id="manifestStatus" role="status" aria-live="polite" data-copy="manifestChecking">Loading the approved image manifest…</p>
           <div class="wm-queue" id="uploadQueue" aria-live="polite"></div>
           <form id="uploadMetadata">
             <div class="wm-fields">
@@ -160,6 +171,10 @@
     <div class="wm-dialog-head"><h2 id="assetDialogTitle" data-copy="editAsset">Edit portfolio asset</h2><button class="wm-dialog-close" type="button" data-dialog-close aria-label="Close">×</button></div>
     <form class="wm-dialog-body" id="assetEditor"><div class="wm-fields" id="editorFields"></div><div class="wm-actions"><button class="wm-btn wm-btn-primary" type="submit" data-copy="saveChanges">Save changes</button><button class="wm-btn wm-btn-secondary" type="button" data-replace data-copy="replaceImage">Replace image</button><button class="wm-btn wm-btn-secondary" type="button" data-dialog-close data-copy="cancel">Cancel</button></div><input class="wm-sr-only" id="replacementInput" type="file" accept=".jpg,.jpeg,.png,.webp,.avif,.heic,image/*"></form>
   </dialog>
-  <script src="../assets/js/admin-portfolio.js?v=p1"></script>
+  <dialog id="queueDialog" aria-labelledby="queueDialogTitle">
+    <div class="wm-dialog-head"><div><h2 id="queueDialogTitle" data-copy="queueReviewTitle">Review image metadata</h2><p class="wm-help" data-copy="queueReviewHelp">Approved suggestions are a starting point. Confirm the fields before publishing.</p></div><button class="wm-dialog-close" type="button" data-queue-dialog-close aria-label="Close">×</button></div>
+    <form class="wm-dialog-body" id="queueEditor"><div class="wm-fields" id="queueEditorFields"></div><div class="wm-actions"><button class="wm-btn wm-btn-primary" type="submit" data-copy="saveQueueMetadata">Confirm metadata</button><button class="wm-btn wm-btn-secondary" type="button" data-queue-dialog-close data-copy="cancel">Cancel</button></div></form>
+  </dialog>
+  <script src="../assets/js/admin-portfolio.js?v=p2"></script>
 </body>
 </html>

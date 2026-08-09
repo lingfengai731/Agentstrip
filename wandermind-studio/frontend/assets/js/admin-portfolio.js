@@ -3,7 +3,7 @@
 
   var LANGS = ['zh', 'en', 'ja', 'ko', 'id'];
   var token = localStorage.getItem('wm_studio_token') || '';
-  var state = { assets: [], files: [], storageReady: false, editingId: '', draggingId: '' };
+  var state = { assets: [], files: [], storageReady: false, editingId: '', queueEditingId: '', draggingId: '', manifestByHash: {}, manifestLoaded: false, manifestError: false };
   var pageAlert = document.getElementById('pageAlert');
   var fileInput = document.getElementById('fileInput');
   var dropzone = document.getElementById('dropzone');
@@ -11,6 +11,7 @@
   var uploadForm = document.getElementById('uploadMetadata');
   var assetList = document.getElementById('assetList');
   var dialog = document.getElementById('assetDialog');
+  var queueDialog = document.getElementById('queueDialog');
 
   var COPY = {
     en: {
@@ -30,6 +31,15 @@
     }
   };
 
+  var QUEUE_COPY = {
+    en:{manifestChecking:'Loading the approved image manifest…',manifestReady:'Approved manifest ready: 108 images can be matched by hash.',manifestLoadFailed:'The approved manifest could not be loaded. New files may still be saved as drafts after manual review.',manifestMatched:'Approved manifest matched',manifestUnmatched:'Not in approved manifest',metadataConfirmed:'Metadata confirmed',editMetadata:'Review metadata',queueReviewTitle:'Review image metadata',queueReviewHelp:'Approved suggestions are a starting point. Confirm the fields before publishing.',saveQueueMetadata:'Confirm metadata',duplicateFile:'This image is already in the upload queue.',publishNeedsManifestReview:'Every unpublished image must match the approved manifest or have its metadata manually confirmed.',uploadFinishedWithErrors:'The upload queue finished with errors. Review the failed images and retry.',archiveConfirm:'Archive this Portfolio image? You can keep its metadata and restore its status later.',skipContent:'Skip to content'},
+    zh:{manifestChecking:'正在读取已批准图片清单…',manifestReady:'已批准清单就绪：可按哈希匹配 108 张图片。',manifestLoadFailed:'无法读取已批准清单；新图片仍可在人工核对后保存为草稿。',manifestMatched:'已匹配批准清单',manifestUnmatched:'不在批准清单中',metadataConfirmed:'元数据已确认',editMetadata:'核对元数据',queueReviewTitle:'核对单张图片元数据',queueReviewHelp:'批准清单只提供建议值；发布前请确认各字段。',saveQueueMetadata:'确认元数据',duplicateFile:'该图片已在上传队列中。',publishNeedsManifestReview:'每张待发布图片必须匹配批准清单，或已完成人工元数据确认。',uploadFinishedWithErrors:'上传队列已处理，但存在失败项；请查看失败图片并重试。',archiveConfirm:'确认归档这张 Portfolio 图片吗？元数据会保留，之后仍可恢复状态。',skipContent:'跳到主要内容'},
+    ja:{manifestChecking:'承認済み画像マニフェストを読み込み中…',manifestReady:'承認済みマニフェストの準備完了：108枚をハッシュで照合できます。',manifestLoadFailed:'承認済みマニフェストを読み込めません。新規画像は手動確認後に下書き保存できます。',manifestMatched:'承認済みマニフェスト一致',manifestUnmatched:'承認済みマニフェスト外',metadataConfirmed:'メタデータ確認済み',editMetadata:'メタデータを確認',queueReviewTitle:'画像メタデータを確認',queueReviewHelp:'承認済み候補は初期値です。公開前に各項目を確認してください。',saveQueueMetadata:'メタデータを確定',duplicateFile:'この画像はすでにアップロード待ちです。',publishNeedsManifestReview:'公開する画像は承認済みマニフェストとの一致、または手動メタデータ確認が必要です。',uploadFinishedWithErrors:'アップロード処理は完了しましたが、失敗した画像があります。確認して再試行してください。',archiveConfirm:'この Portfolio 画像をアーカイブしますか？メタデータは保持され、後で状態を戻せます。',skipContent:'メインコンテンツへ移動'},
+    ko:{manifestChecking:'승인된 이미지 매니페스트를 불러오는 중…',manifestReady:'승인 매니페스트 준비 완료: 해시로 108개 이미지를 확인할 수 있습니다.',manifestLoadFailed:'승인 매니페스트를 불러오지 못했습니다. 새 이미지는 수동 검토 후 초안으로 저장할 수 있습니다.',manifestMatched:'승인 매니페스트 일치',manifestUnmatched:'승인 매니페스트에 없음',metadataConfirmed:'메타데이터 확인됨',editMetadata:'메타데이터 검토',queueReviewTitle:'이미지 메타데이터 검토',queueReviewHelp:'승인된 제안은 시작점입니다. 게시 전에 각 필드를 확인하세요.',saveQueueMetadata:'메타데이터 확인',duplicateFile:'이 이미지는 이미 업로드 대기열에 있습니다.',publishNeedsManifestReview:'게시할 각 이미지는 승인 매니페스트와 일치하거나 메타데이터를 수동으로 확인해야 합니다.',uploadFinishedWithErrors:'업로드 처리가 끝났지만 실패한 이미지가 있습니다. 확인 후 다시 시도하세요.',archiveConfirm:'이 Portfolio 이미지를 보관하시겠습니까? 메타데이터는 유지되며 나중에 상태를 복원할 수 있습니다.',skipContent:'본문으로 건너뛰기'},
+    id:{manifestChecking:'Memuat manifest gambar yang disetujui…',manifestReady:'Manifest siap: 108 gambar dapat dicocokkan melalui hash.',manifestLoadFailed:'Manifest tidak dapat dimuat. Gambar baru masih dapat disimpan sebagai draf setelah ditinjau manual.',manifestMatched:'Cocok dengan manifest yang disetujui',manifestUnmatched:'Tidak ada di manifest yang disetujui',metadataConfirmed:'Metadata dikonfirmasi',editMetadata:'Tinjau metadata',queueReviewTitle:'Tinjau metadata gambar',queueReviewHelp:'Saran yang disetujui adalah titik awal. Konfirmasikan setiap kolom sebelum menerbitkan.',saveQueueMetadata:'Konfirmasi metadata',duplicateFile:'Gambar ini sudah ada dalam antrean unggahan.',publishNeedsManifestReview:'Setiap gambar yang akan diterbitkan harus cocok dengan manifest yang disetujui atau telah dikonfirmasi secara manual.',uploadFinishedWithErrors:'Antrean selesai, tetapi beberapa gambar gagal. Tinjau gambar yang gagal lalu coba lagi.',archiveConfirm:'Arsipkan gambar Portfolio ini? Metadata tetap tersimpan dan status dapat dipulihkan nanti.',skipContent:'Lewati ke konten utama'}
+  };
+  LANGS.forEach(function (lang) { Object.assign(COPY[lang], QUEUE_COPY[lang]); });
+
   function language() {
     var value = (document.getElementById('langPicker').value || localStorage.getItem('wm_studio_lang') || 'en').toLowerCase();
     return LANGS.indexOf(value) >= 0 ? value : 'en';
@@ -45,6 +55,66 @@
   function fileFormat(file) { var ext = String(file.name || '').split('.').pop().toLowerCase(); return ext === 'jpeg' ? 'jpg' : ext; }
   function isSupportedImageFile(file) { return ['jpg','png','webp','avif','heic'].indexOf(fileFormat(file)) >= 0; }
   function formatBytes(bytes) { if (bytes < 1024 * 1024) return Math.round(bytes / 1024) + ' KB'; return (bytes / 1024 / 1024).toFixed(1) + ' MB'; }
+
+  function updateManifestStatus() {
+    var node = document.getElementById('manifestStatus');
+    if (!node) return;
+    node.textContent = state.manifestError ? t('manifestLoadFailed') : state.manifestLoaded ? t('manifestReady') : t('manifestChecking');
+  }
+
+  async function loadApprovalManifest() {
+    if (state.manifestLoaded || state.manifestError) return;
+    try {
+      var response = await fetch('../assets/data/image-publish-manifest.json?v=p2', { cache:'no-store' });
+      if (!response.ok) throw new Error('manifest');
+      var payload = await response.json();
+      (payload.images || []).forEach(function (item) {
+        var hash = String(item.sha256 || '').toLowerCase();
+        if (hash) state.manifestByHash[hash] = item;
+      });
+      state.manifestLoaded = true;
+    } catch (_) { state.manifestError = true; }
+    updateManifestStatus();
+  }
+
+  function meaningfulText(value) {
+    value = String(value || '').trim();
+    return value && !/\?{2,}|\uFFFD/.test(value) ? value : '';
+  }
+
+  function approvedSuggestion(item, file) {
+    var stem = fileStem(file.name);
+    var themes = ['landscapes','culture','experiences'];
+    var theme = themes.indexOf(item.category) >= 0 ? item.category : 'landscapes';
+    var routes = Array.isArray(item.route_ids) ? item.route_ids.slice() : [];
+    var regions = Array.isArray(item.region_ids) ? item.region_ids.slice() : [];
+    var alt = {};
+    LANGS.forEach(function (lang) {
+      var value = meaningfulText((item.alt_text || {})[lang]);
+      if (value) alt[lang] = value;
+    });
+    if (!alt.en) alt.en = stem + ' in Bali';
+    return {
+      destination:'bali', primary_theme:theme, sub_category:String(item.sub_category || '').trim(),
+      region:regions.join(', '), area:'', place_name:stem, place_type:String(item.sub_category || '').replace(/-/g, ' '),
+      prominence:routes.length ? 'signature' : 'supporting', route_ids:routes, extension_ids:[],
+      tags:Array.isArray(item.tags) ? item.tags.slice() : [], mood:'', photography_style:'',
+      title:{ en:stem }, description:{}, alt_text:alt,
+      verification_status:routes.length ? 'route-linked' : item.location_status === 'bali-named' ? 'bali-named' : 'caption-only', status:'draft'
+    };
+  }
+
+  function recordMetadata(record, baseMetadata, status) {
+    var metadata = JSON.parse(JSON.stringify(record.manifestMatch || record.metadataEdited ? record.metadata : baseMetadata));
+    metadata.status = status || 'draft';
+    var stem = fileStem(record.file.name);
+    metadata.title = metadata.title || {};
+    metadata.alt_text = metadata.alt_text || {};
+    metadata.description = metadata.description || {};
+    if (!Object.keys(metadata.title).length) metadata.title.en = stem;
+    if (!Object.keys(metadata.alt_text).length) metadata.alt_text.en = stem + ' in Bali';
+    return metadata;
+  }
 
   async function api(path, options) {
     options = options || {};
@@ -88,7 +158,9 @@
     filterOptions[0].textContent = t('allStatuses'); filterOptions[1].textContent = t('draft'); filterOptions[2].textContent = t('published'); filterOptions[3].textContent = t('hidden'); filterOptions[4].textContent = t('archived');
     document.getElementById('uploadLocales').innerHTML = localizedFields('upload', readLocalized(uploadForm));
     if (state.editingId) openEditor(state.editingId, true);
+    if (state.queueEditingId) openQueueEditor(state.queueEditingId, true);
     updateStorageStatus();
+    updateManifestStatus();
     renderQueue();
     renderAssets();
   }
@@ -138,19 +210,21 @@
 
   async function addFiles(files) {
     clearAlert();
-    for (var file of Array.from(files || [])) {
-      var record = { id:crypto.randomUUID(), file:file, preview:URL.createObjectURL(file), progress:0, state:'analysing', error:'', width:0, height:0, sha256:'' };
+    var selectedFiles = Array.from(files || []);
+    await loadApprovalManifest();
+    for (var file of selectedFiles) {
+      var record = { id:crypto.randomUUID(), file:file, preview:URL.createObjectURL(file), progress:0, state:'analysing', error:'', width:0, height:0, sha256:'', manifestMatch:false, manifestItem:null, metadata:null, metadataEdited:false };
       state.files.push(record); renderQueue();
       try {
         if (!isSupportedImageFile(file)) throw new Error(t('formatError'));
         if (file.size > 25 * 1024 * 1024) throw new Error(t('sizeError'));
         var details = await Promise.all([digestFile(file), imageDimensions(record.preview).catch(function () { return { width:0, height:0 }; })]);
-        record.sha256 = details[0]; record.width = details[1].width; record.height = details[1].height; record.state = 'queued';
-        if (!document.getElementById('placeName').value) document.getElementById('placeName').value = fileStem(file.name);
-        var titleEn = document.querySelector('[name="title_en"]');
-        var altEn = document.querySelector('[name="alt_text_en"]');
-        if (titleEn && !titleEn.value) titleEn.value = fileStem(file.name);
-        if (altEn && !altEn.value) altEn.value = fileStem(file.name) + ' in Bali';
+        record.sha256 = details[0]; record.width = details[1].width; record.height = details[1].height;
+        if (state.files.some(function (item) { return item.id !== record.id && item.sha256 === record.sha256 && item.state !== 'failed'; })) throw new Error(t('duplicateFile'));
+        record.manifestItem = state.manifestByHash[record.sha256] || null;
+        record.manifestMatch = Boolean(record.manifestItem);
+        record.metadata = record.manifestMatch ? approvedSuggestion(record.manifestItem, file) : recordMetadata(record, metadataFromForm(uploadForm, 'draft'), 'draft');
+        record.state = 'queued';
       } catch (error) { record.state = 'failed'; record.error = error.message || t('networkError'); }
       renderQueue();
     }
@@ -160,8 +234,36 @@
     queue.innerHTML = state.files.map(function (item) {
       var stateText = item.error || t(item.state);
       var meta = item.width ? item.width + ' × ' + item.height + ' · ' + formatBytes(item.file.size) + ' · ' + fileFormat(item.file).toUpperCase() : formatBytes(item.file.size);
-      return '<div class="wm-queue-item"><img src="' + escapeHtml(item.preview) + '" alt=""><div class="wm-queue-main"><span class="wm-queue-name">' + escapeHtml(item.file.name) + '</span><span class="wm-queue-meta">' + escapeHtml(meta) + '</span><div class="wm-progress" aria-hidden="true"><span style="width:' + Number(item.progress || 0) + '%"></span></div><div class="wm-queue-state">' + escapeHtml(stateText) + '</div></div></div>';
+      var badges = item.sha256 ? '<div class="wm-queue-badges"><span class="wm-chip" data-status="' + (item.manifestMatch ? 'manifest-matched' : 'manifest-unmatched') + '">' + escapeHtml(t(item.manifestMatch ? 'manifestMatched' : 'manifestUnmatched')) + '</span>' + (item.metadataEdited ? '<span class="wm-chip">' + escapeHtml(t('metadataConfirmed')) + '</span>' : '') + '</div>' : '';
+      var actions = item.state === 'queued' ? '<div class="wm-queue-actions"><button class="wm-btn wm-btn-secondary" type="button" data-queue-edit="' + escapeHtml(item.id) + '">' + escapeHtml(t('editMetadata')) + '</button></div>' : '';
+      return '<div class="wm-queue-item"><img src="' + escapeHtml(item.preview) + '" width="58" height="58" alt=""><div class="wm-queue-main"><div class="wm-queue-head"><div><span class="wm-queue-name">' + escapeHtml(item.file.name) + '</span><span class="wm-queue-meta">' + escapeHtml(meta) + '</span></div></div>' + badges + '<div class="wm-progress" role="progressbar" aria-label="' + escapeHtml(item.file.name) + '" aria-valuemin="0" aria-valuemax="100" aria-valuenow="' + Number(item.progress || 0) + '"><span style="width:' + Number(item.progress || 0) + '%"></span></div><div class="wm-queue-state">' + escapeHtml(stateText) + '</div>' + actions + '</div></div>';
     }).join('');
+    bindQueueEvents();
+  }
+
+  function bindQueueEvents() {
+    queue.querySelectorAll('[data-queue-edit]').forEach(function (button) {
+      button.addEventListener('click', function () { openQueueEditor(button.dataset.queueEdit); });
+    });
+  }
+
+  function openQueueEditor(id, languageRefresh) {
+    var record = state.files.find(function (item) { return item.id === id; });
+    if (!record || !record.metadata) return;
+    state.queueEditingId = id;
+    document.getElementById('queueEditorFields').innerHTML = editorMarkup(record.metadata);
+    if (!languageRefresh && !queueDialog.open) queueDialog.showModal();
+  }
+
+  function closeQueueEditor() { state.queueEditingId = ''; queueDialog.close(); }
+
+  function saveQueueEditor(event) {
+    event.preventDefault(); clearAlert();
+    var record = state.files.find(function (item) { return item.id === state.queueEditingId; });
+    if (!record) return;
+    record.metadata = metadataFromForm(event.currentTarget, 'draft');
+    record.metadataEdited = true;
+    closeQueueEditor(); renderQueue();
   }
 
   function uploadToCloudinary(file, signature, onProgress) {
@@ -185,15 +287,12 @@
     });
   }
 
-  async function uploadRecord(record, baseMetadata) {
+  async function uploadRecord(record, baseMetadata, status) {
     record.state = 'uploading'; renderQueue();
     var signature = await api('/api/admin/portfolio/upload-signature', { method:'POST', body:{ destination:'bali', filename:record.file.name } });
     var uploaded = await uploadToCloudinary(record.file, signature, function (progress) { record.progress = progress; renderQueue(); });
     record.state = 'saving'; record.progress = 100; renderQueue();
-    var metadata = JSON.parse(JSON.stringify(baseMetadata));
-    var stem = fileStem(record.file.name);
-    if (!Object.keys(metadata.title).length) metadata.title.en = stem;
-    if (!Object.keys(metadata.alt_text).length) metadata.alt_text.en = stem + ' in Bali';
+    var metadata = recordMetadata(record, baseMetadata, status);
     metadata.original_filename = record.file.name;
     metadata.sha256 = record.sha256;
     metadata.file_bytes = uploaded.bytes;
@@ -217,15 +316,20 @@
     if (!state.storageReady) return showAlert(t('storageMissing'));
     var status = event.submitter && event.submitter.dataset.status || 'draft';
     var metadata = metadataFromForm(uploadForm, status);
-    if (status === 'published' && (!metadata.place_name || !Object.keys(metadata.title).length || !Object.keys(metadata.alt_text).length)) return showAlert(t('publishNeedsMetadata'));
+    if (status === 'published' && selected.some(function (record) { return !record.manifestMatch && !record.metadataEdited; })) return showAlert(t('publishNeedsManifestReview'));
+    if (status === 'published' && selected.some(function (record) {
+      var itemMetadata = recordMetadata(record, metadata, status);
+      return !itemMetadata.place_name || !Object.keys(itemMetadata.title).length || !Object.keys(itemMetadata.alt_text).length;
+    })) return showAlert(t('publishNeedsMetadata'));
     var buttons = uploadForm.querySelectorAll('button[type="submit"]');
     buttons.forEach(function (button) { button.disabled = true; });
+    var failedCount = 0;
     for (var record of selected) {
-      try { await uploadRecord(record, metadata); }
-      catch (error) { record.state = 'failed'; record.error = error.message || t('networkError'); renderQueue(); }
+      try { await uploadRecord(record, metadata, status); }
+      catch (error) { failedCount += 1; record.state = 'failed'; record.error = error.message || t('networkError'); renderQueue(); }
     }
     buttons.forEach(function (button) { button.disabled = !state.storageReady; });
-    showAlert(t('uploadFinished'));
+    showAlert(t(failedCount ? 'uploadFinishedWithErrors' : 'uploadFinished'));
     await loadAssets();
   }
 
@@ -242,7 +346,7 @@
     assetList.innerHTML = filtered.map(function (asset, index) {
       var position = state.assets.findIndex(function (item) { return item.id === asset.id; });
       return '<article class="wm-asset" data-asset-id="' + escapeHtml(asset.id) + '" draggable="' + (allowDrag ? 'true' : 'false') + '">' +
-        '<img src="' + escapeHtml(asset.thumbnail_url) + '" alt="' + escapeHtml(localeValue(asset.alt_text)) + '" loading="lazy"><div><div class="wm-asset-top"><div><h3>' + escapeHtml(localeValue(asset.title) || asset.place_name || asset.original_filename) + '</h3><p>' + escapeHtml([asset.area,asset.region,asset.primary_theme].filter(Boolean).join(' · ')) + '</p></div><span class="wm-chip" data-status="' + escapeHtml(asset.status) + '">' + escapeHtml(statusLabel(asset.status)) + '</span></div>' +
+        '<img src="' + escapeHtml(asset.thumbnail_url) + '" width="112" height="94" alt="' + escapeHtml(localeValue(asset.alt_text)) + '" loading="lazy"><div><div class="wm-asset-top"><div><h3>' + escapeHtml(localeValue(asset.title) || asset.place_name || asset.original_filename) + '</h3><p>' + escapeHtml([asset.area,asset.region,asset.primary_theme].filter(Boolean).join(' · ')) + '</p></div><span class="wm-chip" data-status="' + escapeHtml(asset.status) + '">' + escapeHtml(statusLabel(asset.status)) + '</span></div>' +
         '<p>' + escapeHtml(asset.width + ' × ' + asset.height + ' · ' + String(asset.format || '').toUpperCase() + ' · ' + (asset.verification_status || '')) + '</p>' +
         '<div class="wm-asset-actions"><a class="wm-btn wm-btn-secondary" href="' + escapeHtml(asset.web_url) + '" target="_blank" rel="noopener">' + escapeHtml(t('preview')) + '</a><button class="wm-btn wm-btn-secondary" type="button" data-action="edit">' + escapeHtml(t('edit')) + '</button>' +
         (asset.status !== 'published' ? '<button class="wm-btn wm-btn-primary" type="button" data-action="published">' + escapeHtml(t('publish')) + '</button>' : '') +
@@ -287,6 +391,7 @@
 
   async function changeStatus(id, status) {
     clearAlert();
+    if (status === 'archived' && !window.confirm(t('archiveConfirm'))) return;
     try { await api('/api/admin/portfolio/assets/' + encodeURIComponent(id), { method:'PATCH', body:{ status:status } }); await loadAssets(); }
     catch (error) { showAlert(error.message || t('networkError')); }
   }
@@ -367,6 +472,7 @@
     document.getElementById('uploadLocales').innerHTML = localizedFields('upload', {});
     if (!token) return redirectToLogin();
     try {
+      await loadApprovalManifest();
       var me = await api('/api/auth/me');
       if (!me || me.role !== 'admin') { showAlert(t('adminOnly')); uploadForm.hidden = true; assetList.innerHTML = ''; return; }
       await loadAssets();
@@ -383,10 +489,13 @@
   document.getElementById('assetSearch').addEventListener('input', renderAssets);
   document.getElementById('statusFilter').addEventListener('change', renderAssets);
   document.getElementById('assetEditor').addEventListener('submit', saveEditor);
+  document.getElementById('queueEditor').addEventListener('submit', saveQueueEditor);
   document.querySelectorAll('[data-dialog-close]').forEach(function (button) { button.addEventListener('click', closeEditor); });
+  document.querySelectorAll('[data-queue-dialog-close]').forEach(function (button) { button.addEventListener('click', closeQueueEditor); });
   document.querySelector('[data-replace]').addEventListener('click', function () { document.getElementById('replacementInput').click(); });
   document.getElementById('replacementInput').addEventListener('change', function (event) { replaceImage(event.target.files[0]); event.target.value = ''; });
   dialog.addEventListener('cancel', function (event) { event.preventDefault(); closeEditor(); });
+  queueDialog.addEventListener('cancel', function (event) { event.preventDefault(); closeQueueEditor(); });
   applyLanguage();
   initialize();
 })();

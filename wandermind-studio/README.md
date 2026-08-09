@@ -188,7 +188,7 @@ powershell -NoProfile -ExecutionPolicy Bypass -File .\tools\image-intake.ps1
 
 人工只需在 CSV 中填写或确认 `RightsStatus`、`SourceUrl`、`LicenseOrOwner`、`Publishable`、`HumanConfirmed`、`IntendedUse` 和中英文替代文字。允许的权利状态是 `owned`、`user_provided_with_consent`、`licensed`、`public_domain` 或 `cc0`；外部授权图片还必须填写来源网址。
 
-脚本不会移动、改名、覆盖或删除原图。图片改名时，唯一 SHA-256 会保留已有人工审核；出现重复文件时，新副本不会继承批准。当前发布清单保持为空，直到人工确认完成。
+脚本不会移动、改名、覆盖或删除原图。图片改名时，唯一 SHA-256 会保留已有人工审核；出现重复文件时，新副本不会继承批准。当前发布清单包含 108 张已获统一授权并完成人工确认的图片；Portfolio 管理页会按 SHA-256 匹配清单、带入建议元数据，并要求清单外图片在发布前完成人工核对。
 
 回归测试：
 

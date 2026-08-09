@@ -1322,7 +1322,13 @@ class ProductAccessTests(unittest.TestCase):
         bali_html = (frontend / "bali.html").read_text(encoding="utf-8")
         self.assertIn('id="fileInput"', admin_html)
         self.assertIn("multiple", admin_html)
+        self.assertIn('id="manifestStatus"', admin_html)
+        self.assertIn('id="queueDialog"', admin_html)
         self.assertIn("/api/admin/portfolio/upload-signature", admin_js)
+        self.assertIn("image-publish-manifest.json?v=p2", admin_js)
+        self.assertIn("state.manifestByHash[record.sha256]", admin_js)
+        self.assertIn("record.metadataEdited", admin_js)
+        self.assertIn("publishNeedsManifestReview", admin_js)
         self.assertIn("xhr.open('POST', signature.upload_url)", admin_js)
         self.assertIn("isSupportedImageFile(file)", admin_js)
         self.assertIn("t('preview')", admin_js)
@@ -1332,6 +1338,33 @@ class ProductAccessTests(unittest.TestCase):
         self.assertIn("/api/portfolio?destination=bali", bali_html)
         self.assertIn("dynamicGalleryCopy", bali_html)
         self.assertGreaterEqual(bali_html.count('class="bali-shot"'), 37)
+
+    def test_approved_image_manifest_contains_unique_108_and_new_lempuyang_hash(self):
+        frontend = BACKEND_DIR.parents[1] / "wandermind-studio" / "frontend"
+        manifest = json.loads(
+            (frontend / "assets" / "data" / "image-publish-manifest.json").read_text(
+                encoding="utf-8"
+            )
+        )
+        images = manifest["images"]
+        self.assertEqual(len(images), 108)
+        hashes = [item["sha256"] for item in images]
+        self.assertEqual(len(hashes), len(set(hashes)))
+        self.assertEqual(manifest["approval"]["approval_source"], "user_global_confirmation")
+        self.assertEqual(manifest["approval"]["approval_date"], "2026-08-05")
+        lempuyang = [
+            item
+            for item in images
+            if item["relative_path"] == "assets/images/Lempuyang Temple.jpg"
+        ]
+        self.assertEqual(len(lempuyang), 1)
+        item = lempuyang[0]
+        expected_hash = "90b2d9be2187fd871790d4fc5e84abf5f75bc0127991723ab4c8dec199a436e9"
+        self.assertEqual(item["sha256"], expected_hash)
+        self.assertEqual(item["web_optimized_path"], "assets/images/web/90b2d9be2187fd87.webp")
+        self.assertEqual(item["thumbnail_path"], "assets/images/thumbs/90b2d9be2187fd87.webp")
+        self.assertTrue((frontend / item["web_optimized_path"]).is_file())
+        self.assertTrue((frontend / item["thumbnail_path"]).is_file())
 
     def test_bali_gallery_uses_theme_and_tag_taxonomy(self):
         frontend_dir = (
