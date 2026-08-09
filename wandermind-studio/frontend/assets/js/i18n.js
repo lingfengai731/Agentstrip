@@ -1198,6 +1198,7 @@ function applyLang(lang) {
   document.documentElement.setAttribute('lang', lang);
   // persist selection
   try { localStorage.setItem('wm_studio_lang', lang); } catch (e) {}
+  document.dispatchEvent(new CustomEvent('wm:language-change', { detail: { lang: lang } }));
 }
 
 (function init() {

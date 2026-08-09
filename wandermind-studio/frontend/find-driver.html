@@ -462,8 +462,7 @@
       choice.querySelector('input').addEventListener('change', syncDriverChoice);
     });
     syncDriverChoice();
-    var driverLanguagePicker = document.getElementById('langPicker');
-    if (driverLanguagePicker) driverLanguagePicker.addEventListener('change', function () {
+    document.addEventListener('wm:language-change', function () {
       var selected = document.querySelector('input[name="fd-driver"]:checked');
       renderDriverDetail((selected && selected.value) || 'dicky');
     });
@@ -609,7 +608,7 @@
     };
   })();
 </script>
-<script src="assets/js/i18n.js?v=p58"></script>
+<script src="assets/js/i18n.js?v=p59"></script>
 <script>
   // Expose JS-side strings for the dynamic messages (filled after i18n load)
   (function () {

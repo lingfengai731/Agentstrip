@@ -1506,6 +1506,8 @@ class ProductAccessTests(unittest.TestCase):
         self.assertIn("888fef90456d4604.webp", driver_html)
         self.assertIn("profile.moments.map", driver_html)
         self.assertIn("DRIVER_PROFILES[choice.querySelector('input').value]", driver_html)
+        self.assertIn("document.addEventListener('wm:language-change'", driver_html)
+        self.assertIn('assets/js/i18n.js?v=p59', driver_html)
         self.assertIn("IDR 700k base + IDR 50k per guest", driver_html)
         self.assertIn("IDR 500k base + IDR 50k per guest", driver_html)
         self.assertIn("IDR 75k per hour", driver_html)
@@ -1525,6 +1527,7 @@ class ProductAccessTests(unittest.TestCase):
         for language in ("en", "zh", "ja", "ko", "id"):
             self.assertIn(f"Object.assign(LANGS.{language}", i18n_js)
         self.assertIn("fdQuoteBoundary", i18n_js)
+        self.assertIn("new CustomEvent('wm:language-change'", i18n_js)
         for private_value in (
             "availability confirmed privately",
             "私密确认档期",
