@@ -109,8 +109,8 @@ const DESTS = {
       { cls:'tag-blue', title:{ zh:'签证',en:'Visa',ja:'ビザ',ko:'비자',id:'Visa' }, tag:{ zh:'中国护照',en:'CN Passport',ja:'中国パスポート',ko:'중국 여권',id:'Paspor CN' },
         desc:{ zh:'落地签约 $35，备美元现金',en:'Visa on arrival ~$35, bring USD cash',ja:'到着ビザ約$35、米ドル現金を準備',ko:'도착 비자 약 $35, USD 현금 준비',id:'VOA ~$35, siapkan USD tunai' } },
       { cls:'tag-green', driver: true,
-        title:{ zh:'司机推荐 · Dicky',en:'Driver · Dicky',ja:'ドライバー · Dicky',ko:'운전기사 · Dicky',id:'Driver Rekomendasi · Dicky' },
-        tag:{ zh:'亲测靠谱',en:'Trusted',ja:'信頼済み',ko:'검증됨',id:'Terpercaya' },
+        title:{ zh:'巴厘岛本地司机',en:'Bali local drivers',ja:'バリ島の現地ドライバー',ko:'발리 현지 기사',id:'Driver lokal Bali' },
+        tag:{ zh:'表单内选择',en:'Choose in form',ja:'フォームで選択',ko:'양식에서 선택',id:'Pilih di formulir' },
         desc:{ zh:'本地司机 · 英语 · 机场接送 · 包车',en:'Local · English-speaking · Transfers · Tours',ja:'ローカル · 英語 · 空港送迎 · 貸切',ko:'현지 · 영어 · 픽업 · 전세 투어',id:'Driver lokal · Bisa bahasa Inggris · Jemput bandara · Tur privat' },
         contacts: [
           { icon:'fa-paper-plane', label:'WanderMind', value:{ zh:'提交日期与预算需求',en:'Send dates & budget request',ja:'日程と予算を送信',ko:'일정과 예산 요청 보내기',id:'Kirim tanggal & anggaran' }, href:'find-driver.html' }

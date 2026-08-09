@@ -874,26 +874,35 @@ class ProductAccessTests(unittest.TestCase):
         self.assertNotIn("private-phone-value", html)
         self.assertNotIn("private-phone-value", text)
 
-    def test_gede_driver_email_uses_private_server_configuration(self):
-        with (
-            patch.object(email_service, "GEDE_DRIVER_EMAIL", "gede@example.test"),
-            patch.object(email_service, "OWNER_BCC_EMAIL", "owner@example.test"),
-            patch.object(email_service, "send_email", new_callable=AsyncMock) as send,
-        ):
-            send.return_value = {"ok": True, "id": "email-test"}
-            result = self._run(
-                email_service.send_driver_request(
-                    {
-                        "driver_id": "gede",
-                        "first_name": "Test",
-                        "contact_email": "traveller@example.test",
-                    }
-                )
-            )
-        self.assertTrue(result["ok"])
-        self.assertEqual(send.await_args.args[0], "gede@example.test")
-        self.assertEqual(send.await_args.kwargs["bcc"], "owner@example.test")
-        self.assertEqual(send.await_args.kwargs["reply_to"], "traveller@example.test")
+    def test_driver_email_routing_uses_private_env_or_owner_fallback(self):
+        cases = (
+            ("dicky", "dicky@example.test", "", "dicky@example.test", "owner@example.test"),
+            ("dicky", "", "", "owner@example.test", None),
+            ("gede", "", "gede@example.test", "gede@example.test", "owner@example.test"),
+            ("gede", "", "", "owner@example.test", None),
+        )
+        for driver_id, dicky_email, gede_email, recipient, bcc in cases:
+            with self.subTest(driver_id=driver_id, recipient=recipient, bcc=bcc):
+                with (
+                    patch.object(email_service, "DRIVER_EMAIL", dicky_email),
+                    patch.object(email_service, "GEDE_DRIVER_EMAIL", gede_email),
+                    patch.object(email_service, "OWNER_BCC_EMAIL", "owner@example.test"),
+                    patch.object(email_service, "send_email", new_callable=AsyncMock) as send,
+                ):
+                    send.return_value = {"ok": True, "id": "email-test"}
+                    result = self._run(
+                        email_service.send_driver_request(
+                            {
+                                "driver_id": driver_id,
+                                "first_name": "Test",
+                                "contact_email": "traveller@example.test",
+                            }
+                        )
+                    )
+                self.assertTrue(result["ok"])
+                self.assertEqual(send.await_args.args[0], recipient)
+                self.assertEqual(send.await_args.kwargs["bcc"], bcc)
+                self.assertEqual(send.await_args.kwargs["reply_to"], "traveller@example.test")
 
     def test_driver_request_passes_route_and_trip_details_to_selected_driver(self):
         with patch.object(main, "send_driver_request", new_callable=AsyncMock) as send:
@@ -1080,6 +1089,11 @@ class ProductAccessTests(unittest.TestCase):
                 for poi_id in day["suggested_poi_ids"]:
                     self.assertIn(poi_id, poi_by_id, poi_id)
                     self.assertEqual(poi_by_id[poi_id]["region_id"], day["region_id"])
+                    self.assertIn(
+                        route["id"],
+                        poi_by_id[poi_id]["route_ids"],
+                        (route["id"], day["day"], poi_id),
+                    )
                     suggested_ids.append(poi_id)
             self.assertEqual(len(suggested_ids), len(set(suggested_ids)), route["id"])
 
