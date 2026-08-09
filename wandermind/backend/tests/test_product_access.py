@@ -1003,9 +1003,11 @@ class ProductAccessTests(unittest.TestCase):
         )
         data = json.loads(data_path.read_text(encoding="utf-8"))
         region_ids = {region["id"] for region in data["regions"]}
+        geo_coordinates = set()
         self.assertEqual(len(region_ids), 7)
         for region in data["regions"]:
             self.assertIn("map", region)
+            self.assertIn("geo", region)
             self.assertEqual(
                 set(region["name"]),
                 {"zh", "en", "ja", "ko", "id"},
@@ -1015,6 +1017,16 @@ class ProductAccessTests(unittest.TestCase):
             self.assertLessEqual(region["map"]["x"], 100)
             self.assertGreaterEqual(region["map"]["y"], 0)
             self.assertLessEqual(region["map"]["y"], 100)
+            self.assertGreaterEqual(region["geo"]["lat"], -9.0)
+            self.assertLessEqual(region["geo"]["lat"], -8.0)
+            self.assertGreaterEqual(region["geo"]["lng"], 114.8)
+            self.assertLessEqual(region["geo"]["lng"], 115.8)
+            self.assertEqual(region["geo"]["source"], "OpenStreetMap Nominatim")
+            self.assertEqual(region["geo"]["role"], "planning_anchor")
+            self.assertIn(region["geo"]["verification_status"], data["verification_states"])
+            self.assertTrue(region["geo"]["anchor"], region["id"])
+            geo_coordinates.add((region["geo"]["lat"], region["geo"]["lng"]))
+        self.assertEqual(len(geo_coordinates), 7)
         for route in data["routes"]:
             self.assertEqual(
                 set(route["name"]),
@@ -1096,6 +1108,24 @@ class ProductAccessTests(unittest.TestCase):
                     )
                     suggested_ids.append(poi_id)
             self.assertEqual(len(suggested_ids), len(set(suggested_ids)), route["id"])
+
+    def test_bali_route_map_uses_pinned_leaflet_with_fallback(self):
+        html = (
+            BACKEND_DIR.parents[1]
+            / "wandermind-studio"
+            / "frontend"
+            / "bali.html"
+        ).read_text(encoding="utf-8")
+        self.assertEqual(html.count("leaflet@1.9.4/dist/leaflet"), 2)
+        self.assertIn("sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=", html)
+        self.assertIn("sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=", html)
+        self.assertIn("tile.openstreetmap.org/{z}/{x}/{y}.png", html)
+        self.assertIn("data-route-map-fallback", html)
+        self.assertIn("if (!window.L) { loadRouteMapFallback(canvas); return; }", html)
+        self.assertIn("if (tileFailed) return;", html)
+        self.assertIn("canvas.classList.remove('leaflet-ready')", html)
+        self.assertIn("event.key !== 'Enter' && event.key !== ' '", html)
+        self.assertIn("prefers-reduced-motion: reduce", html)
 
     def test_bali_gallery_uses_theme_and_tag_taxonomy(self):
         frontend_dir = (

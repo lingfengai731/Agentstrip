@@ -1,6 +1,6 @@
 {
-  "schema_version": "1.0.0",
-  "updated_at": "2026-08-06",
+  "schema_version": "1.1.0",
+  "updated_at": "2026-08-10",
   "destination": {
     "id": "bali",
     "name": {
@@ -19,6 +19,7 @@
     {
       "id": "G1",
       "map": {"x": 27, "y": 66},
+      "geo": {"lat": -8.6898586, "lng": 115.1667783, "anchor": "Seminyak", "source": "OpenStreetMap Nominatim", "role": "planning_anchor", "verification_status": "pending_review"},
       "name": {
         "zh": "西南海岸生活方式圈",
         "en": "Southwest coast lifestyle",
@@ -33,6 +34,7 @@
     {
       "id": "G2",
       "map": {"x": 43, "y": 86},
+      "geo": {"lat": -8.8208398, "lng": 115.1136217, "anchor": "Pecatu", "source": "OpenStreetMap Nominatim", "role": "planning_anchor", "verification_status": "pending_review"},
       "name": {
         "zh": "南部半岛与海岸度假圈",
         "en": "Southern peninsula and coastal retreat",
@@ -47,6 +49,7 @@
     {
       "id": "G3",
       "map": {"x": 62, "y": 73},
+      "geo": {"lat": -8.6946473, "lng": 115.2605838, "anchor": "Sanur", "source": "OpenStreetMap Nominatim", "role": "planning_anchor", "verification_status": "pending_review"},
       "name": {
         "zh": "东南门户与离岛衔接圈",
         "en": "Southeast gateway and island transfers",
@@ -61,6 +64,7 @@
     {
       "id": "G4",
       "map": {"x": 47, "y": 49},
+      "geo": {"lat": -8.5170195, "lng": 115.2550507, "anchor": "Ubud", "source": "OpenStreetMap Nominatim", "role": "planning_anchor", "verification_status": "pending_review"},
       "name": {
         "zh": "中部乌布文化自然圈",
         "en": "Central Ubud culture and nature",
@@ -75,6 +79,7 @@
     {
       "id": "G5",
       "map": {"x": 42, "y": 28},
+      "geo": {"lat": -8.2683683, "lng": 115.0777059, "anchor": "Munduk", "source": "OpenStreetMap Nominatim", "role": "planning_anchor", "verification_status": "pending_review"},
       "name": {
         "zh": "中北部山地自然圈",
         "en": "Central-north highland nature",
@@ -89,6 +94,7 @@
     {
       "id": "G6",
       "map": {"x": 63, "y": 34},
+      "geo": {"lat": -8.2495163, "lng": 115.3482233, "anchor": "Kintamani", "source": "OpenStreetMap Nominatim", "role": "planning_anchor", "verification_status": "pending_review"},
       "name": {
         "zh": "东北火山与东部高地圈",
         "en": "Northeast volcano and eastern highlands",
@@ -103,6 +109,7 @@
     {
       "id": "G7",
       "map": {"x": 78, "y": 51},
+      "geo": {"lat": -8.334584, "lng": 115.6409359, "anchor": "Amed", "source": "OpenStreetMap Nominatim", "role": "planning_anchor", "verification_status": "pending_review"},
       "name": {
         "zh": "东部海岸与传统村落圈",
         "en": "Eastern coast and traditional villages",

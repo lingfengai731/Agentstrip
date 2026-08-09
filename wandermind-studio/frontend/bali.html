@@ -19,6 +19,9 @@
   <link rel="icon" type="image/png" href="assets/images/logo-mark-256.png">
   <link rel="apple-touch-icon" href="assets/images/logo-mark-256.png">
     <link rel="stylesheet" href="assets/css/style-starter.css?v=p47">
+    <link rel="preconnect" href="https://unpkg.com" crossorigin>
+    <link rel="preconnect" href="https://tile.openstreetmap.org" crossorigin>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="">
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=optional" rel="stylesheet">
     <style>
       .navbar-brand { font-weight: 700; letter-spacing: .02em; white-space: nowrap; display: inline-flex !important; align-items: center; gap: 8px; }
@@ -143,15 +146,28 @@
       .bali-route-map-head { display:flex; justify-content:space-between; align-items:flex-start; gap:12px; margin-bottom:8px; }
       .bali-route-map-head strong { color:#fff; font-size:14px; }
       .bali-route-map-head span { color:rgba(255,255,255,.66); font-size:10px; text-align:right; }
-      .bali-route-map-canvas { position:relative; overflow:hidden; height:260px; border-radius:11px; background:#dce8e5; }
+      .bali-route-map-canvas { position:relative; overflow:hidden; height:300px; border-radius:11px; background:#dce8e5; }
+      .bali-route-map-live, .bali-route-map-fallback { position:absolute; inset:0; width:100%; height:100%; }
+      .bali-route-map-live { z-index:3; visibility:hidden; background:#dce8e5; }
+      .bali-route-map-canvas.leaflet-ready .bali-route-map-live { visibility:visible; }
+      .bali-route-map-canvas.leaflet-ready .bali-route-map-fallback { visibility:hidden; }
       .bali-route-map-frame { display:block; width:100%; height:100%; border:0; background:#dce8e5; filter:saturate(.88) contrast(1.04); }
       .bali-map-overlay { position:absolute; inset:0; width:100%; height:100%; pointer-events:none; z-index:1; }
       .bali-map-line { fill:none; stroke:#fcbf1e; stroke-width:1.4; stroke-linecap:round; stroke-linejoin:round; filter:drop-shadow(0 1px 1px rgba(0,0,0,.58)); }
       .bali-map-line.optional { stroke:rgba(255,255,255,.82); stroke-dasharray:2.6 2.3; stroke-width:1; }
-      .bali-map-region { position:absolute; transform:translate(-50%,-50%); z-index:2; width:29px; height:29px; padding:0; border:2px solid #fff; border-radius:50%; background:#0e7c6b; color:#fff; font-size:10px; font-weight:900; line-height:1; box-shadow:0 2px 8px rgba(0,0,0,.48); cursor:pointer; pointer-events:auto; }
+      .bali-map-region { position:absolute; transform:translate(-50%,-50%); z-index:2; width:44px; height:44px; padding:0; border:2px solid #fff; border-radius:50%; background:#0e7c6b; color:#fff; font-size:10px; font-weight:900; line-height:1; box-shadow:0 2px 8px rgba(0,0,0,.48); cursor:pointer; pointer-events:auto; }
       .bali-map-region.optional { background:#475569; border-style:dashed; }
       .bali-map-region.day-active, .bali-map-region:focus-visible { background:#fcbf1e; color:#083d37; outline:3px solid rgba(252,191,30,.38); outline-offset:2px; }
       .bali-map-region:hover { transform:translate(-50%,-50%) scale(1.13); }
+      .wm-leaflet-marker-shell { width:44px !important; height:44px !important; margin:0 !important; border:0 !important; background:transparent !important; touch-action:manipulation; }
+      .wm-leaflet-marker { display:grid; place-items:center; width:32px; height:32px; margin:6px; border:2px solid #fff; border-radius:50%; background:#0e7c6b; color:#fff; font-size:10px; font-weight:900; line-height:1; box-shadow:0 2px 8px rgba(0,0,0,.48); transition:transform .15s,background .15s,color .15s; }
+      .wm-leaflet-marker.optional { background:#475569; border-style:dashed; }
+      .wm-leaflet-marker-shell:hover .wm-leaflet-marker { transform:scale(1.12); }
+      .wm-leaflet-marker-shell:focus { outline:0; }
+      .wm-leaflet-marker-shell:focus-visible .wm-leaflet-marker, .wm-leaflet-marker.day-active { background:#fcbf1e; color:#083d37; outline:3px solid rgba(252,191,30,.42); outline-offset:2px; }
+      .bali-route-map-live .leaflet-control-attribution { font-size:9px; line-height:1.35; }
+      .bali-route-map-live .leaflet-control-zoom a { color:#083d37; }
+      @media (prefers-reduced-motion: reduce) { .wm-leaflet-marker { transition:none; } }
       .bali-map-region-list { display:flex; flex-wrap:wrap; gap:6px; margin-top:10px; }
       .bali-map-region-list span { padding:5px 8px; border-radius:12px; background:rgba(255,255,255,.1); color:#fff; font-size:10px; line-height:1.35; }
       .bali-map-region-list span.optional { border:1px dashed rgba(255,255,255,.45); background:transparent; }
@@ -194,7 +210,7 @@
       .bali-route-secondary { background:transparent; color:#fff; border:1px solid rgba(255,255,255,.55); }
       .bali-route-secondary:hover { color:#fff; background:rgba(255,255,255,.1); text-decoration:none; }
       @media(max-width:991px){ .bali-route-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.bali-route-detail-grid{grid-template-columns:1fr} }
-      @media(max-width:575px){ .bali-route-grid{display:flex;width:100%;max-width:100%;min-width:0;overflow-x:auto;overscroll-behavior-x:contain;scroll-snap-type:x mandatory;margin-right:0;padding:0 0 12px}.bali-route-card{flex:0 0 min(calc(100vw - 30px),330px);scroll-snap-align:start}.bali-route-detail{padding:22px 18px}.bali-route-value{grid-template-columns:1fr}.bali-route-card p{min-height:0}.bali-route-map{padding:13px}.bali-route-map-head{align-items:center}.bali-route-map-canvas{height:230px}.bali-day-main{grid-template-columns:48px minmax(0,1fr)}.bali-day-actions{gap:3px}.bali-day-icon-btn{width:28px;height:28px}.bali-day-select{flex-basis:150px} }
+      @media(max-width:575px){ .bali-route-grid{display:flex;width:100%;max-width:100%;min-width:0;overflow-x:auto;overscroll-behavior-x:contain;scroll-snap-type:x mandatory;margin-right:0;padding:0 0 12px}.bali-route-card{flex:0 0 min(calc(100vw - 30px),330px);scroll-snap-align:start}.bali-route-detail{padding:22px 18px}.bali-route-value{grid-template-columns:1fr}.bali-route-card p{min-height:0}.bali-route-map{padding:13px}.bali-route-map-head{align-items:center}.bali-route-map-canvas{height:280px}.bali-day-main{grid-template-columns:48px minmax(0,1fr)}.bali-day-actions{gap:3px}.bali-day-icon-btn{width:28px;height:28px}.bali-day-select{flex-basis:150px} }
       @media(max-width:360px){ .bali-route-map-head{display:block}.bali-route-map-head span{display:block;margin-top:3px;text-align:left}.bali-route-detail-actions{display:grid}.bali-route-detail-actions .bali-btn{width:100%;text-align:center} }
       .bali-driver-band { background: linear-gradient(135deg, #0e7c6b, #14b8a6); color: #fff; padding: 64px 0; }
       .bali-driver-inner { max-width: 960px; margin: 0 auto; text-align: center; }
@@ -624,6 +640,7 @@
   function topFunction() { document.body.scrollTop = 0; document.documentElement.scrollTop = 0; }
 </script>
 <script src="assets/js/i18n.js?v=p58"></script>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
 <script>
 (function () {
   var grid = document.getElementById('bali-route-grid');
@@ -635,6 +652,8 @@
   var activeDayIndex = 0;
   var routePlans = {};
   var planStorageKey = 'wm_bali_route_plans_v1';
+  var activeLeafletMap = null;
+  var activeLeafletMarkers = {};
 
   function language() {
     var value = (document.getElementById('langPicker') || {}).value || localStorage.getItem('wm_studio_lang') || 'en';
@@ -731,11 +750,12 @@
   function renderCards() {
     grid.innerHTML = routes.map(function (route) {
       var meta = routeMeta(route);
-      return '<button class="bali-route-card ' + (route.id === activeId ? 'active' : '') + '" type="button" data-route-id="' + route.id + '" aria-pressed="' + (route.id === activeId) + '">' +
-        '<span class="bali-route-id"><span>' + route.id + '</span><span class="bali-route-status">' + routeStatus(route) + '</span></span>' +
-        '<h3>' + text(route.name) + '</h3>' +
-        '<p>' + text(route.promise) + '</p>' +
-        '<span class="bali-route-meta">' + meta.map(function (item) { return '<span>' + item + '</span>'; }).join('') + '</span>' +
+      var routeId = escapeHtml(route.id);
+      return '<button class="bali-route-card ' + (route.id === activeId ? 'active' : '') + '" type="button" data-route-id="' + routeId + '" aria-pressed="' + (route.id === activeId) + '">' +
+        '<span class="bali-route-id"><span translate="no">' + routeId + '</span><span class="bali-route-status">' + escapeHtml(routeStatus(route)) + '</span></span>' +
+        '<h3>' + escapeHtml(text(route.name)) + '</h3>' +
+        '<p>' + escapeHtml(text(route.promise)) + '</p>' +
+        '<span class="bali-route-meta">' + meta.map(function (item) { return '<span>' + escapeHtml(item) + '</span>'; }).join('') + '</span>' +
       '</button>';
     }).join('');
     grid.querySelectorAll('.bali-route-card').forEach(function (card) {
@@ -907,8 +927,8 @@
   function renderRouteMap(route, plan) {
     var ui = routeUiCopy();
     var coreIds = plan.days.map(function (day) { return day.region_id; });
-    var optionalIds = route.optional_regions || [];
     var dayRegionIds = Array.from(new Set(coreIds));
+    var optionalIds = (route.optional_regions || []).filter(function (id) { return dayRegionIds.indexOf(id) < 0; });
     var relevant = dayRegionIds.map(function (id) { return { id:id, optional:false }; })
       .concat(optionalIds.map(function (id) { return { id:id, optional:true }; }));
     var corePrefix = ui.core;
@@ -936,10 +956,144 @@
     }).join('');
     return '<div class="bali-route-map">' +
       '<div class="bali-route-map-head"><strong>' + title + '</strong><span>' + note + '</span></div>' +
-      '<div class="bali-route-map-canvas"><iframe class="bali-route-map-frame" title="' + escapeHtml(ui.mapTitle) + '" loading="lazy" scrolling="no" src="https://www.openstreetmap.org/export/embed.html?bbox=114.95%2C-8.88%2C115.72%2C-8.03&amp;layer=mapnik"></iframe>' +
-      '<svg class="bali-map-overlay" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">' + (coreLine ? '<polyline class="bali-map-line" points="' + coreLine + '"></polyline>' : '') + optionalLines + '</svg>' + markers + '</div>' +
+      '<div class="bali-route-map-canvas"><div class="bali-route-map-live" data-route-map-live role="region" aria-label="' + escapeHtml(ui.mapTitle) + '"></div>' +
+      '<div class="bali-route-map-fallback" data-route-map-fallback><iframe class="bali-route-map-frame" title="' + escapeHtml(ui.mapTitle) + '" loading="lazy" scrolling="no" data-src="https://www.openstreetmap.org/export/embed.html?bbox=114.95%2C-8.88%2C115.72%2C-8.03&amp;layer=mapnik"></iframe>' +
+      '<svg class="bali-map-overlay" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">' + (coreLine ? '<polyline class="bali-map-line" points="' + coreLine + '"></polyline>' : '') + optionalLines + '</svg>' + markers + '</div></div>' +
       '<div class="bali-map-region-list">' + regionList + '</div>' +
     '</div>';
+  }
+
+  function destroyLeafletMap() {
+    if (activeLeafletMap) {
+      window.clearTimeout(activeLeafletMap.wmFallbackTimer);
+      activeLeafletMap.remove();
+    }
+    activeLeafletMap = null;
+    activeLeafletMarkers = {};
+  }
+
+  function regionLatLng(regionId) {
+    var geo = (regions[regionId] || {}).geo || {};
+    var lat = Number(geo.lat);
+    var lng = Number(geo.lng);
+    return Number.isFinite(lat) && Number.isFinite(lng) ? [lat, lng] : null;
+  }
+
+  function syncLeafletActiveMarker(regionId) {
+    Object.keys(activeLeafletMarkers).forEach(function (id) {
+      var marker = activeLeafletMarkers[id];
+      marker.setZIndexOffset(id === regionId ? 1000 : 0);
+      var element = marker.getElement();
+      var badge = element && element.querySelector('.wm-leaflet-marker');
+      if (badge) badge.classList.toggle('day-active', id === regionId);
+    });
+  }
+
+  function loadRouteMapFallback(canvas) {
+    var frame = canvas && canvas.querySelector('[data-route-map-fallback] iframe');
+    if (frame && !frame.hasAttribute('src')) frame.setAttribute('src', frame.dataset.src);
+  }
+
+  function keepRouteMarkersInView(map) {
+    var canvas = map.getContainer().getBoundingClientRect();
+    var markers = Object.keys(activeLeafletMarkers).map(function (id) {
+      return activeLeafletMarkers[id].getElement();
+    }).filter(Boolean).map(function (element) { return element.getBoundingClientRect(); });
+    if (!markers.length) return;
+    var margin = 4;
+    var minX = Math.min.apply(null, markers.map(function (rect) { return rect.left - canvas.left; }));
+    var maxX = Math.max.apply(null, markers.map(function (rect) { return rect.right - canvas.left; }));
+    var minY = Math.min.apply(null, markers.map(function (rect) { return rect.top - canvas.top; }));
+    var maxY = Math.max.apply(null, markers.map(function (rect) { return rect.bottom - canvas.top; }));
+    var offsetX = minX < margin ? minX - margin : (maxX > canvas.width - margin ? maxX - (canvas.width - margin) : 0);
+    var offsetY = minY < margin ? minY - margin : (maxY > canvas.height - margin ? maxY - (canvas.height - margin) : 0);
+    if (offsetX || offsetY) map.panBy([offsetX, offsetY], { animate:false });
+  }
+
+  function initRouteMap(route, plan) {
+    var target = detail.querySelector('[data-route-map-live]');
+    var canvas = detail.querySelector('.bali-route-map-canvas');
+    if (!target || !canvas) return;
+    if (!window.L) { loadRouteMapFallback(canvas); return; }
+    var coreIds = plan.days.map(function (day) { return day.region_id; });
+    var optionalIds = (route.optional_regions || []).filter(function (id) { return coreIds.indexOf(id) < 0; });
+    var relevantIds = Array.from(new Set(coreIds.concat(optionalIds)));
+    var coreLatLngs = coreIds.map(regionLatLng).filter(Boolean);
+    var allLatLngs = relevantIds.map(regionLatLng).filter(Boolean);
+    if (!coreLatLngs.length || allLatLngs.length !== relevantIds.length) { loadRouteMapFallback(canvas); return; }
+
+    var reducedMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    var map = window.L.map(target, { scrollWheelZoom:false, zoomControl:true, attributionControl:true, zoomAnimation:!reducedMotion, fadeAnimation:!reducedMotion, markerZoomAnimation:!reducedMotion });
+    activeLeafletMap = map;
+    var tiles = window.L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      maxZoom:19,
+      attribution:'&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+    }).addTo(map);
+    var tileFailed = false;
+    map.wmFallbackTimer = window.setTimeout(function () {
+      if (activeLeafletMap === map && canvas.isConnected && !canvas.classList.contains('leaflet-ready')) loadRouteMapFallback(canvas);
+    }, 4000);
+    tiles.once('tileerror', function () {
+      tileFailed = true;
+      window.clearTimeout(map.wmFallbackTimer);
+      if (activeLeafletMap === map && canvas.isConnected) {
+        canvas.classList.remove('leaflet-ready');
+        destroyLeafletMap();
+      }
+      loadRouteMapFallback(canvas);
+    });
+    window.L.polyline(coreLatLngs, { color:'#d49b00', weight:4, opacity:.95, lineCap:'round', lineJoin:'round' }).addTo(map);
+    var tail = coreLatLngs[coreLatLngs.length - 1];
+    optionalIds.forEach(function (id) {
+      var point = regionLatLng(id);
+      if (point && tail) window.L.polyline([tail, point], { color:'#475569', weight:3, opacity:.82, dashArray:'7 7' }).addTo(map);
+    });
+    relevantIds.forEach(function (id) {
+      var region = regions[id] || {};
+      var optional = optionalIds.indexOf(id) >= 0 && coreIds.indexOf(id) < 0;
+      var label = id + ' · ' + text(region.name);
+      var icon = window.L.divIcon({
+        className:'wm-leaflet-marker-shell',
+        html:'<span class="wm-leaflet-marker' + (optional ? ' optional' : '') + '" translate="no">' + escapeHtml(id) + '</span>',
+        iconSize:[44,44],
+        iconAnchor:[22,22]
+      });
+      var marker = window.L.marker(regionLatLng(id), { icon:icon, keyboard:true, title:label, alt:label });
+      marker.bindTooltip(escapeHtml(label), { direction:'top', offset:[0,-18] });
+      marker.on('click', function () {
+        var index = plan.days.findIndex(function (day) { return day.region_id === id; });
+        if (index >= 0) setActiveDay(plan, index);
+      });
+      marker.on('add', function () {
+        var element = marker.getElement();
+        if (!element) return;
+        element.setAttribute('aria-label', label);
+        element.setAttribute('role', 'button');
+        element.addEventListener('keydown', function (event) {
+          if (event.key !== 'Enter' && event.key !== ' ') return;
+          event.preventDefault();
+          marker.fire('click');
+        });
+      });
+      marker.addTo(map);
+      activeLeafletMarkers[id] = marker;
+    });
+    map.fitBounds(window.L.latLngBounds(allLatLngs), { padding:[8,8], maxZoom:9 });
+    syncLeafletActiveMarker((plan.days[activeDayIndex] || {}).region_id);
+    tiles.once('load', function () {
+      if (activeLeafletMap === map && canvas.isConnected) {
+        window.clearTimeout(map.wmFallbackTimer);
+        if (tileFailed) return;
+        var pane = target.querySelector('.leaflet-pane');
+        if (!pane || window.getComputedStyle(pane).position !== 'absolute') {
+          loadRouteMapFallback(canvas);
+          return;
+        }
+        canvas.classList.add('leaflet-ready');
+        map.invalidateSize(false);
+        keepRouteMarkersInView(map);
+      }
+    });
   }
 
   function renderDayOutline(route, plan) {
@@ -1000,6 +1154,7 @@
     detail.querySelectorAll('.bali-map-region').forEach(function (point) {
       point.classList.toggle('day-active', point.dataset.regionId === activeRegionId);
     });
+    syncLeafletActiveMarker(activeRegionId);
   }
 
   function attachRouteEditor(route, plan) {
@@ -1078,23 +1233,25 @@
     });
     var path = routePath.map(function (id) {
       var region = regions[id];
-      return '<span class="bali-region-node" title="' + (region ? text(region.name) : id) + '">' + id + ' · ' + (region ? text(region.name) : id) + '</span>';
+      var regionName = region ? text(region.name) : id;
+      return '<span class="bali-region-node" title="' + escapeHtml(regionName) + '"><span translate="no">' + escapeHtml(id) + '</span> · ' + escapeHtml(regionName) + '</span>';
     }).join('<span class="fa fa-long-arrow-right bali-region-arrow" aria-hidden="true"></span>');
     var outline = renderDayOutline(route, plan);
     var ui = routeUiCopy();
     var params = new URLSearchParams({ dest: 'bali', route: route.id, mode: 'diy' });
+    destroyLeafletMap();
     detail.innerHTML =
       '<div class="bali-route-detail-grid">' +
-        '<div><div class="bali-sec-eyebrow" style="color:#fcbf1e">' + route.id + ' · ' + words.layer + '</div>' +
-          '<h3>' + text(route.name) + '</h3><p>' + text(route.promise) + '</p>' +
-          '<div class="bali-region-path" aria-label="' + words.path + '">' + path + '</div>' +
+        '<div><div class="bali-sec-eyebrow" style="color:#fcbf1e"><span translate="no">' + escapeHtml(route.id) + '</span> · ' + words.layer + '</div>' +
+          '<h3>' + escapeHtml(text(route.name)) + '</h3><p>' + escapeHtml(text(route.promise)) + '</p>' +
+          '<div class="bali-region-path" aria-label="' + escapeHtml(words.path) + '">' + path + '</div>' +
           '<div class="bali-poi-notice" role="note"><span class="fa fa-info-circle" aria-hidden="true"></span><span>' + ui.poiNotice + '</span></div>' +
           '<div class="bali-day-outline" aria-label="' + words.days + '">' + outline + '</div>' +
           '<div class="bali-editor-note"><span><span class="fa fa-check-circle"></span> ' + words.note + '</span>' +
             '<button class="bali-day-reset" type="button" data-reset-route>' + words.reset + '</button></div>' +
           '<div class="bali-route-detail-actions">' +
             '<a class="bali-btn bali-btn-primary" data-route-handoff href="ai-tool.html?' + params.toString() + '">' + words.adjust + '</a>' +
-             '<a class="bali-btn bali-route-secondary" href="bali.html?route=' + encodeURIComponent(route.id) + '#professional-planner" data-professional-route="' + route.id + '">' + words.professional + '</a>' +
+             '<a class="bali-btn bali-route-secondary" href="bali.html?route=' + encodeURIComponent(route.id) + '#professional-planner" data-professional-route="' + escapeHtml(route.id) + '">' + words.professional + '</a>' +
             '<a class="bali-btn bali-route-secondary" data-route-handoff href="find-driver.html?route=' + encodeURIComponent(route.id) + '">' + words.driver + '</a>' +
           '</div>' +
         '</div>' +
@@ -1107,6 +1264,7 @@
         '</div>' +
       '</div>';
     attachRouteEditor(route, plan);
+    initRouteMap(route, plan);
   }
 
   function useData(data) {
@@ -1132,7 +1290,7 @@
     renderDetail();
   }
 
-    fetch('assets/data/bali-travel-data.json?v=20260810r5')
+    fetch('assets/data/bali-travel-data.json?v=20260810r6')
     .then(function (response) { if (!response.ok) throw new Error('HTTP ' + response.status); return response.json(); })
     .then(useData)
     .catch(function () {
@@ -1245,7 +1403,7 @@
       driver.removeAttribute('href');
     }
   }
-    fetch('assets/data/bali-travel-data.json?v=20260810r5')
+    fetch('assets/data/bali-travel-data.json?v=20260810r6')
     .then(function(response) { if (!response.ok) throw new Error('HTTP ' + response.status); return response.json(); })
     .then(function(data) {
       (data.routes || []).forEach(function(route) { routeCatalog[route.id] = route; });
