@@ -220,6 +220,7 @@
       body.dark .bali-place-decision-card p { color:#d1d5db; }
       body.dark .bali-place-purpose { background:rgba(252,191,30,.08); color:#d1d5db; }
       .bali-route-match { display:flex; align-items:center; justify-content:space-between; gap:12px; margin:0 0 10px; padding:10px 12px; border-radius:10px; background:rgba(14,124,107,.08); color:#0f766e; font-size:12px; font-weight:700; }
+      .bali-route-match[hidden] { display:none; }
       .bali-route-match:hover { color:#0e7c6b; text-decoration:none; background:rgba(14,124,107,.13); }
       .bali-route-match span:last-child { text-align:right; }
       body.dark .bali-route-match { background:rgba(45,212,191,.1); color:#99f6e4; }
@@ -1125,16 +1126,23 @@
     ];
     var routeId = matchedRouteId(activeShot);
     var placeName = data[0];
-     var handoff = new URLSearchParams({ dest:'bali', place:placeName, route:routeId, source:'gallery', mode:'diy' });
+    var handoff = new URLSearchParams({ dest:'bali', place:placeName, source:'gallery', mode:'diy' });
+    var driverHandoff = new URLSearchParams({ place:placeName, source:'gallery' });
+    if (routeId) {
+      handoff.set('route', routeId);
+      driverHandoff.set('route', routeId);
+    }
     document.getElementById('bali-place-image').src = activeShot.querySelector('img').src;
     document.getElementById('bali-place-image').alt = activeShot.querySelector('img').alt;
     document.getElementById('bali-place-tags').textContent = Array.from(activeShot.querySelectorAll('.bali-shot-meta span')).map(function(x){return x.textContent}).join(' · ');
     document.getElementById('bali-place-title').textContent = data[0]; document.getElementById('bali-place-desc').textContent = data[1];
     document.getElementById('bali-place-purpose').textContent = data[2]; document.getElementById('bali-place-route').textContent = data[3];
-    document.getElementById('bali-place-route-name').textContent = routeName(routeId);
-    document.getElementById('bali-place-route-link').href = 'bali.html?route=' + encodeURIComponent(routeId) + '#route-families';
+    var routeLink = document.getElementById('bali-place-route-link');
+    routeLink.hidden = !routeId;
+    document.getElementById('bali-place-route-name').textContent = routeId ? routeName(routeId) : '';
+    routeLink.href = routeId ? 'bali.html?route=' + encodeURIComponent(routeId) + '#route-families' : '#route-families';
     document.getElementById('bali-place-ai').href = 'ai-tool.html?' + handoff.toString();
-    document.getElementById('bali-place-driver').href = 'find-driver.html?route=' + encodeURIComponent(routeId) + '&place=' + encodeURIComponent(placeName) + '&source=gallery';
+    document.getElementById('bali-place-driver').href = 'find-driver.html?' + driverHandoff.toString();
   }
     fetch('assets/data/bali-travel-data.json?v=20260806r4')
     .then(function(response) { if (!response.ok) throw new Error('HTTP ' + response.status); return response.json(); })

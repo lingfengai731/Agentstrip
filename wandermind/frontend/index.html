@@ -13,6 +13,7 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="WanderMind">
+<link rel="icon" href="/icon.svg" type="image/svg+xml">
 <link rel="apple-touch-icon" href="/icon.svg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=Plus+Jakarta+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
@@ -2684,11 +2685,11 @@ const DESTINATIONS = {
         title:{zh:'文化礼仪',en:'Cultural Etiquette',ja:'文化的マナー',ko:'문화 예절',id:'Etika Budaya'},
         tag:{zh:'必读',en:'Must Know',ja:'必読',ko:'필독',id:'Wajib Tahu'},
         desc:{zh:'进庙须着纱笼；左手被视为不洁，避免用左手递物',en:'Temple sarong required; left hand considered unclean — avoid passing things left-handed',ja:'寺院ではサロンが必要。左手は不浄とされ、物を渡す際は右手を使う',ko:'사원 입장 시 사룽 필수; 왼손은 불결하게 여겨져 물건 전달 시 사용 금지',id:'Sarung wajib di pura; tangan kiri dianggap kotor, hindari memberikan barang dengan tangan kiri'}},
-      {cls:'tag-green', driver:true,
-        title:{zh:'司机推荐 · Dicky',en:'Recommended Driver · Dicky',ja:'おすすめドライバー · Dicky',ko:'추천 운전기사 · Dicky',id:'Driver Rekomendasi · Dicky'},
-        tag:{zh:'亲测靠谱',en:'Trusted',ja:'信頼済み',ko:'검증됨',id:'Terpercaya'},
-        desc:{zh:'本地司机 · 会英语 · 机场接送 · 包车游览',en:'Local driver · English-speaking · Airport transfers · Private tours',ja:'ローカルドライバー · 英語対応 · 空港送迎 · 貸切ツアー',ko:'현지 운전기사 · 영어 가능 · 공항 픽업 · 전세 투어',id:'Driver lokal · Bisa bahasa Inggris · Jemput bandara · Tur privat'},
-        contacts:{whatsapp:'+62898-0532-230', xhs:'Wander with ky (ID: 18613428065)', wechat:'wxid_vkzbrp1iyg6t12'}},
+      {cls:'tag-green', driver:true, href:'/find-driver',
+        title:{zh:'巴厘岛本地司机',en:'Local Bali drivers',ja:'バリ島の現地ドライバー',ko:'발리 현지 기사',id:'Driver lokal Bali'},
+        tag:{zh:'私密表单',en:'Private request',ja:'非公開フォーム',ko:'비공개 요청',id:'Permintaan privat'},
+        desc:{zh:'可选择 Dicky 或 Gede Nico，并把日期、路线与预算通过 WanderMind 表单提交。司机个人账号不会公开。',en:'Choose Dicky or Gede Nico and send your dates, route and budget through the WanderMind form. Personal driver accounts stay private.',ja:'Dicky または Gede Nico を選び、日程・ルート・予算を WanderMind のフォームから送信できます。個人アカウントは公開しません。',ko:'Dicky 또는 Gede Nico를 선택하고 날짜, 경로, 예산을 WanderMind 양식으로 보내세요. 기사 개인 계정은 공개하지 않습니다.',id:'Pilih Dicky atau Gede Nico lalu kirim tanggal, rute, dan anggaran melalui formulir WanderMind. Akun pribadi driver tidak dipublikasikan.'},
+        cta:{zh:'打开司机需求表单',en:'Open driver request form',ja:'ドライバー依頼フォームを開く',ko:'기사 요청 양식 열기',id:'Buka formulir permintaan driver'}},
     ],
     itinerary:[
       {icon:'✈️',color:'#E3F5F1',dayLabel:'Day 1',dayStart:0,         title:'抵达登巴萨 → 乌布',        desc:'机场接送，入住民宿，圣泉寺傍晚游览'},
@@ -2884,12 +2885,9 @@ const BASE_SYSTEM = `你是 WanderMind 游心 —— 一个顶级 AI 多智能�
 - 价格信息尽量给出区间而非精确数字
 - 主动询问用户偏好以提供更精准建议
 
-【巴厘岛专属 · 私家司机推荐】
-当用户询问巴厘岛的交通方式、机场接送、包车游览或本地司机时，请主动推荐以下经验证的华人司机：
-- 📱 WhatsApp: +62898-0532-230
-- 📕 小红书: Wander with ky（账号 ID: 18613428065）
-- 💬 微信 WeChat: wxid_vkzbrp1iyg6t12
-该司机名叫 Dicky，是本地司机、会英语，可安排机场接送、单日包车、景点定制游览，性价比高、靠谱有口碑。建议用户提前通过小红书或 WhatsApp 联系确认行程安排。`;
+【巴厘岛专属 · 本地司机】
+当用户询问巴厘岛交通、机场接送、包车游览或本地司机时，可介绍 Dicky 与 Gede Nico，并引导用户通过 WanderMind 的 /find-driver 表单提交日期、路线和预算。
+不得提供、猜测或索取司机个人电话、WhatsApp、微信、社交账号或私人邮箱。所有需求由 WanderMind 通过邮件私密转发。`;
 
 // ─── HOTEL AREAS (per-destination) ──────────────────────
 // "q" is the keyword appended to the destination name when calling SerpAPI hotels
@@ -3233,22 +3231,18 @@ function renderDestPanel(id) {
   const tipsEl = document.getElementById('panel-tips');
   if (tipsEl) {
     if (d.tips && d.tips.length > 0) {
-      const xhsLabel  = {zh:'小红书',en:'Xiaohongshu',ja:'小紅書',ko:'샤오홍수',id:'Xiaohongshu'}[currentLang] || '小红书';
       tipsEl.innerHTML = `<div class="panel-section-title">${L.destTabSections?.tips || '旅行必知'}</div>` +
         d.tips.map(t => {
           const tTitle = _gl(t.title);
           const tTag   = _gl(t.tag);
           const tDesc  = _gl(t.desc);
-          if (t.driver && t.contacts) {
-            const c = t.contacts;
-            const waHref = 'https://wa.me/' + c.whatsapp.replace(/[^0-9]/g, '');
+          if (t.driver && t.href) {
+            const cta = _gl(t.cta);
             return `<div class="info-card driver-card">
               <div class="info-card-head"><span class="info-card-title">🚗 ${tTitle}</span><span class="tag ${t.cls}">${tTag}</span></div>
               <div class="info-card-body">${tDesc}</div>
               <div class="driver-contacts">
-                <a class="driver-contact" href="${waHref}" target="_blank" rel="noopener"><span class="driver-contact-icon">📱</span><span>WhatsApp: ${c.whatsapp}</span></a>
-                <div class="driver-contact"><span class="driver-contact-icon">📕</span><span>${xhsLabel}: ${c.xhs}</span></div>
-                <div class="driver-contact"><span class="driver-contact-icon">💬</span><span>WeChat: ${c.wechat}</span></div>
+                <a class="driver-contact" href="${t.href}"><span class="driver-contact-icon">✉️</span><span>${cta}</span></a>
               </div>
             </div>`;
           }
@@ -3649,13 +3643,10 @@ function openExportPDF() {
   if (currentDest === 'bali') {
     const dr = d.tips?.find(t => t.driver);
     if (dr) {
-      const c = dr.contacts;
       driverHtml = `<div class="pdf-driver">
         <div class="pdf-driver-head">🚗 ${_gl(dr.title)}</div>
         <div class="pdf-driver-desc">${_gl(dr.desc)}</div>
-        <div class="pdf-driver-row">📱 WhatsApp: <strong>${c.whatsapp}</strong></div>
-        <div class="pdf-driver-row">📕 小红书 / Xiaohongshu: <strong>${c.xhs}</strong></div>
-        <div class="pdf-driver-row">💬 WeChat: <strong>${c.wechat}</strong></div>
+        <div class="pdf-driver-row"><a href="https://wandermind.cc/find-driver.html">${_gl(dr.cta)}</a></div>
       </div>`;
     }
   }

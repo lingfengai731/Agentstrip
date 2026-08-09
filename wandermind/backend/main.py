@@ -541,9 +541,7 @@ class DriverReq(BaseModel):
     first_name: str = ""
     last_name: str = ""
     intro: str = ""
-    contact_whatsapp: str = ""
     contact_email: str = ""
-    contact_phone: str = ""
     num_people: Optional[int] = None
     num_days: Optional[int] = None
     attractions: str = ""
@@ -2223,9 +2221,9 @@ async def driver_request(data: DriverReq, request: Request):
         return {"ok": True, "delivered": False}
     if not data.privacy_consent:
         raise HTTPException(400, "Please confirm that WanderMind may forward this request to the selected driver")
-    # Require at least one contact method so the driver can respond
-    if not (data.contact_whatsapp.strip() or data.contact_email.strip() or data.contact_phone.strip()):
-        raise HTTPException(400, "Please provide at least one contact method")
+    # Email-only handoff keeps driver phone and social accounts out of the flow.
+    if not data.contact_email.strip():
+        raise HTTPException(400, "Please provide an email address")
     if not (data.first_name.strip() or data.last_name.strip()):
         raise HTTPException(400, "Please provide your name")
     driver_id = data.driver_id.strip().lower()
@@ -2237,9 +2235,7 @@ async def driver_request(data: DriverReq, request: Request):
         "first_name": data.first_name.strip(),
         "last_name": data.last_name.strip(),
         "intro": data.intro.strip(),
-        "contact_whatsapp": data.contact_whatsapp.strip(),
-        "contact_email": data.contact_email.strip(),
-        "contact_phone": data.contact_phone.strip(),
+        "contact_email": _clean_email(data.contact_email),
         "num_people": data.num_people,
         "num_days": data.num_days,
         "attractions": data.attractions.strip(),

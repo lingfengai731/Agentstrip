@@ -299,12 +299,13 @@ async def send_password_reset(to: str, name: str, reset_link: str, lang: str = "
     return await send_email(to, subject, html, text)
 
 
-# ─── Driver request (Find a Driver → email to Dicky) ──────────────────────
-DRIVER_EMAIL = os.getenv("DRIVER_EMAIL", "Dickymahaputramahaputra@gmail.com").strip()
-DRIVER_PHONE = os.getenv("DRIVER_PHONE", "+62 898-0532-230").strip()
+# ─── Driver request (Find a Driver → private server-side routing) ──────────
+# Driver inboxes must stay out of the public repository and frontend bundle.
+DRIVER_EMAIL = os.getenv("DRIVER_EMAIL", "").strip()
 GEDE_DRIVER_EMAIL = os.getenv("GEDE_DRIVER_EMAIL", "").strip()
 # Silent owner copy on every driver lead — hidden from the driver and traveller
-# (BCC), so the owner always knows when a customer contacts Dicky. Blank disables.
+# (BCC), so the owner always knows when a customer contacts either driver.
+# Blank disables the copy and also removes the manual-forwarding fallback.
 OWNER_BCC_EMAIL = os.getenv("OWNER_BCC_EMAIL", "wlfyyds666@gmail.com").strip()
 
 
@@ -316,8 +317,8 @@ def _esc(s) -> str:
 
 def render_driver_request(data: dict) -> tuple:
     """Build the email that goes to the driver. `data` keys:
-    first_name, last_name, intro, contact_whatsapp, contact_email,
-    contact_phone, num_people, num_days, attractions."""
+    first_name, last_name, intro, contact_email, num_people, num_days,
+    attractions."""
     full_name = f"{_esc(data.get('first_name',''))} {_esc(data.get('last_name',''))}".strip() or "A traveller"
     driver_id = str(data.get("driver_id") or "dicky").strip().lower()
     driver_name = "Gede" if driver_id == "gede" else "Dicky"
@@ -331,12 +332,8 @@ def render_driver_request(data: dict) -> tuple:
                 f'<td style="padding:8px 0;color:#1e293b;font-size:14.5px;line-height:1.6;">{_esc(value)}</td></tr>')
 
     contacts = []
-    if data.get("contact_whatsapp"):
-        contacts.append(("WhatsApp", data["contact_whatsapp"]))
     if data.get("contact_email"):
         contacts.append(("Email", data["contact_email"]))
-    if data.get("contact_phone"):
-        contacts.append(("Phone", data["contact_phone"]))
     contacts_html = "".join(row(l, v) for l, v in contacts)
 
     inner = f"""
@@ -400,13 +397,12 @@ async def send_driver_request(data: dict) -> dict:
     reply_to = data.get("contact_email") or None
     driver_id = str(data.get("driver_id") or "dicky").strip().lower()
     if driver_id == "gede":
-        # Until Gede supplies a direct email, route the lead to the owner for
-        # manual forwarding rather than guessing a recipient address.
+        # Keep the address server-side; if absent, the owner can forward it.
         recipient = GEDE_DRIVER_EMAIL or OWNER_BCC_EMAIL
         bcc = OWNER_BCC_EMAIL if GEDE_DRIVER_EMAIL and OWNER_BCC_EMAIL else None
     else:
-        recipient = DRIVER_EMAIL
-        bcc = OWNER_BCC_EMAIL or None
+        recipient = DRIVER_EMAIL or OWNER_BCC_EMAIL
+        bcc = OWNER_BCC_EMAIL if DRIVER_EMAIL and OWNER_BCC_EMAIL else None
     if not recipient:
         return {"ok": False, "id": None, "reason": "selected driver email is not configured"}
     return await send_email(

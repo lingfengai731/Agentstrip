@@ -52,7 +52,7 @@ WanderMind（游心）是一款 AI 原生旅行规划平台，通过**多智能�
 | 地图探索 | SVG 交互地图，POI 标注，人流热力图（按小时） |
 | 对话历史 | 云端保存，跨设备同步，随时继续上次规划 |
 | 游记生成 | AI 一键生成小红书 / 朋友圈风格旅行游记 |
-| 本地司机推荐 | 巴厘岛专属：Dicky 司机联系卡片（WhatsApp / 微信 / 小红书） |
+| 本地司机推荐 | 巴厘岛专属：Dicky / Gede Nico 双司机，统一进入 WanderMind 邮件表单，不公开个人账号 |
 | Agent 日志 | 实时显示每次 AI 调用链路和网络搜索状态 |
 | PWA | 可安装、Service Worker 缓存 Shell |
 
@@ -180,11 +180,11 @@ FREE_USE_LIMIT=5
 # 充值码（暂无在线支付时，手动发码给用户充豆）。格式：码:豆数,码:豆数
 # 例：REDEEM_CODES=WELCOME10:10,VIP100:100
 REDEEM_CODES=
-# 找司机邮件收件人（默认 Dicky）+ 邮件里展示的司机电话
-DRIVER_EMAIL=Dickymahaputramahaputra@gmail.com
-# 若留空，Gede 的请求会先发给站点负责人手动转交
+# 找司机邮件收件人。只配置在服务器环境变量中，不得写入前端或公开仓库。
+DRIVER_EMAIL=
+# 若司机邮箱留空，对应请求会先发给站点负责人手动转交。
 GEDE_DRIVER_EMAIL=
-DRIVER_PHONE=+62 898-0532-230
+OWNER_BCC_EMAIL=
 ```
 
 ### 4. 启动服务
@@ -350,7 +350,7 @@ psql "postgresql://user:pass@..." < backup.sql
 
 | 目的地 | 语言 | 特色 |
 |--------|------|------|
-| 🌺 巴厘岛（Bali） | ZH/EN/JA/KO/ID | 本地司机 Dicky 推荐、冲浪景点热力图 |
+| 🌺 巴厘岛（Bali） | ZH/EN/JA/KO/ID | 双司机私密需求入口、冲浪景点热力图 |
 | 🌸 京都（Kyoto） | ZH/EN/JA/KO/ID | 茶道、神社、赏樱路线 |
 | 🗼 巴黎（Paris） | ZH/EN/JA/KO/ID | 艺术、美食、埃菲尔铁塔 |
 | 🏝️ 圣托里尼（Santorini） | ZH/EN/JA/KO/ID | 日落、白色建筑、爱琴海 |
@@ -385,7 +385,7 @@ psql "postgresql://user:pass@..." < backup.sql
 - [x] **Clean URL** 中间件（`/about` 自动映射到 `about.html`）
 - [x] **邮件系统**（Resend：注册欢迎信 + 密码重置流程）
 - [x] **双人偏好融合**（朋友打开分享链接 → 填偏好 → AI 重新规划 → `/fusion?t=TOKEN`）
-- [x] **巴厘岛深度页**（`bali.html` 作品集 + 12-14 天行程）+ **找司机**页（邮件转发给 Dicky，不存数据）
+- [x] **巴厘岛深度页**（`bali.html` 作品集 + 12-14 天行程）+ **找司机**页（按所选 Dicky / Gede Nico 私密邮件转发，不存旅客联系方式）
 - [x] **AI 用量限额 + 旅行豆**（5 次免费，超出需充值豆；兑换码机制；游客匿名计量）
 - [x] **专业中文字体**（全站注入 PingFang SC / 微软雅黑 等 CJK 字体栈）
 - [ ] 微信小程序版本

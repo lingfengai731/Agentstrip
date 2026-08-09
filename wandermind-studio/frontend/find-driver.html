@@ -227,12 +227,12 @@
         <label class="fd-driver-choice">
           <input type="radio" name="fd-driver" value="dicky" checked>
           <img src="assets/images/web/b47e5dbf32902c06.webp" alt="Dicky, Bali driver" loading="lazy">
-          <span><strong>Dicky</strong><span data-i18n="fdDickyShort">Local Bali driver · availability confirmed privately</span></span>
+          <span><strong>Dicky</strong><span data-i18n="fdDickyShort">Local Bali driver</span></span>
         </label>
         <label class="fd-driver-choice">
           <input type="radio" name="fd-driver" value="gede">
           <img src="assets/images/web/b0a4861a2a414f15.webp" alt="Gede Nico, Bali driver" loading="lazy">
-          <span><strong>Gede Nico</strong><span data-i18n="fdGedeShort">Local Bali driver · availability confirmed privately</span></span>
+          <span><strong>Gede Nico</strong><span data-i18n="fdGedeShort">Local Bali driver</span></span>
         </label>
       </div>
 
@@ -315,11 +315,9 @@
       </div>
 
       <div class="fd-field">
-        <label class="fd-label" data-i18n="fdContact">Your contact <span class="fd-req">*</span></label>
-        <div class="fd-hint" style="margin-top:0;margin-bottom:8px" data-i18n="fdContactHint">Provide at least one so the selected driver can reach you.</div>
-        <input type="text" class="fd-input" id="fd-wa" style="margin-bottom:10px" data-i18n="fdWaPh" data-i18n-attr="placeholder" placeholder="WhatsApp number">
-        <input type="email" class="fd-input" id="fd-email" style="margin-bottom:10px" data-i18n="fdEmailPh" data-i18n-attr="placeholder" placeholder="Email address">
-        <input type="text" class="fd-input" id="fd-phone" data-i18n="fdPhonePh" data-i18n-attr="placeholder" placeholder="Phone number">
+        <label class="fd-label" for="fd-email" data-i18n="fdContact">Your email <span class="fd-req">*</span></label>
+        <div class="fd-hint" style="margin-top:0;margin-bottom:8px" data-i18n="fdContactHint">Driver requests are handled by email through WanderMind.</div>
+        <input type="email" class="fd-input" id="fd-email" data-i18n="fdEmailPh" data-i18n-attr="placeholder" placeholder="Email address" required>
       </div>
 
       <div class="fd-field">
@@ -565,11 +563,9 @@
       msg.className = 'fd-msg'; msg.textContent = '';
       var first = document.getElementById('fd-first').value.trim();
       var last = document.getElementById('fd-last').value.trim();
-      var wa = document.getElementById('fd-wa').value.trim();
       var email = document.getElementById('fd-email').value.trim();
-      var phone = document.getElementById('fd-phone').value.trim();
       if (!first && !last) { msg.className = 'fd-msg err'; msg.textContent = L.fdErrName || 'Please enter your name'; return; }
-      if (!wa && !email && !phone) { msg.className = 'fd-msg err'; msg.textContent = L.fdErrContact || 'Please provide at least one contact method'; return; }
+      if (!email) { msg.className = 'fd-msg err'; msg.textContent = L.fdErrContact || 'Please provide an email address'; return; }
       if (!startEl.value || !endEl.value || endEl.value < startEl.value) { msg.className = 'fd-msg err'; msg.textContent = L.fdErrDates || 'Please enter valid travel dates'; return; }
       if (!document.getElementById('fd-consent').checked) { msg.className = 'fd-msg err'; msg.textContent = L.fdErrConsent || 'Please confirm that we may forward this request to your selected driver'; return; }
 
@@ -578,7 +574,7 @@
         route_id: requestedRoute || (readPlan().plan && readPlan().plan.route_id) || '',
         first_name: first, last_name: last,
         intro: document.getElementById('fd-intro').value.trim(),
-        contact_whatsapp: wa, contact_email: email, contact_phone: phone,
+        contact_email: email,
         num_people: parseInt(peopleEl.value) || null,
         num_days: parseInt(daysEl.value) || null,
         attractions: places.value.trim(),

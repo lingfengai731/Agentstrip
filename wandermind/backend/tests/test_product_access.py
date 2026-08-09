@@ -23,6 +23,7 @@ os.environ.pop("ADMIN_BOOTSTRAP_PASSWORD", None)
 BACKEND_DIR = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(BACKEND_DIR))
 
+import email_service  # noqa: E402
 import main  # noqa: E402
 from db import get_db  # noqa: E402
 from email_service import render_driver_request  # noqa: E402
@@ -856,6 +857,44 @@ class ProductAccessTests(unittest.TestCase):
         self.assertNotIn("550", html)
         self.assertNotIn("550", text)
 
+    def test_driver_email_forwards_only_the_traveller_email(self):
+        _, html, text = render_driver_request(
+            {
+                "driver_id": "gede",
+                "first_name": "Test",
+                "contact_email": "traveller@example.test",
+                "contact_whatsapp": "private-wa-value",
+                "contact_phone": "private-phone-value",
+            }
+        )
+        self.assertIn("traveller@example.test", html)
+        self.assertIn("traveller@example.test", text)
+        self.assertNotIn("private-wa-value", html)
+        self.assertNotIn("private-wa-value", text)
+        self.assertNotIn("private-phone-value", html)
+        self.assertNotIn("private-phone-value", text)
+
+    def test_gede_driver_email_uses_private_server_configuration(self):
+        with (
+            patch.object(email_service, "GEDE_DRIVER_EMAIL", "gede@example.test"),
+            patch.object(email_service, "OWNER_BCC_EMAIL", "owner@example.test"),
+            patch.object(email_service, "send_email", new_callable=AsyncMock) as send,
+        ):
+            send.return_value = {"ok": True, "id": "email-test"}
+            result = self._run(
+                email_service.send_driver_request(
+                    {
+                        "driver_id": "gede",
+                        "first_name": "Test",
+                        "contact_email": "traveller@example.test",
+                    }
+                )
+            )
+        self.assertTrue(result["ok"])
+        self.assertEqual(send.await_args.args[0], "gede@example.test")
+        self.assertEqual(send.await_args.kwargs["bcc"], "owner@example.test")
+        self.assertEqual(send.await_args.kwargs["reply_to"], "traveller@example.test")
+
     def test_driver_request_passes_route_and_trip_details_to_selected_driver(self):
         with patch.object(main, "send_driver_request", new_callable=AsyncMock) as send:
             send.return_value = {"ok": True}
@@ -895,6 +934,22 @@ class ProductAccessTests(unittest.TestCase):
                     "POST", "/api/driver-request", json={
                         "driver_id": "dicky", "first_name": "Test",
                         "contact_email": "traveller@example.test",
+                    }
+                )
+            )
+        self.assertEqual(response.status_code, 400, response.text)
+        send.assert_not_awaited()
+
+    def test_driver_request_requires_email_instead_of_phone_or_whatsapp(self):
+        with patch.object(main, "send_driver_request", new_callable=AsyncMock) as send:
+            send.return_value = {"ok": True}
+            response = self._run(
+                self._request(
+                    "POST", "/api/driver-request", json={
+                        "driver_id": "dicky", "first_name": "Test",
+                        "contact_whatsapp": "private-wa-value",
+                        "contact_phone": "private-phone-value",
+                        "privacy_consent": True,
                     }
                 )
             )
@@ -1084,7 +1139,11 @@ class ProductAccessTests(unittest.TestCase):
         self.assertIn('data-i18n="baliFilterTags" data-i18n-attr="aria-label"', html)
         self.assertIn("categoryMatches && tagMatches", html)
         self.assertIn('id="bali-place-route-link"', html)
-        self.assertIn("encodeURIComponent(routeId) + '#route-families'", html)
+        self.assertIn("routeLink.hidden = !routeId", html)
+        self.assertIn("handoff.set('route', routeId)", html)
+        self.assertIn("driverHandoff.set('route', routeId)", html)
+        self.assertNotIn("place:placeName, route:routeId", html)
+        self.assertNotIn("find-driver.html?route=' + encodeURIComponent(routeId)", html)
         self.assertIn('id="bali-place-driver"', html)
         self.assertIn("source:'gallery'", html)
         self.assertIn("openstreetmap.org/export/embed.html", html)
@@ -1125,6 +1184,9 @@ class ProductAccessTests(unittest.TestCase):
         self.assertIn("Daihatsu Xenia — 7 Seater", driver_html)
         self.assertIn("Comfortable for up to 6 guests with one driver", driver_html)
         self.assertNotIn("direct contact details pending", driver_html)
+        self.assertNotIn('id="fd-wa"', driver_html)
+        self.assertNotIn('id="fd-phone"', driver_html)
+        self.assertNotIn("availability confirmed privately", driver_html)
 
         i18n_js = (frontend_dir / "assets" / "js" / "i18n.js").read_text(
             encoding="utf-8"
@@ -1135,10 +1197,39 @@ class ProductAccessTests(unittest.TestCase):
         for language in ("en", "zh", "ja", "ko", "id"):
             self.assertIn(f"Object.assign(LANGS.{language}", i18n_js)
         self.assertIn("fdQuoteBoundary", i18n_js)
+        for private_value in (
+            "availability confirmed privately",
+            "私密确认档期",
+            "空き状況は非公開で確認",
+            "가능 일정은 비공개로 확인",
+            "ketersediaan dikonfirmasi secara privat",
+        ):
+            self.assertNotIn(private_value, i18n_js)
+
+        public_frontend = "\n".join(
+            path.read_text(encoding="utf-8")
+            for path in frontend_dir.rglob("*")
+            if path.is_file() and path.suffix.lower() in {".html", ".js", ".json", ".css"}
+        )
+        self.assertNotIn("contact_whatsapp", public_frontend)
+        self.assertNotIn("contact_phone", public_frontend)
+        self.assertNotIn("wa.me/", public_frontend)
+
+        legacy_html = (BACKEND_DIR.parent / "frontend" / "index.html").read_text(
+            encoding="utf-8"
+        )
+        self.assertNotIn("c.whatsapp", legacy_html)
+        self.assertNotIn("c.wechat", legacy_html)
+        self.assertNotIn("c.xhs", legacy_html)
+        self.assertNotIn("dr.contacts", legacy_html)
+        self.assertIn("Dicky", legacy_html)
+        self.assertIn("Gede Nico", legacy_html)
+        self.assertIn("/find-driver", legacy_html)
 
         about_html = (frontend_dir / "about.html").read_text(encoding="utf-8")
         contact_html = (frontend_dir / "contact.html").read_text(encoding="utf-8")
-        self.assertNotIn("wxid_vkzbrp1iyg6t12", about_html)
+        self.assertNotIn("WeChat ID", about_html)
+        self.assertNotIn("wa.me/", about_html)
         self.assertNotIn("Xiaohongshu: Wander with ky", about_html)
         self.assertNotIn("Dicky · trusted local driver", contact_html)
 
