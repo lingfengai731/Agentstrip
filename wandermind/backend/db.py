@@ -267,6 +267,61 @@ def init_db():
             "CREATE INDEX IF NOT EXISTS idx_route_points_user ON route_points_ledger(user_id)"
         )
 
+        # Portfolio assets are stored externally (Cloudinary or a compatible
+        # object store). The database keeps only verified delivery references
+        # and editorial metadata, so Render's ephemeral filesystem is never
+        # part of the publishing path.
+        conn.execute(f"""
+            CREATE TABLE IF NOT EXISTS portfolio_assets (
+                id                       TEXT PRIMARY KEY,
+                destination              TEXT NOT NULL DEFAULT 'bali',
+                primary_theme            TEXT NOT NULL,
+                sub_category             TEXT DEFAULT '',
+                region                   TEXT DEFAULT '',
+                area                     TEXT DEFAULT '',
+                place_name               TEXT DEFAULT '',
+                place_type               TEXT DEFAULT '',
+                prominence               TEXT DEFAULT 'supporting',
+                route_ids                TEXT DEFAULT '[]',
+                extension_ids            TEXT DEFAULT '[]',
+                tags                     TEXT DEFAULT '[]',
+                mood                     TEXT DEFAULT '',
+                photography_style        TEXT DEFAULT '',
+                title                    TEXT DEFAULT '{{}}',
+                description              TEXT DEFAULT '{{}}',
+                alt_text                 TEXT DEFAULT '{{}}',
+                verification_status      TEXT DEFAULT 'caption-only',
+                original_filename        TEXT DEFAULT '',
+                sha256                   TEXT NOT NULL,
+                file_bytes               INTEGER DEFAULT 0,
+                width                    INTEGER DEFAULT 0,
+                height                   INTEGER DEFAULT 0,
+                format                   TEXT DEFAULT '',
+                exif                     TEXT DEFAULT '{{}}',
+                cloudinary_asset_id      TEXT UNIQUE NOT NULL,
+                cloudinary_public_id     TEXT UNIQUE NOT NULL,
+                cloudinary_version       {ts_type} NOT NULL,
+                secure_url               TEXT NOT NULL,
+                web_url                  TEXT NOT NULL,
+                thumbnail_url            TEXT NOT NULL,
+                status                   TEXT NOT NULL DEFAULT 'draft',
+                sort_order               INTEGER NOT NULL DEFAULT 0,
+                created_by               TEXT NOT NULL,
+                created_at               {ts_type} NOT NULL,
+                updated_at               {ts_type} NOT NULL,
+                published_at             {ts_type},
+                archived_at              {ts_type}
+            )
+        """)
+        conn.execute(
+            "CREATE INDEX IF NOT EXISTS idx_portfolio_public "
+            "ON portfolio_assets(destination,status,sort_order)"
+        )
+        conn.execute(
+            "CREATE UNIQUE INDEX IF NOT EXISTS idx_portfolio_sha256 "
+            "ON portfolio_assets(destination,sha256)"
+        )
+
         # Commit table/index creation BEFORE running migrations. On Postgres a
         # failing ALTER (e.g. column already exists) aborts the whole transaction;
         # without this commit the subsequent rollback would also undo any table

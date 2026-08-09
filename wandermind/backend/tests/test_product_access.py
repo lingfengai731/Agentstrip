@@ -1,4 +1,5 @@
 import asyncio
+import hashlib
 import json
 import os
 import sys
@@ -1126,6 +1127,211 @@ class ProductAccessTests(unittest.TestCase):
         self.assertIn("canvas.classList.remove('leaflet-ready')", html)
         self.assertIn("event.key !== 'Enter' && event.key !== ' '", html)
         self.assertIn("prefers-reduced-motion: reduce", html)
+
+    def test_portfolio_manager_requires_admin_and_storage_configuration(self):
+        denied = self._run(
+            self._request("GET", "/api/admin/portfolio", token=self.user_token)
+        )
+        self.assertEqual(denied.status_code, 403)
+
+        with patch.dict(
+            os.environ,
+            {
+                "CLOUDINARY_CLOUD_NAME": "",
+                "CLOUDINARY_API_KEY": "",
+                "CLOUDINARY_API_SECRET": "",
+            },
+            clear=False,
+        ):
+            disabled = self._run(
+                self._request(
+                    "POST",
+                    "/api/admin/portfolio/upload-signature",
+                    token=self.admin_token,
+                    json={"destination": "bali", "filename": "lovina.jpg"},
+                )
+            )
+        self.assertEqual(disabled.status_code, 503)
+        self.assertNotIn("secret", disabled.text.lower())
+
+    def test_portfolio_signed_upload_publish_hide_replace_and_reorder(self):
+        cloud_env = {
+            "CLOUDINARY_CLOUD_NAME": "wandermind-test",
+            "CLOUDINARY_API_KEY": "public-test-key",
+            "CLOUDINARY_API_SECRET": "portfolio-test-secret",
+        }
+
+        def signed_upload(filename, suffix, *, replacement_asset_id=""):
+            request_json = {"destination": "bali", "filename": filename}
+            if replacement_asset_id:
+                request_json["replacement_asset_id"] = replacement_asset_id
+            signature_response = self._run(
+                self._request(
+                    "POST",
+                    "/api/admin/portfolio/upload-signature",
+                    token=self.admin_token,
+                    json=request_json,
+                )
+            )
+            self.assertEqual(signature_response.status_code, 200, signature_response.text)
+            signature_payload = signature_response.json()
+            self.assertNotIn("api_secret", signature_payload)
+            signed_fields = signature_payload["signed_fields"]
+            self.assertEqual(
+                signed_fields["allowed_formats"], "jpg,jpeg,png,webp,avif,heic"
+            )
+            serialized = "&".join(
+                f"{key}={signed_fields[key]}" for key in sorted(signed_fields)
+            )
+            self.assertEqual(
+                signature_payload["signature"],
+                hashlib.sha1(
+                    f"{serialized}{cloud_env['CLOUDINARY_API_SECRET']}".encode()
+                ).hexdigest(),
+            )
+            public_id = signed_fields["public_id"]
+            if signed_fields.get("folder"):
+                public_id = f"{signed_fields['folder']}/{public_id}"
+            version = int(time.time()) + int(suffix)
+            response_signature = hashlib.sha1(
+                f"public_id={public_id}&version={version}{cloud_env['CLOUDINARY_API_SECRET']}".encode()
+            ).hexdigest()
+            return {
+                "original_filename": filename,
+                "sha256": hashlib.sha256(f"image-{suffix}".encode()).hexdigest(),
+                "file_bytes": 240000 + int(suffix),
+                "width": 1600,
+                "height": 1000,
+                "format": "jpg",
+                "image_metadata": {"Make": "WanderMind test"},
+                "cloudinary_asset_id": f"cloud-asset-{uuid.uuid4().hex}",
+                "cloudinary_public_id": public_id,
+                "cloudinary_version": version,
+                "secure_url": f"https://res.cloudinary.com/wandermind-test/image/upload/v{version}/{public_id}.jpg",
+                "response_signature": response_signature,
+            }
+
+        def create_asset(filename, suffix, title, status="draft"):
+            payload = {
+                "destination": "bali",
+                "primary_theme": "experiences",
+                "sub_category": "wildlife",
+                "region": "G5",
+                "area": "Lovina",
+                "place_name": "Lovina Dolphin Watching",
+                "place_type": "boat wildlife experience",
+                "prominence": "signature",
+                "route_ids": ["R2"],
+                "extension_ids": ["sunrise", "boat"],
+                "tags": ["wildlife", "golden-hour"],
+                "mood": "curious",
+                "photography_style": "sunrise-documentary",
+                "title": {"en": title, "zh": "罗威纳追海豚"},
+                "description": {"en": "A sunrise wildlife experience in North Bali."},
+                "alt_text": {"en": "Dolphins seen from a Lovina sunrise boat"},
+                "verification_status": "route-linked",
+                "status": status,
+            }
+            payload.update(signed_upload(filename, suffix))
+            response = self._run(
+                self._request(
+                    "POST",
+                    "/api/admin/portfolio/assets",
+                    token=self.admin_token,
+                    json=payload,
+                )
+            )
+            self.assertEqual(response.status_code, 200, response.text)
+            return response.json()["asset"]
+
+        with patch.dict(os.environ, cloud_env, clear=False):
+            first = create_asset("lovina-one.jpg", "1", "Lovina at sunrise")
+            second = create_asset("lovina-two.jpg", "2", "Dolphin boat moment")
+
+            public_draft = self._run(
+                self._request("GET", "/api/portfolio?destination=bali")
+            )
+            self.assertEqual(public_draft.status_code, 200)
+            self.assertNotIn(first["id"], {item["id"] for item in public_draft.json()["assets"]})
+
+            published = self._run(
+                self._request(
+                    "PATCH",
+                    f"/api/admin/portfolio/assets/{first['id']}",
+                    token=self.admin_token,
+                    json={"status": "published"},
+                )
+            )
+            self.assertEqual(published.status_code, 200, published.text)
+            public_live = self._run(
+                self._request("GET", "/api/portfolio?destination=bali")
+            )
+            public_item = next(
+                item for item in public_live.json()["assets"] if item["id"] == first["id"]
+            )
+            self.assertEqual(public_item["title"]["en"], "Lovina at sunrise")
+            self.assertNotIn("cloudinary_asset_id", public_item)
+            self.assertEqual(public_live.headers["cache-control"], "no-store")
+
+            replacement = signed_upload(
+                "lovina-replacement.jpg", "3", replacement_asset_id=first["id"]
+            )
+            replaced = self._run(
+                self._request(
+                    "POST",
+                    f"/api/admin/portfolio/assets/{first['id']}/replace",
+                    token=self.admin_token,
+                    json=replacement,
+                )
+            )
+            self.assertEqual(replaced.status_code, 200, replaced.text)
+            self.assertEqual(replaced.json()["asset"]["title"]["en"], "Lovina at sunrise")
+            self.assertEqual(
+                replaced.json()["asset"]["cloudinary_public_id"],
+                first["cloudinary_public_id"],
+            )
+
+            reordered = self._run(
+                self._request(
+                    "POST",
+                    "/api/admin/portfolio/reorder?destination=bali",
+                    token=self.admin_token,
+                    json={"asset_ids": [second["id"], first["id"]]},
+                )
+            )
+            self.assertEqual(reordered.status_code, 200, reordered.text)
+
+            hidden = self._run(
+                self._request(
+                    "PATCH",
+                    f"/api/admin/portfolio/assets/{first['id']}",
+                    token=self.admin_token,
+                    json={"status": "hidden"},
+                )
+            )
+            self.assertEqual(hidden.status_code, 200, hidden.text)
+            public_hidden = self._run(
+                self._request("GET", "/api/portfolio?destination=bali")
+            )
+            self.assertNotIn(first["id"], {item["id"] for item in public_hidden.json()["assets"]})
+
+    def test_portfolio_admin_page_uses_direct_signed_upload_and_static_fallback(self):
+        frontend = BACKEND_DIR.parents[1] / "wandermind-studio" / "frontend"
+        admin_html = (frontend / "admin" / "portfolio.html").read_text(encoding="utf-8")
+        admin_js = (frontend / "assets" / "js" / "admin-portfolio.js").read_text(encoding="utf-8")
+        bali_html = (frontend / "bali.html").read_text(encoding="utf-8")
+        self.assertIn('id="fileInput"', admin_html)
+        self.assertIn("multiple", admin_html)
+        self.assertIn("/api/admin/portfolio/upload-signature", admin_js)
+        self.assertIn("xhr.open('POST', signature.upload_url)", admin_js)
+        self.assertIn("isSupportedImageFile(file)", admin_js)
+        self.assertIn("t('preview')", admin_js)
+        self.assertIn("https://api.cloudinary.com", Path(main.__file__).read_text(encoding="utf-8"))
+        self.assertNotIn("CLOUDINARY_API_SECRET", admin_js)
+        self.assertNotIn("/api/admin/portfolio/upload-file", admin_js)
+        self.assertIn("/api/portfolio?destination=bali", bali_html)
+        self.assertIn("dynamicGalleryCopy", bali_html)
+        self.assertGreaterEqual(bali_html.count('class="bali-shot"'), 37)
 
     def test_bali_gallery_uses_theme_and_tag_taxonomy(self):
         frontend_dir = (

@@ -1335,6 +1335,8 @@
   var modal = document.getElementById('bali-place-modal');
   var activeShot = null;
   var routeCatalog = {};
+  var dynamicGalleryCopy = {};
+  var dynamicGalleryShots = [];
   function lang() { return (document.getElementById('langPicker') || {}).value || localStorage.getItem('wm_studio_lang') || 'en'; }
   function matchedRouteId(shot) {
     var routeIds = (shot.dataset.routeIds || '').split(/\s+/).filter(Boolean);
@@ -1364,7 +1366,15 @@
     if (!activeShot) return;
     var key = map[activeShot.dataset.place];
     var fallback = GALLERY_FALLBACK[lang()] || GALLERY_FALLBACK.en;
-    var data = (COPY[lang()] || COPY.en)[key] || COPY.en[key] || [
+    var dynamicAsset = dynamicGalleryCopy[activeShot.dataset.portfolioId];
+    var dynamicTitle = dynamicAsset && localizedPortfolioValue(dynamicAsset.title);
+    var dynamicDescription = dynamicAsset && localizedPortfolioValue(dynamicAsset.description);
+    var data = dynamicAsset ? [
+      dynamicTitle || dynamicAsset.place_name || activeShot.dataset.placeName,
+      dynamicDescription || fallback.description,
+      fallback.purpose,
+      [dynamicAsset.area, dynamicAsset.place_name].filter(Boolean).join(' → ') || dynamicAsset.destination
+    ] : (COPY[lang()] || COPY.en)[key] || COPY.en[key] || [
       activeShot.dataset.placeName || activeShot.querySelector('img').alt,
       fallback.description,
       fallback.purpose,
@@ -1448,9 +1458,81 @@
   else mobileFilterQuery.addListener(resetMobileFilterScroll);
   window.addEventListener('resize', function() { resetMobileFilterScroll(mobileFilterQuery); });
   resetMobileFilterScroll(mobileFilterQuery);
-  document.querySelectorAll('.bali-shot').forEach(function(shot){ shot.onclick=function(){ activeShot=shot; renderModal(); modal.classList.add('show'); modal.setAttribute('aria-hidden','false'); document.body.style.overflow='hidden'; modal.querySelector('.bali-place-close').focus(); }; });
+  function bindGalleryShot(shot) {
+    shot.onclick=function(){ activeShot=shot; renderModal(); modal.classList.add('show'); modal.setAttribute('aria-hidden','false'); document.body.style.overflow='hidden'; modal.querySelector('.bali-place-close').focus(); };
+  }
+  document.querySelectorAll('.bali-shot').forEach(bindGalleryShot);
+  var PORTFOLIO_THEME_LABELS = {
+    en:{landscapes:'Landscapes',culture:'Culture',experiences:'Experiences'},
+    zh:{landscapes:'自然风景',culture:'文化',experiences:'体验'},
+    ja:{landscapes:'風景',culture:'文化',experiences:'体験'},
+    ko:{landscapes:'풍경',culture:'문화',experiences:'체험'},
+    id:{landscapes:'Lanskap',culture:'Budaya',experiences:'Pengalaman'}
+  };
+  function localizedPortfolioValue(value) {
+    value = value || {};
+    return value[lang()] || value.en || value.zh || Object.keys(value).map(function(key){return value[key];})[0] || '';
+  }
+  function readablePortfolioSlug(value) {
+    return String(value || '').replace(/[-_]+/g,' ').replace(/\b\w/g,function(letter){return letter.toUpperCase();});
+  }
+  function refreshDynamicGalleryShot(shot) {
+    var asset = dynamicGalleryCopy[shot.dataset.portfolioId];
+    if (!asset) return;
+    var image = shot.querySelector('img');
+    image.alt = localizedPortfolioValue(asset.alt_text) || localizedPortfolioValue(asset.title) || asset.place_name || 'Bali portfolio image';
+    var meta = shot.querySelectorAll('.bali-shot-meta span');
+    var labels = PORTFOLIO_THEME_LABELS[lang()] || PORTFOLIO_THEME_LABELS.en;
+    if (meta[0]) meta[0].textContent = labels[asset.primary_theme] || readablePortfolioSlug(asset.primary_theme);
+    if (meta[1]) meta[1].textContent = readablePortfolioSlug(asset.sub_category || asset.place_type);
+  }
+  function createDynamicGalleryShot(asset) {
+    var shot = document.createElement('button');
+    shot.type = 'button';
+    shot.className = 'bali-shot';
+    shot.dataset.portfolioId = asset.id;
+    shot.dataset.place = 'portfolio-' + asset.id;
+    shot.dataset.category = asset.primary_theme || '';
+    shot.dataset.region = asset.region || '';
+    shot.dataset.area = asset.area || '';
+    shot.dataset.placeName = asset.place_name || '';
+    shot.dataset.placeType = asset.place_type || '';
+    shot.dataset.prominence = asset.prominence || '';
+    shot.dataset.photographyStyle = asset.photography_style || '';
+    shot.dataset.verificationStatus = asset.verification_status || 'caption-only';
+    shot.dataset.subCategory = asset.sub_category || '';
+    shot.dataset.tags = (asset.tags || []).join(' ');
+    shot.dataset.mood = asset.mood || '';
+    shot.dataset.routeIds = (asset.route_ids || []).join(' ');
+    var image = document.createElement('img');
+    image.src = asset.thumbnail_url || asset.web_url;
+    image.loading = 'lazy';
+    var meta = document.createElement('span');
+    meta.className = 'bali-shot-meta';
+    meta.appendChild(document.createElement('span'));
+    meta.appendChild(document.createElement('span'));
+    shot.appendChild(image);
+    shot.appendChild(meta);
+    dynamicGalleryCopy[asset.id] = asset;
+    dynamicGalleryShots.push(shot);
+    refreshDynamicGalleryShot(shot);
+    bindGalleryShot(shot);
+    return shot;
+  }
+  fetch('/api/portfolio?destination=bali', { cache:'no-store' })
+    .then(function(response){ if(!response.ok) throw new Error('HTTP '+response.status); return response.json(); })
+    .then(function(payload){
+      var assets = Array.isArray(payload.assets) ? payload.assets : [];
+      if (!assets.length) return;
+      var fragment = document.createDocumentFragment();
+      assets.forEach(function(asset){ fragment.appendChild(createDynamicGalleryShot(asset)); });
+      document.getElementById('bali-gallery-grid').prepend(fragment);
+      applyGalleryFilters();
+    })
+    .catch(function(){ dynamicGalleryCopy = {}; dynamicGalleryShots = []; });
   var galleryLangPicker = document.getElementById('langPicker');
   if (galleryLangPicker) galleryLangPicker.addEventListener('change', function() {
+    dynamicGalleryShots.forEach(refreshDynamicGalleryShot);
     if (activeShot) window.setTimeout(renderModal, 0);
   });
   function close(){ modal.classList.remove('show'); modal.setAttribute('aria-hidden','true'); document.body.style.overflow=''; if(activeShot) activeShot.focus(); }

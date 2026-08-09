@@ -13,6 +13,7 @@ from copy import deepcopy
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import List, Optional
+from urllib.parse import quote
 
 import httpx
 from dotenv import load_dotenv
@@ -589,6 +590,559 @@ class ProfessionalRouteAdjustReq(BaseModel):
     trip_profile: dict = {}
     route_id: str = ""
     lang: str = "en"
+
+
+class PortfolioUploadSignatureReq(BaseModel):
+    destination: str = "bali"
+    filename: str = ""
+    replacement_asset_id: str = ""
+
+
+class PortfolioAssetReq(BaseModel):
+    destination: str = "bali"
+    primary_theme: str
+    sub_category: str = ""
+    region: str = ""
+    area: str = ""
+    place_name: str = ""
+    place_type: str = ""
+    prominence: str = "supporting"
+    route_ids: List[str] = []
+    extension_ids: List[str] = []
+    tags: List[str] = []
+    mood: str = ""
+    photography_style: str = ""
+    title: dict = {}
+    description: dict = {}
+    alt_text: dict = {}
+    verification_status: str = "caption-only"
+    original_filename: str = ""
+    sha256: str
+    file_bytes: int
+    width: int
+    height: int
+    format: str
+    image_metadata: dict = {}
+    cloudinary_asset_id: str
+    cloudinary_public_id: str
+    cloudinary_version: int
+    secure_url: str
+    response_signature: str
+    status: str = "draft"
+
+
+class PortfolioAssetUpdateReq(BaseModel):
+    primary_theme: Optional[str] = None
+    sub_category: Optional[str] = None
+    region: Optional[str] = None
+    area: Optional[str] = None
+    place_name: Optional[str] = None
+    place_type: Optional[str] = None
+    prominence: Optional[str] = None
+    route_ids: Optional[List[str]] = None
+    extension_ids: Optional[List[str]] = None
+    tags: Optional[List[str]] = None
+    mood: Optional[str] = None
+    photography_style: Optional[str] = None
+    title: Optional[dict] = None
+    description: Optional[dict] = None
+    alt_text: Optional[dict] = None
+    verification_status: Optional[str] = None
+    status: Optional[str] = None
+
+
+class PortfolioAssetReplaceReq(BaseModel):
+    original_filename: str = ""
+    sha256: str
+    file_bytes: int
+    width: int
+    height: int
+    format: str
+    image_metadata: dict = {}
+    cloudinary_asset_id: str
+    cloudinary_public_id: str
+    cloudinary_version: int
+    secure_url: str
+    response_signature: str
+
+
+class PortfolioReorderReq(BaseModel):
+    asset_ids: List[str]
+
+
+_PORTFOLIO_LANGS = ("zh", "en", "ja", "ko", "id")
+_PORTFOLIO_THEMES = {"landscapes", "culture", "experiences"}
+_PORTFOLIO_STATUSES = {"draft", "published", "hidden", "archived"}
+_PORTFOLIO_PROMINENCE = {"signature", "iconic", "supporting"}
+_PORTFOLIO_VERIFICATION = {
+    "pending-review", "caption-only", "bali-named", "route-linked"
+}
+_PORTFOLIO_IMAGE_FORMATS = {"jpg", "jpeg", "png", "webp", "avif", "heic"}
+_PORTFOLIO_MAX_BYTES = 25 * 1024 * 1024
+
+
+def _portfolio_destination(value: str) -> str:
+    destination = (value or "bali").strip().lower()
+    if not re.fullmatch(r"[a-z0-9-]{2,40}", destination):
+        raise HTTPException(400, "Invalid portfolio destination")
+    return destination
+
+
+def _portfolio_text(value, field: str, limit: int = 240) -> str:
+    text_value = str(value or "").strip()
+    if len(text_value) > limit:
+        raise HTTPException(400, f"{field} is too long")
+    return text_value
+
+
+def _portfolio_localized(value, field: str, limit: int) -> dict:
+    if not isinstance(value, dict):
+        raise HTTPException(400, f"{field} must be a language map")
+    cleaned = {}
+    for lang in _PORTFOLIO_LANGS:
+        text_value = _portfolio_text(value.get(lang, ""), f"{field}.{lang}", limit)
+        if text_value:
+            cleaned[lang] = text_value
+    return cleaned
+
+
+def _portfolio_slug_list(value, field: str, *, routes: bool = False) -> list:
+    if not isinstance(value, list) or len(value) > 24:
+        raise HTTPException(400, f"{field} must be a short list")
+    result = []
+    for item in value:
+        normalized = str(item or "").strip()
+        valid = re.fullmatch(r"R[1-6]", normalized) if routes else re.fullmatch(
+            r"[A-Za-z0-9][A-Za-z0-9_-]{0,47}", normalized
+        )
+        if not valid:
+            raise HTTPException(400, f"Invalid value in {field}")
+        if normalized not in result:
+            result.append(normalized)
+    return result
+
+
+def _validate_portfolio_metadata(payload: dict) -> dict:
+    theme = str(payload.get("primary_theme") or "").strip().lower()
+    if theme not in _PORTFOLIO_THEMES:
+        raise HTTPException(400, "primary_theme must be landscapes, culture, or experiences")
+    prominence = str(payload.get("prominence") or "supporting").strip().lower()
+    if prominence not in _PORTFOLIO_PROMINENCE:
+        raise HTTPException(400, "Invalid prominence")
+    verification = str(payload.get("verification_status") or "caption-only").strip().lower()
+    if verification not in _PORTFOLIO_VERIFICATION:
+        raise HTTPException(400, "Invalid verification_status")
+    status = str(payload.get("status") or "draft").strip().lower()
+    if status not in _PORTFOLIO_STATUSES:
+        raise HTTPException(400, "Invalid portfolio status")
+    cleaned = {
+        "primary_theme": theme,
+        "sub_category": _portfolio_text(payload.get("sub_category"), "sub_category", 80),
+        "region": _portfolio_text(payload.get("region"), "region", 80),
+        "area": _portfolio_text(payload.get("area"), "area", 120),
+        "place_name": _portfolio_text(payload.get("place_name"), "place_name", 180),
+        "place_type": _portfolio_text(payload.get("place_type"), "place_type", 120),
+        "prominence": prominence,
+        "route_ids": _portfolio_slug_list(payload.get("route_ids") or [], "route_ids", routes=True),
+        "extension_ids": _portfolio_slug_list(payload.get("extension_ids") or [], "extension_ids"),
+        "tags": _portfolio_slug_list(payload.get("tags") or [], "tags"),
+        "mood": _portfolio_text(payload.get("mood"), "mood", 80),
+        "photography_style": _portfolio_text(payload.get("photography_style"), "photography_style", 120),
+        "title": _portfolio_localized(payload.get("title") or {}, "title", 180),
+        "description": _portfolio_localized(payload.get("description") or {}, "description", 1200),
+        "alt_text": _portfolio_localized(payload.get("alt_text") or {}, "alt_text", 240),
+        "verification_status": verification,
+        "status": status,
+    }
+    if status == "published":
+        if not cleaned["place_name"] or not cleaned["title"] or not cleaned["alt_text"]:
+            raise HTTPException(400, "Published assets require place_name, title, and alt_text")
+    return cleaned
+
+
+def _cloudinary_config() -> tuple:
+    cloud_name = os.getenv("CLOUDINARY_CLOUD_NAME", "").strip()
+    api_key = os.getenv("CLOUDINARY_API_KEY", "").strip()
+    api_secret = os.getenv("CLOUDINARY_API_SECRET", "").strip()
+    if not cloud_name or not api_key or not api_secret:
+        raise HTTPException(503, "Portfolio object storage is not configured")
+    if not re.fullmatch(r"[A-Za-z0-9_-]{2,80}", cloud_name):
+        raise HTTPException(503, "Portfolio object storage configuration is invalid")
+    return cloud_name, api_key, api_secret
+
+
+def _cloudinary_sign(params: dict, api_secret: str) -> str:
+    serialized = "&".join(
+        f"{key}={params[key]}" for key in sorted(params) if params[key] not in (None, "")
+    )
+    return hashlib.sha1(f"{serialized}{api_secret}".encode()).hexdigest()
+
+
+def _portfolio_storage_payload(data, destination: str) -> dict:
+    cloud_name, _, api_secret = _cloudinary_config()
+    public_id = _portfolio_text(data.cloudinary_public_id, "cloudinary_public_id", 260)
+    version = int(data.cloudinary_version or 0)
+    if version < 1:
+        raise HTTPException(400, "Invalid Cloudinary asset version")
+    response_signature = str(data.response_signature or "").strip().lower()
+    expected_signature = hashlib.sha1(
+        f"public_id={public_id}&version={version}{api_secret}".encode()
+    ).hexdigest()
+    if not hmac.compare_digest(response_signature, expected_signature):
+        raise HTTPException(400, "Cloudinary upload response signature is invalid")
+    expected_prefix = f"wandermind/portfolio/{destination}/"
+    if not public_id.startswith(expected_prefix):
+        raise HTTPException(400, "Cloudinary public_id is outside the portfolio folder")
+    secure_url = _portfolio_text(data.secure_url, "secure_url", 1000)
+    delivery_prefix = f"https://res.cloudinary.com/{cloud_name}/image/upload/"
+    if not secure_url.startswith(delivery_prefix):
+        raise HTTPException(400, "Cloudinary secure_url does not match the configured account")
+    file_format = str(data.format or "").strip().lower()
+    if file_format not in _PORTFOLIO_IMAGE_FORMATS:
+        raise HTTPException(400, "Unsupported portfolio image format")
+    file_bytes = int(data.file_bytes or 0)
+    width = int(data.width or 0)
+    height = int(data.height or 0)
+    if file_bytes < 1 or file_bytes > _PORTFOLIO_MAX_BYTES:
+        raise HTTPException(400, "Portfolio image must be 25 MB or smaller")
+    if width < 1 or height < 1 or width > 30000 or height > 30000:
+        raise HTTPException(400, "Invalid portfolio image dimensions")
+    sha256 = str(data.sha256 or "").strip().lower()
+    if not re.fullmatch(r"[0-9a-f]{64}", sha256):
+        raise HTTPException(400, "Invalid SHA-256 digest")
+    versioned_id = quote(public_id, safe="/")
+    version_path = f"v{version}/{versioned_id}"
+    base = f"https://res.cloudinary.com/{cloud_name}/image/upload"
+    cloudinary_asset_id = _portfolio_text(data.cloudinary_asset_id, "cloudinary_asset_id", 160)
+    if not cloudinary_asset_id:
+        raise HTTPException(400, "Cloudinary asset_id is required")
+    return {
+        "original_filename": _portfolio_text(data.original_filename, "original_filename", 240),
+        "sha256": sha256,
+        "file_bytes": file_bytes,
+        "width": width,
+        "height": height,
+        "format": file_format,
+        "exif": dict(data.image_metadata or {}),
+        "cloudinary_asset_id": cloudinary_asset_id,
+        "cloudinary_public_id": public_id,
+        "cloudinary_version": version,
+        "secure_url": secure_url,
+        "web_url": f"{base}/f_webp,q_auto,w_1600,c_limit/{version_path}",
+        "thumbnail_url": f"{base}/f_webp,q_auto,w_480,h_320,c_fill,g_auto/{version_path}",
+    }
+
+
+def _portfolio_json(value, fallback):
+    try:
+        parsed = json.loads(value or "")
+        return parsed if isinstance(parsed, type(fallback)) else fallback
+    except Exception:
+        return fallback
+
+
+def _portfolio_asset_dict(row, *, public: bool = False) -> dict:
+    item = dict(row)
+    for field in ("route_ids", "extension_ids", "tags"):
+        item[field] = _portfolio_json(item.get(field), [])
+    for field in ("title", "description", "alt_text", "exif"):
+        item[field] = _portfolio_json(item.get(field), {})
+    if public:
+        allowed = {
+            "id", "destination", "primary_theme", "sub_category", "region", "area",
+            "place_name", "place_type", "prominence", "route_ids", "extension_ids",
+            "tags", "mood", "photography_style", "title", "description", "alt_text",
+            "verification_status", "width", "height", "web_url", "thumbnail_url",
+            "sort_order", "published_at",
+        }
+        item = {key: value for key, value in item.items() if key in allowed}
+    return item
+
+
+@app.get("/api/portfolio")
+async def list_public_portfolio(destination: str = "bali"):
+    normalized_destination = _portfolio_destination(destination)
+    conn = get_db()
+    try:
+        rows = conn.execute(
+            """SELECT * FROM portfolio_assets
+               WHERE destination=? AND status='published'
+               ORDER BY sort_order ASC, published_at DESC, created_at DESC
+               LIMIT 300""",
+            (normalized_destination,),
+        ).fetchall()
+        return JSONResponse(
+            {"assets": [_portfolio_asset_dict(row, public=True) for row in rows]},
+            headers={"Cache-Control": "no-store"},
+        )
+    finally:
+        conn.close()
+
+
+@app.get("/api/admin/portfolio")
+async def list_admin_portfolio(
+    destination: str = "bali",
+    admin=Depends(current_admin),
+):
+    normalized_destination = _portfolio_destination(destination)
+    conn = get_db()
+    try:
+        rows = conn.execute(
+            """SELECT * FROM portfolio_assets
+               WHERE destination=?
+               ORDER BY sort_order ASC, created_at DESC
+               LIMIT 500""",
+            (normalized_destination,),
+        ).fetchall()
+        storage_ready = all(os.getenv(key, "").strip() for key in (
+            "CLOUDINARY_CLOUD_NAME", "CLOUDINARY_API_KEY", "CLOUDINARY_API_SECRET"
+        ))
+        return {
+            "assets": [_portfolio_asset_dict(row) for row in rows],
+            "storage_ready": storage_ready,
+            "max_upload_bytes": _PORTFOLIO_MAX_BYTES,
+        }
+    finally:
+        conn.close()
+
+
+@app.post("/api/admin/portfolio/upload-signature")
+async def portfolio_upload_signature(
+    data: PortfolioUploadSignatureReq,
+    admin=Depends(current_admin),
+):
+    destination = _portfolio_destination(data.destination)
+    cloud_name, api_key, api_secret = _cloudinary_config()
+    timestamp = int(time.time())
+    eager = "f_webp,q_auto,w_1600,c_limit|f_webp,q_auto,w_480,h_320,c_fill,g_auto"
+    params = {
+        "allowed_formats": "jpg,jpeg,png,webp,avif,heic",
+        "eager": eager,
+        "image_metadata": "true",
+        "tags": f"wandermind,portfolio,{destination}",
+        "timestamp": timestamp,
+    }
+    replacement_id = (data.replacement_asset_id or "").strip()
+    if replacement_id:
+        conn = get_db()
+        try:
+            row = conn.execute(
+                "SELECT cloudinary_public_id,destination FROM portfolio_assets WHERE id=?",
+                (replacement_id,),
+            ).fetchone()
+        finally:
+            conn.close()
+        if not row or dict(row).get("destination") != destination:
+            raise HTTPException(404, "Portfolio asset not found")
+        params.update({
+            "invalidate": "true",
+            "overwrite": "true",
+            "public_id": dict(row)["cloudinary_public_id"],
+        })
+    else:
+        stem = re.sub(r"[^a-z0-9]+", "-", Path(data.filename or "image").stem.lower()).strip("-")
+        stem = (stem or "image")[:48]
+        params.update({
+            "folder": f"wandermind/portfolio/{destination}",
+            "overwrite": "false",
+            "public_id": f"{stem}-{uuid.uuid4().hex[:12]}",
+        })
+    return {
+        "upload_url": f"https://api.cloudinary.com/v1_1/{cloud_name}/image/upload",
+        "cloud_name": cloud_name,
+        "api_key": api_key,
+        "signature": _cloudinary_sign(params, api_secret),
+        "signed_fields": params,
+        "max_upload_bytes": _PORTFOLIO_MAX_BYTES,
+    }
+
+
+@app.post("/api/admin/portfolio/assets")
+async def create_portfolio_asset(
+    data: PortfolioAssetReq,
+    admin=Depends(current_admin),
+):
+    destination = _portfolio_destination(data.destination)
+    metadata = _validate_portfolio_metadata(data.model_dump())
+    storage = _portfolio_storage_payload(data, destination)
+    now = int(time.time())
+    conn = get_db()
+    try:
+        max_row = conn.execute(
+            "SELECT COALESCE(MAX(sort_order),-10) AS n FROM portfolio_assets WHERE destination=?",
+            (destination,),
+        ).fetchone()
+        sort_order = int(dict(max_row).get("n") or -10) + 10
+        asset_id = str(uuid.uuid4())
+        published_at = now if metadata["status"] == "published" else None
+        archived_at = now if metadata["status"] == "archived" else None
+        try:
+            conn.execute(
+                """INSERT INTO portfolio_assets
+                   (id,destination,primary_theme,sub_category,region,area,place_name,
+                    place_type,prominence,route_ids,extension_ids,tags,mood,
+                    photography_style,title,description,alt_text,verification_status,
+                    original_filename,sha256,file_bytes,width,height,format,exif,
+                    cloudinary_asset_id,cloudinary_public_id,cloudinary_version,
+                    secure_url,web_url,thumbnail_url,status,sort_order,created_by,
+                    created_at,updated_at,published_at,archived_at)
+                   VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)""",
+                (
+                    asset_id, destination, metadata["primary_theme"], metadata["sub_category"],
+                    metadata["region"], metadata["area"], metadata["place_name"],
+                    metadata["place_type"], metadata["prominence"],
+                    json.dumps(metadata["route_ids"], ensure_ascii=False),
+                    json.dumps(metadata["extension_ids"], ensure_ascii=False),
+                    json.dumps(metadata["tags"], ensure_ascii=False), metadata["mood"],
+                    metadata["photography_style"],
+                    json.dumps(metadata["title"], ensure_ascii=False),
+                    json.dumps(metadata["description"], ensure_ascii=False),
+                    json.dumps(metadata["alt_text"], ensure_ascii=False),
+                    metadata["verification_status"], storage["original_filename"],
+                    storage["sha256"], storage["file_bytes"], storage["width"],
+                    storage["height"], storage["format"],
+                    json.dumps(storage["exif"], ensure_ascii=False),
+                    storage["cloudinary_asset_id"], storage["cloudinary_public_id"],
+                    storage["cloudinary_version"], storage["secure_url"],
+                    storage["web_url"], storage["thumbnail_url"], metadata["status"],
+                    sort_order, admin["id"], now, now, published_at, archived_at,
+                ),
+            )
+            conn.commit()
+        except IntegrityError:
+            conn.rollback()
+            raise HTTPException(409, "This portfolio image or Cloudinary asset already exists")
+        row = conn.execute("SELECT * FROM portfolio_assets WHERE id=?", (asset_id,)).fetchone()
+        return {"ok": True, "asset": _portfolio_asset_dict(row)}
+    finally:
+        conn.close()
+
+
+@app.patch("/api/admin/portfolio/assets/{asset_id}")
+async def update_portfolio_asset(
+    asset_id: str,
+    data: PortfolioAssetUpdateReq,
+    admin=Depends(current_admin),
+):
+    conn = get_db()
+    try:
+        row = conn.execute("SELECT * FROM portfolio_assets WHERE id=?", (asset_id,)).fetchone()
+        if not row:
+            raise HTTPException(404, "Portfolio asset not found")
+        existing = _portfolio_asset_dict(row)
+        merged = {
+            key: existing[key] for key in (
+                "primary_theme", "sub_category", "region", "area", "place_name",
+                "place_type", "prominence", "route_ids", "extension_ids", "tags",
+                "mood", "photography_style", "title", "description", "alt_text",
+                "verification_status", "status",
+            )
+        }
+        merged.update(data.model_dump(exclude_none=True))
+        metadata = _validate_portfolio_metadata(merged)
+        now = int(time.time())
+        published_at = existing.get("published_at")
+        archived_at = existing.get("archived_at")
+        if metadata["status"] == "published" and not published_at:
+            published_at = now
+        if metadata["status"] == "archived" and not archived_at:
+            archived_at = now
+        conn.execute(
+            """UPDATE portfolio_assets SET
+               primary_theme=?,sub_category=?,region=?,area=?,place_name=?,place_type=?,
+               prominence=?,route_ids=?,extension_ids=?,tags=?,mood=?,photography_style=?,
+               title=?,description=?,alt_text=?,verification_status=?,status=?,updated_at=?,
+               published_at=?,archived_at=? WHERE id=?""",
+            (
+                metadata["primary_theme"], metadata["sub_category"], metadata["region"],
+                metadata["area"], metadata["place_name"], metadata["place_type"],
+                metadata["prominence"], json.dumps(metadata["route_ids"], ensure_ascii=False),
+                json.dumps(metadata["extension_ids"], ensure_ascii=False),
+                json.dumps(metadata["tags"], ensure_ascii=False), metadata["mood"],
+                metadata["photography_style"], json.dumps(metadata["title"], ensure_ascii=False),
+                json.dumps(metadata["description"], ensure_ascii=False),
+                json.dumps(metadata["alt_text"], ensure_ascii=False),
+                metadata["verification_status"], metadata["status"], now,
+                published_at, archived_at, asset_id,
+            ),
+        )
+        conn.commit()
+        updated = conn.execute("SELECT * FROM portfolio_assets WHERE id=?", (asset_id,)).fetchone()
+        return {"ok": True, "asset": _portfolio_asset_dict(updated)}
+    finally:
+        conn.close()
+
+
+@app.post("/api/admin/portfolio/assets/{asset_id}/replace")
+async def replace_portfolio_asset(
+    asset_id: str,
+    data: PortfolioAssetReplaceReq,
+    admin=Depends(current_admin),
+):
+    conn = get_db()
+    try:
+        row = conn.execute("SELECT * FROM portfolio_assets WHERE id=?", (asset_id,)).fetchone()
+        if not row:
+            raise HTTPException(404, "Portfolio asset not found")
+        existing = dict(row)
+        storage = _portfolio_storage_payload(data, existing["destination"])
+        if storage["cloudinary_public_id"] != existing["cloudinary_public_id"]:
+            raise HTTPException(400, "Replacement must preserve the Cloudinary public_id")
+        now = int(time.time())
+        try:
+            conn.execute(
+                """UPDATE portfolio_assets SET
+                   original_filename=?,sha256=?,file_bytes=?,width=?,height=?,format=?,exif=?,
+                   cloudinary_asset_id=?,cloudinary_version=?,secure_url=?,web_url=?,thumbnail_url=?,
+                   updated_at=? WHERE id=?""",
+                (
+                    storage["original_filename"], storage["sha256"], storage["file_bytes"],
+                    storage["width"], storage["height"], storage["format"],
+                    json.dumps(storage["exif"], ensure_ascii=False),
+                    storage["cloudinary_asset_id"], storage["cloudinary_version"],
+                    storage["secure_url"], storage["web_url"], storage["thumbnail_url"],
+                    now, asset_id,
+                ),
+            )
+            conn.commit()
+        except IntegrityError:
+            conn.rollback()
+            raise HTTPException(409, "This replacement duplicates another portfolio image")
+        updated = conn.execute("SELECT * FROM portfolio_assets WHERE id=?", (asset_id,)).fetchone()
+        return {"ok": True, "asset": _portfolio_asset_dict(updated)}
+    finally:
+        conn.close()
+
+
+@app.post("/api/admin/portfolio/reorder")
+async def reorder_portfolio_assets(
+    data: PortfolioReorderReq,
+    destination: str = "bali",
+    admin=Depends(current_admin),
+):
+    normalized_destination = _portfolio_destination(destination)
+    asset_ids = [str(asset_id).strip() for asset_id in data.asset_ids]
+    if not asset_ids or len(asset_ids) != len(set(asset_ids)) or len(asset_ids) > 500:
+        raise HTTPException(400, "asset_ids must be a unique non-empty list")
+    conn = get_db()
+    try:
+        rows = conn.execute(
+            "SELECT id FROM portfolio_assets WHERE destination=?",
+            (normalized_destination,),
+        ).fetchall()
+        existing_ids = {dict(row)["id"] for row in rows}
+        if set(asset_ids) != existing_ids:
+            raise HTTPException(409, "Reorder list must contain every asset for this destination")
+        now = int(time.time())
+        for index, asset_id in enumerate(asset_ids):
+            conn.execute(
+                "UPDATE portfolio_assets SET sort_order=?,updated_at=? WHERE id=?",
+                (index * 10, now, asset_id),
+            )
+        conn.commit()
+        return {"ok": True, "asset_ids": asset_ids}
+    finally:
+        conn.close()
 
 
 # ─── Auth routes ─────────────────────────────────────────────

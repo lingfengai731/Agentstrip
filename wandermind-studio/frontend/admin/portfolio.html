@@ -1,0 +1,165 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="robots" content="noindex,nofollow">
+  <title>Portfolio Content Manager | WanderMind Studio</title>
+  <link rel="icon" type="image/png" href="../assets/images/logo-mark-256.png">
+  <style>
+    :root{--ink:#0b2f2b;--teal:#0e7c6b;--teal-dark:#07594e;--gold:#d99b00;--paper:#f7f5ef;--card:#fff;--line:#d8ded9;--muted:#60706c;--danger:#a83d35;--shadow:0 16px 38px rgba(11,47,43,.10)}
+    *{box-sizing:border-box}
+    body{margin:0;background:var(--paper);color:var(--ink);font-family:Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif;line-height:1.5}
+    button,input,select,textarea{font:inherit}
+    button,a{touch-action:manipulation}
+    button{cursor:pointer}
+    button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible{outline:3px solid rgba(217,155,0,.42);outline-offset:2px}
+    .wm-admin-header{position:sticky;top:0;z-index:20;border-bottom:1px solid rgba(255,255,255,.14);background:#083d37;color:#fff}
+    .wm-admin-header-inner{width:min(1240px,calc(100% - 32px));min-height:68px;margin:auto;display:flex;align-items:center;justify-content:space-between;gap:18px}
+    .wm-admin-brand{display:flex;align-items:center;gap:10px;color:#fff;text-decoration:none;font-weight:800}
+    .wm-admin-brand img{width:34px;height:34px}
+    .wm-admin-tools{display:flex;align-items:center;gap:10px}
+    .wm-admin-tools a{color:#fff;text-decoration:none}
+    .wm-admin-tools select{min-height:44px;border:1px solid rgba(255,255,255,.35);border-radius:9px;background:#fff;color:var(--ink);padding:0 34px 0 11px}
+    main{width:min(1240px,calc(100% - 32px));margin:38px auto 72px}
+    .wm-page-head{display:flex;justify-content:space-between;align-items:flex-end;gap:24px;margin-bottom:24px}
+    .wm-eyebrow{margin:0 0 6px;color:var(--teal);font-size:.76rem;font-weight:850;letter-spacing:.12em;text-transform:uppercase}
+    h1{margin:0;font-family:Georgia,serif;font-size:clamp(2rem,4vw,3.35rem);line-height:1.04}
+    .wm-page-head p{max-width:670px;margin:10px 0 0;color:var(--muted)}
+    .wm-status{padding:9px 12px;border:1px solid #b9d7ce;border-radius:999px;background:#e8f5f1;color:var(--teal-dark);font-size:.82rem;font-weight:750;white-space:nowrap}
+    .wm-status[data-state="blocked"]{border-color:#e3c4a7;background:#fff4e4;color:#875110}
+    .wm-alert{margin:0 0 20px;padding:13px 15px;border-left:4px solid var(--gold);border-radius:8px;background:#fff9e8;color:#624710}
+    .wm-alert[hidden]{display:none}
+    .wm-layout{display:grid;grid-template-columns:minmax(0,420px) minmax(0,1fr);gap:22px;align-items:start}
+    .wm-panel{border:1px solid var(--line);border-radius:16px;background:var(--card);box-shadow:var(--shadow)}
+    .wm-panel-head{padding:20px 22px 14px;border-bottom:1px solid #edf0ed}
+    .wm-panel-head h2{margin:0;font-size:1.18rem}
+    .wm-panel-head p{margin:5px 0 0;color:var(--muted);font-size:.88rem}
+    .wm-panel-body{padding:20px 22px}
+    .wm-dropzone{display:grid;place-items:center;min-height:170px;padding:22px;border:2px dashed #98b9b0;border-radius:14px;background:#f4faf8;text-align:center}
+    .wm-dropzone.is-dragging{border-color:var(--gold);background:#fff9e6}
+    .wm-dropzone strong{display:block;margin-bottom:5px;font-size:1rem}
+    .wm-dropzone span{display:block;color:var(--muted);font-size:.83rem}
+    .wm-dropzone input{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+    .wm-btn{display:inline-flex;min-height:44px;align-items:center;justify-content:center;border:1px solid transparent;border-radius:9px;padding:9px 14px;font-weight:760;text-decoration:none}
+    .wm-btn-primary{background:var(--teal);color:#fff}
+    .wm-btn-primary:hover{background:var(--teal-dark)}
+    .wm-btn-secondary{border-color:#b8c8c3;background:#fff;color:var(--ink)}
+    .wm-btn-danger{border-color:#e5bbb6;background:#fff7f6;color:var(--danger)}
+    .wm-btn:disabled{cursor:not-allowed;opacity:.5}
+    .wm-fields{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:18px}
+    .wm-field{display:grid;gap:5px}
+    .wm-field.wide{grid-column:1/-1}
+    .wm-field label,.wm-field-label{font-size:.78rem;font-weight:800;color:#28443f}
+    .wm-field input,.wm-field select,.wm-field textarea{width:100%;min-height:44px;border:1px solid #c7d2ce;border-radius:8px;background:#fff;padding:9px 10px;color:var(--ink)}
+    .wm-field textarea{min-height:82px;resize:vertical}
+    .wm-help{color:var(--muted);font-size:.73rem}
+    .wm-locales{grid-column:1/-1;border:1px solid #dfe6e2;border-radius:10px;background:#fbfcfb}
+    .wm-locales summary{cursor:pointer;padding:11px 12px;font-weight:780}
+    .wm-locales-grid{display:grid;gap:12px;padding:0 12px 14px}
+    .wm-actions{display:flex;flex-wrap:wrap;gap:9px;margin-top:18px}
+    .wm-queue{display:grid;gap:10px;margin-top:16px}
+    .wm-queue-item{display:grid;grid-template-columns:58px minmax(0,1fr);gap:10px;align-items:center;padding:9px;border:1px solid #dfe6e2;border-radius:10px}
+    .wm-queue-item img{width:58px;height:58px;object-fit:cover;border-radius:8px;background:#edf2f0}
+    .wm-queue-main{min-width:0}
+    .wm-queue-name{display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:.83rem;font-weight:780}
+    .wm-queue-meta{color:var(--muted);font-size:.72rem}
+    .wm-progress{height:6px;margin-top:7px;overflow:hidden;border-radius:999px;background:#e7ece9}
+    .wm-progress span{display:block;width:0;height:100%;background:var(--teal)}
+    .wm-queue-state{margin-top:4px;color:var(--muted);font-size:.72rem}
+    .wm-assets-toolbar{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:12px;margin-bottom:14px}
+    .wm-assets-toolbar input,.wm-assets-toolbar select{min-height:44px;border:1px solid #c7d2ce;border-radius:8px;background:#fff;padding:8px 10px}
+    .wm-assets{display:grid;gap:12px}
+    .wm-empty{padding:34px 20px;border:1px dashed #cbd6d2;border-radius:12px;color:var(--muted);text-align:center}
+    .wm-asset{display:grid;grid-template-columns:112px minmax(0,1fr);gap:14px;padding:12px;border:1px solid #dce4e0;border-radius:12px;background:#fff}
+    .wm-asset[draggable="true"]{cursor:grab}
+    .wm-asset.is-dragging{opacity:.48}
+    .wm-asset img{width:112px;height:94px;object-fit:cover;border-radius:9px;background:#e9efec}
+    .wm-asset-top{display:flex;justify-content:space-between;gap:12px}
+    .wm-asset h3{margin:0;font-size:1rem}
+    .wm-asset p{margin:3px 0;color:var(--muted);font-size:.78rem}
+    .wm-chip{display:inline-flex;border-radius:999px;padding:4px 8px;background:#edf4f1;color:#31534c;font-size:.69rem;font-weight:760}
+    .wm-chip[data-status="published"]{background:#dff3e9;color:#17613f}
+    .wm-chip[data-status="hidden"]{background:#eceff3;color:#46515d}
+    .wm-chip[data-status="archived"]{background:#f1e8e6;color:#7b423c}
+    .wm-asset-actions{display:flex;flex-wrap:wrap;gap:7px;margin-top:9px}
+    .wm-asset-actions .wm-btn{min-height:38px;padding:6px 10px;font-size:.75rem}
+    dialog{width:min(760px,calc(100% - 28px));max-height:90vh;overflow:auto;border:0;border-radius:16px;padding:0;box-shadow:0 30px 80px rgba(4,34,30,.28)}
+    dialog::backdrop{background:rgba(3,28,25,.62)}
+    .wm-dialog-head{position:sticky;top:0;z-index:2;display:flex;justify-content:space-between;gap:16px;padding:18px 20px;border-bottom:1px solid #e3e8e5;background:#fff}
+    .wm-dialog-head h2{margin:0;font-size:1.1rem}
+    .wm-dialog-close{width:44px;height:44px;border:1px solid #cad4d0;border-radius:50%;background:#fff;color:var(--ink);font-size:1.3rem}
+    .wm-dialog-body{padding:20px}
+    .wm-sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+    @media(max-width:900px){.wm-layout{grid-template-columns:1fr}.wm-panel:first-child{position:static}}
+    @media(max-width:575px){.wm-admin-header-inner,main{width:min(100% - 20px,1240px)}.wm-admin-header-inner{align-items:center;flex-wrap:wrap;padding:10px 0}.wm-admin-tools{width:100%;flex-wrap:nowrap;justify-content:space-between}.wm-admin-tools a{font-size:.78rem}.wm-admin-tools select{width:148px;min-width:0}.wm-page-head{display:block}.wm-status{display:inline-flex;margin-top:14px}.wm-fields{grid-template-columns:1fr}.wm-field.wide,.wm-locales{grid-column:1}.wm-panel-head,.wm-panel-body{padding-left:15px;padding-right:15px}.wm-asset{grid-template-columns:84px minmax(0,1fr)}.wm-asset img{width:84px;height:78px}.wm-asset-top{display:block}.wm-chip{margin-top:5px}}
+    @media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important;transition:none!important}}
+  </style>
+</head>
+<body>
+  <header class="wm-admin-header">
+    <div class="wm-admin-header-inner">
+      <a class="wm-admin-brand" href="../index.html" aria-label="WanderMind Studio home">
+        <img src="../assets/images/logo-mark-256.png" alt=""><span>WanderMind · Portfolio</span>
+      </a>
+      <div class="wm-admin-tools">
+        <a href="../bali.html#gallery" data-copy="viewPortfolio">View Bali Portfolio</a>
+        <label class="wm-sr-only" for="langPicker">Language</label>
+        <select id="langPicker" aria-label="Language">
+          <option value="zh">中文</option><option value="en">English</option><option value="ja">日本語</option><option value="ko">한국어</option><option value="id">Bahasa Indonesia</option>
+        </select>
+      </div>
+    </div>
+  </header>
+  <main>
+    <div class="wm-page-head">
+      <div><p class="wm-eyebrow" data-copy="eyebrow">Editorial workspace</p><h1 data-copy="title">Portfolio Content Manager</h1><p data-copy="subtitle">Upload approved images, confirm metadata, and publish to Bali without redeploying the website.</p></div>
+      <span class="wm-status" id="storageStatus" data-state="checking" data-copy="checking">Checking storage…</span>
+    </div>
+    <div class="wm-alert" id="pageAlert" role="alert" hidden></div>
+    <div class="wm-layout">
+      <section class="wm-panel" aria-labelledby="uploadTitle">
+        <div class="wm-panel-head"><h2 id="uploadTitle" data-copy="uploadTitle">Upload approved images</h2><p data-copy="uploadSub">Images go directly from this browser to object storage. Render never stores the file.</p></div>
+        <div class="wm-panel-body">
+          <label class="wm-dropzone" id="dropzone" for="fileInput">
+            <span><strong data-copy="dropTitle">Drop images here or choose files</strong><span data-copy="dropSub">JPG, PNG, WebP, AVIF or HEIC · up to 25 MB each</span></span>
+            <input id="fileInput" type="file" accept=".jpg,.jpeg,.png,.webp,.avif,.heic,image/*" multiple>
+          </label>
+          <div class="wm-queue" id="uploadQueue" aria-live="polite"></div>
+          <form id="uploadMetadata">
+            <div class="wm-fields">
+              <div class="wm-field"><label for="primaryTheme" data-copy="theme">Primary theme</label><select id="primaryTheme" name="primary_theme"><option value="landscapes">Landscapes</option><option value="culture">Culture</option><option value="experiences">Experiences</option></select></div>
+              <div class="wm-field"><label for="subCategory" data-copy="subCategory">Sub-category</label><input id="subCategory" name="sub_category" autocomplete="off"></div>
+              <div class="wm-field"><label for="region" data-copy="region">Region</label><input id="region" name="region" placeholder="G1–G7"></div>
+              <div class="wm-field"><label for="area" data-copy="area">Area</label><input id="area" name="area" placeholder="Lovina"></div>
+              <div class="wm-field wide"><label for="placeName" data-copy="placeName">Place name</label><input id="placeName" name="place_name" autocomplete="off"></div>
+              <div class="wm-field"><label for="placeType" data-copy="placeType">Place type</label><input id="placeType" name="place_type" placeholder="Dolphin watching"></div>
+              <div class="wm-field"><label for="prominence" data-copy="prominence">Prominence</label><select id="prominence" name="prominence"><option value="supporting">Supporting</option><option value="signature">Signature</option><option value="iconic">Iconic</option></select></div>
+              <div class="wm-field wide"><label for="routeIds" data-copy="routeIds">Route IDs</label><input id="routeIds" name="route_ids" placeholder="R1, R3"><span class="wm-help" data-copy="listHelp">Separate values with commas.</span></div>
+              <div class="wm-field wide"><label for="extensionIds" data-copy="extensionIds">Extension IDs</label><input id="extensionIds" name="extension_ids" placeholder="sunrise, boat"></div>
+              <div class="wm-field wide"><label for="tags" data-copy="tags">Tags</label><input id="tags" name="tags" placeholder="traveller-moment, golden-hour, boat"></div>
+              <div class="wm-field"><label for="mood" data-copy="mood">Mood</label><input id="mood" name="mood" placeholder="calm"></div>
+              <div class="wm-field"><label for="photographyStyle" data-copy="photoStyle">Photography style</label><input id="photographyStyle" name="photography_style" placeholder="sunrise documentary"></div>
+              <div class="wm-field wide"><label for="verificationStatus" data-copy="verification">Verification status</label><select id="verificationStatus" name="verification_status"><option value="pending-review">Pending review</option><option value="caption-only">Caption only</option><option value="bali-named">Bali named</option><option value="route-linked">Route linked</option></select></div>
+              <details class="wm-locales" open><summary data-copy="localizedCopy">Localized title, description and alt text</summary><div class="wm-locales-grid" id="uploadLocales"></div></details>
+            </div>
+            <div class="wm-actions"><button class="wm-btn wm-btn-primary" id="uploadDraft" type="submit" data-status="draft" data-copy="saveDraft">Upload as draft</button><button class="wm-btn wm-btn-secondary" id="uploadPublish" type="submit" data-status="published" data-copy="uploadPublish">Upload and publish</button></div>
+          </form>
+        </div>
+      </section>
+      <section class="wm-panel" aria-labelledby="libraryTitle">
+        <div class="wm-panel-head"><h2 id="libraryTitle" data-copy="libraryTitle">Portfolio library</h2><p data-copy="librarySub">Drag to reorder, or use the move buttons for keyboard control.</p></div>
+        <div class="wm-panel-body">
+          <div class="wm-assets-toolbar"><input id="assetSearch" type="search" placeholder="Search place or title" aria-label="Search place or title"><select id="statusFilter" aria-label="Filter status"><option value="all">All statuses</option><option value="draft">Draft</option><option value="published">Published</option><option value="hidden">Hidden</option><option value="archived">Archived</option></select></div>
+          <div class="wm-assets" id="assetList" aria-live="polite"><div class="wm-empty" data-copy="loadingAssets">Loading portfolio assets…</div></div>
+        </div>
+      </section>
+    </div>
+  </main>
+  <dialog id="assetDialog" aria-labelledby="assetDialogTitle">
+    <div class="wm-dialog-head"><h2 id="assetDialogTitle" data-copy="editAsset">Edit portfolio asset</h2><button class="wm-dialog-close" type="button" data-dialog-close aria-label="Close">×</button></div>
+    <form class="wm-dialog-body" id="assetEditor"><div class="wm-fields" id="editorFields"></div><div class="wm-actions"><button class="wm-btn wm-btn-primary" type="submit" data-copy="saveChanges">Save changes</button><button class="wm-btn wm-btn-secondary" type="button" data-replace data-copy="replaceImage">Replace image</button><button class="wm-btn wm-btn-secondary" type="button" data-dialog-close data-copy="cancel">Cancel</button></div><input class="wm-sr-only" id="replacementInput" type="file" accept=".jpg,.jpeg,.png,.webp,.avif,.heic,image/*"></form>
+  </dialog>
+  <script src="../assets/js/admin-portfolio.js?v=p1"></script>
+</body>
+</html>

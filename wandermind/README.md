@@ -185,6 +185,12 @@ DRIVER_EMAIL=
 # 若司机邮箱留空，对应请求会先发给站点负责人手动转交。
 GEDE_DRIVER_EMAIL=
 OWNER_BCC_EMAIL=
+
+# Portfolio Content Manager。图片由浏览器签名直传 Cloudinary，Render 只保存元数据。
+# 未配置时 /admin/portfolio 仍可访问，但上传按钮会明确禁用，现有静态 Portfolio 不受影响。
+CLOUDINARY_CLOUD_NAME=
+CLOUDINARY_API_KEY=
+CLOUDINARY_API_SECRET=
 ```
 
 ### 4. 启动服务
