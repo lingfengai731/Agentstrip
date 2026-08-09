@@ -203,7 +203,7 @@
       @media(max-width:767px){ .bali-driver-grid{grid-template-columns:1fr;text-align:center}.bali-driver-car{max-width:520px;margin:auto} }
       .bali-place-modal { position:fixed; inset:0; z-index:10000; display:none; align-items:center; justify-content:center; padding:20px; background:rgba(15,17,20,.68); backdrop-filter:blur(7px); }
       .bali-place-modal.show { display:flex; }
-      .bali-place-dialog { position:relative; width:min(880px,100%); max-height:90vh; overflow:auto; display:grid; grid-template-columns:1fr 1fr; background:#fff; border-radius:16px; box-shadow:0 24px 70px rgba(0,0,0,.32); }
+      .bali-place-dialog { position:relative; width:min(880px,100%); max-height:90vh; overflow:auto; overscroll-behavior:contain; display:grid; grid-template-columns:1fr 1fr; background:#fff; border-radius:16px; box-shadow:0 24px 70px rgba(0,0,0,.32); }
       body.dark .bali-place-dialog { background:#1f211e; }
       .bali-place-dialog > img { width:100%; height:100%; min-height:440px; object-fit:cover; }
       .bali-place-copy { align-self:center; padding:34px; }
@@ -224,6 +224,9 @@
       .bali-route-match:hover { color:#0e7c6b; text-decoration:none; background:rgba(14,124,107,.13); }
       .bali-route-match span:last-child { text-align:right; }
       body.dark .bali-route-match { background:rgba(45,212,191,.1); color:#99f6e4; }
+      .bali-place-verification { margin:0 0 10px; padding:10px 12px; border:1px solid rgba(217,119,6,.28); border-radius:10px; background:rgba(252,191,30,.1); color:#92400e; font-size:12px; line-height:1.55; }
+      .bali-place-verification[hidden], .bali-modal-actions[hidden] { display:none; }
+      body.dark .bali-place-verification { border-color:rgba(252,191,30,.3); background:rgba(252,191,30,.08); color:#fde68a; }
       .bali-mini-route { margin:0 0 16px; padding:14px; border:1px solid #e5e2da; border-radius:10px; color:#475569; font-size:13px; line-height:1.65; }
       body.dark .bali-mini-route { border-color:#3a3d38; color:#d1d5db; }
       .bali-modal-actions { display:flex; flex-wrap:wrap; gap:9px; }
@@ -555,6 +558,7 @@
         <span data-i18n="baliRouteMatch">Matched route</span>
         <span id="bali-place-route-name" aria-live="polite"></span>
       </a>
+      <p class="bali-place-verification" id="bali-place-verification" aria-live="polite" hidden></p>
       <div class="bali-mini-route"><strong data-i18n="baliMiniRoute">Simple route</strong><br><span id="bali-place-route"></span></div>
       <div class="bali-modal-actions">
         <a class="bali-btn bali-btn-primary" id="bali-place-ai" href="ai-tool.html?dest=bali"><span class="fa fa-magic"></span> <span data-i18n="baliAddRoute">Add to my AI route</span></a>
@@ -640,6 +644,17 @@
     return String(value == null ? '' : value).replace(/[&<>"']/g, function (char) {
       return { '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#39;' }[char];
     });
+  }
+
+  function routeUiCopy() {
+    var copy = {
+      en:{day:function(number){ return 'Day ' + number; },remove:'Remove ',core:'Core',optional:'Optional',mapTitle:'Bali geographic basemap',reset:'Restore the recommended order and places?',loadError:'Route data is temporarily unavailable. Please retry or use AI planning.'},
+      zh:{day:function(number){ return '第 ' + number + ' 天'; },remove:'移除 ',core:'核心',optional:'可选',mapTitle:'巴厘岛真实地理底图',reset:'恢复这条路线的推荐顺序和地点？',loadError:'路线资料暂时无法加载，请稍后重试或使用 AI 规划。'},
+      ja:{day:function(number){ return number + '日目'; },remove:'削除：',core:'主要',optional:'任意',mapTitle:'バリ島の実地図',reset:'おすすめの順序と場所に戻しますか？',loadError:'ルート情報を読み込めません。時間をおいて再試行するか、AIプランナーをご利用ください。'},
+      ko:{day:function(number){ return number + '일차'; },remove:'삭제: ',core:'핵심',optional:'선택',mapTitle:'발리 실제 지도',reset:'추천 순서와 장소로 복원할까요?',loadError:'경로 정보를 불러올 수 없습니다. 잠시 후 다시 시도하거나 AI 플래너를 이용해 주세요.'},
+      id:{day:function(number){ return 'Hari ' + number; },remove:'Hapus ',core:'Inti',optional:'Opsional',mapTitle:'Peta geografis Bali',reset:'Pulihkan urutan dan tempat yang direkomendasikan?',loadError:'Data rute sementara tidak dapat dimuat. Coba lagi nanti atau gunakan perencana AI.'}
+    };
+    return copy[language()] || copy.en;
   }
 
   function routeMeta(route) {
@@ -794,12 +809,13 @@
   }
 
   function routePlanText(route, plan) {
+    var ui = routeUiCopy();
     var lines = plan.days.map(function (day, index) {
       var names = (day.place_ids || []).map(function (id) {
         var poi = poiById(id);
         return poi ? poi.name : '';
       }).filter(Boolean);
-      return (language() === 'zh' ? '第 ' + (index + 1) + ' 天' : 'Day ' + (index + 1)) +
+      return ui.day(index + 1) +
         ' · ' + day.region_id + ' · ' + text(day.theme) + (names.length ? ' · ' + names.join(' → ') : '');
     });
     return text(route.name) + ' (' + route.id + ')\n' + lines.join('\n');
@@ -830,13 +846,14 @@
   }
 
   function renderRouteMap(route, plan) {
+    var ui = routeUiCopy();
     var coreIds = plan.days.map(function (day) { return day.region_id; });
     var optionalIds = route.optional_regions || [];
     var dayRegionIds = Array.from(new Set(coreIds));
     var relevant = dayRegionIds.map(function (id) { return { id:id, optional:false }; })
       .concat(optionalIds.map(function (id) { return { id:id, optional:true }; }));
-    var corePrefix = language() === 'zh' ? '核心' : 'Core';
-    var optionPrefix = language() === 'zh' ? '可选' : 'Optional';
+    var corePrefix = ui.core;
+    var optionPrefix = ui.optional;
     var regionList = relevant.map(function (item) {
       var region = regions[item.id] || {};
       var nodes = (region.nodes || []).slice(0, 2).map(nodeLabel).join(' / ');
@@ -860,19 +877,20 @@
     }).join('');
     return '<div class="bali-route-map">' +
       '<div class="bali-route-map-head"><strong>' + title + '</strong><span>' + note + '</span></div>' +
-      '<div class="bali-route-map-canvas"><iframe class="bali-route-map-frame" title="' + escapeHtml((language() === 'zh' ? '巴厘岛真实地理底图' : 'Bali geographic basemap')) + '" loading="lazy" scrolling="no" src="https://www.openstreetmap.org/export/embed.html?bbox=114.95%2C-8.88%2C115.72%2C-8.03&amp;layer=mapnik"></iframe>' +
+      '<div class="bali-route-map-canvas"><iframe class="bali-route-map-frame" title="' + escapeHtml(ui.mapTitle) + '" loading="lazy" scrolling="no" src="https://www.openstreetmap.org/export/embed.html?bbox=114.95%2C-8.88%2C115.72%2C-8.03&amp;layer=mapnik"></iframe>' +
       '<svg class="bali-map-overlay" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">' + (coreLine ? '<polyline class="bali-map-line" points="' + coreLine + '"></polyline>' : '') + optionalLines + '</svg>' + markers + '</div>' +
       '<div class="bali-map-region-list">' + regionList + '</div>' +
     '</div>';
   }
 
   function renderDayOutline(route, plan) {
+    var ui = routeUiCopy();
     var usedPoiIds = new Set(plan.days.flatMap(function (day) { return day.place_ids || []; }));
     return plan.days.map(function (day, index) {
       var placeChips = (day.place_ids || []).map(function (id) {
         var poi = poiById(id);
         if (!poi) return '';
-        var removeLabel = language() === 'zh' ? '移除 ' + poi.name : 'Remove ' + poi.name;
+        var removeLabel = ui.remove + poi.name;
         return '<span class="bali-day-place"><span>' + escapeHtml(poi.name) + '</span>' +
           '<button type="button" data-remove-place="' + escapeHtml(id) + '" data-day-index="' + index + '" aria-label="' + escapeHtml(removeLabel) + '">×</button></span>';
       }).join('');
@@ -970,8 +988,7 @@
     });
     var reset = detail.querySelector('[data-reset-route]');
     if (reset) reset.addEventListener('click', function () {
-      var message = language() === 'zh' ? '恢复这条路线的推荐顺序和地点？' : 'Restore the recommended order and places?';
-      if (!window.confirm(message)) return;
+      if (!window.confirm(routeUiCopy().reset)) return;
       delete routePlans[route.id];
       try { localStorage.setItem(planStorageKey, JSON.stringify(routePlans)); } catch (_) {}
       activeDayIndex = 0;
@@ -1055,7 +1072,7 @@
     .then(function (response) { if (!response.ok) throw new Error('HTTP ' + response.status); return response.json(); })
     .then(useData)
     .catch(function () {
-      detail.innerHTML = '<p>' + (language() === 'zh' ? '路线资料暂时无法加载，请稍后重试或使用 AI 规划。' : 'Route data is temporarily unavailable. Please retry or use AI planning.') + '</p>';
+      detail.innerHTML = '<p>' + routeUiCopy().loadError + '</p>';
     });
 
   var picker = document.getElementById('langPicker');
@@ -1108,11 +1125,18 @@
     return routeId + ' · ' + ((route.name || {})[lang()] || (route.name || {}).en || routeId);
   }
   var GALLERY_FALLBACK = {
-    en: { description:'This approved image is part of the Bali portfolio. Check current opening information and conditions before visiting.', purpose:'Use the place details and current conditions to decide whether this culture or experience fits your trip.' },
-    zh: { description:'这张已获授权的图片属于巴厘岛作品集。出行前请核对开放信息和当天情况。', purpose:'请结合地点信息和实时情况，判断这项文化或体验是否适合你的行程。' },
-    ja: { description:'この承認済み画像はバリのポートフォリオの一部です。訪問前に営業情報と当日の状況を確認してください。', purpose:'場所の情報と最新の状況を確認し、文化体験またはアクティビティが旅程に合うか判断してください。' },
-    ko: { description:'이 승인된 이미지는 발리 포트폴리오의 일부입니다. 방문 전 운영 정보와 당일 상황을 확인해 주세요.', purpose:'장소 정보와 최신 상황을 확인해 문화 또는 체험이 여행 일정에 맞는지 판단해 주세요.' },
-    id: { description:'Foto yang telah disetujui ini merupakan bagian dari portofolio Bali. Periksa informasi buka dan kondisi terkini sebelum berkunjung.', purpose:'Gunakan detail tempat dan kondisi terkini untuk menentukan apakah budaya atau pengalaman ini sesuai dengan perjalanan Anda.' }
+    en: { description:'This image is part of the Bali portfolio. Check current opening information and conditions before visiting.', purpose:'Use the place details and current conditions to decide whether this culture or experience fits your trip.' },
+    zh: { description:'这张图片属于巴厘岛作品集。出行前请核对开放信息和当天情况。', purpose:'请结合地点信息和实时情况，判断这项文化或体验是否适合你的行程。' },
+    ja: { description:'この画像はバリのポートフォリオの一部です。訪問前に営業情報と当日の状況を確認してください。', purpose:'場所の情報と最新の状況を確認し、文化体験またはアクティビティが旅程に合うか判断してください。' },
+    ko: { description:'이 이미지는 발리 포트폴리오의 일부입니다. 방문 전 운영 정보와 당일 상황을 확인해 주세요.', purpose:'장소 정보와 최신 상황을 확인해 문화 또는 체험이 여행 일정에 맞는지 판단해 주세요.' },
+    id: { description:'Foto ini merupakan bagian dari portofolio Bali. Periksa informasi buka dan kondisi terkini sebelum berkunjung.', purpose:'Gunakan detail tempat dan kondisi terkini untuk menentukan apakah budaya atau pengalaman ini sesuai dengan perjalanan Anda.' }
+  };
+  var GALLERY_HANDOFF_PENDING = {
+    en:'Approved for display; route matching is still pending, so AI and driver handoff are unavailable for this image.',
+    zh:'图片已获展示授权，但路线匹配仍待完成，因此暂不开放 AI 和司机交接。',
+    ja:'表示許可は確認済みですが、ルート照合が未完了のため、この画像からAI・ドライバーへはまだ引き継げません。',
+    ko:'표시 권한은 확인되었지만 경로 연결이 완료되지 않아 이 이미지의 AI·기사 전달은 아직 사용할 수 없습니다.',
+    id:'Izin tayang sudah disetujui, tetapi pencocokan rute belum selesai sehingga penerusan ke AI dan driver belum tersedia.'
   };
   function renderModal() {
     if (!activeShot) return;
@@ -1125,6 +1149,7 @@
       (activeShot.dataset.area || 'Bali') + ' → ' + (activeShot.dataset.placeName || activeShot.dataset.place)
     ];
     var routeId = matchedRouteId(activeShot);
+    var handoffReady = activeShot.dataset.verificationStatus === 'route-linked' && /^R[1-6]$/.test(routeId);
     var placeName = data[0];
     var handoff = new URLSearchParams({ dest:'bali', place:placeName, source:'gallery', mode:'diy' });
     var driverHandoff = new URLSearchParams({ place:placeName, source:'gallery' });
@@ -1138,11 +1163,23 @@
     document.getElementById('bali-place-title').textContent = data[0]; document.getElementById('bali-place-desc').textContent = data[1];
     document.getElementById('bali-place-purpose').textContent = data[2]; document.getElementById('bali-place-route').textContent = data[3];
     var routeLink = document.getElementById('bali-place-route-link');
-    routeLink.hidden = !routeId;
-    document.getElementById('bali-place-route-name').textContent = routeId ? routeName(routeId) : '';
-    routeLink.href = routeId ? 'bali.html?route=' + encodeURIComponent(routeId) + '#route-families' : '#route-families';
-    document.getElementById('bali-place-ai').href = 'ai-tool.html?' + handoff.toString();
-    document.getElementById('bali-place-driver').href = 'find-driver.html?' + driverHandoff.toString();
+    routeLink.hidden = !handoffReady;
+    document.getElementById('bali-place-route-name').textContent = handoffReady ? routeName(routeId) : '';
+    routeLink.href = handoffReady ? 'bali.html?route=' + encodeURIComponent(routeId) + '#route-families' : '#route-families';
+    var verification = document.getElementById('bali-place-verification');
+    verification.hidden = handoffReady;
+    verification.textContent = handoffReady ? '' : (GALLERY_HANDOFF_PENDING[lang()] || GALLERY_HANDOFF_PENDING.en);
+    var actions = modal.querySelector('.bali-modal-actions');
+    var ai = document.getElementById('bali-place-ai');
+    var driver = document.getElementById('bali-place-driver');
+    actions.hidden = !handoffReady;
+    if (handoffReady) {
+      ai.href = 'ai-tool.html?' + handoff.toString();
+      driver.href = 'find-driver.html?' + driverHandoff.toString();
+    } else {
+      ai.removeAttribute('href');
+      driver.removeAttribute('href');
+    }
   }
     fetch('assets/data/bali-travel-data.json?v=20260806r4')
     .then(function(response) { if (!response.ok) throw new Error('HTTP ' + response.status); return response.json(); })

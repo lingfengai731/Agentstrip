@@ -1125,7 +1125,8 @@ class ProductAccessTests(unittest.TestCase):
             ):
                 self.assertTrue(shot.get(field), field)
             route_ids = set(shot.get("data-route-ids", "").split())
-            if route_ids:
+            if shot.get("data-verification-status") == "route-linked":
+                self.assertTrue(route_ids)
                 self.assertTrue(route_ids.issubset(valid_routes))
             else:
                 self.assertNotEqual(shot.get("data-verification-status"), "route-linked")
@@ -1139,7 +1140,13 @@ class ProductAccessTests(unittest.TestCase):
         self.assertIn('data-i18n="baliFilterTags" data-i18n-attr="aria-label"', html)
         self.assertIn("categoryMatches && tagMatches", html)
         self.assertIn('id="bali-place-route-link"', html)
-        self.assertIn("routeLink.hidden = !routeId", html)
+        self.assertIn('id="bali-place-verification"', html)
+        self.assertIn("activeShot.dataset.verificationStatus === 'route-linked'", html)
+        self.assertIn("routeLink.hidden = !handoffReady", html)
+        self.assertIn("actions.hidden = !handoffReady", html)
+        self.assertIn("ai.removeAttribute('href')", html)
+        self.assertIn("driver.removeAttribute('href')", html)
+        self.assertNotIn("This approved image", html)
         self.assertIn("handoff.set('route', routeId)", html)
         self.assertIn("driverHandoff.set('route', routeId)", html)
         self.assertNotIn("place:placeName, route:routeId", html)
@@ -1150,6 +1157,14 @@ class ProductAccessTests(unittest.TestCase):
         self.assertIn("Real basemap", html)
         self.assertIn("item.suggested_poi_ids || []", html)
         self.assertIn("bali-map-overlay", html)
+        self.assertIn("function routeUiCopy()", html)
+        for localized_route_copy in (
+            "おすすめの順序と場所に戻しますか？",
+            "추천 순서와 장소로 복원할까요?",
+            "Pulihkan urutan dan tempat yang direkomendasikan?",
+        ):
+            self.assertIn(localized_route_copy, html)
+        self.assertNotIn("language() === 'zh'", html)
         self.assertIn("matchedRouteId(activeShot)", html)
         self.assertIn("activeId = requestedRoute", html)
         self.assertIn("window.setTimeout(renderModal, 0)", html)
