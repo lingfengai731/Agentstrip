@@ -623,7 +623,7 @@
 <script>
   function topFunction() { document.body.scrollTop = 0; document.documentElement.scrollTop = 0; }
 </script>
-<script src="assets/js/i18n.js?v=p57"></script>
+<script src="assets/js/i18n.js?v=p58"></script>
 <script>
 (function () {
   var grid = document.getElementById('bali-route-grid');
@@ -1132,7 +1132,7 @@
     renderDetail();
   }
 
-    fetch('assets/data/bali-travel-data.json?v=20260806r4')
+    fetch('assets/data/bali-travel-data.json?v=20260810r5')
     .then(function (response) { if (!response.ok) throw new Error('HTTP ' + response.status); return response.json(); })
     .then(useData)
     .catch(function () {
@@ -1245,7 +1245,7 @@
       driver.removeAttribute('href');
     }
   }
-    fetch('assets/data/bali-travel-data.json?v=20260806r4')
+    fetch('assets/data/bali-travel-data.json?v=20260810r5')
     .then(function(response) { if (!response.ok) throw new Error('HTTP ' + response.status); return response.json(); })
     .then(function(data) {
       (data.routes || []).forEach(function(route) { routeCatalog[route.id] = route; });
