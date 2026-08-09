@@ -41,13 +41,29 @@ except ImportError:  # dependency is installed from requirements in production
 
 load_dotenv(Path(__file__).parent.parent / ".env")
 
+
+def _cors_allowed_origins() -> list[str]:
+    defaults = ["https://wandermind.cc", "https://www.wandermind.cc"]
+    configured = [
+        value.strip().rstrip("/")
+        for value in os.getenv("CORS_ALLOWED_ORIGINS", "").split(",")
+        if value.strip()
+    ]
+    valid = [
+        origin for origin in defaults + configured
+        if re.fullmatch(r"https?://[^/\s]+", origin) and origin != "*"
+    ]
+    return list(dict.fromkeys(valid))
+
+
 app = FastAPI(title="WanderMind API")
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
+    allow_origins=_cors_allowed_origins(),
+    allow_origin_regex=r"^http://(?:localhost|127\.0\.0\.1)(?::\d{1,5})?$",
     allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
+    allow_methods=["GET", "POST", "PATCH", "DELETE", "OPTIONS"],
+    allow_headers=["Authorization", "Content-Type", "X-Anon-Id"],
 )
 app.add_middleware(GZipMiddleware, minimum_size=1000)
 

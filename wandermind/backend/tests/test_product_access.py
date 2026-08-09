@@ -82,8 +82,8 @@ class ProductAccessTests(unittest.TestCase):
     def _run(coro):
         return asyncio.run(coro)
 
-    async def _request(self, method, path, *, token=None, json=None, anon_id=None):
-        headers = {}
+    async def _request(self, method, path, *, token=None, json=None, anon_id=None, headers=None):
+        headers = dict(headers or {})
         if token:
             headers["Authorization"] = f"Bearer {token}"
         if anon_id:
@@ -93,6 +93,43 @@ class ProductAccessTests(unittest.TestCase):
             transport=transport, base_url="http://testserver"
         ) as client:
             return await client.request(method, path, headers=headers, json=json)
+
+    def test_cors_allows_wandermind_and_rejects_unknown_origins(self):
+        allowed = self._run(
+            self._request(
+                "GET", "/healthz", headers={"Origin": "https://wandermind.cc"}
+            )
+        )
+        rejected = self._run(
+            self._request(
+                "GET", "/healthz", headers={"Origin": "https://attacker.example"}
+            )
+        )
+        preflight = self._run(
+            self._request(
+                "OPTIONS",
+                "/api/product-trips",
+                headers={
+                    "Origin": "https://wandermind.cc",
+                    "Access-Control-Request-Method": "POST",
+                    "Access-Control-Request-Headers": "authorization,content-type,x-anon-id",
+                },
+            )
+        )
+        self.assertEqual(
+            allowed.headers.get("access-control-allow-origin"),
+            "https://wandermind.cc",
+        )
+        self.assertEqual(allowed.headers.get("access-control-allow-credentials"), "true")
+        self.assertIsNone(rejected.headers.get("access-control-allow-origin"))
+        self.assertEqual(preflight.status_code, 200, preflight.text)
+        self.assertEqual(
+            preflight.headers.get("access-control-allow-origin"),
+            "https://wandermind.cc",
+        )
+        allowed_headers = preflight.headers.get("access-control-allow-headers", "").lower()
+        for header in ("authorization", "content-type", "x-anon-id"):
+            self.assertIn(header, allowed_headers)
 
     def _new_trip(self, token=None, anon_id=None):
         response = self._run(
