@@ -100,6 +100,16 @@ class ProductAccessTests(unittest.TestCase):
                 "GET", "/healthz", headers={"Origin": "https://wandermind.cc"}
             )
         )
+        www_allowed = self._run(
+            self._request(
+                "GET", "/healthz", headers={"Origin": "https://www.wandermind.cc"}
+            )
+        )
+        local_allowed = self._run(
+            self._request(
+                "GET", "/healthz", headers={"Origin": "http://localhost:8770"}
+            )
+        )
         rejected = self._run(
             self._request(
                 "GET", "/healthz", headers={"Origin": "https://attacker.example"}
@@ -116,9 +126,28 @@ class ProductAccessTests(unittest.TestCase):
                 },
             )
         )
+        rejected_preflight = self._run(
+            self._request(
+                "OPTIONS",
+                "/api/product-trips",
+                headers={
+                    "Origin": "https://attacker.example",
+                    "Access-Control-Request-Method": "POST",
+                    "Access-Control-Request-Headers": "content-type",
+                },
+            )
+        )
         self.assertEqual(
             allowed.headers.get("access-control-allow-origin"),
             "https://wandermind.cc",
+        )
+        self.assertEqual(
+            www_allowed.headers.get("access-control-allow-origin"),
+            "https://www.wandermind.cc",
+        )
+        self.assertEqual(
+            local_allowed.headers.get("access-control-allow-origin"),
+            "http://localhost:8770",
         )
         self.assertEqual(allowed.headers.get("access-control-allow-credentials"), "true")
         self.assertIsNone(rejected.headers.get("access-control-allow-origin"))
@@ -130,6 +159,30 @@ class ProductAccessTests(unittest.TestCase):
         allowed_headers = preflight.headers.get("access-control-allow-headers", "").lower()
         for header in ("authorization", "content-type", "x-anon-id"):
             self.assertIn(header, allowed_headers)
+        self.assertEqual(rejected_preflight.status_code, 400)
+        self.assertIsNone(
+            rejected_preflight.headers.get("access-control-allow-origin")
+        )
+
+    def test_cors_config_accepts_explicit_origins_and_rejects_wildcards(self):
+        with patch.dict(
+            os.environ,
+            {
+                "CORS_ALLOWED_ORIGINS": (
+                    "https://preview.wandermind.cc/, *, ftp://files.example, "
+                    "https://wandermind.cc/"
+                )
+            },
+            clear=False,
+        ):
+            self.assertEqual(
+                main._cors_allowed_origins(),
+                [
+                    "https://wandermind.cc",
+                    "https://www.wandermind.cc",
+                    "https://preview.wandermind.cc",
+                ],
+            )
 
     def _new_trip(self, token=None, anon_id=None):
         response = self._run(

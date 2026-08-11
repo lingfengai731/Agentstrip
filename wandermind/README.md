@@ -163,6 +163,9 @@ GOOGLE_CLIENT_ID=
 
 # 运行环境。Render 建议显式设为 production
 ENVIRONMENT=production
+# 携带凭据的跨域请求只允许明确来源；默认已包含 wandermind.cc 与 www.wandermind.cc。
+# 如需预览站点，使用英文逗号追加完整 HTTPS 来源；不要填写 *，末尾斜杠会自动去除。
+CORS_ALLOWED_ORIGINS=
 
 # 独立管理员。仅本地开发在未配置时会创建 admin / 123456。
 # 生产环境密码必须至少 12 位且不能使用 123456，否则不会创建弱管理员。
