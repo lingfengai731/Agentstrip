@@ -202,8 +202,12 @@
       .bali-day-empty { color:rgba(255,255,255,.62); font-size:11px; }
       .bali-day-select { min-width:0; flex:1 1 190px; height:34px; border:1px solid rgba(255,255,255,.28); border-radius:9px; padding:0 9px; background:#0a6659; color:#fff; font-size:11px; }
       .bali-day-select option { background:#fff; color:#1e293b; }
+      .bali-day-select[aria-invalid="true"] { border-color:#fb923c; box-shadow:0 0 0 2px rgba(251,146,60,.2); }
       .bali-day-add-btn, .bali-day-reset { min-height:34px; border:1px solid rgba(255,255,255,.38); border-radius:9px; padding:6px 11px; background:transparent; color:#fff; font-size:11px; font-weight:700; cursor:pointer; }
       .bali-day-add-btn:hover, .bali-day-add-btn:focus-visible, .bali-day-reset:hover, .bali-day-reset:focus-visible { background:rgba(255,255,255,.14); outline:none; }
+      .bali-day-feedback { grid-column:1/-1; margin:0; color:#ccfbf1; font-size:10.5px; font-weight:700; line-height:1.45; }
+      .bali-day-feedback:empty { display:none; }
+      .bali-day-feedback.is-error { color:#fed7aa; }
       .bali-editor-note { display:flex; align-items:center; justify-content:space-between; gap:10px; flex-wrap:wrap; margin-top:-8px; color:rgba(255,255,255,.7); font-size:10.5px; }
       .bali-route-detail-actions { display:flex; flex-wrap:wrap; gap:10px; margin-top:18px; }
       .bali-route-detail-actions .bali-btn { padding:11px 18px; font-size:13px; }
@@ -651,6 +655,7 @@
   var activeId = 'R1';
   var activeDayIndex = 0;
   var routePlans = {};
+  var routeEditorFeedback = null;
   var planStorageKey = 'wm_bali_route_plans_v1';
   var activeLeafletMap = null;
   var activeLeafletMarkers = {};
@@ -673,11 +678,11 @@
 
   function routeUiCopy() {
     var copy = {
-      en:{day:function(number){ return 'Day ' + number; },remove:'Remove ',core:'Core',optional:'Optional',mapTitle:'Bali geographic basemap',reset:'Restore the recommended order and places?',loadError:'Route data is temporarily unavailable. Please retry or use AI planning.',poiNotice:'Place names stay canonical for maps and driver handoff. Every current place is a planning anchor; confirm access, opening details and conditions before travel.'},
-      zh:{day:function(number){ return '第 ' + number + ' 天'; },remove:'移除 ',core:'核心',optional:'可选',mapTitle:'巴厘岛真实地理底图',reset:'恢复这条路线的推荐顺序和地点？',loadError:'路线资料暂时无法加载，请稍后重试或使用 AI 规划。',poiNotice:'地点专名保留地图与司机可识别的标准写法。当前地点均为规划参考；出行前请核验开放、进入条件和当天情况。'},
-      ja:{day:function(number){ return number + '日目'; },remove:'削除：',core:'主要',optional:'任意',mapTitle:'バリ島の実地図',reset:'おすすめの順序と場所に戻しますか？',loadError:'ルート情報を読み込めません。時間をおいて再試行するか、AIプランナーをご利用ください。',poiNotice:'地図とドライバーへの引き継ぎのため、場所名は正式表記を保ちます。現在の場所はすべて計画用候補です。訪問前に営業・入場条件・当日の状況を確認してください。'},
-      ko:{day:function(number){ return number + '일차'; },remove:'삭제: ',core:'핵심',optional:'선택',mapTitle:'발리 실제 지도',reset:'추천 순서와 장소로 복원할까요?',loadError:'경로 정보를 불러올 수 없습니다. 잠시 후 다시 시도하거나 AI 플래너를 이용해 주세요.',poiNotice:'지도와 기사 전달을 위해 장소명은 표준 표기를 유지합니다. 현재 장소는 모두 일정 참고 지점이므로 방문 전 운영, 입장 조건과 당일 상황을 확인해 주세요.'},
-      id:{day:function(number){ return 'Hari ' + number; },remove:'Hapus ',core:'Inti',optional:'Opsional',mapTitle:'Peta geografis Bali',reset:'Pulihkan urutan dan tempat yang direkomendasikan?',loadError:'Data rute sementara tidak dapat dimuat. Coba lagi nanti atau gunakan perencana AI.',poiNotice:'Nama tempat dipertahankan dalam bentuk kanonis agar cocok dengan peta dan serah-terima ke driver. Semua tempat saat ini adalah titik perencanaan; konfirmasikan akses, jam buka, dan kondisi sebelum berangkat.'}
+      en:{day:function(number){ return 'Day ' + number; },remove:'Remove ',core:'Core',optional:'Optional',mapTitle:'Bali geographic basemap',reset:'Restore the recommended order and places?',loadError:'Route data is temporarily unavailable. Please retry or use AI planning.',poiNotice:'Place names stay canonical for maps and driver handoff. Every current place is a planning anchor; confirm access, opening details and conditions before travel.',chooseFirst:'Choose a place before adding it.',placeUnavailable:'That place is no longer available. Please choose another.',added:function(name, number){ return name + ' was added to Day ' + number + '.'; }},
+      zh:{day:function(number){ return '第 ' + number + ' 天'; },remove:'移除 ',core:'核心',optional:'可选',mapTitle:'巴厘岛真实地理底图',reset:'恢复这条路线的推荐顺序和地点？',loadError:'路线资料暂时无法加载，请稍后重试或使用 AI 规划。',poiNotice:'地点专名保留地图与司机可识别的标准写法。当前地点均为规划参考；出行前请核验开放、进入条件和当天情况。',chooseFirst:'请先选择一个地点，再点击添加。',placeUnavailable:'这个地点暂时不可添加，请重新选择。',added:function(name, number){ return name + ' 已添加到第 ' + number + ' 天。'; }},
+      ja:{day:function(number){ return number + '日目'; },remove:'削除：',core:'主要',optional:'任意',mapTitle:'バリ島の実地図',reset:'おすすめの順序と場所に戻しますか？',loadError:'ルート情報を読み込めません。時間をおいて再試行するか、AIプランナーをご利用ください。',poiNotice:'地図とドライバーへの引き継ぎのため、場所名は正式表記を保ちます。現在の場所はすべて計画用候補です。訪問前に営業・入場条件・当日の状況を確認してください。',chooseFirst:'追加する場所を先に選択してください。',placeUnavailable:'この場所は現在追加できません。別の場所を選択してください。',added:function(name, number){ return name + 'を' + number + '日目に追加しました。'; }},
+      ko:{day:function(number){ return number + '일차'; },remove:'삭제: ',core:'핵심',optional:'선택',mapTitle:'발리 실제 지도',reset:'추천 순서와 장소로 복원할까요?',loadError:'경로 정보를 불러올 수 없습니다. 잠시 후 다시 시도하거나 AI 플래너를 이용해 주세요.',poiNotice:'지도와 기사 전달을 위해 장소명은 표준 표기를 유지합니다. 현재 장소는 모두 일정 참고 지점이므로 방문 전 운영, 입장 조건과 당일 상황을 확인해 주세요.',chooseFirst:'추가할 장소를 먼저 선택해 주세요.',placeUnavailable:'현재 추가할 수 없는 장소입니다. 다른 장소를 선택해 주세요.',added:function(name, number){ return name + '을(를) ' + number + '일차에 추가했습니다.'; }},
+      id:{day:function(number){ return 'Hari ' + number; },remove:'Hapus ',core:'Inti',optional:'Opsional',mapTitle:'Peta geografis Bali',reset:'Pulihkan urutan dan tempat yang direkomendasikan?',loadError:'Data rute sementara tidak dapat dimuat. Coba lagi nanti atau gunakan perencana AI.',poiNotice:'Nama tempat dipertahankan dalam bentuk kanonis agar cocok dengan peta dan serah-terima ke driver. Semua tempat saat ini adalah titik perencanaan; konfirmasikan akses, jam buka, dan kondisi sebelum berangkat.',chooseFirst:'Pilih tempat terlebih dahulu sebelum menambahkannya.',placeUnavailable:'Tempat ini tidak dapat ditambahkan sekarang. Pilih tempat lain.',added:function(name, number){ return name + ' ditambahkan ke Hari ' + number + '.'; }}
     };
     return copy[language()] || copy.en;
   }
@@ -762,6 +767,7 @@
       card.addEventListener('click', function () {
         activeId = card.dataset.routeId;
         activeDayIndex = 0;
+        routeEditorFeedback = null;
         renderCards();
         renderDetail();
       });
@@ -1124,6 +1130,8 @@
         candidates.map(function (poi) {
           return '<option value="' + escapeHtml(poi.id) + '" translate="no">' + escapeHtml(poiDisplayName(poi) + ' · ' + poiStatusLabel(poi)) + '</option>';
         }).join('');
+      var feedback = routeEditorFeedback && routeEditorFeedback.routeId === route.id && routeEditorFeedback.dayIndex === index ? routeEditorFeedback : null;
+      var feedbackId = 'bali-day-feedback-' + index;
       return '<div class="bali-day-row ' + (index === activeDayIndex ? 'active' : '') + '" data-day-index="' + index + '">' +
         '<button class="bali-day-main" type="button" data-select-day="' + index + '" aria-pressed="' + (index === activeDayIndex) + '">' +
           '<strong>' + labels.day(index + 1) + '</strong>' +
@@ -1135,11 +1143,27 @@
         '</div>' +
         '<div class="bali-day-places">' + (placeChips || '<span class="bali-day-empty">' + labels.empty + '</span>') + '</div>' +
         '<div class="bali-day-add">' +
-          '<select class="bali-day-select" data-place-select="' + index + '" aria-label="' + labels.aria + '"' + (!candidates.length ? ' disabled' : '') + '>' + options + '</select>' +
+          '<select class="bali-day-select" data-place-select="' + index + '" aria-label="' + labels.aria + '" aria-describedby="' + feedbackId + '"' + (!candidates.length ? ' disabled' : '') + '>' + options + '</select>' +
           '<button class="bali-day-add-btn" type="button" data-add-place="' + index + '"' + (!candidates.length ? ' disabled' : '') + '>' + labels.add + '</button>' +
         '</div>' +
+        '<p class="bali-day-feedback' + (feedback && feedback.tone === 'error' ? ' is-error' : '') + '" id="' + feedbackId + '" role="status" aria-live="polite">' + (feedback ? escapeHtml(feedback.message) : '') + '</p>' +
       '</div>';
     }).join('');
+  }
+
+  function showRouteEditorFeedback(route, dayIndex, tone, message, select) {
+    routeEditorFeedback = { routeId: route.id, dayIndex: dayIndex, tone: tone, message: message };
+    var feedback = detail.querySelector('#bali-day-feedback-' + dayIndex);
+    if (feedback) {
+      feedback.classList.toggle('is-error', tone === 'error');
+      feedback.setAttribute('role', tone === 'error' ? 'alert' : 'status');
+      feedback.setAttribute('aria-live', tone === 'error' ? 'assertive' : 'polite');
+      feedback.textContent = message;
+    }
+    if (select && tone === 'error') {
+      select.setAttribute('aria-invalid', 'true');
+      select.focus({ preventScroll: true });
+    }
   }
 
   function setActiveDay(plan, index) {
@@ -1169,6 +1193,7 @@
         var moved = plan.days.splice(from, 1)[0];
         plan.days.splice(to, 0, moved);
         activeDayIndex = to;
+        routeEditorFeedback = null;
         saveRoutePlan(route, plan);
         renderDetail();
       });
@@ -1180,20 +1205,42 @@
           return id !== button.dataset.removePlace;
         });
         activeDayIndex = index;
+        routeEditorFeedback = null;
         saveRoutePlan(route, plan);
         renderDetail();
+      });
+    });
+    detail.querySelectorAll('[data-place-select]').forEach(function (select) {
+      select.addEventListener('change', function () {
+        select.removeAttribute('aria-invalid');
+        var index = Number(select.dataset.placeSelect);
+        if (!routeEditorFeedback || routeEditorFeedback.routeId !== route.id || routeEditorFeedback.dayIndex !== index) return;
+        routeEditorFeedback = null;
+        var feedback = detail.querySelector('#bali-day-feedback-' + index);
+        if (feedback) feedback.textContent = '';
       });
     });
     detail.querySelectorAll('[data-add-place]').forEach(function (button) {
       button.addEventListener('click', function () {
         var index = Number(button.dataset.addPlace);
         var select = detail.querySelector('[data-place-select="' + index + '"]');
+        var ui = routeUiCopy();
+        if (!select || !select.value) {
+          showRouteEditorFeedback(route, index, 'error', ui.chooseFirst, select);
+          return;
+        }
         var poi = select && poiById(select.value);
-        if (!poi || !poiIsAvailable(poi) || poi.region_id !== plan.days[index].region_id) return;
+        if (!poi || !poiIsAvailable(poi) || poi.region_id !== plan.days[index].region_id) {
+          showRouteEditorFeedback(route, index, 'error', ui.placeUnavailable, select);
+          return;
+        }
         plan.days[index].place_ids = (plan.days[index].place_ids || []).concat(poi.id);
         activeDayIndex = index;
+        routeEditorFeedback = { routeId: route.id, dayIndex: index, tone: 'success', message: ui.added(poiDisplayName(poi), index + 1) };
         saveRoutePlan(route, plan);
         renderDetail();
+        var nextSelect = detail.querySelector('[data-place-select="' + index + '"]');
+        if (nextSelect && !nextSelect.disabled) nextSelect.focus({ preventScroll: true });
       });
     });
     detail.querySelectorAll('[data-map-region="true"]').forEach(function (point) {
@@ -1209,6 +1256,7 @@
       delete routePlans[route.id];
       try { localStorage.setItem(planStorageKey, JSON.stringify(routePlans)); } catch (_) {}
       activeDayIndex = 0;
+      routeEditorFeedback = null;
       renderDetail();
     });
     detail.querySelectorAll('[data-route-handoff]').forEach(function (link) {
@@ -1298,7 +1346,7 @@
     });
 
   var picker = document.getElementById('langPicker');
-  if (picker) picker.addEventListener('change', function () { if (routes.length) { renderCards(); renderDetail(); } });
+  if (picker) picker.addEventListener('change', function () { if (routes.length) { routeEditorFeedback = null; renderCards(); renderDetail(); } });
 
   var gallery = document.getElementById('gallery');
   var itinerary = document.getElementById('itinerary');

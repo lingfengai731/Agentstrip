@@ -1218,6 +1218,27 @@ class ProductAccessTests(unittest.TestCase):
         self.assertIn("event.key !== 'Enter' && event.key !== ' '", html)
         self.assertIn("prefers-reduced-motion: reduce", html)
 
+    def test_bali_route_editor_reports_add_place_outcomes(self):
+        html = (
+            BACKEND_DIR.parents[1]
+            / "wandermind-studio"
+            / "frontend"
+            / "bali.html"
+        ).read_text(encoding="utf-8")
+        for message in (
+            "Choose a place before adding it.",
+            "请先选择一个地点，再点击添加。",
+            "追加する場所を先に選択してください。",
+            "추가할 장소를 먼저 선택해 주세요.",
+            "Pilih tempat terlebih dahulu sebelum menambahkannya.",
+        ):
+            self.assertIn(message, html)
+        self.assertIn('class="bali-day-feedback', html)
+        self.assertIn("aria-describedby=\"' + feedbackId + '\"", html)
+        self.assertIn("showRouteEditorFeedback(route, index, 'error'", html)
+        self.assertIn("routeEditorFeedback = { routeId: route.id", html)
+        self.assertIn("nextSelect.focus({ preventScroll: true })", html)
+
     def test_portfolio_manager_requires_admin_and_storage_configuration(self):
         denied = self._run(
             self._request("GET", "/api/admin/portfolio", token=self.user_token)

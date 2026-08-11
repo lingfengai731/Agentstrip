@@ -198,6 +198,22 @@ powershell -NoProfile -ExecutionPolicy Bypass -File .\tools\test-image-intake.ps
 
 ---
 
+## 🧭 路线编辑反馈与开源吸收顺序
+
+巴厘岛公共路线编辑器会在用户未选择地点时显示五语言提示并聚焦下拉框；成功添加后显示可见且可被屏幕阅读器识别的状态，路线继续保存在当前设备。该交互需同时在桌面、390px 与 320px 手机宽度验证。
+
+后续开源能力按增量方式吸收，不整体替换现有 FastAPI、PostgreSQL、原生 JavaScript 与 Leaflet 基础：
+
+| 优先级 | 方向 | 采用边界 |
+|------|------|------|
+| P1 | Portfolio 管理体验 | 评估 [Uppy](https://github.com/transloadit/uppy) 的拖拽、预览、进度和 metadata 交互；继续使用现有 Cloudinary 签名直传、FastAPI 与 PostgreSQL，先完成真实单图 E2E 再引入依赖 |
+| P1 | 地图与路线产品 | 以 [MapLibre](https://github.com/maplibre) 的真实经纬度、区域和路线图层为设计参考；当前 Leaflet 实现保持生产可用，先做数据与原型评估，不立即替换 |
+| P1 | 多日行程闭环 | 吸收 [TRIP](https://github.com/itskovacs/trip/wiki) 的“地图—POI—多日行程”交互思路，仅复用产品模式，不复制品牌或受限制代码 |
+| P2 | 确定性路线优化 | 在 POI 坐标、开放时间、停留时间和车程数据成熟后，再评估 [VROOM](https://github.com/vroom-project/vroom) 与 [OR-Tools](https://github.com/google/or-tools)；现阶段不接入生产 |
+| 研究限定 | [TREK](https://github.com/liketrek/TREK) | 仅用于功能研究；因 AGPL 网络使用义务，不直接复制到当前商业产品 |
+
+---
+
 ## 🌐 部署（已上线，自动）
 
 Studio **已经随 wandermind 后端一起部署**，无需单独配置：

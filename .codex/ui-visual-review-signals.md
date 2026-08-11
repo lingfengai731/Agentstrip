@@ -25,3 +25,16 @@ rejected aspects: 不接受固定导航或图案在 Safari、常见手机默认�
 reason in reviewer words: 每次设计不仅仅要考虑电脑端网站效果，还要重新考虑手机端网站，如 Safari、各类手机默认浏览器的尺寸要合适，不能有的图案都被遮挡住了
 scope: this project
 recorded at: 2026-07-27
+
+workflow: ui-implementation-workflow-v2
+status: raw
+task: 巴厘岛推荐路线添加地点交互修复
+page/surface: WanderMind 巴厘岛页（推荐日程编辑器）
+screenshot or artifact: 生产页面 390x844 复现与本轮待实现版本
+reviewer: 用户
+decision: rejected
+accepted aspects: 保持既有 ClaudeCode 青绿色与金色风格；继续优化巴厘岛路线产品
+rejected aspects: 不接受点击添加地点后没有任何反应或可见反馈
+reason in reviewer words: 现在的巴厘岛界面点击添加地点是没有反应的，没有回馈
+scope: this project
+recorded at: 2026-08-11
