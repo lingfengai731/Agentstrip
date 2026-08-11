@@ -32,11 +32,11 @@
   };
 
   var QUEUE_COPY = {
-    en:{manifestChecking:'Loading the approved image manifest…',manifestReady:'Approved manifest ready: 108 images can be matched by hash.',manifestLoadFailed:'The approved manifest could not be loaded. New files may still be saved as drafts after manual review.',manifestMatched:'Approved manifest matched',manifestUnmatched:'Not in approved manifest',metadataConfirmed:'Metadata confirmed',editMetadata:'Review metadata',queueReviewTitle:'Review image metadata',queueReviewHelp:'Approved suggestions are a starting point. Confirm the fields before publishing.',saveQueueMetadata:'Confirm metadata',duplicateFile:'This image is already in the upload queue.',publishNeedsManifestReview:'Every unpublished image must match the approved manifest or have its metadata manually confirmed.',uploadFinishedWithErrors:'The upload queue finished with errors. Review the failed images and retry.',archiveConfirm:'Archive this Portfolio image? You can keep its metadata and restore its status later.',skipContent:'Skip to content'},
-    zh:{manifestChecking:'正在读取已批准图片清单…',manifestReady:'已批准清单就绪：可按哈希匹配 108 张图片。',manifestLoadFailed:'无法读取已批准清单；新图片仍可在人工核对后保存为草稿。',manifestMatched:'已匹配批准清单',manifestUnmatched:'不在批准清单中',metadataConfirmed:'元数据已确认',editMetadata:'核对元数据',queueReviewTitle:'核对单张图片元数据',queueReviewHelp:'批准清单只提供建议值；发布前请确认各字段。',saveQueueMetadata:'确认元数据',duplicateFile:'该图片已在上传队列中。',publishNeedsManifestReview:'每张待发布图片必须匹配批准清单，或已完成人工元数据确认。',uploadFinishedWithErrors:'上传队列已处理，但存在失败项；请查看失败图片并重试。',archiveConfirm:'确认归档这张 Portfolio 图片吗？元数据会保留，之后仍可恢复状态。',skipContent:'跳到主要内容'},
-    ja:{manifestChecking:'承認済み画像マニフェストを読み込み中…',manifestReady:'承認済みマニフェストの準備完了：108枚をハッシュで照合できます。',manifestLoadFailed:'承認済みマニフェストを読み込めません。新規画像は手動確認後に下書き保存できます。',manifestMatched:'承認済みマニフェスト一致',manifestUnmatched:'承認済みマニフェスト外',metadataConfirmed:'メタデータ確認済み',editMetadata:'メタデータを確認',queueReviewTitle:'画像メタデータを確認',queueReviewHelp:'承認済み候補は初期値です。公開前に各項目を確認してください。',saveQueueMetadata:'メタデータを確定',duplicateFile:'この画像はすでにアップロード待ちです。',publishNeedsManifestReview:'公開する画像は承認済みマニフェストとの一致、または手動メタデータ確認が必要です。',uploadFinishedWithErrors:'アップロード処理は完了しましたが、失敗した画像があります。確認して再試行してください。',archiveConfirm:'この Portfolio 画像をアーカイブしますか？メタデータは保持され、後で状態を戻せます。',skipContent:'メインコンテンツへ移動'},
-    ko:{manifestChecking:'승인된 이미지 매니페스트를 불러오는 중…',manifestReady:'승인 매니페스트 준비 완료: 해시로 108개 이미지를 확인할 수 있습니다.',manifestLoadFailed:'승인 매니페스트를 불러오지 못했습니다. 새 이미지는 수동 검토 후 초안으로 저장할 수 있습니다.',manifestMatched:'승인 매니페스트 일치',manifestUnmatched:'승인 매니페스트에 없음',metadataConfirmed:'메타데이터 확인됨',editMetadata:'메타데이터 검토',queueReviewTitle:'이미지 메타데이터 검토',queueReviewHelp:'승인된 제안은 시작점입니다. 게시 전에 각 필드를 확인하세요.',saveQueueMetadata:'메타데이터 확인',duplicateFile:'이 이미지는 이미 업로드 대기열에 있습니다.',publishNeedsManifestReview:'게시할 각 이미지는 승인 매니페스트와 일치하거나 메타데이터를 수동으로 확인해야 합니다.',uploadFinishedWithErrors:'업로드 처리가 끝났지만 실패한 이미지가 있습니다. 확인 후 다시 시도하세요.',archiveConfirm:'이 Portfolio 이미지를 보관하시겠습니까? 메타데이터는 유지되며 나중에 상태를 복원할 수 있습니다.',skipContent:'본문으로 건너뛰기'},
-    id:{manifestChecking:'Memuat manifest gambar yang disetujui…',manifestReady:'Manifest siap: 108 gambar dapat dicocokkan melalui hash.',manifestLoadFailed:'Manifest tidak dapat dimuat. Gambar baru masih dapat disimpan sebagai draf setelah ditinjau manual.',manifestMatched:'Cocok dengan manifest yang disetujui',manifestUnmatched:'Tidak ada di manifest yang disetujui',metadataConfirmed:'Metadata dikonfirmasi',editMetadata:'Tinjau metadata',queueReviewTitle:'Tinjau metadata gambar',queueReviewHelp:'Saran yang disetujui adalah titik awal. Konfirmasikan setiap kolom sebelum menerbitkan.',saveQueueMetadata:'Konfirmasi metadata',duplicateFile:'Gambar ini sudah ada dalam antrean unggahan.',publishNeedsManifestReview:'Setiap gambar yang akan diterbitkan harus cocok dengan manifest yang disetujui atau telah dikonfirmasi secara manual.',uploadFinishedWithErrors:'Antrean selesai, tetapi beberapa gambar gagal. Tinjau gambar yang gagal lalu coba lagi.',archiveConfirm:'Arsipkan gambar Portfolio ini? Metadata tetap tersimpan dan status dapat dipulihkan nanti.',skipContent:'Lewati ke konten utama'}
+    en:{manifestChecking:'Loading the approved image manifest…',manifestReady:'Approved manifest ready: 108 images can be matched by hash.',manifestLoadFailed:'The approved manifest could not be loaded. New files may still be saved as drafts after manual review.',manifestMatched:'Approved manifest matched',manifestUnmatched:'Not in approved manifest',metadataConfirmed:'Metadata confirmed',editMetadata:'Review metadata',queueReviewTitle:'Review image metadata',queueReviewHelp:'Approved suggestions are a starting point. Confirm the fields before publishing.',saveQueueMetadata:'Confirm metadata',duplicateFile:'This image is already in the upload queue.',duplicateAsset:'This image already exists in the Portfolio library.',publishNeedsManifestReview:'Every unpublished image must match the approved manifest or have its metadata manually confirmed.',uploadFinishedWithErrors:'The upload queue finished with errors. Review the failed images and retry.',archiveConfirm:'Archive this Portfolio image? You can keep its metadata and restore its status later.',skipContent:'Skip to content'},
+    zh:{manifestChecking:'正在读取已批准图片清单…',manifestReady:'已批准清单就绪：可按哈希匹配 108 张图片。',manifestLoadFailed:'无法读取已批准清单；新图片仍可在人工核对后保存为草稿。',manifestMatched:'已匹配批准清单',manifestUnmatched:'不在批准清单中',metadataConfirmed:'元数据已确认',editMetadata:'核对元数据',queueReviewTitle:'核对单张图片元数据',queueReviewHelp:'批准清单只提供建议值；发布前请确认各字段。',saveQueueMetadata:'确认元数据',duplicateFile:'该图片已在上传队列中。',duplicateAsset:'该图片已存在于 Portfolio 内容库中。',publishNeedsManifestReview:'每张待发布图片必须匹配批准清单，或已完成人工元数据确认。',uploadFinishedWithErrors:'上传队列已处理，但存在失败项；请查看失败图片并重试。',archiveConfirm:'确认归档这张 Portfolio 图片吗？元数据会保留，之后仍可恢复状态。',skipContent:'跳到主要内容'},
+    ja:{manifestChecking:'承認済み画像マニフェストを読み込み中…',manifestReady:'承認済みマニフェストの準備完了：108枚をハッシュで照合できます。',manifestLoadFailed:'承認済みマニフェストを読み込めません。新規画像は手動確認後に下書き保存できます。',manifestMatched:'承認済みマニフェスト一致',manifestUnmatched:'承認済みマニフェスト外',metadataConfirmed:'メタデータ確認済み',editMetadata:'メタデータを確認',queueReviewTitle:'画像メタデータを確認',queueReviewHelp:'承認済み候補は初期値です。公開前に各項目を確認してください。',saveQueueMetadata:'メタデータを確定',duplicateFile:'この画像はすでにアップロード待ちです。',duplicateAsset:'この画像はすでに Portfolio に登録されています。',publishNeedsManifestReview:'公開する画像は承認済みマニフェストとの一致、または手動メタデータ確認が必要です。',uploadFinishedWithErrors:'アップロード処理は完了しましたが、失敗した画像があります。確認して再試行してください。',archiveConfirm:'この Portfolio 画像をアーカイブしますか？メタデータは保持され、後で状態を戻せます。',skipContent:'メインコンテンツへ移動'},
+    ko:{manifestChecking:'승인된 이미지 매니페스트를 불러오는 중…',manifestReady:'승인 매니페스트 준비 완료: 해시로 108개 이미지를 확인할 수 있습니다.',manifestLoadFailed:'승인 매니페스트를 불러오지 못했습니다. 새 이미지는 수동 검토 후 초안으로 저장할 수 있습니다.',manifestMatched:'승인 매니페스트 일치',manifestUnmatched:'승인 매니페스트에 없음',metadataConfirmed:'메타데이터 확인됨',editMetadata:'메타데이터 검토',queueReviewTitle:'이미지 메타데이터 검토',queueReviewHelp:'승인된 제안은 시작점입니다. 게시 전에 각 필드를 확인하세요.',saveQueueMetadata:'메타데이터 확인',duplicateFile:'이 이미지는 이미 업로드 대기열에 있습니다.',duplicateAsset:'이 이미지는 이미 Portfolio 라이브러리에 있습니다.',publishNeedsManifestReview:'게시할 각 이미지는 승인 매니페스트와 일치하거나 메타데이터를 수동으로 확인해야 합니다.',uploadFinishedWithErrors:'업로드 처리가 끝났지만 실패한 이미지가 있습니다. 확인 후 다시 시도하세요.',archiveConfirm:'이 Portfolio 이미지를 보관하시겠습니까? 메타데이터는 유지되며 나중에 상태를 복원할 수 있습니다.',skipContent:'본문으로 건너뛰기'},
+    id:{manifestChecking:'Memuat manifest gambar yang disetujui…',manifestReady:'Manifest siap: 108 gambar dapat dicocokkan melalui hash.',manifestLoadFailed:'Manifest tidak dapat dimuat. Gambar baru masih dapat disimpan sebagai draf setelah ditinjau manual.',manifestMatched:'Cocok dengan manifest yang disetujui',manifestUnmatched:'Tidak ada di manifest yang disetujui',metadataConfirmed:'Metadata dikonfirmasi',editMetadata:'Tinjau metadata',queueReviewTitle:'Tinjau metadata gambar',queueReviewHelp:'Saran yang disetujui adalah titik awal. Konfirmasikan setiap kolom sebelum menerbitkan.',saveQueueMetadata:'Konfirmasi metadata',duplicateFile:'Gambar ini sudah ada dalam antrean unggahan.',duplicateAsset:'Gambar ini sudah ada di pustaka Portfolio.',publishNeedsManifestReview:'Setiap gambar yang akan diterbitkan harus cocok dengan manifest yang disetujui atau telah dikonfirmasi secara manual.',uploadFinishedWithErrors:'Antrean selesai, tetapi beberapa gambar gagal. Tinjau gambar yang gagal lalu coba lagi.',archiveConfirm:'Arsipkan gambar Portfolio ini? Metadata tetap tersimpan dan status dapat dipulihkan nanti.',skipContent:'Lewati ke konten utama'}
   };
   LANGS.forEach(function (lang) { Object.assign(COPY[lang], QUEUE_COPY[lang]); });
 
@@ -82,24 +82,32 @@
     return value && !/\?{2,}|\uFFFD/.test(value) ? value : '';
   }
 
+  function localizedSuggestion(value) {
+    var result = {};
+    LANGS.forEach(function (lang) {
+      var text = meaningfulText((value || {})[lang]);
+      if (text) result[lang] = text;
+    });
+    return result;
+  }
+
   function approvedSuggestion(item, file) {
     var stem = fileStem(file.name);
     var themes = ['landscapes','culture','experiences'];
     var theme = themes.indexOf(item.category) >= 0 ? item.category : 'landscapes';
     var routes = Array.isArray(item.route_ids) ? item.route_ids.slice() : [];
     var regions = Array.isArray(item.region_ids) ? item.region_ids.slice() : [];
-    var alt = {};
-    LANGS.forEach(function (lang) {
-      var value = meaningfulText((item.alt_text || {})[lang]);
-      if (value) alt[lang] = value;
-    });
+    var title = localizedSuggestion(item.title);
+    var description = localizedSuggestion(item.description);
+    var alt = localizedSuggestion(item.alt_text);
+    if (!title.en) title.en = stem;
     if (!alt.en) alt.en = stem + ' in Bali';
     return {
       destination:'bali', primary_theme:theme, sub_category:String(item.sub_category || '').trim(),
       region:regions.join(', '), area:'', place_name:stem, place_type:String(item.sub_category || '').replace(/-/g, ' '),
       prominence:routes.length ? 'signature' : 'supporting', route_ids:routes, extension_ids:[],
       tags:Array.isArray(item.tags) ? item.tags.slice() : [], mood:'', photography_style:'',
-      title:{ en:stem }, description:{}, alt_text:alt,
+      title:title, description:description, alt_text:alt,
       verification_status:routes.length ? 'route-linked' : item.location_status === 'bali-named' ? 'bali-named' : 'caption-only', status:'draft'
     };
   }
@@ -221,6 +229,7 @@
         var details = await Promise.all([digestFile(file), imageDimensions(record.preview).catch(function () { return { width:0, height:0 }; })]);
         record.sha256 = details[0]; record.width = details[1].width; record.height = details[1].height;
         if (state.files.some(function (item) { return item.id !== record.id && item.sha256 === record.sha256 && item.state !== 'failed'; })) throw new Error(t('duplicateFile'));
+        if (state.assets.some(function (asset) { return asset.sha256 === record.sha256; })) throw new Error(t('duplicateAsset'));
         record.manifestItem = state.manifestByHash[record.sha256] || null;
         record.manifestMatch = Boolean(record.manifestItem);
         record.metadata = record.manifestMatch ? approvedSuggestion(record.manifestItem, file) : recordMetadata(record, metadataFromForm(uploadForm, 'draft'), 'draft');

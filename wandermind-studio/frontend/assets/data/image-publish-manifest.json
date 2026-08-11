@@ -2313,10 +2313,27 @@
       "poi_ids": [
         "tanah_lot"
       ],
-      "intended_use": "WanderMind approved project image library; connect only where its destination/category metadata matches.",
+      "intended_use": "Approved Tanah Lot culture image for G1 and routes R1, R4 and R6; describe tides and weather honestly without promising a fixed photo result.",
+      "title": {
+        "zh": "海浪中的海神庙",
+        "en": "Tanah Lot above the waves",
+        "ja": "波間に立つタナロット寺院",
+        "ko": "파도 위의 타나롯 사원",
+        "id": "Tanah Lot di tengah ombak"
+      },
+      "description": {
+        "zh": "海神庙坐落在巴厘岛西南海岸的岩礁上。潮汐和天气会改变现场观感，建议把它作为海岸文化与日落路线的一站，而不是保证固定的出片效果。",
+        "en": "Tanah Lot stands on a rocky outcrop off Bali's southwest coast. Tides and weather change the view, so treat it as a coastal culture and sunset stop rather than a guaranteed photo setup.",
+        "ja": "タナロット寺院はバリ島南西岸の岩礁に立ちます。潮位や天候で景色が変わるため、必ず同じ写真が撮れる場所ではなく、海岸文化と夕日の立ち寄り先として計画してください。",
+        "ko": "타나롯 사원은 발리 남서 해안의 바위섬 위에 자리합니다. 조수와 날씨에 따라 풍경이 달라지므로 정해진 사진을 보장하는 장소가 아니라 해안 문화와 일몰 코스의 한 지점으로 계획하세요.",
+        "id": "Pura Tanah Lot berdiri di atas batu karang di pesisir barat daya Bali. Pemandangan berubah mengikuti pasang surut dan cuaca, jadi jadikan tempat ini bagian dari rute budaya pesisir dan matahari terbenam, bukan lokasi foto yang hasilnya selalu sama."
+      },
       "alt_text": {
-        "zh": "??????????",
-        "en": "Bali culture or temple scene"
+        "zh": "巴厘岛海神庙坐落在海中岩礁上，海浪拍打寺庙周围",
+        "en": "Tanah Lot temple on a rocky offshore outcrop with waves breaking around it",
+        "ja": "海上の岩礁に立つタナロット寺院と周囲に打ち寄せる波",
+        "ko": "바다 바위섬 위의 타나롯 사원과 주변으로 부서지는 파도",
+        "id": "Pura Tanah Lot di atas batu karang lepas pantai dengan ombak pecah di sekelilingnya"
       },
       "rights": {
         "status": "user_provided_with_consent",

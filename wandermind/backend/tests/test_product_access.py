@@ -1435,11 +1435,16 @@ class ProductAccessTests(unittest.TestCase):
         self.assertIn("multiple", admin_html)
         self.assertIn('id="manifestStatus"', admin_html)
         self.assertIn('id="queueDialog"', admin_html)
+        self.assertIn("admin-portfolio.js?v=p3", admin_html)
         self.assertIn("/api/admin/portfolio/upload-signature", admin_js)
         self.assertIn("image-publish-manifest.json?v=p2", admin_js)
         self.assertIn("state.manifestByHash[record.sha256]", admin_js)
         self.assertIn("record.metadataEdited", admin_js)
         self.assertIn("publishNeedsManifestReview", admin_js)
+        self.assertIn("duplicateAsset", admin_js)
+        self.assertIn("asset.sha256 === record.sha256", admin_js)
+        self.assertIn("localizedSuggestion(item.title", admin_js)
+        self.assertIn("localizedSuggestion(item.description", admin_js)
         self.assertIn("xhr.open('POST', signature.upload_url)", admin_js)
         self.assertIn("isSupportedImageFile(file)", admin_js)
         self.assertIn("t('preview')", admin_js)
@@ -1476,6 +1481,22 @@ class ProductAccessTests(unittest.TestCase):
         self.assertEqual(item["thumbnail_path"], "assets/images/thumbs/90b2d9be2187fd87.webp")
         self.assertTrue((frontend / item["web_optimized_path"]).is_file())
         self.assertTrue((frontend / item["thumbnail_path"]).is_file())
+
+        tanah_lot = next(
+            item
+            for item in images
+            if item["relative_path"] == "assets/images/Pura Tanah Lot.jpg"
+        )
+        self.assertEqual(
+            tanah_lot["sha256"],
+            "f7cd422d0d2322bcb90cb2a7b4c5538441ecdc1cf61715860b9949a4e74967cf",
+        )
+        self.assertEqual(tanah_lot["region_ids"], ["G1"])
+        self.assertEqual(tanah_lot["route_ids"], ["R1", "R4", "R6"])
+        self.assertEqual(tanah_lot["poi_ids"], ["tanah_lot"])
+        for field in ("title", "description", "alt_text"):
+            self.assertEqual(set(tanah_lot[field]), {"zh", "en", "ja", "ko", "id"})
+            self.assertTrue(all("?" not in value for value in tanah_lot[field].values()))
 
     def test_bali_gallery_uses_theme_and_tag_taxonomy(self):
         frontend_dir = (
@@ -1618,7 +1639,7 @@ class ProductAccessTests(unittest.TestCase):
         self.assertIn("profile.moments.map", driver_html)
         self.assertIn("DRIVER_PROFILES[choice.querySelector('input').value]", driver_html)
         self.assertIn("document.addEventListener('wm:language-change'", driver_html)
-        self.assertIn('assets/js/i18n.js?v=p59', driver_html)
+        self.assertIn('assets/js/i18n.js?v=p60', driver_html)
         self.assertIn("IDR 700k base + IDR 50k per guest", driver_html)
         self.assertIn("IDR 500k base + IDR 50k per guest", driver_html)
         self.assertIn("IDR 75k per hour", driver_html)
@@ -1638,6 +1659,22 @@ class ProductAccessTests(unittest.TestCase):
         for language in ("en", "zh", "ja", "ko", "id"):
             self.assertIn(f"Object.assign(LANGS.{language}", i18n_js)
         self.assertIn("fdQuoteBoundary", i18n_js)
+        for confirmed_quote in (
+            "IDR 700k base + IDR 50k per guest",
+            "基础价 70 万印尼盾 + 每位游客 5 万印尼盾",
+            "基本 70万 IDR + 1名につき 5万 IDR",
+            "기본 70만 IDR + 1인당 5만 IDR",
+            "dasar IDR 700k + IDR 50k per tamu",
+        ):
+            self.assertIn(confirmed_quote, i18n_js)
+        for stale_quote in (
+            "From IDR 750k",
+            "IDR 750k 起",
+            "IDR 750k〜",
+            "IDR 750k부터",
+            "mulai <strong>IDR 750k",
+        ):
+            self.assertNotIn(stale_quote, i18n_js)
         self.assertIn("new CustomEvent('wm:language-change'", i18n_js)
         for private_value in (
             "availability confirmed privately",
