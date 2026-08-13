@@ -525,6 +525,30 @@ class ProductAccessTests(unittest.TestCase):
         self.assertEqual(professional_js.count("adjustScope:"), 5)
         self.assertIn('data-i18n="baliRouteSectionSub"', bali_html)
 
+    def test_public_login_uses_email_without_exposing_admin_username(self):
+        frontend = BACKEND_DIR.parents[1] / "wandermind-studio" / "frontend"
+        ai_html = (frontend / "ai-tool.html").read_text(encoding="utf-8")
+        ai_js = (frontend / "assets" / "js" / "ai-tool.js").read_text(
+            encoding="utf-8"
+        )
+
+        self.assertIn("assets/js/ai-tool.js?v=p55", ai_html)
+        self.assertIn(
+            'type="email" class="ws-form-input ws-auth-input" id="ws-li-email"',
+            ai_js,
+        )
+        self.assertIn("${escapeHtml(T.authEmailLabel)}", ai_js)
+        self.assertNotIn("authLoginIdentifierLabel", ai_js)
+        for public_admin_hint in (
+            "Email or admin username",
+            "邮箱或管理员用户名",
+            "メールまたは管理者名",
+            "이메일 또는 관리자 이름",
+            "Email atau nama admin",
+        ):
+            self.assertNotIn(public_admin_hint, ai_js)
+        self.assertNotIn("email.toLowerCase() !== 'admin'", ai_js)
+
     def test_only_admin_can_confirm_and_confirmation_is_idempotent(self):
         trip_id = self._new_trip(token=self.user_token)
         for action in ("rough_route", "adjustment", "adjustment"):
