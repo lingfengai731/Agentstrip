@@ -2703,6 +2703,15 @@ const AUTH_EXTRA = {
 };
 Object.keys(AUTH_EXTRA).forEach(lang => Object.assign(TOOL_I18N[lang], AUTH_EXTRA[lang]));
 
+const ACCOUNT_ADMIN_EXTRA = {
+  en: { accountTitle:'My account', accountAdminBadge:'Admin', accountPortfolioTitle:'Portfolio Content Manager', accountPortfolioSub:'Check object storage, upload approved images, and manage what is published.', accountPortfolioOpen:'Open content manager' },
+  zh: { accountTitle:'我的账户', accountAdminBadge:'管理员', accountPortfolioTitle:'Portfolio 内容管理器', accountPortfolioSub:'检查对象存储、上传已获授权的图片，并管理已发布内容。', accountPortfolioOpen:'打开内容管理器' },
+  ja: { accountTitle:'マイアカウント', accountAdminBadge:'管理者', accountPortfolioTitle:'Portfolio コンテンツ管理', accountPortfolioSub:'ストレージを確認し、許可済み画像のアップロードと公開管理を行います。', accountPortfolioOpen:'コンテンツ管理を開く' },
+  ko: { accountTitle:'내 계정', accountAdminBadge:'관리자', accountPortfolioTitle:'Portfolio 콘텐츠 관리자', accountPortfolioSub:'개체 저장소를 확인하고 승인된 이미지를 업로드해 공개 상태를 관리합니다.', accountPortfolioOpen:'콘텐츠 관리자 열기' },
+  id: { accountTitle:'Akun saya', accountAdminBadge:'Admin', accountPortfolioTitle:'Pengelola Konten Portfolio', accountPortfolioSub:'Periksa penyimpanan objek, unggah gambar yang disetujui, dan kelola konten terbit.', accountPortfolioOpen:'Buka pengelola konten' }
+};
+Object.keys(ACCOUNT_ADMIN_EXTRA).forEach(lang => Object.assign(TOOL_I18N[lang], ACCOUNT_ADMIN_EXTRA[lang]));
+
 let authToken  = localStorage.getItem('wm_studio_token') || null;
 let authUser   = (() => { try { return JSON.parse(localStorage.getItem('wm_studio_user') || 'null'); } catch(_) { return null; } })();
 const authQuery = new URLSearchParams(window.location.search);
@@ -3482,12 +3491,13 @@ function updateAuthUI() {
 async function openAccountModal() {
   const el = _ensureModal();
   const zh = currentLang === 'zh';
+  const T = t();
   el.innerHTML = `
     <div class="ws-modal" role="dialog" aria-modal="true" aria-labelledby="ws-account-title">
       <div class="ws-modal-head">
         <div>
-          <h3 id="ws-account-title">${zh ? '我的账户' : 'My account'}</h3>
-          <p>${escapeHtml(authUser.name || authUser.email)}${authUser.role === 'admin' ? ' · Admin' : ''}</p>
+          <h3 id="ws-account-title">${escapeHtml(T.accountTitle)}</h3>
+          <p>${escapeHtml(authUser.name || authUser.email)}${authUser.role === 'admin' ? ` · ${escapeHtml(T.accountAdminBadge)}` : ''}</p>
         </div>
         <button class="ws-modal-close" type="button" aria-label="Close"><span class="fa fa-times"></span></button>
       </div>
@@ -3498,6 +3508,11 @@ async function openAccountModal() {
           <div id="ws-referral-status" style="padding:12px;border:1px solid var(--ws-border);border-radius:12px">${zh ? '正在读取…' : 'Loading…'}</div>
         </section>
         ${authUser.role === 'admin' ? `
+          <section style="margin-top:18px;padding:14px;border:1px solid var(--ws-border);border-radius:12px;background:var(--ws-surface)">
+            <strong>${escapeHtml(T.accountPortfolioTitle)}</strong>
+            <p style="font-size:13px;color:var(--ws-ink-3);margin:6px 0 10px">${escapeHtml(T.accountPortfolioSub)}</p>
+            <a class="ws-action-btn secondary" href="admin/portfolio" style="margin:0;text-decoration:none;display:flex;justify-content:center;align-items:center;gap:8px"><span class="fa fa-images"></span> ${escapeHtml(T.accountPortfolioOpen)}</a>
+          </section>
           <section style="margin-top:18px">
             <strong>${zh ? '待确认的专业路线订单' : 'Pending professional-route orders'}</strong>
             <div id="ws-admin-orders" style="margin-top:10px">${zh ? '正在读取…' : 'Loading…'}</div>

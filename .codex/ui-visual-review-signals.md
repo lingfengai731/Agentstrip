@@ -38,3 +38,16 @@ rejected aspects: 不接受点击添加地点后没有任何反应或可见反�
 reason in reviewer words: 现在的巴厘岛界面点击添加地点是没有反应的，没有回馈
 scope: this project
 recorded at: 2026-08-11
+
+workflow: ui-implementation-workflow-v2
+status: raw
+task: 管理员登录后的 Portfolio 管理入口
+page/surface: WanderMind AI 工作台账户弹窗与 Portfolio Content Manager
+screenshot or artifact: 生产登录页与本轮待实现账户弹窗
+reviewer: 用户
+decision: rejected
+accepted aspects: 管理员账户已经能够成功登录
+rejected aspects: 不接受登录后无法发现对象存储状态和 Portfolio 内容管理入口
+reason in reviewer words: 现在我已经成功登入，但登入的时候没有看到“对象存储已就绪”
+scope: this project
+recorded at: 2026-08-14

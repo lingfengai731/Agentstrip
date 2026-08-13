@@ -532,7 +532,7 @@ class ProductAccessTests(unittest.TestCase):
             encoding="utf-8"
         )
 
-        self.assertIn("assets/js/ai-tool.js?v=p55", ai_html)
+        self.assertIn("assets/js/ai-tool.js?v=p56", ai_html)
         self.assertIn(
             'type="email" class="ws-form-input ws-auth-input" id="ws-li-email"',
             ai_js,
@@ -548,6 +548,24 @@ class ProductAccessTests(unittest.TestCase):
         ):
             self.assertNotIn(public_admin_hint, ai_js)
         self.assertNotIn("email.toLowerCase() !== 'admin'", ai_js)
+
+    def test_admin_account_exposes_private_portfolio_manager_entry(self):
+        frontend = BACKEND_DIR.parents[1] / "wandermind-studio" / "frontend"
+        ai_js = (frontend / "assets" / "js" / "ai-tool.js").read_text(
+            encoding="utf-8"
+        )
+
+        self.assertIn("authUser.role === 'admin'", ai_js)
+        self.assertIn('href="admin/portfolio"', ai_js)
+        self.assertIn("accountPortfolioOpen", ai_js)
+        for label in (
+            "Open content manager",
+            "打开内容管理器",
+            "コンテンツ管理を開く",
+            "콘텐츠 관리자 열기",
+            "Buka pengelola konten",
+        ):
+            self.assertIn(label, ai_js)
 
     def test_only_admin_can_confirm_and_confirmation_is_idempotent(self):
         trip_id = self._new_trip(token=self.user_token)
