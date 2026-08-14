@@ -1,0 +1,29 @@
+name: Project memory validation
+
+on:
+  pull_request:
+    paths:
+      - PROJECT_CONTEXT.md
+      - .codex/project-memory/**
+      - tools/project-memory.ps1
+      - .github/ISSUE_TEMPLATE/agent-task.yml
+      - .github/workflows/project-memory-validate.yml
+  push:
+    branches:
+      - main
+    paths:
+      - PROJECT_CONTEXT.md
+      - .codex/project-memory/**
+      - tools/project-memory.ps1
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Validate project memory
+        shell: pwsh
+        run: ./tools/project-memory.ps1 validate

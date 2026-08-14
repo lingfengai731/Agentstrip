@@ -1,0 +1,65 @@
+name: Agent task claim
+description: Coordinate one bounded task across accounts and worktrees.
+title: "[Agent task] "
+labels:
+  - agent-task
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Use one account, one worktree, and one task branch. Do not include secrets or chat transcripts.
+  - type: input
+    id: owner
+    attributes:
+      label: Owner account
+      description: The account or person claiming this task.
+      placeholder: account1
+    validations:
+      required: true
+  - type: input
+    id: branch
+    attributes:
+      label: Branch and worktree
+      placeholder: codex/account1-issue-123 / E:\Agentstrip-account1
+    validations:
+      required: true
+  - type: textarea
+    id: objective
+    attributes:
+      label: Single objective
+      description: One independently verifiable outcome.
+    validations:
+      required: true
+  - type: textarea
+    id: scope
+    attributes:
+      label: Allowed scope
+      description: Files, modules, and external systems that may be touched.
+    validations:
+      required: true
+  - type: textarea
+    id: prohibited
+    attributes:
+      label: Prohibited changes and stop conditions
+      description: Existing content that must not change and conditions that require stopping.
+    validations:
+      required: true
+  - type: textarea
+    id: evidence
+    attributes:
+      label: Starting evidence
+      description: Commit, current checks, decisions, or prior handoff references.
+    validations:
+      required: true
+  - type: textarea
+    id: acceptance
+    attributes:
+      label: Acceptance and validation
+      description: Exact checks that must pass before completion.
+    validations:
+      required: true
+  - type: input
+    id: handoff
+    attributes:
+      label: Latest handoff path
+      placeholder: .codex/project-memory/handoffs/YYYY/MM/file.md
