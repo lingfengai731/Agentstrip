@@ -695,6 +695,7 @@ _PORTFOLIO_VERIFICATION = {
 }
 _PORTFOLIO_IMAGE_FORMATS = {"jpg", "jpeg", "png", "webp", "avif", "heic"}
 _PORTFOLIO_MAX_BYTES = 25 * 1024 * 1024
+_PORTFOLIO_MANIFEST_PATH = Path(__file__).resolve().parents[2] / "wandermind-studio" / "frontend" / "assets" / "data" / "image-publish-manifest.json"
 
 
 def _portfolio_destination(value: str) -> str:
@@ -785,6 +786,32 @@ def _cloudinary_config() -> tuple:
     if not re.fullmatch(r"[A-Za-z0-9_-]{2,80}", cloud_name):
         raise HTTPException(503, "Portfolio object storage configuration is invalid")
     return cloud_name, api_key, api_secret
+
+
+def _portfolio_approved_hashes() -> set[str]:
+    try:
+        manifest = json.loads(_PORTFOLIO_MANIFEST_PATH.read_text(encoding="utf-8"))
+    except (OSError, json.JSONDecodeError):
+        raise HTTPException(503, "Approved image manifest is unavailable")
+    if not isinstance(manifest, dict):
+        raise HTTPException(503, "Approved image manifest has an invalid structure")
+    images = manifest.get("images")
+    if not isinstance(images, list):
+        raise HTTPException(503, "Approved image manifest has an invalid images list")
+    hashes = {
+        str(item.get("sha256") or "").strip().lower()
+        for item in images
+        if isinstance(item, dict)
+    }
+    hashes.discard("")
+    if not hashes:
+        raise HTTPException(503, "Approved image manifest is empty")
+    return hashes
+
+
+def _require_portfolio_publish_approval(sha256: str, status: str) -> None:
+    if status == "published" and str(sha256 or "").strip().lower() not in _portfolio_approved_hashes():
+        raise HTTPException(400, "Image must be added to the approved manifest before publishing")
 
 
 def _cloudinary_sign(params: dict, api_secret: str) -> str:
@@ -981,6 +1008,7 @@ async def create_portfolio_asset(
     destination = _portfolio_destination(data.destination)
     metadata = _validate_portfolio_metadata(data.model_dump())
     storage = _portfolio_storage_payload(data, destination)
+    _require_portfolio_publish_approval(storage["sha256"], metadata["status"])
     now = int(time.time())
     conn = get_db()
     try:
@@ -1056,6 +1084,7 @@ async def update_portfolio_asset(
         }
         merged.update(data.model_dump(exclude_none=True))
         metadata = _validate_portfolio_metadata(merged)
+        _require_portfolio_publish_approval(existing["sha256"], metadata["status"])
         now = int(time.time())
         published_at = existing.get("published_at")
         archived_at = existing.get("archived_at")
@@ -1102,6 +1131,7 @@ async def replace_portfolio_asset(
             raise HTTPException(404, "Portfolio asset not found")
         existing = dict(row)
         storage = _portfolio_storage_payload(data, existing["destination"])
+        _require_portfolio_publish_approval(storage["sha256"], existing["status"])
         if storage["cloudinary_public_id"] != existing["cloudinary_public_id"]:
             raise HTTPException(400, "Replacement must preserve the Cloudinary public_id")
         now = int(time.time())

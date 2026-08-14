@@ -188,9 +188,9 @@ powershell -NoProfile -ExecutionPolicy Bypass -File .\tools\image-intake.ps1
 
 人工只需在 CSV 中填写或确认 `RightsStatus`、`SourceUrl`、`LicenseOrOwner`、`Publishable`、`HumanConfirmed`、`IntendedUse` 和中英文替代文字。允许的权利状态是 `owned`、`user_provided_with_consent`、`licensed`、`public_domain` 或 `cc0`；外部授权图片还必须填写来源网址。
 
-脚本不会移动、改名、覆盖或删除原图。图片改名时，唯一 SHA-256 会保留已有人工审核；出现重复文件时，新副本不会继承批准。当前发布清单包含 108 张已获统一授权并完成人工确认的图片；Portfolio 管理页会按 SHA-256 匹配清单、带入建议元数据，并要求清单外图片在发布前完成人工核对。
+脚本不会移动、改名、覆盖或删除原图。图片改名时，唯一 SHA-256 会保留已有人工审核；出现重复文件时，新副本不会继承批准。当前发布清单包含 108 张已获统一授权并完成人工确认的图片；Portfolio 管理页会按 SHA-256 匹配清单并自动带入标题、地点、路线和多语言资料，匹配图片保存草稿时无需手填。清单外图片只能保留为草稿，必须先通过收件与授权流程加入批准清单后才能发布。
 
-首张真实发布候选为 `Pura Tanah Lot.jpg`（SHA-256 `f7cd422d0d2322bcb90cb2a7b4c5538441ecdc1cf61715860b9949a4e74967cf`）。清单已提供中文、英文、日文、韩文和印尼文的标题、说明与替代文字，并强调潮汐和天气会改变现场观感，不承诺固定“出片”结果。管理页会同时检查上传队列和现有 Portfolio 内容库中的 SHA-256，避免重复上传。
+首张真实发布候选为 `Pura Tanah Lot.jpg`（SHA-256 `f7cd422d0d2322bcb90cb2a7b4c5538441ecdc1cf61715860b9949a4e74967cf`）。清单已提供中文、英文、日文、韩文和印尼文的标题、说明与替代文字，并强调潮汐和天气会改变现场观感，不承诺固定“出片”结果。该图片已在生产完成对象存储直传、数据库草稿记录和预览；草稿不进入公开 Portfolio API。管理页会同时检查上传队列和现有内容库中的 SHA-256，避免重复上传。
 
 生产单图 E2E 只有在 Render 已配置 `CLOUDINARY_CLOUD_NAME`、`CLOUDINARY_API_KEY`、`CLOUDINARY_API_SECRET` 且强管理员账号可用时才允许执行。缺少这些条件时，不应把本地 manifest 就绪误写成“已上传”或“已发布”。
 

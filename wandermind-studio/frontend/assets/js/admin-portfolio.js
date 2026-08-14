@@ -38,7 +38,14 @@
     ko:{manifestChecking:'승인된 이미지 매니페스트를 불러오는 중…',manifestReady:'승인 매니페스트 준비 완료: 해시로 108개 이미지를 확인할 수 있습니다.',manifestLoadFailed:'승인 매니페스트를 불러오지 못했습니다. 새 이미지는 수동 검토 후 초안으로 저장할 수 있습니다.',manifestMatched:'승인 매니페스트 일치',manifestUnmatched:'승인 매니페스트에 없음',metadataConfirmed:'메타데이터 확인됨',editMetadata:'메타데이터 검토',queueReviewTitle:'이미지 메타데이터 검토',queueReviewHelp:'승인된 제안은 시작점입니다. 게시 전에 각 필드를 확인하세요.',saveQueueMetadata:'메타데이터 확인',duplicateFile:'이 이미지는 이미 업로드 대기열에 있습니다.',duplicateAsset:'이 이미지는 이미 Portfolio 라이브러리에 있습니다.',publishNeedsManifestReview:'게시할 각 이미지는 승인 매니페스트와 일치하거나 메타데이터를 수동으로 확인해야 합니다.',uploadFinishedWithErrors:'업로드 처리가 끝났지만 실패한 이미지가 있습니다. 확인 후 다시 시도하세요.',archiveConfirm:'이 Portfolio 이미지를 보관하시겠습니까? 메타데이터는 유지되며 나중에 상태를 복원할 수 있습니다.',skipContent:'본문으로 건너뛰기'},
     id:{manifestChecking:'Memuat manifest gambar yang disetujui…',manifestReady:'Manifest siap: 108 gambar dapat dicocokkan melalui hash.',manifestLoadFailed:'Manifest tidak dapat dimuat. Gambar baru masih dapat disimpan sebagai draf setelah ditinjau manual.',manifestMatched:'Cocok dengan manifest yang disetujui',manifestUnmatched:'Tidak ada di manifest yang disetujui',metadataConfirmed:'Metadata dikonfirmasi',editMetadata:'Tinjau metadata',queueReviewTitle:'Tinjau metadata gambar',queueReviewHelp:'Saran yang disetujui adalah titik awal. Konfirmasikan setiap kolom sebelum menerbitkan.',saveQueueMetadata:'Konfirmasi metadata',duplicateFile:'Gambar ini sudah ada dalam antrean unggahan.',duplicateAsset:'Gambar ini sudah ada di pustaka Portfolio.',publishNeedsManifestReview:'Setiap gambar yang akan diterbitkan harus cocok dengan manifest yang disetujui atau telah dikonfirmasi secara manual.',uploadFinishedWithErrors:'Antrean selesai, tetapi beberapa gambar gagal. Tinjau gambar yang gagal lalu coba lagi.',archiveConfirm:'Arsipkan gambar Portfolio ini? Metadata tetap tersimpan dan status dapat dipulihkan nanti.',skipContent:'Lewati ke konten utama'}
   };
-  LANGS.forEach(function (lang) { Object.assign(COPY[lang], QUEUE_COPY[lang]); });
+  var SIMPLE_UPLOAD_COPY = {
+    en:{autoFillTitle:'Approved images are filled automatically',autoFillHelp:'After a manifest match, title, location, routes and localized copy are saved with the image. Draft uploads need no manual entry.',advancedMetadata:'Optional defaults for unmatched images',advancedMetadataHelp:'Open this only when an image is not in the approved manifest. You can also edit one image from its queue card.',autoMetadata:'Automatic details',manualMetadataNeeded:'Not matched: review details before publishing',reviewAutoMetadata:'View or edit automatic details',publishNeedsManifestReview:'Add every image to the approved manifest before publishing. Unmatched images can still be saved as drafts.',manifestApprovalRequired:'Add this image to the approved manifest before publishing.',draftUploadFinished:'Draft saved. The image, database record and preview are ready in the library.',publishedUploadFinished:'Upload published. The image and metadata are now available in the Portfolio.'},
+    zh:{autoFillTitle:'已批准图片会自动填写资料',autoFillHelp:'匹配批准清单后，标题、地点、路线和五语言文案会随图片一起保存；上传草稿无需手动填写。',advancedMetadata:'未匹配图片的选填资料',advancedMetadataHelp:'只有图片不在批准清单中时才需要展开；也可以在单张图片卡片中单独修改。',autoMetadata:'自动资料',manualMetadataNeeded:'未匹配清单：发布前请核对资料',reviewAutoMetadata:'查看或修改自动资料',publishNeedsManifestReview:'图片必须先加入批准清单才能发布；未匹配图片仍可保存为草稿。',manifestApprovalRequired:'请先将这张图片加入批准清单，再发布。',draftUploadFinished:'草稿已保存：图片、数据库记录和预览均已就绪。',publishedUploadFinished:'图片已发布，图片和资料已进入 Portfolio。'},
+    ja:{autoFillTitle:'承認済み画像の情報は自動入力されます',autoFillHelp:'マニフェストに一致すると、タイトル、場所、ルート、多言語文が画像と一緒に保存されます。下書きでは手入力不要です。',advancedMetadata:'未照合画像の任意設定',advancedMetadataHelp:'承認済みマニフェストにない画像だけ開いてください。各画像カードから個別編集もできます。',autoMetadata:'自動入力情報',manualMetadataNeeded:'未照合：公開前に情報を確認してください',reviewAutoMetadata:'自動情報を確認・編集',publishNeedsManifestReview:'公開前に画像を承認済みマニフェストへ追加してください。未照合画像は下書き保存できます。',manifestApprovalRequired:'公開前にこの画像を承認済みマニフェストへ追加してください。',draftUploadFinished:'下書きを保存しました。画像、データベース記録、プレビューの準備が完了しました。',publishedUploadFinished:'画像を公開しました。画像と情報が Portfolio に反映されました。'},
+    ko:{autoFillTitle:'승인된 이미지는 정보가 자동 입력됩니다',autoFillHelp:'매니페스트와 일치하면 제목, 장소, 경로, 다국어 문구가 이미지와 함께 저장됩니다. 초안 업로드에는 직접 입력이 필요 없습니다.',advancedMetadata:'일치하지 않는 이미지의 선택 정보',advancedMetadataHelp:'승인 매니페스트에 없는 이미지에만 펼쳐 사용하세요. 각 이미지 카드에서도 개별 수정할 수 있습니다.',autoMetadata:'자동 정보',manualMetadataNeeded:'일치하지 않음: 공개 전에 정보를 확인하세요',reviewAutoMetadata:'자동 정보 보기 또는 수정',publishNeedsManifestReview:'공개 전에 이미지를 승인 매니페스트에 추가하세요. 일치하지 않는 이미지는 초안으로 저장할 수 있습니다.',manifestApprovalRequired:'공개 전에 이 이미지를 승인 매니페스트에 추가하세요.',draftUploadFinished:'초안이 저장되었습니다. 이미지, 데이터베이스 기록, 미리보기가 준비되었습니다.',publishedUploadFinished:'이미지가 공개되어 Portfolio에 이미지와 정보가 반영되었습니다.'},
+    id:{autoFillTitle:'Informasi gambar yang disetujui terisi otomatis',autoFillHelp:'Setelah cocok dengan manifest, judul, lokasi, rute, dan teks multibahasa disimpan bersama gambar. Draf tidak perlu diisi manual.',advancedMetadata:'Data opsional untuk gambar yang tidak cocok',advancedMetadataHelp:'Buka hanya jika gambar tidak ada di manifest yang disetujui. Setiap gambar juga dapat diedit dari kartu antrean.',autoMetadata:'Data otomatis',manualMetadataNeeded:'Tidak cocok: tinjau data sebelum menerbitkan',reviewAutoMetadata:'Lihat atau ubah data otomatis',publishNeedsManifestReview:'Tambahkan gambar ke manifest yang disetujui sebelum menerbitkan. Gambar yang belum cocok tetap dapat disimpan sebagai draf.',manifestApprovalRequired:'Tambahkan gambar ini ke manifest yang disetujui sebelum menerbitkan.',draftUploadFinished:'Draf tersimpan. Gambar, catatan database, dan pratinjau sudah siap.',publishedUploadFinished:'Gambar telah diterbitkan dan data sudah tersedia di Portfolio.'}
+  };
+  LANGS.forEach(function (lang) { Object.assign(COPY[lang], QUEUE_COPY[lang], SIMPLE_UPLOAD_COPY[lang]); });
 
   function language() {
     var value = (document.getElementById('langPicker').value || localStorage.getItem('wm_studio_lang') || 'en').toLowerCase();
@@ -244,8 +251,11 @@
       var stateText = item.error || t(item.state);
       var meta = item.width ? item.width + ' × ' + item.height + ' · ' + formatBytes(item.file.size) + ' · ' + fileFormat(item.file).toUpperCase() : formatBytes(item.file.size);
       var badges = item.sha256 ? '<div class="wm-queue-badges"><span class="wm-chip" data-status="' + (item.manifestMatch ? 'manifest-matched' : 'manifest-unmatched') + '">' + escapeHtml(t(item.manifestMatch ? 'manifestMatched' : 'manifestUnmatched')) + '</span>' + (item.metadataEdited ? '<span class="wm-chip">' + escapeHtml(t('metadataConfirmed')) + '</span>' : '') + '</div>' : '';
-      var actions = item.state === 'queued' ? '<div class="wm-queue-actions"><button class="wm-btn wm-btn-secondary" type="button" data-queue-edit="' + escapeHtml(item.id) + '">' + escapeHtml(t('editMetadata')) + '</button></div>' : '';
-      return '<div class="wm-queue-item"><img src="' + escapeHtml(item.preview) + '" width="58" height="58" alt=""><div class="wm-queue-main"><div class="wm-queue-head"><div><span class="wm-queue-name">' + escapeHtml(item.file.name) + '</span><span class="wm-queue-meta">' + escapeHtml(meta) + '</span></div></div>' + badges + '<div class="wm-progress" role="progressbar" aria-label="' + escapeHtml(item.file.name) + '" aria-valuemin="0" aria-valuemax="100" aria-valuenow="' + Number(item.progress || 0) + '"><span style="width:' + Number(item.progress || 0) + '%"></span></div><div class="wm-queue-state">' + escapeHtml(stateText) + '</div>' + actions + '</div></div>';
+      var metadata = item.metadata || {};
+      var summaryParts = [localeValue(metadata.title) || metadata.place_name, metadata.region, (metadata.route_ids || []).join(' / ')].filter(Boolean);
+      var metadataSummary = item.sha256 && summaryParts.length ? '<div class="wm-queue-meta"><strong>' + escapeHtml(t(item.manifestMatch ? 'autoMetadata' : 'manualMetadataNeeded')) + '：</strong> ' + escapeHtml(summaryParts.join(' · ')) + '</div>' : '';
+      var actions = item.state === 'queued' ? '<div class="wm-queue-actions"><button class="wm-btn wm-btn-secondary" type="button" data-queue-edit="' + escapeHtml(item.id) + '">' + escapeHtml(t(item.manifestMatch ? 'reviewAutoMetadata' : 'editMetadata')) + '</button></div>' : '';
+      return '<div class="wm-queue-item"><img src="' + escapeHtml(item.preview) + '" width="58" height="58" alt=""><div class="wm-queue-main"><div class="wm-queue-head"><div><span class="wm-queue-name">' + escapeHtml(item.file.name) + '</span><span class="wm-queue-meta">' + escapeHtml(meta) + '</span></div></div>' + badges + metadataSummary + '<div class="wm-progress" role="progressbar" aria-label="' + escapeHtml(item.file.name) + '" aria-valuemin="0" aria-valuemax="100" aria-valuenow="' + Number(item.progress || 0) + '"><span style="width:' + Number(item.progress || 0) + '%"></span></div><div class="wm-queue-state">' + escapeHtml(stateText) + '</div>' + actions + '</div></div>';
     }).join('');
     bindQueueEvents();
   }
@@ -325,7 +335,7 @@
     if (!state.storageReady) return showAlert(t('storageMissing'));
     var status = event.submitter && event.submitter.dataset.status || 'draft';
     var metadata = metadataFromForm(uploadForm, status);
-    if (status === 'published' && selected.some(function (record) { return !record.manifestMatch && !record.metadataEdited; })) return showAlert(t('publishNeedsManifestReview'));
+    if (status === 'published' && selected.some(function (record) { return !record.manifestMatch; })) return showAlert(t('publishNeedsManifestReview'));
     if (status === 'published' && selected.some(function (record) {
       var itemMetadata = recordMetadata(record, metadata, status);
       return !itemMetadata.place_name || !Object.keys(itemMetadata.title).length || !Object.keys(itemMetadata.alt_text).length;
@@ -338,11 +348,12 @@
       catch (error) { failedCount += 1; record.state = 'failed'; record.error = error.message || t('networkError'); renderQueue(); }
     }
     buttons.forEach(function (button) { button.disabled = !state.storageReady; });
-    showAlert(t(failedCount ? 'uploadFinishedWithErrors' : 'uploadFinished'));
+    showAlert(t(failedCount ? 'uploadFinishedWithErrors' : status === 'published' ? 'publishedUploadFinished' : 'draftUploadFinished'));
     await loadAssets();
   }
 
   function statusLabel(status) { return t(status) || status; }
+  function isApprovedPortfolioAsset(asset) { return Boolean(state.manifestByHash[String(asset.sha256 || '').toLowerCase()]); }
   function renderAssets() {
     var search = String(document.getElementById('assetSearch').value || '').trim().toLowerCase();
     var status = document.getElementById('statusFilter').value;
@@ -354,11 +365,13 @@
     var allowDrag = !search && status === 'all';
     assetList.innerHTML = filtered.map(function (asset, index) {
       var position = state.assets.findIndex(function (item) { return item.id === asset.id; });
+      var approved = isApprovedPortfolioAsset(asset);
+      var approvalNote = asset.status !== 'published' && !approved ? '<p class="wm-help">' + escapeHtml(t('manifestApprovalRequired')) + '</p>' : '';
       return '<article class="wm-asset" data-asset-id="' + escapeHtml(asset.id) + '" draggable="' + (allowDrag ? 'true' : 'false') + '">' +
         '<img src="' + escapeHtml(asset.thumbnail_url) + '" width="112" height="94" alt="' + escapeHtml(localeValue(asset.alt_text)) + '" loading="lazy"><div><div class="wm-asset-top"><div><h3>' + escapeHtml(localeValue(asset.title) || asset.place_name || asset.original_filename) + '</h3><p>' + escapeHtml([asset.area,asset.region,asset.primary_theme].filter(Boolean).join(' · ')) + '</p></div><span class="wm-chip" data-status="' + escapeHtml(asset.status) + '">' + escapeHtml(statusLabel(asset.status)) + '</span></div>' +
-        '<p>' + escapeHtml(asset.width + ' × ' + asset.height + ' · ' + String(asset.format || '').toUpperCase() + ' · ' + (asset.verification_status || '')) + '</p>' +
+        '<p>' + escapeHtml(asset.width + ' × ' + asset.height + ' · ' + String(asset.format || '').toUpperCase() + ' · ' + (asset.verification_status || '')) + '</p>' + approvalNote +
         '<div class="wm-asset-actions"><a class="wm-btn wm-btn-secondary" href="' + escapeHtml(asset.web_url) + '" target="_blank" rel="noopener">' + escapeHtml(t('preview')) + '</a><button class="wm-btn wm-btn-secondary" type="button" data-action="edit">' + escapeHtml(t('edit')) + '</button>' +
-        (asset.status !== 'published' ? '<button class="wm-btn wm-btn-primary" type="button" data-action="published">' + escapeHtml(t('publish')) + '</button>' : '') +
+        (asset.status !== 'published' && approved ? '<button class="wm-btn wm-btn-primary" type="button" data-action="published">' + escapeHtml(t('publish')) + '</button>' : '') +
         (asset.status !== 'hidden' ? '<button class="wm-btn wm-btn-secondary" type="button" data-action="hidden">' + escapeHtml(t('hide')) + '</button>' : '') +
         (asset.status !== 'archived' ? '<button class="wm-btn wm-btn-danger" type="button" data-action="archived">' + escapeHtml(t('archive')) + '</button>' : '') +
         '<button class="wm-btn wm-btn-secondary" type="button" data-action="up"' + (position <= 0 ? ' disabled' : '') + '>' + escapeHtml(t('moveUp')) + '</button><button class="wm-btn wm-btn-secondary" type="button" data-action="down"' + (position >= state.assets.length - 1 ? ' disabled' : '') + '>' + escapeHtml(t('moveDown')) + '</button></div></div></article>';
@@ -376,7 +389,7 @@
       '<div class="wm-field wide"><label>' + escapeHtml(t('routeIds')) + '</label><input name="route_ids" value="' + escapeHtml((asset.route_ids || []).join(', ')) + '"></div><div class="wm-field wide"><label>' + escapeHtml(t('extensionIds')) + '</label><input name="extension_ids" value="' + escapeHtml((asset.extension_ids || []).join(', ')) + '"></div><div class="wm-field wide"><label>' + escapeHtml(t('tags')) + '</label><input name="tags" value="' + escapeHtml((asset.tags || []).join(', ')) + '"></div>' +
       '<div class="wm-field"><label>' + escapeHtml(t('mood')) + '</label><input name="mood" value="' + escapeHtml(asset.mood) + '"></div><div class="wm-field"><label>' + escapeHtml(t('photoStyle')) + '</label><input name="photography_style" value="' + escapeHtml(asset.photography_style) + '"></div>' +
       '<div class="wm-field wide"><label>' + escapeHtml(t('verification')) + '</label><select name="verification_status">' + option('pending-review',t('pendingReview'),asset.verification_status) + option('caption-only',t('captionOnly'),asset.verification_status) + option('bali-named',t('baliNamed'),asset.verification_status) + option('route-linked',t('routeLinked'),asset.verification_status) + '</select></div>' +
-      '<details class="wm-locales" open><summary>' + escapeHtml(t('localizedCopy')) + '</summary><div class="wm-locales-grid">' + localizedFields('editor', asset) + '</div></details>';
+      '<details class="wm-locales"><summary>' + escapeHtml(t('localizedCopy')) + '</summary><div class="wm-locales-grid">' + localizedFields('editor', asset) + '</div></details>';
   }
 
   function openEditor(id, languageRefresh) {
@@ -400,6 +413,8 @@
 
   async function changeStatus(id, status) {
     clearAlert();
+    var asset = state.assets.find(function (item) { return item.id === id; });
+    if (status === 'published' && (!asset || !isApprovedPortfolioAsset(asset))) return showAlert(t('manifestApprovalRequired'));
     if (status === 'archived' && !window.confirm(t('archiveConfirm'))) return;
     try { await api('/api/admin/portfolio/assets/' + encodeURIComponent(id), { method:'PATCH', body:{ status:status } }); await loadAssets(); }
     catch (error) { showAlert(error.message || t('networkError')); }

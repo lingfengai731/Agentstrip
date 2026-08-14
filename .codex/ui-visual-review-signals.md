@@ -51,3 +51,16 @@ rejected aspects: 不接受登录后无法发现对象存储状态和 Portfolio 
 reason in reviewer words: 现在我已经成功登入，但登入的时候没有看到“对象存储已就绪”
 scope: this project
 recorded at: 2026-08-14
+
+workflow: ui-implementation-workflow-v2
+status: raw
+task: Portfolio 首图上传流程简化
+page/surface: WanderMind Portfolio Content Manager 上传表单
+screenshot or artifact: C:\WINDOWS\TEMP\codex-clipboard-8edb1c9a-f1e8-40d2-bdd0-3a1f76eeaa00.png
+reviewer: 用户
+decision: rejected
+accepted aspects: Pura Tanah Lot 图片已成功保存为草稿，内容库能够显示预览和草稿状态
+rejected aspects: 不接受把分类、地区、路线、标签和五语言资料全部作为默认可见的手工填写项
+reason in reviewer words: 上传要填写的东西会不会太多，像这张照片我都不知道怎么填写
+scope: this surface
+recorded at: 2026-08-14

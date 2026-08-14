@@ -58,6 +58,12 @@
     .wm-field input,.wm-field select,.wm-field textarea{width:100%;min-height:44px;border:1px solid #c7d2ce;border-radius:8px;background:#fff;padding:9px 10px;color:var(--ink)}
     .wm-field textarea{min-height:82px;resize:vertical}
     .wm-help{color:var(--muted);font-size:.73rem}
+    .wm-upload-guide{margin-top:16px;padding:13px 14px;border:1px solid #b9d7ce;border-radius:10px;background:#f0f8f5;color:var(--ink)}
+    .wm-upload-guide strong{display:block;font-size:.88rem}
+    .wm-upload-guide p{margin:4px 0 0;color:var(--muted);font-size:.76rem}
+    .wm-advanced{margin-top:16px;border:1px solid #dfe6e2;border-radius:10px;background:#fbfcfb}
+    .wm-advanced>summary{cursor:pointer;padding:12px 13px;font-size:.84rem;font-weight:780}
+    .wm-advanced-body{padding:0 13px 14px}
     .wm-locales{grid-column:1/-1;border:1px solid #dfe6e2;border-radius:10px;background:#fbfcfb}
     .wm-locales summary{cursor:pointer;padding:11px 12px;font-weight:780}
     .wm-locales-grid{display:grid;gap:12px;padding:0 12px 14px}
@@ -138,7 +144,11 @@
           <p class="wm-help" id="manifestStatus" role="status" aria-live="polite" data-copy="manifestChecking">Loading the approved image manifest…</p>
           <div class="wm-queue" id="uploadQueue" aria-live="polite"></div>
           <form id="uploadMetadata">
-            <div class="wm-fields">
+            <div class="wm-upload-guide"><strong data-copy="autoFillTitle">Approved images are filled automatically</strong><p data-copy="autoFillHelp">After a manifest match, title, location, routes and localized copy are saved with the image. Draft uploads need no manual entry.</p></div>
+            <details class="wm-advanced" id="uploadDefaults">
+              <summary data-copy="advancedMetadata">Optional defaults for unmatched images</summary>
+              <div class="wm-advanced-body"><p class="wm-help" data-copy="advancedMetadataHelp">Open this only when an image is not in the approved manifest. You can also edit one image from its queue card.</p>
+              <div class="wm-fields">
               <div class="wm-field"><label for="primaryTheme" data-copy="theme">Primary theme</label><select id="primaryTheme" name="primary_theme"><option value="landscapes">Landscapes</option><option value="culture">Culture</option><option value="experiences">Experiences</option></select></div>
               <div class="wm-field"><label for="subCategory" data-copy="subCategory">Sub-category</label><input id="subCategory" name="sub_category" autocomplete="off"></div>
               <div class="wm-field"><label for="region" data-copy="region">Region</label><input id="region" name="region" placeholder="G1–G7"></div>
@@ -152,8 +162,9 @@
               <div class="wm-field"><label for="mood" data-copy="mood">Mood</label><input id="mood" name="mood" placeholder="calm"></div>
               <div class="wm-field"><label for="photographyStyle" data-copy="photoStyle">Photography style</label><input id="photographyStyle" name="photography_style" placeholder="sunrise documentary"></div>
               <div class="wm-field wide"><label for="verificationStatus" data-copy="verification">Verification status</label><select id="verificationStatus" name="verification_status"><option value="pending-review">Pending review</option><option value="caption-only">Caption only</option><option value="bali-named">Bali named</option><option value="route-linked">Route linked</option></select></div>
-              <details class="wm-locales" open><summary data-copy="localizedCopy">Localized title, description and alt text</summary><div class="wm-locales-grid" id="uploadLocales"></div></details>
-            </div>
+              <details class="wm-locales"><summary data-copy="localizedCopy">Localized title, description and alt text</summary><div class="wm-locales-grid" id="uploadLocales"></div></details>
+              </div></div>
+            </details>
             <div class="wm-actions"><button class="wm-btn wm-btn-primary" id="uploadDraft" type="submit" data-status="draft" data-copy="saveDraft">Upload as draft</button><button class="wm-btn wm-btn-secondary" id="uploadPublish" type="submit" data-status="published" data-copy="uploadPublish">Upload and publish</button></div>
           </form>
         </div>
@@ -175,6 +186,6 @@
     <div class="wm-dialog-head"><div><h2 id="queueDialogTitle" data-copy="queueReviewTitle">Review image metadata</h2><p class="wm-help" data-copy="queueReviewHelp">Approved suggestions are a starting point. Confirm the fields before publishing.</p></div><button class="wm-dialog-close" type="button" data-queue-dialog-close aria-label="Close">×</button></div>
     <form class="wm-dialog-body" id="queueEditor"><div class="wm-fields" id="queueEditorFields"></div><div class="wm-actions"><button class="wm-btn wm-btn-primary" type="submit" data-copy="saveQueueMetadata">Confirm metadata</button><button class="wm-btn wm-btn-secondary" type="button" data-queue-dialog-close data-copy="cancel">Cancel</button></div></form>
   </dialog>
-  <script src="../assets/js/admin-portfolio.js?v=p3"></script>
+  <script src="../assets/js/admin-portfolio.js?v=p4"></script>
 </body>
 </html>

@@ -1397,7 +1397,13 @@ class ProductAccessTests(unittest.TestCase):
             self.assertEqual(response.status_code, 200, response.text)
             return response.json()["asset"]
 
-        with patch.dict(os.environ, cloud_env, clear=False):
+        approved_hashes = {
+            hashlib.sha256(f"image-{suffix}".encode()).hexdigest()
+            for suffix in ("1", "2", "3")
+        }
+        with patch.dict(os.environ, cloud_env, clear=False), patch.object(
+            main, "_portfolio_approved_hashes", return_value=approved_hashes
+        ):
             first = create_asset("lovina-one.jpg", "1", "Lovina at sunrise")
             second = create_asset("lovina-two.jpg", "2", "Dolphin boat moment")
 
@@ -1406,6 +1412,39 @@ class ProductAccessTests(unittest.TestCase):
             )
             self.assertEqual(public_draft.status_code, 200)
             self.assertNotIn(first["id"], {item["id"] for item in public_draft.json()["assets"]})
+
+            with patch.object(main, "_portfolio_approved_hashes", return_value=set()):
+                blocked_publish = self._run(
+                    self._request(
+                        "PATCH",
+                        f"/api/admin/portfolio/assets/{second['id']}",
+                        token=self.admin_token,
+                        json={"status": "published"},
+                    )
+                )
+            self.assertEqual(blocked_publish.status_code, 400, blocked_publish.text)
+            self.assertIn("approved manifest", blocked_publish.text)
+
+            unapproved_create = {
+                "destination": "bali",
+                "primary_theme": "culture",
+                "place_name": "Unapproved place",
+                "title": {"en": "Unapproved image"},
+                "alt_text": {"en": "Unapproved image"},
+                "verification_status": "route-linked",
+                "status": "published",
+            }
+            unapproved_create.update(signed_upload("unapproved.jpg", "4"))
+            with patch.object(main, "_portfolio_approved_hashes", return_value=set()):
+                blocked_create = self._run(
+                    self._request(
+                        "POST",
+                        "/api/admin/portfolio/assets",
+                        token=self.admin_token,
+                        json=unapproved_create,
+                    )
+                )
+            self.assertEqual(blocked_create.status_code, 400, blocked_create.text)
 
             published = self._run(
                 self._request(
@@ -1425,6 +1464,20 @@ class ProductAccessTests(unittest.TestCase):
             self.assertEqual(public_item["title"]["en"], "Lovina at sunrise")
             self.assertNotIn("cloudinary_asset_id", public_item)
             self.assertEqual(public_live.headers["cache-control"], "no-store")
+
+            unapproved_replacement = signed_upload(
+                "unapproved-replacement.jpg", "4", replacement_asset_id=first["id"]
+            )
+            with patch.object(main, "_portfolio_approved_hashes", return_value=set()):
+                blocked_replacement = self._run(
+                    self._request(
+                        "POST",
+                        f"/api/admin/portfolio/assets/{first['id']}/replace",
+                        token=self.admin_token,
+                        json=unapproved_replacement,
+                    )
+                )
+            self.assertEqual(blocked_replacement.status_code, 400, blocked_replacement.text)
 
             replacement = signed_upload(
                 "lovina-replacement.jpg", "3", replacement_asset_id=first["id"]
@@ -1468,6 +1521,18 @@ class ProductAccessTests(unittest.TestCase):
             )
             self.assertNotIn(first["id"], {item["id"] for item in public_hidden.json()["assets"]})
 
+    def test_portfolio_publish_approval_fails_closed_for_invalid_manifest(self):
+        with patch.object(main.json, "loads", return_value=[]):
+            with self.assertRaises(main.HTTPException) as caught:
+                main._portfolio_approved_hashes()
+        self.assertEqual(caught.exception.status_code, 503)
+        self.assertIn("invalid structure", caught.exception.detail)
+        with patch.object(main.json, "loads", return_value={"images": None}):
+            with self.assertRaises(main.HTTPException) as caught:
+                main._portfolio_approved_hashes()
+        self.assertEqual(caught.exception.status_code, 503)
+        self.assertIn("invalid images list", caught.exception.detail)
+
     def test_portfolio_admin_page_uses_direct_signed_upload_and_static_fallback(self):
         frontend = BACKEND_DIR.parents[1] / "wandermind-studio" / "frontend"
         admin_html = (frontend / "admin" / "portfolio.html").read_text(encoding="utf-8")
@@ -1477,20 +1542,29 @@ class ProductAccessTests(unittest.TestCase):
         self.assertIn("multiple", admin_html)
         self.assertIn('id="manifestStatus"', admin_html)
         self.assertIn('id="queueDialog"', admin_html)
-        self.assertIn("admin-portfolio.js?v=p3", admin_html)
+        self.assertIn("admin-portfolio.js?v=p4", admin_html)
+        self.assertIn('id="uploadDefaults"', admin_html)
+        self.assertNotIn('id="uploadDefaults" open', admin_html)
+        self.assertIn("Approved images are filled automatically", admin_html)
         self.assertIn("/api/admin/portfolio/upload-signature", admin_js)
         self.assertIn("image-publish-manifest.json?v=p2", admin_js)
         self.assertIn("state.manifestByHash[record.sha256]", admin_js)
         self.assertIn("record.metadataEdited", admin_js)
         self.assertIn("publishNeedsManifestReview", admin_js)
+        self.assertIn("isApprovedPortfolioAsset", admin_js)
+        self.assertIn("manifestApprovalRequired", admin_js)
         self.assertIn("duplicateAsset", admin_js)
         self.assertIn("asset.sha256 === record.sha256", admin_js)
         self.assertIn("localizedSuggestion(item.title", admin_js)
         self.assertIn("localizedSuggestion(item.description", admin_js)
+        self.assertIn("reviewAutoMetadata", admin_js)
+        self.assertIn("draftUploadFinished", admin_js)
+        self.assertIn("summaryParts.join(' · ')", admin_js)
         self.assertIn("xhr.open('POST', signature.upload_url)", admin_js)
         self.assertIn("isSupportedImageFile(file)", admin_js)
         self.assertIn("t('preview')", admin_js)
         self.assertIn("https://api.cloudinary.com", Path(main.__file__).read_text(encoding="utf-8"))
+        self.assertIn("_require_portfolio_publish_approval", Path(main.__file__).read_text(encoding="utf-8"))
         self.assertNotIn("CLOUDINARY_API_SECRET", admin_js)
         self.assertNotIn("/api/admin/portfolio/upload-file", admin_js)
         self.assertIn("/api/portfolio?destination=bali", bali_html)
