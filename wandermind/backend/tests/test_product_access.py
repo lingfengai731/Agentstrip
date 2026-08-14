@@ -1239,6 +1239,10 @@ class ProductAccessTests(unittest.TestCase):
             1,
         )
         r1 = next(route for route in data["routes"] if route["id"] == "R1")
+        self.assertEqual(
+            r1["verification_status"],
+            "needs_supplier_confirmation",
+        )
         r1_outline_ids = {
             poi_id
             for day in r1["free_outline"]

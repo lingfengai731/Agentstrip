@@ -172,7 +172,7 @@
       "optional_modules": ["nusa_penida_day", "mount_batur_sunrise", "east_bali"],
       "preview_days": 3,
       "driver_supported": true,
-      "verification_status": "pending_review"
+      "verification_status": "needs_supplier_confirmation"
     },
     {
       "id": "R2",
