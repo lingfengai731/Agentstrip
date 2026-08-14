@@ -1208,6 +1208,11 @@ class ProductAccessTests(unittest.TestCase):
             "besakih_temple",
             "gwk",
             "ubud_monkey_forest",
+            "uluwatu_temple",
+            "seminyak_beach",
+            "melasti_beach",
+            "jimbaran_bay",
+            "sanur_beach",
         }
         self.assertEqual(
             {poi["id"] for poi in data["pois"] if poi["verification_status"] == "verified"},
@@ -1215,7 +1220,7 @@ class ProductAccessTests(unittest.TestCase):
         )
         self.assertEqual(
             sum(poi["verification_status"] == "pending_review" for poi in data["pois"]),
-            45,
+            40,
         )
         self.assertIn("opening_hours", data["verification_policy"]["live_checks_required"])
         for poi_id in verified_ids:
