@@ -1218,6 +1218,10 @@ class ProductAccessTests(unittest.TestCase):
             "ubud_palace",
             "ubud_art_market",
             "campuhan_ridge_walk",
+            "padang_padang_beach",
+            "pandawa_beach",
+            "bingin_beach",
+            "nusa_dua_beach",
         }
         self.assertEqual(
             {poi["id"] for poi in data["pois"] if poi["verification_status"] == "verified"},
@@ -1225,7 +1229,7 @@ class ProductAccessTests(unittest.TestCase):
         )
         self.assertEqual(
             sum(poi["verification_status"] == "pending_review" for poi in data["pois"]),
-            34,
+            30,
         )
         self.assertEqual(
             poi_by_id["mount_batur_jeep"]["verification_status"],
@@ -1265,7 +1269,22 @@ class ProductAccessTests(unittest.TestCase):
             },
             {"mount_batur_jeep"},
         )
+        r3 = next(route for route in data["routes"] if route["id"] == "R3")
+        self.assertEqual(r3["verification_status"], "verified")
+        r3_outline_ids = {
+            poi_id
+            for day in r3["free_outline"]
+            for poi_id in day["suggested_poi_ids"]
+        }
+        self.assertEqual(len(r3_outline_ids), 8)
+        self.assertEqual(
+            {poi_by_id[poi_id]["verification_status"] for poi_id in r3_outline_ids},
+            {"verified"},
+        )
         self.assertIn("opening_hours", data["verification_policy"]["live_checks_required"])
+        bali_html = (data_path.parents[2] / "bali.html").read_text(encoding="utf-8")
+        self.assertIn("Stable route facts reviewed", bali_html)
+        self.assertIn("路线稳定事实已核验", bali_html)
         for poi_id in verified_ids:
             poi = poi_by_id[poi_id]
             self.assertTrue(poi["official_url"].startswith("https://"), poi_id)
