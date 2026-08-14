@@ -1,0 +1,22 @@
+{
+    "schema_version":  1,
+    "evidence_id":  "ev-20260814T172020Z-cross-account-memory-rollout",
+    "task_ref":  "cross-account-memory-rollout",
+    "owner":  "codex-sol",
+    "captured_at":  "2026-08-14T17:20:20Z",
+    "status":  "verified",
+    "claim":  "PR #1 merged add-only; Agentstrip2 worktree created at E:\\Agentstrip2-worktree; global cross-account-project-memory skill installed and validated; Codex persistent project mapping updated.",
+    "source":  {
+                   "kind":  "git",
+                   "repository":  "https://github.com/lingfengai731/Agentstrip.git",
+                   "commit":  "0cd9681032b7f8c8e315adf6f11856a0f350ef7a",
+                   "branch":  "codex/account2-start",
+                   "worktree":  "E:\\Agentstrip2-worktree",
+                   "dirty":  false
+               },
+    "verification":  {
+                         "command":  "GitHub PR #1 + Actions; project-memory validate; skill quick_validate; add-only collision forward-test",
+                         "result":  "pass; current Codex process still caches old Agentstrip2 path until restart"
+                     },
+    "notes":  "No existing Agentstrip project file was modified. Independent codex exec skill-load probe timed out without final after 3 minutes and is not counted as success."
+}
