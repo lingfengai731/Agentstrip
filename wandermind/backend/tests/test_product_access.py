@@ -1202,11 +1202,37 @@ class ProductAccessTests(unittest.TestCase):
             self.assertIsInstance(poi["name"], str, poi["id"])
             self.assertTrue(poi["name"].strip(), poi["id"])
             self.assertIn(poi["verification_status"], verification_states, poi["id"])
+        verified_ids = {
+            "tirta_empul",
+            "tanah_lot",
+            "besakih_temple",
+            "gwk",
+            "ubud_monkey_forest",
+        }
         self.assertEqual(
-            {poi["verification_status"] for poi in data["pois"]},
-            {"pending_review"},
-            "No Bali POI should be presented as verified before source review",
+            {poi["id"] for poi in data["pois"] if poi["verification_status"] == "verified"},
+            verified_ids,
         )
+        self.assertEqual(
+            sum(poi["verification_status"] == "pending_review" for poi in data["pois"]),
+            45,
+        )
+        self.assertIn("opening_hours", data["verification_policy"]["live_checks_required"])
+        for poi_id in verified_ids:
+            poi = poi_by_id[poi_id]
+            self.assertTrue(poi["official_url"].startswith("https://"), poi_id)
+            verification = poi["verification"]
+            self.assertRegex(verification["reviewed_at"], r"^\d{4}-\d{2}-\d{2}$")
+            self.assertTrue(verification["verified_scope"], poi_id)
+            self.assertTrue(verification["live_checks"], poi_id)
+            self.assertTrue(verification["sources"], poi_id)
+            for source in verification["sources"]:
+                self.assertTrue(source["url"].startswith("https://"), (poi_id, source))
+                self.assertIn(
+                    source["kind"],
+                    {"official_venue", "official_booking", "government_tourism", "government_registry"},
+                    (poi_id, source),
+                )
         for route in data["routes"]:
             outline_regions = {item["region_id"] for item in route["free_outline"]}
             compatible = [

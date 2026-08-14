@@ -74,6 +74,7 @@ wandermind-studio/
 | **机票比价** | SerpAPI Google Flights · 8 城市下拉 + 自由输入 · 往返/单程 |
 | **探索地图** | SVG 交互地图 · POI 按类别着色 · 24h 人流热力图 |
 | **巴厘岛路线编辑器** | R1–R6 按天调整顺序 · 添加/移除同区域 POI · 地图同步高亮 · 本机保存并交接 AI/司机；路线名称、说明、区域、每日主题和状态覆盖中文、英文、日文、韩文、印尼文 |
+| **巴厘岛事实核验** | 50 个 POI 分离“稳定事实已核验”和“实时信息待复核”；首批 Tirta Empul、Tanah Lot、Besakih、GWK、Sacred Monkey Forest 已记录官方/政府来源、核验范围、复核日期与出发前 live checks |
 | **巴厘岛视觉数据库** | 37 张已发布图片按 Landscapes / Culture / Experiences 三大主题展示；地点以 region、area、placeName、placeType、prominence、routeIds、tags、mood、photographyStyle、verificationStatus 描述，支持主题 + 标签组合筛选，并可把地点 + `route_id` 带入 AI 或司机询价 |
 | **预算计算器** | 按目的地 / 天数 / 人数 / 风格 / 出发城市估算全程预算 |
 | **平行宇宙** | 同一旅行 3 套方案并排对比（节俭 / 平衡 / 奢华） |

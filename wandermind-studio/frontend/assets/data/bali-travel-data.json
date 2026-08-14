@@ -1,6 +1,6 @@
 {
-  "schema_version": "1.1.0",
-  "updated_at": "2026-08-10",
+  "schema_version": "1.2.0",
+  "updated_at": "2026-08-14",
   "destination": {
     "id": "bali",
     "name": {
@@ -15,6 +15,10 @@
     "needs_supplier_confirmation",
     "retired"
   ],
+  "verification_policy": {
+    "verified": "Stable identity, location and visitor context were checked against an official venue or government tourism source.",
+    "live_checks_required": ["opening_hours", "ticket_price", "ceremony_access", "weather", "traffic"]
+  },
   "regions": [
     {
       "id": "G1",
@@ -402,10 +406,19 @@
       "type": "temple",
       "tags": ["religion", "purification", "culture"],
       "route_ids": ["R1", "R2", "R4"],
-      "official_url": "",
+      "official_url": "https://www.indonesia.travel/gb/en/destination/bali-nusa-tenggara/bali/bali---the-holy-springs-of-tirta-empul",
       "booking_url": "",
-      "verification_status": "pending_review",
-      "notes": "Ritual etiquette, dress rules, access and opening hours require confirmation."
+      "verification_status": "verified",
+      "notes": "Government tourism guidance confirms the Tampaksiring water-temple context and sarong requirement. Melukat participation, ceremony access, opening hours and fees still require a live check.",
+      "verification": {
+        "reviewed_at": "2026-08-14",
+        "verified_scope": ["identity", "location", "temple_context", "sarong_etiquette"],
+        "live_checks": ["opening_hours", "ticket_price", "melukat_access", "ceremony_access"],
+        "sources": [
+          {"publisher":"Ministry of Tourism, Republic of Indonesia","title":"A Guide to the Holy Springs of Tirta Empul","url":"https://www.indonesia.travel/gb/en/destination/bali-nusa-tenggara/bali/bali---the-holy-springs-of-tirta-empul","kind":"government_tourism"},
+          {"publisher":"Ministry of Religious Affairs, Bali","title":"Pura Tirta Empul","url":"https://pelitabali.kemenag.go.id/sitiba/index.php/id/detail/363","kind":"government_registry"}
+        ]
+      }
     },
     {
       "id": "yoga_barn",
@@ -480,10 +493,18 @@
       "type": "temple",
       "tags": ["religion", "coast", "sunset"],
       "route_ids": ["R1", "R4", "R6"],
-      "official_url": "",
+      "official_url": "https://www.indonesia.travel/us/en/destination/bali-nusa-tenggara/bali/tanah-lot",
       "booking_url": "",
-      "verification_status": "pending_review",
-      "notes": "Node assignment is a routing convenience; actual drive time must be calculated."
+      "verification_status": "verified",
+      "notes": "Government tourism guidance confirms the offshore temple in Beraban, Tabanan and visitor facilities. The Canggu node remains a routing convenience; tides, ceremony access, hours and drive time require a live check.",
+      "verification": {
+        "reviewed_at": "2026-08-14",
+        "verified_scope": ["identity", "location", "visitor_facilities", "road_approach"],
+        "live_checks": ["opening_hours", "ticket_price", "tide", "ceremony_access", "traffic"],
+        "sources": [
+          {"publisher":"Ministry of Tourism, Republic of Indonesia","title":"Tanah Lot","url":"https://www.indonesia.travel/us/en/destination/bali-nusa-tenggara/bali/tanah-lot","kind":"government_tourism"}
+        ]
+      }
     },
     {
       "id": "ulun_danu_beratan",
@@ -506,10 +527,18 @@
       "type": "temple",
       "tags": ["religion", "highland", "culture"],
       "route_ids": ["R1", "R4", "R5"],
-      "official_url": "",
+      "official_url": "https://www.indonesia.travel/gb/en/travel-ideas/pilgrimage/pura-besakih",
       "booking_url": "",
-      "verification_status": "pending_review",
-      "notes": "Confirm current access, dress, guide rules and transport conditions."
+      "verification_status": "verified",
+      "notes": "Government tourism guidance confirms the temple complex in Besakih Village on Mount Agung's southwest slope and road access by car or motorbike. Dress, guide rules, hours, fees, ceremonies and current mountain-road conditions still require a live check.",
+      "verification": {
+        "reviewed_at": "2026-08-14",
+        "verified_scope": ["identity", "location", "highland_context", "road_access"],
+        "live_checks": ["opening_hours", "ticket_price", "dress_rules", "guide_rules", "ceremony_access", "road_conditions"],
+        "sources": [
+          {"publisher":"Ministry of Tourism, Republic of Indonesia","title":"Visiting Pura Besakih, the Largest Hindu Temple in Bali","url":"https://www.indonesia.travel/gb/en/travel-ideas/pilgrimage/pura-besakih","kind":"government_tourism"}
+        ]
+      }
     },
     {
       "id": "gwk",
@@ -519,10 +548,20 @@
       "type": "cultural_park",
       "tags": ["culture", "performance", "landmark"],
       "route_ids": ["R1", "R3", "R4"],
-      "official_url": "",
-      "booking_url": "",
-      "verification_status": "pending_review",
-      "notes": "A modern cultural park, not a temple; classify under culture/landmark."
+      "official_url": "https://www.gwkbali.com/",
+      "booking_url": "https://ticket.gwkbali.com/fit/get-regular-ticket",
+      "verification_status": "verified",
+      "notes": "The venue and government tourism pages confirm GWK as a modern cultural park in the Jimbaran/Ungasan area, not a temple. Current admission, performance schedule and event closures require a live check on the official ticket page.",
+      "verification": {
+        "reviewed_at": "2026-08-14",
+        "verified_scope": ["identity", "location", "cultural_park_classification", "official_ticket_path"],
+        "live_checks": ["opening_hours", "ticket_price", "performance_schedule", "event_closures"],
+        "sources": [
+          {"publisher":"Garuda Wisnu Kencana Cultural Park","title":"GWK Bali","url":"https://www.gwkbali.com/","kind":"official_venue"},
+          {"publisher":"Garuda Wisnu Kencana Cultural Park","title":"Regular Ticket","url":"https://ticket.gwkbali.com/fit/get-regular-ticket","kind":"official_booking"},
+          {"publisher":"Ministry of Tourism, Republic of Indonesia","title":"Taman Budaya GWK","url":"https://www.indonesia.travel/id/en/destination/bali-nusa-tenggara/bali/taman-budaya-gwk","kind":"government_tourism"}
+        ]
+      }
     },
     {"id":"batu_bolong_beach","name":"Batu Bolong Beach","region_id":"G1","node_id":"canggu","type":"beach","tags":["beach","sunset","surf"],"route_ids":["R1","R6"],"official_url":"","booking_url":"","verification_status":"pending_review","notes":"Planning anchor; confirm access, weather and conditions before travel."},
     {"id":"echo_beach","name":"Echo Beach","region_id":"G1","node_id":"canggu","type":"beach","tags":["beach","sunset","surf"],"route_ids":["R1","R6"],"official_url":"","booking_url":"","verification_status":"pending_review","notes":"Planning anchor; confirm access, weather and conditions before travel."},
@@ -540,7 +579,7 @@
     {"id":"broken_beach","name":"Broken Beach","region_id":"G3","node_id":"nusa_penida","type":"viewpoint","tags":["island","coast","photography"],"route_ids":["R1","R6"],"official_url":"","booking_url":"","verification_status":"pending_review","notes":"Island transfer planning anchor; confirm boat, road and weather before travel."},
     {"id":"crystal_bay","name":"Crystal Bay","region_id":"G3","node_id":"nusa_penida","type":"beach","tags":["island","beach","snorkelling"],"route_ids":["R1","R6"],"official_url":"","booking_url":"","verification_status":"pending_review","notes":"Island transfer planning anchor; confirm sea and safety conditions before travel."},
     {"id":"tegalalang_rice_terrace","name":"Tegalalang Rice Terrace","region_id":"G4","node_id":"ubud","type":"rice_terrace","tags":["rice_fields","photography","culture"],"route_ids":["R1","R2","R4","R6"],"official_url":"","booking_url":"","verification_status":"pending_review","notes":"Planning anchor; confirm access, trail condition and visitor management before travel."},
-    {"id":"ubud_monkey_forest","name":"Sacred Monkey Forest Sanctuary","region_id":"G4","node_id":"ubud","type":"nature_reserve","tags":["wildlife","forest","culture"],"route_ids":["R1","R2","R4"],"official_url":"","booking_url":"","verification_status":"pending_review","notes":"Planning anchor; follow wildlife guidance and confirm entry requirements."},
+    {"id":"ubud_monkey_forest","name":"Sacred Monkey Forest Sanctuary","region_id":"G4","node_id":"ubud","type":"nature_reserve","tags":["wildlife","forest","culture"],"route_ids":["R1","R2","R4"],"official_url":"https://monkeyforestubud.com/visit/","booking_url":"","verification_status":"verified","notes":"The official sanctuary page confirms the Padangtegal address, semi-wild macaque setting, visitor map and safety guidance. Recheck current opening hours, admission price and temporary closures before travel.","verification":{"reviewed_at":"2026-08-14","verified_scope":["identity","location","visitor_map","wildlife_safety_guidance"],"live_checks":["opening_hours","ticket_price","temporary_closures"],"sources":[{"publisher":"Sacred Monkey Forest Sanctuary","title":"Opening Hours & Maps","url":"https://monkeyforestubud.com/visit/","kind":"official_venue"}]}},
     {"id":"ubud_palace","name":"Ubud Palace","region_id":"G4","node_id":"ubud","type":"palace","tags":["culture","architecture","town"],"route_ids":["R1","R2","R4"],"official_url":"","booking_url":"","verification_status":"pending_review","notes":"Planning anchor; performance schedules and access need confirmation."},
     {"id":"ubud_art_market","name":"Ubud Art Market","region_id":"G4","node_id":"ubud","type":"market","tags":["craft","market","culture"],"route_ids":["R1","R2","R4","R6"],"official_url":"","booking_url":"","verification_status":"pending_review","notes":"Planning anchor; opening times and vendors vary."},
     {"id":"campuhan_ridge_walk","name":"Campuhan Ridge Walk","region_id":"G4","node_id":"ubud","type":"walk","tags":["walk","nature","sunrise"],"route_ids":["R1","R2","R4","R6"],"official_url":"","booking_url":"","verification_status":"pending_review","notes":"Planning anchor; confirm weather and trail conditions before travel."},
