@@ -1,0 +1,37 @@
+{
+  "schema_version": 1,
+  "project": "Agentstrip / WanderMind",
+  "authority": {
+    "repository": "https://github.com/lingfengai731/Agentstrip.git",
+    "order": [
+      "fresh production or external verification",
+      "current Git commit, pull request, CI result, and code",
+      "accepted decision and immutable evidence records",
+      "handoffs and task descriptions",
+      "old conversations and recollections"
+    ]
+  },
+  "snapshot": {
+    "status": "verified",
+    "captured_at": "2026-08-14T14:18:27Z",
+    "captured_by": "codex-bootstrap",
+    "source_commit": "bf7c7efc77de15330575841f272221b6e8d06b63",
+    "source_branch": "codex/project-memory-bootstrap",
+    "working_tree_at_capture": "clean",
+    "production": {
+      "status": "unknown",
+      "verified_at": null,
+      "evidence_ids": []
+    }
+  },
+  "coordination": {
+    "task_system": "GitHub Issues and Projects",
+    "code_isolation": "one account, one worktree, one task branch",
+    "integration_gate": "reviewed pull request"
+  },
+  "limitations": [
+    "The existing root AGENTS.md has not been changed, so automatic loading is not guaranteed.",
+    "This snapshot does not claim current production or external configuration state.",
+    "Conversation history and hidden reasoning are not project facts."
+  ]
+}

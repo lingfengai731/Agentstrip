@@ -1,0 +1,21 @@
+{
+  "schema_version": 1,
+  "evidence_id": "ev-20260814-project-memory-bootstrap",
+  "task_ref": "project-memory-bootstrap",
+  "owner": "codex-bootstrap",
+  "captured_at": "2026-08-14T14:18:27Z",
+  "status": "verified",
+  "claim": "The project-memory implementation was started in an isolated worktree from the recorded source commit; existing project files were not selected for modification.",
+  "source": {
+    "kind": "git",
+    "repository": "https://github.com/lingfengai731/Agentstrip.git",
+    "commit": "bf7c7efc77de15330575841f272221b6e8d06b63",
+    "branch": "codex/project-memory-bootstrap",
+    "worktree": "E:\\Agentstrip-context-memory"
+  },
+  "verification": {
+    "command": "git status --short and target-path existence checks",
+    "result": "pass"
+  },
+  "notes": "Production state was not checked and remains unknown."
+}

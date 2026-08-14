@@ -1,0 +1,22 @@
+{
+    "schema_version":  1,
+    "evidence_id":  "ev-20260814T142343Z-project-memory-bootstrap",
+    "task_ref":  "project-memory-bootstrap",
+    "owner":  "codex-bootstrap",
+    "captured_at":  "2026-08-14T14:23:43Z",
+    "status":  "verified",
+    "claim":  "The additive project-memory files pass local schema and secret-pattern validation.",
+    "source":  {
+                   "kind":  "git",
+                   "repository":  "https://github.com/lingfengai731/Agentstrip.git",
+                   "commit":  "bf7c7efc77de15330575841f272221b6e8d06b63",
+                   "branch":  "codex/project-memory-bootstrap",
+                   "worktree":  "E:\\Agentstrip-context-memory",
+                   "dirty":  true
+               },
+    "verification":  {
+                         "command":  ".\\tools\\project-memory.ps1 validate",
+                         "result":  "pass"
+                     },
+    "notes":  "Existing project files remain outside this branch diff."
+}
