@@ -1213,6 +1213,11 @@ class ProductAccessTests(unittest.TestCase):
             "melasti_beach",
             "jimbaran_bay",
             "sanur_beach",
+            "mertasari_beach",
+            "tegalalang_rice_terrace",
+            "ubud_palace",
+            "ubud_art_market",
+            "campuhan_ridge_walk",
         }
         self.assertEqual(
             {poi["id"] for poi in data["pois"] if poi["verification_status"] == "verified"},
@@ -1220,7 +1225,41 @@ class ProductAccessTests(unittest.TestCase):
         )
         self.assertEqual(
             sum(poi["verification_status"] == "pending_review" for poi in data["pois"]),
-            40,
+            34,
+        )
+        self.assertEqual(
+            poi_by_id["mount_batur_jeep"]["verification_status"],
+            "needs_supplier_confirmation",
+        )
+        self.assertEqual(
+            sum(
+                poi["verification_status"] == "needs_supplier_confirmation"
+                for poi in data["pois"]
+            ),
+            1,
+        )
+        r1 = next(route for route in data["routes"] if route["id"] == "R1")
+        r1_outline_ids = {
+            poi_id
+            for day in r1["free_outline"]
+            for poi_id in day["suggested_poi_ids"]
+        }
+        self.assertEqual(len(r1_outline_ids), 16)
+        self.assertEqual(
+            {
+                poi_by_id[poi_id]["verification_status"]
+                for poi_id in r1_outline_ids
+            },
+            {"verified", "needs_supplier_confirmation"},
+        )
+        self.assertEqual(
+            {
+                poi_id
+                for poi_id in r1_outline_ids
+                if poi_by_id[poi_id]["verification_status"]
+                == "needs_supplier_confirmation"
+            },
+            {"mount_batur_jeep"},
         )
         self.assertIn("opening_hours", data["verification_policy"]["live_checks_required"])
         for poi_id in verified_ids:
