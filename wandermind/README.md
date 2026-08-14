@@ -191,6 +191,7 @@ OWNER_BCC_EMAIL=
 
 # Portfolio Content Manager。图片由浏览器签名直传 Cloudinary，Render 只保存元数据。
 # 未配置时 /admin/portfolio 仍可访问，但上传按钮会明确禁用，现有静态 Portfolio 不受影响。
+# 新上传若被数据库明确拒绝，会通过管理员专用短期凭证清理未关联对象；结果不确定时保留文件并幂等重试，已登记资产和替换上传不会被自动删除。
 CLOUDINARY_CLOUD_NAME=
 CLOUDINARY_API_KEY=
 CLOUDINARY_API_SECRET=

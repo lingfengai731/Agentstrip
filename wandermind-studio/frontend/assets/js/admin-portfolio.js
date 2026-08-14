@@ -39,11 +39,11 @@
     id:{manifestChecking:'Memuat manifest gambar yang disetujui…',manifestReady:'Manifest siap: 108 gambar dapat dicocokkan melalui hash.',manifestLoadFailed:'Manifest tidak dapat dimuat. Gambar baru masih dapat disimpan sebagai draf setelah ditinjau manual.',manifestMatched:'Cocok dengan manifest yang disetujui',manifestUnmatched:'Tidak ada di manifest yang disetujui',metadataConfirmed:'Metadata dikonfirmasi',editMetadata:'Tinjau metadata',queueReviewTitle:'Tinjau metadata gambar',queueReviewHelp:'Saran yang disetujui adalah titik awal. Konfirmasikan setiap kolom sebelum menerbitkan.',saveQueueMetadata:'Konfirmasi metadata',duplicateFile:'Gambar ini sudah ada dalam antrean unggahan.',duplicateAsset:'Gambar ini sudah ada di pustaka Portfolio.',publishNeedsManifestReview:'Setiap gambar yang akan diterbitkan harus cocok dengan manifest yang disetujui atau telah dikonfirmasi secara manual.',uploadFinishedWithErrors:'Antrean selesai, tetapi beberapa gambar gagal. Tinjau gambar yang gagal lalu coba lagi.',archiveConfirm:'Arsipkan gambar Portfolio ini? Metadata tetap tersimpan dan status dapat dipulihkan nanti.',skipContent:'Lewati ke konten utama'}
   };
   var SIMPLE_UPLOAD_COPY = {
-    en:{autoFillTitle:'Approved images are filled automatically',autoFillHelp:'After a manifest match, title, location, routes and localized copy are saved with the image. Draft uploads need no manual entry.',advancedMetadata:'Optional defaults for unmatched images',advancedMetadataHelp:'Open this only when an image is not in the approved manifest. You can also edit one image from its queue card.',autoMetadata:'Automatic details',manualMetadataNeeded:'Not matched: review details before publishing',reviewAutoMetadata:'View or edit automatic details',publishNeedsManifestReview:'Add every image to the approved manifest before publishing. Unmatched images can still be saved as drafts.',manifestApprovalRequired:'Add this image to the approved manifest before publishing.',draftUploadFinished:'Draft saved. The image, database record and preview are ready in the library.',publishedUploadFinished:'Upload published. The image and metadata are now available in the Portfolio.'},
-    zh:{autoFillTitle:'已批准图片会自动填写资料',autoFillHelp:'匹配批准清单后，标题、地点、路线和五语言文案会随图片一起保存；上传草稿无需手动填写。',advancedMetadata:'未匹配图片的选填资料',advancedMetadataHelp:'只有图片不在批准清单中时才需要展开；也可以在单张图片卡片中单独修改。',autoMetadata:'自动资料',manualMetadataNeeded:'未匹配清单：发布前请核对资料',reviewAutoMetadata:'查看或修改自动资料',publishNeedsManifestReview:'图片必须先加入批准清单才能发布；未匹配图片仍可保存为草稿。',manifestApprovalRequired:'请先将这张图片加入批准清单，再发布。',draftUploadFinished:'草稿已保存：图片、数据库记录和预览均已就绪。',publishedUploadFinished:'图片已发布，图片和资料已进入 Portfolio。'},
-    ja:{autoFillTitle:'承認済み画像の情報は自動入力されます',autoFillHelp:'マニフェストに一致すると、タイトル、場所、ルート、多言語文が画像と一緒に保存されます。下書きでは手入力不要です。',advancedMetadata:'未照合画像の任意設定',advancedMetadataHelp:'承認済みマニフェストにない画像だけ開いてください。各画像カードから個別編集もできます。',autoMetadata:'自動入力情報',manualMetadataNeeded:'未照合：公開前に情報を確認してください',reviewAutoMetadata:'自動情報を確認・編集',publishNeedsManifestReview:'公開前に画像を承認済みマニフェストへ追加してください。未照合画像は下書き保存できます。',manifestApprovalRequired:'公開前にこの画像を承認済みマニフェストへ追加してください。',draftUploadFinished:'下書きを保存しました。画像、データベース記録、プレビューの準備が完了しました。',publishedUploadFinished:'画像を公開しました。画像と情報が Portfolio に反映されました。'},
-    ko:{autoFillTitle:'승인된 이미지는 정보가 자동 입력됩니다',autoFillHelp:'매니페스트와 일치하면 제목, 장소, 경로, 다국어 문구가 이미지와 함께 저장됩니다. 초안 업로드에는 직접 입력이 필요 없습니다.',advancedMetadata:'일치하지 않는 이미지의 선택 정보',advancedMetadataHelp:'승인 매니페스트에 없는 이미지에만 펼쳐 사용하세요. 각 이미지 카드에서도 개별 수정할 수 있습니다.',autoMetadata:'자동 정보',manualMetadataNeeded:'일치하지 않음: 공개 전에 정보를 확인하세요',reviewAutoMetadata:'자동 정보 보기 또는 수정',publishNeedsManifestReview:'공개 전에 이미지를 승인 매니페스트에 추가하세요. 일치하지 않는 이미지는 초안으로 저장할 수 있습니다.',manifestApprovalRequired:'공개 전에 이 이미지를 승인 매니페스트에 추가하세요.',draftUploadFinished:'초안이 저장되었습니다. 이미지, 데이터베이스 기록, 미리보기가 준비되었습니다.',publishedUploadFinished:'이미지가 공개되어 Portfolio에 이미지와 정보가 반영되었습니다.'},
-    id:{autoFillTitle:'Informasi gambar yang disetujui terisi otomatis',autoFillHelp:'Setelah cocok dengan manifest, judul, lokasi, rute, dan teks multibahasa disimpan bersama gambar. Draf tidak perlu diisi manual.',advancedMetadata:'Data opsional untuk gambar yang tidak cocok',advancedMetadataHelp:'Buka hanya jika gambar tidak ada di manifest yang disetujui. Setiap gambar juga dapat diedit dari kartu antrean.',autoMetadata:'Data otomatis',manualMetadataNeeded:'Tidak cocok: tinjau data sebelum menerbitkan',reviewAutoMetadata:'Lihat atau ubah data otomatis',publishNeedsManifestReview:'Tambahkan gambar ke manifest yang disetujui sebelum menerbitkan. Gambar yang belum cocok tetap dapat disimpan sebagai draf.',manifestApprovalRequired:'Tambahkan gambar ini ke manifest yang disetujui sebelum menerbitkan.',draftUploadFinished:'Draf tersimpan. Gambar, catatan database, dan pratinjau sudah siap.',publishedUploadFinished:'Gambar telah diterbitkan dan data sudah tersedia di Portfolio.'}
+    en:{autoFillTitle:'Approved images are filled automatically',autoFillHelp:'After a manifest match, title, location, routes and localized copy are saved with the image. Draft uploads need no manual entry.',advancedMetadata:'Optional defaults for unmatched images',advancedMetadataHelp:'Open this only when an image is not in the approved manifest. You can also edit one image from its queue card.',autoMetadata:'Automatic details',manualMetadataNeeded:'Not matched: review details before publishing',reviewAutoMetadata:'View or edit automatic details',publishNeedsManifestReview:'Add every image to the approved manifest before publishing. Unmatched images can still be saved as drafts.',manifestApprovalRequired:'Add this image to the approved manifest before publishing.',draftUploadFinished:'Draft saved. The image, database record and preview are ready in the library.',publishedUploadFinished:'Upload published. The image and metadata are now available in the Portfolio.',uploadRolledBack:'Metadata was rejected, so the unlinked cloud file was removed. This image is ready to retry.',uploadRecovered:'The server had already saved this image. Its completed state has been restored.',uploadRecoveryPending:'The save result is not confirmed. The cloud file was kept; retry safe recovery before uploading again.',retryRecovery:'Retry safe recovery',uploadCleanupFailed:'The save was rejected, but cloud cleanup could not be confirmed. Retry cleanup before uploading again.',retryCleanup:'Retry cloud cleanup'},
+    zh:{autoFillTitle:'已批准图片会自动填写资料',autoFillHelp:'匹配批准清单后，标题、地点、路线和五语言文案会随图片一起保存；上传草稿无需手动填写。',advancedMetadata:'未匹配图片的选填资料',advancedMetadataHelp:'只有图片不在批准清单中时才需要展开；也可以在单张图片卡片中单独修改。',autoMetadata:'自动资料',manualMetadataNeeded:'未匹配清单：发布前请核对资料',reviewAutoMetadata:'查看或修改自动资料',publishNeedsManifestReview:'图片必须先加入批准清单才能发布；未匹配图片仍可保存为草稿。',manifestApprovalRequired:'请先将这张图片加入批准清单，再发布。',draftUploadFinished:'草稿已保存：图片、数据库记录和预览均已就绪。',publishedUploadFinished:'图片已发布，图片和资料已进入 Portfolio。',uploadRolledBack:'资料被明确拒绝保存，未关联的云端文件已清理；这张图片可以重新上传。',uploadRecovered:'服务器其实已经保存了这张图片，现已恢复为完成状态。',uploadRecoveryPending:'保存结果尚未确认，系统已保留云端文件；重新上传前请先安全重试保存。',retryRecovery:'安全重试保存',uploadCleanupFailed:'资料被明确拒绝保存，但云端清理未能确认；重新上传前请先重试清理。',retryCleanup:'重试云端清理'},
+    ja:{autoFillTitle:'承認済み画像の情報は自動入力されます',autoFillHelp:'マニフェストに一致すると、タイトル、場所、ルート、多言語文が画像と一緒に保存されます。下書きでは手入力不要です。',advancedMetadata:'未照合画像の任意設定',advancedMetadataHelp:'承認済みマニフェストにない画像だけ開いてください。各画像カードから個別編集もできます。',autoMetadata:'自動入力情報',manualMetadataNeeded:'未照合：公開前に情報を確認してください',reviewAutoMetadata:'自動情報を確認・編集',publishNeedsManifestReview:'公開前に画像を承認済みマニフェストへ追加してください。未照合画像は下書き保存できます。',manifestApprovalRequired:'公開前にこの画像を承認済みマニフェストへ追加してください。',draftUploadFinished:'下書きを保存しました。画像、データベース記録、プレビューの準備が完了しました。',publishedUploadFinished:'画像を公開しました。画像と情報が Portfolio に反映されました。',uploadRolledBack:'保存が拒否されたため、未登録のクラウド画像を削除しました。再アップロードできます。',uploadRecovered:'サーバーには画像が保存済みでした。完了状態を復元しました。',uploadRecoveryPending:'保存結果を確認できないため、クラウド画像を保持しました。再アップロード前に安全な保存再試行を行ってください。',retryRecovery:'安全に保存を再試行',uploadCleanupFailed:'保存は拒否されましたが、クラウド削除を確認できませんでした。再アップロード前に削除を再試行してください。',retryCleanup:'クラウド削除を再試行'},
+    ko:{autoFillTitle:'승인된 이미지는 정보가 자동 입력됩니다',autoFillHelp:'매니페스트와 일치하면 제목, 장소, 경로, 다국어 문구가 이미지와 함께 저장됩니다. 초안 업로드에는 직접 입력이 필요 없습니다.',advancedMetadata:'일치하지 않는 이미지의 선택 정보',advancedMetadataHelp:'승인 매니페스트에 없는 이미지에만 펼쳐 사용하세요. 각 이미지 카드에서도 개별 수정할 수 있습니다.',autoMetadata:'자동 정보',manualMetadataNeeded:'일치하지 않음: 공개 전에 정보를 확인하세요',reviewAutoMetadata:'자동 정보 보기 또는 수정',publishNeedsManifestReview:'공개 전에 이미지를 승인 매니페스트에 추가하세요. 일치하지 않는 이미지는 초안으로 저장할 수 있습니다.',manifestApprovalRequired:'공개 전에 이 이미지를 승인 매니페스트에 추가하세요.',draftUploadFinished:'초안이 저장되었습니다. 이미지, 데이터베이스 기록, 미리보기가 준비되었습니다.',publishedUploadFinished:'이미지가 공개되어 Portfolio에 이미지와 정보가 반영되었습니다.',uploadRolledBack:'저장이 명확히 거부되어 연결되지 않은 클라우드 파일을 삭제했습니다. 다시 업로드할 수 있습니다.',uploadRecovered:'서버에 이미지가 이미 저장되어 있어 완료 상태를 복원했습니다.',uploadRecoveryPending:'저장 결과를 확인할 수 없어 클라우드 파일을 유지했습니다. 다시 업로드하기 전에 안전한 저장 재시도를 실행하세요.',retryRecovery:'안전한 저장 재시도',uploadCleanupFailed:'저장은 거부되었지만 클라우드 정리를 확인하지 못했습니다. 다시 업로드하기 전에 정리를 재시도하세요.',retryCleanup:'클라우드 정리 재시도'},
+    id:{autoFillTitle:'Informasi gambar yang disetujui terisi otomatis',autoFillHelp:'Setelah cocok dengan manifest, judul, lokasi, rute, dan teks multibahasa disimpan bersama gambar. Draf tidak perlu diisi manual.',advancedMetadata:'Data opsional untuk gambar yang tidak cocok',advancedMetadataHelp:'Buka hanya jika gambar tidak ada di manifest yang disetujui. Setiap gambar juga dapat diedit dari kartu antrean.',autoMetadata:'Data otomatis',manualMetadataNeeded:'Tidak cocok: tinjau data sebelum menerbitkan',reviewAutoMetadata:'Lihat atau ubah data otomatis',publishNeedsManifestReview:'Tambahkan gambar ke manifest yang disetujui sebelum menerbitkan. Gambar yang belum cocok tetap dapat disimpan sebagai draf.',manifestApprovalRequired:'Tambahkan gambar ini ke manifest yang disetujui sebelum menerbitkan.',draftUploadFinished:'Draf tersimpan. Gambar, catatan database, dan pratinjau sudah siap.',publishedUploadFinished:'Gambar telah diterbitkan dan data sudah tersedia di Portfolio.',uploadRolledBack:'Penyimpanan ditolak, jadi file cloud yang belum terhubung sudah dihapus. Gambar siap diunggah ulang.',uploadRecovered:'Server ternyata sudah menyimpan gambar ini. Status selesai telah dipulihkan.',uploadRecoveryPending:'Hasil penyimpanan belum terkonfirmasi. File cloud dipertahankan; coba pemulihan aman sebelum mengunggah ulang.',retryRecovery:'Coba pemulihan aman',uploadCleanupFailed:'Penyimpanan ditolak, tetapi pembersihan cloud belum terkonfirmasi. Coba pembersihan lagi sebelum mengunggah ulang.',retryCleanup:'Coba lagi pembersihan cloud'}
   };
   LANGS.forEach(function (lang) { Object.assign(COPY[lang], QUEUE_COPY[lang], SIMPLE_UPLOAD_COPY[lang]); });
 
@@ -139,9 +139,16 @@
       options.body = JSON.stringify(options.body);
     }
     var response = await fetch(path, options);
-    if (response.status === 401) { showAlert(t('sessionExpired')); window.setTimeout(redirectToLogin, 700); throw new Error('AUTH'); }
+    if (response.status === 401) {
+      showAlert(t('sessionExpired')); window.setTimeout(redirectToLogin, 700);
+      var authError = new Error('AUTH'); authError.status = 401; throw authError;
+    }
     var payload = await response.json().catch(function () { return {}; });
-    if (!response.ok) throw new Error(payload.detail || t('networkError'));
+    if (!response.ok) {
+      var responseError = new Error(payload.detail || t('networkError'));
+      responseError.status = response.status;
+      throw responseError;
+    }
     return payload;
   }
 
@@ -254,7 +261,9 @@
       var metadata = item.metadata || {};
       var summaryParts = [localeValue(metadata.title) || metadata.place_name, metadata.region, (metadata.route_ids || []).join(' / ')].filter(Boolean);
       var metadataSummary = item.sha256 && summaryParts.length ? '<div class="wm-queue-meta"><strong>' + escapeHtml(t(item.manifestMatch ? 'autoMetadata' : 'manualMetadataNeeded')) + '：</strong> ' + escapeHtml(summaryParts.join(' · ')) + '</div>' : '';
-      var actions = item.state === 'queued' ? '<div class="wm-queue-actions"><button class="wm-btn wm-btn-secondary" type="button" data-queue-edit="' + escapeHtml(item.id) + '">' + escapeHtml(t(item.manifestMatch ? 'reviewAutoMetadata' : 'editMetadata')) + '</button></div>' : '';
+      var actions = item.state === 'queued' ? '<div class="wm-queue-actions"><button class="wm-btn wm-btn-secondary" type="button" data-queue-edit="' + escapeHtml(item.id) + '">' + escapeHtml(t(item.manifestMatch ? 'reviewAutoMetadata' : 'editMetadata')) + '</button></div>' :
+        item.state === 'recoveryPending' ? '<div class="wm-queue-actions"><button class="wm-btn wm-btn-danger" type="button" data-queue-recovery="' + escapeHtml(item.id) + '">' + escapeHtml(t('retryRecovery')) + '</button></div>' :
+        item.state === 'cleanupFailed' ? '<div class="wm-queue-actions"><button class="wm-btn wm-btn-danger" type="button" data-queue-cleanup="' + escapeHtml(item.id) + '">' + escapeHtml(t('retryCleanup')) + '</button></div>' : '';
       return '<div class="wm-queue-item"><img src="' + escapeHtml(item.preview) + '" width="58" height="58" alt=""><div class="wm-queue-main"><div class="wm-queue-head"><div><span class="wm-queue-name">' + escapeHtml(item.file.name) + '</span><span class="wm-queue-meta">' + escapeHtml(meta) + '</span></div></div>' + badges + metadataSummary + '<div class="wm-progress" role="progressbar" aria-label="' + escapeHtml(item.file.name) + '" aria-valuemin="0" aria-valuemax="100" aria-valuenow="' + Number(item.progress || 0) + '"><span style="width:' + Number(item.progress || 0) + '%"></span></div><div class="wm-queue-state">' + escapeHtml(stateText) + '</div>' + actions + '</div></div>';
     }).join('');
     bindQueueEvents();
@@ -263,6 +272,12 @@
   function bindQueueEvents() {
     queue.querySelectorAll('[data-queue-edit]').forEach(function (button) {
       button.addEventListener('click', function () { openQueueEditor(button.dataset.queueEdit); });
+    });
+    queue.querySelectorAll('[data-queue-cleanup]').forEach(function (button) {
+      button.addEventListener('click', function () { retryUploadCleanup(button.dataset.queueCleanup); });
+    });
+    queue.querySelectorAll('[data-queue-recovery]').forEach(function (button) {
+      button.addEventListener('click', function () { retryUploadRecovery(button.dataset.queueRecovery); });
     });
   }
 
@@ -306,8 +321,68 @@
     });
   }
 
+  function uploadCleanupPayload(signature, uploaded) {
+    if (!signature.cleanup) return null;
+    return {
+      destination:'bali', cloudinary_public_id:uploaded.public_id,
+      cloudinary_version:uploaded.version, response_signature:uploaded.signature,
+      cleanup_timestamp:signature.cleanup.timestamp, cleanup_token:signature.cleanup.token
+    };
+  }
+
+  async function runUploadCleanup(record) {
+    if (!record.cleanup) throw new Error(t('uploadCleanupFailed'));
+    var result = await api('/api/admin/portfolio/upload-cleanup', { method:'POST', body:record.cleanup });
+    if (result.result === 'registered') {
+      record.state = 'complete'; record.error = t('uploadRecovered'); record.cleanup = null; record.pendingMetadata = null;
+      renderQueue(); return 'registered';
+    }
+    record.state = 'queued'; record.progress = 0; record.error = t('uploadRolledBack'); record.cleanup = null; record.pendingMetadata = null;
+    renderQueue(); return result.result;
+  }
+
+  function isDeterministicSaveRejection(error) {
+    var status = Number(error && error.status || 0);
+    return status >= 400 && status < 500 && [401, 403, 408, 425, 429].indexOf(status) < 0;
+  }
+
+  async function recoverSavedUpload(record) {
+    try {
+      await api('/api/admin/portfolio/assets', { method:'POST', body:record.pendingMetadata });
+      record.state = 'complete'; record.error = t('uploadRecovered'); record.cleanup = null; record.pendingMetadata = null;
+      renderQueue(); return;
+    } catch (saveError) {
+      if (!isDeterministicSaveRejection(saveError)) throw saveError;
+    }
+    try { await runUploadCleanup(record); }
+    catch (cleanupFailure) {
+      cleanupFailure.cleanupFailed = true;
+      throw cleanupFailure;
+    }
+  }
+
+  async function retryUploadRecovery(id) {
+    var record = state.files.find(function (item) { return item.id === id; });
+    if (!record || !record.cleanup || !record.pendingMetadata) return;
+    clearAlert(); record.state = 'saving'; record.error = ''; renderQueue();
+    try { await recoverSavedUpload(record); }
+    catch (error) {
+      record.state = error.cleanupFailed ? 'cleanupFailed' : 'recoveryPending';
+      record.error = t(error.cleanupFailed ? 'uploadCleanupFailed' : 'uploadRecoveryPending');
+      renderQueue();
+    }
+  }
+
+  async function retryUploadCleanup(id) {
+    var record = state.files.find(function (item) { return item.id === id; });
+    if (!record || !record.cleanup) return;
+    clearAlert(); record.state = 'saving'; record.error = ''; renderQueue();
+    try { await runUploadCleanup(record); }
+    catch (_) { record.state = 'cleanupFailed'; record.error = t('uploadCleanupFailed'); renderQueue(); }
+  }
+
   async function uploadRecord(record, baseMetadata, status) {
-    record.state = 'uploading'; renderQueue();
+    record.state = 'uploading'; record.error = ''; renderQueue();
     var signature = await api('/api/admin/portfolio/upload-signature', { method:'POST', body:{ destination:'bali', filename:record.file.name } });
     var uploaded = await uploadToCloudinary(record.file, signature, function (progress) { record.progress = progress; renderQueue(); });
     record.state = 'saving'; record.progress = 100; renderQueue();
@@ -324,8 +399,29 @@
     metadata.cloudinary_version = uploaded.version;
     metadata.secure_url = uploaded.secure_url;
     metadata.response_signature = uploaded.signature;
-    await api('/api/admin/portfolio/assets', { method:'POST', body:metadata });
-    record.state = 'complete'; renderQueue();
+    record.cleanup = uploadCleanupPayload(signature, uploaded);
+    record.pendingMetadata = metadata;
+    try {
+      await api('/api/admin/portfolio/assets', { method:'POST', body:metadata });
+    } catch (saveError) {
+      if (!isDeterministicSaveRejection(saveError)) {
+        var recoveryError = new Error(t('uploadRecoveryPending'));
+        recoveryError.recoveryPending = true;
+        throw recoveryError;
+      }
+      try {
+        var cleanupResult = await runUploadCleanup(record);
+        if (cleanupResult === 'registered') return;
+      } catch (_) {
+        var cleanupError = new Error(t('uploadCleanupFailed'));
+        cleanupError.cleanupFailed = true;
+        throw cleanupError;
+      }
+      var rolledBackError = new Error(t('uploadRolledBack'));
+      rolledBackError.rolledBack = true;
+      throw rolledBackError;
+    }
+    record.state = 'complete'; record.error = ''; record.cleanup = null; record.pendingMetadata = null; renderQueue();
   }
 
   async function submitUploads(event) {
@@ -345,7 +441,11 @@
     var failedCount = 0;
     for (var record of selected) {
       try { await uploadRecord(record, metadata, status); }
-      catch (error) { failedCount += 1; record.state = 'failed'; record.error = error.message || t('networkError'); renderQueue(); }
+      catch (error) {
+        failedCount += 1;
+        record.state = error.rolledBack ? 'queued' : error.recoveryPending ? 'recoveryPending' : error.cleanupFailed ? 'cleanupFailed' : 'failed';
+        record.error = error.message || t('networkError'); renderQueue();
+      }
     }
     buttons.forEach(function (button) { button.disabled = !state.storageReady; });
     showAlert(t(failedCount ? 'uploadFinishedWithErrors' : status === 'published' ? 'publishedUploadFinished' : 'draftUploadFinished'));

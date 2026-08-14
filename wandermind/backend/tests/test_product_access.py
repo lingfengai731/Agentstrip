@@ -1307,6 +1307,268 @@ class ProductAccessTests(unittest.TestCase):
         self.assertEqual(disabled.status_code, 503)
         self.assertNotIn("secret", disabled.text.lower())
 
+    def test_portfolio_orphan_cleanup_is_scoped_idempotent_and_admin_only(self):
+        cloud_env = {
+            "CLOUDINARY_CLOUD_NAME": "wandermind-test",
+            "CLOUDINARY_API_KEY": "public-test-key",
+            "CLOUDINARY_API_SECRET": "portfolio-test-secret",
+        }
+
+        destination = "cleanup-test"
+
+        def signed_cleanup(filename):
+            signature_response = self._run(
+                self._request(
+                    "POST",
+                    "/api/admin/portfolio/upload-signature",
+                    token=self.admin_token,
+                    json={"destination": destination, "filename": filename},
+                )
+            )
+            self.assertEqual(signature_response.status_code, 200, signature_response.text)
+            signature_payload = signature_response.json()
+            cleanup = signature_payload["cleanup"]
+            self.assertTrue(cleanup["public_id"].startswith(
+                f"wandermind/portfolio/{destination}/"
+            ))
+            version = cleanup["timestamp"] + 1
+            response_signature = hashlib.sha1(
+                (
+                    f"public_id={cleanup['public_id']}&version={version}"
+                    f"{cloud_env['CLOUDINARY_API_SECRET']}"
+                ).encode()
+            ).hexdigest()
+            return signature_payload, {
+                "destination": destination,
+                "cloudinary_public_id": cleanup["public_id"],
+                "cloudinary_version": version,
+                "response_signature": response_signature,
+                "cleanup_timestamp": cleanup["timestamp"],
+                "cleanup_token": cleanup["token"],
+            }
+
+        with patch.dict(os.environ, cloud_env, clear=False):
+            signature_payload, cleanup_payload = signed_cleanup("orphan.jpg")
+            replacement_signature = self._run(
+                self._request(
+                    "POST",
+                    "/api/admin/portfolio/upload-signature",
+                    token=self.admin_token,
+                    json={
+                        "destination": destination,
+                        "filename": "replacement.jpg",
+                        "replacement_asset_id": "missing-asset",
+                    },
+                )
+            )
+            self.assertEqual(replacement_signature.status_code, 404)
+
+            denied = self._run(
+                self._request(
+                    "POST",
+                    "/api/admin/portfolio/upload-cleanup",
+                    token=self.user_token,
+                    json=cleanup_payload,
+                )
+            )
+            self.assertEqual(denied.status_code, 403)
+
+            invalid_payload = dict(cleanup_payload)
+            invalid_payload["cleanup_token"] = "0" * 64
+            invalid = self._run(
+                self._request(
+                    "POST",
+                    "/api/admin/portfolio/upload-cleanup",
+                    token=self.admin_token,
+                    json=invalid_payload,
+                )
+            )
+            self.assertEqual(invalid.status_code, 400)
+            self.assertIn("cleanup authorization", invalid.text)
+
+            destroy = AsyncMock(return_value="ok")
+            with patch.object(main, "_cloudinary_destroy_image", destroy):
+                cleaned = self._run(
+                    self._request(
+                        "POST",
+                        "/api/admin/portfolio/upload-cleanup",
+                        token=self.admin_token,
+                        json=cleanup_payload,
+                    )
+                )
+            self.assertEqual(cleaned.status_code, 200, cleaned.text)
+            self.assertEqual(cleaned.json()["result"], "deleted")
+            destroy.assert_awaited_once_with(cleanup_payload["cloudinary_public_id"])
+
+            with patch.object(
+                main, "_cloudinary_destroy_image", AsyncMock(return_value="not found")
+            ):
+                repeated = self._run(
+                    self._request(
+                        "POST",
+                        "/api/admin/portfolio/upload-cleanup",
+                        token=self.admin_token,
+                        json=cleanup_payload,
+                    )
+                )
+            self.assertEqual(repeated.status_code, 200, repeated.text)
+            self.assertEqual(repeated.json()["result"], "not_found")
+
+            _, registered_cleanup = signed_cleanup("registered.jpg")
+            registered_asset = {
+                "destination": destination,
+                "primary_theme": "culture",
+                "original_filename": "registered.jpg",
+                "sha256": hashlib.sha256(b"registered-image").hexdigest(),
+                "file_bytes": 240000,
+                "width": 1600,
+                "height": 1000,
+                "format": "jpg",
+                "image_metadata": {},
+                "cloudinary_asset_id": f"registered-{uuid.uuid4().hex}",
+                "cloudinary_public_id": registered_cleanup["cloudinary_public_id"],
+                "cloudinary_version": registered_cleanup["cloudinary_version"],
+                "secure_url": (
+                    "https://res.cloudinary.com/wandermind-test/image/upload/"
+                    f"v{registered_cleanup['cloudinary_version']}/"
+                    f"{registered_cleanup['cloudinary_public_id']}.jpg"
+                ),
+                "response_signature": registered_cleanup["response_signature"],
+                "status": "draft",
+            }
+            created = self._run(
+                self._request(
+                    "POST",
+                    "/api/admin/portfolio/assets",
+                    token=self.admin_token,
+                    json=registered_asset,
+                )
+            )
+            self.assertEqual(created.status_code, 200, created.text)
+            repeated_create = self._run(
+                self._request(
+                    "POST",
+                    "/api/admin/portfolio/assets",
+                    token=self.admin_token,
+                    json=registered_asset,
+                )
+            )
+            self.assertEqual(repeated_create.status_code, 200, repeated_create.text)
+            self.assertTrue(repeated_create.json()["idempotent"])
+            self.assertEqual(
+                repeated_create.json()["asset"]["id"], created.json()["asset"]["id"]
+            )
+            conflicting_asset = dict(registered_asset)
+            conflicting_asset["cloudinary_asset_id"] = f"conflict-{uuid.uuid4().hex}"
+            conflict = self._run(
+                self._request(
+                    "POST",
+                    "/api/admin/portfolio/assets",
+                    token=self.admin_token,
+                    json=conflicting_asset,
+                )
+            )
+            self.assertEqual(conflict.status_code, 409, conflict.text)
+            registered_destroy = AsyncMock(return_value="ok")
+            with patch.object(main, "_cloudinary_destroy_image", registered_destroy):
+                registered = self._run(
+                    self._request(
+                        "POST",
+                        "/api/admin/portfolio/upload-cleanup",
+                        token=self.admin_token,
+                        json=registered_cleanup,
+                    )
+                )
+            self.assertEqual(registered.status_code, 200, registered.text)
+            self.assertEqual(registered.json()["result"], "registered")
+            registered_destroy.assert_not_awaited()
+
+            expired_payload = dict(cleanup_payload)
+            expired_payload["cleanup_timestamp"] = int(time.time()) - 7200
+            expired_payload["cleanup_token"] = main._portfolio_cleanup_token(
+                destination,
+                expired_payload["cloudinary_public_id"],
+                expired_payload["cleanup_timestamp"],
+                cloud_env["CLOUDINARY_API_SECRET"],
+            )
+            expired = self._run(
+                self._request(
+                    "POST",
+                    "/api/admin/portfolio/upload-cleanup",
+                    token=self.admin_token,
+                    json=expired_payload,
+                )
+            )
+            self.assertEqual(expired.status_code, 400)
+            self.assertIn("expired", expired.text)
+
+    def test_cloudinary_destroy_uses_signed_image_endpoint_and_rejects_unknown_result(self):
+        cloud_env = {
+            "CLOUDINARY_CLOUD_NAME": "wandermind-test",
+            "CLOUDINARY_API_KEY": "public-test-key",
+            "CLOUDINARY_API_SECRET": "portfolio-test-secret",
+        }
+
+        class FakeResponse:
+            def __init__(self, result):
+                self.result = result
+
+            def raise_for_status(self):
+                return None
+
+            def json(self):
+                return {"result": self.result}
+
+        class FakeClient:
+            def __init__(self, result):
+                self.result = result
+                self.url = ""
+                self.data = {}
+
+            async def __aenter__(self):
+                return self
+
+            async def __aexit__(self, *_):
+                return None
+
+            async def post(self, url, data):
+                self.url = url
+                self.data = data
+                return FakeResponse(self.result)
+
+        public_id = "wandermind/portfolio/bali/orphan-test"
+        ok_client = FakeClient("ok")
+        with patch.dict(os.environ, cloud_env, clear=False), patch.object(
+            main.httpx, "AsyncClient", return_value=ok_client
+        ):
+            result = self._run(main._cloudinary_destroy_image(public_id))
+        self.assertEqual(result, "ok")
+        self.assertEqual(
+            ok_client.url,
+            "https://api.cloudinary.com/v1_1/wandermind-test/image/destroy",
+        )
+        self.assertEqual(ok_client.data["public_id"], public_id)
+        self.assertEqual(ok_client.data["invalidate"], "true")
+        self.assertEqual(ok_client.data["api_key"], "public-test-key")
+        self.assertNotIn("portfolio-test-secret", json.dumps(ok_client.data))
+        expected_params = {
+            "invalidate": ok_client.data["invalidate"],
+            "public_id": ok_client.data["public_id"],
+            "timestamp": ok_client.data["timestamp"],
+        }
+        self.assertEqual(
+            ok_client.data["signature"],
+            main._cloudinary_sign(expected_params, cloud_env["CLOUDINARY_API_SECRET"]),
+        )
+
+        unknown_client = FakeClient("pending")
+        with patch.dict(os.environ, cloud_env, clear=False), patch.object(
+            main.httpx, "AsyncClient", return_value=unknown_client
+        ):
+            with self.assertRaises(HTTPException) as caught:
+                self._run(main._cloudinary_destroy_image(public_id))
+        self.assertEqual(caught.exception.status_code, 502)
+
     def test_portfolio_signed_upload_publish_hide_replace_and_reorder(self):
         cloud_env = {
             "CLOUDINARY_CLOUD_NAME": "wandermind-test",
@@ -1329,6 +1591,12 @@ class ProductAccessTests(unittest.TestCase):
             self.assertEqual(signature_response.status_code, 200, signature_response.text)
             signature_payload = signature_response.json()
             self.assertNotIn("api_secret", signature_payload)
+            if replacement_asset_id:
+                self.assertIsNone(signature_payload["cleanup"])
+            else:
+                self.assertTrue(signature_payload["cleanup"]["public_id"].startswith(
+                    "wandermind/portfolio/bali/"
+                ))
             signed_fields = signature_payload["signed_fields"]
             self.assertEqual(
                 signed_fields["allowed_formats"], "jpg,jpeg,png,webp,avif,heic"
@@ -1542,7 +1810,7 @@ class ProductAccessTests(unittest.TestCase):
         self.assertIn("multiple", admin_html)
         self.assertIn('id="manifestStatus"', admin_html)
         self.assertIn('id="queueDialog"', admin_html)
-        self.assertIn("admin-portfolio.js?v=p4", admin_html)
+        self.assertIn("admin-portfolio.js?v=p5", admin_html)
         self.assertIn('id="uploadDefaults"', admin_html)
         self.assertNotIn('id="uploadDefaults" open', admin_html)
         self.assertIn("Approved images are filled automatically", admin_html)
@@ -1559,12 +1827,20 @@ class ProductAccessTests(unittest.TestCase):
         self.assertIn("localizedSuggestion(item.description", admin_js)
         self.assertIn("reviewAutoMetadata", admin_js)
         self.assertIn("draftUploadFinished", admin_js)
+        self.assertIn("/api/admin/portfolio/upload-cleanup", admin_js)
+        self.assertIn("retryUploadCleanup", admin_js)
+        self.assertIn("retryUploadRecovery", admin_js)
+        self.assertIn("isDeterministicSaveRejection", admin_js)
+        self.assertIn("uploadRecoveryPending", admin_js)
+        self.assertIn("uploadCleanupFailed", admin_js)
         self.assertIn("summaryParts.join(' · ')", admin_js)
         self.assertIn("xhr.open('POST', signature.upload_url)", admin_js)
         self.assertIn("isSupportedImageFile(file)", admin_js)
         self.assertIn("t('preview')", admin_js)
         self.assertIn("https://api.cloudinary.com", Path(main.__file__).read_text(encoding="utf-8"))
         self.assertIn("_require_portfolio_publish_approval", Path(main.__file__).read_text(encoding="utf-8"))
+        self.assertIn("_validate_portfolio_cleanup_claim", Path(main.__file__).read_text(encoding="utf-8"))
+        self.assertIn("/image/destroy", Path(main.__file__).read_text(encoding="utf-8"))
         self.assertNotIn("CLOUDINARY_API_SECRET", admin_js)
         self.assertNotIn("/api/admin/portfolio/upload-file", admin_js)
         self.assertIn("/api/portfolio?destination=bali", bali_html)

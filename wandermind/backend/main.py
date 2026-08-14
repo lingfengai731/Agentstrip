@@ -614,6 +614,15 @@ class PortfolioUploadSignatureReq(BaseModel):
     replacement_asset_id: str = ""
 
 
+class PortfolioUploadCleanupReq(BaseModel):
+    destination: str = "bali"
+    cloudinary_public_id: str
+    cloudinary_version: int
+    response_signature: str
+    cleanup_timestamp: int
+    cleanup_token: str
+
+
 class PortfolioAssetReq(BaseModel):
     destination: str = "bali"
     primary_theme: str
@@ -695,6 +704,7 @@ _PORTFOLIO_VERIFICATION = {
 }
 _PORTFOLIO_IMAGE_FORMATS = {"jpg", "jpeg", "png", "webp", "avif", "heic"}
 _PORTFOLIO_MAX_BYTES = 25 * 1024 * 1024
+_PORTFOLIO_CLEANUP_TTL_SECONDS = 60 * 60
 _PORTFOLIO_MANIFEST_PATH = Path(__file__).resolve().parents[2] / "wandermind-studio" / "frontend" / "assets" / "data" / "image-publish-manifest.json"
 
 
@@ -819,6 +829,76 @@ def _cloudinary_sign(params: dict, api_secret: str) -> str:
         f"{key}={params[key]}" for key in sorted(params) if params[key] not in (None, "")
     )
     return hashlib.sha1(f"{serialized}{api_secret}".encode()).hexdigest()
+
+
+def _portfolio_cleanup_token(
+    destination: str, public_id: str, timestamp: int, api_secret: str
+) -> str:
+    message = f"{destination}\n{public_id}\n{timestamp}".encode()
+    return hmac.new(api_secret.encode(), message, hashlib.sha256).hexdigest()
+
+
+def _validate_portfolio_cleanup_claim(data: PortfolioUploadCleanupReq) -> str:
+    _, _, api_secret = _cloudinary_config()
+    destination = _portfolio_destination(data.destination)
+    public_id = _portfolio_text(
+        data.cloudinary_public_id, "cloudinary_public_id", 260
+    )
+    if not public_id.startswith(f"wandermind/portfolio/{destination}/"):
+        raise HTTPException(400, "Cloudinary public_id is outside the portfolio folder")
+    timestamp = int(data.cleanup_timestamp or 0)
+    now = int(time.time())
+    if timestamp < 1 or timestamp > now + 60 or now - timestamp > _PORTFOLIO_CLEANUP_TTL_SECONDS:
+        raise HTTPException(400, "Portfolio cleanup authorization has expired")
+    expected_token = _portfolio_cleanup_token(
+        destination, public_id, timestamp, api_secret
+    )
+    if not hmac.compare_digest(
+        str(data.cleanup_token or "").strip().lower(), expected_token
+    ):
+        raise HTTPException(400, "Invalid portfolio cleanup authorization")
+    version = int(data.cloudinary_version or 0)
+    if version < 1:
+        raise HTTPException(400, "Invalid Cloudinary asset version")
+    expected_response_signature = hashlib.sha1(
+        f"public_id={public_id}&version={version}{api_secret}".encode()
+    ).hexdigest()
+    if not hmac.compare_digest(
+        str(data.response_signature or "").strip().lower(),
+        expected_response_signature,
+    ):
+        raise HTTPException(400, "Cloudinary upload response signature is invalid")
+    return public_id
+
+
+async def _cloudinary_destroy_image(public_id: str) -> str:
+    cloud_name, api_key, api_secret = _cloudinary_config()
+    params = {
+        "invalidate": "true",
+        "public_id": public_id,
+        "timestamp": int(time.time()),
+    }
+    payload = {
+        **params,
+        "api_key": api_key,
+        "signature": _cloudinary_sign(params, api_secret),
+    }
+    try:
+        async with httpx.AsyncClient(timeout=10.0) as client:
+            response = await client.post(
+                f"https://api.cloudinary.com/v1_1/{cloud_name}/image/destroy",
+                data=payload,
+            )
+        response.raise_for_status()
+        response_payload = response.json()
+        if not isinstance(response_payload, dict):
+            raise ValueError("Unexpected Cloudinary cleanup response")
+        result = str(response_payload.get("result") or "").strip().lower()
+    except (httpx.HTTPError, ValueError, TypeError, AttributeError):
+        raise HTTPException(502, "Cloudinary cleanup could not be confirmed")
+    if result not in {"ok", "not found"}:
+        raise HTTPException(502, "Cloudinary cleanup could not be confirmed")
+    return result
 
 
 def _portfolio_storage_payload(data, destination: str) -> dict:
@@ -966,6 +1046,7 @@ async def portfolio_upload_signature(
         "timestamp": timestamp,
     }
     replacement_id = (data.replacement_asset_id or "").strip()
+    cleanup = None
     if replacement_id:
         conn = get_db()
         try:
@@ -990,13 +1071,46 @@ async def portfolio_upload_signature(
             "overwrite": "false",
             "public_id": f"{stem}-{uuid.uuid4().hex[:12]}",
         })
+        cleanup_public_id = f"{params['folder']}/{params['public_id']}"
+        cleanup = {
+            "public_id": cleanup_public_id,
+            "timestamp": timestamp,
+            "token": _portfolio_cleanup_token(
+                destination, cleanup_public_id, timestamp, api_secret
+            ),
+        }
     return {
         "upload_url": f"https://api.cloudinary.com/v1_1/{cloud_name}/image/upload",
         "cloud_name": cloud_name,
         "api_key": api_key,
         "signature": _cloudinary_sign(params, api_secret),
         "signed_fields": params,
+        "cleanup": cleanup,
         "max_upload_bytes": _PORTFOLIO_MAX_BYTES,
+    }
+
+
+@app.post("/api/admin/portfolio/upload-cleanup")
+async def cleanup_portfolio_upload(
+    data: PortfolioUploadCleanupReq,
+    admin=Depends(current_admin),
+):
+    destination = _portfolio_destination(data.destination)
+    public_id = _validate_portfolio_cleanup_claim(data)
+    conn = get_db()
+    try:
+        row = conn.execute(
+            "SELECT id FROM portfolio_assets WHERE destination=? AND cloudinary_public_id=?",
+            (destination, public_id),
+        ).fetchone()
+    finally:
+        conn.close()
+    if row:
+        return {"ok": True, "result": "registered"}
+    result = await _cloudinary_destroy_image(public_id)
+    return {
+        "ok": True,
+        "result": "deleted" if result == "ok" else "not_found",
     }
 
 
@@ -1055,6 +1169,26 @@ async def create_portfolio_asset(
             conn.commit()
         except IntegrityError:
             conn.rollback()
+            existing_row = conn.execute(
+                """SELECT * FROM portfolio_assets
+                   WHERE destination=? AND
+                   (sha256=? OR cloudinary_asset_id=? OR cloudinary_public_id=?)
+                   LIMIT 1""",
+                (
+                    destination,
+                    storage["sha256"],
+                    storage["cloudinary_asset_id"],
+                    storage["cloudinary_public_id"],
+                ),
+            ).fetchone()
+            if existing_row:
+                existing = _portfolio_asset_dict(existing_row)
+                if (
+                    existing["sha256"] == storage["sha256"]
+                    and existing["cloudinary_asset_id"] == storage["cloudinary_asset_id"]
+                    and existing["cloudinary_public_id"] == storage["cloudinary_public_id"]
+                ):
+                    return {"ok": True, "asset": existing, "idempotent": True}
             raise HTTPException(409, "This portfolio image or Cloudinary asset already exists")
         row = conn.execute("SELECT * FROM portfolio_assets WHERE id=?", (asset_id,)).fetchone()
         return {"ok": True, "asset": _portfolio_asset_dict(row)}
