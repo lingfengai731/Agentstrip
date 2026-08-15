@@ -1,0 +1,22 @@
+{
+  "schema_version": 1,
+  "evidence_id": "ev-20260815T050457Z-task-20260815-r2-verify",
+  "task_ref": "TASK-20260815-R2-VERIFY",
+  "owner": "codex-sol",
+  "captured_at": "2026-08-15T05:04:57Z",
+  "status": "verified",
+  "claim": "R2 stable route facts verified for The Yoga Barn, Pyramids of Chi and Tibumana Waterfall; all ten R2 free-outline nodes are verified while schedules, health claims and safety conditions remain dynamic.",
+  "source": {
+    "kind": "git",
+    "repository": "https://github.com/lingfengai731/Agentstrip.git",
+    "commit": "7b4b7b386a81192aedb1ebdb706671b7f804d0e7",
+    "branch": "codex/r2-route-verification",
+    "worktree": "E:\\Agentstrip-wt-r2",
+    "dirty": false
+  },
+  "verification": {
+    "command": "python -m unittest wandermind.backend.tests.test_product_access; JSON count and R2 outline assertions; git diff --check; project-memory validate; Playwright Chrome 1440/768/320 and WebKit 390",
+    "result": "39 tests OK; 59 POIs = 38 verified + 18 pending + 3 supplier-gated; R2 status, three long-name POIs and zh/en redraw passed; document/detail overflow 0 at all four viewports."
+  },
+  "notes": "Official evidence: The Yoga Barn and Pyramids of Chi venue/booking pages, Indonesia Ministry of Tourism and Susut District government. Wellness copy is not medical evidence. Live checks remain for schedules, prices, availability, practitioners, waivers, suitability, refunds, rainfall, water conditions, trail access and swimming safety. Production was not changed or reverified."
+}
