@@ -13,21 +13,21 @@
   },
   "snapshot": {
     "status": "verified",
-    "captured_at": "2026-08-15T04:55:26Z",
+    "captured_at": "2026-08-15T05:04:22Z",
     "captured_by": "codex-sol",
-    "source_commit": "ab451306d5591844919bfbb46165a1a63e05e5f5",
-    "source_branch": "codex/r6-route-verification",
+    "source_commit": "e57cf5e79191455836874260bfb7342a18ef964e",
+    "source_branch": "codex/r2-route-verification",
     "working_tree_at_capture": "clean",
     "wandermind_bali": {
       "status": "verified",
       "routes": 6,
       "pois": 59,
-      "verified_pois": 35,
-      "pending_review_pois": 21,
+      "verified_pois": 38,
+      "pending_review_pois": 18,
       "supplier_gated_pois": 3,
-      "verified_route_families": ["R3", "R4", "R6"],
+      "verified_route_families": ["R2", "R3", "R4", "R6"],
       "notes": [
-        "R3, R4 and R6 free-outline stable facts are verified; named paid activities still require live supplier confirmation.",
+        "R2, R3, R4 and R6 free-outline stable facts are verified; named paid activities still require live schedule, suitability and supplier confirmation.",
         "Dicky's five-day itinerary is treated as an R1 field calibration, not a seventh route family.",
         "Production was not changed or reverified by this snapshot."
       ]
