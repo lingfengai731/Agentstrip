@@ -1211,6 +1211,9 @@ class ProductAccessTests(unittest.TestCase):
             "ubud_monkey_forest",
             "uluwatu_temple",
             "seminyak_beach",
+            "batu_bolong_beach",
+            "echo_beach",
+            "petitenget_temple",
             "melasti_beach",
             "jimbaran_bay",
             "sanur_beach",
@@ -1243,7 +1246,7 @@ class ProductAccessTests(unittest.TestCase):
         )
         self.assertEqual(
             sum(poi["verification_status"] == "pending_review" for poi in data["pois"]),
-            24,
+            21,
         )
         supplier_confirmation_ids = {
             "mount_batur_jeep",
@@ -1319,6 +1322,18 @@ class ProductAccessTests(unittest.TestCase):
         self.assertEqual(
             r4["free_outline"][2]["suggested_poi_ids"],
             ["celuk_village", "tegalalang_rice_terrace"],
+        )
+        r6 = next(route for route in data["routes"] if route["id"] == "R6")
+        self.assertEqual(r6["verification_status"], "verified")
+        r6_outline_ids = {
+            poi_id
+            for day in r6["free_outline"]
+            for poi_id in day["suggested_poi_ids"]
+        }
+        self.assertEqual(len(r6_outline_ids), 10)
+        self.assertEqual(
+            {poi_by_id[poi_id]["verification_status"] for poi_id in r6_outline_ids},
+            {"verified"},
         )
         self.assertIn("opening_hours", data["verification_policy"]["live_checks_required"])
         bali_html = (data_path.parents[2] / "bali.html").read_text(encoding="utf-8")
