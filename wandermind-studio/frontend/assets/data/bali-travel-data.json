@@ -1,5 +1,5 @@
 {
-  "schema_version": "1.4.0",
+  "schema_version": "1.5.0",
   "updated_at": "2026-08-15",
   "destination": {
     "id": "bali",
@@ -216,7 +216,7 @@
       "optional_modules": ["munduk_nature", "east_bali_village"],
       "preview_days": 3,
       "driver_supported": true,
-      "verification_status": "pending_review",
+      "verification_status": "verified",
       "content_boundary": "Wellness experiences are not medical treatment and must not use health cure claims."
     },
     {
@@ -429,9 +429,18 @@
       "tags": ["yoga", "sound", "wellness"],
       "route_ids": ["R2"],
       "official_url": "https://theyogabarn.com/",
-      "booking_url": "",
-      "verification_status": "pending_review",
-      "notes": "Do not make medical or guaranteed wellness claims."
+      "booking_url": "https://theyogabarn.com/classes/daily-classes/",
+      "verification_status": "verified",
+      "notes": "The official venue confirms The Yoga Barn as an Ubud yoga and wellness centre offering classes and events. This verifies the venue and activity categories only; recheck the live schedule, price, availability, teacher, waiver, accessibility and suitability, and never present wellness marketing as medical treatment or a guaranteed outcome.",
+      "verification": {
+        "reviewed_at": "2026-08-15",
+        "verified_scope": ["identity", "ubud_location_context", "yoga_and_wellness_venue", "official_schedule_path"],
+        "live_checks": ["class_schedule", "ticket_price", "availability", "teacher", "waiver", "accessibility", "traveller_suitability"],
+        "sources": [
+          {"publisher":"The Yoga Barn","title":"About The Yoga Barn","url":"https://theyogabarn.com/about/","kind":"official_venue"},
+          {"publisher":"The Yoga Barn","title":"Daily classes","url":"https://theyogabarn.com/classes/daily-classes/","kind":"official_booking"}
+        ]
+      }
     },
     {
       "id": "pyramids_of_chi",
@@ -441,10 +450,19 @@
       "type": "wellness_venue",
       "tags": ["sound", "wellness"],
       "route_ids": ["R2"],
-      "official_url": "",
-      "booking_url": "",
-      "verification_status": "pending_review",
-      "notes": "Confirm official URL, session schedule, image rights and booking terms."
+      "official_url": "https://ubud.pyramidsofchi.com/",
+      "booking_url": "https://ubud.pyramidsofchi.com/events/",
+      "verification_status": "verified",
+      "notes": "The official venue confirms Pyramids of Chi in the Ubud area as a purpose-built sound and wellness events venue. This verifies identity, location context and activity categories only; recheck the live event calendar, price, availability, practitioner, contraindications, waiver, transport and refund terms, and do not convert spiritual or wellness claims into medical advice.",
+      "verification": {
+        "reviewed_at": "2026-08-15",
+        "verified_scope": ["identity", "ubud_area_location", "sound_and_wellness_venue", "official_event_path"],
+        "live_checks": ["event_calendar", "ticket_price", "availability", "practitioner", "contraindications", "waiver", "transport", "refund_terms"],
+        "sources": [
+          {"publisher":"Pyramids of Chi","title":"Pyramids of Chi Ubud","url":"https://ubud.pyramidsofchi.com/","kind":"official_venue"},
+          {"publisher":"Pyramids of Chi","title":"Events and sessions","url":"https://ubud.pyramidsofchi.com/events/","kind":"official_booking"}
+        ]
+      }
     },
     {
       "id": "heart_space_bali",
@@ -603,7 +621,7 @@
     {"id":"goa_gajah","name":"Goa Gajah","region_id":"G4","node_id":"ubud","type":"temple","tags":["temple","culture","history"],"route_ids":["R1","R2","R4"],"official_url":"https://www.indonesia.travel/uk-en/explore-indonesia/bali-nusa-tenggara/bali/goa-gajah","booking_url":"","verification_status":"verified","notes":"Government tourism guidance confirms Goa Gajah in Bedulu, Gianyar as an archaeological and sacred complex with rock-cut cave, bathing structures and Hindu-Buddhist context. Recheck opening hours, fees, dress guidance, ceremony access, site works and accessibility before travel.","verification":{"reviewed_at":"2026-08-15","verified_scope":["identity","bedulu_location","archaeological_context","sacred_context","bathing_structure_context"],"live_checks":["opening_hours","ticket_price","dress_guidance","ceremony_access","site_works","accessibility"],"sources":[{"publisher":"Ministry of Tourism, Republic of Indonesia","title":"Goa Gajah","url":"https://www.indonesia.travel/uk-en/explore-indonesia/bali-nusa-tenggara/bali/goa-gajah","kind":"government_tourism"}]}},
     {"id":"tegenungan_waterfall","name":"Tegenungan Waterfall","region_id":"G4","node_id":"ubud","type":"waterfall","tags":["waterfall","nature","swim"],"route_ids":["R1","R2","R4"],"official_url":"","booking_url":"","verification_status":"pending_review","notes":"Planning anchor; confirm rainfall, steps and water safety before travel."},
     {"id":"kanto_lampo_waterfall","name":"Kanto Lampo Waterfall","region_id":"G4","node_id":"ubud","type":"waterfall","tags":["waterfall","photography","nature"],"route_ids":["R1","R2","R4","R6"],"official_url":"https://www.indonesia.travel/id/id/destination/bali-nusa-tenggara/bali/air-terjun-kanto-lampo","booking_url":"","verification_status":"verified","notes":"Government tourism guidance confirms Kanto Lampo in Gianyar as a tiered waterfall with a natural pool and relatively short approach. Recheck rainfall, flash-water risk, current, trail and stair condition, water access, crowding, weather and fees before travel.","verification":{"reviewed_at":"2026-08-15","verified_scope":["identity","gianyar_location","tiered_waterfall_context","natural_pool_context","approach_context"],"live_checks":["rainfall","flash_water_risk","current","trail_condition","stair_condition","water_access","crowding","weather","ticket_price"],"sources":[{"publisher":"Ministry of Tourism, Republic of Indonesia","title":"Kanto Lampo Waterfall","url":"https://www.indonesia.travel/id/id/destination/bali-nusa-tenggara/bali/air-terjun-kanto-lampo","kind":"government_tourism"}]}},
-    {"id":"tibumana_waterfall","name":"Tibumana Waterfall","region_id":"G4","node_id":"ubud","type":"waterfall","tags":["waterfall","nature","relaxed"],"route_ids":["R1","R2"],"official_url":"","booking_url":"","verification_status":"pending_review","notes":"Planning anchor; confirm rainfall and access before travel."},
+    {"id":"tibumana_waterfall","name":"Tibumana Waterfall","region_id":"G4","node_id":"ubud","type":"waterfall","tags":["waterfall","nature","relaxed"],"route_ids":["R1","R2"],"official_url":"https://www.indonesia.travel/id/en/destination/bali-nusa-tenggara/bali/air-terjun-tibumama","booking_url":"","verification_status":"verified","notes":"National tourism guidance confirms Tibumana Waterfall as a forest-and-cliff nature destination with a short walking approach; Susut District lists it among the district's nature attractions in Bangli. The G4/Ubud node is an itinerary grouping, not an administrative-location claim. Recheck rainfall, water level and current, trail and stair conditions, swimming permission and safety, lifeguard coverage, access, fees and weather before travel.","verification":{"reviewed_at":"2026-08-15","verified_scope":["identity","susut_bangli_location_context","waterfall_and_forest_context","walking_approach","ubud_route_extension_boundary"],"live_checks":["rainfall","water_level_and_current","trail_condition","stair_condition","swimming_permission","swimming_safety","lifeguard_coverage","access","ticket_price","weather"],"sources":[{"publisher":"Ministry of Tourism, Republic of Indonesia","title":"Tibumana Waterfall","url":"https://www.indonesia.travel/id/en/destination/bali-nusa-tenggara/bali/air-terjun-tibumama","kind":"government_tourism"},{"publisher":"Susut District, Bangli Regency","title":"Profile of Susut District","url":"https://www.susut.banglikab.go.id/page/profil-kecamatan-susut","kind":"government_registry"}]}},
     {"id":"jatiluwih_rice_terraces","name":"Jatiluwih Rice Terraces","region_id":"G5","node_id":"bedugul","type":"rice_terrace","tags":["rice_fields","landscape","walk"],"route_ids":["R1","R4","R6"],"official_url":"","booking_url":"","verification_status":"pending_review","notes":"Planning anchor; confirm route, weather and visitor access before travel."},
     {"id":"banyumala_waterfall","name":"Banyumala Twin Waterfall","region_id":"G5","node_id":"munduk","type":"waterfall","tags":["waterfall","nature","highland"],"route_ids":["R1","R5"],"official_url":"","booking_url":"","verification_status":"pending_review","notes":"Planning anchor; confirm road, steps, weather and water safety before travel."},
     {"id":"munduk_waterfall","name":"Munduk Waterfall","region_id":"G5","node_id":"munduk","type":"waterfall","tags":["waterfall","nature","highland"],"route_ids":["R1","R5"],"official_url":"","booking_url":"","verification_status":"pending_review","notes":"Planning anchor; confirm road, trail and weather before travel."},

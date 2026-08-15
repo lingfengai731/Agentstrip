@@ -1214,6 +1214,9 @@ class ProductAccessTests(unittest.TestCase):
             "batu_bolong_beach",
             "echo_beach",
             "petitenget_temple",
+            "yoga_barn",
+            "pyramids_of_chi",
+            "tibumana_waterfall",
             "melasti_beach",
             "jimbaran_bay",
             "sanur_beach",
@@ -1246,7 +1249,7 @@ class ProductAccessTests(unittest.TestCase):
         )
         self.assertEqual(
             sum(poi["verification_status"] == "pending_review" for poi in data["pois"]),
-            21,
+            18,
         )
         supplier_confirmation_ids = {
             "mount_batur_jeep",
@@ -1294,6 +1297,18 @@ class ProductAccessTests(unittest.TestCase):
                 == "needs_supplier_confirmation"
             },
             {"mount_batur_jeep"},
+        )
+        r2 = next(route for route in data["routes"] if route["id"] == "R2")
+        self.assertEqual(r2["verification_status"], "verified")
+        r2_outline_ids = {
+            poi_id
+            for day in r2["free_outline"]
+            for poi_id in day["suggested_poi_ids"]
+        }
+        self.assertEqual(len(r2_outline_ids), 10)
+        self.assertEqual(
+            {poi_by_id[poi_id]["verification_status"] for poi_id in r2_outline_ids},
+            {"verified"},
         )
         r3 = next(route for route in data["routes"] if route["id"] == "R3")
         self.assertEqual(r3["verification_status"], "verified")

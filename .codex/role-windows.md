@@ -23,6 +23,9 @@
 
 ## 最近回调
 
+- 2026-08-15 R2 内容回调：The Yoga Barn、Pyramids of Chi 与 Tibumana Waterfall 已用场所官网、印尼旅游部和 Susut/Bangli 政府来源核验稳定身份；R2 免费路线 10 个节点全部 `verified`。课程、价格、余位、教师/主持人、waiver、活动适用性、退款、天气、水况、步道与游泳安全仍为实时检查，任何 wellness 文案不得转写成医疗或保证性疗效。
+- 2026-08-15 R2 测试/UI 回调：产品回归 39/39；全库 59 个 POI 更新为 38 verified、18 pending、3 supplier-gated。Chrome 1440/768/320 与 WebKit 390 的 R2 状态、长场所名称、中英文重绘和控件可达性通过，页面与详情横向溢出均为 0。
+- 2026-08-15 R2 Luna 回调：正式 Agent `luna_worker` / `gpt-5.6-luna` / `max` 于 2026-08-15T12:58:01+08:00 启动，只读来源审计最终状态 `complete`，耗时约 5.5 分钟且零写入；Sol 已独立核对其位置与预约建议、实际 diff、39 项测试及四视口证据后接受。Tibumana 的 G4/Ubud 仅保留为路线分组，稳定事实明确为 Susut/Bangli 语境。
 - 2026-08-15 R6 内容回调：Pura Petitenget、Batu Bolong Beach 与 Echo Beach 已用 Badung 政府、印尼旅游部和宗教事务登记核验稳定身份、位置与文化/海岸语义；R6 免费路线 10 个节点全部 `verified`。仪式开放、着装、门票、潮汐、浪况、游泳安全、救生员、天气与交通仍为出发前动态检查。
 - 2026-08-15 R6 测试/UI 回调：产品回归 39/39；全库 59 个 POI 更新为 35 verified、21 pending、3 supplier-gated。Chrome 1440/768/320 与 WebKit 390 的 R6 状态、三节点、添加地点和中英文重绘通过，页面与详情横向溢出均为 0。
 - 2026-08-15 R6 Luna 回调：正式 Agent `luna_worker` / `gpt-5.6-luna` / `max` 于 2026-08-15T12:40:46+08:00 启动只读来源审计；因 Sol 按计划并行产生集成改动而触发任务包 STOP，最终状态为 `blocked`，未写文件。其来源审计已完整返回，Sol 独立核对来源、实际 diff、39 项测试和四视口证据后接受结论；不把该状态误写为“Luna 完成”。
@@ -70,6 +73,7 @@
 
 ## 技能命中
 
+- 2026-08-15 R2 轮实际使用：agent-role-orchestrator 继续约束 L3 回调与事实边界；codex-luna-worker 独立核验三个主路线节点；ui-implementation-workflow 限定既有 portfolio 页面内的数据增量；browser-automation-router/Playwright 完成 Chrome/WebKit 四视口验证。未使用女娲或人物 Perspective：医疗/疗效边界由一手来源、现有产品规则和最小承诺原则即可确定。
 - 2026-08-15 R6 轮实际使用：agent-role-orchestrator 约束 L3 路由、事实回调和 fail-closed 记录；codex-luna-worker 仅委派边界明确的只读来源审计；ui-implementation-workflow 将本轮限定为既有 portfolio 页面内的数据更新，不新建设计；browser-automation-router 选择确定性 Playwright，Chrome/WebKit 四视口完成交互与响应式验收。`prepare_role_window.py` 仍因缺少 `registry/plugin-packages.json` fail-closed，未伪造持久角色窗口；未调用女娲或人物 Perspective，因为没有新增商业、定价或品牌判断。
 - 2026-08-15 实际使用：agent-role-orchestrator 约束 L3 路由与回调；codex-luna-worker 仅委派只读、边界明确的差距审计；ui-implementation-workflow 保持 teal + gold 和 tiny/small 增量边界；browser-automation-router 选择确定性 Playwright；Playwright CLI 完成 Chrome/WebKit 四视口真实交互。未使用女娲或人物 Perspective，因为本轮没有新增商业承诺或定价裁决。
 - 2026-08-03 路线编辑器轮实际使用：agent-role-orchestrator、ui-implementation-workflow、browser-automation-router、Playwright CLI；按 medium/L3 路径完成现状审计、既有风格内实现、Chrome/WebKit 响应式交互验证并通过 Sol 最终门禁。WebKit 26.5 安装在 `E:\CodexBrowserCache`，未写入项目仓库。
@@ -117,8 +121,8 @@
 
 ## 压缩交接卡
 
-- 最近摘要：R3、R4 与 R6 免费路线的稳定事实已闭环；Dicky 五日路线已补充 Suluban 与佩妮达东西线资料，但不另建 R7。全库 59 个 POI：35 verified、21 pending、3 supplier-gated。
+- 最近摘要：R2、R3、R4 与 R6 免费路线的稳定事实已闭环；Dicky 五日路线已补充 Suluban 与佩妮达东西线资料，但不另建 R7。全库 59 个 POI：38 verified、18 pending、3 supplier-gated。
 - 关键决策：保持 Claudecode teal + gold；巴厘岛主、其他目的地次；泛化执行步骤不伪装为 POI，活动供应商和动态条件不冒充已核验稳定事实。
-- 当前证据：39 项产品回归、项目记忆 validate、Chrome 1440/768/320、WebKit 390；R6 状态、三节点、添加地点和中英文重绘通过，页面级横向溢出为 0。
-- 下一步：按 README 完整台账优先处理剩余 21 个 pending POI 和 3 个供应商门禁，再建立逐司机路线级报价；未合并到 `main`、未生产部署前不得声称网站已更新。
+- 当前证据：39 项产品回归、项目记忆 validate、Chrome 1440/768/320、WebKit 390；R2 状态、三节点、长名称和中英文重绘通过，页面级横向溢出为 0。
+- 下一步：按 README 完整台账优先处理剩余 18 个 pending POI 和 3 个供应商门禁；R5 主路线尚有 6 个 pending 稳定节点与 Mount Batur Jeep 供应商门禁。未合并到 `main`、未生产部署前不得声称网站已更新。
 - 新窗口接续提示：从本轮 task branch、evidence 和 handoff 接续；不得删除用户根目录下的旅行图片分类规划 txt。
