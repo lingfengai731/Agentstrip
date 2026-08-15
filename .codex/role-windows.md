@@ -23,6 +23,10 @@
 
 ## 最近回调
 
+- 2026-08-15 Dicky 五日路线 / R4 回调：不新建 R7；把五日内容作为 R1 的在地压缩校准，接送、餐食、酒店、道路和泛化购物不伪装为 POI。Blue Point 归一为 Suluban Beach；补齐佩妮达西线 Angel's Billabong 与东线 Diamond Beach、Rumah Pohon、Atuh Beach，Thousand Islands Viewpoint 因精确身份不足继续 `pending_review`。
+- 2026-08-15 内容核验回调：R4 的 Goa Gajah、Kanto Lampo、Sidemen、Tirta Gangga 及 Celuk Village 已用政府/官方来源核验稳定事实；R4 Day 3 从“瀑布 + 稻田”纠正为“银饰村落 + 稻田”，免费路线 10 个节点全部 `verified`。Celuk 银饰课、Bali Fire Shooting Club 与 Mount Batur Jeep 保持供应商门禁。
+- 2026-08-15 测试/UI 回调：后端产品回归 39/39 通过；Chrome 1440/768/320 与 WebKit 390 均完成 R4 状态、R1 Day 7 佩妮达候选及 Angel's Billabong 添加交互，页面级横向溢出为 0。旧 WebKit 2311 与 Playwright 1.62.1 不匹配，已在用户缓存安装 2336 后重跑通过，未写入仓库。
+- 2026-08-15 Luna 审计回调：正式 Agent `luna_worker` / `gpt-5.6-luna` / `max` 执行只读 Dicky 差距与 backlog 审计，最终状态 `completed`；协作工具未暴露精确启动时间，台账不编造。Sol 已独立复核实际数据、diff、39 项测试、四视口浏览器证据和项目记忆校验后接受其审计结论。
 - 2026-08-03 QA 终态回调：Sol 首轮发现同路径换图继承批准、关键词地点冲突和内容字段未必填 3 个 P1；全部修复并复审 GO，P0/P1 为 0；Region、用途与双语替代文字的剩余 P2 断言也已补齐。
 - 2026-08-03 开发/测试回调：图片收件工具改为增量合并；唯一哈希改名保留人工字段，重复副本不继承批准；非巴厘岛明确地点不关联巴厘路线；专项测试、幂等检查和原后端 9 项 unittest 均通过。
 - 2026-08-03 图片发布门禁：108 张中 23 张建议关联路线、15 张建议关联 POI；当前 0 张人工确认，因此发布 manifest 为 0，来源图片未移动、改名、覆盖或删除。
@@ -63,6 +67,7 @@
 
 ## 技能命中
 
+- 2026-08-15 实际使用：agent-role-orchestrator 约束 L3 路由与回调；codex-luna-worker 仅委派只读、边界明确的差距审计；ui-implementation-workflow 保持 teal + gold 和 tiny/small 增量边界；browser-automation-router 选择确定性 Playwright；Playwright CLI 完成 Chrome/WebKit 四视口真实交互。未使用女娲或人物 Perspective，因为本轮没有新增商业承诺或定价裁决。
 - 2026-08-03 路线编辑器轮实际使用：agent-role-orchestrator、ui-implementation-workflow、browser-automation-router、Playwright CLI；按 medium/L3 路径完成现状审计、既有风格内实现、Chrome/WebKit 响应式交互验证并通过 Sol 最终门禁。WebKit 26.5 安装在 `E:\CodexBrowserCache`，未写入项目仓库。
 - 2026-08-03 本轮实际使用：agent-role-orchestrator、ui-implementation-workflow、browser-automation-router、Playwright CLI；分别约束 L3 角色台账、既有页面风格、确定性浏览器路径以及桌面/平板/手机验收。`prepare_role_window.py` 仍因缺少 `registry/plugin-packages.json` fail-closed，未伪造持久角色窗口；最终复用现有 Sol 审查窗口。
 - 2026-08-03 当前轮影响产出的 skill：agent-role-orchestrator 触发 L3 台账和 Sol 门禁；Sol 的独立反证直接发现并推动修复 3 个 P1。未使用 UI、浏览器、女娲或人物 Perspective，因为没有页面视觉或新商业判断。
@@ -108,8 +113,8 @@
 
 ## 压缩交接卡
 
-- 最近摘要：Google 登录、阶段 1/2、C1–C4 产品额度及六路线空间示意均已验收；108 张图片已具备增量复核、路线/POI 建议和 fail-closed 发布 manifest。
-- 关键决策：保持 Claudecode 既有风格；巴厘岛主、其他目的地次；桌面悬停/键盘和手机点击均可操作。
-- 当前证据：图片专项负向测试、幂等检查、12 项后端/数据测试、四目的地 × 五语言接口矩阵、1440/768/390 目的地情报响应式验收及既往 24 组路线尺寸矩阵；最新图片工作流最终 GO。
-- 下一步：等待 Dicky/Gede 真实报价；图片需完成权属确认后再按路线/POI 发布；自动支付和精确车程地图仍属于后续阶段。
-- 新窗口接续提示：不得删除用户根目录下的旅行图片分类规划 txt。
+- 最近摘要：R4 免费路线 10 个节点的稳定事实已闭环；Dicky 五日路线已补充 Suluban 与佩妮达东西线资料，但不另建 R7。全库 59 个 POI：32 verified、24 pending、3 supplier-gated。
+- 关键决策：保持 Claudecode teal + gold；巴厘岛主、其他目的地次；泛化执行步骤不伪装为 POI，活动供应商和动态条件不冒充已核验稳定事实。
+- 当前证据：39 项产品回归、项目记忆 validate、Chrome 1440/768/320、WebKit 390；R1 Day 7 可加入 Angel's Billabong，页面级横向溢出为 0。
+- 下一步：按 README 完整台账优先处理剩余 24 个 pending POI 和 3 个供应商门禁，再建立逐司机路线级报价；未合并到 `main`、未生产部署前不得声称网站已更新。
+- 新窗口接续提示：从本轮 task branch、evidence 和 handoff 接续；不得删除用户根目录下的旅行图片分类规划 txt。

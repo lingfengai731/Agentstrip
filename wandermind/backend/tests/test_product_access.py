@@ -1189,6 +1189,7 @@ class ProductAccessTests(unittest.TestCase):
         route_ids = {route["id"] for route in data["routes"]}
         poi_ids = [poi["id"] for poi in data["pois"]]
         poi_by_id = {poi["id"]: poi for poi in data["pois"]}
+        self.assertEqual(len(poi_ids), 59)
         self.assertEqual(len(poi_ids), len(set(poi_ids)))
         verification_states = {
             "verified",
@@ -1222,6 +1223,19 @@ class ProductAccessTests(unittest.TestCase):
             "pandawa_beach",
             "bingin_beach",
             "nusa_dua_beach",
+            "suluban_beach",
+            "kelingking_beach",
+            "broken_beach",
+            "angels_billabong",
+            "crystal_bay",
+            "diamond_beach",
+            "rumah_pohon_molenteng",
+            "atuh_beach",
+            "celuk_village",
+            "goa_gajah",
+            "kanto_lampo_waterfall",
+            "tirta_gangga",
+            "sidemen_valley",
         }
         self.assertEqual(
             {poi["id"] for poi in data["pois"] if poi["verification_status"] == "verified"},
@@ -1229,18 +1243,27 @@ class ProductAccessTests(unittest.TestCase):
         )
         self.assertEqual(
             sum(poi["verification_status"] == "pending_review" for poi in data["pois"]),
-            30,
+            24,
         )
+        supplier_confirmation_ids = {
+            "mount_batur_jeep",
+            "bali_fire_shooting_club",
+            "celuk_silver_class",
+        }
         self.assertEqual(
-            poi_by_id["mount_batur_jeep"]["verification_status"],
-            "needs_supplier_confirmation",
+            {
+                poi["id"]
+                for poi in data["pois"]
+                if poi["verification_status"] == "needs_supplier_confirmation"
+            },
+            supplier_confirmation_ids,
         )
         self.assertEqual(
             sum(
                 poi["verification_status"] == "needs_supplier_confirmation"
                 for poi in data["pois"]
             ),
-            1,
+            3,
         )
         r1 = next(route for route in data["routes"] if route["id"] == "R1")
         self.assertEqual(
@@ -1280,6 +1303,22 @@ class ProductAccessTests(unittest.TestCase):
         self.assertEqual(
             {poi_by_id[poi_id]["verification_status"] for poi_id in r3_outline_ids},
             {"verified"},
+        )
+        r4 = next(route for route in data["routes"] if route["id"] == "R4")
+        self.assertEqual(r4["verification_status"], "verified")
+        r4_outline_ids = {
+            poi_id
+            for day in r4["free_outline"]
+            for poi_id in day["suggested_poi_ids"]
+        }
+        self.assertEqual(len(r4_outline_ids), 10)
+        self.assertEqual(
+            {poi_by_id[poi_id]["verification_status"] for poi_id in r4_outline_ids},
+            {"verified"},
+        )
+        self.assertEqual(
+            r4["free_outline"][2]["suggested_poi_ids"],
+            ["celuk_village", "tegalalang_rice_terrace"],
         )
         self.assertIn("opening_hours", data["verification_policy"]["live_checks_required"])
         bali_html = (data_path.parents[2] / "bali.html").read_text(encoding="utf-8")
@@ -1334,6 +1373,51 @@ class ProductAccessTests(unittest.TestCase):
                     )
                     suggested_ids.append(poi_id)
             self.assertEqual(len(suggested_ids), len(set(suggested_ids)), route["id"])
+
+    def test_dicky_five_day_route_gaps_are_normalized_without_generic_pois(self):
+        data_path = (
+            BACKEND_DIR.parents[1]
+            / "wandermind-studio"
+            / "frontend"
+            / "assets"
+            / "data"
+            / "bali-travel-data.json"
+        )
+        data = json.loads(data_path.read_text(encoding="utf-8"))
+        poi_by_id = {poi["id"]: poi for poi in data["pois"]}
+
+        for poi_id in {
+            "suluban_beach",
+            "kelingking_beach",
+            "broken_beach",
+            "angels_billabong",
+            "crystal_bay",
+            "diamond_beach",
+            "rumah_pohon_molenteng",
+            "atuh_beach",
+        }:
+            self.assertEqual(poi_by_id[poi_id]["verification_status"], "verified")
+            self.assertIn("R1", poi_by_id[poi_id]["route_ids"])
+
+        self.assertIn("Blue Point", poi_by_id["suluban_beach"]["name"])
+        self.assertEqual(
+            poi_by_id["thousand_islands_viewpoint"]["verification_status"],
+            "pending_review",
+        )
+        self.assertEqual(
+            poi_by_id["bali_fire_shooting_club"]["verification_status"],
+            "needs_supplier_confirmation",
+        )
+        for generic_id in {
+            "airport_pickup",
+            "airport_dropoff",
+            "hotel_check_in",
+            "lunch_dinner",
+            "cliff_road",
+            "shopping",
+            "blue_point",
+        }:
+            self.assertNotIn(generic_id, poi_by_id)
 
     def test_bali_route_map_uses_pinned_leaflet_with_fallback(self):
         html = (
