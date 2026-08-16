@@ -1246,6 +1246,12 @@ class ProductAccessTests(unittest.TestCase):
             "tamblingan_lake",
             "tukad_cepung_waterfall",
             "amed_beach",
+            "ulun_danu_beratan",
+            "tegenungan_waterfall",
+            "jatiluwih_rice_terraces",
+            "lempuyang_temple",
+            "taman_ujung",
+            "virgin_beach",
         }
         self.assertEqual(
             {poi["id"] for poi in data["pois"] if poi["verification_status"] == "verified"},
@@ -1253,8 +1259,18 @@ class ProductAccessTests(unittest.TestCase):
         )
         self.assertEqual(
             sum(poi["verification_status"] == "pending_review" for poi in data["pois"]),
-            14,
+            8,
         )
+        for route_grouped_id in {
+            "ulun_danu_beratan",
+            "tegenungan_waterfall",
+            "jatiluwih_rice_terraces",
+        }:
+            self.assertIn("itinerary grouping", poi_by_id[route_grouped_id]["notes"])
+        self.assertIn("Penataran Agung", poi_by_id["lempuyang_temple"]["notes"])
+        self.assertIn("summit temple", poi_by_id["lempuyang_temple"]["notes"])
+        self.assertIn("Pantai Perasi", poi_by_id["virgin_beach"]["name"])
+        self.assertIn("does not promise", poi_by_id["virgin_beach"]["notes"])
         supplier_confirmation_ids = {
             "mount_batur_jeep",
             "bali_fire_shooting_club",

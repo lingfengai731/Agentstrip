@@ -23,6 +23,9 @@
 
 ## 最近回调
 
+- 2026-08-16 POI batch 1 内容回调：Ulun Danu Beratan、Tegenungan、Jatiluwih、Lempuyang、Taman Ujung 与 Virgin Beach 已用印尼旅游部、Tabanan、Bali、Karangasem 政府来源核验稳定身份与位置；Bedugul/Ubud 仅保留路线分组，Lempuyang 明确区分 Penataran Agung 拍照门区与山顶寺庙，Virgin Beach 统一 Pantai Perasi 别名且不承诺游泳条件。
+- 2026-08-16 POI batch 1 测试回调：全库 59 个 POI 更新为 48 verified、8 pending、3 supplier-gated；产品回归 39/39，测试锁定三处路线分组边界、Lempuyang 两地点层级和 Virgin Beach 安全承诺边界。
+- 2026-08-16 POI batch 1 Luna 回调：正式 Agent `luna_worker` / `gpt-5.6-luna` / `max` 完成六节点只读一手来源审计并给出 6 个 GO，任务前后 HEAD 均为 `a6b4a6d`、工作树为空、零文件修改；Sol 已独立核对来源、实际 diff、JSON 计数和测试后接受。
 - 2026-08-16 R5 内容回调：Tukad Cepung、Banyumala、Lake Tamblingan 与 Amed 已用 Bangli、Buleleng、Karangasem 政府及印尼旅游部来源核验稳定身份和区域语义；Mount Batur Sunrise Trailhead 因存在多个正式入口、Batur Hot Springs Area 因对应多个运营场所继续 `pending_review`，未擅自替用户选择入口或供应商。R5 与 Mount Batur Jeep 继续 `needs_supplier_confirmation`。
 - 2026-08-16 R5 测试回调：产品回归 39/39；全库 59 个 POI 更新为 42 verified、14 pending、3 supplier-gated。R5 测试明确约束四个新核验节点、两个命名待审节点和一个 Jeep 供应商门禁，防止后续误把地点身份核验扩张成实时安全或成交承诺。
 - 2026-08-16 R5 Luna 回调：正式 Agent `luna_worker` / `gpt-5.6-luna` / `max` 完成六节点只读来源审计，零文件修改；它反证了“六个全部升级”的初始假设并给出两个 NO-GO。Sol 已独立核对一手来源、实际 diff、JSON 状态和 39 项测试后接受该边界。
@@ -76,6 +79,7 @@
 
 ## 技能命中
 
+- 2026-08-16 POI batch 1 实际使用：cross-account-project-memory 从 R5 远端同步点建立独立 `codex/poi-facts-batch1` worktree；agent-role-orchestrator 采用 medium/L2 和 fail-closed 来源门禁；codex-luna-worker 派发正式 Luna Max 六节点只读审计并由 Sol 复核；ui-implementation-workflow 将页面归为既有 content/detail 数据增量，不新增参考、token 或样式；browser-automation-router 选择 Playwright，Chrome 1440/768/390/320 与 WebKit 390 英文均无页面/详情横向溢出。`prepare_role_window.py` 仍因缺少 `registry/plugin-packages.json` fail-closed，未伪造持久角色窗口。未使用女娲/Perspective：事实身份、行政位置和安全边界不能由人物顾问替代。
 - 2026-08-16 R5 轮实际使用：agent-role-orchestrator 约束 medium/L2 路由、来源回调和 fail-closed 记录；codex-luna-worker 独立反证六节点可核验性；ui-implementation-workflow 将范围限定为既有 portfolio 页的数据增量；browser-automation-router/Playwright 用于四视口确定性验收。`prepare_role_window.py` 仍因缺少 `registry/plugin-packages.json` fail-closed，未伪造持久角色窗口。未使用女娲或人物 Perspective：本轮出现的是入口/供应商事实缺口，不应由顾问风格替代真实授权。
 - 2026-08-15 R2 轮实际使用：agent-role-orchestrator 继续约束 L3 回调与事实边界；codex-luna-worker 独立核验三个主路线节点；ui-implementation-workflow 限定既有 portfolio 页面内的数据增量；browser-automation-router/Playwright 完成 Chrome/WebKit 四视口验证。未使用女娲或人物 Perspective：医疗/疗效边界由一手来源、现有产品规则和最小承诺原则即可确定。
 - 2026-08-15 R6 轮实际使用：agent-role-orchestrator 约束 L3 路由、事实回调和 fail-closed 记录；codex-luna-worker 仅委派边界明确的只读来源审计；ui-implementation-workflow 将本轮限定为既有 portfolio 页面内的数据更新，不新建设计；browser-automation-router 选择确定性 Playwright，Chrome/WebKit 四视口完成交互与响应式验收。`prepare_role_window.py` 仍因缺少 `registry/plugin-packages.json` fail-closed，未伪造持久角色窗口；未调用女娲或人物 Perspective，因为没有新增商业、定价或品牌判断。
@@ -125,8 +129,8 @@
 
 ## 压缩交接卡
 
-- 最近摘要：R2、R3、R4 与 R6 免费路线的稳定事实已闭环；R5 新核验 Tukad Cepung、Banyumala、Tamblingan 与 Amed，但 Mount Batur 徒步入口、Batur 温泉场所和 Jeep 仍受命名/供应商门禁；Dicky 五日路线已补充 Suluban 与佩妮达东西线资料，但不另建 R7。全库 59 个 POI：42 verified、14 pending、3 supplier-gated。
+- 最近摘要：R2、R3、R4 与 R6 免费路线的稳定事实已闭环；R5 新核验 Tukad Cepung、Banyumala、Tamblingan 与 Amed，但 Mount Batur 徒步入口、Batur 温泉场所和 Jeep 仍受命名/供应商门禁；本轮再核验 Ulun Danu Beratan、Tegenungan、Jatiluwih、Lempuyang、Taman Ujung 与 Virgin Beach。全库 59 个 POI：48 verified、8 pending、3 supplier-gated。
 - 关键决策：保持 Claudecode teal + gold；巴厘岛主、其他目的地次；泛化执行步骤不伪装为 POI，活动供应商和动态条件不冒充已核验稳定事实。
-- 当前证据：39 项产品回归、项目记忆 validate 与一手来源审计已通过；Chrome 1440/768/320 与 WebKit 390 均显示 R5 四个 verified、两个 pending 和一个 supplier-gated 节点，页面/详情横向溢出均为 0，teal + gold 未改变。本地静态服务器的 Portfolio API 404 属于未启动后端的预期限制，不替代生产验证。
-- 下一步：完成本轮 evidence/handoff、提交和远端 0/0 核对；随后在获得明确入口/供应商资料前保持两个命名节点和 Jeep 门禁，优先继续复核不依赖供应商的剩余 12 个 pending POI。不得因路线展示正常而声称可直接预订；未合并到 `main`、未生产部署前不得声称网站已更新。
+- 当前证据：正式 Luna Max 六节点只读审计、Sol 一手来源复核、JSON 计数和 39 项产品回归已通过；Chrome 1440/768/390/320 与 WebKit 390 英文均确认六节点为 verified 且有来源，页面/详情横向溢出为 0，teal + gold 未改变。本地静态服务器唯一控制台错误是未启动后端导致 `/api/portfolio` 404，不替代生产验证。
+- 下一步：完成本轮 evidence/handoff、提交和远端 0/0；随后继续处理剩余 6 个不依赖供应商的 pending POI，两个 Mount Batur 命名节点继续等明确入口/场所。不得因路线展示正常而声称可直接预订；未合并到 `main`、未生产部署前不得声称网站已更新。
 - 新窗口接续提示：从本轮 task branch、evidence 和 handoff 接续；不得删除用户根目录下的旅行图片分类规划 txt。
