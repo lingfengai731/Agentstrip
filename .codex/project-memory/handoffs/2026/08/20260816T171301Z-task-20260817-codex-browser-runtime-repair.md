@@ -25,7 +25,7 @@ The device matches openai/codex issue 25220: EFS-protected MSIX resources caused
 
 ## Risks and unknowns
 
-Do not reuse the two retired Render tasks. Do not call Browser restored merely from plugin list or file presence. The first fresh task must prove callable Browser or node_repl tooling and Computer Use native-pipe readiness. If it fails, inspect only the new post-restart Desktop log before considering AppX-volume reinstall.
+Do not reuse the two retired Render tasks. Do not call Browser restored merely from plugin list or file presence. The first fresh task must prove callable Browser or node_repl tooling and Computer Use native-pipe readiness. If it fails, inspect only the new post-restart Desktop log before considering AppX-volume reinstall. The overrides are pinned to Codex Desktop 26.810.7004.0; after an app update, rebuild or remove them rather than silently retaining the old runtime.
 
 ## Next exact action
 

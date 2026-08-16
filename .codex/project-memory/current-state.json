@@ -139,6 +139,7 @@
         "override_variables": "CODEX_ELECTRON_BUNDLED_PLUGINS_RESOURCES_PATH and CODEX_CLI_PATH set at user scope"
       },
       "rollback": "remove the two user-scope override variables after a full Desktop exit; the copied override directories are additive and were not used to overwrite existing cache",
+      "update_policy": "the overrides are version-pinned; after any Codex Desktop update, compare the installed app version and rebuild or remove the overrides instead of silently continuing with an older runtime",
       "remaining_gate": "fully exit and relaunch Codex Desktop, create a fresh local task, prove Browser tool injection and Computer Use native-pipe readiness, then perform secret-preserving Render checks"
     }
   },
