@@ -1252,6 +1252,11 @@ class ProductAccessTests(unittest.TestCase):
             "lempuyang_temple",
             "taman_ujung",
             "virgin_beach",
+            "heart_space_bali",
+            "intuitive_flow",
+            "munduk_waterfall",
+            "gitgit_waterfall",
+            "tulamben",
         }
         self.assertEqual(
             {poi["id"] for poi in data["pois"] if poi["verification_status"] == "verified"},
@@ -1259,7 +1264,7 @@ class ProductAccessTests(unittest.TestCase):
         )
         self.assertEqual(
             sum(poi["verification_status"] == "pending_review" for poi in data["pois"]),
-            8,
+            3,
         )
         for route_grouped_id in {
             "ulun_danu_beratan",
@@ -1271,6 +1276,19 @@ class ProductAccessTests(unittest.TestCase):
         self.assertIn("summit temple", poi_by_id["lempuyang_temple"]["notes"])
         self.assertIn("Pantai Perasi", poi_by_id["virgin_beach"]["name"])
         self.assertIn("does not promise", poi_by_id["virgin_beach"]["notes"])
+        self.assertIn("does not verify medical benefit", poi_by_id["heart_space_bali"]["notes"])
+        self.assertIn("does not verify medical benefit", poi_by_id["intuitive_flow"]["notes"])
+        self.assertIn("must not be merged", poi_by_id["munduk_waterfall"]["notes"])
+        self.assertIn("must not be merged", poi_by_id["gitgit_waterfall"]["notes"])
+        self.assertIn("does not verify any dive operator", poi_by_id["tulamben"]["notes"])
+        self.assertEqual(
+            poi_by_id["thousand_islands_viewpoint"]["verification_status"],
+            "pending_review",
+        )
+        self.assertIn(
+            "exact public identity",
+            poi_by_id["thousand_islands_viewpoint"]["notes"],
+        )
         supplier_confirmation_ids = {
             "mount_batur_jeep",
             "bali_fire_shooting_club",

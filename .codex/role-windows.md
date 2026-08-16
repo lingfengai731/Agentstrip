@@ -23,6 +23,9 @@
 
 ## 最近回调
 
+- 2026-08-16 POI batch 2 内容回调：Heart Space Bali、Intuitive Flow、Munduk Waterfall、Gitgit Waterfall 与 Tulamben 已用场所官网及 Buleleng/Karangasem 政府来源核验稳定身份与区域语义；疗效、课程、教师、价格、水况、游泳与潜水执行条件不属于已核验范围。Thousand Islands Viewpoint 因官方来源不能证明唯一规范身份，继续 `pending_review`。
+- 2026-08-16 POI batch 2 测试/UI 回调：全库 59 个 POI 更新为 53 verified、3 pending、3 supplier-gated；产品回归 39/39。Chrome 1440/768/390/320 与 WebKit 390 英文均确认目标状态、R6 横滑可达且页面/路线详情横向溢出为 0；静态服务器唯一控制台错误是未启动后端导致 `/api/portfolio` 404，不替代生产验证。
+- 2026-08-16 POI batch 2 Luna 回调：正式 Agent `luna_worker` / `gpt-5.6-luna` / `max` 完成六节点只读来源审计并给出 5 GO / 1 NO-GO；任务前后 HEAD 均为 `93c4524`，工作树为空且零文件修改。Sol 已独立核对一手来源、实际 diff、JSON 计数、39 项测试与五视口浏览器证据后接受。
 - 2026-08-16 POI batch 1 内容回调：Ulun Danu Beratan、Tegenungan、Jatiluwih、Lempuyang、Taman Ujung 与 Virgin Beach 已用印尼旅游部、Tabanan、Bali、Karangasem 政府来源核验稳定身份与位置；Bedugul/Ubud 仅保留路线分组，Lempuyang 明确区分 Penataran Agung 拍照门区与山顶寺庙，Virgin Beach 统一 Pantai Perasi 别名且不承诺游泳条件。
 - 2026-08-16 POI batch 1 测试回调：全库 59 个 POI 更新为 48 verified、8 pending、3 supplier-gated；产品回归 39/39，测试锁定三处路线分组边界、Lempuyang 两地点层级和 Virgin Beach 安全承诺边界。
 - 2026-08-16 POI batch 1 Luna 回调：正式 Agent `luna_worker` / `gpt-5.6-luna` / `max` 完成六节点只读一手来源审计并给出 6 个 GO，任务前后 HEAD 均为 `a6b4a6d`、工作树为空、零文件修改；Sol 已独立核对来源、实际 diff、JSON 计数和测试后接受。
@@ -79,6 +82,7 @@
 
 ## 技能命中
 
+- 2026-08-16 POI batch 2 实际使用：cross-account-project-memory 从 batch 1 远端同步点建立独立 `codex/poi-facts-batch2` worktree，并要求 evidence/handoff/远端一致性门禁；agent-role-orchestrator 采用 medium/L2 与来源 fail-closed；codex-luna-worker 派发正式 Luna Max 六节点只读审计并由 Sol 复核；ui-implementation-workflow 将范围限定为既有 content/detail 数据增量；browser-automation-router 选择 Playwright，Chrome 1440/768/390/320 与 WebKit 390 英文均无页面/详情横向溢出。`prepare_role_window.py` 仍因缺少 `registry/plugin-packages.json` fail-closed，未伪造持久角色窗口。未使用女娲/Perspective：地点身份、医疗与潜水安全边界必须由一手来源和实际供应商确认。
 - 2026-08-16 POI batch 1 实际使用：cross-account-project-memory 从 R5 远端同步点建立独立 `codex/poi-facts-batch1` worktree；agent-role-orchestrator 采用 medium/L2 和 fail-closed 来源门禁；codex-luna-worker 派发正式 Luna Max 六节点只读审计并由 Sol 复核；ui-implementation-workflow 将页面归为既有 content/detail 数据增量，不新增参考、token 或样式；browser-automation-router 选择 Playwright，Chrome 1440/768/390/320 与 WebKit 390 英文均无页面/详情横向溢出。`prepare_role_window.py` 仍因缺少 `registry/plugin-packages.json` fail-closed，未伪造持久角色窗口。未使用女娲/Perspective：事实身份、行政位置和安全边界不能由人物顾问替代。
 - 2026-08-16 R5 轮实际使用：agent-role-orchestrator 约束 medium/L2 路由、来源回调和 fail-closed 记录；codex-luna-worker 独立反证六节点可核验性；ui-implementation-workflow 将范围限定为既有 portfolio 页的数据增量；browser-automation-router/Playwright 用于四视口确定性验收。`prepare_role_window.py` 仍因缺少 `registry/plugin-packages.json` fail-closed，未伪造持久角色窗口。未使用女娲或人物 Perspective：本轮出现的是入口/供应商事实缺口，不应由顾问风格替代真实授权。
 - 2026-08-15 R2 轮实际使用：agent-role-orchestrator 继续约束 L3 回调与事实边界；codex-luna-worker 独立核验三个主路线节点；ui-implementation-workflow 限定既有 portfolio 页面内的数据增量；browser-automation-router/Playwright 完成 Chrome/WebKit 四视口验证。未使用女娲或人物 Perspective：医疗/疗效边界由一手来源、现有产品规则和最小承诺原则即可确定。
@@ -129,8 +133,8 @@
 
 ## 压缩交接卡
 
-- 最近摘要：R2、R3、R4 与 R6 免费路线的稳定事实已闭环；R5 新核验 Tukad Cepung、Banyumala、Tamblingan 与 Amed，但 Mount Batur 徒步入口、Batur 温泉场所和 Jeep 仍受命名/供应商门禁；本轮再核验 Ulun Danu Beratan、Tegenungan、Jatiluwih、Lempuyang、Taman Ujung 与 Virgin Beach。全库 59 个 POI：48 verified、8 pending、3 supplier-gated。
+- 最近摘要：R2、R3、R4 与 R6 免费路线的稳定事实已闭环；R5 仍受 Mount Batur 徒步入口、温泉场所和 Jeep 命名/供应商门禁。本轮再核验 Heart Space Bali、Intuitive Flow、Munduk Waterfall、Gitgit Waterfall 与 Tulamben；Thousand Islands Viewpoint 因唯一身份不明继续待审。全库 59 个 POI：53 verified、3 pending、3 supplier-gated。
 - 关键决策：保持 Claudecode teal + gold；巴厘岛主、其他目的地次；泛化执行步骤不伪装为 POI，活动供应商和动态条件不冒充已核验稳定事实。
-- 当前证据：正式 Luna Max 六节点只读审计、Sol 一手来源复核、JSON 计数和 39 项产品回归已通过；Chrome 1440/768/390/320 与 WebKit 390 英文均确认六节点为 verified 且有来源，页面/详情横向溢出为 0，teal + gold 未改变。本地静态服务器唯一控制台错误是未启动后端导致 `/api/portfolio` 404，不替代生产验证。
-- 下一步：完成本轮 evidence/handoff、提交和远端 0/0；随后继续处理剩余 6 个不依赖供应商的 pending POI，两个 Mount Batur 命名节点继续等明确入口/场所。不得因路线展示正常而声称可直接预订；未合并到 `main`、未生产部署前不得声称网站已更新。
+- 当前证据：正式 Luna Max 六节点只读审计、Sol 一手来源复核、JSON 计数和 39 项产品回归已通过；Chrome 1440/768/390/320 与 WebKit 390 英文均确认 5 个新核验节点、1 个待审节点与 53/3/3 计数，页面/详情横向溢出为 0，teal + gold 未改变。本地静态服务器唯一控制台错误是未启动后端导致 `/api/portfolio` 404，不替代生产验证。
+- 下一步：完成本轮 evidence/handoff、提交和远端 0/0；随后三个 pending 只在取得明确入口/场所/坐标决策后继续，三个 supplier-gated 只在取得真实运营和安全资料后继续。不得因地点稳定事实已核验而声称课程、瀑布、潜水或司机服务可直接预订；未合并到 `main`、未生产部署前不得声称网站已更新。
 - 新窗口接续提示：从本轮 task branch、evidence 和 handoff 接续；不得删除用户根目录下的旅行图片分类规划 txt。
