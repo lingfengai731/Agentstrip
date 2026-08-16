@@ -1,0 +1,22 @@
+{
+  "schema_version": 1,
+  "evidence_id": "ev-20260816T171301Z-task-20260817-codex-browser-runtime-repair",
+  "task_ref": "task-20260817-codex-browser-runtime-repair",
+  "owner": "codex-sol",
+  "captured_at": "2026-08-16T17:13:01Z",
+  "status": "verified",
+  "claim": "Confirmed the Windows Store/MSIX EFS bundled-resource staging failure and staged an additive, user-owned Browser/Chrome/Computer Use runtime override; repository and Render production were not changed.",
+  "source": {
+    "kind": "git",
+    "repository": "https://github.com/lingfengai731/Agentstrip.git",
+    "commit": "7e781ef6b715914b15ba21cf6125e3d4a8f43712",
+    "branch": "codex/account2-integration-20260816",
+    "worktree": "E:\\Agentstrip2-worktree",
+    "dirty": true
+  },
+  "verification": {
+    "command": "Desktop log signature audit; source/destination file count and SHA-256 comparison; required runtime path checks; copied CLI --version; user-scope override readback",
+    "result": "openai-bundled 842/842 and cua_node 3625/3625 with zero hash mismatches; CLI hash matched and reported 0.148.0-alpha.9; 10/10 required paths present; two previously empty user-scope overrides set; full Desktop restart still required."
+  },
+  "notes": "No Secret was read or persisted. No WindowsApps, AppX default volume, existing plugin cache, repository product code, Render configuration or production deployment was modified. Native-pipe/tool injection remains unverified until a full Desktop restart and fresh task."
+}

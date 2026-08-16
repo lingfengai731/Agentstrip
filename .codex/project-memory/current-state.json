@@ -124,12 +124,29 @@
       "scope": "Render configuration presence, canary, deployment logs and production E2E only",
       "routing": "disabled; preserve ids for audit only and do not dispatch new work",
       "secret_policy": "presence and strength only; never record values"
+    },
+    "desktop_browser_control_repair": {
+      "status": "staged_requires_full_restart",
+      "verified_at": "2026-08-16T17:12:24Z",
+      "codex_app_version": "26.810.7004.0",
+      "root_cause": "Windows Store MSIX bundled resources are EFS protected and Desktop copyfile staging repeatedly failed, leaving the runtime marketplace and Computer Use native helper unavailable",
+      "repair": "byte-stream mirror of the official openai-bundled plugins, cua_node runtime and codex CLI into a user-owned LOCALAPPDATA override; no WindowsApps, AppX volume or existing cache mutation",
+      "verification": {
+        "plugin_files": "842/842 with zero SHA-256 mismatches",
+        "cua_node_files": "3625/3625 with zero SHA-256 mismatches",
+        "cli_hash": "matched official package",
+        "required_runtime_paths": "10/10 present",
+        "override_variables": "CODEX_ELECTRON_BUNDLED_PLUGINS_RESOURCES_PATH and CODEX_CLI_PATH set at user scope"
+      },
+      "rollback": "remove the two user-scope override variables after a full Desktop exit; the copied override directories are additive and were not used to overwrite existing cache",
+      "remaining_gate": "fully exit and relaunch Codex Desktop, create a fresh local task, prove Browser tool injection and Computer Use native-pipe readiness, then perform secret-preserving Render checks"
     }
   },
   "limitations": [
     "The existing root AGENTS.md has not been changed, so automatic loading is not guaranteed.",
     "Production was checked only through public HTTP behavior; authenticated Render environment values, the production backend commit and database contents were not read because this existing task has no injected browser-control handle.",
     "The latest branch passed isolated real PostgreSQL 16 integration tests but still requires a post-deploy Render proxy-address smoke test before release completion.",
+    "The Desktop Browser/Chrome/Computer Use repair is staged and hash-verified, but the current process cannot prove native-pipe readiness; a full Desktop restart and fresh task are mandatory.",
     "Conversation history and hidden reasoning are not project facts."
   ]
 }

@@ -15,6 +15,7 @@
 | DBA | 待确认 | 待确认 | 架构 | 数据库实例风险和只读诊断 | 本阶段不涉及 | 待确认 |
 | 运维 / Render Work | 已退役，待用户侧归档 | 6a81da9a-1998-83e8-b2ca-34e1f6eb526d | 当前主线 | 历史 ChatGPT Work Browser 探针 | Cloud Work 无法承担已登录 Render；Codex 归档接口不支持该 ChatGPT 对话，需用户在其菜单中归档或删除 | 禁止继续派发 |
 | 运维 / 仓库回流 | 已归档 | 01a00b3a-b62f-7c60-ae73-f9e74ae7879d | 当前主线 | 历史仓库上下文与 Render 能力探针 | 已归档；Browser 探针为 BROWSER_CONTROL_UNAVAILABLE，零生产写入 | 已退役 |
+| 运维 / 本机 Browser runtime | 修复已暂存，待重启验收 | 未建立 | 当前主线 | 恢复 Codex Desktop 的 Browser、Chrome 与 Computer Use 控制通道 | 完全退出并重启 Desktop 后新建本地任务；只有工具注入与 native pipe 实测通过后才登记 thread id 并接续 Render | fail-closed，禁止把文件完整性写成控制能力已恢复 |
 | 公众号发布 | 待确认 | 待确认 | 内容主编 | 微信公众号草稿、预览、发布准备 | 本阶段不涉及 | 待确认 |
 | 小红书 | 待确认 | 待确认 | 内容主编 | 小红书内容实验、发布包、评论研究 | 本阶段不涉及 | 待确认 |
 | 视频 | 待确认 | 待确认 | 内容主编 | 视频脚本、分镜、素材和渲染计划 | 本阶段不涉及 | 待确认 |
@@ -24,6 +25,7 @@
 
 ## 最近回调
 
+- 2026-08-17 Codex Desktop Browser runtime 回调：确认 Windows Store/MSIX 官方资源带 EFS 保护，Desktop 日志持续出现 bundled marketplace `copyfile`、executable relocation 和 Computer Use helper path 失败，native pipe 没有 ready 记录。已将官方 `openai-bundled` 842 个文件、`cua_node` 3625 个文件和同包 CLI 用字节流复制到用户级 LOCALAPPDATA override，逐文件 SHA-256 零不一致，10 个关键入口均存在；设置两个可回滚用户级 override，未修改 WindowsApps、AppX 默认卷、既有缓存或任何 Secret。当前进程无法热注入工具，必须完整重启并在新任务做 Browser/native-pipe 实证后才能恢复 Render 门禁。
 - 2026-08-16 专业路线发布门禁回调：女娲现有 Steve Jobs、Paul Graham、Charlie Munger 三种顾问视角完成交叉评审；共同接受“冻结扩功能、先闭环真实发布门禁”，Munger 识别出的未核验付费 POI 与权益竞态被证据确认并实施，PG 的隐私安全漏斗建议延后到发布后，未引入支付/CMS/Redis 等扩张范围。
 - 2026-08-16 专业路线工程/QA 回调：正式 `luna_worker` / `gpt-5.6-luna` / `max` 完成只读权益审计；独立 QA 首轮发现 PostgreSQL 测试导入前保护和 CI 覆盖两个 P1，修复后复审 P0=0、P1=0。PR #3 head `4eb303a` 的 SQLite 50/50、隔离 PostgreSQL 16 12/12 和项目记忆检查均真实绿色；PR 继续 Draft，Render 配置、代理 canary、合并部署与部署后 E2E 未执行。
 - 2026-08-16 司机询价持久化反滥用开发回调：移除进程内 `_driver_request_attempts`，新增 SQLite/Postgres 共用的原子 UPSERT 计数；客户端地址只以 `SECRET_KEY` 作用域 HMAC 保存，表中仅含伪匿名键、窗口时间、计数和更新时间，不保存姓名、邮箱、预算或行程正文。数据库门禁异常 fail-closed 为 503，Dicky/Gede 继续共享 5 次/30 分钟额度。
