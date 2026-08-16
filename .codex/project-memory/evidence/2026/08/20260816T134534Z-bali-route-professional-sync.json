@@ -1,0 +1,22 @@
+{
+  "schema_version": 1,
+  "evidence_id": "ev-20260816T134534Z-bali-route-professional-sync",
+  "task_ref": "bali-route-professional-sync",
+  "owner": "Sol main task with Luna read-only audit",
+  "captured_at": "2026-08-16T13:45:34Z",
+  "status": "verified",
+  "claim": "Commit 8e49b3d synchronizes public R1-R6 selection with the unlocked-safe professional route flow and centers the adjustment badge without changing entitlement rules.",
+  "source": {
+    "kind": "git",
+    "repository": "https://github.com/lingfengai731/Agentstrip.git",
+    "commit": "8e49b3d8b752d2c5722dc1db3e7408554757edfd",
+    "branch": "codex/account2-integration-20260816",
+    "worktree": "E:\\Agentstrip2-worktree",
+    "dirty": true
+  },
+  "verification": {
+    "command": "python -m unittest wandermind.backend.tests.test_product_access; node --check bali-professional.js; Edge callback at 320,390,768,1440",
+    "result": "43 tests OK; preview R1 to R3 sync; unlocked browsing 0 adjustment calls; submitted switch 1 adjustment call with route_id R3 and remaining 2; five languages; zero overflow; zero console/page errors."
+  },
+  "notes": "Render and production were not changed because the current task lacks the in-app Browser control tool; production remains unverified for this commit."
+}

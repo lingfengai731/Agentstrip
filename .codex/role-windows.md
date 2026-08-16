@@ -153,3 +153,12 @@
 - GitHub 回调：当前账号分支已推送并建立 Draft PR #3；PR 可合并但保持 Draft，Project memory validation 成功；未合并、未部署、未改 Render 变量或数据库，下一回调固定为隔离 PostgreSQL 门禁。
 - PostgreSQL 回调：新增只允许 localhost/127.0.0.1 的专项集成测试；GitHub Actions 临时 PostgreSQL 16 中 4/4 通过并明确使用 postgres 后端，覆盖并发、固定窗口、重初始化持久化和 BIGINT/索引。真实 PostgreSQL 门禁关闭，下一门禁为 Render canary 代理隔离与部署后生产 E2E。
 - 2026-08-16 Render canary 接续回调：Computer Use 插件与功能开关已启用，但当前任务未注入 `node_repl/@oai/sky`、Chrome 或 Browser 控制工具，故账号内 Render 配置、canary 和部署后 E2E 继续 fail-closed；PR #3 保持 draft/open/mergeable，当前两项 Actions 成功，公开生产仍为 health 200 与 6 routes / 50 POIs 旧基线。未读取或显示任何 Secret，未合并、未部署、未改变 PR 状态；下一步必须完整重启 Codex Desktop 并新建任务，先验证控制工具存在再接续。
+
+## 2026-08-16 Bali public-to-professional route sync callback
+
+- 路由：medium / L2。Sol 保留产品语义、权益保护、集成、浏览器验收和发布判断；正式 Agent `luna_worker`（Locke，`gpt-5.6-luna`，`max`）于 `2026-08-16T21:22:33+08:00` 启动，只读核对状态流与 Git 历史，最终状态 `completed`，从启动到首次收到 final 约 5 分钟；等待窗口超时未被写成失败。
+- Luna 回调：确认“首访画像匹配 R1”是既有规则，但公共 R2–R6 卡片只更新 `activeId`、未通知专业模块属于前端状态同步缺陷；未修改文件、未访问生产或凭据。Sol 对照实际代码和历史文档后接受该结论。
+- 实现回调：未解锁专业预览跟随公共路线选择并同步 URL/deep link；已解锁路线只记录待切换 route，普通浏览不扣次，提交“调整本次行程”才通过 `/adjust` 携带 route_id 并使用 1 次调整；3 次额度、¥9.9、30 积分、70% 预览和 AI 独立额度均未改变。
+- UI/QA 回调：UI UX Pro Max 要求明确 active state、URL state 与触屏布局；Vercel Web Interface Guidelines 要求 URL 反映状态并为异步反馈提供 `aria-live`。Edge 回调验证 R1→R3、已解锁不暗扣、提交后剩余 2 次、五语言提示、320/390/768/1440 零横向溢出，console/page errors 均为 0；43 项后端测试、Node 语法和 diff check 通过。
+- Skill 回调：安装并审查 `AgriciDaniel/claude-seo@seo`（MIT、约 14.2k GitHub Stars、活跃维护、安全策略完整）到用户级 Skills；未改项目仓库。拒绝安装较旧且会在个人目录持久化旅行偏好的通用 travel-planner 候选。
+- 生产边界：当前任务未注入右侧内嵌浏览器控制通道，按用户要求停止排障；Render、生产数据库、环境变量、合并和部署均未触碰，不能声称生产已更新。
