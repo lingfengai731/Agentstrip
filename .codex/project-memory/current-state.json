@@ -13,21 +13,22 @@
   },
   "snapshot": {
     "status": "verified",
-    "captured_at": "2026-08-16T05:53:05Z",
+    "captured_at": "2026-08-16T06:06:38Z",
     "captured_by": "codex-sol",
-    "source_commit": "6f6b68dd0393f071847b4ad58457fe8af240651b",
-    "source_branch": "codex/poi-facts-batch1",
+    "source_commit": "4f2c6e73bbce081af04ff303762101fcfd94dd05",
+    "source_branch": "codex/poi-facts-batch2",
     "working_tree_at_capture": "clean",
     "wandermind_bali": {
       "status": "verified",
       "routes": 6,
       "pois": 59,
-      "verified_pois": 48,
-      "pending_review_pois": 8,
+      "verified_pois": 53,
+      "pending_review_pois": 3,
       "supplier_gated_pois": 3,
       "verified_route_families": ["R2", "R3", "R4", "R6"],
       "notes": [
-        "R2, R3, R4 and R6 free-outline stable facts are verified; six additional cross-route POIs now have government-backed stable identity and location evidence, while R5 retains two ambiguous place anchors and one supplier-gated Jeep experience.",
+        "R2, R3, R4 and R6 free-outline stable facts are verified; Heart Space Bali, Intuitive Flow, Munduk Waterfall, Gitgit Waterfall and Tulamben now have first-party stable identity and location evidence.",
+        "Thousand Islands Viewpoint and two Mount Batur anchors remain pending because their exact public identity, entrance or venue is not uniquely resolved; supplier-gated experiences remain non-execution-ready.",
         "Dicky's five-day itinerary is treated as an R1 field calibration, not a seventh route family.",
         "Production was not changed or reverified by this snapshot."
       ]
