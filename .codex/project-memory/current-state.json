@@ -13,9 +13,9 @@
   },
   "snapshot": {
     "status": "verified",
-    "captured_at": "2026-08-16T14:28:27Z",
+    "captured_at": "2026-08-16T15:27:09Z",
     "captured_by": "codex-sol",
-    "source_commit": "206d9b3f7932bbf05f94071d3b1865589ff3fa0c",
+    "source_commit": "4eb303abeddcfb3f3ac32bb2a64cb9983d70ec15",
     "source_branch": "codex/account2-integration-20260816",
     "working_tree_at_capture": "clean",
     "wandermind_bali": {
@@ -34,7 +34,7 @@
       ]
     },
     "driver_request_protection": {
-      "status": "verified_local",
+      "status": "verified_ci",
       "limit": 5,
       "window_seconds": 1800,
       "storage": "SQLite/Postgres atomic counter",
@@ -45,25 +45,44 @@
         "updated timestamp"
       ],
       "failure_policy": "fail_closed_503",
-      "tests_passed": 43,
+      "tests_passed": 50,
       "production_status": "not_deployed",
       "postgres_integration": {
         "status": "verified",
         "postgres_version": "16-alpine",
-        "tests_passed": 4,
-        "workflow_run": 31939117240,
-        "job": 95145601201
+        "tests_passed": 12,
+        "workflow_run": 31955571721,
+        "job": 95185585092
       },
       "remaining_gates": [
         "Render request.client.host anonymous distribution smoke test"
       ]
+    },
+    "professional_route_entitlements": {
+      "status": "verified_ci",
+      "paid_route_poi_policy": "verified_only",
+      "current_adjustment_limit": 3,
+      "legacy_adjustment_limit": 10,
+      "admin_unlimited": true,
+      "pending_manual_order_points_policy": "convert_same_order_atomically",
+      "concurrency_controls": [
+        "SQLite BEGIN IMMEDIATE",
+        "PostgreSQL user row then trip row FOR UPDATE",
+        "conditional atomic allowance updates",
+        "single transaction for points ledger, order, and entitlement"
+      ],
+      "product_tests_passed": 50,
+      "postgres_entitlement_tests_passed": 8,
+      "postgres_workflow_run": 31955571721,
+      "evidence_id": "ev-20260816T152709Z-task-20260816-entitlement-release-gate",
+      "production_status": "not_deployed"
     },
     "production": {
       "status": "verified_frontend_baseline",
       "verified_at": "2026-08-16T14:28:27Z",
       "frontend_matches_commit": "3fbf898fb6a27da8d7b87476d6fd941a24c3d05c",
       "backend_commit": "unknown",
-      "latest_branch_commit": "206d9b3f7932bbf05f94071d3b1865589ff3fa0c",
+      "latest_branch_commit": "4eb303abeddcfb3f3ac32bb2a64cb9983d70ec15",
       "latest_branch_deployed": false,
       "health": "200 ok",
       "bali_routes": 6,
@@ -85,7 +104,7 @@
       "url": "https://github.com/lingfengai731/Agentstrip/pull/3",
       "status": "draft",
       "mergeable": true,
-      "head_commit": "206d9b3f7932bbf05f94071d3b1865589ff3fa0c",
+      "head_commit": "4eb303abeddcfb3f3ac32bb2a64cb9983d70ec15",
       "project_memory_ci": "success",
       "postgres_integration_ci": "success",
       "release_gate": "post-deploy Render proxy smoke and production browser regression"

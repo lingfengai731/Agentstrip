@@ -1,0 +1,22 @@
+{
+  "schema_version": 1,
+  "evidence_id": "ev-20260816T152709Z-task-20260816-entitlement-release-gate",
+  "task_ref": "TASK-20260816-ENTITLEMENT-RELEASE-GATE",
+  "owner": "codex-sol",
+  "captured_at": "2026-08-16T15:27:09Z",
+  "status": "verified",
+  "claim": "PR #3 head 4eb303a makes paid-route POI selection verified-only and serializes order, points, allowance, and adjustment entitlement writes across SQLite/PostgreSQL without reducing legacy or admin rights.",
+  "source": {
+    "kind": "git",
+    "repository": "https://github.com/lingfengai731/Agentstrip.git",
+    "commit": "4eb303abeddcfb3f3ac32bb2a64cb9983d70ec15",
+    "branch": "codex/account2-integration-20260816",
+    "worktree": "E:\\Agentstrip2-worktree",
+    "dirty": false
+  },
+  "verification": {
+    "command": "python -B -m unittest wandermind.backend.tests.test_product_access -v; GitHub Actions PostgreSQL integration run 31955571721",
+    "result": "Local and CI SQLite product suite 50/50 passed; isolated PostgreSQL 16 run 31955571721 passed 12/12 with DB backend postgres; project-memory run 31955571670 passed; independent QA P0=0 P1=0."
+  },
+  "notes": "PR #3 remains Draft. Production is still the p54/50-POI baseline. Authenticated Render env presence, proxy canary, merge/deploy, and post-deploy E2E remain unverified because no callable in-app Browser control surface or Render API session is available in this task."
+}

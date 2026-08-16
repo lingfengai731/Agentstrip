@@ -23,6 +23,8 @@
 
 ## 最近回调
 
+- 2026-08-16 专业路线发布门禁回调：女娲现有 Steve Jobs、Paul Graham、Charlie Munger 三种顾问视角完成交叉评审；共同接受“冻结扩功能、先闭环真实发布门禁”，Munger 识别出的未核验付费 POI 与权益竞态被证据确认并实施，PG 的隐私安全漏斗建议延后到发布后，未引入支付/CMS/Redis 等扩张范围。
+- 2026-08-16 专业路线工程/QA 回调：正式 `luna_worker` / `gpt-5.6-luna` / `max` 完成只读权益审计；独立 QA 首轮发现 PostgreSQL 测试导入前保护和 CI 覆盖两个 P1，修复后复审 P0=0、P1=0。PR #3 head `4eb303a` 的 SQLite 50/50、隔离 PostgreSQL 16 12/12 和项目记忆检查均真实绿色；PR 继续 Draft，Render 配置、代理 canary、合并部署与部署后 E2E 未执行。
 - 2026-08-16 司机询价持久化反滥用开发回调：移除进程内 `_driver_request_attempts`，新增 SQLite/Postgres 共用的原子 UPSERT 计数；客户端地址只以 `SECRET_KEY` 作用域 HMAC 保存，表中仅含伪匿名键、窗口时间、计数和更新时间，不保存姓名、邮箱、预算或行程正文。数据库门禁异常 fail-closed 为 503，Dicky/Gede 继续共享 5 次/30 分钟额度。
 - 2026-08-16 司机询价测试/QA 回调：产品回归从 39 增至 43 项且全部通过；新增持久化字段、8 线程原子并发、不同客户端隔离、窗口恢复、blocked 不延长窗口和数据库故障不发邮件测试，并将原子并发测试连续运行 10 轮。正式 Luna Max 两轮只读审计最终 GO，P0/P1 为 0。
 - 2026-08-16 司机询价发布边界回调：PostgreSQL/SQLite 官方文档和 SQLite 3.39.4 本地运行支持当前 `ON CONFLICT ... DO UPDATE ... RETURNING`；未连接真实 Neon、未部署 Render。上线门禁保留真实 Postgres 集成测试及 `request.client.host` 在 Render 可信代理后的只读烟测，未擅自改信任头策略。
@@ -85,6 +87,7 @@
 
 ## 技能命中
 
+- 2026-08-16 专业路线发布门禁实际使用：cross-account-project-memory 恢复当前仓库、最新 handoff、PR #3、CI 和公开生产事实；agent-role-orchestrator 将任务定级 critical/L3，并在 `prepare_role_window.py` 因缺少 `registry/plugin-packages.json` 时 fail-closed，不伪造持久线程；codex-luna-worker 派发正式 Luna Max 只读权益审计；huashu-nuwa 路由 Steve Jobs、Paul Graham、Munger 现有角色交叉评审；browser-automation-router/Playwright 复核公开生产五语言与四视口；GitHub 连接器核验 PR 和 Actions。当前任务没有可调用的内嵌 Browser/Chrome 控制工具，故已登录 Render 标签页不能作为已检查证据。
 - 2026-08-16 司机询价持久化反滥用实际使用：cross-account-project-memory 从 batch 2 的远端 0/0 同步点建立独立 `codex/driver-request-rate-limit` worktree；agent-role-orchestrator 采用 medium/L2 和开发→测试→QA 回调；codex-luna-worker 派发正式 Luna Max 首轮架构审计与第二轮对抗性 QA，Sol 独立复核实际 diff、43 项测试和官方数据库语法文档。未加载 UI workflow、浏览器自动化、女娲或人物 Perspective：本轮无页面视觉、品牌、内容或商业判断，避免制造无关技能命中。
 - 2026-08-16 POI batch 2 实际使用：cross-account-project-memory 从 batch 1 远端同步点建立独立 `codex/poi-facts-batch2` worktree，并要求 evidence/handoff/远端一致性门禁；agent-role-orchestrator 采用 medium/L2 与来源 fail-closed；codex-luna-worker 派发正式 Luna Max 六节点只读审计并由 Sol 复核；ui-implementation-workflow 将范围限定为既有 content/detail 数据增量；browser-automation-router 选择 Playwright，Chrome 1440/768/390/320 与 WebKit 390 英文均无页面/详情横向溢出。`prepare_role_window.py` 仍因缺少 `registry/plugin-packages.json` fail-closed，未伪造持久角色窗口。未使用女娲/Perspective：地点身份、医疗与潜水安全边界必须由一手来源和实际供应商确认。
 - 2026-08-16 POI batch 1 实际使用：cross-account-project-memory 从 R5 远端同步点建立独立 `codex/poi-facts-batch1` worktree；agent-role-orchestrator 采用 medium/L2 和 fail-closed 来源门禁；codex-luna-worker 派发正式 Luna Max 六节点只读审计并由 Sol 复核；ui-implementation-workflow 将页面归为既有 content/detail 数据增量，不新增参考、token 或样式；browser-automation-router 选择 Playwright，Chrome 1440/768/390/320 与 WebKit 390 英文均无页面/详情横向溢出。`prepare_role_window.py` 仍因缺少 `registry/plugin-packages.json` fail-closed，未伪造持久角色窗口。未使用女娲/Perspective：事实身份、行政位置和安全边界不能由人物顾问替代。
@@ -137,11 +140,11 @@
 
 ## 压缩交接卡
 
-- 最近摘要：巴厘岛 POI 当前为 53 verified、3 pending、3 supplier-gated；外部事实门禁未伪造。本轮把司机询价 5 次/30 分钟限流从进程内字典迁移为 SQLite/Postgres 持久化 HMAC 伪匿名原子计数，43 项产品测试通过。
-- 关键决策：保持 Claudecode teal + gold；巴厘岛主、其他目的地次；泛化执行步骤不伪装为 POI，活动供应商和动态条件不冒充已核验稳定事实。
-- 当前证据：正式 Luna Max 首轮审计和第二轮 QA、Sol diff 复核、43 项回归、SQLite 8 线程并发及连续 10 轮稳定性测试通过；表结构断言确认只含 `client_key/window_started_at/request_count/updated_at`，数据库异常时不发送邮件。真实 Neon/Postgres 和 Render 代理地址尚未验证，不得写成生产完成。
-- 下一步：完成本轮 evidence/handoff、提交和远端 0/0；进入发布流程前先在隔离环境跑一次真实 Postgres schema/并发测试，再在部署后只读确认 Render 下 `request.client.host` 的匿名分布，不记录原始地址。未合并到 `main`、未生产部署前不得声称网站已更新。
-- 新窗口接续提示：从本轮 task branch、evidence 和 handoff 接续；不得删除用户根目录下的旅行图片分类规划 txt。
+- 最近摘要：巴厘岛 POI 为 53 verified、3 pending、3 supplier-gated；司机限流与专业路线权益均已完成 SQLite/PostgreSQL 原子化门禁，付费路线仅交付 verified POI，既有用户权益不降低。
+- 关键决策：保持 ClaudeCode teal + gold；巴厘岛主、其他目的地次；pending/supplier-gated 内容不得冒充付费执行事实；pending 手工订单使用积分时原子转换同一订单，历史 10 次与 admin unlimited 保留。
+- 当前证据：PR #3 head `4eb303a`，Draft/open/mergeable；SQLite 产品套件 50/50、隔离 PostgreSQL 16 12/12、项目记忆 CI 绿色，独立 QA P0=0/P1=0。公开生产仍为 p54、6 routes / 50 POIs，Render 配置与代理 canary 未核验，不得写成生产完成。
+- 下一步：在具备可调用内嵌 Browser 控制工具的新任务中复用已登录 Render，仅检查生产 PostgreSQL/强稳定 `SECRET_KEY` 的存在与结构，完成安全 canary 和双外部客户端代理隔离，再按绿色结果决定 ready/merge/deploy，并执行部署后完整 E2E。
+- 新窗口接续提示：从 `codex/account2-integration-20260816`、最新 evidence/handoff 和 PR #3 接续；不得删除用户数据、显示 Secret、降低既有用户权益，且不得触碰旧脏工作树或用户旅行图片规划文件。
 
 ## 2026-08-16 cross-account recovery callback
 
