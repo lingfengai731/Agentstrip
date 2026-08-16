@@ -1,0 +1,52 @@
+name: PostgreSQL integration
+
+on:
+  pull_request:
+    paths:
+      - wandermind/backend/db.py
+      - wandermind/backend/main.py
+      - wandermind/backend/requirements.txt
+      - wandermind/backend/tests/test_driver_rate_limit_postgres.py
+      - .github/workflows/postgres-integration.yml
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  driver-request-rate-limit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    services:
+      postgres:
+        image: postgres:16-alpine
+        env:
+          POSTGRES_USER: wandermind_ci
+          POSTGRES_PASSWORD: wandermind_ci_password
+          POSTGRES_DB: wandermind_ci
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U wandermind_ci -d wandermind_ci"
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 10
+    env:
+      DATABASE_URL: postgresql://wandermind_ci:wandermind_ci_password@127.0.0.1:5432/wandermind_ci
+      SECRET_KEY: ci-only-driver-rate-limit-secret-20260816
+      ENVIRONMENT: development
+      ADMIN_USERNAME: ci-admin
+      ADMIN_EMAIL: ci-admin@example.test
+      ADMIN_BOOTSTRAP_PASSWORD: ci-only-strong-password
+      PYTHONDONTWRITEBYTECODE: "1"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+          cache-dependency-path: wandermind/backend/requirements.txt
+      - name: Install backend dependencies
+        run: python -m pip install -r wandermind/backend/requirements.txt
+      - name: Run PostgreSQL driver-request integration tests
+        run: python -B -m unittest wandermind.backend.tests.test_driver_rate_limit_postgres -v
