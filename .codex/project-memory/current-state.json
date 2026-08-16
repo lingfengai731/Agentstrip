@@ -13,9 +13,9 @@
   },
   "snapshot": {
     "status": "verified",
-    "captured_at": "2026-08-16T09:24:59Z",
+    "captured_at": "2026-08-16T09:29:54Z",
     "captured_by": "codex-sol",
-    "source_commit": "5b91ea799be2f9217aa691d96e11165713bb7bc8",
+    "source_commit": "f3011d7aaf955f0cf833d6496a3eac0f1c01cd1c",
     "source_branch": "codex/account2-integration-20260816",
     "working_tree_at_capture": "clean",
     "wandermind_bali": {
@@ -47,8 +47,14 @@
       "failure_policy": "fail_closed_503",
       "tests_passed": 43,
       "production_status": "not_deployed",
+      "postgres_integration": {
+        "status": "verified",
+        "postgres_version": "16-alpine",
+        "tests_passed": 4,
+        "workflow_run": 31939117240,
+        "job": 95145601201
+      },
       "remaining_gates": [
-        "real Postgres integration test",
         "Render request.client.host anonymous distribution smoke test"
       ]
     },
@@ -76,15 +82,16 @@
       "url": "https://github.com/lingfengai731/Agentstrip/pull/3",
       "status": "draft",
       "mergeable": true,
-      "head_commit": "5b91ea799be2f9217aa691d96e11165713bb7bc8",
+      "head_commit": "f3011d7aaf955f0cf833d6496a3eac0f1c01cd1c",
       "project_memory_ci": "success",
-      "release_gate": "real PostgreSQL integration and post-deploy Render proxy smoke"
+      "postgres_integration_ci": "success",
+      "release_gate": "post-deploy Render proxy smoke and production browser regression"
     }
   },
   "limitations": [
     "The existing root AGENTS.md has not been changed, so automatic loading is not guaranteed.",
     "Production was checked only through public browser and HTTP behavior; authenticated Render environment values, the production backend commit and database contents were not read.",
-    "The latest branch still requires an isolated real PostgreSQL integration test and a post-deploy Render proxy-address smoke test before release completion.",
+    "The latest branch passed isolated real PostgreSQL 16 integration tests but still requires a post-deploy Render proxy-address smoke test before release completion.",
     "Conversation history and hidden reasoning are not project facts."
   ]
 }

@@ -151,3 +151,4 @@
 - 路由终态：large / L2；Sol 保留集成、GitHub、发布和最终验收，Luna 只负责边界明确的只读复核；最终状态 `completed`，未把等待超时写成失败。
 - 技能命中：cross-account-project-memory 约束权威事实和一账号一 worktree；agent-role-orchestrator 约束分发与回调；codex-luna-worker 执行独立数据库风险复核；browser-automation-router/Playwright 完成生产浏览器验收；github/yeet 约束显式文件提交、分支推送与 Draft PR。
 - GitHub 回调：当前账号分支已推送并建立 Draft PR #3；PR 可合并但保持 Draft，Project memory validation 成功；未合并、未部署、未改 Render 变量或数据库，下一回调固定为隔离 PostgreSQL 门禁。
+- PostgreSQL 回调：新增只允许 localhost/127.0.0.1 的专项集成测试；GitHub Actions 临时 PostgreSQL 16 中 4/4 通过并明确使用 postgres 后端，覆盖并发、固定窗口、重初始化持久化和 BIGINT/索引。真实 PostgreSQL 门禁关闭，下一门禁为 Render canary 代理隔离与部署后生产 E2E。
