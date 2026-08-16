@@ -1,0 +1,22 @@
+{
+  "schema_version": 1,
+  "evidence_id": "ev-20260816T055333Z-task-20260816-poi-batch1",
+  "task_ref": "TASK-20260816-POI-BATCH1",
+  "owner": "codex-sol",
+  "captured_at": "2026-08-16T05:53:33Z",
+  "status": "verified",
+  "claim": "Verified six high-impact Bali POIs from first-party government sources while preserving route-group, temple-section and live safety boundaries; counts are now 48 verified, 8 pending and 3 supplier-gated.",
+  "source": {
+    "kind": "git",
+    "repository": "https://github.com/lingfengai731/Agentstrip.git",
+    "commit": "58b4fd5a5cecf215c91d6e8b6355bd4dbfe8c427",
+    "branch": "codex/poi-facts-batch1",
+    "worktree": "E:\\Agentstrip-wt-poi-b1",
+    "dirty": false
+  },
+  "verification": {
+    "command": "python -m unittest wandermind.backend.tests.test_product_access; project-memory validate; Playwright Chrome 1440/768/390/320 and WebKit 390",
+    "result": "39/39 tests OK; project-memory validation passed; six target POIs loaded as verified with two sources each; document and route-detail horizontal overflow were 0 at all viewports."
+  },
+  "notes": "Screenshots: C:\\Users\\吴凌峰\\.codex\\visualizations\\2026\\08\\16\\poi-batch1-qa\\poi-batch1-chromium-1440.png, poi-batch1-chromium-768.png, poi-batch1-chromium-390.png, poi-batch1-chromium-320.png and poi-batch1-webkit-390.png. Local static-server Portfolio API 404 is expected because no backend was started and is not production verification. Luna worker completed read-only with zero writes; Sol independently reviewed sources, diff, counts and tests."
+}
