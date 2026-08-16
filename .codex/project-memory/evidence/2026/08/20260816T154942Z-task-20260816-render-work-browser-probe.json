@@ -1,0 +1,22 @@
+{
+  "schema_version": 1,
+  "evidence_id": "ev-20260816T154942Z-task-20260816-render-work-browser-probe",
+  "task_ref": "task-20260816-render-work-browser-probe",
+  "owner": "codex-sol",
+  "captured_at": "2026-08-16T15:49:42Z",
+  "status": "verified",
+  "claim": "Fresh ChatGPT Work probe confirmed Browser is callable and includes interaction capability; dashboard.render.com is currently blocked by saved user site permissions, so Render content and login state remain unread.",
+  "source": {
+    "kind": "git",
+    "repository": "https://github.com/lingfengai731/Agentstrip.git",
+    "commit": "e8eb5eae201ec8a51b7f1b95d95e456f88b04be6",
+    "branch": "codex/account2-integration-20260816",
+    "worktree": "E:\\Agentstrip2-worktree",
+    "dirty": true
+  },
+  "verification": {
+    "command": "read_thread 6a81da9a-1998-83e8-b2ca-34e1f6eb526d",
+    "result": "Browser available; no separate Computer Use tool; Render blocked_by_saved_user_permission; no configuration change or deployment."
+  },
+  "notes": "This supersedes the earlier pending-probe state. The user must grant dashboard.render.com permission inside the Work task. Do not infer login status from the ambient URL."
+}

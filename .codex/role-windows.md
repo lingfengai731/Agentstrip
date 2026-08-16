@@ -13,7 +13,7 @@
 | QA | 未建立 | 无 | 架构 | 图片发布边界、匹配准确性与暂存范围审查 | Sol 最终 GO，P0/P1 为 0；唯一 P2 已补测试 | 本地降级已完成 |
 | 安全 | 待确认 | 待确认 | 架构 | 授权安全审计和低影响验证 | 无新增安全范围 | 待确认 |
 | DBA | 待确认 | 待确认 | 架构 | 数据库实例风险和只读诊断 | 本阶段不涉及 | 待确认 |
-| 运维 / Render Work | 已建立，等待 Browser 激活 | 6a81da9a-1998-83e8-b2ca-34e1f6eb526d | 当前主线 | ChatGPT Work 内的 Render 配置存在性、canary、部署记录、日志与生产 E2E | Work 已创建并固定复用；尚无 Browser 探针结果，需在该任务启用 `@Browser`/站点权限后再执行 | 活跃，固定复用 |
+| 运维 / Render Work | 已建立，Browser 可用 | 6a81da9a-1998-83e8-b2ca-34e1f6eb526d | 当前主线 | ChatGPT Work 内的 Render 配置存在性、canary、部署记录、日志与生产 E2E | Browser 已确认可调用；Render 被已保存的用户站点权限阻止，需用户在该任务中授权后再执行 | 活跃，固定复用 |
 | 运维 / 仓库回流 | 已建立 | 01a00b3a-b62f-7c60-ae73-f9e74ae7879d | 当前主线 | 共享仓库上下文、Render 任务包转发与结果回流 | Browser 探针为 BROWSER_CONTROL_UNAVAILABLE；保持待命，不重复建窗口 | 已回调，固定复用 |
 | 公众号发布 | 待确认 | 待确认 | 内容主编 | 微信公众号草稿、预览、发布准备 | 本阶段不涉及 | 待确认 |
 | 小红书 | 待确认 | 待确认 | 内容主编 | 小红书内容实验、发布包、评论研究 | 本阶段不涉及 | 待确认 |
@@ -169,8 +169,9 @@
 
 ## 2026-08-16 Render Work routing callback
 
-- 已建立并固定复用 ChatGPT Work `6a81da9a-1998-83e8-b2ca-34e1f6eb526d`，专用于 Render 配置存在性、canary、部署记录、日志与生产 E2E；当前尚无 Browser 探针结果，不能写成可控或已登录。
+- 已建立并固定复用 ChatGPT Work `6a81da9a-1998-83e8-b2ca-34e1f6eb526d`，专用于 Render 配置存在性、canary、部署记录、日志与生产 E2E；新鲜探针确认 Browser 可调用，但 Render 被已保存的用户站点权限阻止，尚未读取页面或确认登录态。
 - 已建立并固定复用仓库回流任务 `01a00b3a-b62f-7c60-ae73-f9e74ae7879d`；它完成项目记忆与 Git 恢复，但能力探针为 `BROWSER_CONTROL_UNAVAILABLE`，未访问 Render、未写仓库、未部署。
 - 路由边界：主线在遇到 Render 门禁时必须显式向上述任务发送最小任务包并读取回调；不同任务不会自动感知彼此内部进度，且 Browser 能力不会因右侧 ambient 页面自动继承。
 - Secret 边界：只报告变量是否存在、结构是否有效及强度结论，禁止显示、复制或写入实际值；删除数据、降低权益、生产部署和不可逆变更仍需独立门禁。
 - Skill 回调：`openai-docs` 确认 Projects/Work 与 Browser 的产品边界；`agent-role-orchestrator` 约束固定复用与回调台账；`cross-account-project-memory` 约束项目级持久化；`browser-automation-router` 使无控制面时 fail-closed。
+- Work 探针回流：`Browser=available`；无独立 Computer Use 工具但 Browser 自带交互；`Render=blocked_by_saved_user_permission`；零配置修改、零部署。下一步只需用户在该 Work 中授予 `dashboard.render.com` 访问权限。
