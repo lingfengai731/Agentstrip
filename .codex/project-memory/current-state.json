@@ -13,10 +13,10 @@
   },
   "snapshot": {
     "status": "verified",
-    "captured_at": "2026-08-16T06:06:38Z",
+    "captured_at": "2026-08-16T06:21:46Z",
     "captured_by": "codex-sol",
-    "source_commit": "4f2c6e73bbce081af04ff303762101fcfd94dd05",
-    "source_branch": "codex/poi-facts-batch2",
+    "source_commit": "31e8d45ee6ec392ca62c39028ed7ab966652e4a0",
+    "source_branch": "codex/driver-request-rate-limit",
     "working_tree_at_capture": "clean",
     "wandermind_bali": {
       "status": "verified",
@@ -31,6 +31,25 @@
         "Thousand Islands Viewpoint and two Mount Batur anchors remain pending because their exact public identity, entrance or venue is not uniquely resolved; supplier-gated experiences remain non-execution-ready.",
         "Dicky's five-day itinerary is treated as an R1 field calibration, not a seventh route family.",
         "Production was not changed or reverified by this snapshot."
+      ]
+    },
+    "driver_request_protection": {
+      "status": "verified_local",
+      "limit": 5,
+      "window_seconds": 1800,
+      "storage": "SQLite/Postgres atomic counter",
+      "stored_fields": [
+        "HMAC client key",
+        "window start",
+        "request count",
+        "updated timestamp"
+      ],
+      "failure_policy": "fail_closed_503",
+      "tests_passed": 43,
+      "production_status": "unknown",
+      "remaining_gates": [
+        "real Postgres integration test",
+        "Render request.client.host anonymous distribution smoke test"
       ]
     },
     "production": {
