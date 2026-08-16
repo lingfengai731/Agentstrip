@@ -21,6 +21,8 @@ TEST_DIR = tempfile.TemporaryDirectory(prefix="wandermind-product-test-")
 os.environ.pop("DATABASE_URL", None)
 os.environ["DB_PATH"] = str(Path(TEST_DIR.name) / "test.db")
 os.environ["ENVIRONMENT"] = "development"
+os.environ.pop("ADMIN_USERNAME", None)
+os.environ.pop("ADMIN_EMAIL", None)
 os.environ.pop("ADMIN_BOOTSTRAP_PASSWORD", None)
 
 BACKEND_DIR = Path(__file__).resolve().parents[1]
