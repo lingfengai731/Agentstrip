@@ -111,7 +111,8 @@
     },
     "render_operations_thread": {
       "work_thread_id": "6a81da9a-1998-83e8-b2ca-34e1f6eb526d",
-      "work_title": "Agentstrip Render Work",
+      "work_title": "Browser控制能力探针",
+      "work_role": "Agentstrip Render Work",
       "repository_relay_thread_id": "01a00b3a-b62f-7c60-ae73-f9e74ae7879d",
       "repository_relay_title": "Agentstrip · Render 专用工作台",
       "status": "work_browser_available_site_permission_blocked",
