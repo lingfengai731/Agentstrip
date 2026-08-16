@@ -297,6 +297,7 @@
        .bali-professional-lock-note { color:#92400e; font-size:12px; line-height:1.55; }
        .bali-professional-actions { display:flex; flex-wrap:wrap; gap:9px; margin-top:18px; }
        .bali-professional-actions .bali-btn { padding:11px 16px; font-size:13px; }
+       .bali-professional-actions .bali-professional-adjustments-badge { display:inline-flex; align-items:center; justify-content:center; min-height:42px; padding:8px 13px; text-align:center; }
        .bali-professional-form { display:grid; gap:10px; margin-top:16px; }
        .bali-professional-form-row { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:10px; }
        .bali-professional-form label { display:grid; gap:5px; color:#64748b; font-size:11px; font-weight:700; }
@@ -306,7 +307,7 @@
        .bali-professional-status { min-height:20px; margin-top:10px; color:#0f766e; font-size:12px; line-height:1.55; }
        .bali-professional-status.error { color:#b91c1c; }
        @media(max-width:991px){ .bali-professional-layout{grid-template-columns:1fr} }
-       @media(max-width:575px){ .bali-professional-card{padding:18px}.bali-profile-summary{grid-template-columns:1fr}.bali-professional-form-row{grid-template-columns:1fr}.bali-professional-actions{display:grid}.bali-professional-actions .bali-btn{width:100%;justify-content:center;text-align:center} }
+       @media(max-width:575px){ .bali-professional-card{padding:18px}.bali-profile-summary{grid-template-columns:1fr}.bali-professional-form-row{grid-template-columns:1fr}.bali-professional-actions{display:grid}.bali-professional-actions .bali-btn,.bali-professional-actions .bali-professional-adjustments-badge{width:100%;justify-content:center;text-align:center} }
        .footer-contact-line { display: flex; align-items: center; gap: 8px; padding: 4px 0; flex-wrap: wrap; }
       .footer-contact-line .fa { color: #fcbf1e !important; width: 18px; text-align: center; flex-shrink: 0; font-size: 15px; }
       .footer-contact-line a { color: #ddd; }
@@ -771,6 +772,13 @@
         routeEditorFeedback = null;
         renderCards();
         renderDetail();
+        try {
+          localStorage.setItem('wm_studio_professional_route_hint', activeId);
+          var nextUrl = new URL(window.location.href);
+          nextUrl.searchParams.set('route', activeId);
+          window.history.replaceState({}, document.title, nextUrl.pathname + nextUrl.search + nextUrl.hash);
+        } catch (_) {}
+        window.dispatchEvent(new CustomEvent('wm:bali-route-selected', { detail: { routeId: activeId } }));
       });
     });
   }
@@ -1589,7 +1597,7 @@
   var picker=document.getElementById('langPicker'); if(picker)picker.addEventListener('change',renderModal);
 })();
 </script>
-<script src="assets/js/bali-professional.js?v=p54"></script>
+<script src="assets/js/bali-professional.js?v=p55"></script>
 <script src="assets/js/global-auth.js?v=p52"></script>
 </body>
 </html>
