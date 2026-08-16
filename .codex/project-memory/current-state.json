@@ -13,9 +13,9 @@
   },
   "snapshot": {
     "status": "verified",
-    "captured_at": "2026-08-16T09:22:43Z",
+    "captured_at": "2026-08-16T09:24:59Z",
     "captured_by": "codex-sol",
-    "source_commit": "1e3da86b9bb7eb3de1846e0c095656ab30f4d707",
+    "source_commit": "5b91ea799be2f9217aa691d96e11165713bb7bc8",
     "source_branch": "codex/account2-integration-20260816",
     "working_tree_at_capture": "clean",
     "wandermind_bali": {
@@ -70,7 +70,16 @@
   "coordination": {
     "task_system": "GitHub Issues and Projects",
     "code_isolation": "one account, one worktree, one task branch",
-    "integration_gate": "reviewed pull request"
+    "integration_gate": "reviewed pull request",
+    "integration_pull_request": {
+      "number": 3,
+      "url": "https://github.com/lingfengai731/Agentstrip/pull/3",
+      "status": "draft",
+      "mergeable": true,
+      "head_commit": "5b91ea799be2f9217aa691d96e11165713bb7bc8",
+      "project_memory_ci": "success",
+      "release_gate": "real PostgreSQL integration and post-deploy Render proxy smoke"
+    }
   },
   "limitations": [
     "The existing root AGENTS.md has not been changed, so automatic loading is not guaranteed.",
