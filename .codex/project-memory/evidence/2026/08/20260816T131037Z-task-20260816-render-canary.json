@@ -1,0 +1,22 @@
+{
+  "schema_version": 1,
+  "evidence_id": "ev-20260816T131037Z-task-20260816-render-canary",
+  "task_ref": "task-20260816-render-canary",
+  "owner": "account2-sol",
+  "captured_at": "2026-08-16T13:10:37Z",
+  "status": "unknown",
+  "claim": "Computer Use plugin is installed and enabled and the computer_use feature flag is true, but this fresh task exposes neither node_repl/@oai/sky nor native Chrome/Browser control tools; authenticated Render inspection and canary remain fail-closed. PR #3 and public production were freshly rechecked without changing external state.",
+  "source": {
+    "kind": "git",
+    "repository": "https://github.com/lingfengai731/Agentstrip.git",
+    "commit": "64ca8ecf062076e74a5aeecc33f21d65bc21be8f",
+    "branch": "codex/account2-integration-20260816",
+    "worktree": "E:\\Agentstrip2-worktree",
+    "dirty": false
+  },
+  "verification": {
+    "command": "codex plugin list; codex features list; current task tool capability inspection; codex doctor --summary/--json; GitHub connector PR/CI reads; Invoke-WebRequest/Invoke-RestMethod public production checks",
+    "result": "PR #3 is open, draft and mergeable at head 64ca8ec; Project memory validation and PostgreSQL integration Actions both succeeded; https://wandermind.cc/healthz returned 200 ok; public Bali data remains schema 1.2.0 with 6 routes, 50 POIs, 19 verified, 30 pending and 1 supplier-gated; no deploy, merge or PR state change occurred."
+  },
+  "notes": "No Render secret value was read or displayed. DATABASE_URL/PostgreSQL presence, SECRET_KEY presence, preview/canary path, trusted-proxy client isolation and post-deploy browser E2E remain unverified. Do not use codex-computer-use.exe or custom browser-profile automation. Full Codex Desktop restart plus a newly created task is required before retrying Computer Use."
+}

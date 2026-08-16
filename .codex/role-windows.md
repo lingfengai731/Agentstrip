@@ -152,3 +152,4 @@
 - 技能命中：cross-account-project-memory 约束权威事实和一账号一 worktree；agent-role-orchestrator 约束分发与回调；codex-luna-worker 执行独立数据库风险复核；browser-automation-router/Playwright 完成生产浏览器验收；github/yeet 约束显式文件提交、分支推送与 Draft PR。
 - GitHub 回调：当前账号分支已推送并建立 Draft PR #3；PR 可合并但保持 Draft，Project memory validation 成功；未合并、未部署、未改 Render 变量或数据库，下一回调固定为隔离 PostgreSQL 门禁。
 - PostgreSQL 回调：新增只允许 localhost/127.0.0.1 的专项集成测试；GitHub Actions 临时 PostgreSQL 16 中 4/4 通过并明确使用 postgres 后端，覆盖并发、固定窗口、重初始化持久化和 BIGINT/索引。真实 PostgreSQL 门禁关闭，下一门禁为 Render canary 代理隔离与部署后生产 E2E。
+- 2026-08-16 Render canary 接续回调：Computer Use 插件与功能开关已启用，但当前任务未注入 `node_repl/@oai/sky`、Chrome 或 Browser 控制工具，故账号内 Render 配置、canary 和部署后 E2E 继续 fail-closed；PR #3 保持 draft/open/mergeable，当前两项 Actions 成功，公开生产仍为 health 200 与 6 routes / 50 POIs 旧基线。未读取或显示任何 Secret，未合并、未部署、未改变 PR 状态；下一步必须完整重启 Codex Desktop 并新建任务，先验证控制工具存在再接续。
