@@ -13,8 +13,8 @@
 | QA | 未建立 | 无 | 架构 | 图片发布边界、匹配准确性与暂存范围审查 | Sol 最终 GO，P0/P1 为 0；唯一 P2 已补测试 | 本地降级已完成 |
 | 安全 | 待确认 | 待确认 | 架构 | 授权安全审计和低影响验证 | 无新增安全范围 | 待确认 |
 | DBA | 待确认 | 待确认 | 架构 | 数据库实例风险和只读诊断 | 本阶段不涉及 | 待确认 |
-| 运维 / Render Work | 已建立，Browser 可用 | 6a81da9a-1998-83e8-b2ca-34e1f6eb526d | 当前主线 | ChatGPT Work 内的 Render 配置存在性、canary、部署记录、日志与生产 E2E | Browser 已确认可调用；Render 被已保存的用户站点权限阻止，需用户在该任务中授权后再执行 | 活跃，固定复用 |
-| 运维 / 仓库回流 | 已建立 | 01a00b3a-b62f-7c60-ae73-f9e74ae7879d | 当前主线 | 共享仓库上下文、Render 任务包转发与结果回流 | Browser 探针为 BROWSER_CONTROL_UNAVAILABLE；保持待命，不重复建窗口 | 已回调，固定复用 |
+| 运维 / Render Work | 已退役，待用户侧归档 | 6a81da9a-1998-83e8-b2ca-34e1f6eb526d | 当前主线 | 历史 ChatGPT Work Browser 探针 | Cloud Work 无法承担已登录 Render；Codex 归档接口不支持该 ChatGPT 对话，需用户在其菜单中归档或删除 | 禁止继续派发 |
+| 运维 / 仓库回流 | 已归档 | 01a00b3a-b62f-7c60-ae73-f9e74ae7879d | 当前主线 | 历史仓库上下文与 Render 能力探针 | 已归档；Browser 探针为 BROWSER_CONTROL_UNAVAILABLE，零生产写入 | 已退役 |
 | 公众号发布 | 待确认 | 待确认 | 内容主编 | 微信公众号草稿、预览、发布准备 | 本阶段不涉及 | 待确认 |
 | 小红书 | 待确认 | 待确认 | 内容主编 | 小红书内容实验、发布包、评论研究 | 本阶段不涉及 | 待确认 |
 | 视频 | 待确认 | 待确认 | 内容主编 | 视频脚本、分镜、素材和渲染计划 | 本阶段不涉及 | 待确认 |
@@ -175,3 +175,10 @@
 - Secret 边界：只报告变量是否存在、结构是否有效及强度结论，禁止显示、复制或写入实际值；删除数据、降低权益、生产部署和不可逆变更仍需独立门禁。
 - Skill 回调：`openai-docs` 确认 Projects/Work 与 Browser 的产品边界；`agent-role-orchestrator` 约束固定复用与回调台账；`cross-account-project-memory` 约束项目级持久化；`browser-automation-router` 使无控制面时 fail-closed。
 - Work 探针回流：`Browser=available`；无独立 Computer Use 工具但 Browser 自带交互；`Render=blocked_by_saved_user_permission`；零配置修改、零部署。下一步只需用户在该 Work 中授予 `dashboard.render.com` 访问权限。
+
+## 2026-08-17 Render task cleanup callback
+
+- `Agentstrip · Render 专用工作台` 已通过 Codex 任务管理接口归档，可从 Archived 恢复；它不再占用主线侧栏或接收 Render 任务包。
+- `Browser控制能力探针` 属于 ChatGPT 对话，Codex 归档接口返回不支持；已尝试取消置顶，但 ChatGPT 来源仍将其显示在置顶区，需用户通过该对话的 `…` 菜单手动归档或删除。
+- 两个历史 ID 均保留在项目记忆中仅作审计，路由状态改为 retired/disabled；后续不得自动派发。新的本地 Render Browser 任务只能在 Browser 插件实际注入并通过能力探针后登记。
+- 本轮未访问 Render、未读取 Secret、未修改配置、未部署；`agent-role-orchestrator` 约束台账退役，`cross-account-project-memory` 记录可审计事实，OpenAI 任务管理使用可恢复归档优先于永久删除。

@@ -115,12 +115,14 @@
       "work_role": "Agentstrip Render Work",
       "repository_relay_thread_id": "01a00b3a-b62f-7c60-ae73-f9e74ae7879d",
       "repository_relay_title": "Agentstrip · Render 专用工作台",
-      "status": "work_browser_available_site_permission_blocked",
+      "status": "retired",
       "work_browser_status": "available",
       "work_render_status": "blocked_by_saved_user_permission",
+      "work_cleanup_status": "chatgpt_archive_requires_user_action",
       "repository_relay_browser_status": "BROWSER_CONTROL_UNAVAILABLE",
+      "repository_relay_cleanup_status": "archived",
       "scope": "Render configuration presence, canary, deployment logs and production E2E only",
-      "routing": "send explicit Render packets to the Work task and use the repository relay for project context; do not create duplicates",
+      "routing": "disabled; preserve ids for audit only and do not dispatch new work",
       "secret_policy": "presence and strength only; never record values"
     }
   },
