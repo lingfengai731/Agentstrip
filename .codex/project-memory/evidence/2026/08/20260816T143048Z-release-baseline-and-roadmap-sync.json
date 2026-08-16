@@ -1,0 +1,22 @@
+{
+  "schema_version": 1,
+  "evidence_id": "ev-20260816T143048Z-release-baseline-and-roadmap-sync",
+  "task_ref": "release-baseline-and-roadmap-sync",
+  "owner": "codex-sol",
+  "captured_at": "2026-08-16T14:30:48Z",
+  "status": "verified",
+  "claim": "Aligned the stale master roadmap and current-state snapshot with the frozen dual-path entitlement, D8 portfolio, driver pricing, 59-POI branch, and verified production drift.",
+  "source": {
+    "kind": "git",
+    "repository": "https://github.com/lingfengai731/Agentstrip.git",
+    "commit": "206d9b3f7932bbf05f94071d3b1865589ff3fa0c",
+    "branch": "codex/account2-integration-20260816",
+    "worktree": "E:\\Agentstrip2-worktree",
+    "dirty": true
+  },
+  "verification": {
+    "command": "python -m unittest wandermind.backend.tests.test_product_access; node --check wandermind-studio/frontend/assets/js/bali-professional.js; project-memory validate; git diff --check",
+    "result": "43/43 product-access tests passed; node --check passed; current-state JSON valid; project-memory validate passed with 0 warnings; git diff --check passed."
+  },
+  "notes": "Public production remains main frontend baseline: bali-professional p54 and 50 POIs. Branch 206d9b3 uses p55 and 59 POIs. Authenticated Render/database inspection is still pending because this old task has no injected in-app-browser control handle. Nuwa Steve Jobs, Paul Graham and Munger perspectives all prioritized shipping and real-flow verification over scope expansion."
+}

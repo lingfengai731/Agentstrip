@@ -13,9 +13,9 @@
   },
   "snapshot": {
     "status": "verified",
-    "captured_at": "2026-08-16T09:29:54Z",
+    "captured_at": "2026-08-16T14:28:27Z",
     "captured_by": "codex-sol",
-    "source_commit": "f3011d7aaf955f0cf833d6496a3eac0f1c01cd1c",
+    "source_commit": "206d9b3f7932bbf05f94071d3b1865589ff3fa0c",
     "source_branch": "codex/account2-integration-20260816",
     "working_tree_at_capture": "clean",
     "wandermind_bali": {
@@ -60,16 +60,19 @@
     },
     "production": {
       "status": "verified_frontend_baseline",
-      "verified_at": "2026-08-16T09:22:43Z",
+      "verified_at": "2026-08-16T14:28:27Z",
       "frontend_matches_commit": "3fbf898fb6a27da8d7b87476d6fd941a24c3d05c",
       "backend_commit": "unknown",
-      "latest_branch_commit": "1e3da86b9bb7eb3de1846e0c095656ab30f4d707",
+      "latest_branch_commit": "206d9b3f7932bbf05f94071d3b1865589ff3fa0c",
       "latest_branch_deployed": false,
       "health": "200 ok",
       "bali_routes": 6,
       "bali_pois": 50,
+      "frontend_asset_marker": "bali-professional.js?v=p54",
+      "branch_frontend_asset_marker": "bali-professional.js?v=p55",
       "evidence_ids": [
-        "ev-20260816T092243Z-task-20260816-cross-account-recovery"
+        "ev-20260816T092243Z-task-20260816-cross-account-recovery",
+        "ev-20260816T143048Z-release-baseline-and-roadmap-sync"
       ]
     }
   },
@@ -82,7 +85,7 @@
       "url": "https://github.com/lingfengai731/Agentstrip/pull/3",
       "status": "draft",
       "mergeable": true,
-      "head_commit": "f3011d7aaf955f0cf833d6496a3eac0f1c01cd1c",
+      "head_commit": "206d9b3f7932bbf05f94071d3b1865589ff3fa0c",
       "project_memory_ci": "success",
       "postgres_integration_ci": "success",
       "release_gate": "post-deploy Render proxy smoke and production browser regression"
@@ -90,7 +93,7 @@
   },
   "limitations": [
     "The existing root AGENTS.md has not been changed, so automatic loading is not guaranteed.",
-    "Production was checked only through public browser and HTTP behavior; authenticated Render environment values, the production backend commit and database contents were not read.",
+    "Production was checked only through public HTTP behavior; authenticated Render environment values, the production backend commit and database contents were not read because this existing task has no injected browser-control handle.",
     "The latest branch passed isolated real PostgreSQL 16 integration tests but still requires a post-deploy Render proxy-address smoke test before release completion.",
     "Conversation history and hidden reasoning are not project facts."
   ]
