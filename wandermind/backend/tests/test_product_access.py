@@ -1242,6 +1242,10 @@ class ProductAccessTests(unittest.TestCase):
             "kanto_lampo_waterfall",
             "tirta_gangga",
             "sidemen_valley",
+            "banyumala_waterfall",
+            "tamblingan_lake",
+            "tukad_cepung_waterfall",
+            "amed_beach",
         }
         self.assertEqual(
             {poi["id"] for poi in data["pois"] if poi["verification_status"] == "verified"},
@@ -1249,7 +1253,7 @@ class ProductAccessTests(unittest.TestCase):
         )
         self.assertEqual(
             sum(poi["verification_status"] == "pending_review" for poi in data["pois"]),
-            18,
+            14,
         )
         supplier_confirmation_ids = {
             "mount_batur_jeep",
@@ -1337,6 +1341,38 @@ class ProductAccessTests(unittest.TestCase):
         self.assertEqual(
             r4["free_outline"][2]["suggested_poi_ids"],
             ["celuk_village", "tegalalang_rice_terrace"],
+        )
+        r5 = next(route for route in data["routes"] if route["id"] == "R5")
+        self.assertEqual(r5["verification_status"], "needs_supplier_confirmation")
+        r5_outline_ids = {
+            poi_id
+            for day in r5["free_outline"]
+            for poi_id in day["suggested_poi_ids"]
+        }
+        self.assertEqual(len(r5_outline_ids), 9)
+        self.assertEqual(
+            {
+                poi_by_id[poi_id]["verification_status"]
+                for poi_id in r5_outline_ids
+            },
+            {"verified", "pending_review", "needs_supplier_confirmation"},
+        )
+        self.assertEqual(
+            {
+                poi_id
+                for poi_id in r5_outline_ids
+                if poi_by_id[poi_id]["verification_status"] == "pending_review"
+            },
+            {"mount_batur_trailhead", "batur_hot_springs"},
+        )
+        self.assertEqual(
+            {
+                poi_id
+                for poi_id in r5_outline_ids
+                if poi_by_id[poi_id]["verification_status"]
+                == "needs_supplier_confirmation"
+            },
+            {"mount_batur_jeep"},
         )
         r6 = next(route for route in data["routes"] if route["id"] == "R6")
         self.assertEqual(r6["verification_status"], "verified")
