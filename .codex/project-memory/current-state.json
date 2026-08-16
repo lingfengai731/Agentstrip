@@ -108,6 +108,17 @@
       "project_memory_ci": "success",
       "postgres_integration_ci": "success",
       "release_gate": "post-deploy Render proxy smoke and production browser regression"
+    },
+    "render_operations_thread": {
+      "work_thread_id": "6a81da9a-1998-83e8-b2ca-34e1f6eb526d",
+      "work_title": "Agentstrip Render Work",
+      "repository_relay_thread_id": "01a00b3a-b62f-7c60-ae73-f9e74ae7879d",
+      "repository_relay_title": "Agentstrip · Render 专用工作台",
+      "status": "work_created_waiting_browser_activation",
+      "repository_relay_browser_status": "BROWSER_CONTROL_UNAVAILABLE",
+      "scope": "Render configuration presence, canary, deployment logs and production E2E only",
+      "routing": "send explicit Render packets to the Work task and use the repository relay for project context; do not create duplicates",
+      "secret_policy": "presence and strength only; never record values"
     }
   },
   "limitations": [
