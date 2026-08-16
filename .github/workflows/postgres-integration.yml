@@ -7,6 +7,8 @@ on:
       - wandermind/backend/main.py
       - wandermind/backend/requirements.txt
       - wandermind/backend/tests/test_driver_rate_limit_postgres.py
+      - wandermind/backend/tests/test_entitlements_postgres.py
+      - wandermind/backend/tests/test_product_access.py
       - .github/workflows/postgres-integration.yml
   workflow_dispatch:
 
@@ -38,6 +40,7 @@ jobs:
       ADMIN_USERNAME: ci-admin
       ADMIN_EMAIL: ci-admin@example.test
       ADMIN_BOOTSTRAP_PASSWORD: ci-only-strong-password
+      WANDERMIND_ALLOW_LOCAL_POSTGRES_TESTS: "1"
       PYTHONDONTWRITEBYTECODE: "1"
     steps:
       - uses: actions/checkout@v4
@@ -48,5 +51,13 @@ jobs:
           cache-dependency-path: wandermind/backend/requirements.txt
       - name: Install backend dependencies
         run: python -m pip install -r wandermind/backend/requirements.txt
-      - name: Run PostgreSQL driver-request integration tests
-        run: python -B -m unittest wandermind.backend.tests.test_driver_rate_limit_postgres -v
+      - name: Run SQLite product access tests
+        env:
+          DATABASE_URL: ""
+        run: python -B -m unittest wandermind.backend.tests.test_product_access -v
+      - name: Run PostgreSQL release-critical integration tests
+        run: >-
+          python -B -m unittest
+          wandermind.backend.tests.test_driver_rate_limit_postgres
+          wandermind.backend.tests.test_entitlements_postgres
+          -v

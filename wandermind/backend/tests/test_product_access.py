@@ -2,6 +2,7 @@ import asyncio
 import hashlib
 import json
 import os
+import subprocess
 import sys
 import tempfile
 import time
@@ -344,6 +345,295 @@ class ProductAccessTests(unittest.TestCase):
                     sum(1 for day in preview["days_plan"] if day["locked"]),
                     expected[1],
                 )
+
+    def test_professional_route_places_are_verified_execution_facts(self):
+        excluded = {
+            "thousand_islands_viewpoint",
+            "mount_batur_trailhead",
+            "mount_batur_jeep",
+            "batur_hot_springs",
+            "bali_fire_shooting_club",
+            "celuk_silver_class",
+        }
+        seen = set()
+        for route_id in ("R1", "R2", "R3", "R4", "R5", "R6"):
+            with self.subTest(route_id=route_id):
+                route = main._professional_route_document(
+                    {
+                        "audience": "first",
+                        "goals": ["local", "photo"],
+                        "travel_style": "comfort",
+                        "travellers": 2,
+                        "days": 12,
+                        "pace": "balanced",
+                    },
+                    route_id=route_id,
+                    lang="en",
+                )
+                for day in route["full_days"]:
+                    for place in day["places"]:
+                        seen.add(place["id"])
+                        self.assertEqual(place["verification_status"], "verified")
+        self.assertTrue(seen)
+        self.assertTrue(excluded.isdisjoint(seen))
+
+    def test_concurrent_professional_order_creation_returns_one_order(self):
+        email = f"order-race-{uuid.uuid4().hex}@example.test"
+        user_id = self._create_user(email, "order-race")
+        token = main.make_token(user_id, email)
+        trip_id = self._new_trip(token=token)
+
+        def create_order(_):
+            return self._run(
+                self._request(
+                    "POST",
+                    "/api/professional-route/orders",
+                    token=token,
+                    json={"trip_id": trip_id},
+                )
+            )
+
+        with ThreadPoolExecutor(max_workers=8) as pool:
+            responses = list(pool.map(create_order, range(8)))
+        self.assertEqual([response.status_code for response in responses], [200] * 8)
+        order_ids = {response.json()["order"]["id"] for response in responses}
+        self.assertEqual(len(order_ids), 1)
+        conn = get_db()
+        try:
+            row = conn.execute(
+                """SELECT COUNT(*) AS n FROM professional_route_orders
+                   WHERE trip_id=? AND status IN ('pending','confirmed')""",
+                (trip_id,),
+            ).fetchone()
+        finally:
+            conn.close()
+        self.assertEqual(row["n"], 1)
+
+    def test_postgres_tests_reject_unsafe_database_before_backend_import(self):
+        cases = (
+            (
+                "wandermind.backend.tests.test_driver_rate_limit_postgres",
+                "postgresql://ci:ci@localhost.evil/wandermind",
+                True,
+            ),
+            (
+                "wandermind.backend.tests.test_entitlements_postgres",
+                "postgresql://ci:ci@127.0.0.1.evil/wandermind",
+                True,
+            ),
+            (
+                "wandermind.backend.tests.test_entitlements_postgres",
+                "postgresql://ci:ci@127.0.0.1/wandermind",
+                False,
+            ),
+        )
+        for module_name, database_url, allow_local in cases:
+            env = os.environ.copy()
+            env["DATABASE_URL"] = database_url
+            if allow_local:
+                env["WANDERMIND_ALLOW_LOCAL_POSTGRES_TESTS"] = "1"
+            else:
+                env.pop("WANDERMIND_ALLOW_LOCAL_POSTGRES_TESTS", None)
+            probe = subprocess.run(
+                [
+                    sys.executable,
+                    "-c",
+                    f"import importlib; importlib.import_module('{module_name}')",
+                ],
+                cwd=BACKEND_DIR.parents[1],
+                env=env,
+                capture_output=True,
+                text=True,
+                check=False,
+            )
+            output = probe.stdout + probe.stderr
+            self.assertNotEqual(probe.returncode, 0)
+            self.assertIn("explicitly allowed loopback database", output)
+            self.assertNotIn("[wandermind] DB backend", output)
+
+    def test_concurrent_rough_route_consumption_is_atomic(self):
+        email = f"rough-race-{uuid.uuid4().hex}@example.test"
+        user_id = self._create_user(email, "rough-race")
+        token = main.make_token(user_id, email)
+        trip_id = self._new_trip(token=token)
+
+        def consume(_):
+            return self._run(
+                self._request(
+                    "POST",
+                    f"/api/product-trips/{trip_id}/consume",
+                    token=token,
+                    json={"action": "rough_route"},
+                )
+            )
+
+        with ThreadPoolExecutor(max_workers=8) as pool:
+            responses = list(pool.map(consume, range(8)))
+        self.assertEqual(sum(response.status_code == 200 for response in responses), 1)
+        self.assertEqual(sum(response.status_code == 402 for response in responses), 7)
+        conn = get_db()
+        try:
+            row = conn.execute(
+                "SELECT rough_used FROM product_trips WHERE id=?", (trip_id,)
+            ).fetchone()
+        finally:
+            conn.close()
+        self.assertEqual(row["rough_used"], 1)
+
+    def test_concurrent_points_redemption_cannot_overspend_across_trips(self):
+        email = f"points-race-{uuid.uuid4().hex}@example.test"
+        user_id = self._create_user(email, "points-race")
+        token = main.make_token(user_id, email)
+        trip_ids = [self._new_trip(token=token), self._new_trip(token=token)]
+        conn = get_db()
+        try:
+            conn.execute(
+                """INSERT INTO route_points_ledger
+                   (id,user_id,delta,reason,ref_id,created_at)
+                   VALUES (?,?,?,?,?,?)""",
+                (
+                    str(uuid.uuid4()), user_id, 30, "test_credit",
+                    str(uuid.uuid4()), int(time.time()),
+                ),
+            )
+            conn.commit()
+        finally:
+            conn.close()
+
+        def redeem(trip_id):
+            return self._run(
+                self._request(
+                    "POST",
+                    "/api/referrals/redeem-professional-route",
+                    token=token,
+                    json={"trip_id": trip_id},
+                )
+            )
+
+        with ThreadPoolExecutor(max_workers=2) as pool:
+            responses = list(pool.map(redeem, trip_ids))
+        self.assertEqual(sorted(response.status_code for response in responses), [200, 402])
+        conn = get_db()
+        try:
+            balance = main._points_balance(conn, user_id)
+            confirmed = conn.execute(
+                """SELECT COUNT(*) AS n FROM professional_route_orders
+                   WHERE user_id=? AND status='confirmed'""",
+                (user_id,),
+            ).fetchone()
+        finally:
+            conn.close()
+        self.assertEqual(balance, 0)
+        self.assertEqual(confirmed["n"], 1)
+
+    def test_concurrent_professional_adjustments_stop_at_three(self):
+        email = f"adjust-race-{uuid.uuid4().hex}@example.test"
+        user_id = self._create_user(email, "adjust-race")
+        token = main.make_token(user_id, email)
+        trip_id = self._new_trip(token=token)
+        conn = get_db()
+        try:
+            conn.execute(
+                """UPDATE product_trips
+                   SET professional_route_entitlement=1,
+                       professional_adjustment_limit=3,
+                       professional_adjustments_used=0
+                   WHERE id=?""",
+                (trip_id,),
+            )
+            conn.commit()
+        finally:
+            conn.close()
+
+        def adjust(index):
+            return self._run(
+                self._request(
+                    "POST",
+                    f"/api/bali/professional-route/{trip_id}/adjust",
+                    token=token,
+                    json={
+                        "trip_profile": {
+                            "audience": "first",
+                            "goals": ["local"],
+                            "travel_style": "comfort",
+                            "travellers": 2,
+                            "days": 5 + (index % 2),
+                            "pace": "balanced",
+                        },
+                        "lang": "en",
+                    },
+                )
+            )
+
+        with ThreadPoolExecutor(max_workers=8) as pool:
+            responses = list(pool.map(adjust, range(8)))
+        self.assertEqual(sum(response.status_code == 200 for response in responses), 3)
+        self.assertEqual(sum(response.status_code == 402 for response in responses), 5)
+        conn = get_db()
+        try:
+            row = conn.execute(
+                "SELECT professional_adjustments_used FROM product_trips WHERE id=?",
+                (trip_id,),
+            ).fetchone()
+        finally:
+            conn.close()
+        self.assertEqual(row["professional_adjustments_used"], 3)
+
+    def test_points_redemption_converts_pending_order_without_duplication(self):
+        email = f"points-pending-{uuid.uuid4().hex}@example.test"
+        user_id = self._create_user(email, "points-pending")
+        token = main.make_token(user_id, email)
+        trip_id = self._new_trip(token=token)
+        pending = self._run(
+            self._request(
+                "POST",
+                "/api/professional-route/orders",
+                token=token,
+                json={"trip_id": trip_id},
+            )
+        )
+        self.assertEqual(pending.status_code, 200, pending.text)
+        pending_id = pending.json()["order"]["id"]
+        conn = get_db()
+        try:
+            conn.execute(
+                """INSERT INTO route_points_ledger
+                   (id,user_id,delta,reason,ref_id,created_at)
+                   VALUES (?,?,?,?,?,?)""",
+                (
+                    str(uuid.uuid4()), user_id, 30, "test_credit",
+                    str(uuid.uuid4()), int(time.time()),
+                ),
+            )
+            conn.commit()
+        finally:
+            conn.close()
+
+        redeemed = self._run(
+            self._request(
+                "POST",
+                "/api/referrals/redeem-professional-route",
+                token=token,
+                json={"trip_id": trip_id},
+            )
+        )
+        self.assertEqual(redeemed.status_code, 200, redeemed.text)
+        conn = get_db()
+        try:
+            rows = conn.execute(
+                """SELECT id,amount_cents,currency,status,payment_reference
+                   FROM professional_route_orders WHERE trip_id=?""",
+                (trip_id,),
+            ).fetchall()
+        finally:
+            conn.close()
+        self.assertEqual(len(rows), 1)
+        order = dict(rows[0])
+        self.assertEqual(order["id"], pending_id)
+        self.assertEqual(order["amount_cents"], 0)
+        self.assertEqual(order["currency"], "POINTS")
+        self.assertEqual(order["status"], "confirmed")
+        self.assertEqual(order["payment_reference"], "route_points:30")
 
     def test_professional_adjustment_endpoint_is_separate_from_ai_quota(self):
         self.assertEqual(main.PROFESSIONAL_ROUTE_ADJUSTMENT_LIMIT, 3)

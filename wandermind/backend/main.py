@@ -1756,6 +1756,23 @@ def _trip_owner(conn, trip_id: str, user, anon_id) -> dict:
     raise HTTPException(403, "This trip belongs to another account")
 
 
+def _lock_professional_route_transaction(conn, trip_id: str, user_id: str = "") -> None:
+    """Serialize entitlement writes without changing or exposing user data."""
+    is_postgres = backend_name() == "postgres"
+    if not is_postgres:
+        conn.execute("BEGIN IMMEDIATE")
+    lock_suffix = " FOR UPDATE" if is_postgres else ""
+    if user_id:
+        user_row = conn.execute(
+            f"SELECT id FROM users WHERE id=?{lock_suffix}", (user_id,)
+        ).fetchone()
+        if not user_row:
+            raise HTTPException(404, "User not found")
+    conn.execute(
+        f"SELECT id FROM product_trips WHERE id=?{lock_suffix}", (trip_id,)
+    ).fetchone()
+
+
 _BALI_DATA_PATH = Path(__file__).resolve().parents[2] / "wandermind-studio" / "frontend" / "assets" / "data" / "bali-travel-data.json"
 _BALI_DATA_CACHE = None
 PROFESSIONAL_ROUTE_ADJUSTMENT_LIMIT = int(os.getenv("PROFESSIONAL_ROUTE_ADJUSTMENT_LIMIT", "3"))
@@ -1867,7 +1884,9 @@ def _professional_route_document(profile: dict, route_id: str = "", lang: str = 
             theme = f"{region_name} · {experiences[index % len(experiences)].replace('_', ' ')}"
         route_pois = [
             poi for poi in pois
-            if poi.get("region_id") == region_id and route.get("id") in (poi.get("route_ids") or [])
+            if poi.get("region_id") == region_id
+            and route.get("id") in (poi.get("route_ids") or [])
+            and poi.get("verification_status") == "verified"
         ][:3]
         full_days.append({
             "day": index + 1,
@@ -2040,10 +2059,34 @@ def _consume_trip_action(conn, trip: dict, user, action: str) -> dict:
         "adjustment": "adjustments_used",
         "professional_route": "professional_used",
     }[action]
-    conn.execute(
-        f"UPDATE product_trips SET {column}={column}+1,updated_at=? WHERE id=?",
-        (int(time.time()), trip["id"]),
-    )
+    consumed = conn.execute(
+        f"""UPDATE product_trips
+            SET {column}=COALESCE({column},0)+1,updated_at=?
+            WHERE id=? AND COALESCE({column},0)<?
+            RETURNING {column}""",
+        (int(time.time()), trip["id"], allowance[quota_key]["limit"]),
+    ).fetchone()
+    if not consumed:
+        conn.rollback()
+        is_ai_action = action in {"rough_route", "adjustment"}
+        error = (
+            "ai_usage_exhausted"
+            if is_ai_action
+            else "professional_route_usage_exhausted"
+        )
+        raise HTTPException(
+            402,
+            detail={
+                "error": error,
+                "action": action,
+                "payment_reason": (
+                    "ai_usage_exhausted"
+                    if is_ai_action
+                    else "professional_route_adjustment"
+                ),
+                "professional_route_price": {"amount": 9.9, "currency": "CNY"},
+            },
+        )
     conn.commit()
     refreshed = dict(conn.execute("SELECT * FROM product_trips WHERE id=?", (trip["id"],)).fetchone())
     result = _trip_allowance(conn, refreshed, user)
@@ -2190,6 +2233,8 @@ async def adjust_bali_professional_route(
     conn = get_db()
     try:
         trip = _trip_owner(conn, trip_id, user, anon_id)
+        _lock_professional_route_transaction(conn, trip_id, user["sub"])
+        trip = _trip_owner(conn, trip_id, user, anon_id)
         allowance = _trip_allowance(conn, trip, user)
         if not allowance["professional_route_entitlement"]:
             raise HTTPException(402, detail={"error": "professional_route_unlock_required"})
@@ -2211,18 +2256,43 @@ async def adjust_bali_professional_route(
             brief = {}
         brief["trip_profile"] = profile
         brief["route_id"] = document["route_id"]
-        used = int(trip.get("professional_adjustments_used") or 0)
-        conn.execute(
-            """UPDATE product_trips
-               SET brief=?,professional_route_payload=?,professional_adjustments_used=?,updated_at=?
-               WHERE id=?""",
-            (
-                json.dumps(brief, ensure_ascii=False),
-                json.dumps(document, ensure_ascii=False),
-                used if allowance["admin_unlimited"] else used + 1,
-                int(time.time()), trip_id,
-            ),
-        )
+        if allowance["admin_unlimited"]:
+            updated = conn.execute(
+                """UPDATE product_trips
+                   SET brief=?,professional_route_payload=?,updated_at=?
+                   WHERE id=?
+                   RETURNING professional_adjustments_used""",
+                (
+                    json.dumps(brief, ensure_ascii=False),
+                    json.dumps(document, ensure_ascii=False),
+                    int(time.time()), trip_id,
+                ),
+            ).fetchone()
+        else:
+            updated = conn.execute(
+                """UPDATE product_trips
+                   SET brief=?,professional_route_payload=?,
+                       professional_adjustments_used=COALESCE(professional_adjustments_used,0)+1,
+                       updated_at=?
+                   WHERE id=? AND COALESCE(professional_adjustments_used,0)<?
+                   RETURNING professional_adjustments_used""",
+                (
+                    json.dumps(brief, ensure_ascii=False),
+                    json.dumps(document, ensure_ascii=False),
+                    int(time.time()), trip_id,
+                    allowance["professional_adjustment_limit"],
+                ),
+            ).fetchone()
+        if not updated:
+            conn.rollback()
+            raise HTTPException(
+                402,
+                detail={
+                    "error": "professional_route_adjustments_exhausted",
+                    "payment_reason": "professional_route_adjustment",
+                    "limit": allowance["professional_adjustment_limit"],
+                },
+            )
         conn.commit()
         refreshed = dict(conn.execute("SELECT * FROM product_trips WHERE id=?", (trip_id,)).fetchone())
         return _professional_route_response(conn, refreshed, user, document, lang)
@@ -2272,6 +2342,8 @@ async def create_professional_route_order(
 ):
     conn = get_db()
     try:
+        trip = _trip_owner(conn, data.trip_id, user, anon_id)
+        _lock_professional_route_transaction(conn, data.trip_id, user["sub"])
         trip = _trip_owner(conn, data.trip_id, user, anon_id)
         allowance = _trip_allowance(conn, trip, user)
         if allowance["professional_route_unlocked"]:
@@ -2369,6 +2441,13 @@ async def confirm_professional_route_order(
         if not row:
             raise HTTPException(404, "Order not found")
         order = dict(row)
+        _lock_professional_route_transaction(conn, order["trip_id"], order["user_id"])
+        row = conn.execute(
+            "SELECT * FROM professional_route_orders WHERE id=?", (order_id,)
+        ).fetchone()
+        if not row:
+            raise HTTPException(404, "Order not found")
+        order = dict(row)
         if order["status"] == "confirmed":
             return {"ok": True, "already_confirmed": True, "order_id": order_id}
         if order["status"] != "pending":
@@ -2438,6 +2517,8 @@ async def redeem_referral_points(
         now = int(time.time())
         _mature_referrals(conn, user["sub"], now)
         trip = _trip_owner(conn, data.trip_id, user, anon_id)
+        _lock_professional_route_transaction(conn, data.trip_id, user["sub"])
+        trip = _trip_owner(conn, data.trip_id, user, anon_id)
         allowance = _trip_allowance(conn, trip, user)
         if allowance["professional_route_unlocked"]:
             return {"ok": True, "already_unlocked": True, **allowance}
@@ -2447,23 +2528,38 @@ async def redeem_referral_points(
                 402,
                 detail={"error": "insufficient_route_points", "required": 30, "balance": balance},
             )
-        redemption_id = str(uuid.uuid4())
+        pending = conn.execute(
+            """SELECT * FROM professional_route_orders
+               WHERE trip_id=? AND user_id=? AND status='pending'
+               ORDER BY created_at ASC LIMIT 1""",
+            (data.trip_id, user["sub"]),
+        ).fetchone()
+        redemption_id = dict(pending)["id"] if pending else str(uuid.uuid4())
         conn.execute(
             """INSERT INTO route_points_ledger
                (id,user_id,delta,reason,ref_id,created_at)
                VALUES (?,?,?,?,?,?)""",
             (str(uuid.uuid4()), user["sub"], -30, "professional_route_redeem", redemption_id, now),
         )
-        conn.execute(
-            """INSERT INTO professional_route_orders
-               (id,trip_id,user_id,amount_cents,currency,status,payment_reference,
-                created_at,confirmed_at,confirmed_by)
-               VALUES (?,?,?,?,?,?,?,?,?,?)""",
-            (
-                redemption_id, data.trip_id, user["sub"], 0, "POINTS", "confirmed",
-                "route_points:30", now, now, user["sub"],
-            ),
-        )
+        if pending:
+            conn.execute(
+                """UPDATE professional_route_orders
+                   SET amount_cents=0,currency='POINTS',status='confirmed',
+                       payment_reference='route_points:30',confirmed_at=?,confirmed_by=?
+                   WHERE id=? AND status='pending'""",
+                (now, user["sub"], redemption_id),
+            )
+        else:
+            conn.execute(
+                """INSERT INTO professional_route_orders
+                   (id,trip_id,user_id,amount_cents,currency,status,payment_reference,
+                    created_at,confirmed_at,confirmed_by)
+                   VALUES (?,?,?,?,?,?,?,?,?,?)""",
+                (
+                    redemption_id, data.trip_id, user["sub"], 0, "POINTS", "confirmed",
+                    "route_points:30", now, now, user["sub"],
+                ),
+            )
         conn.execute(
             """UPDATE product_trips
                SET professional_route_entitlement=1,professional_adjustment_limit=?,updated_at=?

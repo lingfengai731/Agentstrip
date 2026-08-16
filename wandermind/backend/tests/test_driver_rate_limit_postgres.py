@@ -11,10 +11,30 @@ import unittest
 import uuid
 from concurrent.futures import ThreadPoolExecutor
 from pathlib import Path
+from urllib.parse import urlparse
 
 
 DATABASE_URL = os.getenv("DATABASE_URL", "").strip()
-POSTGRES_ENABLED = DATABASE_URL.startswith(("postgres://", "postgresql://"))
+
+
+def _postgres_test_enabled():
+    if not DATABASE_URL:
+        return False
+    parsed = urlparse(DATABASE_URL)
+    if parsed.scheme not in {"postgres", "postgresql"}:
+        return False
+    if (
+        os.getenv("WANDERMIND_ALLOW_LOCAL_POSTGRES_TESTS") != "1"
+        or parsed.hostname not in {"127.0.0.1", "localhost", "::1"}
+    ):
+        raise RuntimeError(
+            "refusing to import the backend for PostgreSQL integration tests "
+            "without an explicitly allowed loopback database"
+        )
+    return True
+
+
+POSTGRES_ENABLED = _postgres_test_enabled()
 
 if POSTGRES_ENABLED:
     BACKEND_DIR = Path(__file__).resolve().parents[1]
@@ -28,8 +48,6 @@ if POSTGRES_ENABLED:
 class DriverRateLimitPostgresTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
-        if "127.0.0.1" not in DATABASE_URL and "localhost" not in DATABASE_URL:
-            raise RuntimeError("refusing to run destructive integration cleanup on a non-local database")
         db.init_db()
         cls.keys = []
 
