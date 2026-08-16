@@ -1,0 +1,22 @@
+{
+  "schema_version": 1,
+  "evidence_id": "ev-20260816T060716Z-task-20260816-poi-batch2",
+  "task_ref": "TASK-20260816-POI-BATCH2",
+  "owner": "codex-sol",
+  "captured_at": "2026-08-16T06:07:16Z",
+  "status": "verified",
+  "claim": "Verified five additional Bali POI stable-fact records and retained Thousand Islands Viewpoint as pending; 59 POIs now total 53 verified, 3 pending and 3 supplier-gated.",
+  "source": {
+    "kind": "git",
+    "repository": "https://github.com/lingfengai731/Agentstrip.git",
+    "commit": "873cef4ce3eb0e1bfb08127ebb5ddb706fbaca82",
+    "branch": "codex/poi-facts-batch2",
+    "worktree": "E:\\Agentstrip-wt-poi-b2",
+    "dirty": false
+  },
+  "verification": {
+    "command": "python -m unittest wandermind.backend.tests.test_product_access; git diff --check; project-memory validate; Playwright Chrome 1440/768/390/320 and WebKit 390",
+    "result": "39/39 tests OK; project-memory validation passed; five targets verified and Thousand Islands pending; document and route-detail horizontal overflow 0 at every viewport."
+  },
+  "notes": "Formal luna_worker gpt-5.6-luna max read-only audit returned 5 GO and 1 NO-GO with zero writes; Sol independently reviewed sources and diff. Screenshots: C:\\Users\\吴凌峰\\.codex\\visualizations\\2026\\08\\16\\poi-batch2-qa. Static-only browser run expected one /api/portfolio 404 because backend was not started; no production verification, merge or deploy claimed."
+}
