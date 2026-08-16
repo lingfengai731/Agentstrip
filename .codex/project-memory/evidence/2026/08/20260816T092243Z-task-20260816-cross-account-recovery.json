@@ -1,0 +1,24 @@
+{
+  "schema_version": 1,
+  "evidence_id": "ev-20260816T092243Z-task-20260816-cross-account-recovery",
+  "task_ref": "TASK-20260816-CROSS-ACCOUNT-RECOVERY",
+  "owner": "codex-sol",
+  "captured_at": "2026-08-16T09:22:43Z",
+  "status": "verified",
+  "claim": "Repository-native memory successfully recovered the cumulative pushed task branch; GitHub main and the current production frontend remain on the older baseline, while the recovered 34-commit branch is locally verified but not yet production-ready.",
+  "source": {
+    "kind": "git_and_production",
+    "repository": "https://github.com/lingfengai731/Agentstrip.git",
+    "commit": "1e3da86b9bb7eb3de1846e0c095656ab30f4d707",
+    "branch": "codex/account2-integration-20260816",
+    "worktree": "E:\\Agentstrip2-worktree",
+    "dirty_at_capture": false,
+    "main_commit": "3fbf898fb6a27da8d7b87476d6fd941a24c3d05c",
+    "production_url": "https://wandermind.cc/"
+  },
+  "verification": {
+    "command": "git fetch and divergence check; project-memory brief/validate; Python product-access unittest; ten repeated SQLite atomic-counter tests; GitHub compare; public production HTTP and Playwright browser checks; git diff --check",
+    "result": "Recovered branch is 34 ahead and 0 behind main; 43/43 tests passed independently by Sol and Luna; the atomic counter passed 10/10 repeated Sol runs; production health is 200 ok and serves 6 routes/50 POIs from the main frontend baseline, while the branch contains 6 routes/59 POIs; homepage, Bali routes, five-language switching, professional preview, legacy redirect, driver privacy/content, admin auth boundary and 320/390/768/1440 overflow checks passed on current production."
+  },
+  "notes": "Formal luna_worker 01a009c1-3632-78f3-94b5-3d5944585928 using gpt-5.6-luna/max completed an independent read-only review and returned production NO-GO until real PostgreSQL and Render proxy-address checks pass. No user files in E:\\Agentstrip were touched. No Secret value was read or recorded. This machine has no isolated PostgreSQL URL, psql, Docker, psycopg or psycopg2."
+}

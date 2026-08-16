@@ -142,3 +142,11 @@
 - 当前证据：正式 Luna Max 首轮审计和第二轮 QA、Sol diff 复核、43 项回归、SQLite 8 线程并发及连续 10 轮稳定性测试通过；表结构断言确认只含 `client_key/window_started_at/request_count/updated_at`，数据库异常时不发送邮件。真实 Neon/Postgres 和 Render 代理地址尚未验证，不得写成生产完成。
 - 下一步：完成本轮 evidence/handoff、提交和远端 0/0；进入发布流程前先在隔离环境跑一次真实 Postgres schema/并发测试，再在部署后只读确认 Render 下 `request.client.host` 的匿名分布，不记录原始地址。未合并到 `main`、未生产部署前不得声称网站已更新。
 - 新窗口接续提示：从本轮 task branch、evidence 和 handoff 接续；不得删除用户根目录下的旅行图片分类规划 txt。
+
+## 2026-08-16 cross-account recovery callback
+
+- 总控回调：`cross-account-project-memory` 成功定位上一账号累计成果于远端分支 `codex/driver-request-rate-limit`；当前账号在独立 `E:\Agentstrip2-worktree` / `codex/account2-integration-20260816` 接续，未触碰旧脏工作树。
+- 三层回调：GitHub `main` 为 `3fbf898`；累计分支 `1e3da86` 为 ahead 34 / behind 0；生产前端仍匹配 main 基线，Bali 数据为 6 routes / 50 POIs，累计分支为 6 routes / 59 POIs，故最新成果尚未部署。
+- 测试回调：Sol 复跑 43/43，通过 10 轮 SQLite 8 线程原子计数；正式 `luna_worker` / `gpt-5.6-luna` / `max` 完成只读对抗审查并确认本地实现可接受，但真实 PostgreSQL 和 Render 代理地址仍为生产 P0 门槛。
+- 路由终态：large / L2；Sol 保留集成、GitHub、发布和最终验收，Luna 只负责边界明确的只读复核；最终状态 `completed`，未把等待超时写成失败。
+- 技能命中：cross-account-project-memory 约束权威事实和一账号一 worktree；agent-role-orchestrator 约束分发与回调；codex-luna-worker 执行独立数据库风险复核；browser-automation-router/Playwright 完成生产浏览器验收；github/yeet 约束显式文件提交、分支推送与 Draft PR。
