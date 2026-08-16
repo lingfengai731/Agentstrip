@@ -13,21 +13,21 @@
   },
   "snapshot": {
     "status": "verified",
-    "captured_at": "2026-08-15T05:04:22Z",
+    "captured_at": "2026-08-16T02:30:40Z",
     "captured_by": "codex-sol",
-    "source_commit": "e57cf5e79191455836874260bfb7342a18ef964e",
-    "source_branch": "codex/r2-route-verification",
+    "source_commit": "d2f5753759d03e095c1169a9a22c25f0ccab4632",
+    "source_branch": "codex/r5-route-verification",
     "working_tree_at_capture": "clean",
     "wandermind_bali": {
       "status": "verified",
       "routes": 6,
       "pois": 59,
-      "verified_pois": 38,
-      "pending_review_pois": 18,
+      "verified_pois": 42,
+      "pending_review_pois": 14,
       "supplier_gated_pois": 3,
       "verified_route_families": ["R2", "R3", "R4", "R6"],
       "notes": [
-        "R2, R3, R4 and R6 free-outline stable facts are verified; named paid activities still require live schedule, suitability and supplier confirmation.",
+        "R2, R3, R4 and R6 free-outline stable facts are verified; R5 has four newly verified stable nodes, two ambiguous place anchors pending exact entrance or venue selection, and one Jeep experience still supplier-gated.",
         "Dicky's five-day itinerary is treated as an R1 field calibration, not a seventh route family.",
         "Production was not changed or reverified by this snapshot."
       ]
