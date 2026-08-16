@@ -7,6 +7,7 @@ import tempfile
 import time
 import unittest
 import uuid
+from concurrent.futures import ThreadPoolExecutor
 from html.parser import HTMLParser
 from pathlib import Path
 from unittest.mock import AsyncMock, patch
@@ -47,7 +48,12 @@ class ProductAccessTests(unittest.TestCase):
             conn.close()
 
     def setUp(self):
-        main._driver_request_attempts.clear()
+        conn = get_db()
+        try:
+            conn.execute("DELETE FROM driver_request_rate_limits")
+            conn.commit()
+        finally:
+            conn.close()
 
     @staticmethod
     def _create_user(email: str, name: str) -> str:
@@ -82,13 +88,16 @@ class ProductAccessTests(unittest.TestCase):
     def _run(coro):
         return asyncio.run(coro)
 
-    async def _request(self, method, path, *, token=None, json=None, anon_id=None, headers=None):
+    async def _request(
+        self, method, path, *, token=None, json=None, anon_id=None,
+        headers=None, client_ip="127.0.0.1",
+    ):
         headers = dict(headers or {})
         if token:
             headers["Authorization"] = f"Bearer {token}"
         if anon_id:
             headers["X-Anon-Id"] = anon_id
-        transport = httpx.ASGITransport(app=main.app)
+        transport = httpx.ASGITransport(app=main.app, client=(client_ip, 12345))
         async with httpx.AsyncClient(
             transport=transport, base_url="http://testserver"
         ) as client:
@@ -1124,6 +1133,102 @@ class ProductAccessTests(unittest.TestCase):
         self.assertEqual([response.status_code for response in responses[:5]], [200] * 5)
         self.assertEqual(responses[5].status_code, 429, responses[5].text)
         self.assertEqual(send.await_count, 5)
+
+    def test_driver_request_rate_limit_persists_only_pseudonymous_counter(self):
+        payload = {
+            "driver_id": "dicky", "first_name": "Private Name",
+            "contact_email": "private@example.test", "privacy_consent": True,
+            "attractions": "Private itinerary text", "budget_range": "Private budget",
+        }
+        with patch.object(main, "send_driver_request", new_callable=AsyncMock) as send:
+            send.return_value = {"ok": True}
+            response = self._run(
+                self._request(
+                    "POST", "/api/driver-request", json=payload,
+                    client_ip="203.0.113.17",
+                )
+            )
+        self.assertEqual(response.status_code, 200, response.text)
+        conn = get_db()
+        try:
+            row = conn.execute("SELECT * FROM driver_request_rate_limits").fetchone()
+        finally:
+            conn.close()
+        self.assertIsNotNone(row)
+        stored = dict(row)
+        self.assertEqual(
+            set(stored),
+            {"client_key", "window_started_at", "request_count", "updated_at"},
+        )
+        self.assertRegex(stored["client_key"], r"^[0-9a-f]{64}$")
+        self.assertEqual(stored["request_count"], 1)
+        self.assertNotIn("203.0.113.17", json.dumps(stored))
+        self.assertNotIn("Private", json.dumps(stored))
+
+    def test_driver_request_rate_limit_is_atomic_and_separates_clients(self):
+        key = hashlib.sha256(b"same-client").hexdigest()
+        with ThreadPoolExecutor(max_workers=8) as pool:
+            counts = list(
+                pool.map(
+                    lambda _: main._consume_driver_request_attempt(key, 1_000_000),
+                    range(8),
+                )
+            )
+        self.assertEqual(
+            sum(count <= main._DRIVER_REQUEST_LIMIT for count in counts), 5
+        )
+        self.assertEqual(max(counts), main._DRIVER_REQUEST_LIMIT + 1)
+        other_count = main._consume_driver_request_attempt(
+            hashlib.sha256(b"other-client").hexdigest(), 1_000_000
+        )
+        self.assertEqual(other_count, 1)
+
+    def test_driver_request_rate_limit_resets_after_window(self):
+        key = hashlib.sha256(b"expiring-client").hexdigest()
+        counts = [
+            main._consume_driver_request_attempt(key, 1_000_000)
+            for _ in range(main._DRIVER_REQUEST_LIMIT)
+        ]
+        self.assertEqual(counts[-1], main._DRIVER_REQUEST_LIMIT)
+        self.assertEqual(
+            main._consume_driver_request_attempt(key, 1_000_060),
+            main._DRIVER_REQUEST_LIMIT + 1,
+        )
+        conn = get_db()
+        try:
+            blocked_row = dict(
+                conn.execute(
+                    "SELECT window_started_at,request_count,updated_at "
+                    "FROM driver_request_rate_limits WHERE client_key=?",
+                    (key,),
+                ).fetchone()
+            )
+        finally:
+            conn.close()
+        self.assertEqual(blocked_row["window_started_at"], 1_000_000)
+        self.assertEqual(blocked_row["request_count"], main._DRIVER_REQUEST_LIMIT + 1)
+        self.assertEqual(blocked_row["updated_at"], 1_000_060)
+        self.assertEqual(
+            main._consume_driver_request_attempt(
+                key, 1_000_000 + main._DRIVER_REQUEST_WINDOW_SECONDS
+            ),
+            1,
+        )
+
+    def test_driver_request_rate_limit_fails_closed_when_db_is_unavailable(self):
+        payload = {
+            "driver_id": "dicky", "first_name": "Test",
+            "contact_email": "traveller@example.test", "privacy_consent": True,
+        }
+        with patch.object(main, "get_db", side_effect=RuntimeError("db unavailable")), patch.object(
+            main, "send_driver_request", new_callable=AsyncMock
+        ) as send:
+            response = self._run(
+                self._request("POST", "/api/driver-request", json=payload)
+            )
+        self.assertEqual(response.status_code, 503, response.text)
+        self.assertNotIn("db unavailable", response.text)
+        send.assert_not_awaited()
 
     def test_bali_route_map_has_coordinates_for_every_region(self):
         data_path = (

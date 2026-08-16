@@ -2932,19 +2932,81 @@ async def fusion_get(token: str):
 # details. The request is relayed once by email and never stored in the DB.
 _DRIVER_REQUEST_WINDOW_SECONDS = 30 * 60
 _DRIVER_REQUEST_LIMIT = 5
-_driver_request_attempts: dict[str, list[float]] = {}
+_DRIVER_REQUEST_LIMIT_RETENTION_SECONDS = 24 * 60 * 60
+
+
+def _driver_request_client_key(request: Request) -> str:
+    """Return a scoped pseudonymous key without storing the raw client address."""
+    host = request.client.host if request.client else "unknown"
+    return hmac.new(
+        _SECRET.encode(), f"driver-request-rate:{host}".encode(), hashlib.sha256
+    ).hexdigest()
+
+
+def _consume_driver_request_attempt(client_key: str, now: int) -> int:
+    """Atomically consume one attempt in the client's first-request 30m window."""
+    cutoff = now - _DRIVER_REQUEST_WINDOW_SECONDS
+    conn = get_db()
+    try:
+        conn.execute(
+            "DELETE FROM driver_request_rate_limits WHERE updated_at < ?",
+            (now - _DRIVER_REQUEST_LIMIT_RETENTION_SECONDS,),
+        )
+        row = conn.execute(
+            """
+            INSERT INTO driver_request_rate_limits
+                (client_key,window_started_at,request_count,updated_at)
+            VALUES (?,?,1,?)
+            ON CONFLICT(client_key) DO UPDATE SET
+                request_count = CASE
+                    WHEN driver_request_rate_limits.window_started_at <= ? THEN 1
+                    WHEN driver_request_rate_limits.request_count < ?
+                        THEN driver_request_rate_limits.request_count + 1
+                    ELSE driver_request_rate_limits.request_count
+                END,
+                window_started_at = CASE
+                    WHEN driver_request_rate_limits.window_started_at <= ?
+                        THEN excluded.window_started_at
+                    ELSE driver_request_rate_limits.window_started_at
+                END,
+                updated_at = excluded.updated_at
+            RETURNING request_count
+            """,
+            (
+                client_key,
+                now,
+                now,
+                cutoff,
+                _DRIVER_REQUEST_LIMIT + 1,
+                cutoff,
+            ),
+        ).fetchone()
+        conn.commit()
+        if not row:
+            raise RuntimeError("driver request rate limit did not return a counter")
+        return int(dict(row)["request_count"])
+    except Exception:
+        try:
+            conn.rollback()
+        except Exception:
+            pass
+        raise
+    finally:
+        conn.close()
 
 
 def _check_driver_request_rate_limit(request: Request) -> None:
-    """Keep a short-lived per-client counter; traveller details are never persisted."""
-    client_key = (request.client.host if request.client else "unknown")[:128]
-    now = time.time()
-    attempts = [stamp for stamp in _driver_request_attempts.get(client_key, []) if now - stamp < _DRIVER_REQUEST_WINDOW_SECONDS]
-    if len(attempts) >= _DRIVER_REQUEST_LIMIT:
-        _driver_request_attempts[client_key] = attempts
+    """Apply a persistent pseudonymous counter; traveller details are not stored."""
+    try:
+        count = _consume_driver_request_attempt(
+            _driver_request_client_key(request), int(time.time())
+        )
+    except Exception:
+        raise HTTPException(
+            503, "Request protection is temporarily unavailable. Please retry shortly."
+        )
+    if count > _DRIVER_REQUEST_LIMIT:
         raise HTTPException(429, "Too many requests. Please wait before sending another request.")
-    attempts.append(now)
-    _driver_request_attempts[client_key] = attempts
 
 
 @app.post("/api/driver-request")

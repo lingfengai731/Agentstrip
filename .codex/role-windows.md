@@ -23,6 +23,9 @@
 
 ## 最近回调
 
+- 2026-08-16 司机询价持久化反滥用开发回调：移除进程内 `_driver_request_attempts`，新增 SQLite/Postgres 共用的原子 UPSERT 计数；客户端地址只以 `SECRET_KEY` 作用域 HMAC 保存，表中仅含伪匿名键、窗口时间、计数和更新时间，不保存姓名、邮箱、预算或行程正文。数据库门禁异常 fail-closed 为 503，Dicky/Gede 继续共享 5 次/30 分钟额度。
+- 2026-08-16 司机询价测试/QA 回调：产品回归从 39 增至 43 项且全部通过；新增持久化字段、8 线程原子并发、不同客户端隔离、窗口恢复、blocked 不延长窗口和数据库故障不发邮件测试，并将原子并发测试连续运行 10 轮。正式 Luna Max 两轮只读审计最终 GO，P0/P1 为 0。
+- 2026-08-16 司机询价发布边界回调：PostgreSQL/SQLite 官方文档和 SQLite 3.39.4 本地运行支持当前 `ON CONFLICT ... DO UPDATE ... RETURNING`；未连接真实 Neon、未部署 Render。上线门禁保留真实 Postgres 集成测试及 `request.client.host` 在 Render 可信代理后的只读烟测，未擅自改信任头策略。
 - 2026-08-16 POI batch 2 内容回调：Heart Space Bali、Intuitive Flow、Munduk Waterfall、Gitgit Waterfall 与 Tulamben 已用场所官网及 Buleleng/Karangasem 政府来源核验稳定身份与区域语义；疗效、课程、教师、价格、水况、游泳与潜水执行条件不属于已核验范围。Thousand Islands Viewpoint 因官方来源不能证明唯一规范身份，继续 `pending_review`。
 - 2026-08-16 POI batch 2 测试/UI 回调：全库 59 个 POI 更新为 53 verified、3 pending、3 supplier-gated；产品回归 39/39。Chrome 1440/768/390/320 与 WebKit 390 英文均确认目标状态、R6 横滑可达且页面/路线详情横向溢出为 0；静态服务器唯一控制台错误是未启动后端导致 `/api/portfolio` 404，不替代生产验证。
 - 2026-08-16 POI batch 2 Luna 回调：正式 Agent `luna_worker` / `gpt-5.6-luna` / `max` 完成六节点只读来源审计并给出 5 GO / 1 NO-GO；任务前后 HEAD 均为 `93c4524`，工作树为空且零文件修改。Sol 已独立核对一手来源、实际 diff、JSON 计数、39 项测试与五视口浏览器证据后接受。
@@ -82,6 +85,7 @@
 
 ## 技能命中
 
+- 2026-08-16 司机询价持久化反滥用实际使用：cross-account-project-memory 从 batch 2 的远端 0/0 同步点建立独立 `codex/driver-request-rate-limit` worktree；agent-role-orchestrator 采用 medium/L2 和开发→测试→QA 回调；codex-luna-worker 派发正式 Luna Max 首轮架构审计与第二轮对抗性 QA，Sol 独立复核实际 diff、43 项测试和官方数据库语法文档。未加载 UI workflow、浏览器自动化、女娲或人物 Perspective：本轮无页面视觉、品牌、内容或商业判断，避免制造无关技能命中。
 - 2026-08-16 POI batch 2 实际使用：cross-account-project-memory 从 batch 1 远端同步点建立独立 `codex/poi-facts-batch2` worktree，并要求 evidence/handoff/远端一致性门禁；agent-role-orchestrator 采用 medium/L2 与来源 fail-closed；codex-luna-worker 派发正式 Luna Max 六节点只读审计并由 Sol 复核；ui-implementation-workflow 将范围限定为既有 content/detail 数据增量；browser-automation-router 选择 Playwright，Chrome 1440/768/390/320 与 WebKit 390 英文均无页面/详情横向溢出。`prepare_role_window.py` 仍因缺少 `registry/plugin-packages.json` fail-closed，未伪造持久角色窗口。未使用女娲/Perspective：地点身份、医疗与潜水安全边界必须由一手来源和实际供应商确认。
 - 2026-08-16 POI batch 1 实际使用：cross-account-project-memory 从 R5 远端同步点建立独立 `codex/poi-facts-batch1` worktree；agent-role-orchestrator 采用 medium/L2 和 fail-closed 来源门禁；codex-luna-worker 派发正式 Luna Max 六节点只读审计并由 Sol 复核；ui-implementation-workflow 将页面归为既有 content/detail 数据增量，不新增参考、token 或样式；browser-automation-router 选择 Playwright，Chrome 1440/768/390/320 与 WebKit 390 英文均无页面/详情横向溢出。`prepare_role_window.py` 仍因缺少 `registry/plugin-packages.json` fail-closed，未伪造持久角色窗口。未使用女娲/Perspective：事实身份、行政位置和安全边界不能由人物顾问替代。
 - 2026-08-16 R5 轮实际使用：agent-role-orchestrator 约束 medium/L2 路由、来源回调和 fail-closed 记录；codex-luna-worker 独立反证六节点可核验性；ui-implementation-workflow 将范围限定为既有 portfolio 页的数据增量；browser-automation-router/Playwright 用于四视口确定性验收。`prepare_role_window.py` 仍因缺少 `registry/plugin-packages.json` fail-closed，未伪造持久角色窗口。未使用女娲或人物 Perspective：本轮出现的是入口/供应商事实缺口，不应由顾问风格替代真实授权。
@@ -133,8 +137,8 @@
 
 ## 压缩交接卡
 
-- 最近摘要：R2、R3、R4 与 R6 免费路线的稳定事实已闭环；R5 仍受 Mount Batur 徒步入口、温泉场所和 Jeep 命名/供应商门禁。本轮再核验 Heart Space Bali、Intuitive Flow、Munduk Waterfall、Gitgit Waterfall 与 Tulamben；Thousand Islands Viewpoint 因唯一身份不明继续待审。全库 59 个 POI：53 verified、3 pending、3 supplier-gated。
+- 最近摘要：巴厘岛 POI 当前为 53 verified、3 pending、3 supplier-gated；外部事实门禁未伪造。本轮把司机询价 5 次/30 分钟限流从进程内字典迁移为 SQLite/Postgres 持久化 HMAC 伪匿名原子计数，43 项产品测试通过。
 - 关键决策：保持 Claudecode teal + gold；巴厘岛主、其他目的地次；泛化执行步骤不伪装为 POI，活动供应商和动态条件不冒充已核验稳定事实。
-- 当前证据：正式 Luna Max 六节点只读审计、Sol 一手来源复核、JSON 计数和 39 项产品回归已通过；Chrome 1440/768/390/320 与 WebKit 390 英文均确认 5 个新核验节点、1 个待审节点与 53/3/3 计数，页面/详情横向溢出为 0，teal + gold 未改变。本地静态服务器唯一控制台错误是未启动后端导致 `/api/portfolio` 404，不替代生产验证。
-- 下一步：完成本轮 evidence/handoff、提交和远端 0/0；随后三个 pending 只在取得明确入口/场所/坐标决策后继续，三个 supplier-gated 只在取得真实运营和安全资料后继续。不得因地点稳定事实已核验而声称课程、瀑布、潜水或司机服务可直接预订；未合并到 `main`、未生产部署前不得声称网站已更新。
+- 当前证据：正式 Luna Max 首轮审计和第二轮 QA、Sol diff 复核、43 项回归、SQLite 8 线程并发及连续 10 轮稳定性测试通过；表结构断言确认只含 `client_key/window_started_at/request_count/updated_at`，数据库异常时不发送邮件。真实 Neon/Postgres 和 Render 代理地址尚未验证，不得写成生产完成。
+- 下一步：完成本轮 evidence/handoff、提交和远端 0/0；进入发布流程前先在隔离环境跑一次真实 Postgres schema/并发测试，再在部署后只读确认 Render 下 `request.client.host` 的匿名分布，不记录原始地址。未合并到 `main`、未生产部署前不得声称网站已更新。
 - 新窗口接续提示：从本轮 task branch、evidence 和 handoff 接续；不得删除用户根目录下的旅行图片分类规划 txt。
