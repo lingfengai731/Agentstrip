@@ -126,32 +126,33 @@
       "secret_policy": "presence and strength only; never record values"
     },
     "desktop_browser_control_repair": {
-      "status": "post_rollback_control_unavailable_no_go",
-      "verified_at": "2026-08-17T06:32:01Z",
+      "status": "final_one_shot_marketplace_ownership_repair_staged_requires_restart",
+      "verified_at": "2026-08-17T06:39:57Z",
       "codex_app_version": "26.810.7004.0",
-      "root_cause": "Windows Store MSIX bundled resources are EFS protected and Desktop copyfile staging repeatedly failed, leaving the runtime marketplace and Computer Use native helper unavailable",
-      "repair": "after the resource-only override was cleared and Codex fully restarted, the fresh task no longer received the browser-control execution tool; Chrome extension/native-host discovery still failed, while the prior cua_node copy failure did not recur",
+      "root_cause": "two stacked Windows Store failure classes match openai/codex issue 26501 and its 26.810.7004.0 follow-up: the package is a C-path junction to non-system E AppX storage with Application Protected copy history, and a persisted openai-bundled source still pinned 26.810.50856 while the package contains 26.810.52044, causing same-name marketplace ownership conflict",
+      "repair": "one final bounded attempt is staged: preserve the complete current-version unencrypted bundled-resources mirror, remove only the stale external openai-bundled marketplace registration after a local config backup, keep browser/chrome/computer-use enabled records, keep CODEX_CLI_PATH empty, and let Desktop own and rebuild its generated marketplace on restart",
       "verification": {
         "plugin_files": "842/842 with zero SHA-256 mismatches",
         "cua_node_files": "3625/3625 with zero SHA-256 mismatches",
         "code_mode_host": "restored after CODEX_CLI_PATH was cleared at process, user and machine scope",
         "required_runtime_paths": "7/7 present and not EFS encrypted",
-        "browser": "mcp__node_repl__js was absent from the fresh task tool set, so no Browser binding or real navigation could be attempted",
-        "chrome": "Chrome was running, but the control tool was absent; extension check exited 2 and native-host manifest check exited 1",
-        "computer_use": "the control tool and codex-computer-use process were absent in the fresh post-rollback task",
-        "cua_node_log_gate": "passed after restart with zero copyfile, permission and launcher failure signatures outside conversation-stream logs",
-        "override_variables": "CODEX_ELECTRON_BUNDLED_PLUGINS_RESOURCES_PATH is absent at both user and current-process scope after the full restart; CODEX_CLI_PATH remains empty"
+        "browser": "the pre-repair fresh task lacked Browser control, so no binding or navigation was attempted",
+        "chrome": "the stale configured marketplace source was E:/CodexSkills/.sources/openai-bundled-26.810.50856 while the verified packaged mirror is 26.810.52044",
+        "computer_use": "the pre-repair fresh task lacked Computer Use control; GitHub issue 31023 shows that file/runtime repair alone can still fail session injection",
+        "appx_layout": "InstallLocation is a junction from C:/Program Files/WindowsApps to non-system E:/WindowsApps; system, D and E AppX volumes were read-only enumerated",
+        "marketplace_repair": "config backup created; stale external openai-bundled registration removed; three enabled plugin records retained",
+        "override_variables": "CODEX_ELECTRON_BUNDLED_PLUGINS_RESOURCES_PATH points to the verified 26.810.7004.0 user mirror; CODEX_CLI_PATH remains empty"
       },
-      "rollback": "the user-scope resource override was cleared after the failed complete gate; copied override directories remain additive and existing cache was not overwritten",
+      "rollback": "restore the timestamped config backup and clear the resource override after a full Desktop exit; no plugin cache, session database, WindowsApps file or AppX volume was deleted or modified",
       "update_policy": "the resource override is version-pinned; after any Codex Desktop update, compare the installed app version and rebuild or remove it instead of silently continuing with an older runtime",
-      "remaining_gate": "repair or reinstall the Browser plugin and Chrome extension/native-host through the ChatGPT plugin UI, fully exit and relaunch Codex Desktop, then re-run Browser, Chrome, Computer Use and cua_node gates before any Render access"
+      "remaining_gate": "fully restart and test one fresh task; if Browser/Chrome/Computer Use controls are still absent, permanently downgrade native control to a non-blocking project limitation and resume Agentstrip through CLI, GitHub, Render connector/API when available, public HTTP and deterministic Playwright"
     }
   },
   "limitations": [
     "The existing root AGENTS.md has not been changed, so automatic loading is not guaranteed.",
     "Production was checked only through public HTTP behavior; authenticated Render environment values, the production backend commit and database contents were not read because this existing task has no injected browser-control handle.",
     "The latest branch passed isolated real PostgreSQL 16 integration tests but still requires a post-deploy Render proxy-address smoke test before release completion.",
-    "A fresh post-rollback task has no Browser, Chrome or Computer Use execution tool; cua_node copy failures did not recur, the resource override remains fully absent, and Render was not accessed.",
+    "One final bounded marketplace-ownership repair is staged. If a fresh post-restart task still lacks Browser, Chrome or Computer Use execution tools, no further local plugin repair is authorized in this workstream and Agentstrip must continue through non-native-browser routes.",
     "Conversation history and hidden reasoning are not project facts."
   ]
 }

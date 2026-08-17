@@ -15,7 +15,7 @@
 | DBA | 待确认 | 待确认 | 架构 | 数据库实例风险和只读诊断 | 本阶段不涉及 | 待确认 |
 | 运维 / Render Work | 已退役，待用户侧归档 | 6a81da9a-1998-83e8-b2ca-34e1f6eb526d | 当前主线 | 历史 ChatGPT Work Browser 探针 | Cloud Work 无法承担已登录 Render；Codex 归档接口不支持该 ChatGPT 对话，需用户在其菜单中归档或删除 | 禁止继续派发 |
 | 运维 / 仓库回流 | 已归档 | 01a00b3a-b62f-7c60-ae73-f9e74ae7879d | 当前主线 | 历史仓库上下文与 Render 能力探针 | 已归档；Browser 探针为 BROWSER_CONTROL_UNAVAILABLE，零生产写入 | 已退役 |
-| 运维 / 本机 Browser runtime | CLI 错误已回滚，资源修复待重启验收 | 未建立 | 当前主线 | 恢复 Codex Desktop 的 Browser、Chrome 与 Computer Use 控制通道 | 完全退出并重启 Desktop 后新建本地任务；只有工具注入与 native pipe 实测通过后才登记 thread id 并接续 Render | fail-closed；CLI override 保持为空，只暂存资源 override |
+| 运维 / 本机 Browser runtime | 最终一次同名 marketplace 纠偏待重启验收 | 未建立 | 当前主线 | 恢复 Codex Desktop 的 Browser、Chrome 与 Computer Use 控制通道 | 重启后只验收一次；若仍无工具则永久降级为非阻断限制并回到 Agentstrip CLI/API/Playwright 主线 | fail-closed；CLI override 为空，旧 26.810.50856 marketplace 注册已备份并移除 |
 | 公众号发布 | 待确认 | 待确认 | 内容主编 | 微信公众号草稿、预览、发布准备 | 本阶段不涉及 | 待确认 |
 | 小红书 | 待确认 | 待确认 | 内容主编 | 小红书内容实验、发布包、评论研究 | 本阶段不涉及 | 待确认 |
 | 视频 | 待确认 | 待确认 | 内容主编 | 视频脚本、分镜、素材和渲染计划 | 本阶段不涉及 | 待确认 |
@@ -25,6 +25,7 @@
 
 ## 最近回调
 
+- 2026-08-17 Codex Desktop Browser runtime 最终一次尝试回调：GitHub `openai/codex#26501` 的 2026-08-15 新证据与本机完全同版，均为 Store `26.810.7004.0`、包内 bundled 插件 `26.810.52044`、本地旧源 `26.810.50856` 和同名 marketplace 双来源冲突；`#31023` 证明继续堆叠镜像/缓存不能保证会话工具注入。已备份用户配置，仅移除旧 `E:/CodexSkills/.sources/openai-bundled-26.810.50856` marketplace 注册，保留 Browser/Chrome/Computer Use 三项 enabled 记录，并只启用当前包完整、无 EFS 的资源镜像；未删除缓存/会话、未改 WindowsApps/AppX 卷、CLI override 保持为空。重启后只验收一次，失败即停止本机插件排障并回到项目 CLI/API/Playwright 主线。
 - 2026-08-17 Codex Desktop Browser runtime 纠偏回调：首次修复错误地只复制 `codex.exe` 后设置 `CODEX_CLI_PATH`，导致 Desktop 找不到同目录 `codex-code-mode-host.exe`；已明确承担并将 CLI override 在进程、用户和系统范围恢复为空，普通 code-mode 重新可用，仓库与生产未受损。重启后当前任务仍未获得 Browser/Chrome/Computer Use 控制工具，新日志继续显示 WindowsApps `cua_node` EFS relocation 失败；现只启用已做逐文件哈希校验且无 EFS 属性的 bundled-resources override，等待下一次完整重启验收，不同时改 marketplace 或删除缓存。
 - 2026-08-17 Codex Desktop Browser runtime 回调：确认 Windows Store/MSIX 官方资源带 EFS 保护，Desktop 日志持续出现 bundled marketplace `copyfile`、executable relocation 和 Computer Use helper path 失败，native pipe 没有 ready 记录。已将官方 `openai-bundled` 842 个文件、`cua_node` 3625 个文件和同包 CLI 用字节流复制到用户级 LOCALAPPDATA override，逐文件 SHA-256 零不一致，10 个关键入口均存在；设置两个可回滚用户级 override，未修改 WindowsApps、AppX 默认卷、既有缓存或任何 Secret。当前进程无法热注入工具，必须完整重启并在新任务做 Browser/native-pipe 实证后才能恢复 Render 门禁。
 - 2026-08-16 专业路线发布门禁回调：女娲现有 Steve Jobs、Paul Graham、Charlie Munger 三种顾问视角完成交叉评审；共同接受“冻结扩功能、先闭环真实发布门禁”，Munger 识别出的未核验付费 POI 与权益竞态被证据确认并实施，PG 的隐私安全漏斗建议延后到发布后，未引入支付/CMS/Redis 等扩张范围。

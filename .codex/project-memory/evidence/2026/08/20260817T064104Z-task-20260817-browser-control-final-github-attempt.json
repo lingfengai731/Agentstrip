@@ -1,0 +1,22 @@
+{
+  "schema_version": 1,
+  "evidence_id": "ev-20260817T064104Z-task-20260817-browser-control-final-github-attempt",
+  "task_ref": "task-20260817-browser-control-final-github-attempt",
+  "owner": "codex-sol",
+  "captured_at": "2026-08-17T06:41:04Z",
+  "status": "verified",
+  "claim": "Matched the host to the exact Codex 26.810.7004.0 same-name openai-bundled marketplace conflict reported in openai/codex issue 26501, then staged one final reversible repair by backing up config, removing only the stale 26.810.50856 external marketplace registration, retaining enabled plugin records, and enabling the complete 26.810.52044 user-owned package mirror.",
+  "source": {
+    "kind": "git",
+    "repository": "https://github.com/lingfengai731/Agentstrip.git",
+    "commit": "5b1d3d5a2790ea46c24aaf7f90b59fba6ec8069a",
+    "branch": "codex/account2-integration-20260816",
+    "worktree": "E:\\Agentstrip2-worktree",
+    "dirty": true
+  },
+  "verification": {
+    "command": "Fresh GitHub issue and comment review; AppX junction/volume inspection; package and configured plugin version comparison; marketplace remove readback; enabled plugin record count; user override scope check; project-memory validate.",
+    "result": "InstallLocation is a junction to non-system E AppX storage; verified mirror exposes seven bundled descriptors and Browser/Chrome/Computer Use 26.810.52044; stale external marketplace 26.810.50856 removed after backup; three enabled plugin records retained; CODEX_CLI_PATH empty; resource override set; restart required."
+  },
+  "notes": "Closest sources: https://github.com/openai/codex/issues/26501 and https://github.com/openai/codex/issues/31023. No cache, session DB, WindowsApps file, AppX volume, Render setting, Secret or production data was deleted or modified. Per user stop rule, if one fresh post-restart task still lacks controls, native Browser/Computer Use repair is abandoned as non-blocking."
+}
