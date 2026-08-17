@@ -1,0 +1,22 @@
+{
+  "schema_version": 1,
+  "evidence_id": "ev-20260817T063258Z-task-20260817-browser-control-fast-recheck",
+  "task_ref": "task-20260817-browser-control-fast-recheck",
+  "owner": "codex-sol",
+  "captured_at": "2026-08-17T06:32:58Z",
+  "status": "verified",
+  "claim": "Fresh post-rollback task remains NO-GO: Browser, Chrome and Computer Use execution controls are unavailable, while cua_node copy failure signatures remain absent.",
+  "source": {
+    "kind": "git",
+    "repository": "https://github.com/lingfengai731/Agentstrip.git",
+    "commit": "1fd5cb91d12285f79307d146eb6da3312bda82ec",
+    "branch": "codex/account2-integration-20260816",
+    "worktree": "E:\\Agentstrip2-worktree",
+    "dirty": true
+  },
+  "verification": {
+    "command": "Confirm fresh Codex process time and absent resource override; rediscover live tools; run Chrome running, extension and native-host diagnostics; inspect codex-computer-use process presence; count post-start cua_node failure signatures.",
+    "result": "mcp__node_repl__js absent; Chrome running with extension exit 2 and native-host exit 1; codex-computer-use process absent; cua_node copy, permission and launcher failure signatures all 0; Render not accessed."
+  },
+  "notes": "No Secret value, Render page, retired Render conversation, cache, mirror or plugin configuration was opened or modified."
+}
