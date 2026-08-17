@@ -126,28 +126,32 @@
       "secret_policy": "presence and strength only; never record values"
     },
     "desktop_browser_control_repair": {
-      "status": "resource_only_override_staged_requires_full_restart",
-      "verified_at": "2026-08-17T04:39:20Z",
+      "status": "post_restart_partial_no_go_override_rolled_back",
+      "verified_at": "2026-08-17T04:50:41Z",
       "codex_app_version": "26.810.7004.0",
       "root_cause": "Windows Store MSIX bundled resources are EFS protected and Desktop copyfile staging repeatedly failed, leaving the runtime marketplace and Computer Use native helper unavailable",
-      "repair": "the incomplete CLI override was fully rolled back after it caused a missing codex-code-mode-host error; only the byte-stream-verified user-owned bundled-resources override is now staged so Desktop can relocate openai-bundled and cua_node without EFS",
+      "repair": "the resource-only override allowed Browser and Computer Use packages to load from the verified user-owned mirror, but the complete control gate still failed because Browser navigation was policy-blocked and Chrome extension/native-host discovery failed",
       "verification": {
         "plugin_files": "842/842 with zero SHA-256 mismatches",
         "cua_node_files": "3625/3625 with zero SHA-256 mismatches",
         "code_mode_host": "restored after CODEX_CLI_PATH was cleared at process, user and machine scope",
         "required_runtime_paths": "7/7 present and not EFS encrypted",
-        "override_variables": "CODEX_ELECTRON_BUNDLED_PLUGINS_RESOURCES_PATH set at user scope; CODEX_CLI_PATH remains empty"
+        "browser": "binding and tab creation succeeded; two real navigation attempts were denied because the admin-enforced browser policy could not be verified",
+        "chrome": "Chrome was running, but browser-client reported the Chrome family unavailable; extension check exited 2 and native-host manifest check exited 1",
+        "computer_use": "@oai/sky import and list_apps succeeded with 40 apps and 8 targetable windows",
+        "cua_node_log_gate": "passed after restart with zero copyfile, permission and launcher failure signatures outside conversation-stream logs",
+        "override_variables": "CODEX_ELECTRON_BUNDLED_PLUGINS_RESOURCES_PATH cleared at user scope after the failed complete gate; the current process retains its inherited value until exit; CODEX_CLI_PATH remains empty"
       },
-      "rollback": "clear the resource override after a full Desktop exit; the copied override directories are additive and existing cache was not overwritten",
+      "rollback": "the user-scope resource override was cleared after the failed complete gate; copied override directories remain additive and existing cache was not overwritten",
       "update_policy": "the resource override is version-pinned; after any Codex Desktop update, compare the installed app version and rebuild or remove it instead of silently continuing with an older runtime",
-      "remaining_gate": "fully exit and relaunch Codex Desktop, create a fresh local task, prove Browser tool injection and Computer Use native-pipe readiness, then perform secret-preserving Render checks"
+      "remaining_gate": "repair or reinstall the Browser plugin and Chrome extension/native-host through the ChatGPT plugin UI, fully exit and relaunch Codex Desktop, then re-run Browser, Chrome, Computer Use and cua_node gates before any Render access"
     }
   },
   "limitations": [
     "The existing root AGENTS.md has not been changed, so automatic loading is not guaranteed.",
     "Production was checked only through public HTTP behavior; authenticated Render environment values, the production backend commit and database contents were not read because this existing task has no injected browser-control handle.",
     "The latest branch passed isolated real PostgreSQL 16 integration tests but still requires a post-deploy Render proxy-address smoke test before release completion.",
-    "The original CLI override was rolled back after causing a missing code-mode host; a narrower resource-only Browser/Chrome/Computer Use repair is staged and hash-verified, but a full Desktop restart and fresh task are still mandatory.",
+    "The post-restart resource-only probe proved Computer Use and cua_node readiness, but Browser navigation and Chrome control failed; the user-scope resource override was cleared and Render was not accessed.",
     "Conversation history and hidden reasoning are not project facts."
   ]
 }
