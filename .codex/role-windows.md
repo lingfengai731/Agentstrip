@@ -4,7 +4,8 @@
 
 | 角色 | 状态 | thread id | 来源窗口 | 当前职责 | 下一步 | 循环状态 |
 | --- | --- | --- | --- | --- | --- | --- |
-| 总控 | 已关闭 | 019f70c7-3985-7bb0-b395-b208373ca92b | 用户 | 图片自动分类、路线/POI 匹配与版权发布门禁 | 下一步由用户逐张确认权属与用途，再从 manifest 接入页面 | L3 已闭环 |
+| 总控 | 活跃 | 019fcbe4-146b-72a1-a3e6-9fac972a37d6 | 用户 | 接续跨账号主线、维护发布门禁与项目事实 | 先完成 Portfolio 历史素材 D8 批次，再恢复 Render/生产门禁 | L3 执行中 |
+| 总控 / 前主线 | 已停用并保持闲置 | 01a00b05-e145-7ae3-844b-f0cf62b78e6f | 用户 | 历史主线内容来源 | 不再派发；仅保留可审计记录 | 路由关闭 |
 | 架构 | 未建立 | 无 | 总控 | 定位 `/api/dest_info` 失败根因并限定最小修复 | 已回调总控：主模型余额不足，采用诚实前端降级 | 本地降级已完成 |
 | 内容主编 | 未建立 | 无 | 总控 | 阶段 2 文案与预算范围核对 | 无新增内容裁决 | 本地降级已完成 |
 | 开发 | 未建立 | 无 | 架构 | 增量图片扫描、审核保留、唯一哈希改名与发布清单 | 实现及本地回归已完成 | 本地降级已完成 |
@@ -15,7 +16,7 @@
 | DBA | 待确认 | 待确认 | 架构 | 数据库实例风险和只读诊断 | 本阶段不涉及 | 待确认 |
 | 运维 / Render Work | 已退役，待用户侧归档 | 6a81da9a-1998-83e8-b2ca-34e1f6eb526d | 当前主线 | 历史 ChatGPT Work Browser 探针 | Cloud Work 无法承担已登录 Render；Codex 归档接口不支持该 ChatGPT 对话，需用户在其菜单中归档或删除 | 禁止继续派发 |
 | 运维 / 仓库回流 | 已归档 | 01a00b3a-b62f-7c60-ae73-f9e74ae7879d | 当前主线 | 历史仓库上下文与 Render 能力探针 | 已归档；Browser 探针为 BROWSER_CONTROL_UNAVAILABLE，零生产写入 | 已退役 |
-| 运维 / 本机 Browser runtime | 最终一次同名 marketplace 纠偏待重启验收 | 未建立 | 当前主线 | 恢复 Codex Desktop 的 Browser、Chrome 与 Computer Use 控制通道 | 重启后只验收一次；若仍无工具则永久降级为非阻断限制并回到 Agentstrip CLI/API/Playwright 主线 | fail-closed；CLI override 为空，旧 26.810.50856 marketplace 注册已备份并移除 |
+| 运维 / 本机 Browser runtime | 永久降级为非阻断限制 | 未建立 | 当前主线 | 保留历史证据，不再继续插件排障 | 使用 CLI、GitHub、可用的 Render connector/API、公共 HTTP 与确定性 Playwright；生产写入仍需独立门禁 | 新任务实测 callable control tools = 0，停止条件已满足 |
 | 公众号发布 | 待确认 | 待确认 | 内容主编 | 微信公众号草稿、预览、发布准备 | 本阶段不涉及 | 待确认 |
 | 小红书 | 待确认 | 待确认 | 内容主编 | 小红书内容实验、发布包、评论研究 | 本阶段不涉及 | 待确认 |
 | 视频 | 待确认 | 待确认 | 内容主编 | 视频脚本、分镜、素材和渲染计划 | 本阶段不涉及 | 待确认 |
@@ -25,6 +26,9 @@
 
 ## 最近回调
 
+- 2026-08-17 主线迁回回调：已完整读取 `01a00b05-e145-7ae3-844b-f0cf62b78e6f` 的两页任务记录和用户粘贴的完整记录，并用安全工作树、共享项目记忆及 GitHub PR #3 重新核验；当前总控固定为 `019fcbe4-146b-72a1-a3e6-9fac972a37d6`，前主线保持闲置且禁止继续派发，不把聊天回忆当项目事实。
+- 2026-08-17 Browser 最终门禁回调：当前新任务可调用控制工具数量为 0，且没有新的 Desktop 日志证明运行时挂载成功；已按约定停止所有 Browser/Chrome/Computer Use 本机修复，将其永久降级为非阻断限制。环境右侧 ambient Render URL 仅证明页面被打开，不证明 Agent 能读取或控制。
+- 2026-08-17 Portfolio 批次审计与发布门禁回调：108 张唯一素材均已授权并在 manifest；D8 三类候选 52 张，其中 23 张关联路线、15 张关联 POI、20 张关联区域、15 张三类地理关联齐全，只有 1 张具有五语言替代文本。其余 56 张为 people/unclassified，前者主要进入 Driver Moments，后者须人工分类。管理员上传、Cloudinary 直传、生命周期、排序、替换和公开 API 已实现；新增前后端五语言发布门禁，草稿可不完整，发布必须补齐 zh/en/ja/ko/id 的标题、说明和替代文本。产品回归 51/51、图片收件专项和 Node 语法通过；Playwright 对五语言逐一触发正确提示，320/390/768/1440 均零横向溢出、最终控制台 0 error/0 warning。下一批从 15 张完整地理关联素材开始，不能把“已授权”误写成“已完成 D8 发布”。
 - 2026-08-17 Codex Desktop Browser runtime 最终一次尝试回调：GitHub `openai/codex#26501` 的 2026-08-15 新证据与本机完全同版，均为 Store `26.810.7004.0`、包内 bundled 插件 `26.810.52044`、本地旧源 `26.810.50856` 和同名 marketplace 双来源冲突；`#31023` 证明继续堆叠镜像/缓存不能保证会话工具注入。已备份用户配置，仅移除旧 `E:/CodexSkills/.sources/openai-bundled-26.810.50856` marketplace 注册，保留 Browser/Chrome/Computer Use 三项 enabled 记录，并只启用当前包完整、无 EFS 的资源镜像；未删除缓存/会话、未改 WindowsApps/AppX 卷、CLI override 保持为空。重启后只验收一次，失败即停止本机插件排障并回到项目 CLI/API/Playwright 主线。
 - 2026-08-17 Codex Desktop Browser runtime 纠偏回调：首次修复错误地只复制 `codex.exe` 后设置 `CODEX_CLI_PATH`，导致 Desktop 找不到同目录 `codex-code-mode-host.exe`；已明确承担并将 CLI override 在进程、用户和系统范围恢复为空，普通 code-mode 重新可用，仓库与生产未受损。重启后当前任务仍未获得 Browser/Chrome/Computer Use 控制工具，新日志继续显示 WindowsApps `cua_node` EFS relocation 失败；现只启用已做逐文件哈希校验且无 EFS 属性的 bundled-resources override，等待下一次完整重启验收，不同时改 marketplace 或删除缓存。
 - 2026-08-17 Codex Desktop Browser runtime 回调：确认 Windows Store/MSIX 官方资源带 EFS 保护，Desktop 日志持续出现 bundled marketplace `copyfile`、executable relocation 和 Computer Use helper path 失败，native pipe 没有 ready 记录。已将官方 `openai-bundled` 842 个文件、`cua_node` 3625 个文件和同包 CLI 用字节流复制到用户级 LOCALAPPDATA override，逐文件 SHA-256 零不一致，10 个关键入口均存在；设置两个可回滚用户级 override，未修改 WindowsApps、AppX 默认卷、既有缓存或任何 Secret。当前进程无法热注入工具，必须完整重启并在新任务做 Browser/native-pipe 实证后才能恢复 Render 门禁。

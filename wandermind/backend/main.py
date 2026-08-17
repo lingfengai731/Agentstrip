@@ -782,8 +782,20 @@ def _validate_portfolio_metadata(payload: dict) -> dict:
         "status": status,
     }
     if status == "published":
-        if not cleaned["place_name"] or not cleaned["title"] or not cleaned["alt_text"]:
-            raise HTTPException(400, "Published assets require place_name, title, and alt_text")
+        if not cleaned["place_name"]:
+            raise HTTPException(400, "Published assets require place_name")
+        missing_locales = [
+            f"{field}.{lang}"
+            for field in ("title", "description", "alt_text")
+            for lang in _PORTFOLIO_LANGS
+            if not cleaned[field].get(lang)
+        ]
+        if missing_locales:
+            raise HTTPException(
+                400,
+                "Published assets require title, description, and alt_text in zh, en, ja, ko, and id; missing: "
+                + ", ".join(missing_locales),
+            )
     return cleaned
 
 

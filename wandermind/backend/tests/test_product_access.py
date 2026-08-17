@@ -2313,6 +2313,12 @@ class ProductAccessTests(unittest.TestCase):
             }
 
         def create_asset(filename, suffix, title, status="draft"):
+            def localized(value):
+                return {
+                    lang: value if lang == "en" else f"{value} [{lang}]"
+                    for lang in ("zh", "en", "ja", "ko", "id")
+                }
+
             payload = {
                 "destination": "bali",
                 "primary_theme": "experiences",
@@ -2327,9 +2333,9 @@ class ProductAccessTests(unittest.TestCase):
                 "tags": ["wildlife", "golden-hour"],
                 "mood": "curious",
                 "photography_style": "sunrise-documentary",
-                "title": {"en": title, "zh": "罗威纳追海豚"},
-                "description": {"en": "A sunrise wildlife experience in North Bali."},
-                "alt_text": {"en": "Dolphins seen from a Lovina sunrise boat"},
+                "title": localized(title),
+                "description": localized("A sunrise wildlife experience in North Bali."),
+                "alt_text": localized("Dolphins seen from a Lovina sunrise boat"),
                 "verification_status": "route-linked",
                 "status": status,
             }
@@ -2469,6 +2475,41 @@ class ProductAccessTests(unittest.TestCase):
             )
             self.assertNotIn(first["id"], {item["id"] for item in public_hidden.json()["assets"]})
 
+    def test_portfolio_publish_requires_all_five_locales_but_draft_does_not(self):
+        incomplete = {
+            "primary_theme": "experiences",
+            "place_name": "Lovina Dolphin Watching",
+            "title": {"en": "Lovina at sunrise"},
+            "description": {"en": "A North Bali wildlife experience."},
+            "alt_text": {"en": "Dolphins seen from a Lovina boat"},
+            "status": "draft",
+        }
+        draft = main._validate_portfolio_metadata(incomplete)
+        self.assertEqual(draft["status"], "draft")
+        self.assertEqual(draft["title"], {"en": "Lovina at sunrise"})
+
+        with self.assertRaises(main.HTTPException) as caught:
+            main._validate_portfolio_metadata({**incomplete, "status": "published"})
+        self.assertEqual(caught.exception.status_code, 400)
+        self.assertIn("title.zh", caught.exception.detail)
+        self.assertIn("description.ja", caught.exception.detail)
+        self.assertIn("alt_text.id", caught.exception.detail)
+
+        localized = {
+            lang: f"Complete metadata {lang}"
+            for lang in ("zh", "en", "ja", "ko", "id")
+        }
+        published = main._validate_portfolio_metadata(
+            {
+                **incomplete,
+                "title": localized,
+                "description": localized,
+                "alt_text": localized,
+                "status": "published",
+            }
+        )
+        self.assertEqual(published["status"], "published")
+
     def test_portfolio_publish_approval_fails_closed_for_invalid_manifest(self):
         with patch.object(main.json, "loads", return_value=[]):
             with self.assertRaises(main.HTTPException) as caught:
@@ -2490,7 +2531,7 @@ class ProductAccessTests(unittest.TestCase):
         self.assertIn("multiple", admin_html)
         self.assertIn('id="manifestStatus"', admin_html)
         self.assertIn('id="queueDialog"', admin_html)
-        self.assertIn("admin-portfolio.js?v=p5", admin_html)
+        self.assertIn("admin-portfolio.js?v=p6", admin_html)
         self.assertIn('id="uploadDefaults"', admin_html)
         self.assertNotIn('id="uploadDefaults" open', admin_html)
         self.assertIn("Approved images are filled automatically", admin_html)
@@ -2506,6 +2547,7 @@ class ProductAccessTests(unittest.TestCase):
         self.assertIn("localizedSuggestion(item.title", admin_js)
         self.assertIn("localizedSuggestion(item.description", admin_js)
         self.assertIn("reviewAutoMetadata", admin_js)
+        self.assertIn("hasCompletePublishedMetadata", admin_js)
         self.assertIn("draftUploadFinished", admin_js)
         self.assertIn("/api/admin/portfolio/upload-cleanup", admin_js)
         self.assertIn("retryUploadCleanup", admin_js)

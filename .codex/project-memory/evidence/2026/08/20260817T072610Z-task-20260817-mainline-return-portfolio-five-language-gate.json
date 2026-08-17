@@ -1,0 +1,22 @@
+{
+  "schema_version": 1,
+  "evidence_id": "ev-20260817T072610Z-task-20260817-mainline-return-portfolio-five-language-gate",
+  "task_ref": "task-20260817-mainline-return-portfolio-five-language-gate",
+  "owner": "codex-sol",
+  "captured_at": "2026-08-17T07:26:10Z",
+  "status": "claimed",
+  "claim": "Returned the active mainline to task 019fcbe4, retired routing to 01a00b05, permanently downgraded unavailable native browser controls, audited 108 approved Portfolio assets, and added fail-closed five-language publication metadata gates while preserving incomplete drafts.",
+  "source": {
+    "kind": "git",
+    "repository": "https://github.com/lingfengai731/Agentstrip.git",
+    "commit": "45f566e7f05a0ad0af079c3660be6ef8a169811a",
+    "branch": "codex/account2-integration-20260816",
+    "worktree": "E:\\Agentstrip2-worktree",
+    "dirty": true
+  },
+  "verification": {
+    "command": "python -m unittest wandermind.backend.tests.test_product_access (51/51); tools/test-image-intake.ps1; node --check admin-portfolio.js; Playwright CLI five-language publish rejection and 320/390/768/1440 overflow checks; tools/project-memory.ps1 validate; git diff --check",
+    "result": "pass; local and deterministic browser verification only; no Render, production database, merge, deploy, or production E2E performed"
+  },
+  "notes": ""
+}
