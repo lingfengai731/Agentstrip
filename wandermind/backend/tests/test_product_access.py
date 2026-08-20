@@ -2773,6 +2773,12 @@ class ProductAccessTests(unittest.TestCase):
     def test_fourth_d8_portfolio_batch_describes_galungan_without_inventing_a_place(self):
         frontend = BACKEND_DIR.parents[1] / "wandermind-studio" / "frontend"
         html = (frontend / "bali.html").read_text(encoding="utf-8")
+        intake_csv = (
+            frontend / "assets" / "data" / "image-intake-review.csv"
+        ).read_text(encoding="utf-8")
+        intake_line = next(
+            line for line in intake_csv.splitlines() if line.startswith("Galungan.jpg,")
+        )
         manifest = json.loads(
             (frontend / "assets" / "data" / "image-publish-manifest.json").read_text(
                 encoding="utf-8"
@@ -2814,6 +2820,9 @@ class ProductAccessTests(unittest.TestCase):
             html,
         )
         self.assertIn("galungan:'galungan'", html)
+        self.assertIn("culture;festival;penjor", intake_line)
+        self.assertNotIn("culture;temple", intake_line)
+        self.assertIn(item["alt_text"]["en"], intake_line)
         for copy in (
             "Balinese penjor associated with Galungan",
             "与加隆安节相关的巴厘岛佩恩乔尔",
