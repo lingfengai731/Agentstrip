@@ -13,10 +13,10 @@
   },
   "snapshot": {
     "status": "verified",
-    "captured_at": "2026-08-20T14:41:20Z",
+    "captured_at": "2026-08-20T15:12:44Z",
     "captured_by": "codex-sol",
-    "source_commit": "f6933a85d17c6cfa87e9533d3976c395488f132e",
-    "source_branch": "codex/portfolio-d8-batch4",
+    "source_commit": "a577f3a664fa2d6f3018e79306cff8cded6a2cea",
+    "source_branch": "codex/portfolio-d8-batch5",
     "working_tree_at_capture": "clean at immutable code commit; documentation and evidence changes follow",
     "wandermind_bali": {
       "status": "verified",
@@ -78,16 +78,16 @@
       "production_status": "not_deployed"
     },
     "portfolio_content_manager": {
-      "status": "implementation_verified_local; four D8 units have 23 complete five-language assets; remaining batch migration pending",
+      "status": "implementation_verified_local; five D8 units have 24 complete five-language assets; remaining batch migration pending",
       "approved_unique_assets": 108,
       "d8_theme_candidates": 52,
       "driver_or_unclassified_assets": 56,
       "d8_route_linked": 23,
       "d8_poi_linked": 22,
-      "d8_region_linked": 22,
+      "d8_region_linked": 23,
       "d8_all_geo_links": 22,
-      "d8_five_language_copy_complete": 23,
-      "d8_five_language_alt_complete": 23,
+      "d8_five_language_copy_complete": 24,
+      "d8_five_language_alt_complete": 24,
       "static_gallery_fallback_assets": 37,
       "verified_capabilities": [
         "multi-file browser upload with progress and SHA-256 duplicate checks",
@@ -99,16 +99,16 @@
         "repeat image-intake scans preserve reviewed manifest version, approval, optimized paths and localized copy for the same SHA-256"
       ],
       "verification": {
-        "product_tests": "55/55",
+        "product_tests": "56/56",
         "image_intake_tests": "pass",
         "node_syntax": "pass",
-        "browser_languages": "Galungan runtime modal showed dedicated zh, en, ja, ko and id copy, with exact location and year kept unverified",
-        "browser_widths": "390, 768 and 1440 px each had zero document horizontal overflow and opened the Galungan modal",
+        "browser_languages": "The Pura Desa Adat Seminyak gathering modal showed dedicated zh, en, ja, ko and id copy while the exact ceremony, date and any Nyepi connection stayed unverified",
+        "browser_widths": "390, 768 and 1440 px each had zero document horizontal overflow and opened the corrected Seminyak gathering modal",
         "browser_console": "local Portfolio API was deterministically mocked; zero console errors; no upload, publication or production request was made"
       },
-      "evidence_id": "ev-20260820T144120Z-portfolio-d8-batch4",
+      "evidence_id": "ev-20260820T151244Z-portfolio-d8-batch5",
       "batch_boundary": "Only Landscapes, Culture and Experiences belong in D8 Portfolio. People assets primarily belong in Driver Moments; unclassified assets require manual classification. Approval alone does not prove place, route or five-language metadata.",
-      "next_batch": "Review the remaining 29 D8 theme candidates. Galungan.jpg is festival-level content linked to R4 without a POI or region because the exact road, location and year are unverified; stock images naming Thailand, Hawaii, Greece or Palau must not be relabelled as Bali. Publication remains a separate authenticated production action.",
+      "next_batch": "Review the remaining 28 D8 theme candidates, starting with a visual and metadata audit of bali-1.jpg. Nyepi.jpg now represents a Pura Desa Adat Seminyak community gathering linked to G1/R6 without a POI; its filename must not override the corrected metadata. Stock images naming Thailand, Hawaii, Greece or Palau must not be relabelled as Bali. Publication remains a separate authenticated production action.",
       "production_status": "not_verified"
     },
     "production": {
@@ -138,7 +138,7 @@
       "url": "https://github.com/lingfengai731/Agentstrip/pull/3",
       "status": "draft",
       "mergeable": true,
-      "head_commit": "45f566e7f05a0ad0af079c3660be6ef8a169811a",
+      "head_commit": "cfc76170ee461566409632e833a09fc92d6c8f7c",
       "project_memory_ci": "success",
       "postgres_integration_ci": "success",
       "release_gate": "post-deploy Render proxy smoke and production browser regression"

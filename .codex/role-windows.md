@@ -226,3 +226,12 @@
 - QA 回调：Luna 首轮因父线程按计划产生目标 diff 而诚实标记 blocked，未写文件；代码冻结为 `6179c32` 后复审完成并 GO。54/54 产品测试、image-intake、Node 与 diff-check 通过。
 - Skill 回调：cross-account-project-memory 约束独立 worktree 与 evidence/handoff；agent-role-orchestrator 约束 L2 回调；codex-luna-worker 执行两阶段监工。本轮无 UI/动效修改，故 UI、Emil 与动画技能不调用。
 - 生产边界：未上传、未发布、未访问 Render、未 merge、未部署；ambient Render URL 仍不作为控制证据。
+
+## 2026-08-20 Portfolio D8 batch 5, Seminyak gathering callback
+
+- 路由：small / L2 / compact。Sol 在独立 `E:\Agentstrip-wt-portfolio-d8-batch5` / `codex/portfolio-d8-batch5` 保留图片语义、实现、浏览器验收、项目事实和发布判断；正式 Luna Max 对原图做事实审计，并对冻结提交 `a577f3a` 做不可变只读复审，最终 GO，P0/P1/P2 均为 0。
+- 内容回调：文件名 `Nyepi.jpg` 不能证明宁静日。画面门牌支持 `Pura Desa / Desa Adat Seminyak`，因此修正为塞米亚克村社神庙外的社区文化聚会；只描述白色仪式服装、寺庙入口、社区人群和 penjor，具体仪式、日期及与 Nyepi 的关系保持未核实。
+- 实现回调：manifest、运营 CSV、静态卡片和中/英/日/韩/印弹窗同步为 G1/R6、无 POI、`bali-named`；虽然保留主题路线关联，AI、司机和路线交接仍隐藏，进入、观察和拍摄只按现场许可表述。
+- QA 回调：56/56 产品测试、PowerShell 7 图片 intake、9 个内嵌脚本语法和 diff check 通过；本地 Chrome 在 1440/768/390 下五语言标题正确、页面横向溢出为 0、控制台 0 错误，390 中文弹窗视觉复核通过。
+- Skill 回调：cross-account-project-memory 约束隔离 worktree、evidence 与 handoff；agent-role-orchestrator/codex-luna-worker 约束 Sol/Luna 分工；ui-implementation-workflow 保持既有 teal + gold 与响应式边界；browser-automation-router 选择本地 Playwright。无新商业决策、动画或组件库需求，不作表演性 Skill 调用。
+- 生产边界：未上传、未发布、未访问 Render、未 merge、未部署；ambient Render URL 仍不是页面控制或生产证据。
