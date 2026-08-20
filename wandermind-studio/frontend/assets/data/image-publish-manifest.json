@@ -242,19 +242,40 @@
       "web_optimized_path": "assets/images/web/51ab7ab45565e4b5.webp",
       "sha256": "51ab7ab45565e4b5238bda9a7991263b8fdbf31dd4c076242bd4b3ef58eb0966",
       "category": "landscapes",
-      "sub_category": "bali-landscape",
+      "sub_category": "ocean-beach",
       "tags": [
-        "bali",
-        "landscape"
+        "coast",
+        "ocean",
+        "intertidal",
+        "rocky-shore",
+        "twilight",
+        "coastal-building"
       ],
-      "location_status": "bali-named",
+      "location_status": "unknown",
       "region_ids": [],
       "route_ids": [],
       "poi_ids": [],
       "intended_use": "WanderMind approved project image library; connect only where its destination/category metadata matches.",
       "alt_text": {
-        "zh": "???????",
-        "en": "Bali landscape scene"
+        "zh": "暮色天空下的临海建筑与退潮礁石海岸",
+        "en": "Coastal building and exposed rocky shore beneath a twilight sky",
+        "ja": "夕暮れの空の下にある海辺の建物と干潮で現れた岩礁の海岸",
+        "ko": "황혼의 하늘 아래 해안 건물과 썰물로 드러난 바위 해안",
+        "id": "Bangunan pesisir dan garis pantai berbatu yang tampak saat air surut di bawah langit senja"
+      },
+      "title": {
+        "zh": "暮色中的临海建筑与礁石海岸",
+        "en": "Coastal building and rocky shore at twilight",
+        "ja": "夕暮れの海辺の建物と岩礁の海岸",
+        "ko": "황혼의 해안 건물과 바위 해안",
+        "id": "Bangunan pesisir dan garis pantai berbatu saat senja"
+      },
+      "description": {
+        "zh": "画面显示一座临海建筑、退潮后露出的礁石海岸和暮色天空。地点、建筑用途与拍摄时间尚未核实。",
+        "en": "The image shows a coastal building, an exposed rocky shore at low tide and a twilight sky. The location, building use and capture time are unverified.",
+        "ja": "海辺の建物、干潮で現れた岩礁の海岸、そして夕暮れの空が写っています。場所、建物の用途、撮影時期は未確認です。",
+        "ko": "이미지에는 해안 건물, 썰물로 드러난 바위 해안과 황혼의 하늘이 보입니다. 위치, 건물 용도와 촬영 시기는 확인되지 않았습니다.",
+        "id": "Foto ini menampilkan bangunan pesisir, garis pantai berbatu yang tampak saat air surut, dan langit senja. Lokasi, fungsi bangunan, dan waktu pengambilan belum terverifikasi."
       },
       "rights": {
         "status": "user_provided_with_consent",
