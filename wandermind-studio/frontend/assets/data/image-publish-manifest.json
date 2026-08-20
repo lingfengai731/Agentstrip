@@ -320,19 +320,46 @@
       "web_optimized_path": "assets/images/web/3d75af3a6b693c12.webp",
       "sha256": "3d75af3a6b693c122721ed8c0ab8a01be453a641f7daf06482af4cc2cea217e8",
       "category": "landscapes",
-      "sub_category": "bali-landscape",
+      "sub_category": "nature-wildlife",
       "tags": [
-        "bali",
-        "landscape"
+        "forest",
+        "wildlife",
+        "culture",
+        "entrance"
       ],
       "location_status": "bali-named",
-      "region_ids": [],
-      "route_ids": [],
-      "poi_ids": [],
+      "region_ids": [
+        "G4"
+      ],
+      "route_ids": [
+        "R1",
+        "R2",
+        "R4"
+      ],
+      "poi_ids": [
+        "ubud_monkey_forest"
+      ],
       "intended_use": "WanderMind approved project image library; connect only where its destination/category metadata matches.",
+      "title": {
+        "zh": "乌布圣猴森林入口",
+        "en": "Sacred Monkey Forest Sanctuary Entrance",
+        "ja": "ウブド・モンキーフォレストの入口",
+        "ko": "우붓 몽키 포레스트 입구",
+        "id": "Pintu Masuk Sacred Monkey Forest Sanctuary"
+      },
+      "description": {
+        "zh": "林荫中的苔藓石雕、金色“monkey forest”字样和入口方向牌，呈现乌布圣猴森林保护区的场所氛围。开放时间、票价和临时关闭请在出发前查看官方信息。",
+        "en": "A moss-covered stone sculpture, gold monkey forest lettering and an entrance arrow sit among the trees at Ubud's Sacred Monkey Forest Sanctuary. Check official information for current hours, admission and temporary closures.",
+        "ja": "木々に囲まれた苔むす石像、金色の「monkey forest」の文字、入口を示す案内板が、ウブド・モンキーフォレストの雰囲気を伝えます。開園時間、入場料、臨時休園は出発前に公式情報をご確認ください。",
+        "ko": "나무 사이의 이끼 낀 석상과 금색 ‘monkey forest’ 글자, 입구 방향 표지판이 우붓 몽키 포레스트의 분위기를 보여 줍니다. 운영 시간, 입장료, 임시 휴장은 출발 전에 공식 정보를 확인하세요.",
+        "id": "Patung batu berlumut, tulisan emas monkey forest, dan penunjuk arah pintu masuk terlihat di antara pepohonan Sacred Monkey Forest Sanctuary Ubud. Periksa informasi resmi sebelum berangkat untuk jam buka, tiket masuk, dan penutupan sementara."
+      },
       "alt_text": {
-        "zh": "???????",
-        "en": "Bali landscape scene"
+        "zh": "乌布圣猴森林林间入口的苔藓石雕、金色字样和方向牌",
+        "en": "Moss-covered sculpture, gold monkey forest lettering and entrance sign among trees in Ubud",
+        "ja": "ウブドのモンキーフォレスト入口にある苔むした石像と金色の文字、案内板",
+        "ko": "우붓 몽키 포레스트 숲속 입구의 이끼 낀 석상과 금색 글자, 방향 표지판",
+        "id": "Patung batu berlumut, tulisan emas monkey forest, dan papan arah pintu masuk di Ubud"
       },
       "rights": {
         "status": "user_provided_with_consent",

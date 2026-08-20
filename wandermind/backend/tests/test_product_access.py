@@ -2724,11 +2724,51 @@ class ProductAccessTests(unittest.TestCase):
                 for field in ("title", "description", "alt_text")
             )
         ]
-        self.assertEqual(len(complete_d8), 21)
+        self.assertEqual(len(complete_d8), 22)
 
         lempuyang = by_path["assets/images/Lempuyang Temple.jpg"]
         self.assertIn("Penataran Agung", lempuyang["title"]["en"])
         self.assertIn("not the summit temple", lempuyang["description"]["en"])
+
+    def test_third_d8_portfolio_batch_maps_bali_12_to_verified_monkey_forest(self):
+        frontend = BACKEND_DIR.parents[1] / "wandermind-studio" / "frontend"
+        manifest = json.loads(
+            (frontend / "assets" / "data" / "image-publish-manifest.json").read_text(
+                encoding="utf-8"
+            )
+        )
+        bali_data = json.loads(
+            (frontend / "assets" / "data" / "bali-travel-data.json").read_text(
+                encoding="utf-8"
+            )
+        )
+        by_path = {item["relative_path"]: item for item in manifest["images"]}
+        poi_by_id = {item["id"]: item for item in bali_data["pois"]}
+        item = by_path["assets/images/bali-12.jpg"]
+        languages = {"zh", "en", "ja", "ko", "id"}
+
+        self.assertEqual(
+            item["sha256"],
+            "3d75af3a6b693c122721ed8c0ab8a01be453a641f7daf06482af4cc2cea217e8",
+        )
+        self.assertEqual(item["web_optimized_path"], "assets/images/web/3d75af3a6b693c12.webp")
+        self.assertTrue((frontend / item["web_optimized_path"]).is_file())
+        self.assertEqual(item["category"], "landscapes")
+        self.assertEqual(item["sub_category"], "nature-wildlife")
+        self.assertEqual(item["region_ids"], ["G4"])
+        self.assertEqual(item["route_ids"], ["R1", "R2", "R4"])
+        self.assertEqual(item["poi_ids"], ["ubud_monkey_forest"])
+        self.assertEqual(
+            poi_by_id["ubud_monkey_forest"]["verification_status"], "verified"
+        )
+        self.assertTrue(
+            {"forest", "wildlife", "culture", "entrance"}.issubset(item["tags"])
+        )
+        for field in ("title", "description", "alt_text"):
+            self.assertEqual(set(item[field]), languages)
+            self.assertTrue(all(value.strip() for value in item[field].values()))
+            self.assertTrue(all("?" not in value for value in item[field].values()))
+        self.assertIn("official", item["description"]["en"].lower())
 
     def test_bali_gallery_uses_theme_and_tag_taxonomy(self):
         frontend_dir = (
