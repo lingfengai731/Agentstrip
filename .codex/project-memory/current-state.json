@@ -13,10 +13,10 @@
   },
   "snapshot": {
     "status": "verified",
-    "captured_at": "2026-08-17T07:08:14Z",
+    "captured_at": "2026-08-20T11:40:00Z",
     "captured_by": "codex-sol",
-    "source_commit": "45f566e7f05a0ad0af079c3660be6ef8a169811a",
-    "source_branch": "codex/account2-integration-20260816",
+    "source_commit": "c7ae5e52b9b32fea035d37b71bb6fe8a34f1555d",
+    "source_branch": "codex/portfolio-d8-batch1",
     "working_tree_at_capture": "clean",
     "wandermind_bali": {
       "status": "verified",
@@ -78,7 +78,7 @@
       "production_status": "not_deployed"
     },
     "portfolio_content_manager": {
-      "status": "implementation_verified_local; five-language publish gate verified; historical batch migration pending",
+      "status": "implementation_verified_local; first 15 geo-linked D8 assets have complete five-language copy; remaining batch migration pending",
       "approved_unique_assets": 108,
       "d8_theme_candidates": 52,
       "driver_or_unclassified_assets": 56,
@@ -86,7 +86,8 @@
       "d8_poi_linked": 15,
       "d8_region_linked": 20,
       "d8_all_geo_links": 15,
-      "d8_five_language_alt_complete": 1,
+      "d8_five_language_copy_complete": 15,
+      "d8_five_language_alt_complete": 15,
       "static_gallery_fallback_assets": 37,
       "verified_capabilities": [
         "multi-file browser upload with progress and SHA-256 duplicate checks",
@@ -94,19 +95,20 @@
         "draft, publish, hide, archive, replace and reorder lifecycle",
         "D8 metadata fields and five-language editor controls",
         "client and server publication gates require complete zh, en, ja, ko and id title, description and alt text while drafts remain editable",
-        "approved-manifest hash gate and public no-redeploy portfolio API"
+        "approved-manifest hash gate and public no-redeploy portfolio API",
+        "repeat image-intake scans preserve reviewed manifest version, approval, optimized paths and localized copy for the same SHA-256"
       ],
       "verification": {
-        "product_tests": "51/51",
+        "product_tests": "52/52",
         "image_intake_tests": "pass",
         "node_syntax": "pass",
-        "browser_languages": "zh, en, ja, ko and id each returned the localized five-language publication error",
-        "browser_widths": "320, 390, 768 and 1440 px each had zero horizontal overflow",
-        "browser_console": "0 errors, 0 warnings after API routes were deterministically mocked"
+        "browser_languages": "a manifest-matched original populated non-empty zh, en, ja, ko and id title, description and alt text",
+        "browser_widths": "390, 768 and 1440 px each had zero root, body and metadata-dialog horizontal overflow",
+        "browser_console": "local API routes were deterministically mocked; no upload, publication or production request was made"
       },
-      "evidence_id": "ev-20260817T072610Z-task-20260817-mainline-return-portfolio-five-language-gate",
+      "evidence_id": "ev-20260820T114000Z-portfolio-d8-batch1",
       "batch_boundary": "Only Landscapes, Culture and Experiences belong in D8 Portfolio. People assets primarily belong in Driver Moments; unclassified assets require manual classification. Approval alone does not prove place, route or five-language metadata.",
-      "next_batch": "Start with the 15 D8 assets already linked to region, route and POI; enrich and verify all five localized title, description and alt-text fields before publication. The new gate prevents partial-language publication.",
+      "next_batch": "Review the remaining 37 D8 theme candidates in evidence-backed groups. Route execution claims for R1 and R5 remain supplier-gated even when an image has complete visual copy. Publication remains a separate authenticated production action.",
       "production_status": "not_verified"
     },
     "production": {

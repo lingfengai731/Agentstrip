@@ -190,3 +190,12 @@
 - `Browser控制能力探针` 属于 ChatGPT 对话，Codex 归档接口返回不支持；已尝试取消置顶，但 ChatGPT 来源仍将其显示在置顶区，需用户通过该对话的 `…` 菜单手动归档或删除。
 - 两个历史 ID 均保留在项目记忆中仅作审计，路由状态改为 retired/disabled；后续不得自动派发。新的本地 Render Browser 任务只能在 Browser 插件实际注入并通过能力探针后登记。
 - 本轮未访问 Render、未读取 Secret、未修改配置、未部署；`agent-role-orchestrator` 约束台账退役，`cross-account-project-memory` 记录可审计事实，OpenAI 任务管理使用可恢复归档优先于永久删除。
+
+## 2026-08-20 Portfolio D8 batch 1 callback
+
+- 路由：medium / L2。Sol 保留图片语义、事实边界、集成、浏览器验收、提交和发布判断；正式 Agent `luna_worker`（`gpt-5.6-luna` / `max`）先完成 15 张候选的只读清单审计，再对实际 diff 做独立 QA；所有写入均在 `E:\Agentstrip-wt-portfolio-d8` / `codex/portfolio-d8-batch1`，旧脏工作树未触碰。
+- 内容回调：首批 15 张同时关联 G 区域、R 路线和已核验 POI 的 D8 图片均补齐中/英/日/韩/印标题、说明与替代文本；文案只描述可见画面和已核验地点，营业、课程、仪式或演出等动态信息明确要求实时确认，不新增医疗、价格或时刻承诺。
+- 工具回调：`image-intake.ps1` 现在按相同 SHA-256 保留人工审核后的 schema、policy、approval、Web 路径、标题、说明和日/韩/印替代文本；CSV 仍负责新鲜的中英文替代文本和结构化建议。回归测试覆盖重复扫描不丢人工成果。
+- UI/QA 回调：不改现有 teal + gold 页面，也不新增无目的动效。系统 Chrome 的确定性本地验收使用 mock 管理 API，选择用户原图后命中批准清单并自动填满五语言字段；390/768/1440 的页面、body 和编辑弹窗横向溢出均为 0。未上传、未发布、未访问生产。
+- Skill 回调：`cross-account-project-memory` 约束跨账号事实与独立 worktree；`agent-role-orchestrator` 与 `codex-luna-worker` 约束 Sol/Luna 分工；`ui-implementation-workflow` 只约束既有视觉和响应式验收；Nuwa 检索后复用 Paul Graham 小批量人工闭环原则，未制造新人物 Skill；本轮无 UI 动效变更，故 Emil/Find/Improve/Review Animations 不作表演性调用。
+- Browser 边界：当前任务仍无可调用右嵌 Browser/Chrome/Computer Use 控制面，ambient Render URL 不作已检查证据；按用户 stop 条件永久降级为非阻塞，不再修插件、不读取 Render、不改变环境变量、不部署。

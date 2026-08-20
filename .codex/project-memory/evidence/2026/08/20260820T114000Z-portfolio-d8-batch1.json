@@ -1,0 +1,22 @@
+{
+  "schema_version": 1,
+  "evidence_id": "ev-20260820T114000Z-portfolio-d8-batch1",
+  "task_ref": "portfolio-d8-batch1",
+  "owner": "codex-sol",
+  "captured_at": "2026-08-20T11:40:00Z",
+  "status": "verified",
+  "claim": "First 15 D8 assets with region, route and verified POI links now have complete zh/en/ja/ko/id title, description and alt text; repeat image intake preserves reviewed manifest metadata; local mocked admin auto-fill and responsive QA passed.",
+  "source": {
+    "kind": "git",
+    "repository": "https://github.com/lingfengai731/Agentstrip.git",
+    "commit": "c7ae5e52b9b32fea035d37b71bb6fe8a34f1555d",
+    "branch": "codex/portfolio-d8-batch1",
+    "worktree": "E:\\Agentstrip-wt-portfolio-d8",
+    "dirty": true
+  },
+  "verification": {
+    "command": "python -m unittest wandermind.backend.tests.test_product_access; tools/test-image-intake.ps1; node --check admin-portfolio.js; git diff --check; local Playwright via system Chrome at 1440/768/390",
+    "result": "52/52 OK; intake PASS; Node/diff PASS; manifest-matched original auto-filled 15 localized fields; zero root/body/dialog horizontal overflow"
+  },
+  "notes": "Code commit c7ae5e52b9b32fea035d37b71bb6fe8a34f1555d. No production upload, publication, Render change, deployment or dirty-root write."
+}
