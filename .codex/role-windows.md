@@ -235,3 +235,11 @@
 - QA 回调：56/56 产品测试、PowerShell 7 图片 intake、9 个内嵌脚本语法和 diff check 通过；本地 Chrome 在 1440/768/390 下五语言标题正确、页面横向溢出为 0、控制台 0 错误，390 中文弹窗视觉复核通过。
 - Skill 回调：cross-account-project-memory 约束隔离 worktree、evidence 与 handoff；agent-role-orchestrator/codex-luna-worker 约束 Sol/Luna 分工；ui-implementation-workflow 保持既有 teal + gold 与响应式边界；browser-automation-router 选择本地 Playwright。无新商业决策、动画或组件库需求，不作表演性 Skill 调用。
 - 生产边界：未上传、未发布、未访问 Render、未 merge、未部署；ambient Render URL 仍不是页面控制或生产证据。
+
+## 2026-08-20 Portfolio D8 batch 6, unknown coast callback
+
+- 路由：small / L2 / compact。Sol 在独立 `E:\Agentstrip-wt-portfolio-d8-batch6` / `codex/portfolio-d8-batch6` 负责实现、测试、项目事实与发布判断；Luna Max 先以 P1/NO-GO 拒绝从 `bali-1.jpg` 文件名推断地点，再对冻结提交 `4877aa3` 做不可变复审并返回 GO，P0/P1/P2 均为 0。
+- 内容回调：画面只支持临海建筑、退潮礁石海岸与暮色天空；EXIF 不含地点或时间。结构化字段修正为 `landscapes / ocean-beach`、`location_status=unknown`，移除 `bali` 标签，区域、路线和 POI 全部留空。
+- QA 回调：五语言 title/description/alt 明确地点、建筑用途和拍摄时间未核实；57/57 产品测试、PowerShell 7 图片 intake、hash/WebP/rights 与 diff check 全部通过。该图片未被静态 gallery 引用且 HTML 未变，UI 工作流判定本单元无需重复浏览器验收。
+- Skill 回调：cross-account-project-memory 约束独立 worktree、evidence 与 handoff；agent-role-orchestrator/codex-luna-worker 以 Luna 反证阻止文件名冒充地点；UI 与动画技能未作表演性调用。
+- 生产边界：未上传、未发布、未访问 Render、未 merge、未部署。
