@@ -2348,24 +2348,49 @@
       "sub_category": "balinese-culture",
       "tags": [
         "culture",
-        "temple"
+        "temple",
+        "water-temple",
+        "heritage"
       ],
       "location_status": "bali-named",
-      "region_ids": [],
-      "route_ids": [
-        "R4"
+      "region_ids": [
+        "G1"
       ],
-      "poi_ids": [],
+      "route_ids": [
+        "R1",
+        "R4",
+        "R6"
+      ],
+      "poi_ids": [
+        "taman_ayun"
+      ],
       "intended_use": "WanderMind approved project image library; connect only where its destination/category metadata matches.",
       "alt_text": {
-        "zh": "??????????",
-        "en": "Bali culture or temple scene"
+        "ja": "青空の下に並ぶタマン・アユン寺院の多層メル塔",
+        "en": "A row of multi-tiered meru towers inside Pura Taman Ayun under a blue sky",
+        "ko": "푸른 하늘 아래 줄지어 선 타만 아윤 사원의 다층 메루 탑",
+        "zh": "蓝天下塔曼阿云寺院内一排多层梅鲁塔",
+        "id": "Deretan menara meru bertingkat di Pura Taman Ayun di bawah langit biru"
       },
       "rights": {
         "status": "user_provided_with_consent",
         "source": "user_global_confirmation",
         "approval_date": "2026-08-05",
         "license_or_owner": "WanderMind user global confirmation"
+      },
+      "title": {
+        "ja": "タマン・アユン寺院の多層メル塔",
+        "en": "Meru towers at Pura Taman Ayun",
+        "ko": "타만 아윤 사원의 다층 메루 탑",
+        "zh": "孟威塔曼阿云寺的多层梅鲁塔",
+        "id": "Menara meru di Pura Taman Ayun"
+      },
+      "description": {
+        "ja": "青空の下、タマン・アユン寺院の境内に多層のメル塔が並びます。ムングウィの王立水寺院はバリの世界遺産文化景観の一部です。公開区域、服装、儀式、入場条件は訪問前に確認してください。",
+        "en": "Multi-tiered meru towers rise across the courtyard of Pura Taman Ayun. The royal water temple in Mengwi is part of Bali's World Heritage cultural landscape; confirm open areas, dress guidance, ceremonies and admission before visiting.",
+        "ko": "푸른 하늘 아래 타만 아윤 사원 안뜰에 다층 메루 탑이 이어집니다. 멩위의 왕실 수상 사원은 발리 세계유산 문화경관의 일부이며, 공개 구역과 복장, 의식, 입장 조건은 방문 전에 확인해야 합니다.",
+        "zh": "蓝天下，多层梅鲁塔沿塔曼阿云寺院展开。这座孟威皇家水庙属于巴厘岛世界遗产文化景观；开放区域、着装、仪式和票务请在出发前确认。",
+        "id": "Menara meru bertingkat berjajar di halaman Pura Taman Ayun di bawah langit biru. Pura air kerajaan di Mengwi ini merupakan bagian dari lanskap budaya Warisan Dunia Bali; periksa area yang dibuka, aturan pakaian, upacara, dan tiket sebelum berkunjung."
       }
     },
     {
@@ -2376,26 +2401,48 @@
       "sub_category": "balinese-culture",
       "tags": [
         "culture",
-        "temple"
+        "temple",
+        "lotus-pond"
       ],
       "location_status": "bali-named",
       "region_ids": [
         "G4"
       ],
       "route_ids": [
-        "R4"
+        "R1",
+        "R4",
+        "R6"
       ],
-      "poi_ids": [],
+      "poi_ids": [
+        "taman_saraswati"
+      ],
       "intended_use": "WanderMind approved project image library; connect only where its destination/category metadata matches.",
       "alt_text": {
-        "zh": "??????????",
-        "en": "Bali culture or temple scene"
+        "ja": "蓮池の間からタマン・サラスワティ寺院の門へ続く小道",
+        "en": "A path between lotus ponds leading to the gate of Pura Taman Saraswati",
+        "ko": "연못 사이로 타만 사라스와티 사원 문까지 이어지는 길",
+        "zh": "莲池之间的小径通向塔曼萨拉斯瓦蒂寺院门",
+        "id": "Jalur di antara kolam teratai menuju gerbang Pura Taman Saraswati"
       },
       "rights": {
         "status": "user_provided_with_consent",
         "source": "user_global_confirmation",
         "approval_date": "2026-08-05",
         "license_or_owner": "WanderMind user global confirmation"
+      },
+      "title": {
+        "ja": "蓮池の小道からウブド・ウォーターパレスへ",
+        "en": "Lotus path to the Ubud Water Palace",
+        "ko": "연못 사이 길로 만나는 우붓 워터 팰리스",
+        "zh": "莲池小径通向乌布水宫",
+        "id": "Jalur kolam teratai menuju Ubud Water Palace"
+      },
+      "description": {
+        "ja": "蓮池の間をまっすぐな小道が伸び、タマン・サラスワティ寺院の門へ続きます。ウブドで現在も使われる寺院のため、公開範囲、服装、儀式、上演情報は訪問前に確認してください。",
+        "en": "A straight path crosses the lotus ponds toward the gate of Pura Taman Saraswati. This remains an active temple setting in Ubud; confirm public access, dress guidance, ceremonies and any performances before visiting.",
+        "ko": "곧게 뻗은 길이 연못 사이를 지나 타만 사라스와티 사원의 문으로 이어집니다. 우붓에서 현재도 사용되는 사원 공간이므로 공개 범위와 복장, 의식, 공연 정보는 방문 전에 확인해야 합니다.",
+        "zh": "笔直小径穿过莲池，通向塔曼萨拉斯瓦蒂寺的院门。这是乌布仍在使用的寺庙空间；开放范围、着装、仪式与演出信息请在到访前确认。",
+        "id": "Jalur lurus melintasi kolam teratai menuju gerbang Pura Taman Saraswati. Tempat ini tetap menjadi ruang pura aktif di Ubud; periksa akses umum, aturan pakaian, upacara, dan pertunjukan sebelum berkunjung."
       }
     },
     {
@@ -2406,26 +2453,48 @@
       "sub_category": "balinese-culture",
       "tags": [
         "culture",
-        "temple"
+        "temple",
+        "lotus-pond"
       ],
       "location_status": "bali-named",
       "region_ids": [
         "G4"
       ],
       "route_ids": [
-        "R4"
+        "R1",
+        "R4",
+        "R6"
       ],
-      "poi_ids": [],
+      "poi_ids": [
+        "taman_saraswati"
+      ],
       "intended_use": "WanderMind approved project image library; connect only where its destination/category metadata matches.",
       "alt_text": {
-        "zh": "??????????",
-        "en": "Bali culture or temple scene"
+        "ja": "蓮池越しに見えるタマン・サラスワティ寺院の門と境内",
+        "en": "The gate and courtyard of Pura Taman Saraswati seen across a lotus pond",
+        "ko": "연못 너머로 보이는 타만 사라스와티 사원 문과 안뜰",
+        "zh": "莲池对面可见塔曼萨拉斯瓦蒂寺院门和庭院",
+        "id": "Gerbang dan halaman Pura Taman Saraswati terlihat di seberang kolam teratai"
       },
       "rights": {
         "status": "user_provided_with_consent",
         "source": "user_global_confirmation",
         "approval_date": "2026-08-05",
         "license_or_owner": "WanderMind user global confirmation"
+      },
+      "title": {
+        "ja": "蓮池越しに見るタマン・サラスワティ寺院",
+        "en": "Pura Taman Saraswati across the lotus pond",
+        "ko": "연못 너머의 타만 사라스와티 사원",
+        "zh": "莲池对面的塔曼萨拉斯瓦蒂寺",
+        "id": "Pura Taman Saraswati di seberang kolam teratai"
+      },
+      "description": {
+        "ja": "手前の池に蓮の葉が広がり、その向こうにバリ様式の寺院門と境内が見えます。ウブド中心部の水景と建築を楽しめますが、公開範囲、礼儀、儀式、上演は当日確認が必要です。",
+        "en": "Lotus leaves fill the foreground while the Balinese temple gate and courtyard sit across the pond. The view shows Ubud's water-garden architecture; confirm access, etiquette, ceremonies and performances in real time.",
+        "ko": "앞쪽 연못에 연잎이 펼쳐지고 그 너머로 발리식 사원 문과 안뜰이 보입니다. 우붓 중심의 수경과 건축을 볼 수 있지만 공개 범위와 예절, 의식, 공연은 실시간 확인이 필요합니다.",
+        "zh": "莲叶铺满前景水面，巴厘式寺院门与庭院位于池塘对面。这里适合观察乌布中心的水景与建筑，但开放范围、礼仪、仪式和演出须实时确认。",
+        "id": "Daun teratai memenuhi kolam di depan, dengan gerbang dan halaman pura bergaya Bali di seberangnya. Pemandangan ini memperlihatkan arsitektur taman air di pusat Ubud; periksa akses, etika, upacara, dan pertunjukan secara langsung."
       }
     },
     {
@@ -3009,8 +3078,9 @@
       "category": "experiences",
       "sub_category": "wellness-leisure",
       "tags": [
-        "wellness",
-        "experience"
+        "beach",
+        "ocean",
+        "leisure"
       ],
       "location_status": "bali-named",
       "region_ids": [
@@ -3020,17 +3090,36 @@
         "R3",
         "R6"
       ],
-      "poi_ids": [],
+      "poi_ids": [
+        "sundays_beach_club"
+      ],
       "intended_use": "WanderMind approved project image library; connect only where its destination/category metadata matches.",
       "alt_text": {
-        "zh": "?????????",
-        "en": "Bali travel experience scene"
+        "ja": "サンデーズ・ビーチクラブの茅葺き屋根の間に見えるビーチとリーフ",
+        "en": "Beach and reef seen between thatched roofs at Sundays Beach Club",
+        "ko": "선데이스 비치 클럽의 초가지붕 사이로 보이는 해변과 리프",
+        "zh": "茅草屋顶之间可见 Sundays Beach Club 的海滩与礁线",
+        "id": "Pantai dan terumbu terlihat di antara atap jerami di Sundays Beach Club"
       },
       "rights": {
         "status": "user_provided_with_consent",
         "source": "user_global_confirmation",
         "approval_date": "2026-08-05",
         "license_or_owner": "WanderMind user global confirmation"
+      },
+      "title": {
+        "ja": "サンデーズ・ビーチクラブからの海岸眺望",
+        "en": "Coastal view from Sundays Beach Club",
+        "ko": "선데이스 비치 클럽에서 보는 해안",
+        "zh": "Sundays Beach Club 的海岸视野",
+        "id": "Pemandangan pantai dari Sundays Beach Club"
+      },
+      "description": {
+        "ja": "茅葺き屋根の間からビーチ、リーフ、外洋が見えます。施設はウンガサンの崖下にあるため、アクセス、デイパス、潮汐、天候、海のアクティビティは当日の公式情報で確認してください。",
+        "en": "The beach, reef line and open ocean appear between thatched roofs. The venue sits below the Ungasan cliffs; confirm access, day passes, tides, weather and water activities with the official venue for the day.",
+        "ko": "초가지붕 사이로 해변과 리프, 탁 트인 바다가 보입니다. 장소는 웅아산 절벽 아래에 있으므로 접근, 데이 패스, 조수, 날씨, 해양 활동은 당일 공식 정보를 확인해야 합니다.",
+        "zh": "茅草屋顶之间可以看见海滩、礁线和开阔海面。这里位于乌干沙悬崖下方；通行、日票、潮汐、天气和海上活动须按当天官方信息确认。",
+        "id": "Pantai, garis terumbu, dan laut lepas terlihat di antara atap jerami. Lokasi ini berada di bawah tebing Ungasan; periksa akses, tiket harian, pasang surut, cuaca, dan aktivitas air melalui informasi resmi pada hari kunjungan."
       }
     },
     {
@@ -3040,8 +3129,9 @@
       "category": "experiences",
       "sub_category": "wellness-leisure",
       "tags": [
-        "wellness",
-        "experience"
+        "beach",
+        "ocean",
+        "leisure"
       ],
       "location_status": "bali-named",
       "region_ids": [
@@ -3051,17 +3141,36 @@
         "R3",
         "R6"
       ],
-      "poi_ids": [],
+      "poi_ids": [
+        "sundays_beach_club"
+      ],
       "intended_use": "WanderMind approved project image library; connect only where its destination/category metadata matches.",
       "alt_text": {
-        "zh": "?????????",
-        "en": "Bali travel experience scene"
+        "ja": "茅葺き屋根と海岸を背景にしたサンデーズのサイン",
+        "en": "Sundays sign with thatched roofs and the coast behind it",
+        "ko": "초가지붕과 해안을 배경으로 한 선데이스 표지",
+        "zh": "Sundays 标志、茅草屋顶和后方海岸",
+        "id": "Papan Sundays dengan atap jerami dan pantai di belakangnya"
       },
       "rights": {
         "status": "user_provided_with_consent",
         "source": "user_global_confirmation",
         "approval_date": "2026-08-05",
         "license_or_owner": "WanderMind user global confirmation"
+      },
+      "title": {
+        "ja": "海岸を望むサンデーズのサイン",
+        "en": "Sundays sign above the coast",
+        "ko": "해안 위 선데이스 표지",
+        "zh": "海岸上方的 Sundays 标志",
+        "id": "Papan Sundays di atas pantai"
+      },
+      "description": {
+        "ja": "白いサンデーズのサインが石壁と茅葺き屋根の間に立ち、その後ろに海とリーフが広がります。クラブの崖沿いの環境を示す写真です。営業、アクセス、海況はリアルタイムで確認してください。",
+        "en": "The white Sundays sign stands between a stone wall and thatched roofs, with the ocean and reef behind it. The image shows the club's cliff-coast setting; confirm opening, access and sea conditions in real time.",
+        "ko": "흰색 선데이스 표지가 돌담과 초가지붕 사이에 서 있고 뒤로 바다와 리프가 펼쳐집니다. 클럽의 절벽 해안 환경을 보여 주는 장면이며 운영, 접근, 해상 상태는 실시간 확인이 필요합니다.",
+        "zh": "白色 Sundays 标志立在石墙和茅草屋顶之间，后方是海面与礁线。画面展示俱乐部的悬崖海岸环境；开放、通行和海况请实时确认。",
+        "id": "Papan putih Sundays berdiri di antara dinding batu dan atap jerami, dengan laut dan terumbu di belakangnya. Foto ini menunjukkan suasana pesisir tebing klub; periksa jam buka, akses, dan kondisi laut secara langsung."
       }
     },
     {
@@ -3150,27 +3259,49 @@
       "sub_category": "balinese-culture",
       "tags": [
         "culture",
-        "temple"
+        "temple",
+        "highland",
+        "photography"
       ],
       "location_status": "bali-named",
       "region_ids": [
         "G6"
       ],
       "route_ids": [
-        "R4",
-        "R5"
+        "R1",
+        "R5",
+        "R6"
       ],
-      "poi_ids": [],
+      "poi_ids": [
+        "lempuyang_temple"
+      ],
       "intended_use": "Approved Bali culture portfolio image after user-confirmed manual watermark removal.",
       "alt_text": {
-        "zh": "????????????",
-        "en": "Lempuyang Temple gates framing Mount Agung in Bali"
+        "ja": "アグン山と鏡面反射を縁取るペナタラン・アグン・レンプヤンの割れ門",
+        "en": "Split gates at Penataran Agung Lempuyang framing Mount Agung with a mirrored reflection",
+        "ko": "아궁산과 거울 반사를 감싸는 페나타란 아궁 렘푸양의 쪼개진 문",
+        "zh": "伦普扬佩纳塔兰阿贡分裂门框住阿贡火山并呈现镜面倒影",
+        "id": "Gerbang terbelah Penataran Agung Lempuyang membingkai Gunung Agung dengan pantulan cermin"
       },
       "rights": {
         "status": "user_provided_with_consent",
         "source": "user_global_confirmation",
         "approval_date": "2026-08-05",
         "license_or_owner": "WanderMind user global confirmation"
+      },
+      "title": {
+        "ja": "ペナタラン・アグン・レンプヤンの割れ門",
+        "en": "Split gate at Penataran Agung Lempuyang",
+        "ko": "페나타란 아궁 렘푸양의 쪼개진 문",
+        "zh": "伦普扬佩纳塔兰阿贡的分裂门",
+        "id": "Gerbang terbelah di Penataran Agung Lempuyang"
+      },
+      "description": {
+        "ja": "バリ式の割れ門がアグン山を縁取り、手前には鏡のような反射が見えます。写真はレンプヤン寺院群のペナタラン・アグンで知られる門景で、山頂寺院ではありません。訪問区域、シャトル、待ち時間、服装、天候は当日確認してください。",
+        "en": "A Balinese split gate frames Mount Agung with a mirrored reflection in the foreground. The photographed gate is the familiar view at Penataran Agung within the Lempuyang complex, not the summit temple; confirm the exact section, shuttle, queue, dress and weather in real time.",
+        "ko": "발리식 쪼개진 문 사이로 아궁산이 보이고 앞쪽에는 거울 같은 반사가 나타납니다. 사진은 렘푸양 사원 단지의 페나타란 아궁에서 알려진 문 풍경이며 정상 사원과는 다릅니다. 방문 구역, 셔틀, 대기, 복장, 날씨는 실시간 확인이 필요합니다.",
+        "zh": "巴厘式分裂门框住阿贡火山，前景呈现镜面倒影。照片对应伦普扬寺庙群中常见的佩纳塔兰阿贡门景，并非山顶主庙；具体参观区、接驳、排队、着装和天气须实时确认。",
+        "id": "Gerbang terbelah bergaya Bali membingkai Gunung Agung dengan pantulan seperti cermin di bagian depan. Gerbang yang difoto adalah pemandangan populer di Penataran Agung dalam kompleks Lempuyang, bukan pura di puncak; periksa bagian yang dikunjungi, shuttle, antrean, pakaian, dan cuaca secara langsung."
       }
     }
   ]

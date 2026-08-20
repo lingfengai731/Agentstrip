@@ -1592,7 +1592,7 @@ class ProductAccessTests(unittest.TestCase):
         route_ids = {route["id"] for route in data["routes"]}
         poi_ids = [poi["id"] for poi in data["pois"]]
         poi_by_id = {poi["id"]: poi for poi in data["pois"]}
-        self.assertEqual(len(poi_ids), 59)
+        self.assertEqual(len(poi_ids), 62)
         self.assertEqual(len(poi_ids), len(set(poi_ids)))
         verification_states = {
             "verified",
@@ -1660,6 +1660,9 @@ class ProductAccessTests(unittest.TestCase):
             "munduk_waterfall",
             "gitgit_waterfall",
             "tulamben",
+            "taman_ayun",
+            "taman_saraswati",
+            "sundays_beach_club",
         }
         self.assertEqual(
             {poi["id"] for poi in data["pois"] if poi["verification_status"] == "verified"},
@@ -1684,6 +1687,9 @@ class ProductAccessTests(unittest.TestCase):
         self.assertIn("must not be merged", poi_by_id["munduk_waterfall"]["notes"])
         self.assertIn("must not be merged", poi_by_id["gitgit_waterfall"]["notes"])
         self.assertIn("does not verify any dive operator", poi_by_id["tulamben"]["notes"])
+        self.assertIn("World Heritage", poi_by_id["taman_ayun"]["notes"])
+        self.assertIn("public access", poi_by_id["taman_saraswati"]["notes"])
+        self.assertIn("tide", poi_by_id["sundays_beach_club"]["verification"]["live_checks"])
         self.assertEqual(
             poi_by_id["thousand_islands_viewpoint"]["verification_status"],
             "pending_review",
@@ -1839,7 +1845,13 @@ class ProductAccessTests(unittest.TestCase):
                 self.assertTrue(source["url"].startswith("https://"), (poi_id, source))
                 self.assertIn(
                     source["kind"],
-                    {"official_venue", "official_booking", "government_tourism", "government_registry"},
+                    {
+                        "official_venue",
+                        "official_booking",
+                        "government_tourism",
+                        "government_registry",
+                        "international_heritage_registry",
+                    },
                     (poi_id, source),
                 )
         for route in data["routes"]:
@@ -2645,7 +2657,8 @@ class ProductAccessTests(unittest.TestCase):
         batch = [
             item
             for item in manifest["images"]
-            if item["category"] in d8_themes
+            if item["relative_path"] in expected_paths
+            and item["category"] in d8_themes
             and item["region_ids"]
             and item["route_ids"]
             and item["poi_ids"]
@@ -2666,6 +2679,56 @@ class ProductAccessTests(unittest.TestCase):
         gwk = next(item for item in batch if item["poi_ids"] == ["gwk"])
         self.assertNotIn("temple", gwk["tags"])
         self.assertIn("cultural-park", gwk["tags"])
+
+    def test_second_d8_portfolio_batch_has_verified_pois_and_five_language_copy(self):
+        frontend = BACKEND_DIR.parents[1] / "wandermind-studio" / "frontend"
+        manifest = json.loads(
+            (frontend / "assets" / "data" / "image-publish-manifest.json").read_text(
+                encoding="utf-8"
+            )
+        )
+        bali_data = json.loads(
+            (frontend / "assets" / "data" / "bali-travel-data.json").read_text(
+                encoding="utf-8"
+            )
+        )
+        expected = {
+            "assets/images/Pura Taman Ayun.jpg": "taman_ayun",
+            "assets/images/Pura Taman Saraswati1.jpg": "taman_saraswati",
+            "assets/images/Pura Taman Saraswati2.jpg": "taman_saraswati",
+            "assets/images/uluwatu_sunday beach club1.jpg": "sundays_beach_club",
+            "assets/images/uluwatu_sunday beach club2.jpg": "sundays_beach_club",
+            "assets/images/Lempuyang Temple.jpg": "lempuyang_temple",
+        }
+        by_path = {item["relative_path"]: item for item in manifest["images"]}
+        poi_by_id = {item["id"]: item for item in bali_data["pois"]}
+        languages = {"zh", "en", "ja", "ko", "id"}
+
+        for path, poi_id in expected.items():
+            item = by_path[path]
+            self.assertEqual(item["poi_ids"], [poi_id])
+            self.assertEqual(poi_by_id[poi_id]["verification_status"], "verified")
+            self.assertTrue((frontend / item["web_optimized_path"]).is_file())
+            for field in ("title", "description", "alt_text"):
+                self.assertEqual(set(item[field]), languages)
+                self.assertTrue(all(value.strip() for value in item[field].values()))
+                self.assertTrue(all("?" not in value for value in item[field].values()))
+
+        complete_d8 = [
+            item
+            for item in manifest["images"]
+            if item["category"] in {"landscapes", "culture", "experiences"}
+            and all(
+                set(item.get(field, {})) == languages
+                and all(value.strip() for value in item[field].values())
+                for field in ("title", "description", "alt_text")
+            )
+        ]
+        self.assertEqual(len(complete_d8), 21)
+
+        lempuyang = by_path["assets/images/Lempuyang Temple.jpg"]
+        self.assertIn("Penataran Agung", lempuyang["title"]["en"])
+        self.assertIn("not the summit temple", lempuyang["description"]["en"])
 
     def test_bali_gallery_uses_theme_and_tag_taxonomy(self):
         frontend_dir = (
