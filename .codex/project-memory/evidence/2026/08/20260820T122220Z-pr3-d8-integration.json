@@ -1,0 +1,23 @@
+{
+  "schema_version": 1,
+  "evidence_id": "ev-20260820T122220Z-pr3-d8-integration",
+  "task_ref": "pr3-d8-integration",
+  "owner": "codex-sol",
+  "captured_at": "2026-08-20T12:22:20Z",
+  "status": "verified",
+  "claim": "Draft PR #3 was fast-forwarded from 94a7a16 to a53901e with both D8 batches and corrected project facts; both GitHub checks passed.",
+  "source": {
+    "kind": "git_pull_request",
+    "repository": "https://github.com/lingfengai731/Agentstrip.git",
+    "pull_request": 3,
+    "branch": "codex/account2-integration-20260816",
+    "commit": "a53901ede58240700ad535e5380a1c675b635761",
+    "worktree": "E:\\Agentstrip-wt-pr3-d8-integration"
+  },
+  "verification": {
+    "local": "53/53 product tests OK; image-intake PASS; Node syntax PASS; diff-check PASS; project-memory validation PASS with one expected source snapshot warning",
+    "github": "validate success; driver-request-rate-limit success; PR open, Draft and mergeable",
+    "independent_gate": "Luna Max GO; P0=0, P1=0, P2=0 after current-state correction"
+  },
+  "notes": "No merge, Render access, deployment, production write, upload or publication was performed. Production remains the previously verified 50-POI baseline."
+}

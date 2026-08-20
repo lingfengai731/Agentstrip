@@ -207,3 +207,11 @@
 - 内容回调：Lempuyang、Taman Ayun、Taman Saraswati 两张、Sundays Beach Club 两张共 6 张补齐五语言 title/description/alt，并精确关联区域、路线与 POI。Lempuyang 明确区分 Penataran Agung 门景与山顶寺院；库存图中的泰国、夏威夷、希腊、帕劳文件不冒充巴厘岛。
 - QA 回调：53 项产品测试通过；完整 D8 资料由 15 增至 21，manifest 仍为 108 张，POI 由 59 增至 62；6/6 Web 图片存在、错位 0、未核验 POI 0。系统 Chrome 本地 mock 管理 API 选择 `Pura Taman Ayun.jpg` 后自动填满五语言资料，390/768/1440 页面、body 与弹窗横向溢出均为 0；未上传、未发布、未访问生产。
 - Skill 回调：继续使用 cross-account-project-memory、agent-role-orchestrator、codex-luna-worker 与 ui-implementation-workflow；本轮无页面布局或动效代码，故 Emil 与动画技能不作表演性调用。Browser/Computer Use 仍按永久非阻塞降级执行。
+
+## 2026-08-20 Draft PR #3 D8 integration callback
+
+- 路由：medium / L3。Sol 在独立 `E:\Agentstrip-wt-pr3-d8-integration` 完成线性 fast-forward、事实修正、提交与远端核验；Luna Max 先以两项 P1 拒绝过期计数和捕获时点矛盾，修正后复审 GO，P0/P1/P2 均为 0。
+- Git 回调：PR #3 从 `94a7a16` 快进至 `a53901e`，远端分支已同步；GitHub `validate` 与 `driver-request-rate-limit` 均成功。PR 保持 Draft，未 merge、未部署。
+- 验证回调：53/53 产品测试、图片导入回归、Node 语法、diff check 与项目记忆校验通过；快照 source commit 与文档 HEAD 不同的提示为已解释的预期警告。
+- Skill 回调：cross-account-project-memory 约束隔离 worktree、远端证据和 handoff；agent-role-orchestrator 采用 L3 门禁；codex-luna-worker 提供独立反证。无 UI 或动效改动，因此 UI/Emil/动画技能未调用。
+- Browser 边界：右嵌 ambient Render URL 仍不作为已查看证据；本轮没有 Render、环境变量、上传、发布或生产写入。
