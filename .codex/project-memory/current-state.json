@@ -17,7 +17,7 @@
     "captured_by": "codex-sol",
     "source_commit": "dd0e1d14f60b1a50d2710901ac5f1a7863268730",
     "source_branch": "codex/portfolio-d8-batch2",
-    "working_tree_at_capture": "clean",
+    "working_tree_at_capture": "dirty: code commit immutable; documentation and evidence files were pending",
     "wandermind_bali": {
       "status": "verified",
       "routes": 6,
@@ -30,7 +30,7 @@
         "R2, R3, R4 and R6 free-outline stable facts are verified; Pura Taman Ayun, Pura Taman Saraswati and Sundays Beach Club now have official, government or international heritage identity and location evidence.",
         "Thousand Islands Viewpoint and two Mount Batur anchors remain pending because their exact public identity, entrance or venue is not uniquely resolved; supplier-gated experiences remain non-execution-ready.",
         "Dicky's five-day itinerary is treated as an R1 field calibration, not a seventh route family.",
-        "Production was freshly reverified at the prior main frontend baseline: schema 1.2.0 with 6 routes and 50 POIs; this 59-POI branch is not deployed."
+        "Production was freshly reverified at the prior main frontend baseline: schema 1.2.0 with 6 routes and 50 POIs; this 62-POI branch is not deployed."
       ]
     },
     "driver_request_protection": {
@@ -83,9 +83,9 @@
       "d8_theme_candidates": 52,
       "driver_or_unclassified_assets": 56,
       "d8_route_linked": 23,
-      "d8_poi_linked": 15,
-      "d8_region_linked": 20,
-      "d8_all_geo_links": 15,
+      "d8_poi_linked": 21,
+      "d8_region_linked": 21,
+      "d8_all_geo_links": 21,
       "d8_five_language_copy_complete": 21,
       "d8_five_language_alt_complete": 21,
       "static_gallery_fallback_assets": 37,
