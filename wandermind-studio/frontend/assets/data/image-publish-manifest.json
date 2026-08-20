@@ -1963,18 +1963,39 @@
       "sub_category": "balinese-culture",
       "tags": [
         "culture",
-        "temple"
+        "community",
+        "temple",
+        "penjor"
       ],
       "location_status": "bali-named",
-      "region_ids": [],
+      "region_ids": [
+        "G1"
+      ],
       "route_ids": [
-        "R4"
+        "R6"
       ],
       "poi_ids": [],
       "intended_use": "WanderMind approved project image library; connect only where its destination/category metadata matches.",
       "alt_text": {
-        "zh": "??????????",
-        "en": "Bali culture or temple scene"
+        "zh": "身着白色仪式服装的社区成员坐在塞米亚克村社神庙外，头顶可见佩恩乔尔装饰",
+        "en": "Community members in white ceremonial attire seated outside Pura Desa Adat Seminyak beneath penjor decorations",
+        "ja": "白い儀礼衣装を着た地域の人々が、ペンジョール装飾の下でプラ・デサ・アダット・スミニャックの外に座る様子",
+        "ko": "흰색 의례복을 입은 지역 주민들이 펜조르 장식 아래 푸라 데사 아다트 스미냑 밖에 앉아 있는 모습",
+        "id": "Warga mengenakan pakaian upacara putih duduk di luar Pura Desa Adat Seminyak di bawah hiasan penjor"
+      },
+      "title": {
+        "zh": "塞米亚克村社神庙的巴厘文化聚会",
+        "en": "Balinese cultural gathering at Pura Desa Adat Seminyak",
+        "ja": "プラ・デサ・アダット・スミニャックのバリ文化の集い",
+        "ko": "푸라 데사 아다트 스미냑의 발리 문화 모임",
+        "id": "Pertemuan budaya Bali di Pura Desa Adat Seminyak"
+      },
+      "description": {
+        "zh": "照片显示身着白色仪式服装的社区成员聚集在塞米亚克村社神庙门外，街边可见佩恩乔尔。具体仪式、拍摄日期以及是否与宁静日有关均尚未核实。",
+        "en": "The photo shows community members in white ceremonial attire gathered outside the gate of Pura Desa Adat Seminyak, with penjor along the street. The exact ceremony, date and any connection to Nyepi are unverified.",
+        "ja": "白い儀礼衣装を着た地域の人々がプラ・デサ・アダット・スミニャックの門外に集まり、通りにはペンジョールが見えます。具体的な儀礼、撮影日、ニュピとの関係は未確認です。",
+        "ko": "흰색 의례복을 입은 지역 주민들이 푸라 데사 아다트 스미냑 정문 밖에 모여 있고 거리에는 펜조르가 보입니다. 정확한 의식, 촬영 날짜, 녜삐와의 관련성은 확인되지 않았습니다.",
+        "id": "Foto ini menunjukkan warga dengan pakaian upacara putih berkumpul di luar gerbang Pura Desa Adat Seminyak, dengan penjor di sepanjang jalan. Upacara, tanggal, dan kaitannya dengan Nyepi belum terverifikasi."
       },
       "rights": {
         "status": "user_provided_with_consent",

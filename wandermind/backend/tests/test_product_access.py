@@ -2724,7 +2724,7 @@ class ProductAccessTests(unittest.TestCase):
                 for field in ("title", "description", "alt_text")
             )
         ]
-        self.assertEqual(len(complete_d8), 23)
+        self.assertEqual(len(complete_d8), 24)
 
         lempuyang = by_path["assets/images/Lempuyang Temple.jpg"]
         self.assertIn("Penataran Agung", lempuyang["title"]["en"])
@@ -2829,6 +2829,62 @@ class ProductAccessTests(unittest.TestCase):
             "ガルンガンに関連するバリ島のペンジョール",
             "갈룽안과 관련된 발리의 펜조르",
             "Penjor Bali yang berkaitan dengan Galungan",
+        ):
+            self.assertIn(copy, html)
+
+    def test_fifth_d8_portfolio_batch_corrects_nyepi_filename_to_visible_seminyak_scene(self):
+        frontend = BACKEND_DIR.parents[1] / "wandermind-studio" / "frontend"
+        html = (frontend / "bali.html").read_text(encoding="utf-8")
+        intake_csv = (
+            frontend / "assets" / "data" / "image-intake-review.csv"
+        ).read_text(encoding="utf-8")
+        intake_line = next(
+            line for line in intake_csv.splitlines() if line.startswith("Nyepi.jpg,")
+        )
+        manifest = json.loads(
+            (frontend / "assets" / "data" / "image-publish-manifest.json").read_text(
+                encoding="utf-8"
+            )
+        )
+        by_path = {item["relative_path"]: item for item in manifest["images"]}
+        item = by_path["assets/images/Nyepi.jpg"]
+        languages = {"zh", "en", "ja", "ko", "id"}
+
+        self.assertEqual(
+            item["sha256"],
+            "5ea1261626ebac26342958d6ca299cfff578f8f01ec04c41a1281f05ced1a550",
+        )
+        self.assertEqual(
+            item["web_optimized_path"], "assets/images/web/5ea1261626ebac26.webp"
+        )
+        self.assertTrue((frontend / item["web_optimized_path"]).is_file())
+        self.assertEqual(item["category"], "culture")
+        self.assertEqual(item["sub_category"], "balinese-culture")
+        self.assertTrue(
+            {"culture", "community", "temple", "penjor"}.issubset(item["tags"])
+        )
+        self.assertEqual(item["location_status"], "bali-named")
+        self.assertEqual(item["region_ids"], ["G1"])
+        self.assertEqual(item["route_ids"], ["R6"])
+        self.assertEqual(item["poi_ids"], [])
+        for field in ("title", "description", "alt_text"):
+            self.assertEqual(set(item[field]), languages)
+            self.assertTrue(all(value.strip() for value in item[field].values()))
+            self.assertTrue(all("?" not in value for value in item[field].values()))
+        self.assertIn("unverified", item["description"]["en"].lower())
+        self.assertIn("culture;community;temple;penjor", intake_line)
+        self.assertIn(item["alt_text"]["en"], intake_line)
+        self.assertIn('data-place="pura-desa-seminyak-gathering"', html)
+        self.assertIn('data-region="G1" data-area="Seminyak"', html)
+        self.assertIn('data-route-ids="R6"', html)
+        self.assertNotIn('data-place="nyepi"', html)
+        self.assertNotIn('alt="Nyepi cultural moment in Bali"', html)
+        for copy in (
+            "Balinese cultural gathering at Pura Desa Adat Seminyak",
+            "塞米亚克村社神庙的巴厘文化聚会",
+            "プラ・デサ・アダット・スミニャックのバリ文化の集い",
+            "푸라 데사 아다트 스미냑의 발리 문화 모임",
+            "Pertemuan budaya Bali di Pura Desa Adat Seminyak",
         ):
             self.assertIn(copy, html)
 
