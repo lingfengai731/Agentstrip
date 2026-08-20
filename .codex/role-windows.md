@@ -215,3 +215,12 @@
 - 验证回调：53/53 产品测试、图片导入回归、Node 语法、diff check 与项目记忆校验通过；快照 source commit 与文档 HEAD 不同的提示为已解释的预期警告。
 - Skill 回调：cross-account-project-memory 约束隔离 worktree、远端证据和 handoff；agent-role-orchestrator 采用 L3 门禁；codex-luna-worker 提供独立反证。无 UI 或动效改动，因此 UI/Emil/动画技能未调用。
 - Browser 边界：右嵌 ambient Render URL 仍不作为已查看证据；本轮没有 Render、环境变量、上传、发布或生产写入。
+
+## 2026-08-20 Portfolio D8 batch 3 first-unit callback
+
+- 路由：small / L2 / compact。Sol 在独立 `E:\Agentstrip-wt-portfolio-d8-batch3` 负责地点证据、五语言文案、测试、提交与最终验收；正式 `luna_worker`（`gpt-5.6-luna` / `max`，工具未暴露精确启动时间）负责只读视觉和不可变提交复审。
+- 内容回调：`bali-12.jpg` 的原图哈希与 manifest 一致；官方 Ubud Monkey Forest 资料及同一入口独立影像共同确认画面中的苔藓石雕、金色字样和入口牌属于乌布圣猴森林。外部影像只作识别证据，未进入仓库。
+- 实现回调：图片保持 Landscapes，细分为 `nature-wildlife`，关联 G4、R1/R2/R4 与 verified POI `ubud_monkey_forest`；五语言文案不声称画面中有活体猴子，不固化开放时间或票价。
+- QA 回调：Luna 首轮因父线程按计划产生目标 diff 而诚实标记 blocked，未写文件；代码冻结为 `6179c32` 后复审完成并 GO。54/54 产品测试、image-intake、Node 与 diff-check 通过。
+- Skill 回调：cross-account-project-memory 约束独立 worktree 与 evidence/handoff；agent-role-orchestrator 约束 L2 回调；codex-luna-worker 执行两阶段监工。本轮无 UI/动效修改，故 UI、Emil 与动画技能不调用。
+- 生产边界：未上传、未发布、未访问 Render、未 merge、未部署；ambient Render URL 仍不作为控制证据。

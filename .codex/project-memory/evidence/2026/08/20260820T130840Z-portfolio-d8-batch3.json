@@ -1,0 +1,22 @@
+{
+  "schema_version": 1,
+  "evidence_id": "ev-20260820T130840Z-portfolio-d8-batch3",
+  "task_ref": "portfolio-d8-batch3",
+  "owner": "codex-sol",
+  "captured_at": "2026-08-20T13:08:40Z",
+  "status": "verified",
+  "claim": "bali-12.jpg is hash-bound and evidence-mapped to the verified Ubud Sacred Monkey Forest Sanctuary POI with complete zh/en/ja/ko/id metadata; complete D8 count is 22.",
+  "source": {
+    "kind": "git",
+    "repository": "https://github.com/lingfengai731/Agentstrip.git",
+    "commit": "6179c3272b262274b6f09422a9b8f7e6ed7d06ae",
+    "branch": "codex/portfolio-d8-batch3",
+    "worktree": "E:\\Agentstrip-wt-portfolio-d8-batch3"
+  },
+  "verification": {
+    "local": "54/54 product tests OK; image-intake PASS; Node syntax PASS; diff-check PASS",
+    "image": "original SHA-256 matched manifest; original and WebP show the same entrance; independent entrance image comparison produced 161 good SIFT matches and 114 RANSAC inliers",
+    "independent_gate": "Luna Max immutable-commit review complete and GO"
+  },
+  "notes": "The external comparison image was used only for location identification and was not added to the repository. No upload, publication, Render access, deployment or production write was performed."
+}

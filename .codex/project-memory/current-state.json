@@ -13,11 +13,11 @@
   },
   "snapshot": {
     "status": "verified",
-    "captured_at": "2026-08-20T12:00:35Z",
+    "captured_at": "2026-08-20T13:08:40Z",
     "captured_by": "codex-sol",
-    "source_commit": "dd0e1d14f60b1a50d2710901ac5f1a7863268730",
-    "source_branch": "codex/portfolio-d8-batch2",
-    "working_tree_at_capture": "dirty: code commit immutable; documentation and evidence files were pending",
+    "source_commit": "6179c3272b262274b6f09422a9b8f7e6ed7d06ae",
+    "source_branch": "codex/portfolio-d8-batch3",
+    "working_tree_at_capture": "clean at immutable code commit; documentation and evidence changes follow",
     "wandermind_bali": {
       "status": "verified",
       "routes": 6,
@@ -78,16 +78,16 @@
       "production_status": "not_deployed"
     },
     "portfolio_content_manager": {
-      "status": "implementation_verified_local; first two D8 batches have 21 complete five-language assets; remaining batch migration pending",
+      "status": "implementation_verified_local; three D8 batches have 22 complete five-language assets; remaining batch migration pending",
       "approved_unique_assets": 108,
       "d8_theme_candidates": 52,
       "driver_or_unclassified_assets": 56,
       "d8_route_linked": 23,
-      "d8_poi_linked": 21,
-      "d8_region_linked": 21,
-      "d8_all_geo_links": 21,
-      "d8_five_language_copy_complete": 21,
-      "d8_five_language_alt_complete": 21,
+      "d8_poi_linked": 22,
+      "d8_region_linked": 22,
+      "d8_all_geo_links": 22,
+      "d8_five_language_copy_complete": 22,
+      "d8_five_language_alt_complete": 22,
       "static_gallery_fallback_assets": 37,
       "verified_capabilities": [
         "multi-file browser upload with progress and SHA-256 duplicate checks",
@@ -99,16 +99,16 @@
         "repeat image-intake scans preserve reviewed manifest version, approval, optimized paths and localized copy for the same SHA-256"
       ],
       "verification": {
-        "product_tests": "53/53",
+        "product_tests": "54/54",
         "image_intake_tests": "pass",
         "node_syntax": "pass",
         "browser_languages": "a manifest-matched original populated non-empty zh, en, ja, ko and id title, description and alt text",
         "browser_widths": "390, 768 and 1440 px each had zero root, body and metadata-dialog horizontal overflow",
         "browser_console": "local API routes were deterministically mocked; no upload, publication or production request was made"
       },
-      "evidence_id": "ev-20260820T120035Z-portfolio-d8-batch2",
+      "evidence_id": "ev-20260820T130840Z-portfolio-d8-batch3",
       "batch_boundary": "Only Landscapes, Culture and Experiences belong in D8 Portfolio. People assets primarily belong in Driver Moments; unclassified assets require manual classification. Approval alone does not prove place, route or five-language metadata.",
-      "next_batch": "Review the remaining 31 D8 theme candidates. Start with visually identifiable assets such as bali-12.jpg only after exact hash-to-POI confirmation; stock images naming Thailand, Hawaii, Greece or Palau must not be relabelled as Bali. Publication remains a separate authenticated production action.",
+      "next_batch": "Review the remaining 30 D8 theme candidates. Start with Galungan.jpg only after exact scene and cultural-context verification; stock images naming Thailand, Hawaii, Greece or Palau must not be relabelled as Bali. Publication remains a separate authenticated production action.",
       "production_status": "not_verified"
     },
     "production": {
