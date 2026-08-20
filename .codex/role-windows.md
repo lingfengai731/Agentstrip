@@ -26,6 +26,7 @@
 
 ## 最近回调
 
+- 2026-08-20 Portfolio D8 第四单元回调：Sol 与 Luna Max 独立核对 `Galungan.jpg` 的原图哈希、WebP、授权和官方文化资料；采用“与 Galungan–Kuningan 相关的 penjor”限定表述，移除错误 `temple` 标签，保留 R4 主题关联但不绑定未知 POI/区域。中英日韩印 manifest、静态弹窗文案和运营 CSV 已同步；55 项产品测试、image-intake、三档响应式及五语言运行时验收通过。未上传、发布、合并或部署。
 - 2026-08-17 主线迁回回调：已完整读取 `01a00b05-e145-7ae3-844b-f0cf62b78e6f` 的两页任务记录和用户粘贴的完整记录，并用安全工作树、共享项目记忆及 GitHub PR #3 重新核验；当前总控固定为 `019fcbe4-146b-72a1-a3e6-9fac972a37d6`，前主线保持闲置且禁止继续派发，不把聊天回忆当项目事实。
 - 2026-08-17 Browser 最终门禁回调：当前新任务可调用控制工具数量为 0，且没有新的 Desktop 日志证明运行时挂载成功；已按约定停止所有 Browser/Chrome/Computer Use 本机修复，将其永久降级为非阻断限制。环境右侧 ambient Render URL 仅证明页面被打开，不证明 Agent 能读取或控制。
 - 2026-08-17 Portfolio 批次审计与发布门禁回调：108 张唯一素材均已授权并在 manifest；D8 三类候选 52 张，其中 23 张关联路线、15 张关联 POI、20 张关联区域、15 张三类地理关联齐全，只有 1 张具有五语言替代文本。其余 56 张为 people/unclassified，前者主要进入 Driver Moments，后者须人工分类。管理员上传、Cloudinary 直传、生命周期、排序、替换和公开 API 已实现；新增前后端五语言发布门禁，草稿可不完整，发布必须补齐 zh/en/ja/ko/id 的标题、说明和替代文本。产品回归 51/51、图片收件专项和 Node 语法通过；Playwright 对五语言逐一触发正确提示，320/390/768/1440 均零横向溢出、最终控制台 0 error/0 warning。下一批从 15 张完整地理关联素材开始，不能把“已授权”误写成“已完成 D8 发布”。
@@ -96,6 +97,7 @@
 
 ## 技能命中
 
+- 2026-08-20 Galungan 单图闭环实际使用：cross-account-project-memory 约束独立 worktree、不可变 evidence 与 handoff；agent-role-orchestrator 采用 small/L2；codex-luna-worker 将图片文化语义与最终提交审计交给 Luna Max，Sol 保留文案边界、实现、响应式复核和发布判断；ui-implementation-workflow 将页面改动限制为既有 teal + gold 静态 gallery 的数据与文案，并通过 browser-automation-router 选择本地 Playwright CLI 做 1440/768/390 及五语言验收。未使用女娲人物、动画或 UI 组件库，因为本轮没有新商业决策、动效或组件设计。
 - 2026-08-16 专业路线发布门禁实际使用：cross-account-project-memory 恢复当前仓库、最新 handoff、PR #3、CI 和公开生产事实；agent-role-orchestrator 将任务定级 critical/L3，并在 `prepare_role_window.py` 因缺少 `registry/plugin-packages.json` 时 fail-closed，不伪造持久线程；codex-luna-worker 派发正式 Luna Max 只读权益审计；huashu-nuwa 路由 Steve Jobs、Paul Graham、Munger 现有角色交叉评审；browser-automation-router/Playwright 复核公开生产五语言与四视口；GitHub 连接器核验 PR 和 Actions。当前任务没有可调用的内嵌 Browser/Chrome 控制工具，故已登录 Render 标签页不能作为已检查证据。
 - 2026-08-16 司机询价持久化反滥用实际使用：cross-account-project-memory 从 batch 2 的远端 0/0 同步点建立独立 `codex/driver-request-rate-limit` worktree；agent-role-orchestrator 采用 medium/L2 和开发→测试→QA 回调；codex-luna-worker 派发正式 Luna Max 首轮架构审计与第二轮对抗性 QA，Sol 独立复核实际 diff、43 项测试和官方数据库语法文档。未加载 UI workflow、浏览器自动化、女娲或人物 Perspective：本轮无页面视觉、品牌、内容或商业判断，避免制造无关技能命中。
 - 2026-08-16 POI batch 2 实际使用：cross-account-project-memory 从 batch 1 远端同步点建立独立 `codex/poi-facts-batch2` worktree，并要求 evidence/handoff/远端一致性门禁；agent-role-orchestrator 采用 medium/L2 与来源 fail-closed；codex-luna-worker 派发正式 Luna Max 六节点只读审计并由 Sol 复核；ui-implementation-workflow 将范围限定为既有 content/detail 数据增量；browser-automation-router 选择 Playwright，Chrome 1440/768/390/320 与 WebKit 390 英文均无页面/详情横向溢出。`prepare_role_window.py` 仍因缺少 `registry/plugin-packages.json` fail-closed，未伪造持久角色窗口。未使用女娲/Perspective：地点身份、医疗与潜水安全边界必须由一手来源和实际供应商确认。
