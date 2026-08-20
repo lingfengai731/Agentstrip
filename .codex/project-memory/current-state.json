@@ -13,21 +13,21 @@
   },
   "snapshot": {
     "status": "verified",
-    "captured_at": "2026-08-20T11:40:00Z",
+    "captured_at": "2026-08-20T12:00:35Z",
     "captured_by": "codex-sol",
-    "source_commit": "c7ae5e52b9b32fea035d37b71bb6fe8a34f1555d",
-    "source_branch": "codex/portfolio-d8-batch1",
+    "source_commit": "dd0e1d14f60b1a50d2710901ac5f1a7863268730",
+    "source_branch": "codex/portfolio-d8-batch2",
     "working_tree_at_capture": "clean",
     "wandermind_bali": {
       "status": "verified",
       "routes": 6,
-      "pois": 59,
-      "verified_pois": 53,
+      "pois": 62,
+      "verified_pois": 56,
       "pending_review_pois": 3,
       "supplier_gated_pois": 3,
       "verified_route_families": ["R2", "R3", "R4", "R6"],
       "notes": [
-        "R2, R3, R4 and R6 free-outline stable facts are verified; Heart Space Bali, Intuitive Flow, Munduk Waterfall, Gitgit Waterfall and Tulamben now have first-party stable identity and location evidence.",
+        "R2, R3, R4 and R6 free-outline stable facts are verified; Pura Taman Ayun, Pura Taman Saraswati and Sundays Beach Club now have official, government or international heritage identity and location evidence.",
         "Thousand Islands Viewpoint and two Mount Batur anchors remain pending because their exact public identity, entrance or venue is not uniquely resolved; supplier-gated experiences remain non-execution-ready.",
         "Dicky's five-day itinerary is treated as an R1 field calibration, not a seventh route family.",
         "Production was freshly reverified at the prior main frontend baseline: schema 1.2.0 with 6 routes and 50 POIs; this 59-POI branch is not deployed."
@@ -78,7 +78,7 @@
       "production_status": "not_deployed"
     },
     "portfolio_content_manager": {
-      "status": "implementation_verified_local; first 15 geo-linked D8 assets have complete five-language copy; remaining batch migration pending",
+      "status": "implementation_verified_local; first two D8 batches have 21 complete five-language assets; remaining batch migration pending",
       "approved_unique_assets": 108,
       "d8_theme_candidates": 52,
       "driver_or_unclassified_assets": 56,
@@ -86,8 +86,8 @@
       "d8_poi_linked": 15,
       "d8_region_linked": 20,
       "d8_all_geo_links": 15,
-      "d8_five_language_copy_complete": 15,
-      "d8_five_language_alt_complete": 15,
+      "d8_five_language_copy_complete": 21,
+      "d8_five_language_alt_complete": 21,
       "static_gallery_fallback_assets": 37,
       "verified_capabilities": [
         "multi-file browser upload with progress and SHA-256 duplicate checks",
@@ -99,16 +99,16 @@
         "repeat image-intake scans preserve reviewed manifest version, approval, optimized paths and localized copy for the same SHA-256"
       ],
       "verification": {
-        "product_tests": "52/52",
+        "product_tests": "53/53",
         "image_intake_tests": "pass",
         "node_syntax": "pass",
         "browser_languages": "a manifest-matched original populated non-empty zh, en, ja, ko and id title, description and alt text",
         "browser_widths": "390, 768 and 1440 px each had zero root, body and metadata-dialog horizontal overflow",
         "browser_console": "local API routes were deterministically mocked; no upload, publication or production request was made"
       },
-      "evidence_id": "ev-20260820T114000Z-portfolio-d8-batch1",
+      "evidence_id": "ev-20260820T120035Z-portfolio-d8-batch2",
       "batch_boundary": "Only Landscapes, Culture and Experiences belong in D8 Portfolio. People assets primarily belong in Driver Moments; unclassified assets require manual classification. Approval alone does not prove place, route or five-language metadata.",
-      "next_batch": "Review the remaining 37 D8 theme candidates in evidence-backed groups. Route execution claims for R1 and R5 remain supplier-gated even when an image has complete visual copy. Publication remains a separate authenticated production action.",
+      "next_batch": "Review the remaining 31 D8 theme candidates. Start with visually identifiable assets such as bali-12.jpg only after exact hash-to-POI confirmation; stock images naming Thailand, Hawaii, Greece or Palau must not be relabelled as Bali. Publication remains a separate authenticated production action.",
       "production_status": "not_verified"
     },
     "production": {

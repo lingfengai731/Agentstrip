@@ -1,0 +1,22 @@
+{
+  "schema_version": 1,
+  "evidence_id": "ev-20260820T120035Z-portfolio-d8-batch2",
+  "task_ref": "portfolio-d8-batch2",
+  "owner": "codex-sol",
+  "captured_at": "2026-08-20T12:00:35Z",
+  "status": "verified",
+  "claim": "Second D8 batch adds three source-backed verified POIs and complete zh/en/ja/ko/id copy for six exact images; complete D8 count is 21 and POI count is 62.",
+  "source": {
+    "kind": "git",
+    "repository": "https://github.com/lingfengai731/Agentstrip.git",
+    "commit": "dd0e1d14f60b1a50d2710901ac5f1a7863268730",
+    "branch": "codex/portfolio-d8-batch2",
+    "worktree": "E:\\Agentstrip-wt-portfolio-d8-batch2",
+    "dirty": true
+  },
+  "verification": {
+    "command": "python -m unittest wandermind.backend.tests.test_product_access; git diff --check; local Playwright via system Chrome at 1440/768/390",
+    "result": "53/53 OK; diff PASS; manifest-matched Pura Taman Ayun original auto-filled all 15 localized fields with zero root/body/dialog horizontal overflow"
+  },
+  "notes": "Code commit dd0e1d14f60b1a50d2710901ac5f1a7863268730. No upload, publication, Render access, deployment or production write."
+}

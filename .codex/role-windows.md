@@ -199,3 +199,11 @@
 - UI/QA 回调：不改现有 teal + gold 页面，也不新增无目的动效。系统 Chrome 的确定性本地验收使用 mock 管理 API，选择用户原图后命中批准清单并自动填满五语言字段；390/768/1440 的页面、body 和编辑弹窗横向溢出均为 0。未上传、未发布、未访问生产。
 - Skill 回调：`cross-account-project-memory` 约束跨账号事实与独立 worktree；`agent-role-orchestrator` 与 `codex-luna-worker` 约束 Sol/Luna 分工；`ui-implementation-workflow` 只约束既有视觉和响应式验收；Nuwa 检索后复用 Paul Graham 小批量人工闭环原则，未制造新人物 Skill；本轮无 UI 动效变更，故 Emil/Find/Improve/Review Animations 不作表演性调用。
 - Browser 边界：当前任务仍无可调用右嵌 Browser/Chrome/Computer Use 控制面，ambient Render URL 不作已检查证据；按用户 stop 条件永久降级为非阻塞，不再修插件、不读取 Render、不改变环境变量、不部署。
+
+## 2026-08-20 Portfolio D8 batch 2 callback
+
+- 路由：medium / L2。Sol 在独立 `E:\Agentstrip-wt-portfolio-d8-batch2` / `codex/portfolio-d8-batch2` 负责事实来源、逐图语义、实现与验收；正式 Luna Max 逐张查看剩余 37 张候选，因主控并行写入检测到工作树漂移后严格 STOP，随后改为审查不可变提交范围，未把漂移中的计数写成 GO。
+- 数据回调：新增 `taman_ayun`、`taman_saraswati`、`sundays_beach_club` 三个 verified POI；来源限定为 UNESCO、印度尼西亚旅游部门与场所官网。票价、开放、仪式、演出、潮汐、海况、活动、接驳和停车保持实时检查，不从文案推断执行就绪。
+- 内容回调：Lempuyang、Taman Ayun、Taman Saraswati 两张、Sundays Beach Club 两张共 6 张补齐五语言 title/description/alt，并精确关联区域、路线与 POI。Lempuyang 明确区分 Penataran Agung 门景与山顶寺院；库存图中的泰国、夏威夷、希腊、帕劳文件不冒充巴厘岛。
+- QA 回调：53 项产品测试通过；完整 D8 资料由 15 增至 21，manifest 仍为 108 张，POI 由 59 增至 62；6/6 Web 图片存在、错位 0、未核验 POI 0。系统 Chrome 本地 mock 管理 API 选择 `Pura Taman Ayun.jpg` 后自动填满五语言资料，390/768/1440 页面、body 与弹窗横向溢出均为 0；未上传、未发布、未访问生产。
+- Skill 回调：继续使用 cross-account-project-memory、agent-role-orchestrator、codex-luna-worker 与 ui-implementation-workflow；本轮无页面布局或动效代码，故 Emil 与动画技能不作表演性调用。Browser/Computer Use 仍按永久非阻塞降级执行。
