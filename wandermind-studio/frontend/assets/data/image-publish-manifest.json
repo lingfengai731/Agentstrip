@@ -1382,7 +1382,8 @@
       "sub_category": "balinese-culture",
       "tags": [
         "culture",
-        "temple"
+        "festival",
+        "penjor"
       ],
       "location_status": "bali-named",
       "region_ids": [],
@@ -1392,8 +1393,25 @@
       "poi_ids": [],
       "intended_use": "WanderMind approved project image library; connect only where its destination/category metadata matches.",
       "alt_text": {
-        "zh": "??????????",
-        "en": "Bali culture or temple scene"
+        "zh": "蓝天下巴厘岛道路旁成排的弯曲竹制佩恩乔尔装饰",
+        "en": "Rows of curved bamboo penjor decorations beside a road in Bali under a blue sky",
+        "ja": "青空の下、バリ島の道路沿いに並ぶ湾曲した竹製ペンジョール装飾",
+        "ko": "푸른 하늘 아래 발리 도로변에 늘어선 굽은 대나무 펜조르 장식",
+        "id": "Deretan hiasan penjor bambu melengkung di tepi jalan Bali di bawah langit biru"
+      },
+      "title": {
+        "zh": "与加隆安节相关的巴厘岛佩恩乔尔装饰",
+        "en": "Balinese penjor decorations associated with Galungan",
+        "ja": "ガルンガンに関連するバリ島のペンジョール装飾",
+        "ko": "갈룽안과 관련된 발리의 펜조르 장식",
+        "id": "Hiasan penjor Bali yang berkaitan dengan Galungan"
+      },
+      "description": {
+        "zh": "照片显示巴厘岛道路旁成排的弯曲竹制佩恩乔尔，以编织的棕榈叶等材料装饰。这类装饰常与加隆安至库宁安期间相关；具体拍摄地点和年份尚未核实。",
+        "en": "The photo shows rows of curved bamboo penjor decorated with woven palm leaves along a road in Bali. Such decorations are commonly associated with the Galungan–Kuningan period; the exact location and year are unverified.",
+        "ja": "バリ島の道路沿いに、編んだヤシの葉などで飾られた湾曲した竹製ペンジョールが並ぶ様子です。こうした装飾はガルンガンからクニンガンの時期と広く関連しますが、撮影場所と年は未確認です。",
+        "ko": "발리의 도로를 따라 엮은 야자 잎 등으로 꾸민 굽은 대나무 펜조르가 늘어선 모습입니다. 이러한 장식은 일반적으로 갈룽안부터 쿠닝안까지의 기간과 관련되지만, 정확한 촬영 장소와 연도는 확인되지 않았습니다.",
+        "id": "Foto ini menampilkan deretan penjor dari bambu melengkung yang dihiasi anyaman janur dan bahan lain di sepanjang jalan di Bali. Hiasan seperti ini lazim dikaitkan dengan masa Galungan–Kuningan; lokasi dan tahun pengambilan foto belum terverifikasi."
       },
       "rights": {
         "status": "user_provided_with_consent",
