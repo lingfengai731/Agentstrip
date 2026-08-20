@@ -62,6 +62,27 @@ function Get-ReviewValue {
     return $property.Value
 }
 
+function Get-ManifestValue {
+    param(
+        [AllowNull()]
+        [object]$Entry,
+        [string]$Name,
+        [AllowNull()]
+        [object]$Fallback = $null
+    )
+
+    if ($null -eq $Entry) {
+        return $Fallback
+    }
+
+    $property = $Entry.PSObject.Properties[$Name]
+    if ($null -eq $property -or $null -eq $property.Value) {
+        return $Fallback
+    }
+
+    return $property.Value
+}
+
 function Get-ImageHints {
     param([string]$FileName)
 
@@ -262,6 +283,28 @@ if (Test-Path -LiteralPath $OutputCsv) {
     $existingRows = @(Import-Csv -LiteralPath $OutputCsv)
 }
 
+$existingManifest = $null
+$existingManifestByHash = @{}
+if (Test-Path -LiteralPath $PublishManifest) {
+    try {
+        $existingManifest = Get-Content -LiteralPath $PublishManifest -Raw -Encoding UTF8 | ConvertFrom-Json
+    }
+    catch {
+        throw "Existing publish manifest is invalid; refusing to overwrite reviewed metadata: $($_.Exception.Message)"
+    }
+
+    foreach ($entry in @($existingManifest.images)) {
+        $entryHash = [string](Get-ManifestValue -Entry $entry -Name "sha256")
+        if ([string]::IsNullOrWhiteSpace($entryHash)) {
+            continue
+        }
+        if ($existingManifestByHash.ContainsKey($entryHash)) {
+            throw "Existing publish manifest contains a duplicate SHA-256: $entryHash"
+        }
+        $existingManifestByHash[$entryHash] = $entry
+    }
+}
+
 $existingByPath = @{}
 foreach ($row in $existingRows) {
     if (-not [string]::IsNullOrWhiteSpace($row.RelativePath)) {
@@ -401,35 +444,62 @@ $manifestImages = @(
     $rows |
         Where-Object { $_.EligibleForPublish } |
         ForEach-Object {
-            [ordered]@{
-                relative_path = $_.RelativePath
-                sha256 = $_.Sha256
-                category = $_.SuggestedCategory
-                sub_category = $_.SuggestedSubCategory
-                tags = @($_.SuggestedTags -split ";" | Where-Object { $_ })
-                location_status = $_.SuggestedLocationStatus
-                region_ids = @($_.SuggestedRegionIds -split ";" | Where-Object { $_ })
-                route_ids = @($_.SuggestedRouteIds -split ";" | Where-Object { $_ })
-                poi_ids = @($_.SuggestedPoiIds -split ";" | Where-Object { $_ })
-                intended_use = $_.IntendedUse
-                alt_text = [ordered]@{
-                    zh = $_.AltTextZh
-                    en = $_.AltTextEn
-                }
-                rights = [ordered]@{
-                    status = $_.RightsStatus
-                    source_url = $_.SourceUrl
-                    license_or_owner = $_.LicenseOrOwner
+            $existingEntry = $existingManifestByHash[$_.Sha256]
+            $localizedAlt = [ordered]@{
+                zh = $_.AltTextZh
+                en = $_.AltTextEn
+            }
+            $existingAlt = Get-ManifestValue -Entry $existingEntry -Name "alt_text"
+            foreach ($language in @("ja", "ko", "id")) {
+                $value = [string](Get-ManifestValue -Entry $existingAlt -Name $language)
+                if (-not [string]::IsNullOrWhiteSpace($value)) {
+                    $localizedAlt[$language] = $value
                 }
             }
+
+            $manifestItem = [ordered]@{
+                relative_path = $_.RelativePath
+            }
+            foreach ($pathField in @("web_optimized_path", "thumbnail_path")) {
+                $pathValue = [string](Get-ManifestValue -Entry $existingEntry -Name $pathField)
+                if (-not [string]::IsNullOrWhiteSpace($pathValue)) {
+                    $manifestItem[$pathField] = $pathValue
+                }
+            }
+            $manifestItem["sha256"] = $_.Sha256
+            $manifestItem["category"] = $_.SuggestedCategory
+            $manifestItem["sub_category"] = $_.SuggestedSubCategory
+            $manifestItem["tags"] = @($_.SuggestedTags -split ";" | Where-Object { $_ })
+            $manifestItem["location_status"] = $_.SuggestedLocationStatus
+            $manifestItem["region_ids"] = @($_.SuggestedRegionIds -split ";" | Where-Object { $_ })
+            $manifestItem["route_ids"] = @($_.SuggestedRouteIds -split ";" | Where-Object { $_ })
+            $manifestItem["poi_ids"] = @($_.SuggestedPoiIds -split ";" | Where-Object { $_ })
+            $manifestItem["intended_use"] = $_.IntendedUse
+            foreach ($copyField in @("title", "description")) {
+                $copyValue = Get-ManifestValue -Entry $existingEntry -Name $copyField
+                if ($null -ne $copyValue) {
+                    $manifestItem[$copyField] = $copyValue
+                }
+            }
+            $manifestItem["alt_text"] = $localizedAlt
+            $manifestItem["rights"] = [ordered]@{
+                status = $_.RightsStatus
+                source_url = $_.SourceUrl
+                license_or_owner = $_.LicenseOrOwner
+            }
+            $manifestItem
         }
 )
 
 $manifest = [ordered]@{
-    schema_version = 1
-    policy = "Only HumanConfirmed + Publishable images with approved rights and provenance are included."
-    images = $manifestImages
+    schema_version = if ($null -ne $existingManifest) { Get-ManifestValue -Entry $existingManifest -Name "schema_version" -Fallback 1 } else { 1 }
+    policy = if ($null -ne $existingManifest) { Get-ManifestValue -Entry $existingManifest -Name "policy" -Fallback "Only HumanConfirmed + Publishable images with approved rights and provenance are included." } else { "Only HumanConfirmed + Publishable images with approved rights and provenance are included." }
 }
+$existingApproval = Get-ManifestValue -Entry $existingManifest -Name "approval"
+if ($null -ne $existingApproval) {
+    $manifest["approval"] = $existingApproval
+}
+$manifest["images"] = $manifestImages
 $manifest | ConvertTo-Json -Depth 8 | Set-Content -LiteralPath $PublishManifest -Encoding UTF8
 
 Write-Output "Image intake complete: $($rows.Count) files"

@@ -2612,6 +2612,61 @@ class ProductAccessTests(unittest.TestCase):
             self.assertEqual(set(tanah_lot[field]), {"zh", "en", "ja", "ko", "id"})
             self.assertTrue(all("?" not in value for value in tanah_lot[field].values()))
 
+    def test_first_route_linked_d8_portfolio_batch_has_reviewed_five_language_copy(self):
+        frontend = BACKEND_DIR.parents[1] / "wandermind-studio" / "frontend"
+        manifest = json.loads(
+            (frontend / "assets" / "data" / "image-publish-manifest.json").read_text(
+                encoding="utf-8"
+            )
+        )
+        bali_data = json.loads(
+            (frontend / "assets" / "data" / "bali-travel-data.json").read_text(
+                encoding="utf-8"
+            )
+        )
+        expected_paths = {
+            "assets/images/Garuda Wisnu Kencana.jpg",
+            "assets/images/Intuitive Flow1.jpg",
+            "assets/images/Pura Besakih1.png",
+            "assets/images/Pura Besakih2.png",
+            "assets/images/Pura Besakih3.png",
+            "assets/images/Pura Besakih4.png",
+            "assets/images/Pura Luhur Uluwatu1.jpg",
+            "assets/images/Pura Luhur Uluwatu2.jpg",
+            "assets/images/Pura Tanah Lot.jpg",
+            "assets/images/Pura Ulun Danu.jpg",
+            "assets/images/Pyramids_Of_Chi音疗1.jpg",
+            "assets/images/Pyramids_Of_Chi音疗2.jpg",
+            "assets/images/Tirta Empul Water Purification Temple.jpg",
+            "assets/images/ubud yogabarn1.jpg",
+            "assets/images/ubud yogabarn2.jpg",
+        }
+        d8_themes = {"landscapes", "culture", "experiences"}
+        batch = [
+            item
+            for item in manifest["images"]
+            if item["category"] in d8_themes
+            and item["region_ids"]
+            and item["route_ids"]
+            and item["poi_ids"]
+        ]
+        self.assertEqual({item["relative_path"] for item in batch}, expected_paths)
+
+        poi_status = {item["id"]: item["verification_status"] for item in bali_data["pois"]}
+        languages = {"zh", "en", "ja", "ko", "id"}
+        for item in batch:
+            self.assertTrue((frontend / item["web_optimized_path"]).is_file())
+            for field in ("title", "description", "alt_text"):
+                self.assertEqual(set(item[field]), languages)
+                self.assertTrue(all(value.strip() for value in item[field].values()))
+                self.assertTrue(all("?" not in value for value in item[field].values()))
+            for poi_id in item["poi_ids"]:
+                self.assertEqual(poi_status.get(poi_id), "verified")
+
+        gwk = next(item for item in batch if item["poi_ids"] == ["gwk"])
+        self.assertNotIn("temple", gwk["tags"])
+        self.assertIn("cultural-park", gwk["tags"])
+
     def test_bali_gallery_uses_theme_and_tag_taxonomy(self):
         frontend_dir = (
             BACKEND_DIR.parents[1] / "wandermind-studio" / "frontend"
