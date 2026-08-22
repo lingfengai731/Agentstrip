@@ -292,3 +292,15 @@
 - QA 回调：62/62 产品测试、完整 74 项（12 项隔离 PostgreSQL 测试按设计 skip）和 `git diff --check` 通过；系统 Edge 确定性本地回调在 320/390/768/1440 下验证 R5 状态、地图/加点、零横向溢出、零 page/console errors，并验证中英日韩印 R5 标题。GitHub 产品提交 `409b275` 的 Project memory validation run `32577693724` 与 PostgreSQL integration run `32577693722` 均成功。
 - Browser/生产边界：按用户授权只重试一次右侧 Render；虽然本任务已有可调用 Browser runtime，Render 与 localhost 绑定均被 `admin-enforced policy could not be verified` 阻止，随后停止排障。未读取 Render 页面、Secret 或数据库，未修改环境变量，未部署；分支推送后于 `2026-08-22T14:12:17Z` 再用公开只读请求确认生产仍为 HTTP 200、schema 1.2.0、p54、6 routes / 50 POIs 旧基线，PR #3 保持 Draft。
 - Skill 回调：cross-account-project-memory 约束本地、远端、CI、生产四层事实和 evidence/handoff；agent-role-orchestrator 与 codex-luna-worker 约束 Sol/Luna 分工；Browser skill 只执行一次可逆能力门禁；Playwright 使用本机 Edge 完成本地确定性回归。本单元只改数据、缓存版本、测试与台账，无视觉布局或动效变更，因此不作表演性 UI/动画 Skill 调用。
+
+## 2026-08-22 PR #3 production release callback
+
+- 路由：critical / L3。Sol 保留环境门禁解释、合并、发布、回滚和生产 GO/NO-GO；用户现场确认 `DATABASE_URL` 为 PostgreSQL、`SECRET_KEY` 为强随机固定值，只记录存在性与结论，未读取或显示值。
+- Luna 回调一：正式 `luna_worker` Gauss（`01a02a02-4e9a-76f3-9ea6-b264145f924c`，`gpt-5.6-luna` / `max`）于 `2026-08-22T23:06:29+08:00` 启动冻结只读审查；达到 10 分钟基线并追加 2 分钟收敛窗口后仍无 final，关闭时为 `running`，最终通知为 `shutdown`。不得写成 Luna 完成或 GO。
+- Luna 回调二：兼容 `luna_wb` Descartes（`01a02a0e-4792-7c41-a4c0-579c9f2814e2`，`gpt-5.6-luna` / `max`）于 `2026-08-22T23:19:33+08:00` 启动，539606 ms 后 completed。它复跑 74 项测试、确认无 `DROP/TRUNCATE` 与 P1 缺陷，并把尚未部署导致的生产 canary/E2E 缺口列为唯一 P0/NO-GO；Sol 将该项判定为部署后验收门，而非阻止受控部署的代码缺陷。
+- GitHub 回调：发布前工作树干净，HEAD `3dba3a7` 与远端 PR 分支一致，`origin/main...HEAD` 为 `0/85`；Project Memory run `32578042102` 与 PostgreSQL run `32578042100` 成功。PR #3 先由 Draft 转 Ready，再按固定 head 以 merge commit 合并；`main` 新提交为 `f7a133da018b6f15091140e004a836a6981c2997`。
+- Render 回调：合并后自动部署生效，公开生产从 p54/schema 1.2.0/50 POIs 切换到 p55/schema 1.8.0/62 POIs；health、首页、Bali、AI Tool、Find Driver 和 Portfolio API 均为 200。没有覆盖或删除任何 Render 变量、服务、数据库、用户或权益。
+- 防刷回调：使用 honeypot 请求，不发邮件、不创建司机订单。保留测试地址客户端 A 前 5 次为 200、第 6 次为 429；客户端 B 同时为 200，证明 Render 代理路径的限流计数隔离。只新增 24 小时后自动清理的 HMAC 伪匿名计数。
+- 浏览器回调：系统 Edge/Playwright 生产验收完成 Bali 20/20（中英日韩印 × 320/390/768/1440）与全局 50/50（首页、About、Contact、Find Driver、AI Tool × 五语言 × 320/1440）；R1→R3 公共/专业同步、同区域加点、6 个地图点、Portfolio 12→37、移动菜单语言切换和首页两入口实际点击均通过，最终复跑为零控制台/页面/同源 HTTP 错误及零横向溢出。一次快速连续地图重绘出现的外部 403 未在两次独立复跑中再现，不归因于本站。
+- 权益与隐私边界：匿名 7 天专业预览已在生产验证；历史 10 次、新用户 3 次、支付/积分原子权益仍由 SQLite 与隔离 PostgreSQL CI 覆盖。为避免制造财务或管理员记录，生产支付、调整扣次和 Portfolio 管理员写操作未执行。司机个人邮箱、WhatsApp 和微信未出现在公开页面；测试没有发送司机邮件。
+- 回滚：若后续出现 P0/P1，优先使用 Render previous deploy；控制面不可用时 revert merge commit `f7a133d`。本次迁移只有 add-only 限流表/索引，旧版本可忽略，未见不可逆用户数据迁移。

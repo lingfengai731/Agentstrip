@@ -1,0 +1,22 @@
+{
+  "schema_version": 1,
+  "evidence_id": "ev-20260822T154346Z-task-20260822-pr3-production-release",
+  "task_ref": "task-20260822-pr3-production-release",
+  "owner": "codex-sol",
+  "captured_at": "2026-08-22T15:43:46Z",
+  "status": "verified",
+  "claim": "PR #3 merged as f7a133d, Render auto-deployed p55/schema 1.8.0/62 POIs, and production canary plus browser E2E passed.",
+  "source": {
+    "kind": "git",
+    "repository": "https://github.com/lingfengai731/Agentstrip.git",
+    "commit": "f7a133da018b6f15091140e004a836a6981c2997",
+    "branch": "codex/postdeploy-evidence-20260822",
+    "worktree": "E:\\Agentstrip2-worktree",
+    "dirty": false
+  },
+  "verification": {
+    "command": "backend 74 tests; GitHub CI runs 32578042102 and 32578042100; public HTTP; driver honeypot proxy smoke; Playwright Edge production matrices",
+    "result": "health/home/Bali/AI/driver/portfolio 200; proxy client A 200x5 then 429 and client B 200; Bali 20/20; global 50/50; route R1-to-R3, add-place, 6 map points and gallery 12-to-37 passed; zero final console/page/same-origin errors and overflow"
+  },
+  "notes": "User confirmed DATABASE_URL is PostgreSQL and SECRET_KEY is strong, random and fixed without exposing values. One transient external 403 burst during rapid map redraw did not reproduce in two follow-up runs; no same-origin failure occurred. Production paid unlock and admin-only Portfolio mutation were not exercised."
+}

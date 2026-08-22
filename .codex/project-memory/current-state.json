@@ -13,11 +13,11 @@
   },
   "snapshot": {
     "status": "verified",
-    "captured_at": "2026-08-22T14:06:41Z",
+    "captured_at": "2026-08-22T15:43:46Z",
     "captured_by": "codex-sol",
-    "source_commit": "409b2752b0bbdf3abecb77c98bc7fad49c80a3ea",
-    "source_branch": "codex/account2-integration-20260816",
-    "working_tree_at_capture": "immutable product commit 409b275; project-memory evidence and handoff changes follow",
+    "source_commit": "f7a133da018b6f15091140e004a836a6981c2997",
+    "source_branch": "codex/postdeploy-evidence-20260822",
+    "working_tree_at_capture": "clean origin/main merge commit f7a133d before post-deploy evidence updates",
     "wandermind_bali": {
       "status": "verified",
       "routes": 6,
@@ -30,14 +30,14 @@
         "R2, R3, R4 and R6 free-outline stable facts are verified; Batur Natural Hot Spring now has Bangli government identity and broad-location evidence while all live access, price, hygiene, safety, weather and volcanic checks remain dynamic.",
         "Thousand Islands Viewpoint remains a distinct unresolved identity, and Mount Batur remains an area-level planning node because government records show multiple hiking posts; supplier-gated experiences remain non-execution-ready.",
         "Dicky's five-day itinerary is treated as an R1 field calibration, not a seventh route family.",
-        "Production was freshly reverified on 2026-08-22 at the prior main frontend baseline: schema 1.2.0 with 6 routes, 50 POIs and p54; this 62-POI/p55 branch and the Bali launch polish are not deployed.",
+        "PR #3 merged to main as f7a133d and Render auto-deployed it on 2026-08-22. Production now serves schema 1.8.0 with 6 routes, 62 POIs and p55.",
         "The Bali route detail now uses a warm paper atlas surface, keeps every public day reachable, previews 12 Portfolio moments before an explicit reveal-all action, and localizes the changed controls across zh/en/ja/ko/id.",
         "Customer-facing route and POI chips no longer expose internal verified labels; verified is silent, while pending and supplier-gated items show localized action copy only."
       ],
-      "evidence_id": "ev-20260822T140828Z-task-20260822-bali-poi-identity-unit"
+      "evidence_id": "ev-20260822T154346Z-task-20260822-pr3-production-release"
     },
     "driver_request_protection": {
-      "status": "verified_ci",
+      "status": "verified_production",
       "limit": 5,
       "window_seconds": 1800,
       "storage": "SQLite/Postgres atomic counter",
@@ -49,20 +49,18 @@
       ],
       "failure_policy": "fail_closed_503",
       "tests_passed": 61,
-      "production_status": "not_deployed",
+      "production_status": "deployed_verified",
       "postgres_integration": {
         "status": "verified",
         "postgres_version": "16-alpine",
         "tests_passed": 12,
-        "workflow_run": 31955571721,
-        "job": 95185585092
+        "workflow_run": 32578042100,
+        "job": 97043180412
       },
-      "remaining_gates": [
-        "Render X-Forwarded-For anonymous distribution smoke test after deployment"
-      ]
+      "remaining_gates": []
     },
     "professional_route_entitlements": {
-      "status": "verified_ci",
+      "status": "deployed_verified_ci",
       "paid_route_poi_policy": "verified_only",
       "current_adjustment_limit": 3,
       "legacy_adjustment_limit": 10,
@@ -76,9 +74,9 @@
       ],
       "product_tests_passed": 62,
       "postgres_entitlement_tests_passed": 8,
-      "postgres_workflow_run": 31955571721,
+      "postgres_workflow_run": 32578042100,
       "evidence_id": "ev-20260816T152709Z-task-20260816-entitlement-release-gate",
-      "production_status": "not_deployed"
+      "production_status": "deployed_preview_verified; paid unlock and adjustment mutations were not exercised against production"
     },
     "portfolio_content_manager": {
       "status": "implementation_verified_local; nine D8 units have 28 complete five-language assets; launch gallery defaults to 12 moments with an explicit reveal-all action; remaining batch migration pending",
@@ -112,26 +110,27 @@
       },
       "evidence_id": "ev-20260822T112232Z-bali-public-status-d8-batch9",
       "batch_boundary": "Only Landscapes, Culture and Experiences belong in D8 Portfolio. People assets primarily belong in Driver Moments; unclassified assets require manual classification. Approval alone does not prove place, route or five-language metadata.",
-      "next_batch": "First complete the Render presence-only production gate, safe canary/deploy and post-deploy E2E for the current PR #3 head. After launch, review the remaining 24 D8 theme candidates; stock images naming Thailand, Hawaii, Greece or Palau must not be relabelled as Bali.",
-      "production_status": "not_verified"
+      "next_batch": "Review the remaining 24 D8 theme candidates; stock images naming Thailand, Hawaii, Greece or Palau must not be relabelled as Bali.",
+      "production_status": "public gallery verified with 12-to-37 reveal; admin-only mutation flow not exercised"
     },
     "production": {
-      "status": "verified_frontend_baseline",
-      "verified_at": "2026-08-22T14:12:17Z",
-      "frontend_matches_commit": "3fbf898fb6a27da8d7b87476d6fd941a24c3d05c",
+      "status": "deployed_verified",
+      "verified_at": "2026-08-22T15:43:46Z",
+      "frontend_matches_commit": "f7a133da018b6f15091140e004a836a6981c2997",
       "backend_commit": "unknown",
-      "latest_branch_commit": "409b2752b0bbdf3abecb77c98bc7fad49c80a3ea",
-      "latest_branch_deployed": false,
+      "latest_branch_commit": "f7a133da018b6f15091140e004a836a6981c2997",
+      "latest_branch_deployed": true,
       "health": "200 ok",
       "bali_routes": 6,
-      "bali_pois": 50,
-      "frontend_asset_marker": "bali-professional.js?v=p54",
+      "bali_pois": 62,
+      "frontend_asset_marker": "bali-professional.js?v=p55",
       "branch_frontend_asset_marker": "bali-professional.js?v=p55",
       "evidence_ids": [
         "ev-20260816T092243Z-task-20260816-cross-account-recovery",
         "ev-20260816T143048Z-release-baseline-and-roadmap-sync",
         "ev-20260822T112651Z-bali-status-github-sync",
-        "ev-20260822T141217Z-task-20260822-production-baseline-after-poi-sync"
+        "ev-20260822T141217Z-task-20260822-production-baseline-after-poi-sync",
+        "ev-20260822T154346Z-task-20260822-pr3-production-release"
       ]
     }
   },
@@ -142,13 +141,14 @@
     "integration_pull_request": {
       "number": 3,
       "url": "https://github.com/lingfengai731/Agentstrip/pull/3",
-      "status": "draft",
+      "status": "merged",
       "mergeable": true,
-      "head_commit": "409b2752b0bbdf3abecb77c98bc7fad49c80a3ea",
-      "project_memory_ci": "success; run 32577693724",
-      "postgres_integration_ci": "success; run 32577693722",
-      "evidence_id": "ev-20260822T140828Z-task-20260822-bali-poi-identity-unit",
-      "release_gate": "presence-only PostgreSQL and stable strong SECRET_KEY confirmation, safe Render deploy, proxy smoke and production browser regression"
+      "head_commit": "3dba3a737a0d76d937687001489bf70d61f3ac35",
+      "merge_commit": "f7a133da018b6f15091140e004a836a6981c2997",
+      "project_memory_ci": "success; run 32578042102",
+      "postgres_integration_ci": "success; run 32578042100",
+      "evidence_id": "ev-20260822T154346Z-task-20260822-pr3-production-release",
+      "release_gate": "complete for public and anonymous production flows; paid/admin mutation flows remain intentionally unexercised"
     },
     "render_operations_thread": {
       "work_thread_id": "6a81da9a-1998-83e8-b2ca-34e1f6eb526d",
@@ -199,8 +199,8 @@
   "limitations": [
     "The existing root AGENTS.md has not been changed, so automatic loading is not guaranteed.",
     "bali-4.jpg remains the approved generic Bali-page hero, but its exact place, mountain name and capture date are unverified; it must not be reused as a location-specific route or advertising claim without new evidence.",
-    "Production was checked only through public HTTP behavior; authenticated Render environment values, the production backend commit and database contents were not read because the injected Browser runtime could not pass the admin-policy binding gate.",
-    "The latest branch passed isolated real PostgreSQL 16 integration tests but still requires a post-deploy Render proxy-address smoke test before release completion.",
+    "The production backend commit is not exposed by a public endpoint; frontend p55/schema 1.8.0/62-POI markers prove the merged release is serving, and the user separately confirmed PostgreSQL plus a stable strong SECRET_KEY by presence only.",
+    "Paid unlock, adjustment mutation and admin-only Portfolio mutation were not exercised against production to avoid creating financial or privileged records; their release-critical behavior remains covered by SQLite and isolated PostgreSQL CI.",
     "The callable in-app Browser runtime is now injected, but the one authorized Render and localhost retry failed at the admin-enforced policy gate. Native control remains a non-blocking limitation for this workstream; no further policy repair is authorized.",
     "Conversation history and hidden reasoning are not project facts."
   ]
