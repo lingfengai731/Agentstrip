@@ -1,0 +1,22 @@
+{
+  "schema_version": 1,
+  "evidence_id": "ev-20260822T141217Z-task-20260822-production-baseline-after-poi-sync",
+  "task_ref": "task-20260822-production-baseline-after-poi-sync",
+  "owner": "codex-sol",
+  "captured_at": "2026-08-22T14:12:17Z",
+  "status": "verified",
+  "claim": "Fresh public production check after the 409b275 and 90f9940 branch pushes still returns the old Bali baseline: HTTP 200, schema 1.2.0, 6 routes, 50 POIs and bali-professional.js?v=p54. The PR branch is not deployed.",
+  "source": {
+    "kind": "git",
+    "repository": "https://github.com/lingfengai731/Agentstrip.git",
+    "commit": "90f9940d454da064f1dc77ebcfddea8f7ce1e794",
+    "branch": "codex/account2-integration-20260816",
+    "worktree": "E:\\Agentstrip2-worktree",
+    "dirty": false
+  },
+  "verification": {
+    "command": "Invoke-WebRequest https://wandermind.cc/bali.html; Invoke-RestMethod https://wandermind.cc/assets/data/bali-travel-data.json",
+    "result": "HTTP 200; schema=1.2.0; routes=6; POIs=50; marker=p54."
+  },
+  "notes": "Public read-only check only. No Render login, Secret, database, environment variable, merge or deploy action occurred."
+}

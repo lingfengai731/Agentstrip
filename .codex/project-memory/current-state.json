@@ -117,7 +117,7 @@
     },
     "production": {
       "status": "verified_frontend_baseline",
-      "verified_at": "2026-08-22T08:05:00Z",
+      "verified_at": "2026-08-22T14:12:17Z",
       "frontend_matches_commit": "3fbf898fb6a27da8d7b87476d6fd941a24c3d05c",
       "backend_commit": "unknown",
       "latest_branch_commit": "409b2752b0bbdf3abecb77c98bc7fad49c80a3ea",
@@ -130,7 +130,8 @@
       "evidence_ids": [
         "ev-20260816T092243Z-task-20260816-cross-account-recovery",
         "ev-20260816T143048Z-release-baseline-and-roadmap-sync",
-        "ev-20260822T112651Z-bali-status-github-sync"
+        "ev-20260822T112651Z-bali-status-github-sync",
+        "ev-20260822T141217Z-task-20260822-production-baseline-after-poi-sync"
       ]
     }
   },
