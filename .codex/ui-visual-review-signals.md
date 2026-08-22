@@ -54,6 +54,19 @@ recorded at: 2026-08-14
 
 workflow: ui-implementation-workflow-v2
 status: raw
+task: Bali 发布前视觉减负与内容精简
+page/surface: WanderMind 巴厘岛页（公共路线、专业路线与司机承接）
+screenshot or artifact: output/playwright/2026-08-22-bali-launch-polish-before/bali-1440.png
+reviewer: 用户
+decision: mixed
+accepted aspects: 巴厘岛路线规划方向整体满意；继续保留 R1-R6、真实地图、专业路线和司机交接
+rejected aspects: 不接受公共路线详情成为一整块超长绿色背景；不接受面向游客的页面堆叠过多重复文字
+reason in reviewer words: 特别是巴厘岛界面的，全绿背景会审美疲劳；对于客户来说字不能太多，太多他们反而不想读
+scope: this surface
+recorded at: 2026-08-22
+
+workflow: ui-implementation-workflow-v2
+status: raw
 task: Portfolio 首图上传流程简化
 page/surface: WanderMind Portfolio Content Manager 上传表单
 screenshot or artifact: C:\WINDOWS\TEMP\codex-clipboard-8edb1c9a-f1e8-40d2-bdd0-3a1f76eeaa00.png

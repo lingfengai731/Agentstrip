@@ -1,4 +1,5 @@
 import asyncio
+import csv
 import hashlib
 import json
 import os
@@ -1432,6 +1433,67 @@ class ProductAccessTests(unittest.TestCase):
         self.assertEqual(responses[5].status_code, 429, responses[5].text)
         self.assertEqual(send.await_count, 5)
 
+    def test_driver_request_rate_limit_separates_clients_behind_render_proxy(self):
+        payload = {
+            "driver_id": "dicky", "first_name": "Test",
+            "contact_email": "traveller@example.test", "privacy_consent": True,
+        }
+        with patch.dict(os.environ, {"RENDER": "true"}), patch.object(
+            main, "send_driver_request", new_callable=AsyncMock
+        ) as send:
+            send.return_value = {"ok": True}
+            first_client = [
+                self._run(
+                    self._request(
+                        "POST", "/api/driver-request", json=payload,
+                        client_ip="10.0.0.7",
+                        headers={"X-Forwarded-For": "203.0.113.17, 10.0.0.7"},
+                    )
+                )
+                for _ in range(main._DRIVER_REQUEST_LIMIT)
+            ]
+            second_client = self._run(
+                self._request(
+                    "POST", "/api/driver-request", json=payload,
+                    client_ip="10.0.0.7",
+                    headers={"X-Forwarded-For": "203.0.113.18, 10.0.0.7"},
+                )
+            )
+            blocked_first_client = self._run(
+                self._request(
+                    "POST", "/api/driver-request", json=payload,
+                    client_ip="10.0.0.7",
+                    headers={"X-Forwarded-For": "203.0.113.17, 10.0.0.7"},
+                )
+            )
+        self.assertEqual([response.status_code for response in first_client], [200] * 5)
+        self.assertEqual(second_client.status_code, 200, second_client.text)
+        self.assertEqual(blocked_first_client.status_code, 429, blocked_first_client.text)
+        self.assertEqual(send.await_count, 6)
+
+    def test_driver_request_rate_limit_ignores_spoofed_forwarded_for_off_render(self):
+        payload = {
+            "driver_id": "dicky", "first_name": "Test",
+            "contact_email": "traveller@example.test", "privacy_consent": True,
+        }
+        with patch.dict(os.environ, {"RENDER": ""}), patch.object(
+            main, "send_driver_request", new_callable=AsyncMock
+        ) as send:
+            send.return_value = {"ok": True}
+            responses = [
+                self._run(
+                    self._request(
+                        "POST", "/api/driver-request", json=payload,
+                        client_ip="10.0.0.7",
+                        headers={"X-Forwarded-For": f"203.0.113.{index}"},
+                    )
+                )
+                for index in range(1, main._DRIVER_REQUEST_LIMIT + 2)
+            ]
+        self.assertEqual([response.status_code for response in responses[:5]], [200] * 5)
+        self.assertEqual(responses[5].status_code, 429, responses[5].text)
+        self.assertEqual(send.await_count, 5)
+
     def test_driver_request_rate_limit_persists_only_pseudonymous_counter(self):
         payload = {
             "driver_id": "dicky", "first_name": "Private Name",
@@ -2583,6 +2645,16 @@ class ProductAccessTests(unittest.TestCase):
 
     def test_approved_image_manifest_contains_unique_108_and_new_lempuyang_hash(self):
         frontend = BACKEND_DIR.parents[1] / "wandermind-studio" / "frontend"
+        intake_path = frontend / "assets" / "data" / "image-intake-review.csv"
+        with intake_path.open(encoding="utf-8", newline="") as handle:
+            intake_rows = list(csv.DictReader(handle))
+        self.assertEqual(len(intake_rows), 108)
+        for row in intake_rows:
+            self.assertNotIn(None, row, row.get("Filename"))
+            self.assertEqual(row["EligibleForPublish"], "True", row["Filename"])
+            self.assertTrue(row["WebOptimizedPath"], row["Filename"])
+            self.assertTrue((frontend / row["WebOptimizedPath"]).is_file(), row["Filename"])
+
         manifest = json.loads(
             (frontend / "assets" / "data" / "image-publish-manifest.json").read_text(
                 encoding="utf-8"

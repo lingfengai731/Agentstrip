@@ -151,9 +151,16 @@ def _new_referral_code() -> str:
     return secrets.token_urlsafe(7).replace("-", "").replace("_", "")[:10].upper()
 
 
+def _request_origin_host(request: Request) -> str:
+    """Return the public client address forwarded by Render, with a direct fallback."""
+    forwarded = ""
+    if os.getenv("RENDER", "").strip():
+        forwarded = (request.headers.get("x-forwarded-for") or "").split(",", 1)[0].strip()
+    return forwarded or (request.client.host if request.client else "")
+
+
 def _request_ip_hash(request: Request) -> str:
-    forwarded = (request.headers.get("x-forwarded-for") or "").split(",", 1)[0].strip()
-    host = forwarded or (request.client.host if request.client else "")
+    host = _request_origin_host(request)
     if not host:
         return ""
     return hmac.new(_SECRET.encode(), f"signup-ip:{host}".encode(), hashlib.sha256).hexdigest()
@@ -3045,7 +3052,7 @@ _DRIVER_REQUEST_LIMIT_RETENTION_SECONDS = 24 * 60 * 60
 
 def _driver_request_client_key(request: Request) -> str:
     """Return a scoped pseudonymous key without storing the raw client address."""
-    host = request.client.host if request.client else "unknown"
+    host = _request_origin_host(request) or "unknown"
     return hmac.new(
         _SECRET.encode(), f"driver-request-rate:{host}".encode(), hashlib.sha256
     ).hexdigest()
