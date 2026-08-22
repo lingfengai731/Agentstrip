@@ -624,19 +624,40 @@
       "web_optimized_path": "assets/images/web/c11a45dfcccc8767.webp",
       "sha256": "c11a45dfcccc8767d48929e159242a184b9521a295b07498684e1df04265a857",
       "category": "landscapes",
-      "sub_category": "bali-landscape",
+      "sub_category": "ocean-beach",
       "tags": [
-        "bali",
-        "landscape"
+        "island",
+        "cliff",
+        "viewpoint",
+        "beach",
+        "ocean",
+        "photography"
       ],
-      "location_status": "bali-named",
-      "region_ids": [],
-      "route_ids": [],
-      "poi_ids": [],
+      "location_status": "route-linked",
+      "region_ids": ["G3"],
+      "route_ids": ["R1", "R6"],
+      "poi_ids": ["kelingking_beach"],
       "intended_use": "WanderMind approved project image library; connect only where its destination/category metadata matches.",
       "alt_text": {
-        "zh": "???????",
-        "en": "Bali landscape scene"
+        "zh": "从观景台俯瞰克林金海滩的绿色岬角、白沙与蓝色海洋",
+        "en": "Green headland, white sand and blue ocean seen from Kelingking Beach Viewpoint",
+        "ja": "クリンキン・ビーチ展望台から望む緑の岬、白砂、青い海",
+        "ko": "켈링킹 비치 전망대에서 내려다본 푸른 곶과 흰 모래, 파란 바다",
+        "id": "Tanjung hijau, pasir putih, dan laut biru dilihat dari titik pandang Pantai Kelingking"
+      },
+      "title": {
+        "zh": "佩妮达岛克林金海滩观景台",
+        "en": "Kelingking Beach Viewpoint on Nusa Penida",
+        "ja": "ヌサ・ペニダのクリンキン・ビーチ展望台",
+        "ko": "누사 페니다 켈링킹 비치 전망대",
+        "id": "Titik pandang Pantai Kelingking di Nusa Penida"
+      },
+      "description": {
+        "zh": "从上方观景台可见克林金海滩标志性的绿色岬角、白沙与蓝色海洋。下至海滩的路径陡峭，并不适合所有游客；快船、道路、崖边防护、天气与拥挤情况须在出发前复核。",
+        "en": "The upper viewpoint shows Kelingking Beach's distinctive green headland, white sand and blue ocean. The steep descent is not suitable for every traveller; recheck fast boats, roads, cliff barriers, weather and crowding before travel.",
+        "ja": "上部の展望台から、クリンキン・ビーチ特有の緑の岬、白砂、青い海を望めます。海岸への急な下りはすべての旅行者に適するとは限りません。高速船、道路、崖の柵、天候、混雑を出発前に再確認してください。",
+        "ko": "상부 전망대에서 켈링킹 비치의 독특한 푸른 곶과 흰 모래, 파란 바다를 볼 수 있습니다. 해변으로 내려가는 가파른 길은 모든 여행자에게 적합하지 않으므로 패스트보트, 도로, 절벽 안전시설, 날씨와 혼잡도를 출발 전에 다시 확인해야 합니다.",
+        "id": "Titik pandang atas memperlihatkan tanjung hijau khas Pantai Kelingking, pasir putih, dan laut biru. Turunan curam tidak cocok untuk semua wisatawan; periksa kembali kapal cepat, jalan, pengaman tebing, cuaca, dan kepadatan sebelum berangkat."
       },
       "rights": {
         "status": "user_provided_with_consent",

@@ -2724,7 +2724,7 @@ class ProductAccessTests(unittest.TestCase):
                 for field in ("title", "description", "alt_text")
             )
         ]
-        self.assertEqual(len(complete_d8), 26)
+        self.assertEqual(len(complete_d8), 27)
 
         lempuyang = by_path["assets/images/Lempuyang Temple.jpg"]
         self.assertIn("Penataran Agung", lempuyang["title"]["en"])
@@ -2998,6 +2998,28 @@ class ProductAccessTests(unittest.TestCase):
         )
         self.assertIn(",unknown,,,,", intake_line)
         self.assertIn(item["alt_text"]["en"], intake_line)
+
+    def test_eighth_d8_portfolio_batch_maps_kelingking_viewpoint_safely(self):
+        frontend = BACKEND_DIR.parents[1] / "wandermind-studio" / "frontend"
+        intake_csv = (frontend / "assets" / "data" / "image-intake-review.csv").read_text(encoding="utf-8")
+        intake_line = next(line for line in intake_csv.splitlines() if line.startswith("bali-3.jpg,"))
+        manifest = json.loads((frontend / "assets" / "data" / "image-publish-manifest.json").read_text(encoding="utf-8"))
+        item = next(image for image in manifest["images"] if image["relative_path"] == "assets/images/bali-3.jpg")
+
+        self.assertEqual(item["sha256"], "c11a45dfcccc8767d48929e159242a184b9521a295b07498684e1df04265a857")
+        self.assertEqual(item["web_optimized_path"], "assets/images/web/c11a45dfcccc8767.webp")
+        self.assertTrue((frontend / item["web_optimized_path"]).is_file())
+        self.assertEqual(item["category"], "landscapes")
+        self.assertEqual(item["sub_category"], "ocean-beach")
+        self.assertEqual(item["location_status"], "route-linked")
+        self.assertEqual(item["region_ids"], ["G3"])
+        self.assertEqual(item["route_ids"], ["R1", "R6"])
+        self.assertEqual(item["poi_ids"], ["kelingking_beach"])
+        for field in ("title", "description", "alt_text"):
+            self.assertEqual(set(item[field]), {"zh", "en", "ja", "ko", "id"})
+            self.assertTrue(all(value.strip() and "?" not in value for value in item[field].values()))
+        self.assertIn("steep descent", item["description"]["en"].lower())
+        self.assertIn("G3,R1;R6,kelingking_beach", intake_line)
 
     def test_bali_gallery_uses_theme_and_tag_taxonomy(self):
         frontend_dir = (
