@@ -71,7 +71,7 @@ WanderMind 的差异化不是“也有一个 AI 聊天框”，而是：
 | 5 | P0 | 用户画像跨页带入 | 已完成 | `wm_studio_trip_brief` 在首页、巴厘岛、AI 和司机页复用；路线与司机页自动预填。 |
 | 6 | P0 | 多选旅行动机与路线匹配 | 第一版完成 | 首访→R1、在地文化→R4、摄影→R6；其余意图可在路线卡继续选择。 |
 | 7 | P1 | 作品集分类与标签 | D8 当前版完成 | Portfolio 统一为 Landscapes / Culture / Experiences 三类；Places 拆为 `region`、`area`、`placeName`、`placeType`、`prominence`、`routeIds`、`tags`、`mood`、`photographyStyle` 和 `verificationStatus`；司机游客合照主要进入 Driver Moments。 |
-| 8 | P0 | G1–G7、节点、POI、店铺和体验数据底座 | 第一版持续扩充 | 分支 JSON 含 7 区、6 路线、62 POI：56 个 `verified`、3 个 `pending_review`、3 个 `needs_supplier_confirmation`；新增 Taman Ayun、Taman Saraswati 与 Sundays Beach Club，动态票务、仪式、潮汐和活动仍实时复核。生产仍是 50 POI 的旧基线。 |
+| 8 | P0 | G1–G7、节点、POI、店铺和体验数据底座 | 第一版持续扩充 | 分支 JSON 含 7 区、6 路线、62 POI：57 个 `verified`、2 个 `pending_review`、3 个 `needs_supplier_confirmation`；Batur Natural Hot Spring 已有政府目录身份，Mount Batur 徒步仍按多入口的区域级节点处理，动态票务、仪式、潮汐、火山与活动状态继续实时复核。生产仍是 50 POI 的旧基线。 |
 | 9 | P0 | AI 自助规划、专业路线预览/解锁与司机交接 | 分支 MVP 完成，待生产验收 | AI 自助为每行程 1 次初始规划 + 2 次调整；专业路线约 70% 预览，¥9.9 与 30 积分解锁同一权益并含 3 次调整；二维码订单、管理员确认和司机路线带入已闭环。 |
 | 10 | P1 | Dicky / Gede 双司机资料与车辆选择 | 第一版完成 | 两位司机完整自我介绍、车辆与 Driver Moments 已接入；用户只通过站内隐私表单联系，网站不公开个人邮箱、微信或 WhatsApp；公开价格使用已确认参考基线，逐司机路线总价仍待确认。 |
 | 11 | P0 | 顾问框架与产品决策门禁 | 已完成 | 项目本地主题 Skill 固化产品、商业、运营边界；人物视角不能替代 WanderMind 设计规范。 |

@@ -354,7 +354,6 @@ class ProductAccessTests(unittest.TestCase):
             "thousand_islands_viewpoint",
             "mount_batur_trailhead",
             "mount_batur_jeep",
-            "batur_hot_springs",
             "bali_fire_shooting_club",
             "celuk_silver_class",
         }
@@ -378,6 +377,7 @@ class ProductAccessTests(unittest.TestCase):
                         seen.add(place["id"])
                         self.assertEqual(place["verification_status"], "verified")
         self.assertTrue(seen)
+        self.assertIn("batur_hot_springs", seen)
         self.assertTrue(excluded.isdisjoint(seen))
 
     def test_concurrent_professional_order_creation_returns_one_order(self):
@@ -1725,6 +1725,7 @@ class ProductAccessTests(unittest.TestCase):
             "taman_ayun",
             "taman_saraswati",
             "sundays_beach_club",
+            "batur_hot_springs",
         }
         self.assertEqual(
             {poi["id"] for poi in data["pois"] if poi["verification_status"] == "verified"},
@@ -1732,7 +1733,7 @@ class ProductAccessTests(unittest.TestCase):
         )
         self.assertEqual(
             sum(poi["verification_status"] == "pending_review" for poi in data["pois"]),
-            3,
+            2,
         )
         for route_grouped_id in {
             "ulun_danu_beratan",
@@ -1759,6 +1760,22 @@ class ProductAccessTests(unittest.TestCase):
         self.assertIn(
             "exact public identity",
             poi_by_id["thousand_islands_viewpoint"]["notes"],
+        )
+        self.assertEqual(
+            poi_by_id["mount_batur_trailhead"]["name"],
+            "Mount Batur Hiking Area",
+        )
+        self.assertIn(
+            "multiple hiking posts",
+            poi_by_id["mount_batur_trailhead"]["notes"],
+        )
+        self.assertEqual(
+            poi_by_id["batur_hot_springs"]["name"],
+            "Batur Natural Hot Spring",
+        )
+        self.assertIn(
+            "hygiene",
+            poi_by_id["batur_hot_springs"]["verification"]["live_checks"],
         )
         supplier_confirmation_ids = {
             "mount_batur_jeep",
@@ -1868,7 +1885,7 @@ class ProductAccessTests(unittest.TestCase):
                 for poi_id in r5_outline_ids
                 if poi_by_id[poi_id]["verification_status"] == "pending_review"
             },
-            {"mount_batur_trailhead", "batur_hot_springs"},
+            {"mount_batur_trailhead"},
         )
         self.assertEqual(
             {
@@ -1897,6 +1914,13 @@ class ProductAccessTests(unittest.TestCase):
         self.assertNotIn("路线稳定事实已核验", bali_html)
         self.assertIn("Confirm before booking", bali_html)
         self.assertIn("预约前确认", bali_html)
+        self.assertIn(
+            "https://maimelali.banglikab.go.id/objek/batur-natural-hot-spring",
+            {
+                source["url"]
+                for source in poi_by_id["batur_hot_springs"]["verification"]["sources"]
+            },
+        )
         for poi_id in verified_ids:
             poi = poi_by_id[poi_id]
             self.assertTrue(poi["official_url"].startswith("https://"), poi_id)
