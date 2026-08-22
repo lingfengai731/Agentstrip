@@ -1,0 +1,22 @@
+{
+  "schema_version": 1,
+  "evidence_id": "ev-20260816T060836Z-task-20260816-poi-batch2-push",
+  "task_ref": "TASK-20260816-POI-BATCH2-PUSH",
+  "owner": "codex-sol",
+  "captured_at": "2026-08-16T06:08:36Z",
+  "status": "verified",
+  "claim": "Pushed codex/poi-facts-batch2 and verified local HEAD exactly matched origin with divergence 0/0 and a clean worktree.",
+  "source": {
+    "kind": "git",
+    "repository": "https://github.com/lingfengai731/Agentstrip.git",
+    "commit": "e7db9154b31dce48bd2a46a938bdd93c3e6cb27e",
+    "branch": "codex/poi-facts-batch2",
+    "worktree": "E:\\Agentstrip-wt-poi-b2",
+    "dirty": false
+  },
+  "verification": {
+    "command": "git fetch origin codex/poi-facts-batch2; git rev-parse HEAD; git rev-parse origin/codex/poi-facts-batch2; git rev-list --left-right --count origin/codex/poi-facts-batch2...HEAD; git status --short",
+    "result": "Before recording this evidence, local and remote were e7db9154b31dce48bd2a46a938bdd93c3e6cb27e, divergence 0/0, and status was clean."
+  },
+  "notes": "Branch push only. No pull request, merge, main update, deploy or production verification."
+}

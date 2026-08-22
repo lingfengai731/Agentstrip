@@ -1,0 +1,28 @@
+{
+  "schema_version": 1,
+  "evidence_id": "ev-20260820T144120Z-portfolio-d8-batch4",
+  "task_ref": "portfolio-d8-batch4",
+  "owner": "codex-sol",
+  "captured_at": "2026-08-20T14:41:20Z",
+  "status": "verified",
+  "claim": "Galungan.jpg is hash-bound and described as Bali penjor associated with the Galungan-Kuningan period, with complete zh/en/ja/ko/id metadata and R4 theme linkage but no invented POI or region; complete D8 count is 23.",
+  "source": {
+    "kind": "git",
+    "repository": "https://github.com/lingfengai731/Agentstrip.git",
+    "commit": "f6933a85d17c6cfa87e9533d3976c395488f132e",
+    "branch": "codex/portfolio-d8-batch4",
+    "worktree": "E:\\Agentstrip-wt-portfolio-d8-batch4"
+  },
+  "verification": {
+    "local": "55/55 product tests OK; image-intake PASS; Bali inline scripts 9/9 syntax OK; diff-check PASS",
+    "image": "original SHA-256 matched manifest; original and WebP are 736x1308 and show the same rows of curved decorated bamboo penjor",
+    "browser": "local Chrome at 1440, 768 and 390 px opened the dedicated modal with zero document overflow and zero console errors; zh/en/ja/ko/id titles rendered",
+    "independent_gate": "Luna Max immutable review of 549547b completed GO and identified the stale intake CSV; Sol synchronized that source and added a regression test in f6933a8"
+  },
+  "sources": [
+    "https://www.indonesia.travel/id/id/news-update/penjor-simbol-manifestasi-istana-tuhan",
+    "https://www.indonesia.travel/id/en/travel-ideas/culture/upacara-keagamaan-bali",
+    "https://sita.badungkab.go.id/en/events/galungan-and-kuningan-day-meaning-traditions-and-celebrations-in-bali"
+  ],
+  "notes": "The exact road, village, capture date and year are unverified. R4 is a cultural-theme link only; the static card remains bali-named so route, AI and driver handoff stay hidden. No upload, publication, Render access, merge or deployment was performed."
+}

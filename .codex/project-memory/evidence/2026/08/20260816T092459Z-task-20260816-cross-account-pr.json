@@ -1,0 +1,22 @@
+{
+  "schema_version": 1,
+  "evidence_id": "ev-20260816T092459Z-task-20260816-cross-account-pr",
+  "task_ref": "TASK-20260816-CROSS-ACCOUNT-RECOVERY",
+  "owner": "codex-sol",
+  "captured_at": "2026-08-16T09:24:59Z",
+  "status": "verified",
+  "claim": "The recovered cumulative WanderMind branch is now pushed under the current account and exposed as a mergeable Draft PR with project-memory CI passing; it remains intentionally unmerged and undeployed behind explicit environment gates.",
+  "source": {
+    "kind": "github",
+    "repository": "https://github.com/lingfengai731/Agentstrip.git",
+    "commit": "5b91ea799be2f9217aa691d96e11165713bb7bc8",
+    "branch": "codex/account2-integration-20260816",
+    "pull_request": "https://github.com/lingfengai731/Agentstrip/pull/3",
+    "base": "main"
+  },
+  "verification": {
+    "command": "git push and divergence check; GitHub PR metadata; GitHub workflow run inspection",
+    "result": "Remote divergence is 0/0; PR #3 is open, draft and mergeable; base is main at 3fbf898 and head is 5b91ea7; GitHub Actions run 31938957079 Project memory validation completed successfully."
+  },
+  "notes": "No merge, Render deploy, environment-variable mutation, database connection or production-data mutation was performed. The PR must remain draft until isolated real PostgreSQL verification passes; Render proxy-address and production browser checks follow a canary deployment."
+}

@@ -1,0 +1,22 @@
+{
+  "schema_version": 1,
+  "evidence_id": "ev-20260815T034518Z-task-20260815-dicky-r4",
+  "task_ref": "TASK-20260815-DICKY-R4",
+  "owner": "codex-sol",
+  "captured_at": "2026-08-15T03:45:18Z",
+  "status": "verified",
+  "claim": "Commit b952e67 verifies all ten R4 free-outline POIs, normalizes Dicky route gaps into R1-compatible POIs, preserves supplier safety gates, and updates the complete unresolved ledger.",
+  "source": {
+    "kind": "git",
+    "repository": "https://github.com/lingfengai731/Agentstrip.git",
+    "commit": "b952e67a4d0a2c506f30949422add97426990b93",
+    "branch": "codex/dicky-route-r4-handoff",
+    "worktree": "E:\\Agentstrip-wt-dicky",
+    "dirty": false
+  },
+  "verification": {
+    "command": "python -m unittest wandermind.backend.tests.test_product_access; data count assertions; project-memory validate; git diff --check; Playwright Chrome 1440/768/320 and WebKit 390",
+    "result": "39 tests OK; 59 POIs = 32 verified + 24 pending + 3 supplier-gated; R4 and Dicky interaction checks passed; zero page overflow at all four viewports."
+  },
+  "notes": "Production was not changed or reverified. Thousand Islands Viewpoint remains pending identity confirmation. Mount Batur Jeep, Celuk silver class and Bali Fire Shooting Club remain supplier-gated. Branch requires reviewed integration before deployment."
+}

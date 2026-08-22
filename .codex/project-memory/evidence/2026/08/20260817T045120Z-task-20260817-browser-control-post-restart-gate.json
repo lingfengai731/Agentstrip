@@ -1,0 +1,22 @@
+{
+  "schema_version": 1,
+  "evidence_id": "ev-20260817T045120Z-task-20260817-browser-control-post-restart-gate",
+  "task_ref": "task-20260817-browser-control-post-restart-gate",
+  "owner": "codex-sol",
+  "captured_at": "2026-08-17T04:51:20Z",
+  "status": "verified",
+  "claim": "Post-restart control gate is NO-GO: Computer Use and cua_node passed, Browser navigation and Chrome control failed, and Render was not accessed.",
+  "source": {
+    "kind": "git",
+    "repository": "https://github.com/lingfengai731/Agentstrip.git",
+    "commit": "b86481e534638d26079b1db7262666b2e7c80904",
+    "branch": "codex/account2-integration-20260816",
+    "worktree": "E:\\Agentstrip2-worktree",
+    "dirty": true
+  },
+  "verification": {
+    "command": "Browser binding plus two navigation attempts; Chrome family selection and four bundled diagnostics; @oai/sky import plus list_apps; post-restart logs_2.sqlite signature counts; user-scope override presence checks.",
+    "result": "Browser policy gate blocked both navigation attempts; Chrome family unavailable with extension exit 2 and native-host exit 1; Computer Use listed 40 apps and 8 windows; cua_node copy, permission and launcher failure signatures were all 0; user-scope resource override cleared."
+  },
+  "notes": "No Render page, retired Render conversation, environment value, credential, cache, plugin installation or copied override directory was opened, changed or removed."
+}

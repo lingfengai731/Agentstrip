@@ -84,6 +84,10 @@
       body.dark .bali-filter { background:#232622; border-color:#3a3d38; color:#d1d5db; }
       body.dark .bali-filter-label { color:#a8b0ba; }
       .bali-gallery-empty { margin:12px 0 0; padding:18px; border:1px dashed #d7d2c7; border-radius:12px; color:#64748b; text-align:center; }
+      .bali-gallery-more { display:flex; justify-content:center; margin-top:24px; }
+      .bali-gallery-more[hidden] { display:none; }
+      .bali-gallery-more .bali-btn { min-height:44px; border:1px solid #0e7c6b; background:#fff; color:#0f6258; }
+      .bali-gallery-more .bali-btn:hover, .bali-gallery-more .bali-btn:focus-visible { background:#e8f2ef; color:#0f6258; box-shadow:0 8px 22px rgba(14,124,107,.12); outline:none; }
       .bali-gallery { columns: 3; column-gap: 14px; }
       .bali-shot { position:relative; width:100%; padding:0; margin:0 0 14px; border:0; border-radius:12px; overflow:hidden; background:#111; display:block; break-inside:avoid; box-shadow:0 6px 22px rgba(0,0,0,.10); cursor:pointer; text-align:left; }
       .bali-shot[hidden] { display:none; }
@@ -130,22 +134,22 @@
       body.dark .bali-route-card { background:#232622; color:#f3f4f6; border-color:#3a3d38; }
       .bali-route-id { display:flex; align-items:center; justify-content:space-between; gap:12px; color:#0e7c6b; font-size:11px; font-weight:800; letter-spacing:.12em; text-transform:uppercase; }
       body.dark .bali-route-id { color:#5eead4; }
-      .bali-route-status { padding:4px 8px; border-radius:12px; background:#fef3c7; color:#92400e; font-size:10px; letter-spacing:0; }
+      .bali-route-status { padding:4px 8px; border-radius:12px; background:#fef3c7; color:#92400e; font-size:10px; letter-spacing:0; text-transform:none; }
       .bali-route-card h3 { margin:12px 0 8px; font-size:19px; font-weight:800; color:inherit; }
       .bali-route-card p { margin:0 0 14px; min-height:66px; color:#64748b; font-size:13px; line-height:1.65; }
       body.dark .bali-route-card p { color:#cbd5e1; }
       .bali-route-meta { display:flex; flex-wrap:wrap; gap:7px; }
       .bali-route-meta span { padding:5px 9px; border-radius:13px; background:rgba(14,124,107,.08); color:#0f766e; font-size:10.5px; font-weight:700; }
       body.dark .bali-route-meta span { background:rgba(45,212,191,.1); color:#99f6e4; }
-      .bali-route-detail { margin-top:24px; padding:28px; border-radius:18px; background:linear-gradient(135deg,#0e7c6b,#0a6659); color:#fff; box-shadow:0 18px 45px rgba(14,124,107,.22); }
+      .bali-route-detail { margin-top:24px; padding:28px; border:1px solid #ded8ca; border-radius:18px; background-color:#f3f1ea; background-image:radial-gradient(circle at 8% 7%,rgba(252,191,30,.12),transparent 24%),linear-gradient(145deg,rgba(255,255,255,.72),rgba(243,241,234,.88)); color:var(--bali-ink); box-shadow:0 14px 38px rgba(43,53,47,.10); }
       .bali-route-detail-grid { display:grid; grid-template-columns:minmax(0,1.1fr) minmax(280px,.9fr); gap:28px; align-items:start; }
       .bali-route-detail h3 { margin:0 0 8px; font-size:clamp(24px,3vw,32px); font-weight:800; }
-      .bali-route-detail p { margin:0; color:rgba(255,255,255,.86); line-height:1.7; }
+      .bali-route-detail p { margin:0; color:#52605c; line-height:1.65; }
       .bali-route-aside { display:grid; gap:14px; min-width:0; }
-      .bali-route-map { padding:16px; border:1px solid rgba(255,255,255,.2); border-radius:16px; background:rgba(4,47,46,.24); }
+      .bali-route-map { padding:16px; border:1px solid #ded8ca; border-radius:16px; background:#fff; box-shadow:0 5px 18px rgba(43,53,47,.06); }
       .bali-route-map-head { display:flex; justify-content:space-between; align-items:flex-start; gap:12px; margin-bottom:8px; }
-      .bali-route-map-head strong { color:#fff; font-size:14px; }
-      .bali-route-map-head span { color:rgba(255,255,255,.66); font-size:10px; text-align:right; }
+      .bali-route-map-head strong { color:var(--bali-ink); font-size:14px; }
+      .bali-route-map-head span { color:#64748b; font-size:10px; text-align:right; }
       .bali-route-map-canvas { position:relative; overflow:hidden; height:300px; border-radius:11px; background:#dce8e5; }
       .bali-route-map-live, .bali-route-map-fallback { position:absolute; inset:0; width:100%; height:100%; }
       .bali-route-map-live { z-index:3; visibility:hidden; background:#dce8e5; }
@@ -169,54 +173,62 @@
       .bali-route-map-live .leaflet-control-zoom a { color:#083d37; }
       @media (prefers-reduced-motion: reduce) { .wm-leaflet-marker { transition:none; } }
       .bali-map-region-list { display:flex; flex-wrap:wrap; gap:6px; margin-top:10px; }
-      .bali-map-region-list span { padding:5px 8px; border-radius:12px; background:rgba(255,255,255,.1); color:#fff; font-size:10px; line-height:1.35; }
-      .bali-map-region-list span.optional { border:1px dashed rgba(255,255,255,.45); background:transparent; }
+      .bali-map-region-list span { padding:5px 8px; border-radius:12px; background:#e8f2ef; color:#0f6258; font-size:10px; line-height:1.35; }
+      .bali-map-region-list span.optional { border:1px dashed #94a3b8; background:#f8fafc; color:#475569; }
       .bali-region-path { display:flex; align-items:center; flex-wrap:wrap; gap:8px; margin:20px 0; }
-      .bali-region-node { padding:8px 12px; border:1px solid rgba(255,255,255,.35); border-radius:16px; background:rgba(255,255,255,.1); font-size:12px; font-weight:800; }
-      .bali-region-arrow { color:#fcbf1e; }
+      .bali-region-node { padding:8px 12px; border:1px solid #d7d2c7; border-radius:16px; background:#fff; color:#34443f; font-size:12px; font-weight:800; }
+      .bali-region-arrow { color:#d49b00; }
       .bali-route-value { display:grid; grid-template-columns:1fr 1fr; gap:10px; }
-      .bali-route-value-card { padding:15px; border-radius:12px; background:rgba(255,255,255,.1); }
-      .bali-route-value-card strong { display:block; color:#fff; margin-bottom:5px; }
-      .bali-route-value-card span { display:block; color:rgba(255,255,255,.78); font-size:12px; line-height:1.55; }
-      .bali-poi-notice { display:flex; align-items:flex-start; gap:8px; margin:18px 0 10px; padding:11px 12px; border:1px solid rgba(252,191,30,.42); border-radius:11px; background:rgba(252,191,30,.09); color:rgba(255,255,255,.9); font-size:12px; line-height:1.55; }
-      .bali-poi-notice .fa { flex:0 0 auto; margin-top:3px; color:#fcbf1e; }
+      .bali-route-value-card { padding:15px; border:1px solid #e5e2da; border-radius:12px; background:#fff; }
+      .bali-route-value-card strong { display:block; color:#0f6258; margin-bottom:5px; }
+      .bali-route-value-card span { display:block; color:#64748b; font-size:12px; line-height:1.55; }
+      .bali-poi-notice { display:flex; align-items:flex-start; gap:8px; margin:18px 0 10px; padding:11px 12px; border:1px solid rgba(212,155,0,.34); border-radius:11px; background:#fffaf0; color:#6b5314; font-size:12px; line-height:1.55; }
+      .bali-poi-notice .fa { flex:0 0 auto; margin-top:3px; color:#d49b00; }
       .bali-day-outline { display:grid; gap:9px; margin:18px 0 20px; }
-      .bali-day-row { display:grid; grid-template-columns:minmax(0,1fr) auto; gap:8px 10px; align-items:start; padding:11px 12px; border-radius:12px; background:rgba(255,255,255,.08); border:1px solid rgba(255,255,255,.16); transition:border-color .18s,background .18s; }
-      .bali-day-row.active { border-color:#fcbf1e; background:rgba(252,191,30,.11); }
-      .bali-day-main { display:grid; grid-template-columns:58px minmax(0,1fr); gap:10px; align-items:center; min-width:0; padding:2px 0; border:0; background:transparent; color:#fff; text-align:left; cursor:pointer; }
-      .bali-day-main:focus-visible { outline:2px solid #fcbf1e; outline-offset:3px; border-radius:6px; }
-      .bali-day-main strong { color:#fcbf1e; font-size:12px; letter-spacing:.06em; }
-      .bali-day-main span { color:#fff; font-size:13px; line-height:1.45; }
+      .bali-day-row { display:grid; grid-template-columns:minmax(0,1fr) auto; gap:8px 10px; align-items:start; padding:11px 12px; border-radius:12px; background:#fff; border:1px solid #ded8ca; transition:border-color .18s ease-out,background .18s ease-out,box-shadow .18s ease-out; }
+      .bali-day-row.active { border-color:#0e7c6b; background:#f7fcfa; box-shadow:0 5px 16px rgba(14,124,107,.08); }
+      .bali-day-row:not(.active) .bali-day-places, .bali-day-row:not(.active) .bali-day-add, .bali-day-row:not(.active) .bali-day-feedback { display:none; }
+      .bali-day-main { display:grid; grid-template-columns:58px minmax(0,1fr); gap:10px; align-items:center; min-width:0; padding:2px 0; border:0; background:transparent; color:var(--bali-ink); text-align:left; cursor:pointer; }
+      .bali-day-main:focus-visible { outline:2px solid #0e7c6b; outline-offset:3px; border-radius:6px; }
+      .bali-day-main strong { color:#0e7c6b; font-size:12px; letter-spacing:.06em; }
+      .bali-day-main span { color:#34443f; font-size:13px; line-height:1.45; }
       .bali-day-actions { display:flex; gap:5px; }
-      .bali-day-icon-btn { width:30px; height:30px; display:inline-grid; place-items:center; border:1px solid rgba(255,255,255,.3); border-radius:8px; background:rgba(255,255,255,.08); color:#fff; cursor:pointer; }
-      .bali-day-icon-btn:hover, .bali-day-icon-btn:focus-visible { background:rgba(255,255,255,.18); outline:none; }
+      .bali-day-icon-btn { width:30px; height:30px; display:inline-grid; place-items:center; border:1px solid #d7d2c7; border-radius:8px; background:#f8faf9; color:#475569; cursor:pointer; }
+      .bali-day-icon-btn:hover, .bali-day-icon-btn:focus-visible { border-color:#0e7c6b; background:#e8f2ef; color:#0f6258; outline:none; }
       .bali-day-icon-btn:disabled { opacity:.3; cursor:not-allowed; }
       .bali-day-places, .bali-day-add { grid-column:1/-1; display:flex; flex-wrap:wrap; gap:7px; align-items:center; }
-      .bali-day-place { display:inline-flex; align-items:center; gap:5px; max-width:100%; padding:5px 7px 5px 9px; border-radius:13px; background:rgba(255,255,255,.12); color:#fff; font-size:11px; line-height:1.35; }
+      .bali-day-place { display:inline-flex; align-items:center; gap:5px; max-width:100%; padding:5px 7px 5px 9px; border-radius:13px; background:#e8f2ef; color:#0f6258; font-size:11px; line-height:1.35; }
       .bali-day-place-name { min-width:0; overflow-wrap:anywhere; }
-      .bali-poi-status { flex:0 0 auto; padding:2px 6px; border:1px solid rgba(252,191,30,.48); border-radius:9px; background:rgba(252,191,30,.12); color:#fef3c7; font-size:9.5px; font-weight:700; line-height:1.35; }
-      .bali-poi-status[data-status="verified"] { border-color:rgba(94,234,212,.55); background:rgba(45,212,191,.12); color:#ccfbf1; }
-      .bali-poi-status[data-status="needs_supplier_confirmation"] { border-color:rgba(251,146,60,.58); background:rgba(251,146,60,.12); color:#ffedd5; }
-      .bali-day-place button { flex:0 0 20px; width:20px; height:20px; padding:0; border:0; border-radius:50%; background:rgba(255,255,255,.16); color:#fff; cursor:pointer; }
+      .bali-poi-status { flex:0 0 auto; padding:2px 6px; border:1px solid #e0bd58; border-radius:9px; background:#fff7dc; color:#765b10; font-size:9.5px; font-weight:700; line-height:1.35; }
+      .bali-poi-status[data-status="needs_supplier_confirmation"] { border-color:#fdba74; background:#fff7ed; color:#9a3412; }
+      .bali-day-place button { flex:0 0 20px; width:20px; height:20px; padding:0; border:0; border-radius:50%; background:rgba(14,124,107,.12); color:#0f6258; cursor:pointer; }
       .bali-day-place button:hover, .bali-day-place button:focus-visible { background:#b91c1c; outline:none; }
-      .bali-day-empty { color:rgba(255,255,255,.62); font-size:11px; }
-      .bali-day-select { min-width:0; flex:1 1 190px; height:34px; border:1px solid rgba(255,255,255,.28); border-radius:9px; padding:0 9px; background:#0a6659; color:#fff; font-size:11px; }
+      .bali-day-empty { color:#64748b; font-size:11px; }
+      .bali-day-select { min-width:0; flex:1 1 190px; height:34px; border:1px solid #cfc9bc; border-radius:9px; padding:0 9px; background:#fff; color:#1e293b; font-size:11px; }
       .bali-day-select option { background:#fff; color:#1e293b; }
       .bali-day-select[aria-invalid="true"] { border-color:#fb923c; box-shadow:0 0 0 2px rgba(251,146,60,.2); }
-      .bali-day-add-btn, .bali-day-reset { min-height:34px; border:1px solid rgba(255,255,255,.38); border-radius:9px; padding:6px 11px; background:transparent; color:#fff; font-size:11px; font-weight:700; cursor:pointer; }
-      .bali-day-add-btn:hover, .bali-day-add-btn:focus-visible, .bali-day-reset:hover, .bali-day-reset:focus-visible { background:rgba(255,255,255,.14); outline:none; }
-      .bali-day-feedback { grid-column:1/-1; margin:0; color:#ccfbf1; font-size:10.5px; font-weight:700; line-height:1.45; }
+      .bali-day-add-btn, .bali-day-reset { min-height:34px; border:1px solid #0e7c6b; border-radius:9px; padding:6px 11px; background:#fff; color:#0f6258; font-size:11px; font-weight:700; cursor:pointer; }
+      .bali-day-add-btn:hover, .bali-day-add-btn:focus-visible, .bali-day-reset:hover, .bali-day-reset:focus-visible { background:#e8f2ef; outline:none; }
+      .bali-day-feedback { grid-column:1/-1; margin:0; color:#0f6258; font-size:10.5px; font-weight:700; line-height:1.45; }
       .bali-day-feedback:empty { display:none; }
-      .bali-day-feedback.is-error { color:#fed7aa; }
-      .bali-editor-note { display:flex; align-items:center; justify-content:space-between; gap:10px; flex-wrap:wrap; margin-top:-8px; color:rgba(255,255,255,.7); font-size:10.5px; }
+      .bali-day-feedback.is-error { color:#b45309; }
+      .bali-editor-note { display:flex; align-items:center; justify-content:space-between; gap:10px; flex-wrap:wrap; margin-top:-8px; color:#64748b; font-size:10.5px; }
       .bali-route-detail-actions { display:flex; flex-wrap:wrap; gap:10px; margin-top:18px; }
       .bali-route-detail-actions .bali-btn { padding:11px 18px; font-size:13px; }
-      .bali-route-secondary { background:transparent; color:#fff; border:1px solid rgba(255,255,255,.55); }
-      .bali-route-secondary:hover { color:#fff; background:rgba(255,255,255,.1); text-decoration:none; }
+      .bali-route-secondary { background:#fff; color:#0f6258; border:1px solid #8fb9ae; }
+      .bali-route-secondary:hover { color:#0f6258; background:#e8f2ef; text-decoration:none; }
+      body.dark .bali-route-detail { border-color:#3a3d38; background:#1d2422; background-image:radial-gradient(circle at 8% 7%,rgba(252,191,30,.09),transparent 24%); color:#f0f0ec; }
+      body.dark .bali-route-detail p, body.dark .bali-editor-note { color:#cbd5e1; }
+      body.dark .bali-route-map, body.dark .bali-route-value-card, body.dark .bali-day-row { border-color:#3a3d38; background:#252b28; }
+      body.dark .bali-route-map-head strong, body.dark .bali-day-main, body.dark .bali-day-main span { color:#f0f0ec; }
+      body.dark .bali-route-map-head span, body.dark .bali-route-value-card span { color:#cbd5e1; }
+      body.dark .bali-region-node { border-color:#4b5563; background:#252b28; color:#e2e8f0; }
+      body.dark .bali-day-row.active { border-color:#5eead4; background:#1f302b; }
+      body.dark .bali-day-icon-btn, body.dark .bali-day-select, body.dark .bali-day-add-btn, body.dark .bali-day-reset, body.dark .bali-route-secondary { border-color:#4b766d; background:#202724; color:#ccfbf1; }
       @media(max-width:991px){ .bali-route-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.bali-route-detail-grid{grid-template-columns:1fr} }
       @media(max-width:575px){ .bali-route-grid{display:flex;width:100%;max-width:100%;min-width:0;overflow-x:auto;overscroll-behavior-x:contain;scroll-snap-type:x mandatory;margin-right:0;padding:0 0 12px}.bali-route-card{flex:0 0 min(calc(100vw - 30px),330px);scroll-snap-align:start}.bali-route-detail{padding:22px 18px}.bali-route-value{grid-template-columns:1fr}.bali-route-card p{min-height:0}.bali-route-map{padding:13px}.bali-route-map-head{align-items:center}.bali-route-map-canvas{height:280px}.bali-day-main{grid-template-columns:48px minmax(0,1fr)}.bali-day-actions{gap:3px}.bali-day-icon-btn{width:28px;height:28px}.bali-day-select{flex-basis:150px} }
       @media(max-width:360px){ .bali-route-map-head{display:block}.bali-route-map-head span{display:block;margin-top:3px;text-align:left}.bali-route-detail-actions{display:grid}.bali-route-detail-actions .bali-btn{width:100%;text-align:center} }
-      .bali-driver-band { background: linear-gradient(135deg, #0e7c6b, #14b8a6); color: #fff; padding: 64px 0; }
+      .bali-driver-band { background:#153238; background-image:radial-gradient(circle at 12% 18%,rgba(252,191,30,.13),transparent 25%),linear-gradient(135deg,#153238,#0e272b); color:#fff; padding:64px 0; }
       .bali-driver-inner { max-width: 960px; margin: 0 auto; text-align: center; }
       .bali-driver-inner h2 { font-size: clamp(26px, 4vw, 38px); font-weight: 800; margin: 0 0 14px; }
       .bali-driver-inner p { font-size: 16px; line-height: 1.7; color: rgba(255,255,255,.92); margin: 0 0 12px; }
@@ -227,6 +239,10 @@
       .bali-driver-grid { display:grid; grid-template-columns:minmax(260px,.9fr) 1.1fr; gap:32px; align-items:center; text-align:left; }
       .bali-driver-car { width:100%; border-radius:14px; box-shadow:0 18px 44px rgba(0,0,0,.25); }
       @media(max-width:767px){ .bali-driver-grid{grid-template-columns:1fr;text-align:center}.bali-driver-car{max-width:520px;margin:auto} }
+      @media (prefers-reduced-motion: reduce) {
+        .bali-btn, .bali-shot img, .bali-route-card, .bali-day-row, .bali-map-region, .wm-leaflet-marker { transition:none !important; }
+        .bali-btn:hover, .bali-shot:hover img, .bali-shot:focus-visible img, .bali-route-card:hover, .bali-route-card:focus-visible, .bali-map-region:hover, .wm-leaflet-marker-shell:hover .wm-leaflet-marker { transform:none !important; }
+      }
       .bali-place-modal { position:fixed; inset:0; z-index:10000; display:none; align-items:center; justify-content:center; padding:20px; background:rgba(15,17,20,.68); backdrop-filter:blur(7px); }
       .bali-place-modal.show { display:flex; }
       .bali-place-dialog { position:relative; width:min(880px,100%); max-height:90vh; overflow:auto; overscroll-behavior:contain; display:grid; grid-template-columns:1fr 1fr; background:#fff; border-radius:16px; box-shadow:0 24px 70px rgba(0,0,0,.32); }
@@ -240,7 +256,7 @@
       .bali-place-decision-card { min-width:0; padding:13px 14px; border:1px solid #e5e2da; border-radius:10px; background:#f8faf9; }
       .bali-place-decision-card strong { display:block; margin-bottom:5px; color:#0e7c6b; font-size:10px; font-weight:800; letter-spacing:.08em; text-transform:uppercase; }
       .bali-place-decision-card p { margin:0; color:#475569; font-size:13px; line-height:1.6; }
-      .bali-place-purpose { border-left:3px solid #fcbf1e; background:#fffbeb; }
+      .bali-place-purpose { border-color:#ead9a7; background:#fffbeb; }
       body.dark .bali-place-decision-card { border-color:#3a3d38; background:rgba(255,255,255,.035); }
       body.dark .bali-place-decision-card strong { color:#5eead4; }
       body.dark .bali-place-decision-card p { color:#d1d5db; }
@@ -279,8 +295,8 @@
        .bali-professional-route-label { display:flex; align-items:flex-start; justify-content:space-between; gap:12px; margin-bottom:8px; }
        .bali-professional-route-label strong { color:#0e7c6b; font-size:13px; letter-spacing:.08em; text-transform:uppercase; }
        .bali-professional-badge { flex:0 0 auto; padding:5px 9px; border-radius:14px; background:#fef3c7; color:#92400e; font-size:11px; font-weight:800; }
-       .bali-professional-reason { padding:13px 14px; border-left:3px solid var(--bali-gold); border-radius:0 10px 10px 0; background:rgba(252,191,30,.1); color:#475569; font-size:13px; line-height:1.65; }
-       body.dark .bali-professional-reason { color:#e2e8f0; }
+       .bali-professional-reason { padding:13px 14px; border:1px solid rgba(212,155,0,.32); border-radius:10px; background:rgba(252,191,30,.1); color:#475569; font-size:13px; line-height:1.65; }
+       body.dark .bali-professional-reason { border-color:rgba(252,191,30,.22); color:#e2e8f0; }
        .bali-professional-days { display:grid; gap:10px; }
        .bali-professional-day { position:relative; padding:15px 16px 15px 58px; border:1px solid #e5e7eb; border-radius:14px; background:#fff; min-width:0; }
        body.dark .bali-professional-day { background:#1f2420; border-color:#3a3d38; }
@@ -297,6 +313,7 @@
        .bali-professional-lock-note { color:#92400e; font-size:12px; line-height:1.55; }
        .bali-professional-actions { display:flex; flex-wrap:wrap; gap:9px; margin-top:18px; }
        .bali-professional-actions .bali-btn { padding:11px 16px; font-size:13px; }
+       .bali-professional-actions .bali-professional-adjustments-badge { display:inline-flex; align-items:center; justify-content:center; min-height:42px; padding:8px 13px; text-align:center; }
        .bali-professional-form { display:grid; gap:10px; margin-top:16px; }
        .bali-professional-form-row { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:10px; }
        .bali-professional-form label { display:grid; gap:5px; color:#64748b; font-size:11px; font-weight:700; }
@@ -306,7 +323,7 @@
        .bali-professional-status { min-height:20px; margin-top:10px; color:#0f766e; font-size:12px; line-height:1.55; }
        .bali-professional-status.error { color:#b91c1c; }
        @media(max-width:991px){ .bali-professional-layout{grid-template-columns:1fr} }
-       @media(max-width:575px){ .bali-professional-card{padding:18px}.bali-profile-summary{grid-template-columns:1fr}.bali-professional-form-row{grid-template-columns:1fr}.bali-professional-actions{display:grid}.bali-professional-actions .bali-btn{width:100%;justify-content:center;text-align:center} }
+       @media(max-width:575px){ .bali-professional-card{padding:18px}.bali-profile-summary{grid-template-columns:1fr}.bali-professional-form-row{grid-template-columns:1fr}.bali-professional-actions{display:grid}.bali-professional-actions .bali-btn,.bali-professional-actions .bali-professional-adjustments-badge{width:100%;justify-content:center;text-align:center} }
        .footer-contact-line { display: flex; align-items: center; gap: 8px; padding: 4px 0; flex-wrap: wrap; }
       .footer-contact-line .fa { color: #fcbf1e !important; width: 18px; text-align: center; flex-shrink: 0; font-size: 15px; }
       .footer-contact-line a { color: #ddd; }
@@ -454,8 +471,8 @@
       <button class="bali-shot" data-place="kintamani-stay" data-category="experiences" data-region="G6" data-area="Kintamani" data-place-name="Kintamani stay" data-place-type="mountain accommodation" data-prominence="supporting" data-photography-style="golden hour" data-verification-status="route-linked" data-sub-category="hotels-resorts" data-tags="golden-hour" data-mood="restorative" data-season="all-season" data-route-ids="R1 R5 R6"><img src="assets/images/bali-17.jpg" alt="Kintamani stay facing Mount Batur" loading="lazy"><span class="bali-shot-meta"><span data-i18n="baliFilterExperiences">Experiences</span><span data-i18n="baliSubHotels">Hotels &amp; Resorts</span></span></button>
       <button class="bali-shot" data-place="island-boat" data-category="experiences" data-region="G3" data-area="Nusa Penida crossing" data-place-name="Bali island crossing" data-place-type="boat transfer" data-prominence="supporting" data-photography-style="traveller documentary" data-verification-status="route-linked" data-sub-category="road-trip" data-tags="traveller-moment documentary" data-mood="practical" data-season="weather-dependent" data-route-ids="R1 R3"><img src="assets/images/bali-18.jpg" alt="Passenger boat for a Bali island crossing" loading="lazy"><span class="bali-shot-meta"><span data-i18n="baliFilterExperiences">Experiences</span><span data-i18n="baliSubRoadTrip">Road trip &amp; transfers</span></span></button>
       <button class="bali-shot" data-place="penida-bay" data-category="landscapes" data-region="G3" data-area="Nusa Penida" data-place-name="Nusa Penida bay" data-place-type="coastal landscape" data-prominence="signature" data-photography-style="dramatic coast" data-verification-status="route-linked" data-sub-category="ocean-beach" data-tags="adventure" data-mood="dramatic" data-season="dry-season" data-route-ids="R1 R3 R6"><img src="assets/images/bali-19.jpg" alt="Nusa Penida bay and sea stacks" loading="lazy"><span class="bali-shot-meta"><span data-i18n="baliFilterLandscapes">Landscapes</span><span data-i18n="baliSubOceanBeach">Ocean &amp; Beach</span></span></button>
-      <button class="bali-shot" data-place="galungan" data-category="culture" data-region="Bali-wide" data-area="Bali" data-place-name="Galungan" data-place-type="Balinese cultural celebration" data-prominence="signature" data-photography-style="cultural documentary" data-verification-status="bali-named" data-sub-category="art-heritage" data-tags="documentary" data-mood="celebratory" data-season="festival-dependent" data-route-ids=""><img src="assets/images/web/a637d36cf0e9f53a.webp" alt="Galungan cultural celebration in Bali" loading="lazy"><span class="bali-shot-meta"><span data-i18n="baliFilterCulture">Culture</span><span data-i18n="baliSubArtHeritage">Art &amp; Heritage</span></span></button>
-      <button class="bali-shot" data-place="nyepi" data-category="culture" data-region="Bali-wide" data-area="Bali" data-place-name="Nyepi" data-place-type="Balinese day of silence" data-prominence="signature" data-photography-style="cultural documentary" data-verification-status="bali-named" data-sub-category="art-heritage" data-tags="documentary" data-mood="reflective" data-season="festival-dependent" data-route-ids=""><img src="assets/images/web/5ea1261626ebac26.webp" alt="Nyepi cultural moment in Bali" loading="lazy"><span class="bali-shot-meta"><span data-i18n="baliFilterCulture">Culture</span><span data-i18n="baliSubArtHeritage">Art &amp; Heritage</span></span></button>
+      <button class="bali-shot" data-place="galungan" data-category="culture" data-region="Bali-wide" data-area="Bali" data-place-name="Galungan" data-place-type="Balinese cultural celebration" data-prominence="signature" data-photography-style="cultural documentary" data-verification-status="bali-named" data-sub-category="balinese-culture" data-tags="culture festival penjor" data-mood="celebratory" data-season="festival-dependent" data-route-ids="R4"><img src="assets/images/web/a637d36cf0e9f53a.webp" alt="Rows of curved bamboo penjor decorations beside a road in Bali under a blue sky" loading="lazy"><span class="bali-shot-meta"><span data-i18n="baliFilterCulture">Culture</span><span data-i18n="baliSubArtHeritage">Art &amp; Heritage</span></span></button>
+      <button class="bali-shot" data-place="pura-desa-seminyak-gathering" data-category="culture" data-region="G1" data-area="Seminyak" data-place-name="Pura Desa Adat Seminyak gathering" data-place-type="community temple gathering" data-prominence="supporting" data-photography-style="cultural documentary" data-verification-status="bali-named" data-sub-category="balinese-culture" data-tags="culture community temple penjor documentary" data-mood="communal" data-season="ceremony-dependent" data-route-ids="R6"><img src="assets/images/web/5ea1261626ebac26.webp" alt="Community members in white ceremonial attire seated outside Pura Desa Adat Seminyak beneath penjor decorations" loading="lazy"><span class="bali-shot-meta"><span data-i18n="baliFilterCulture">Culture</span><span data-i18n="baliSubArtHeritage">Art &amp; Heritage</span></span></button>
       <button class="bali-shot" data-place="pura-besakih-1" data-category="culture" data-region="Karangasem" data-area="Besakih" data-place-name="Pura Besakih" data-place-type="temple complex" data-prominence="iconic" data-photography-style="architectural documentary" data-verification-status="bali-named" data-sub-category="temples-architecture" data-tags="documentary" data-mood="reverent" data-season="all-season" data-route-ids=""><img src="assets/images/web/428ea37c1c091836.webp" alt="Pura Besakih temple complex in Bali" loading="lazy"><span class="bali-shot-meta"><span data-i18n="baliFilterCulture">Culture</span><span data-i18n="baliSubTemples">Temples &amp; Architecture</span></span></button>
       <button class="bali-shot" data-place="pura-besakih-2" data-category="culture" data-region="Karangasem" data-area="Besakih" data-place-name="Pura Besakih" data-place-type="temple complex" data-prominence="iconic" data-photography-style="architectural documentary" data-verification-status="bali-named" data-sub-category="temples-architecture" data-tags="documentary" data-mood="reverent" data-season="all-season" data-route-ids=""><img src="assets/images/web/0ee069026ef64d7f.webp" alt="Pura Besakih temple detail in Bali" loading="lazy"><span class="bali-shot-meta"><span data-i18n="baliFilterCulture">Culture</span><span data-i18n="baliSubTemples">Temples &amp; Architecture</span></span></button>
       <button class="bali-shot" data-place="pura-besakih-3" data-category="culture" data-region="Karangasem" data-area="Besakih" data-place-name="Pura Besakih" data-place-type="temple complex" data-prominence="iconic" data-photography-style="architectural documentary" data-verification-status="bali-named" data-sub-category="temples-architecture" data-tags="documentary" data-mood="reverent" data-season="all-season" data-route-ids=""><img src="assets/images/web/29de3c2fb9bba0e2.webp" alt="Pura Besakih temple view in Bali" loading="lazy"><span class="bali-shot-meta"><span data-i18n="baliFilterCulture">Culture</span><span data-i18n="baliSubTemples">Temples &amp; Architecture</span></span></button>
@@ -476,6 +493,9 @@
       <button class="bali-shot" data-place="ubud-yogabarn-2" data-category="experiences" data-region="G4" data-area="Ubud" data-place-name="The Yoga Barn" data-place-type="yoga and wellness" data-prominence="signature" data-photography-style="experience documentary" data-verification-status="bali-named" data-sub-category="wellness" data-tags="traveller-moment documentary" data-mood="restorative" data-season="all-season" data-route-ids=""><img src="assets/images/web/aa067adb970c08b1.webp" alt="The Yoga Barn wellness moment in Ubud" loading="lazy"><span class="bali-shot-meta"><span data-i18n="baliFilterExperiences">Experiences</span><span data-i18n="baliSubWellness">Wellness &amp; movement</span></span></button>
       <button class="bali-shot" data-place="sunday-beach-club-1" data-category="experiences" data-region="Badung" data-area="Uluwatu" data-place-name="Sunday Beach Club" data-place-type="beach club experience" data-prominence="supporting" data-photography-style="experience documentary" data-verification-status="bali-named" data-sub-category="ocean-beach" data-tags="traveller-moment documentary" data-mood="relaxed" data-season="all-season" data-route-ids=""><img src="assets/images/web/9e500f1e79a63ed8.webp" alt="Sunday Beach Club experience in Uluwatu" loading="lazy"><span class="bali-shot-meta"><span data-i18n="baliFilterExperiences">Experiences</span><span data-i18n="baliSubOceanBeach">Ocean &amp; Beach</span></span></button>
       <button class="bali-shot" data-place="sunday-beach-club-2" data-category="experiences" data-region="Badung" data-area="Uluwatu" data-place-name="Sunday Beach Club" data-place-type="beach club experience" data-prominence="supporting" data-photography-style="experience documentary" data-verification-status="bali-named" data-sub-category="ocean-beach" data-tags="traveller-moment documentary" data-mood="relaxed" data-season="all-season" data-route-ids=""><img src="assets/images/web/5edfe367fc23ca02.webp" alt="Sunday Beach Club moment in Uluwatu" loading="lazy"><span class="bali-shot-meta"><span data-i18n="baliFilterExperiences">Experiences</span><span data-i18n="baliSubOceanBeach">Ocean &amp; Beach</span></span></button>
+    </div>
+    <div class="bali-gallery-more" id="bali-gallery-more" hidden>
+      <button class="bali-btn" id="bali-gallery-more-btn" type="button"></button>
     </div>
     <p class="bali-gallery-empty" id="bali-gallery-empty" hidden data-i18n="baliGalleryEmpty">No current image matches both filters. Try another tag.</p>
   </div>
@@ -659,6 +679,7 @@
   var planStorageKey = 'wm_bali_route_plans_v1';
   var activeLeafletMap = null;
   var activeLeafletMarkers = {};
+  var lastRenderedRouteId = null;
 
   function language() {
     var value = (document.getElementById('langPicker') || {}).value || localStorage.getItem('wm_studio_lang') || 'en';
@@ -678,11 +699,11 @@
 
   function routeUiCopy() {
     var copy = {
-      en:{day:function(number){ return 'Day ' + number; },remove:'Remove ',core:'Core',optional:'Optional',mapTitle:'Bali geographic basemap',reset:'Restore the recommended order and places?',loadError:'Route data is temporarily unavailable. Please retry or use AI planning.',poiNotice:'Status separates reviewed stable facts from live conditions. Confirm access, hours, tickets, weather and traffic before travel.',chooseFirst:'Choose a place before adding it.',placeUnavailable:'That place is no longer available. Please choose another.',added:function(name, number){ return name + ' was added to Day ' + number + '.'; }},
-      zh:{day:function(number){ return '第 ' + number + ' 天'; },remove:'移除 ',core:'核心',optional:'可选',mapTitle:'巴厘岛真实地理底图',reset:'恢复这条路线的推荐顺序和地点？',loadError:'路线资料暂时无法加载，请稍后重试或使用 AI 规划。',poiNotice:'核验状态会区分已复核的稳定事实和仍会变化的现场信息；出行前仍需确认开放、票价、天气与交通。',chooseFirst:'请先选择一个地点，再点击添加。',placeUnavailable:'这个地点暂时不可添加，请重新选择。',added:function(name, number){ return name + ' 已添加到第 ' + number + ' 天。'; }},
-      ja:{day:function(number){ return number + '日目'; },remove:'削除：',core:'主要',optional:'任意',mapTitle:'バリ島の実地図',reset:'おすすめの順序と場所に戻しますか？',loadError:'ルート情報を読み込めません。時間をおいて再試行するか、AIプランナーをご利用ください。',poiNotice:'確認済みの安定情報と変動する現地情報をステータスで区別しています。訪問前に入場、営業時間、料金、天候、交通を再確認してください。',chooseFirst:'追加する場所を先に選択してください。',placeUnavailable:'この場所は現在追加できません。別の場所を選択してください。',added:function(name, number){ return name + 'を' + number + '日目に追加しました。'; }},
-      ko:{day:function(number){ return number + '일차'; },remove:'삭제: ',core:'핵심',optional:'선택',mapTitle:'발리 실제 지도',reset:'추천 순서와 장소로 복원할까요?',loadError:'경로 정보를 불러올 수 없습니다. 잠시 후 다시 시도하거나 AI 플래너를 이용해 주세요.',poiNotice:'검토된 안정 정보와 변동 가능한 현지 정보를 상태로 구분합니다. 방문 전에 입장, 운영 시간, 요금, 날씨와 교통을 다시 확인하세요.',chooseFirst:'추가할 장소를 먼저 선택해 주세요.',placeUnavailable:'현재 추가할 수 없는 장소입니다. 다른 장소를 선택해 주세요.',added:function(name, number){ return name + '을(를) ' + number + '일차에 추가했습니다.'; }},
-      id:{day:function(number){ return 'Hari ' + number; },remove:'Hapus ',core:'Inti',optional:'Opsional',mapTitle:'Peta geografis Bali',reset:'Pulihkan urutan dan tempat yang direkomendasikan?',loadError:'Data rute sementara tidak dapat dimuat. Coba lagi nanti atau gunakan perencana AI.',poiNotice:'Status membedakan fakta stabil yang telah ditinjau dari kondisi langsung. Konfirmasikan akses, jam, tiket, cuaca, dan lalu lintas sebelum berangkat.',chooseFirst:'Pilih tempat terlebih dahulu sebelum menambahkannya.',placeUnavailable:'Tempat ini tidak dapat ditambahkan sekarang. Pilih tempat lain.',added:function(name, number){ return name + ' ditambahkan ke Hari ' + number + '.'; }}
+      en:{day:function(number){ return 'Day ' + number; },remove:'Remove ',core:'Core',optional:'Optional',mapTitle:'Bali geographic basemap',reset:'Restore the recommended order and places?',loadError:'Route data is temporarily unavailable. Please retry or use AI planning.',poiNotice:'Recheck access, hours, tickets, weather and traffic before travel.',chooseFirst:'Choose a place before adding it.',placeUnavailable:'That place is no longer available. Please choose another.',added:function(name, number){ return name + ' was added to Day ' + number + '.'; }},
+      zh:{day:function(number){ return '第 ' + number + ' 天'; },remove:'移除 ',core:'核心',optional:'可选',mapTitle:'巴厘岛真实地理底图',reset:'恢复这条路线的推荐顺序和地点？',loadError:'路线资料暂时无法加载，请稍后重试或使用 AI 规划。',poiNotice:'出行前请再次确认开放、票价、天气与交通。',chooseFirst:'请先选择一个地点，再点击添加。',placeUnavailable:'这个地点暂时不可添加，请重新选择。',added:function(name, number){ return name + ' 已添加到第 ' + number + ' 天。'; }},
+      ja:{day:function(number){ return number + '日目'; },remove:'削除：',core:'主要',optional:'任意',mapTitle:'バリ島の実地図',reset:'おすすめの順序と場所に戻しますか？',loadError:'ルート情報を読み込めません。時間をおいて再試行するか、AIプランナーをご利用ください。',poiNotice:'訪問前に入場、営業時間、料金、天候、交通を再確認してください。',chooseFirst:'追加する場所を先に選択してください。',placeUnavailable:'この場所は現在追加できません。別の場所を選択してください。',added:function(name, number){ return name + 'を' + number + '日目に追加しました。'; }},
+      ko:{day:function(number){ return number + '일차'; },remove:'삭제: ',core:'핵심',optional:'선택',mapTitle:'발리 실제 지도',reset:'추천 순서와 장소로 복원할까요?',loadError:'경로 정보를 불러올 수 없습니다. 잠시 후 다시 시도하거나 AI 플래너를 이용해 주세요.',poiNotice:'방문 전에 입장, 운영 시간, 요금, 날씨와 교통을 다시 확인하세요.',chooseFirst:'추가할 장소를 먼저 선택해 주세요.',placeUnavailable:'현재 추가할 수 없는 장소입니다. 다른 장소를 선택해 주세요.',added:function(name, number){ return name + '을(를) ' + number + '일차에 추가했습니다.'; }},
+      id:{day:function(number){ return 'Hari ' + number; },remove:'Hapus ',core:'Inti',optional:'Opsional',mapTitle:'Peta geografis Bali',reset:'Pulihkan urutan dan tempat yang direkomendasikan?',loadError:'Data rute sementara tidak dapat dimuat. Coba lagi nanti atau gunakan perencana AI.',poiNotice:'Periksa kembali akses, jam, tiket, cuaca, dan lalu lintas sebelum berangkat.',chooseFirst:'Pilih tempat terlebih dahulu sebelum menambahkannya.',placeUnavailable:'Tempat ini tidak dapat ditambahkan sekarang. Pilih tempat lain.',added:function(name, number){ return name + ' ditambahkan ke Hari ' + number + '.'; }}
     };
     return copy[language()] || copy.en;
   }
@@ -704,9 +725,9 @@
 
   function poiStatusLabel(poi) {
     var labels = {
-      verified:{en:'Stable facts reviewed',zh:'稳定事实已核验',ja:'安定情報を確認済み',ko:'안정 정보 검토됨',id:'Fakta stabil ditinjau'},
-      pending_review:{en:'Planning anchor · verify details',zh:'规划参考 · 细节待核验',ja:'計画用候補 · 最新情報を要確認',ko:'일정 참고 · 최신 정보 확인 필요',id:'Titik rencana · verifikasi detail'},
-      needs_supplier_confirmation:{en:'Supplier confirmation required',zh:'需供应商确认',ja:'提供元の確認が必要',ko:'공급업체 확인 필요',id:'Perlu konfirmasi penyedia'},
+      verified:{en:'',zh:'',ja:'',ko:'',id:''},
+      pending_review:{en:'Check before travel',zh:'出发前确认',ja:'出発前に確認',ko:'출발 전 확인',id:'Periksa sebelum berangkat'},
+      needs_supplier_confirmation:{en:'Confirm before booking',zh:'预约前确认',ja:'予約前に確認',ko:'예약 전 확인',id:'Konfirmasi sebelum memesan'},
       retired:{en:'Unavailable',zh:'暂不可用',ja:'利用不可',ko:'이용 불가',id:'Tidak tersedia'}
     };
     var state = poiStatusKey(poi);
@@ -746,19 +767,21 @@
     var lang = language();
     var state = route.verification_status || 'pending_review';
     var labels = {
-      verified:{en:'Stable route facts reviewed',zh:'路线稳定事实已核验',ja:'ルートの安定情報を確認済み',ko:'경로 안정 정보 검토됨',id:'Fakta stabil rute ditinjau'},
-      pending_review:{en:'Planning details being verified',zh:'路线细节核验中',ja:'計画の詳細を確認中',ko:'일정 세부사항 확인 중',id:'Detail rencana sedang diverifikasi'},
-      needs_supplier_confirmation:{en:'Supplier confirmation needed',zh:'需供应商确认',ja:'事業者の確認が必要',ko:'공급업체 확인 필요',id:'Perlu konfirmasi penyedia'}
+      verified:{en:'',zh:'',ja:'',ko:'',id:''},
+      pending_review:{en:'Check before travel',zh:'出发前确认',ja:'出発前に確認',ko:'출발 전 확인',id:'Periksa sebelum berangkat'},
+      needs_supplier_confirmation:{en:'Confirm before booking',zh:'预约前确认',ja:'予約前に確認',ko:'예약 전 확인',id:'Konfirmasi sebelum memesan'}
     };
-    return (labels[state] || labels.pending_review)[lang] || labels.pending_review.en;
+    var selected = labels[state] || labels.pending_review;
+    return Object.prototype.hasOwnProperty.call(selected, lang) ? selected[lang] : selected.en;
   }
 
   function renderCards() {
     grid.innerHTML = routes.map(function (route) {
       var meta = routeMeta(route);
       var routeId = escapeHtml(route.id);
+      var statusLabel = routeStatus(route);
       return '<button class="bali-route-card ' + (route.id === activeId ? 'active' : '') + '" type="button" data-route-id="' + routeId + '" aria-pressed="' + (route.id === activeId) + '">' +
-        '<span class="bali-route-id"><span translate="no">' + routeId + '</span><span class="bali-route-status">' + escapeHtml(routeStatus(route)) + '</span></span>' +
+        '<span class="bali-route-id"><span translate="no">' + routeId + '</span>' + (statusLabel ? '<span class="bali-route-status">' + escapeHtml(statusLabel) + '</span>' : '') + '</span>' +
         '<h3>' + escapeHtml(text(route.name)) + '</h3>' +
         '<p>' + escapeHtml(text(route.promise)) + '</p>' +
         '<span class="bali-route-meta">' + meta.map(function (item) { return '<span>' + escapeHtml(item) + '</span>'; }).join('') + '</span>' +
@@ -771,6 +794,13 @@
         routeEditorFeedback = null;
         renderCards();
         renderDetail();
+        try {
+          localStorage.setItem('wm_studio_professional_route_hint', activeId);
+          var nextUrl = new URL(window.location.href);
+          nextUrl.searchParams.set('route', activeId);
+          window.history.replaceState({}, document.title, nextUrl.pathname + nextUrl.search + nextUrl.hash);
+        } catch (_) {}
+        window.dispatchEvent(new CustomEvent('wm:bali-route-selected', { detail: { routeId: activeId } }));
       });
     });
   }
@@ -1112,9 +1142,10 @@
         if (!poi) return '';
         var displayName = poiDisplayName(poi);
         var statusKey = poiStatusKey(poi);
+        var statusLabel = poiStatusLabel(poi);
         var removeLabel = ui.remove + displayName;
         return '<span class="bali-day-place" data-verification-status="' + escapeHtml(statusKey) + '"><span class="bali-day-place-name" translate="no">' + escapeHtml(displayName) + '</span>' +
-          '<span class="bali-poi-status" data-status="' + escapeHtml(statusKey) + '">' + escapeHtml(poiStatusLabel(poi)) + '</span>' +
+          (statusLabel ? '<span class="bali-poi-status" data-status="' + escapeHtml(statusKey) + '">' + escapeHtml(statusLabel) + '</span>' : '') +
           '<button type="button" data-remove-place="' + escapeHtml(id) + '" data-day-index="' + index + '" aria-label="' + escapeHtml(removeLabel) + '">×</button></span>';
       }).join('');
       var candidates = pois.filter(function (poi) {
@@ -1129,12 +1160,13 @@
       }[language()] || {};
       var options = '<option value="">' + (candidates.length ? labels.choose : labels.none) + '</option>' +
         candidates.map(function (poi) {
-          return '<option value="' + escapeHtml(poi.id) + '" translate="no">' + escapeHtml(poiDisplayName(poi) + ' · ' + poiStatusLabel(poi)) + '</option>';
+          var statusLabel = poiStatusLabel(poi);
+          return '<option value="' + escapeHtml(poi.id) + '" translate="no">' + escapeHtml(poiDisplayName(poi) + (statusLabel ? ' · ' + statusLabel : '')) + '</option>';
         }).join('');
       var feedback = routeEditorFeedback && routeEditorFeedback.routeId === route.id && routeEditorFeedback.dayIndex === index ? routeEditorFeedback : null;
       var feedbackId = 'bali-day-feedback-' + index;
       return '<div class="bali-day-row ' + (index === activeDayIndex ? 'active' : '') + '" data-day-index="' + index + '">' +
-        '<button class="bali-day-main" type="button" data-select-day="' + index + '" aria-pressed="' + (index === activeDayIndex) + '">' +
+        '<button class="bali-day-main" type="button" data-select-day="' + index + '" aria-pressed="' + (index === activeDayIndex) + '" aria-expanded="' + (index === activeDayIndex) + '">' +
           '<strong>' + labels.day(index + 1) + '</strong>' +
           '<span>' + escapeHtml(day.region_id) + ' · ' + escapeHtml(text(day.theme)) + '</span>' +
         '</button>' +
@@ -1174,7 +1206,10 @@
       var active = Number(row.dataset.dayIndex) === activeDayIndex;
       row.classList.toggle('active', active);
       var button = row.querySelector('.bali-day-main');
-      if (button) button.setAttribute('aria-pressed', String(active));
+      if (button) {
+        button.setAttribute('aria-pressed', String(active));
+        button.setAttribute('aria-expanded', String(active));
+      }
     });
     detail.querySelectorAll('.bali-map-region').forEach(function (point) {
       point.classList.toggle('day-active', point.dataset.regionId === activeRegionId);
@@ -1268,14 +1303,15 @@
   function renderDetail() {
     var route = routes.find(function (item) { return item.id === activeId; }) || routes[0];
     if (!route) return;
+    var shouldAnimateRouteChange = lastRenderedRouteId !== null && lastRenderedRouteId !== route.id;
     var plan = routePlan(route);
     if (activeDayIndex >= plan.days.length) activeDayIndex = 0;
     var words = {
-      en:{layer:'Experience product',path:'Regional journey',days:'Recommended day sequence',note:'Order and places save on this device; timing, drive time and opening details still need verification.',reset:'Reset recommendation',adjust:'Adjust to my preferences',professional:'Get my professional route',driver:'Send route to a driver',publicTitle:'Public recommended route',publicBody:'Browse the full recommended R1–R6 day sequence, region order and map for free.',proTitle:'Personal professional route',proBody:'Matched to your profile; preview first, then unlock full places and execution notes.'},
-      zh:{layer:'主题产品层',path:'区域行程路径',days:'推荐日程',note:'顺序和地点自动保存在本机；时间、车程与开放信息仍需核验。',reset:'恢复推荐',adjust:'按我的偏好调整',professional:'获取个性化专业路线',driver:'把路线发给司机询价',publicTitle:'公共推荐路线',publicBody:'R1–R6 的推荐日程、区域顺序和地图可免费完整浏览。',proTitle:'个性化专业路线',proBody:'根据你的信息匹配；先免费预览，解锁后查看完整地点和执行备注。'},
-      ja:{layer:'体験ルート',path:'地域の旅程',days:'おすすめ日程',note:'順序と場所はこの端末に保存されます。時間・移動・営業情報は再確認してください。',reset:'おすすめに戻す',adjust:'好みに合わせて調整',professional:'個別プロルートを見る',driver:'ドライバーに見積もりを依頼',publicTitle:'公開おすすめルート',publicBody:'R1–R6 のおすすめ日程、地域順、地図を無料で確認できます。',proTitle:'個別プロルート',proBody:'あなたの条件に合わせて提案。まずプレビューし、解除後に場所と実行メモを確認します。'},
-      ko:{layer:'체험 루트',path:'지역 여정',days:'추천 일정',note:'순서와 장소는 이 기기에 저장됩니다. 시간, 이동 및 운영 정보는 다시 확인해 주세요.',reset:'추천 일정으로 복원',adjust:'내 취향에 맞게 조정',professional:'개인 전문 루트 보기',driver:'기사에게 견적 요청',publicTitle:'공개 추천 루트',publicBody:'R1–R6의 추천 일정, 지역 순서와 지도를 무료로 확인할 수 있습니다.',proTitle:'개인 전문 루트',proBody:'조건에 맞춰 제안합니다. 미리 본 뒤 잠금을 해제하면 장소와 실행 메모를 확인할 수 있습니다.'},
-      id:{layer:'Rute pengalaman',path:'Alur perjalanan kawasan',days:'Urutan hari rekomendasi',note:'Urutan dan tempat disimpan di perangkat ini; waktu, perjalanan, dan informasi buka perlu dikonfirmasi lagi.',reset:'Pulihkan rekomendasi',adjust:'Sesuaikan dengan preferensi saya',professional:'Lihat rute profesional saya',driver:'Kirim rute ke driver',publicTitle:'Rute rekomendasi publik',publicBody:'Telusuri urutan hari rekomendasi R1–R6, urutan kawasan, dan peta secara gratis.',proTitle:'Rute profesional pribadi',proBody:'Disesuaikan dengan profil Anda; lihat pratinjau dulu, lalu buka lokasi dan catatan pelaksanaan lengkap.'}
+      en:{layer:'Experience route',path:'Regional journey',days:'Recommended days',note:'Saved on this device. Recheck live details before travel.',reset:'Reset recommendation',adjust:'Adjust to my preferences',professional:'Get my professional route',driver:'Send route to a driver',publicTitle:'Public route',publicBody:'Full days, regions and map are free.',proTitle:'Personal route',proBody:'Preview your match; unlock all places and notes.'},
+      zh:{layer:'体验路线',path:'区域行程',days:'推荐日程',note:'已保存在本机；出行前请核验实时信息。',reset:'恢复推荐',adjust:'按我的偏好调整',professional:'获取个性化专业路线',driver:'把路线发给司机询价',publicTitle:'公共路线',publicBody:'日程、区域与地图免费完整浏览。',proTitle:'个性化路线',proBody:'先看匹配预览，解锁全部地点与执行备注。'},
+      ja:{layer:'体験ルート',path:'地域の旅程',days:'おすすめ日程',note:'この端末に保存済み。出発前に最新情報を確認してください。',reset:'おすすめに戻す',adjust:'好みに合わせて調整',professional:'個別プロルートを見る',driver:'ドライバーに見積もりを依頼',publicTitle:'公開ルート',publicBody:'日程、地域、地図を無料で全て確認。',proTitle:'個別ルート',proBody:'提案を確認し、解除後に全スポットとメモを表示。'},
+      ko:{layer:'체험 루트',path:'지역 여정',days:'추천 일정',note:'이 기기에 저장됩니다. 출발 전 최신 정보를 확인하세요.',reset:'추천 일정으로 복원',adjust:'내 취향에 맞게 조정',professional:'개인 전문 루트 보기',driver:'기사에게 견적 요청',publicTitle:'공개 경로',publicBody:'일정, 지역, 지도를 모두 무료로 확인.',proTitle:'개인 경로',proBody:'미리 본 뒤 모든 장소와 메모를 잠금 해제.'},
+      id:{layer:'Rute pengalaman',path:'Alur kawasan',days:'Hari rekomendasi',note:'Tersimpan di perangkat ini. Periksa info terbaru sebelum berangkat.',reset:'Pulihkan rekomendasi',adjust:'Sesuaikan dengan preferensi saya',professional:'Lihat rute profesional saya',driver:'Kirim rute ke driver',publicTitle:'Rute publik',publicBody:'Hari, kawasan, dan peta lengkap gratis.',proTitle:'Rute personal',proBody:'Lihat kecocokan; buka semua tempat dan catatan.'}
     }[language()] || {};
     var routePath = plan.days.map(function (day) { return day.region_id; }).filter(function (id, index, ids) {
       return index === 0 || ids[index - 1] !== id;
@@ -1312,6 +1348,13 @@
           '</div>' +
         '</div>' +
       '</div>';
+    lastRenderedRouteId = route.id;
+    if (shouldAnimateRouteChange && detail.animate && !(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches)) {
+      detail.animate(
+        [{ opacity:.72, transform:'translateY(4px)' }, { opacity:1, transform:'translateY(0)' }],
+        { duration:180, easing:'cubic-bezier(.16,1,.3,1)' }
+      );
+    }
     attachRouteEditor(route, plan);
     initRouteMap(route, plan);
   }
@@ -1339,7 +1382,7 @@
     renderDetail();
   }
 
-    fetch('assets/data/bali-travel-data.json?v=20260810r6')
+    fetch('assets/data/bali-travel-data.json?v=20260822r7')
     .then(function (response) { if (!response.ok) throw new Error('HTTP ' + response.status); return response.json(); })
     .then(useData)
     .catch(function () {
@@ -1367,20 +1410,22 @@
       temple:['Ubud temple architecture','Carved stone, brick and ceremonial details reward a slower look.','Best for culture and architectural photography with respectful dress and timing.','Ubud temple → artisan village → rice-field walk → evening performance'],
       coffee:['Highland coffee experience','Gardens and hand roasting show the process behind a familiar Bali stop.','Best for local craft and conversation, not only a tasting photo.','Ubud → coffee garden → roasting demonstration → Kintamani viewpoint'],
       stay:['Kintamani mountain stay','A mountain-facing stay trades beach access for cooler air and early volcano views.','Best for slowing down and avoiding a long pre-dawn drive from the south.','Ubud → Kintamani check-in → sunrise → lake or hot spring'],
-      boat:['Island crossing by boat','A practical harbour-and-boat moment: boarding time, luggage and sea conditions matter.','Best for reaching Penida; operator and schedule should be confirmed before payment.','Hotel pickup → Sanur harbour → island crossing → local transfer']
+      boat:['Island crossing by boat','A practical harbour-and-boat moment: boarding time, luggage and sea conditions matter.','Best for reaching Penida; operator and schedule should be confirmed before payment.','Hotel pickup → Sanur harbour → island crossing → local transfer'],
+      galungan:['Balinese penjor associated with Galungan','Rows of curved bamboo penjor decorated with woven palm leaves line a Bali road. These decorations are commonly associated with the Galungan–Kuningan period; the exact location and year are unverified.','Best for understanding Bali’s festival visual culture with respectful local context, rather than treating religious decorations as photo props.','Bali-wide cultural context → confirm festival dates → learn local etiquette → pair with verified stops'],
+      seminyakGathering:['Balinese cultural gathering at Pura Desa Adat Seminyak','The photo shows community members in white ceremonial attire gathered outside the gate of Pura Desa Adat Seminyak, with penjor along the street. The exact ceremony, date and any connection to Nyepi are unverified.','Best for understanding Balinese community culture with respect; entry, observation and photography depend on on-site permission.','Seminyak cultural context → confirm ceremony and visitor permission → observe only from permitted areas → pair with verified G1 stops']
     },
     zh: {
-      batur:['巴杜尔火山黎明','真实的清晨现场：气温偏低、吉普路颠簸，云层也会随时变化。','适合感受氛围和拍风景；过程本身和照片同样重要。','金塔马尼住宿 → 凌晨吉普接送 → 日出观景点 → 温泉或咖啡停留'], jeep:['巴杜尔火山吉普体验','游客座位上的视角保留了颠簸和尘土，这是精修照片往往不会展示的部分。','适合冒险与抵达特殊地形，不是安静豪华的接送体验。','金塔马尼 → 黑色熔岩路 → 日出停留 → 本地早餐'], penida:['佩妮达岛悬崖海岸','湛蓝海水与石灰岩很震撼，但画面之外还有炎热、台阶和较长车程。','以风景和摄影为主，建议留出整天并降低赶场节奏。','Sanur 乘船 → 佩妮达西线或东线 → 重点停一个主景点 → 返回码头'], snorkel:['离岛浮潜','近距离、需要参与的水上体验；能见度和海况每天都可能不同。','更适合游泳与观察海洋生物，不以摆拍为主。','Sanur 出发 → 向导带领多个浮潜点 → 午餐 → 下午较早返回'], culture:['巴厘文化地标','这是游客在现场能看到的公共艺术与宗教视觉符号。','适合配合本地讲解理解背景，而不是只当作快速拍照道具。','巴厘岛南部 → 文化地标 → 礼仪说明 → 海岸日落'], beach:['真实的巴厘岛海滩','遮阳伞、旗帜、海浪和其他游客，都是现场本来的样子。','适合轻松半日；不同海岸和季节的海况差异很大。','酒店 → 上午稍晚抵达海滩 → 附近午餐 → 日落散步'], monkey:['乌布圣猴森林','林间道路、神庙与自由活动的猕猴，构成自然和人文并存的体验。','适合安排在乌布上午，并遵循工作人员的动物安全指引。','乌布中心 → 猴林 → 本地午餐 → 皇宫或手工艺街'], temple:['乌布寺庙建筑','石雕、红砖和仪式细节值得慢下来观察。','适合人文和建筑摄影，注意着装与参观时间。','乌布寺庙 → 手工艺村 → 稻田散步 → 晚间表演'], coffee:['高地咖啡体验','咖啡园和手工烘焙展示了常见旅游停留背后的制作过程。','适合了解本地手艺和交流，而不只是拍一张品尝照。','乌布 → 咖啡园 → 烘焙演示 → 金塔马尼观景点'], stay:['金塔马尼山景住宿','用较远的海滩距离，换取清凉空气和清晨火山景色。','适合放慢节奏，也能避免从南部凌晨长途出发。','乌布 → 金塔马尼入住 → 清晨日出 → 火山湖或温泉'], boat:['离岛快船','真实的码头与乘船环节包括登船时间、行李和海况。','适合前往佩妮达；付款前应再次确认运营方、班次与可用性。','酒店接送 → Sanur 码头 → 离岛船程 → 岛上接送']
+      batur:['巴杜尔火山黎明','真实的清晨现场：气温偏低、吉普路颠簸，云层也会随时变化。','适合感受氛围和拍风景；过程本身和照片同样重要。','金塔马尼住宿 → 凌晨吉普接送 → 日出观景点 → 温泉或咖啡停留'], jeep:['巴杜尔火山吉普体验','游客座位上的视角保留了颠簸和尘土，这是精修照片往往不会展示的部分。','适合冒险与抵达特殊地形，不是安静豪华的接送体验。','金塔马尼 → 黑色熔岩路 → 日出停留 → 本地早餐'], penida:['佩妮达岛悬崖海岸','湛蓝海水与石灰岩很震撼，但画面之外还有炎热、台阶和较长车程。','以风景和摄影为主，建议留出整天并降低赶场节奏。','Sanur 乘船 → 佩妮达西线或东线 → 重点停一个主景点 → 返回码头'], snorkel:['离岛浮潜','近距离、需要参与的水上体验；能见度和海况每天都可能不同。','更适合游泳与观察海洋生物，不以摆拍为主。','Sanur 出发 → 向导带领多个浮潜点 → 午餐 → 下午较早返回'], culture:['巴厘文化地标','这是游客在现场能看到的公共艺术与宗教视觉符号。','适合配合本地讲解理解背景，而不是只当作快速拍照道具。','巴厘岛南部 → 文化地标 → 礼仪说明 → 海岸日落'], beach:['真实的巴厘岛海滩','遮阳伞、旗帜、海浪和其他游客，都是现场本来的样子。','适合轻松半日；不同海岸和季节的海况差异很大。','酒店 → 上午稍晚抵达海滩 → 附近午餐 → 日落散步'], monkey:['乌布圣猴森林','林间道路、神庙与自由活动的猕猴，构成自然和人文并存的体验。','适合安排在乌布上午，并遵循工作人员的动物安全指引。','乌布中心 → 猴林 → 本地午餐 → 皇宫或手工艺街'], temple:['乌布寺庙建筑','石雕、红砖和仪式细节值得慢下来观察。','适合人文和建筑摄影，注意着装与参观时间。','乌布寺庙 → 手工艺村 → 稻田散步 → 晚间表演'], coffee:['高地咖啡体验','咖啡园和手工烘焙展示了常见旅游停留背后的制作过程。','适合了解本地手艺和交流，而不只是拍一张品尝照。','乌布 → 咖啡园 → 烘焙演示 → 金塔马尼观景点'], stay:['金塔马尼山景住宿','用较远的海滩距离，换取清凉空气和清晨火山景色。','适合放慢节奏，也能避免从南部凌晨长途出发。','乌布 → 金塔马尼入住 → 清晨日出 → 火山湖或温泉'], boat:['离岛快船','真实的码头与乘船环节包括登船时间、行李和海况。','适合前往佩妮达；付款前应再次确认运营方、班次与可用性。','酒店接送 → Sanur 码头 → 离岛船程 → 岛上接送'], galungan:['与加隆安节相关的巴厘岛佩恩乔尔','照片显示巴厘岛道路旁成排的弯曲竹制佩恩乔尔，以编织的棕榈叶等材料装饰。这类装饰常与加隆安至库宁安期间相关；具体拍摄地点和年份尚未核实。','适合在尊重当地语境的前提下了解巴厘节庆视觉文化，不应把宗教装饰只当作拍照道具。','了解全岛文化背景 → 核对节庆日期 → 学习当地礼仪 → 搭配已核验地点'], seminyakGathering:['塞米亚克村社神庙的巴厘文化聚会','照片显示身着白色仪式服装的社区成员聚集在塞米亚克村社神庙门外，街边可见佩恩乔尔。具体仪式、拍摄日期以及是否与宁静日有关均尚未核实。','适合在尊重当地社区与宗教礼仪的前提下理解巴厘文化；进入、停留和拍摄均须按现场许可。','塞米亚克文化背景 → 核对仪式与访客许可 → 仅在允许区域观察 → 搭配 G1 已核验地点']
     },
     ja: {}, ko: {}, id: {}
   };
   var jaD='写真だけでなく、移動・天候・混雑を含む現地の実際を伝える体験です。', jaP='目的と体力に合わせ、余裕のある時間配分がおすすめです。';
-  COPY.ja={batur:['バトゥール山の夜明け',jaD,jaP,'キンタマーニ宿泊 → 日の出 → 温泉またはコーヒー'],jeep:['バトゥール山ジープ体験',jaD,jaP,'キンタマーニ → 溶岩地帯 → 日の出 → 朝食'],penida:['ヌサ・ペニダの断崖',jaD,jaP,'サヌール発ボート → 島内ルート → 展望地 → 港'],snorkel:['離島シュノーケリング',jaD,jaP,'サヌール → シュノーケル地点 → 昼食 → 帰港'],culture:['バリ文化のランドマーク',jaD,jaP,'南バリ → 文化スポット → 寺院 → 海岸の夕日'],beach:['ありのままのバリのビーチ',jaD,jaP,'ホテル → ビーチ → 昼食 → 夕日散歩'],monkey:['ウブド・モンキーフォレスト',jaD,jaP,'ウブド中心 → モンキーフォレスト → 昼食 → 王宮周辺'],temple:['ウブドの寺院建築',jaD,jaP,'寺院 → 工芸村 → 田園散歩 → 夜の舞踊'],coffee:['高原コーヒー体験',jaD,jaP,'ウブド → コーヒー園 → 焙煎見学 → キンタマーニ'],stay:['キンタマーニ山景ステイ',jaD,jaP,'ウブド → キンタマーニ宿泊 → 日の出 → 湖または温泉'],boat:['離島へのボート移動',jaD,jaP,'ホテル送迎 → サヌール港 → 島へ → 現地送迎']};
+  COPY.ja={batur:['バトゥール山の夜明け',jaD,jaP,'キンタマーニ宿泊 → 日の出 → 温泉またはコーヒー'],jeep:['バトゥール山ジープ体験',jaD,jaP,'キンタマーニ → 溶岩地帯 → 日の出 → 朝食'],penida:['ヌサ・ペニダの断崖',jaD,jaP,'サヌール発ボート → 島内ルート → 展望地 → 港'],snorkel:['離島シュノーケリング',jaD,jaP,'サヌール → シュノーケル地点 → 昼食 → 帰港'],culture:['バリ文化のランドマーク',jaD,jaP,'南バリ → 文化スポット → 寺院 → 海岸の夕日'],beach:['ありのままのバリのビーチ',jaD,jaP,'ホテル → ビーチ → 昼食 → 夕日散歩'],monkey:['ウブド・モンキーフォレスト',jaD,jaP,'ウブド中心 → モンキーフォレスト → 昼食 → 王宮周辺'],temple:['ウブドの寺院建築',jaD,jaP,'寺院 → 工芸村 → 田園散歩 → 夜の舞踊'],coffee:['高原コーヒー体験',jaD,jaP,'ウブド → コーヒー園 → 焙煎見学 → キンタマーニ'],stay:['キンタマーニ山景ステイ',jaD,jaP,'ウブド → キンタマーニ宿泊 → 日の出 → 湖または温泉'],boat:['離島へのボート移動',jaD,jaP,'ホテル送迎 → サヌール港 → 島へ → 現地送迎'],galungan:['ガルンガンに関連するバリ島のペンジョール','バリ島の道路沿いに、編んだヤシの葉などで飾られた湾曲した竹製ペンジョールが並ぶ様子です。こうした装飾はガルンガンからクニンガンの時期と広く関連しますが、撮影場所と年は未確認です。','宗教装飾を撮影道具として扱わず、地域の背景を尊重しながらバリの祭礼文化を理解したい人に適しています。','全島の文化背景 → 祭礼日程を確認 → 地域の礼儀を学ぶ → 確認済みスポットと組み合わせる'],seminyakGathering:['プラ・デサ・アダット・スミニャックのバリ文化の集い','白い儀礼衣装を着た地域の人々がプラ・デサ・アダット・スミニャックの門外に集まり、通りにはペンジョールが見えます。具体的な儀礼、撮影日、ニュピとの関係は未確認です。','地域と宗教儀礼を尊重してバリ文化を理解したい人向けです。入場、見学、撮影は現地の許可に従ってください。','スミニャックの文化背景 → 儀礼と訪問許可を確認 → 許可区域だけで見学 → 確認済みのG1スポットと組み合わせる']};
   var koD='사진뿐 아니라 이동, 날씨, 혼잡함까지 포함한 실제 현장 경험입니다.', koP='목적과 체력에 맞춰 여유 있는 일정으로 계획하세요.';
-  COPY.ko={batur:['바투르산 새벽',koD,koP,'킨타마니 숙박 → 일출 → 온천 또는 커피'],jeep:['바투르 지프 체험',koD,koP,'킨타마니 → 용암 지대 → 일출 → 아침 식사'],penida:['누사 페니다 절벽',koD,koP,'사누르 보트 → 섬 코스 → 전망대 → 항구'],snorkel:['섬 스노클링',koD,koP,'사누르 → 스노클링 포인트 → 점심 → 귀항'],culture:['발리 문화 명소',koD,koP,'남부 발리 → 문화 명소 → 사원 → 해안 일몰'],beach:['있는 그대로의 발리 해변',koD,koP,'호텔 → 해변 → 점심 → 일몰 산책'],monkey:['우붓 몽키 포레스트',koD,koP,'우붓 중심 → 몽키 포레스트 → 점심 → 왕궁 주변'],temple:['우붓 사원 건축',koD,koP,'사원 → 공예 마을 → 논 산책 → 저녁 공연'],coffee:['고원 커피 체험',koD,koP,'우붓 → 커피 농원 → 로스팅 체험 → 킨타마니'],stay:['킨타마니 산 전망 숙소',koD,koP,'우붓 → 킨타마니 체크인 → 일출 → 호수 또는 온천'],boat:['섬 이동 보트',koD,koP,'호텔 픽업 → 사누르 항구 → 섬 이동 → 현지 교통']};
+  COPY.ko={batur:['바투르산 새벽',koD,koP,'킨타마니 숙박 → 일출 → 온천 또는 커피'],jeep:['바투르 지프 체험',koD,koP,'킨타마니 → 용암 지대 → 일출 → 아침 식사'],penida:['누사 페니다 절벽',koD,koP,'사누르 보트 → 섬 코스 → 전망대 → 항구'],snorkel:['섬 스노클링',koD,koP,'사누르 → 스노클링 포인트 → 점심 → 귀항'],culture:['발리 문화 명소',koD,koP,'남부 발리 → 문화 명소 → 사원 → 해안 일몰'],beach:['있는 그대로의 발리 해변',koD,koP,'호텔 → 해변 → 점심 → 일몰 산책'],monkey:['우붓 몽키 포레스트',koD,koP,'우붓 중심 → 몽키 포레스트 → 점심 → 왕궁 주변'],temple:['우붓 사원 건축',koD,koP,'사원 → 공예 마을 → 논 산책 → 저녁 공연'],coffee:['고원 커피 체험',koD,koP,'우붓 → 커피 농원 → 로스팅 체험 → 킨타마니'],stay:['킨타마니 산 전망 숙소',koD,koP,'우붓 → 킨타마니 체크인 → 일출 → 호수 또는 온천'],boat:['섬 이동 보트',koD,koP,'호텔 픽업 → 사누르 항구 → 섬 이동 → 현지 교통'],galungan:['갈룽안과 관련된 발리의 펜조르','발리 도로를 따라 엮은 야자 잎 등으로 꾸민 굽은 대나무 펜조르가 늘어선 모습입니다. 이러한 장식은 일반적으로 갈룽안부터 쿠닝안까지의 기간과 관련되지만, 정확한 촬영 장소와 연도는 확인되지 않았습니다.','종교 장식을 단순한 촬영 소품으로 보지 않고 현지 맥락을 존중하며 발리의 축제 시각 문화를 이해하려는 여행자에게 적합합니다.','발리 전역의 문화 배경 → 축제 날짜 확인 → 현지 예절 학습 → 검증된 장소와 조합'],seminyakGathering:['푸라 데사 아다트 스미냑의 발리 문화 모임','흰색 의례복을 입은 지역 주민들이 푸라 데사 아다트 스미냑 정문 밖에 모여 있고 거리에는 펜조르가 보입니다. 정확한 의식, 촬영 날짜, 녜삐와의 관련성은 확인되지 않았습니다.','지역 공동체와 종교 예절을 존중하며 발리 문화를 이해하려는 여행자에게 적합합니다. 입장, 관람, 촬영은 현장 허가를 따라야 합니다.','스미냑 문화 배경 → 의식과 방문 허가 확인 → 허용 구역에서만 관람 → 검증된 G1 장소와 조합']};
   var idD='Pengalaman nyata di lokasi, termasuk perjalanan, cuaca, dan keramaian di balik foto.', idP='Pilih sesuai tujuan dan energi Anda, dengan waktu yang tidak terburu-buru.';
-  COPY.id={batur:['Fajar di Gunung Batur',idD,idP,'Menginap di Kintamani → matahari terbit → pemandian air panas atau kopi'],jeep:['Pengalaman jip Batur',idD,idP,'Kintamani → jalur lava → matahari terbit → sarapan'],penida:['Tebing Nusa Penida',idD,idP,'Boat dari Sanur → rute pulau → titik pandang → pelabuhan'],snorkel:['Snorkeling antarpulau',idD,idP,'Sanur → titik snorkeling → makan siang → kembali'],culture:['Landmark budaya Bali',idD,idP,'Bali Selatan → landmark budaya → pura → matahari terbenam'],beach:['Pantai Bali apa adanya',idD,idP,'Hotel → pantai → makan siang → jalan saat senja'],monkey:['Monkey Forest Ubud',idD,idP,'Pusat Ubud → Monkey Forest → makan siang → area istana'],temple:['Arsitektur pura Ubud',idD,idP,'Pura → desa kerajinan → jalan sawah → pertunjukan malam'],coffee:['Pengalaman kopi dataran tinggi',idD,idP,'Ubud → kebun kopi → proses sangrai → Kintamani'],stay:['Menginap menghadap gunung Kintamani',idD,idP,'Ubud → check-in Kintamani → matahari terbit → danau atau pemandian'],boat:['Penyeberangan pulau dengan boat',idD,idP,'Jemput hotel → Pelabuhan Sanur → menyeberang → transfer lokal']};
-  var map = { 'batur-jeep':'batur','batur-ride':'jeep','penida-cliff':'penida',snorkel:'snorkel','penida-rock':'penida','coastal-culture':'culture',beach:'beach','monkey-forest':'monkey','ubud-temple':'temple','coffee-garden':'coffee','coffee-roast':'coffee','batur-dawn':'batur','kintamani-stay':'stay','island-boat':'boat','penida-bay':'penida' };
+  COPY.id={batur:['Fajar di Gunung Batur',idD,idP,'Menginap di Kintamani → matahari terbit → pemandian air panas atau kopi'],jeep:['Pengalaman jip Batur',idD,idP,'Kintamani → jalur lava → matahari terbit → sarapan'],penida:['Tebing Nusa Penida',idD,idP,'Boat dari Sanur → rute pulau → titik pandang → pelabuhan'],snorkel:['Snorkeling antarpulau',idD,idP,'Sanur → titik snorkeling → makan siang → kembali'],culture:['Landmark budaya Bali',idD,idP,'Bali Selatan → landmark budaya → pura → matahari terbenam'],beach:['Pantai Bali apa adanya',idD,idP,'Hotel → pantai → makan siang → jalan saat senja'],monkey:['Monkey Forest Ubud',idD,idP,'Pusat Ubud → Monkey Forest → makan siang → area istana'],temple:['Arsitektur pura Ubud',idD,idP,'Pura → desa kerajinan → jalan sawah → pertunjukan malam'],coffee:['Pengalaman kopi dataran tinggi',idD,idP,'Ubud → kebun kopi → proses sangrai → Kintamani'],stay:['Menginap menghadap gunung Kintamani',idD,idP,'Ubud → check-in Kintamani → matahari terbit → danau atau pemandian'],boat:['Penyeberangan pulau dengan boat',idD,idP,'Jemput hotel → Pelabuhan Sanur → menyeberang → transfer lokal'],galungan:['Penjor Bali yang berkaitan dengan Galungan','Deretan penjor dari bambu melengkung yang dihiasi anyaman janur dan bahan lain tampak di sepanjang jalan di Bali. Hiasan ini lazim dikaitkan dengan masa Galungan–Kuningan; lokasi dan tahun pengambilan foto belum terverifikasi.','Cocok untuk memahami budaya visual perayaan Bali dengan menghormati konteks setempat, bukan menjadikan hiasan keagamaan sekadar properti foto.','Konteks budaya seluruh Bali → konfirmasi tanggal perayaan → pelajari etiket setempat → padukan dengan tempat terverifikasi'],seminyakGathering:['Pertemuan budaya Bali di Pura Desa Adat Seminyak','Foto ini menunjukkan warga dengan pakaian upacara putih berkumpul di luar gerbang Pura Desa Adat Seminyak, dengan penjor di sepanjang jalan. Upacara, tanggal, dan kaitannya dengan Nyepi belum terverifikasi.','Cocok untuk memahami budaya masyarakat Bali dengan hormat; masuk, mengamati, dan memotret harus mengikuti izin di lokasi.','Konteks budaya Seminyak → konfirmasi upacara dan izin pengunjung → amati hanya dari area yang diizinkan → padukan dengan tempat G1 terverifikasi']};
+  var map = { 'batur-jeep':'batur','batur-ride':'jeep','penida-cliff':'penida',snorkel:'snorkel','penida-rock':'penida','coastal-culture':'culture',beach:'beach','monkey-forest':'monkey','ubud-temple':'temple','coffee-garden':'coffee','coffee-roast':'coffee','batur-dawn':'batur','kintamani-stay':'stay','island-boat':'boat','penida-bay':'penida',galungan:'galungan','pura-desa-seminyak-gathering':'seminyakGathering' };
   var modal = document.getElementById('bali-place-modal');
   var activeShot = null;
   var routeCatalog = {};
@@ -1462,7 +1507,7 @@
       driver.removeAttribute('href');
     }
   }
-    fetch('assets/data/bali-travel-data.json?v=20260810r6')
+    fetch('assets/data/bali-travel-data.json?v=20260822r7')
     .then(function(response) { if (!response.ok) throw new Error('HTTP ' + response.status); return response.json(); })
     .then(function(data) {
       (data.routes || []).forEach(function(route) { routeCatalog[route.id] = route; });
@@ -1470,17 +1515,38 @@
     })
     .catch(function() { routeCatalog = {}; });
   var galleryFilters = { category:'all', tag:'all' };
+  var galleryExpanded = false;
+  var galleryPreviewLimit = 12;
+  function galleryMoreLabel(total) {
+    var copy = {
+      en:'Show all ' + total + ' moments',
+      zh:'展开全部 ' + total + ' 个瞬间',
+      ja:'全' + total + '件を見る',
+      ko:'전체 ' + total + '개 보기',
+      id:'Lihat semua ' + total + ' momen'
+    };
+    return copy[lang()] || copy.en;
+  }
   function applyGalleryFilters() {
     var visible = 0;
+    var matches = 0;
+    var isDefaultView = galleryFilters.category === 'all' && galleryFilters.tag === 'all';
     document.querySelectorAll('.bali-shot').forEach(function(shot) {
       var tags = (shot.dataset.tags || '').split(/\s+/).filter(Boolean);
       var categoryMatches = galleryFilters.category === 'all' || shot.dataset.category === galleryFilters.category;
       var tagMatches = galleryFilters.tag === 'all' || tags.indexOf(galleryFilters.tag) >= 0;
-      shot.hidden = !(categoryMatches && tagMatches);
+      var matchesFilters = categoryMatches && tagMatches;
+      if (matchesFilters) matches += 1;
+      var insidePreview = !isDefaultView || galleryExpanded || matches <= galleryPreviewLimit;
+      shot.hidden = !(matchesFilters && insidePreview);
       if (!shot.hidden) visible += 1;
     });
     var empty = document.getElementById('bali-gallery-empty');
-    if (empty) empty.hidden = visible !== 0;
+    if (empty) empty.hidden = matches !== 0;
+    var more = document.getElementById('bali-gallery-more');
+    var moreButton = document.getElementById('bali-gallery-more-btn');
+    if (more) more.hidden = !isDefaultView || galleryExpanded || matches <= galleryPreviewLimit;
+    if (moreButton) moreButton.textContent = galleryMoreLabel(matches);
   }
   document.querySelectorAll('.bali-filter').forEach(function(btn) {
     btn.onclick = function() {
@@ -1493,6 +1559,11 @@
       });
       applyGalleryFilters();
     };
+  });
+  var galleryMoreButton = document.getElementById('bali-gallery-more-btn');
+  if (galleryMoreButton) galleryMoreButton.addEventListener('click', function() {
+    galleryExpanded = true;
+    applyGalleryFilters();
   });
   var mobileFilterQuery = window.matchMedia('(max-width:575px)');
   function resetMobileFilterScroll(query) {
@@ -1511,6 +1582,7 @@
     shot.onclick=function(){ activeShot=shot; renderModal(); modal.classList.add('show'); modal.setAttribute('aria-hidden','false'); document.body.style.overflow='hidden'; modal.querySelector('.bali-place-close').focus(); };
   }
   document.querySelectorAll('.bali-shot').forEach(bindGalleryShot);
+  applyGalleryFilters();
   var PORTFOLIO_THEME_LABELS = {
     en:{landscapes:'Landscapes',culture:'Culture',experiences:'Experiences'},
     zh:{landscapes:'自然风景',culture:'文化',experiences:'体验'},
@@ -1582,6 +1654,7 @@
   var galleryLangPicker = document.getElementById('langPicker');
   if (galleryLangPicker) galleryLangPicker.addEventListener('change', function() {
     dynamicGalleryShots.forEach(refreshDynamicGalleryShot);
+    applyGalleryFilters();
     if (activeShot) window.setTimeout(renderModal, 0);
   });
   function close(){ modal.classList.remove('show'); modal.setAttribute('aria-hidden','true'); document.body.style.overflow=''; if(activeShot) activeShot.focus(); }
@@ -1589,7 +1662,7 @@
   var picker=document.getElementById('langPicker'); if(picker)picker.addEventListener('change',renderModal);
 })();
 </script>
-<script src="assets/js/bali-professional.js?v=p54"></script>
+<script src="assets/js/bali-professional.js?v=p55"></script>
 <script src="assets/js/global-auth.js?v=p52"></script>
 </body>
 </html>

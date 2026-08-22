@@ -1,0 +1,22 @@
+{
+  "schema_version": 1,
+  "evidence_id": "ev-20260816T165649Z-task-20260817-render-thread-cleanup",
+  "task_ref": "task-20260817-render-thread-cleanup",
+  "owner": "codex-sol",
+  "captured_at": "2026-08-16T16:56:49Z",
+  "status": "verified",
+  "claim": "The failed Render routing pair was retired. The Codex repository-relay task was archived successfully; the ChatGPT Work cannot be archived by the Codex thread API and requires user-side archive or delete from its own menu.",
+  "source": {
+    "kind": "git",
+    "repository": "https://github.com/lingfengai731/Agentstrip.git",
+    "commit": "d4d7e4b5aafc17e38cc187ede57cfe6518dc1910",
+    "branch": "codex/account2-integration-20260816",
+    "worktree": "E:\\Agentstrip2-worktree",
+    "dirty": true
+  },
+  "verification": {
+    "command": "set_thread_archived; set_thread_pinned; list_threads; list_archived_threads; project-memory validate",
+    "result": "Relay 01a00b3a-b62f-7c60-ae73-f9e74ae7879d appears in Archived. Work 6a81da9a-1998-83e8-b2ca-34e1f6eb526d remains a ChatGPT pinned source despite an unpin response and is marked retired."
+  },
+  "notes": "No Render access, secret reading, configuration mutation, or deployment. The user may manually archive or delete the ChatGPT Work; project routing is disabled regardless."
+}

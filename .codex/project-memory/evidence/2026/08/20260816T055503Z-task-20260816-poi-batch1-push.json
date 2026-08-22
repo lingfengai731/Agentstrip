@@ -1,0 +1,22 @@
+{
+  "schema_version": 1,
+  "evidence_id": "ev-20260816T055503Z-task-20260816-poi-batch1-push",
+  "task_ref": "TASK-20260816-POI-BATCH1-PUSH",
+  "owner": "codex-sol",
+  "captured_at": "2026-08-16T05:55:03Z",
+  "status": "verified",
+  "claim": "Bali POI batch 1 code, evidence and handoff were pushed to the shared GitHub remote.",
+  "source": {
+    "kind": "git",
+    "repository": "https://github.com/lingfengai731/Agentstrip.git",
+    "commit": "26f69923eb2e96b06501d3f240fbcdb368a565c7",
+    "branch": "codex/poi-facts-batch1",
+    "worktree": "E:\\Agentstrip-wt-poi-b1",
+    "dirty": false
+  },
+  "verification": {
+    "command": "git fetch origin codex/poi-facts-batch1; git rev-list --left-right --count HEAD...origin/codex/poi-facts-batch1; git status --short",
+    "result": "Remote synchronization returned 0 0 and the worktree was clean before creating this immutable push evidence."
+  },
+  "notes": "Remote branch: origin/codex/poi-facts-batch1. Branch sync only; no pull request, merge to main or production deployment occurred."
+}

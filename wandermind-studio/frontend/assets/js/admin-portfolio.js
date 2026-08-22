@@ -45,7 +45,14 @@
     ko:{autoFillTitle:'승인된 이미지는 정보가 자동 입력됩니다',autoFillHelp:'매니페스트와 일치하면 제목, 장소, 경로, 다국어 문구가 이미지와 함께 저장됩니다. 초안 업로드에는 직접 입력이 필요 없습니다.',advancedMetadata:'일치하지 않는 이미지의 선택 정보',advancedMetadataHelp:'승인 매니페스트에 없는 이미지에만 펼쳐 사용하세요. 각 이미지 카드에서도 개별 수정할 수 있습니다.',autoMetadata:'자동 정보',manualMetadataNeeded:'일치하지 않음: 공개 전에 정보를 확인하세요',reviewAutoMetadata:'자동 정보 보기 또는 수정',publishNeedsManifestReview:'공개 전에 이미지를 승인 매니페스트에 추가하세요. 일치하지 않는 이미지는 초안으로 저장할 수 있습니다.',manifestApprovalRequired:'공개 전에 이 이미지를 승인 매니페스트에 추가하세요.',draftUploadFinished:'초안이 저장되었습니다. 이미지, 데이터베이스 기록, 미리보기가 준비되었습니다.',publishedUploadFinished:'이미지가 공개되어 Portfolio에 이미지와 정보가 반영되었습니다.',uploadRolledBack:'저장이 명확히 거부되어 연결되지 않은 클라우드 파일을 삭제했습니다. 다시 업로드할 수 있습니다.',uploadRecovered:'서버에 이미지가 이미 저장되어 있어 완료 상태를 복원했습니다.',uploadRecoveryPending:'저장 결과를 확인할 수 없어 클라우드 파일을 유지했습니다. 다시 업로드하기 전에 안전한 저장 재시도를 실행하세요.',retryRecovery:'안전한 저장 재시도',uploadCleanupFailed:'저장은 거부되었지만 클라우드 정리를 확인하지 못했습니다. 다시 업로드하기 전에 정리를 재시도하세요.',retryCleanup:'클라우드 정리 재시도'},
     id:{autoFillTitle:'Informasi gambar yang disetujui terisi otomatis',autoFillHelp:'Setelah cocok dengan manifest, judul, lokasi, rute, dan teks multibahasa disimpan bersama gambar. Draf tidak perlu diisi manual.',advancedMetadata:'Data opsional untuk gambar yang tidak cocok',advancedMetadataHelp:'Buka hanya jika gambar tidak ada di manifest yang disetujui. Setiap gambar juga dapat diedit dari kartu antrean.',autoMetadata:'Data otomatis',manualMetadataNeeded:'Tidak cocok: tinjau data sebelum menerbitkan',reviewAutoMetadata:'Lihat atau ubah data otomatis',publishNeedsManifestReview:'Tambahkan gambar ke manifest yang disetujui sebelum menerbitkan. Gambar yang belum cocok tetap dapat disimpan sebagai draf.',manifestApprovalRequired:'Tambahkan gambar ini ke manifest yang disetujui sebelum menerbitkan.',draftUploadFinished:'Draf tersimpan. Gambar, catatan database, dan pratinjau sudah siap.',publishedUploadFinished:'Gambar telah diterbitkan dan data sudah tersedia di Portfolio.',uploadRolledBack:'Penyimpanan ditolak, jadi file cloud yang belum terhubung sudah dihapus. Gambar siap diunggah ulang.',uploadRecovered:'Server ternyata sudah menyimpan gambar ini. Status selesai telah dipulihkan.',uploadRecoveryPending:'Hasil penyimpanan belum terkonfirmasi. File cloud dipertahankan; coba pemulihan aman sebelum mengunggah ulang.',retryRecovery:'Coba pemulihan aman',uploadCleanupFailed:'Penyimpanan ditolak, tetapi pembersihan cloud belum terkonfirmasi. Coba pembersihan lagi sebelum mengunggah ulang.',retryCleanup:'Coba lagi pembersihan cloud'}
   };
-  LANGS.forEach(function (lang) { Object.assign(COPY[lang], QUEUE_COPY[lang], SIMPLE_UPLOAD_COPY[lang]); });
+  var PUBLISH_GATE_COPY = {
+    en:{publishNeedsMetadata:'Publishing requires a place name plus title, description and alt text in all five languages.'},
+    zh:{publishNeedsMetadata:'发布前必须填写地点名称，并补齐五语言标题、说明和替代文本。'},
+    ja:{publishNeedsMetadata:'公開には場所名と、5言語すべてのタイトル・説明・代替テキストが必要です。'},
+    ko:{publishNeedsMetadata:'공개하려면 장소 이름과 5개 언어의 제목, 설명, 대체 텍스트가 모두 필요합니다.'},
+    id:{publishNeedsMetadata:'Publikasi memerlukan nama tempat serta judul, deskripsi, dan teks alternatif lengkap dalam lima bahasa.'}
+  };
+  LANGS.forEach(function (lang) { Object.assign(COPY[lang], QUEUE_COPY[lang], SIMPLE_UPLOAD_COPY[lang], PUBLISH_GATE_COPY[lang]); });
 
   function language() {
     var value = (document.getElementById('langPicker').value || localStorage.getItem('wm_studio_lang') || 'en').toLowerCase();
@@ -213,6 +220,12 @@
       title:localized.title, description:localized.description, alt_text:localized.alt_text,
       verification_status:String(data.get('verification_status') || 'caption-only'), status:status || 'draft'
     };
+  }
+
+  function hasCompletePublishedMetadata(metadata) {
+    return Boolean(metadata.place_name) && ['title','description','alt_text'].every(function (field) {
+      return LANGS.every(function (lang) { return Boolean((metadata[field] || {})[lang]); });
+    });
   }
 
   async function digestFile(file) {
@@ -434,7 +447,7 @@
     if (status === 'published' && selected.some(function (record) { return !record.manifestMatch; })) return showAlert(t('publishNeedsManifestReview'));
     if (status === 'published' && selected.some(function (record) {
       var itemMetadata = recordMetadata(record, metadata, status);
-      return !itemMetadata.place_name || !Object.keys(itemMetadata.title).length || !Object.keys(itemMetadata.alt_text).length;
+      return !hasCompletePublishedMetadata(itemMetadata);
     })) return showAlert(t('publishNeedsMetadata'));
     var buttons = uploadForm.querySelectorAll('button[type="submit"]');
     buttons.forEach(function (button) { button.disabled = true; });
@@ -507,6 +520,7 @@
     var asset = state.assets.find(function (item) { return item.id === state.editingId; });
     if (!asset) return;
     var metadata = metadataFromForm(event.currentTarget, asset.status);
+    if (asset.status === 'published' && !hasCompletePublishedMetadata(metadata)) return showAlert(t('publishNeedsMetadata'));
     try { await api('/api/admin/portfolio/assets/' + encodeURIComponent(asset.id), { method:'PATCH', body:metadata }); closeEditor(); showAlert(t('changesSaved')); await loadAssets(); }
     catch (error) { showAlert(error.message || t('networkError')); }
   }
@@ -515,6 +529,7 @@
     clearAlert();
     var asset = state.assets.find(function (item) { return item.id === id; });
     if (status === 'published' && (!asset || !isApprovedPortfolioAsset(asset))) return showAlert(t('manifestApprovalRequired'));
+    if (status === 'published' && !hasCompletePublishedMetadata(asset)) return showAlert(t('publishNeedsMetadata'));
     if (status === 'archived' && !window.confirm(t('archiveConfirm'))) return;
     try { await api('/api/admin/portfolio/assets/' + encodeURIComponent(id), { method:'PATCH', body:{ status:status } }); await loadAssets(); }
     catch (error) { showAlert(error.message || t('networkError')); }

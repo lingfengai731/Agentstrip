@@ -1,0 +1,23 @@
+{
+  "schema_version": 1,
+  "evidence_id": "ev-20260816T092954Z-task-20260816-postgres-ci",
+  "task_ref": "TASK-20260816-DRIVER-RATE-LIMIT-POSTGRES",
+  "owner": "codex-sol",
+  "captured_at": "2026-08-16T09:29:54Z",
+  "status": "verified",
+  "claim": "The persistent driver-request limiter passed its real PostgreSQL integration gate in an isolated GitHub Actions PostgreSQL 16 service without accessing production data or credentials.",
+  "source": {
+    "kind": "github_actions",
+    "repository": "https://github.com/lingfengai731/Agentstrip.git",
+    "commit": "f3011d7aaf955f0cf833d6496a3eac0f1c01cd1c",
+    "branch": "codex/account2-integration-20260816",
+    "pull_request": "https://github.com/lingfengai731/Agentstrip/pull/3",
+    "workflow_run": 31939117240,
+    "job": 95145601201
+  },
+  "verification": {
+    "command": "GitHub Actions PostgreSQL integration / driver-request-rate-limit",
+    "result": "PostgreSQL 16-alpine service became healthy; backend reported postgres; 4/4 tests passed in 0.177s: concurrent atomic counter, fixed-window reset, schema reinitialization persistence, and BIGINT/index contract. Workflow and all steps concluded success."
+  },
+  "notes": "The integration test refuses cleanup unless DATABASE_URL points to localhost or 127.0.0.1. It used only ephemeral CI credentials and was not connected to Render or Neon production. Remaining release gates are Render proxy client separation and post-deploy production browser E2E."
+}

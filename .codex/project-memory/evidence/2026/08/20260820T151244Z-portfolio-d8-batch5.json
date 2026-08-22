@@ -1,0 +1,27 @@
+{
+  "schema_version": 1,
+  "evidence_id": "ev-20260820T151244Z-portfolio-d8-batch5",
+  "task_ref": "portfolio-d8-batch5",
+  "owner": "codex-sol",
+  "captured_at": "2026-08-20T15:12:44Z",
+  "status": "verified",
+  "claim": "The file named Nyepi.jpg is hash-bound and corrected to a visible community cultural gathering outside Pura Desa Adat Seminyak, with complete zh/en/ja/ko/id metadata, G1/R6 theme linkage, no POI, and no claim that the image depicts Nyepi; complete D8 count is 24.",
+  "source": {
+    "kind": "git",
+    "repository": "https://github.com/lingfengai731/Agentstrip.git",
+    "commit": "a577f3a664fa2d6f3018e79306cff8cded6a2cea",
+    "branch": "codex/portfolio-d8-batch5",
+    "worktree": "E:\\Agentstrip-wt-portfolio-d8-batch5"
+  },
+  "verification": {
+    "local": "56/56 product tests OK; image-intake PASS under PowerShell 7; Bali inline scripts 9/9 syntax OK; diff-check PASS",
+    "image": "original SHA-256 matched manifest; original and WebP are 900x1200; the visible temple sign reads PURA DESA / DESA ADAT SEMINYAK",
+    "browser": "local Chrome at 1440, 768 and 390 px opened the corrected modal with zero document overflow and zero console errors; zh/en/ja/ko/id titles rendered; route, AI and driver handoff stayed hidden",
+    "independent_gate": "Luna Max immutable review of a577f3a returned GO with P0/P1/P2 all zero"
+  },
+  "sources": [
+    "https://jidhat.baliprov.go.id/storage/awig/j0yS6dHH5IwxWTYpnDo1Z4SAtp8PgG0FkQmD4DAM.pdf",
+    "https://dpma.baliprov.go.id/wp-content/uploads/2021/10/daftar-desa-adat-1.pdf"
+  ],
+  "notes": "The exact ceremony, capture date and any connection to Nyepi are unverified. R6 is a theme link only; bali-named keeps route, AI and driver handoff hidden. No upload, publication, Render access, merge or deployment was performed."
+}

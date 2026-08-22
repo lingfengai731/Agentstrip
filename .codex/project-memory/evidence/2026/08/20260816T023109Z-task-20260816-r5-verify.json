@@ -1,0 +1,22 @@
+{
+  "schema_version": 1,
+  "evidence_id": "ev-20260816T023109Z-task-20260816-r5-verify",
+  "task_ref": "TASK-20260816-R5-VERIFY",
+  "owner": "codex-sol",
+  "captured_at": "2026-08-16T02:31:09Z",
+  "status": "verified",
+  "claim": "R5 route fact audit verified Tukad Cepung, Banyumala, Lake Tamblingan and Amed while retaining Mount Batur trailhead and Batur hot springs as pending and Mount Batur Jeep as supplier-gated.",
+  "source": {
+    "kind": "git",
+    "repository": "https://github.com/lingfengai731/Agentstrip.git",
+    "commit": "e3721ccbaffa82102a2eb29e775b5eac9ec495b0",
+    "branch": "codex/r5-route-verification",
+    "worktree": "E:\\Agentstrip-wt-r5",
+    "dirty": false
+  },
+  "verification": {
+    "command": "python -m unittest wandermind.backend.tests.test_product_access; project-memory validate; Playwright Chrome 1440/768/320 and WebKit 390",
+    "result": "39/39 tests OK; project-memory validation passed; R5 badges matched 4 verified, 2 pending and 1 supplier-gated; document and detail horizontal overflow were 0 at all four viewports."
+  },
+  "notes": "Screenshots: C:\\Users\\吴凌峰\\.codex\\visualizations\\2026\\08\\16\\r5-route-qa\\r5-chromium-1440.png, r5-chromium-768.png, r5-chromium-320.png and r5-webkit-390.png. Static local server returned the expected 404 for the backend Portfolio endpoint because no backend was started; this is not production verification. Luna worker completed read-only with zero writes; Sol independently accepted sources, diff and tests."
+}

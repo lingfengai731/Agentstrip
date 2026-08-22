@@ -242,19 +242,40 @@
       "web_optimized_path": "assets/images/web/51ab7ab45565e4b5.webp",
       "sha256": "51ab7ab45565e4b5238bda9a7991263b8fdbf31dd4c076242bd4b3ef58eb0966",
       "category": "landscapes",
-      "sub_category": "bali-landscape",
+      "sub_category": "ocean-beach",
       "tags": [
-        "bali",
-        "landscape"
+        "coast",
+        "ocean",
+        "intertidal",
+        "rocky-shore",
+        "twilight",
+        "coastal-building"
       ],
-      "location_status": "bali-named",
+      "location_status": "unknown",
       "region_ids": [],
       "route_ids": [],
       "poi_ids": [],
       "intended_use": "WanderMind approved project image library; connect only where its destination/category metadata matches.",
       "alt_text": {
-        "zh": "???????",
-        "en": "Bali landscape scene"
+        "zh": "暮色天空下的临海建筑与退潮礁石海岸",
+        "en": "Coastal building and exposed rocky shore beneath a twilight sky",
+        "ja": "夕暮れの空の下にある海辺の建物と干潮で現れた岩礁の海岸",
+        "ko": "황혼의 하늘 아래 해안 건물과 썰물로 드러난 바위 해안",
+        "id": "Bangunan pesisir dan garis pantai berbatu yang tampak saat air surut di bawah langit senja"
+      },
+      "title": {
+        "zh": "暮色中的临海建筑与礁石海岸",
+        "en": "Coastal building and rocky shore at twilight",
+        "ja": "夕暮れの海辺の建物と岩礁の海岸",
+        "ko": "황혼의 해안 건물과 바위 해안",
+        "id": "Bangunan pesisir dan garis pantai berbatu saat senja"
+      },
+      "description": {
+        "zh": "画面显示一座临海建筑、退潮后露出的礁石海岸和暮色天空。地点、建筑用途与拍摄时间尚未核实。",
+        "en": "The image shows a coastal building, an exposed rocky shore at low tide and a twilight sky. The location, building use and capture time are unverified.",
+        "ja": "海辺の建物、干潮で現れた岩礁の海岸、そして夕暮れの空が写っています。場所、建物の用途、撮影時期は未確認です。",
+        "ko": "이미지에는 해안 건물, 썰물로 드러난 바위 해안과 황혼의 하늘이 보입니다. 위치, 건물 용도와 촬영 시기는 확인되지 않았습니다.",
+        "id": "Foto ini menampilkan bangunan pesisir, garis pantai berbatu yang tampak saat air surut, dan langit senja. Lokasi, fungsi bangunan, dan waktu pengambilan belum terverifikasi."
       },
       "rights": {
         "status": "user_provided_with_consent",
@@ -320,19 +341,46 @@
       "web_optimized_path": "assets/images/web/3d75af3a6b693c12.webp",
       "sha256": "3d75af3a6b693c122721ed8c0ab8a01be453a641f7daf06482af4cc2cea217e8",
       "category": "landscapes",
-      "sub_category": "bali-landscape",
+      "sub_category": "nature-wildlife",
       "tags": [
-        "bali",
-        "landscape"
+        "forest",
+        "wildlife",
+        "culture",
+        "entrance"
       ],
       "location_status": "bali-named",
-      "region_ids": [],
-      "route_ids": [],
-      "poi_ids": [],
+      "region_ids": [
+        "G4"
+      ],
+      "route_ids": [
+        "R1",
+        "R2",
+        "R4"
+      ],
+      "poi_ids": [
+        "ubud_monkey_forest"
+      ],
       "intended_use": "WanderMind approved project image library; connect only where its destination/category metadata matches.",
+      "title": {
+        "zh": "乌布圣猴森林入口",
+        "en": "Sacred Monkey Forest Sanctuary Entrance",
+        "ja": "ウブド・モンキーフォレストの入口",
+        "ko": "우붓 몽키 포레스트 입구",
+        "id": "Pintu Masuk Sacred Monkey Forest Sanctuary"
+      },
+      "description": {
+        "zh": "林荫中的苔藓石雕、金色“monkey forest”字样和入口方向牌，呈现乌布圣猴森林保护区的场所氛围。开放时间、票价和临时关闭请在出发前查看官方信息。",
+        "en": "A moss-covered stone sculpture, gold monkey forest lettering and an entrance arrow sit among the trees at Ubud's Sacred Monkey Forest Sanctuary. Check official information for current hours, admission and temporary closures.",
+        "ja": "木々に囲まれた苔むす石像、金色の「monkey forest」の文字、入口を示す案内板が、ウブド・モンキーフォレストの雰囲気を伝えます。開園時間、入場料、臨時休園は出発前に公式情報をご確認ください。",
+        "ko": "나무 사이의 이끼 낀 석상과 금색 ‘monkey forest’ 글자, 입구 방향 표지판이 우붓 몽키 포레스트의 분위기를 보여 줍니다. 운영 시간, 입장료, 임시 휴장은 출발 전에 공식 정보를 확인하세요.",
+        "id": "Patung batu berlumut, tulisan emas monkey forest, dan penunjuk arah pintu masuk terlihat di antara pepohonan Sacred Monkey Forest Sanctuary Ubud. Periksa informasi resmi sebelum berangkat untuk jam buka, tiket masuk, dan penutupan sementara."
+      },
       "alt_text": {
-        "zh": "???????",
-        "en": "Bali landscape scene"
+        "zh": "乌布圣猴森林林间入口的苔藓石雕、金色字样和方向牌",
+        "en": "Moss-covered sculpture, gold monkey forest lettering and entrance sign among trees in Ubud",
+        "ja": "ウブドのモンキーフォレスト入口にある苔むした石像と金色の文字、案内板",
+        "ko": "우붓 몽키 포레스트 숲속 입구의 이끼 낀 석상과 금색 글자, 방향 표지판",
+        "id": "Patung batu berlumut, tulisan emas monkey forest, dan papan arah pintu masuk di Ubud"
       },
       "rights": {
         "status": "user_provided_with_consent",
@@ -527,20 +575,42 @@
       "relative_path": "assets/images/bali-2.jpg",
       "web_optimized_path": "assets/images/web/94036e2811302fc8.webp",
       "sha256": "94036e2811302fc80417370f6ca64f13a6d85b667a1c222751d8b0f6f5bd6d90",
-      "category": "landscapes",
-      "sub_category": "bali-landscape",
+      "category": "culture",
+      "sub_category": "balinese-culture",
       "tags": [
-        "bali",
-        "landscape"
+        "culture",
+        "architecture",
+        "split-gate",
+        "mountain",
+        "greenery",
+        "road",
+        "cloth-decoration"
       ],
-      "location_status": "bali-named",
+      "location_status": "unknown",
       "region_ids": [],
       "route_ids": [],
       "poi_ids": [],
       "intended_use": "WanderMind approved project image library; connect only where its destination/category metadata matches.",
       "alt_text": {
-        "zh": "???????",
-        "en": "Bali landscape scene"
+        "zh": "山地绿树背景前的巴厘式分体门",
+        "en": "Balinese-style split gate with green mountains and trees",
+        "ja": "緑の山と木々を背景にしたバリ様式の分離門",
+        "ko": "푸른 산과 나무를 배경으로 한 발리 양식의 분리문",
+        "id": "Gerbang terbelah bergaya Bali dengan latar pegunungan dan pepohonan hijau"
+      },
+      "title": {
+        "zh": "山景中的巴厘式分体门",
+        "en": "Balinese-style split gate in a mountain landscape",
+        "ja": "山景に立つバリ様式の分離門",
+        "ko": "산악 풍경 속 발리 양식의 분리문",
+        "id": "Gerbang terbelah bergaya Bali dalam lanskap pegunungan"
+      },
+      "description": {
+        "zh": "照片显示一座高大的巴厘式分体门，门后可见山地、绿树、道路和布饰。具体地点、是否为 Handara Gate、开放信息与拍摄条件均尚未核实。",
+        "en": "The photo shows a tall Balinese-style split gate with mountains, greenery, a road and cloth decorations. The exact location, whether it is Handara Gate, opening information and photography conditions are unverified.",
+        "ja": "写真には、高いバリ様式の分離門、山地、緑、道路、布飾りが写っています。正確な場所、Handara Gateであるか、開門情報と撮影条件は未確認です。",
+        "ko": "사진에는 높은 발리 양식의 분리문과 산지, 녹지, 도로, 천 장식이 보입니다. 정확한 위치, Handara Gate인지 여부, 운영 정보와 촬영 조건은 확인되지 않았습니다.",
+        "id": "Foto ini menampilkan gerbang terbelah bergaya Bali dengan pegunungan, pepohonan hijau, jalan, dan hiasan kain. Lokasi persis, apakah ini Handara Gate, informasi buka, dan kondisi pemotretan belum terverifikasi."
       },
       "rights": {
         "status": "user_provided_with_consent",
@@ -554,19 +624,40 @@
       "web_optimized_path": "assets/images/web/c11a45dfcccc8767.webp",
       "sha256": "c11a45dfcccc8767d48929e159242a184b9521a295b07498684e1df04265a857",
       "category": "landscapes",
-      "sub_category": "bali-landscape",
+      "sub_category": "ocean-beach",
       "tags": [
-        "bali",
-        "landscape"
+        "island",
+        "cliff",
+        "viewpoint",
+        "beach",
+        "ocean",
+        "photography"
       ],
-      "location_status": "bali-named",
-      "region_ids": [],
-      "route_ids": [],
-      "poi_ids": [],
+      "location_status": "route-linked",
+      "region_ids": ["G3"],
+      "route_ids": ["R1", "R6"],
+      "poi_ids": ["kelingking_beach"],
       "intended_use": "WanderMind approved project image library; connect only where its destination/category metadata matches.",
       "alt_text": {
-        "zh": "???????",
-        "en": "Bali landscape scene"
+        "zh": "从观景台俯瞰克林金海滩的绿色岬角、白沙与蓝色海洋",
+        "en": "Green headland, white sand and blue ocean seen from Kelingking Beach Viewpoint",
+        "ja": "クリンキン・ビーチ展望台から望む緑の岬、白砂、青い海",
+        "ko": "켈링킹 비치 전망대에서 내려다본 푸른 곶과 흰 모래, 파란 바다",
+        "id": "Tanjung hijau, pasir putih, dan laut biru dilihat dari titik pandang Pantai Kelingking"
+      },
+      "title": {
+        "zh": "佩妮达岛克林金海滩观景台",
+        "en": "Kelingking Beach Viewpoint on Nusa Penida",
+        "ja": "ヌサ・ペニダのクリンキン・ビーチ展望台",
+        "ko": "누사 페니다 켈링킹 비치 전망대",
+        "id": "Titik pandang Pantai Kelingking di Nusa Penida"
+      },
+      "description": {
+        "zh": "从上方观景台可见克林金海滩标志性的绿色岬角、白沙与蓝色海洋。下至海滩的路径陡峭，并不适合所有游客；快船、道路、崖边防护、天气与拥挤情况须在出发前复核。",
+        "en": "The upper viewpoint shows Kelingking Beach's distinctive green headland, white sand and blue ocean. The steep descent is not suitable for every traveller; recheck fast boats, roads, cliff barriers, weather and crowding before travel.",
+        "ja": "上部の展望台から、クリンキン・ビーチ特有の緑の岬、白砂、青い海を望めます。海岸への急な下りはすべての旅行者に適するとは限りません。高速船、道路、崖の柵、天候、混雑を出発前に再確認してください。",
+        "ko": "상부 전망대에서 켈링킹 비치의 독특한 푸른 곶과 흰 모래, 파란 바다를 볼 수 있습니다. 해변으로 내려가는 가파른 길은 모든 여행자에게 적합하지 않으므로 패스트보트, 도로, 절벽 안전시설, 날씨와 혼잡도를 출발 전에 다시 확인해야 합니다.",
+        "id": "Titik pandang atas memperlihatkan tanjung hijau khas Pantai Kelingking, pasir putih, dan laut biru. Turunan curam tidak cocok untuk semua wisatawan; periksa kembali kapal cepat, jalan, pengaman tebing, cuaca, dan kepadatan sebelum berangkat."
       },
       "rights": {
         "status": "user_provided_with_consent",
@@ -580,19 +671,39 @@
       "web_optimized_path": "assets/images/web/353e3b2879150547.webp",
       "sha256": "353e3b2879150547b42f7ee92518a6423416effa123b045c4fea5805e3502fad",
       "category": "landscapes",
-      "sub_category": "bali-landscape",
+      "sub_category": "mountains-volcano",
       "tags": [
-        "bali",
-        "landscape"
+        "mountain",
+        "rocky-terrain",
+        "forest",
+        "clouds",
+        "scattered-buildings"
       ],
-      "location_status": "bali-named",
+      "location_status": "unknown",
       "region_ids": [],
       "route_ids": [],
       "poi_ids": [],
       "intended_use": "WanderMind approved project image library; connect only where its destination/category metadata matches.",
+      "title": {
+        "zh": "厚重云层下的山地景观",
+        "en": "Mountain landscape beneath heavy clouds",
+        "ja": "厚い雲の下に広がる山岳風景",
+        "ko": "짙은 구름 아래의 산악 풍경",
+        "id": "Bentang pegunungan di bawah awan tebal"
+      },
+      "description": {
+        "zh": "画面显示一座山脊与宽阔的深色岩地，前景是森林覆盖的山坡，远处可见零散建筑；拍摄地点、山名和拍摄日期尚未核实。",
+        "en": "The image shows a mountain ridge above a broad dark rocky expanse, with forested slopes and a few scattered buildings. The exact place, mountain name and capture date are unverified.",
+        "ja": "山の稜線と広い暗色の岩地、森林に覆われた斜面、点在する建物が写っています。正確な場所、山名、撮影日は未確認です。",
+        "ko": "산 능선과 넓은 어두운 바위 지형, 숲이 우거진 비탈면과 흩어진 건물이 보입니다. 정확한 장소, 산 이름과 촬영일은 확인되지 않았습니다.",
+        "id": "Foto ini menampilkan punggungan gunung di atas bentang batuan gelap yang luas, lereng berhutan, dan beberapa bangunan yang tersebar. Lokasi tepat, nama gunung, dan tanggal pengambilan gambar belum terverifikasi."
+      },
       "alt_text": {
-        "zh": "???????",
-        "en": "Bali landscape scene"
+        "zh": "厚重云层下的山脊、深色岩地、森林坡地和零散建筑",
+        "en": "Mountain ridge above dark rocky terrain with forested slopes and scattered buildings beneath heavy clouds",
+        "ja": "厚い雲の下にある山の稜線、暗色の岩地、森林の斜面と点在する建物",
+        "ko": "짙은 구름 아래의 산 능선, 어두운 바위 지형, 숲이 우거진 비탈면과 흩어진 건물",
+        "id": "Punggungan gunung, bentang batuan gelap, lereng berhutan, dan bangunan yang tersebar di bawah awan tebal"
       },
       "rights": {
         "status": "user_provided_with_consent",
@@ -1355,7 +1466,8 @@
       "sub_category": "balinese-culture",
       "tags": [
         "culture",
-        "temple"
+        "festival",
+        "penjor"
       ],
       "location_status": "bali-named",
       "region_ids": [],
@@ -1365,8 +1477,25 @@
       "poi_ids": [],
       "intended_use": "WanderMind approved project image library; connect only where its destination/category metadata matches.",
       "alt_text": {
-        "zh": "??????????",
-        "en": "Bali culture or temple scene"
+        "zh": "蓝天下巴厘岛道路旁成排的弯曲竹制佩恩乔尔装饰",
+        "en": "Rows of curved bamboo penjor decorations beside a road in Bali under a blue sky",
+        "ja": "青空の下、バリ島の道路沿いに並ぶ湾曲した竹製ペンジョール装飾",
+        "ko": "푸른 하늘 아래 발리 도로변에 늘어선 굽은 대나무 펜조르 장식",
+        "id": "Deretan hiasan penjor bambu melengkung di tepi jalan Bali di bawah langit biru"
+      },
+      "title": {
+        "zh": "与加隆安节相关的巴厘岛佩恩乔尔装饰",
+        "en": "Balinese penjor decorations associated with Galungan",
+        "ja": "ガルンガンに関連するバリ島のペンジョール装飾",
+        "ko": "갈룽안과 관련된 발리의 펜조르 장식",
+        "id": "Hiasan penjor Bali yang berkaitan dengan Galungan"
+      },
+      "description": {
+        "zh": "照片显示巴厘岛道路旁成排的弯曲竹制佩恩乔尔，以编织的棕榈叶等材料装饰。这类装饰常与加隆安至库宁安期间相关；具体拍摄地点和年份尚未核实。",
+        "en": "The photo shows rows of curved bamboo penjor decorated with woven palm leaves along a road in Bali. Such decorations are commonly associated with the Galungan–Kuningan period; the exact location and year are unverified.",
+        "ja": "バリ島の道路沿いに、編んだヤシの葉などで飾られた湾曲した竹製ペンジョールが並ぶ様子です。こうした装飾はガルンガンからクニンガンの時期と広く関連しますが、撮影場所と年は未確認です。",
+        "ko": "발리의 도로를 따라 엮은 야자 잎 등으로 꾸민 굽은 대나무 펜조르가 늘어선 모습입니다. 이러한 장식은 일반적으로 갈룽안부터 쿠닝안까지의 기간과 관련되지만, 정확한 촬영 장소와 연도는 확인되지 않았습니다.",
+        "id": "Foto ini menampilkan deretan penjor dari bambu melengkung yang dihiasi anyaman janur dan bahan lain di sepanjang jalan di Bali. Hiasan seperti ini lazim dikaitkan dengan masa Galungan–Kuningan; lokasi dan tahun pengambilan foto belum terverifikasi."
       },
       "rights": {
         "status": "user_provided_with_consent",
@@ -1383,7 +1512,8 @@
       "sub_category": "balinese-culture",
       "tags": [
         "culture",
-        "temple"
+        "landmark",
+        "cultural-park"
       ],
       "location_status": "bali-named",
       "region_ids": [
@@ -1399,14 +1529,31 @@
       ],
       "intended_use": "WanderMind approved project image library; connect only where its destination/category metadata matches.",
       "alt_text": {
-        "zh": "??????????",
-        "en": "Bali culture or temple scene"
+        "zh": "蓝天下的神鹰广场巨型雕像，前方是园区建筑，远处可见海岸",
+        "en": "Garuda Wisnu Kencana's monumental statue above the park buildings with the coast in the distance",
+        "ja": "園内の建物の上に立つ巨大なガルーダ・ウィスヌ・クンチャナ像と遠方の海岸",
+        "ko": "공원 건물 위로 솟은 가루다 위스누 켄차나 거대 조각상과 멀리 보이는 해안",
+        "id": "Patung monumental Garuda Wisnu Kencana di atas bangunan taman dengan garis pantai di kejauhan"
       },
       "rights": {
         "status": "user_provided_with_consent",
         "source": "user_global_confirmation",
         "approval_date": "2026-08-05",
         "license_or_owner": "WanderMind user global confirmation"
+      },
+      "title": {
+        "zh": "神鹰广场航拍全景",
+        "en": "Aerial view of Garuda Wisnu Kencana",
+        "ja": "ガルーダ・ウィスヌ・クンチャナの空撮",
+        "ko": "가루다 위스누 켄차나 항공 전경",
+        "id": "Pemandangan udara Garuda Wisnu Kencana"
+      },
+      "description": {
+        "zh": "从空中俯瞰神鹰广场的巨型雕像、园区建筑与巴厘岛南部海岸线。",
+        "en": "An aerial view of the monumental statue, park buildings and the South Bali coastline at Garuda Wisnu Kencana.",
+        "ja": "巨大な像、園内の建物、バリ島南部の海岸線を空から望むガルーダ・ウィスヌ・クンチャナ。",
+        "ko": "거대한 조각상과 공원 건물, 발리 남부 해안선이 함께 보이는 가루다 위스누 켄차나의 항공 전경입니다.",
+        "id": "Pemandangan udara patung monumental, bangunan taman, dan garis pantai Bali Selatan di Garuda Wisnu Kencana."
       }
     },
     {
@@ -1739,14 +1886,31 @@
       ],
       "intended_use": "WanderMind approved project image library; connect only where its destination/category metadata matches.",
       "alt_text": {
-        "zh": "?????????",
-        "en": "Bali travel experience scene"
+        "zh": "Intuitive Flow 室内铺着多张瑜伽垫，一名参与者坐在清晨阳光里",
+        "en": "Yoga mats inside Intuitive Flow with one participant seated in the morning light",
+        "ja": "Intuitive Flow の室内に並ぶヨガマットと朝の光の中に座る参加者",
+        "ko": "Intuitive Flow 실내에 놓인 요가 매트와 아침 햇살 속에 앉아 있는 참가자",
+        "id": "Deretan matras yoga di dalam Intuitive Flow dengan seorang peserta duduk dalam cahaya pagi"
       },
       "rights": {
         "status": "user_provided_with_consent",
         "source": "user_global_confirmation",
         "approval_date": "2026-08-05",
         "license_or_owner": "WanderMind user global confirmation"
+      },
+      "title": {
+        "zh": "Intuitive Flow 清晨瑜伽空间",
+        "en": "Morning light at Intuitive Flow",
+        "ja": "朝の光に包まれる Intuitive Flow",
+        "ko": "아침 햇살이 드는 Intuitive Flow",
+        "id": "Cahaya pagi di Intuitive Flow"
+      },
+      "description": {
+        "zh": "乌布绿意环绕的室内瑜伽空间，清晨阳光穿过窗户落在整齐铺开的地垫上。",
+        "en": "A yoga space surrounded by Ubud greenery, with morning light falling across rows of mats by the windows.",
+        "ja": "ウブドの緑に囲まれたヨガ空間。朝の光が窓から差し込み、並べられたマットを照らしています。",
+        "ko": "우붓의 녹음에 둘러싸인 요가 공간으로, 창가에 놓인 매트 위로 아침 햇살이 들어옵니다.",
+        "id": "Ruang yoga yang dikelilingi kehijauan Ubud, dengan cahaya pagi menyinari deretan matras di dekat jendela."
       }
     },
     {
@@ -1883,18 +2047,39 @@
       "sub_category": "balinese-culture",
       "tags": [
         "culture",
-        "temple"
+        "community",
+        "temple",
+        "penjor"
       ],
       "location_status": "bali-named",
-      "region_ids": [],
+      "region_ids": [
+        "G1"
+      ],
       "route_ids": [
-        "R4"
+        "R6"
       ],
       "poi_ids": [],
       "intended_use": "WanderMind approved project image library; connect only where its destination/category metadata matches.",
       "alt_text": {
-        "zh": "??????????",
-        "en": "Bali culture or temple scene"
+        "zh": "身着白色仪式服装的社区成员坐在塞米亚克村社神庙外，头顶可见佩恩乔尔装饰",
+        "en": "Community members in white ceremonial attire seated outside Pura Desa Adat Seminyak beneath penjor decorations",
+        "ja": "白い儀礼衣装を着た地域の人々が、ペンジョール装飾の下でプラ・デサ・アダット・スミニャックの外に座る様子",
+        "ko": "흰색 의례복을 입은 지역 주민들이 펜조르 장식 아래 푸라 데사 아다트 스미냑 밖에 앉아 있는 모습",
+        "id": "Warga mengenakan pakaian upacara putih duduk di luar Pura Desa Adat Seminyak di bawah hiasan penjor"
+      },
+      "title": {
+        "zh": "塞米亚克村社神庙的巴厘文化聚会",
+        "en": "Balinese cultural gathering at Pura Desa Adat Seminyak",
+        "ja": "プラ・デサ・アダット・スミニャックのバリ文化の集い",
+        "ko": "푸라 데사 아다트 스미냑의 발리 문화 모임",
+        "id": "Pertemuan budaya Bali di Pura Desa Adat Seminyak"
+      },
+      "description": {
+        "zh": "照片显示身着白色仪式服装的社区成员聚集在塞米亚克村社神庙门外，街边可见佩恩乔尔。具体仪式、拍摄日期以及是否与宁静日有关均尚未核实。",
+        "en": "The photo shows community members in white ceremonial attire gathered outside the gate of Pura Desa Adat Seminyak, with penjor along the street. The exact ceremony, date and any connection to Nyepi are unverified.",
+        "ja": "白い儀礼衣装を着た地域の人々がプラ・デサ・アダット・スミニャックの門外に集まり、通りにはペンジョールが見えます。具体的な儀礼、撮影日、ニュピとの関係は未確認です。",
+        "ko": "흰색 의례복을 입은 지역 주민들이 푸라 데사 아다트 스미냑 정문 밖에 모여 있고 거리에는 펜조르가 보입니다. 정확한 의식, 촬영 날짜, 녜삐와의 관련성은 확인되지 않았습니다.",
+        "id": "Foto ini menunjukkan warga dengan pakaian upacara putih berkumpul di luar gerbang Pura Desa Adat Seminyak, dengan penjor di sepanjang jalan. Upacara, tanggal, dan kaitannya dengan Nyepi belum terverifikasi."
       },
       "rights": {
         "status": "user_provided_with_consent",
@@ -2026,14 +2211,31 @@
       ],
       "intended_use": "WanderMind approved project image library; connect only where its destination/category metadata matches.",
       "alt_text": {
-        "zh": "??????????",
-        "en": "Bali culture or temple scene"
+        "zh": "百沙基寺高耸的石质分门、台阶与门后远山",
+        "en": "Tall stone split gate and steps at Pura Besakih with a mountain visible beyond",
+        "ja": "ブサキ寺院の高い石造りの割れ門と階段、その奥に見える山",
+        "ko": "브사키 사원의 높은 석조 갈라진 문과 계단, 문 너머로 보이는 산",
+        "id": "Candi bentar batu yang tinggi dan tangga di Pura Besakih dengan gunung terlihat di belakangnya"
       },
       "rights": {
         "status": "user_provided_with_consent",
         "source": "user_global_confirmation",
         "approval_date": "2026-08-05",
         "license_or_owner": "WanderMind user global confirmation"
+      },
+      "title": {
+        "zh": "百沙基寺分门与山景",
+        "en": "Split gate at Pura Besakih",
+        "ja": "ブサキ寺院の割れ門",
+        "ko": "브사키 사원의 갈라진 문",
+        "id": "Candi bentar di Pura Besakih"
+      },
+      "description": {
+        "zh": "百沙基寺石质分门框住远处山景，台阶两侧可见雕像与传统建筑。",
+        "en": "A stone split gate at Pura Besakih frames the mountain view beyond, with statues and temple buildings beside the steps.",
+        "ja": "ブサキ寺院の石造りの割れ門が遠くの山を縁取り、階段の両側には像と寺院建築が見えます。",
+        "ko": "브사키 사원의 석조 갈라진 문 사이로 산이 보이고, 계단 양옆에는 조각상과 사원 건물이 자리합니다.",
+        "id": "Candi bentar batu di Pura Besakih membingkai pemandangan gunung, dengan arca dan bangunan pura di sisi tangga."
       }
     },
     {
@@ -2059,14 +2261,31 @@
       ],
       "intended_use": "WanderMind approved project image library; connect only where its destination/category metadata matches.",
       "alt_text": {
-        "zh": "??????????",
-        "en": "Bali culture or temple scene"
+        "zh": "百沙基寺院群内多座黑色屋顶的多层梅鲁塔与石雕",
+        "en": "Several dark-roofed tiered meru towers and stone carvings within Pura Besakih",
+        "ja": "ブサキ寺院内に並ぶ黒い屋根の多層メル塔と石彫",
+        "ko": "브사키 사원 안에 늘어선 검은 지붕의 다층 메루 탑과 석조 조각",
+        "id": "Beberapa menara meru bertingkat beratap gelap dan ukiran batu di dalam Pura Besakih"
       },
       "rights": {
         "status": "user_provided_with_consent",
         "source": "user_global_confirmation",
         "approval_date": "2026-08-05",
         "license_or_owner": "WanderMind user global confirmation"
+      },
+      "title": {
+        "zh": "百沙基寺多层梅鲁塔",
+        "en": "Meru towers at Pura Besakih",
+        "ja": "ブサキ寺院のメル塔",
+        "ko": "브사키 사원의 메루 탑",
+        "id": "Menara meru di Pura Besakih"
+      },
+      "description": {
+        "zh": "百沙基寺院群的多层梅鲁塔与石雕在晴空下层层展开。",
+        "en": "Tiered meru towers and stone ornamentation rise across the Pura Besakih temple complex under a clear sky.",
+        "ja": "澄んだ空の下、ブサキ寺院群に多層のメル塔と石彫が連なっています。",
+        "ko": "맑은 하늘 아래 브사키 사원 단지의 다층 메루 탑과 석조 장식이 이어집니다.",
+        "id": "Menara meru bertingkat dan ornamen batu memenuhi kompleks Pura Besakih di bawah langit cerah."
       }
     },
     {
@@ -2092,14 +2311,31 @@
       ],
       "intended_use": "WanderMind approved project image library; connect only where its destination/category metadata matches.",
       "alt_text": {
-        "zh": "??????????",
-        "en": "Bali culture or temple scene"
+        "zh": "游客沿百沙基寺中央石阶向上，两侧分布石雕和门楼",
+        "en": "Visitors climbing the central stone steps at Pura Besakih between carvings and gateways",
+        "ja": "石彫と門に挟まれたブサキ寺院の中央階段を上る参拝者",
+        "ko": "석조 장식과 문 사이 브사키 사원 중앙 계단을 오르는 방문객",
+        "id": "Pengunjung menaiki tangga batu utama Pura Besakih di antara ukiran dan gerbang"
       },
       "rights": {
         "status": "user_provided_with_consent",
         "source": "user_global_confirmation",
         "approval_date": "2026-08-05",
         "license_or_owner": "WanderMind user global confirmation"
+      },
+      "title": {
+        "zh": "通往百沙基寺的阶梯",
+        "en": "Steps into Pura Besakih",
+        "ja": "ブサキ寺院へ続く階段",
+        "ko": "브사키 사원으로 이어지는 계단",
+        "id": "Tangga menuju Pura Besakih"
+      },
+      "description": {
+        "zh": "石阶从百沙基寺入口向上延伸，两侧是层叠的石雕、门楼与庭院建筑。",
+        "en": "Stone steps rise through Pura Besakih, bordered by layered carvings, gateways and courtyard structures.",
+        "ja": "石段がブサキ寺院の奥へ続き、両側には重なる石彫、門、境内の建物が並びます。",
+        "ko": "브사키 사원 안쪽으로 돌계단이 이어지고, 양옆에는 층층이 놓인 석조 장식과 문, 뜰 건물이 보입니다.",
+        "id": "Tangga batu menanjak di Pura Besakih, diapit ukiran, gerbang, dan bangunan halaman pura."
       }
     },
     {
@@ -2125,14 +2361,31 @@
       ],
       "intended_use": "WanderMind approved project image library; connect only where its destination/category metadata matches.",
       "alt_text": {
-        "zh": "??????????",
-        "en": "Bali culture or temple scene"
+        "zh": "百沙基寺的深色石门与屋顶，后方是被晨光照亮的阿贡火山",
+        "en": "Dark stone gateways and roofs of Pura Besakih with Mount Agung lit behind them",
+        "ja": "ブサキ寺院の暗い石門と屋根、その背後で光を受けるアグン山",
+        "ko": "브사키 사원의 어두운 석문과 지붕, 뒤로 빛을 받는 아궁산",
+        "id": "Gerbang batu gelap dan atap Pura Besakih dengan Gunung Agung tersinari di belakangnya"
       },
       "rights": {
         "status": "user_provided_with_consent",
         "source": "user_global_confirmation",
         "approval_date": "2026-08-05",
         "license_or_owner": "WanderMind user global confirmation"
+      },
+      "title": {
+        "zh": "百沙基寺与阿贡火山",
+        "en": "Pura Besakih beneath Mount Agung",
+        "ja": "アグン山を望むブサキ寺院",
+        "ko": "아궁산 아래의 브사키 사원",
+        "id": "Pura Besakih di bawah Gunung Agung"
+      },
+      "description": {
+        "zh": "百沙基寺的石门与屋顶位于前景，阿贡火山山体在晨光中升起。",
+        "en": "Stone gateways and roofs of Pura Besakih sit in the foreground while Mount Agung rises in the morning light.",
+        "ja": "ブサキ寺院の石門と屋根の背後に、朝の光を受けたアグン山がそびえます。",
+        "ko": "브사키 사원의 석문과 지붕 뒤로 아침 햇살을 받은 아궁산이 솟아 있습니다.",
+        "id": "Gerbang batu dan atap Pura Besakih berada di depan, sementara Gunung Agung menjulang dalam cahaya pagi."
       }
     },
     {
@@ -2159,14 +2412,31 @@
       ],
       "intended_use": "WanderMind approved project image library; connect only where its destination/category metadata matches.",
       "alt_text": {
-        "zh": "??????????",
-        "en": "Bali culture or temple scene"
+        "zh": "海浪旁的乌鲁瓦图悬崖与寺庙建筑，阳光从右上方照入",
+        "en": "Uluwatu cliff and temple structures above rolling ocean waves with sunlight entering from the right",
+        "ja": "海の波を見下ろすウルワツの断崖と寺院建築、右側から差し込む光",
+        "ko": "바다 파도 위 울루와뚜 절벽과 사원 건물, 오른쪽에서 비치는 햇빛",
+        "id": "Tebing dan bangunan Pura Uluwatu di atas ombak laut dengan cahaya masuk dari sisi kanan"
       },
       "rights": {
         "status": "user_provided_with_consent",
         "source": "user_global_confirmation",
         "approval_date": "2026-08-05",
         "license_or_owner": "WanderMind user global confirmation"
+      },
+      "title": {
+        "zh": "乌鲁瓦图悬崖寺庙",
+        "en": "Uluwatu Temple on the cliff",
+        "ja": "断崖に立つウルワツ寺院",
+        "ko": "절벽 위 울루와뚜 사원",
+        "id": "Pura Uluwatu di atas tebing"
+      },
+      "description": {
+        "zh": "乌鲁瓦图寺庙坐落在临海悬崖上，步道沿崖壁延伸，海浪在下方翻涌。",
+        "en": "Uluwatu Temple sits above the ocean cliffs, with a walkway tracing the rock edge and waves rolling below.",
+        "ja": "ウルワツ寺院は海沿いの断崖に立ち、遊歩道が崖に沿って続き、その下で波が打ち寄せます。",
+        "ko": "울루와뚜 사원은 바다 절벽 위에 자리하며, 산책로가 절벽을 따라 이어지고 아래로 파도가 밀려옵니다.",
+        "id": "Pura Uluwatu berdiri di atas tebing laut, dengan jalur pejalan kaki mengikuti tepi batu dan ombak bergulung di bawahnya."
       }
     },
     {
@@ -2193,14 +2463,31 @@
       ],
       "intended_use": "WanderMind approved project image library; connect only where its destination/category metadata matches.",
       "alt_text": {
-        "zh": "??????????",
-        "en": "Bali culture or temple scene"
+        "zh": "乌鲁瓦图露天场地内，凯卡克舞者围成圆圈，观众席后方是日落海面",
+        "en": "Kecak performers seated in a circle at Uluwatu with the audience and sunset sea behind them",
+        "ja": "ウルワツで円になって座るケチャックダンサーと、その背後の観客席と夕暮れの海",
+        "ko": "울루와뚜에서 원을 이뤄 앉은 케착 무용수들과 뒤편의 관객, 일몰 바다",
+        "id": "Para penari Kecak duduk melingkar di Uluwatu dengan penonton dan laut senja di belakangnya"
       },
       "rights": {
         "status": "user_provided_with_consent",
         "source": "user_global_confirmation",
         "approval_date": "2026-08-05",
         "license_or_owner": "WanderMind user global confirmation"
+      },
+      "title": {
+        "zh": "乌鲁瓦图日落凯卡克舞",
+        "en": "Kecak performance at Uluwatu sunset",
+        "ja": "ウルワツの夕景とケチャックダンス",
+        "ko": "울루와뚜 일몰의 케착 공연",
+        "id": "Pertunjukan Kecak saat matahari terbenam di Uluwatu"
+      },
+      "description": {
+        "zh": "观众围坐在乌鲁瓦图露天场地，表演者在落日海景前组成圆阵。演出时间与票务需实时核对。",
+        "en": "An audience surrounds Kecak performers in an open-air Uluwatu venue against a sunset sea view. Showtimes and tickets require a live check.",
+        "ja": "ウルワツの屋外会場で、夕暮れの海を背景に観客が円陣のケチャックダンサーを囲みます。上演時間とチケットは最新情報の確認が必要です。",
+        "ko": "울루와뚜 야외 공연장에서 관객이 원을 이룬 케착 무용수들을 둘러싸고, 뒤로 일몰 바다가 펼쳐집니다. 공연 시간과 티켓은 실시간 확인이 필요합니다.",
+        "id": "Penonton mengelilingi para penari Kecak di arena terbuka Uluwatu dengan latar laut saat matahari terbenam. Jadwal dan tiket perlu diperiksa secara langsung."
       }
     },
     {
@@ -2211,24 +2498,49 @@
       "sub_category": "balinese-culture",
       "tags": [
         "culture",
-        "temple"
+        "temple",
+        "water-temple",
+        "heritage"
       ],
       "location_status": "bali-named",
-      "region_ids": [],
-      "route_ids": [
-        "R4"
+      "region_ids": [
+        "G1"
       ],
-      "poi_ids": [],
+      "route_ids": [
+        "R1",
+        "R4",
+        "R6"
+      ],
+      "poi_ids": [
+        "taman_ayun"
+      ],
       "intended_use": "WanderMind approved project image library; connect only where its destination/category metadata matches.",
       "alt_text": {
-        "zh": "??????????",
-        "en": "Bali culture or temple scene"
+        "ja": "青空の下に並ぶタマン・アユン寺院の多層メル塔",
+        "en": "A row of multi-tiered meru towers inside Pura Taman Ayun under a blue sky",
+        "ko": "푸른 하늘 아래 줄지어 선 타만 아윤 사원의 다층 메루 탑",
+        "zh": "蓝天下塔曼阿云寺院内一排多层梅鲁塔",
+        "id": "Deretan menara meru bertingkat di Pura Taman Ayun di bawah langit biru"
       },
       "rights": {
         "status": "user_provided_with_consent",
         "source": "user_global_confirmation",
         "approval_date": "2026-08-05",
         "license_or_owner": "WanderMind user global confirmation"
+      },
+      "title": {
+        "ja": "タマン・アユン寺院の多層メル塔",
+        "en": "Meru towers at Pura Taman Ayun",
+        "ko": "타만 아윤 사원의 다층 메루 탑",
+        "zh": "孟威塔曼阿云寺的多层梅鲁塔",
+        "id": "Menara meru di Pura Taman Ayun"
+      },
+      "description": {
+        "ja": "青空の下、タマン・アユン寺院の境内に多層のメル塔が並びます。ムングウィの王立水寺院はバリの世界遺産文化景観の一部です。公開区域、服装、儀式、入場条件は訪問前に確認してください。",
+        "en": "Multi-tiered meru towers rise across the courtyard of Pura Taman Ayun. The royal water temple in Mengwi is part of Bali's World Heritage cultural landscape; confirm open areas, dress guidance, ceremonies and admission before visiting.",
+        "ko": "푸른 하늘 아래 타만 아윤 사원 안뜰에 다층 메루 탑이 이어집니다. 멩위의 왕실 수상 사원은 발리 세계유산 문화경관의 일부이며, 공개 구역과 복장, 의식, 입장 조건은 방문 전에 확인해야 합니다.",
+        "zh": "蓝天下，多层梅鲁塔沿塔曼阿云寺院展开。这座孟威皇家水庙属于巴厘岛世界遗产文化景观；开放区域、着装、仪式和票务请在出发前确认。",
+        "id": "Menara meru bertingkat berjajar di halaman Pura Taman Ayun di bawah langit biru. Pura air kerajaan di Mengwi ini merupakan bagian dari lanskap budaya Warisan Dunia Bali; periksa area yang dibuka, aturan pakaian, upacara, dan tiket sebelum berkunjung."
       }
     },
     {
@@ -2239,26 +2551,48 @@
       "sub_category": "balinese-culture",
       "tags": [
         "culture",
-        "temple"
+        "temple",
+        "lotus-pond"
       ],
       "location_status": "bali-named",
       "region_ids": [
         "G4"
       ],
       "route_ids": [
-        "R4"
+        "R1",
+        "R4",
+        "R6"
       ],
-      "poi_ids": [],
+      "poi_ids": [
+        "taman_saraswati"
+      ],
       "intended_use": "WanderMind approved project image library; connect only where its destination/category metadata matches.",
       "alt_text": {
-        "zh": "??????????",
-        "en": "Bali culture or temple scene"
+        "ja": "蓮池の間からタマン・サラスワティ寺院の門へ続く小道",
+        "en": "A path between lotus ponds leading to the gate of Pura Taman Saraswati",
+        "ko": "연못 사이로 타만 사라스와티 사원 문까지 이어지는 길",
+        "zh": "莲池之间的小径通向塔曼萨拉斯瓦蒂寺院门",
+        "id": "Jalur di antara kolam teratai menuju gerbang Pura Taman Saraswati"
       },
       "rights": {
         "status": "user_provided_with_consent",
         "source": "user_global_confirmation",
         "approval_date": "2026-08-05",
         "license_or_owner": "WanderMind user global confirmation"
+      },
+      "title": {
+        "ja": "蓮池の小道からウブド・ウォーターパレスへ",
+        "en": "Lotus path to the Ubud Water Palace",
+        "ko": "연못 사이 길로 만나는 우붓 워터 팰리스",
+        "zh": "莲池小径通向乌布水宫",
+        "id": "Jalur kolam teratai menuju Ubud Water Palace"
+      },
+      "description": {
+        "ja": "蓮池の間をまっすぐな小道が伸び、タマン・サラスワティ寺院の門へ続きます。ウブドで現在も使われる寺院のため、公開範囲、服装、儀式、上演情報は訪問前に確認してください。",
+        "en": "A straight path crosses the lotus ponds toward the gate of Pura Taman Saraswati. This remains an active temple setting in Ubud; confirm public access, dress guidance, ceremonies and any performances before visiting.",
+        "ko": "곧게 뻗은 길이 연못 사이를 지나 타만 사라스와티 사원의 문으로 이어집니다. 우붓에서 현재도 사용되는 사원 공간이므로 공개 범위와 복장, 의식, 공연 정보는 방문 전에 확인해야 합니다.",
+        "zh": "笔直小径穿过莲池，通向塔曼萨拉斯瓦蒂寺的院门。这是乌布仍在使用的寺庙空间；开放范围、着装、仪式与演出信息请在到访前确认。",
+        "id": "Jalur lurus melintasi kolam teratai menuju gerbang Pura Taman Saraswati. Tempat ini tetap menjadi ruang pura aktif di Ubud; periksa akses umum, aturan pakaian, upacara, dan pertunjukan sebelum berkunjung."
       }
     },
     {
@@ -2269,26 +2603,48 @@
       "sub_category": "balinese-culture",
       "tags": [
         "culture",
-        "temple"
+        "temple",
+        "lotus-pond"
       ],
       "location_status": "bali-named",
       "region_ids": [
         "G4"
       ],
       "route_ids": [
-        "R4"
+        "R1",
+        "R4",
+        "R6"
       ],
-      "poi_ids": [],
+      "poi_ids": [
+        "taman_saraswati"
+      ],
       "intended_use": "WanderMind approved project image library; connect only where its destination/category metadata matches.",
       "alt_text": {
-        "zh": "??????????",
-        "en": "Bali culture or temple scene"
+        "ja": "蓮池越しに見えるタマン・サラスワティ寺院の門と境内",
+        "en": "The gate and courtyard of Pura Taman Saraswati seen across a lotus pond",
+        "ko": "연못 너머로 보이는 타만 사라스와티 사원 문과 안뜰",
+        "zh": "莲池对面可见塔曼萨拉斯瓦蒂寺院门和庭院",
+        "id": "Gerbang dan halaman Pura Taman Saraswati terlihat di seberang kolam teratai"
       },
       "rights": {
         "status": "user_provided_with_consent",
         "source": "user_global_confirmation",
         "approval_date": "2026-08-05",
         "license_or_owner": "WanderMind user global confirmation"
+      },
+      "title": {
+        "ja": "蓮池越しに見るタマン・サラスワティ寺院",
+        "en": "Pura Taman Saraswati across the lotus pond",
+        "ko": "연못 너머의 타만 사라스와티 사원",
+        "zh": "莲池对面的塔曼萨拉斯瓦蒂寺",
+        "id": "Pura Taman Saraswati di seberang kolam teratai"
+      },
+      "description": {
+        "ja": "手前の池に蓮の葉が広がり、その向こうにバリ様式の寺院門と境内が見えます。ウブド中心部の水景と建築を楽しめますが、公開範囲、礼儀、儀式、上演は当日確認が必要です。",
+        "en": "Lotus leaves fill the foreground while the Balinese temple gate and courtyard sit across the pond. The view shows Ubud's water-garden architecture; confirm access, etiquette, ceremonies and performances in real time.",
+        "ko": "앞쪽 연못에 연잎이 펼쳐지고 그 너머로 발리식 사원 문과 안뜰이 보입니다. 우붓 중심의 수경과 건축을 볼 수 있지만 공개 범위와 예절, 의식, 공연은 실시간 확인이 필요합니다.",
+        "zh": "莲叶铺满前景水面，巴厘式寺院门与庭院位于池塘对面。这里适合观察乌布中心的水景与建筑，但开放范围、礼仪、仪式和演出须实时确认。",
+        "id": "Daun teratai memenuhi kolam di depan, dengan gerbang dan halaman pura bergaya Bali di seberangnya. Pemandangan ini memperlihatkan arsitektur taman air di pusat Ubud; periksa akses, etika, upacara, dan pertunjukan secara langsung."
       }
     },
     {
@@ -2365,14 +2721,31 @@
       ],
       "intended_use": "WanderMind approved project image library; connect only where its destination/category metadata matches.",
       "alt_text": {
-        "zh": "??????????",
-        "en": "Bali culture or temple scene"
+        "zh": "布拉坦湖水边的多层塔与寺庙建筑，远处是绿色山坡",
+        "en": "Tiered shrines and temple buildings beside Lake Beratan with green mountain slopes behind",
+        "ja": "ブラタン湖畔の多層の祠と寺院建築、背後に広がる緑の山腹",
+        "ko": "브라딴 호숫가의 다층 사당과 사원 건물, 뒤로 보이는 푸른 산비탈",
+        "id": "Pelinggih bertingkat dan bangunan pura di tepi Danau Beratan dengan lereng hijau di belakangnya"
       },
       "rights": {
         "status": "user_provided_with_consent",
         "source": "user_global_confirmation",
         "approval_date": "2026-08-05",
         "license_or_owner": "WanderMind user global confirmation"
+      },
+      "title": {
+        "zh": "布拉坦湖上的水神庙",
+        "en": "Pura Ulun Danu Beratan by the lake",
+        "ja": "湖畔のウルン・ダヌ・ブラタン寺院",
+        "ko": "호숫가 울룬 다누 브라딴 사원",
+        "id": "Pura Ulun Danu Beratan di tepi danau"
+      },
+      "description": {
+        "zh": "布拉坦湖畔的多层塔与寺庙建筑映在水边，后方是云雾中的高地山坡。",
+        "en": "Tiered shrines and temple buildings stand at the edge of Lake Beratan, backed by misty highland slopes.",
+        "ja": "ブラタン湖のほとりに多層の祠と寺院建築が立ち、背後には霧をまとった高原の斜面が広がります。",
+        "ko": "브라딴 호숫가에 다층 사당과 사원 건물이 서 있고, 뒤로 안개 낀 고지대 산비탈이 펼쳐집니다.",
+        "id": "Pelinggih bertingkat dan bangunan pura berdiri di tepi Danau Beratan, dengan lereng dataran tinggi berkabut di belakangnya."
       }
     },
     {
@@ -2397,14 +2770,31 @@
       ],
       "intended_use": "WanderMind approved project image library; connect only where its destination/category metadata matches.",
       "alt_text": {
-        "zh": "?????????",
-        "en": "Bali travel experience scene"
+        "zh": "睡莲池上方的木质步道，两侧是 Pyramids of Chi 的浅色金字塔形建筑",
+        "en": "Wooden walkway over lotus ponds between the pale pyramid-shaped buildings at Pyramids of Chi",
+        "ja": "睡蓮の池に架かる木の通路と、その両側に立つ Pyramids of Chi の淡色のピラミッド型建物",
+        "ko": "수련 연못 위 나무 산책로와 양쪽의 Pyramids of Chi 연한 색 피라미드형 건물",
+        "id": "Jalur kayu di atas kolam teratai di antara bangunan berbentuk piramida berwarna terang di Pyramids of Chi"
       },
       "rights": {
         "status": "user_provided_with_consent",
         "source": "user_global_confirmation",
         "approval_date": "2026-08-05",
         "license_or_owner": "WanderMind user global confirmation"
+      },
+      "title": {
+        "zh": "Pyramids of Chi 园区入口",
+        "en": "Walkway into Pyramids of Chi",
+        "ja": "Pyramids of Chi へ続く通路",
+        "ko": "Pyramids of Chi로 이어지는 길",
+        "id": "Jalur masuk ke Pyramids of Chi"
+      },
+      "description": {
+        "zh": "木质步道穿过睡莲池，连接 Pyramids of Chi 的几何建筑与热带花园。",
+        "en": "A wooden walkway crosses lotus ponds between the geometric buildings and tropical garden at Pyramids of Chi.",
+        "ja": "木の通路が睡蓮の池を渡り、Pyramids of Chi の幾何学的な建物と熱帯の庭をつないでいます。",
+        "ko": "나무 산책로가 수련 연못을 지나 Pyramids of Chi의 기하학적 건물과 열대 정원을 잇습니다.",
+        "id": "Jalur kayu melintasi kolam teratai di antara bangunan geometris dan taman tropis Pyramids of Chi."
       }
     },
     {
@@ -2429,14 +2819,31 @@
       ],
       "intended_use": "WanderMind approved project image library; connect only where its destination/category metadata matches.",
       "alt_text": {
-        "zh": "?????????",
-        "en": "Bali travel experience scene"
+        "zh": "Pyramids of Chi 深色室内的两面铜锣与多排带软垫的躺卧位置",
+        "en": "Two gongs and rows of cushioned resting places inside a dark room at Pyramids of Chi",
+        "ja": "Pyramids of Chi の暗い室内にある2つのゴングとクッション付きの寝台",
+        "ko": "Pyramids of Chi의 어두운 실내에 놓인 두 개의 공과 여러 줄의 쿠션 자리",
+        "id": "Dua gong dan deretan tempat berbaring beralas di dalam ruangan gelap Pyramids of Chi"
       },
       "rights": {
         "status": "user_provided_with_consent",
         "source": "user_global_confirmation",
         "approval_date": "2026-08-05",
         "license_or_owner": "WanderMind user global confirmation"
+      },
+      "title": {
+        "zh": "Pyramids of Chi 音声体验空间",
+        "en": "Sound experience room at Pyramids of Chi",
+        "ja": "Pyramids of Chi のサウンド体験空間",
+        "ko": "Pyramids of Chi 사운드 체험 공간",
+        "id": "Ruang pengalaman suara di Pyramids of Chi"
+      },
+      "description": {
+        "zh": "深色室内摆放着软垫与两面铜锣，呈现 Pyramids of Chi 声音类活动的场地布置。具体活动与适用性需实时确认。",
+        "en": "Cushioned resting places and two gongs are arranged in a dark room used for sound events at Pyramids of Chi. The specific session and suitability require a live check.",
+        "ja": "暗い室内にクッション付きの寝台と2つのゴングが並び、Pyramids of Chi のサウンドイベント会場の様子を伝えます。具体的な内容と適性は最新情報の確認が必要です。",
+        "ko": "어두운 실내에 쿠션이 놓인 휴식 자리와 두 개의 공이 배치되어 Pyramids of Chi의 사운드 행사 공간을 보여 줍니다. 구체적인 세션과 적합성은 실시간 확인이 필요합니다.",
+        "id": "Tempat berbaring beralas dan dua gong tertata di ruangan gelap untuk acara suara di Pyramids of Chi. Sesi dan kesesuaiannya perlu diperiksa secara langsung."
       }
     },
     {
@@ -2663,14 +3070,31 @@
       ],
       "intended_use": "WanderMind approved project image library; connect only where its destination/category metadata matches.",
       "alt_text": {
-        "zh": "??????????",
-        "en": "Bali culture or temple scene"
+        "zh": "圣泉寺水池中多名游客站在连续的出水口前，池边摆着石雕与供品",
+        "en": "Visitors standing at a row of water spouts in the Tirta Empul pool beside stone carvings and offerings",
+        "ja": "ティルタ・エンプルの池で連なる水口の前に立つ来訪者と、池畔の石彫と供物",
+        "ko": "띠르따 엠풀 연못의 물줄기 앞에 선 방문객들과 연못가의 석조 장식 및 공물",
+        "id": "Pengunjung berdiri di deretan pancuran kolam Tirta Empul di samping ukiran batu dan sesajen"
       },
       "rights": {
         "status": "user_provided_with_consent",
         "source": "user_global_confirmation",
         "approval_date": "2026-08-05",
         "license_or_owner": "WanderMind user global confirmation"
+      },
+      "title": {
+        "zh": "圣泉寺净身池",
+        "en": "Purification pool at Tirta Empul",
+        "ja": "ティルタ・エンプルの沐浴池",
+        "ko": "띠르따 엠풀의 정화 연못",
+        "id": "Kolam melukat di Tirta Empul"
+      },
+      "description": {
+        "zh": "游客在圣泉寺水池的出水口前依次停留，池边可见石雕与供品。参与礼仪、服装和开放安排需现场核对。",
+        "en": "Visitors pause in turn at the water spouts of Tirta Empul, with stone carvings and offerings along the pool. Participation, dress and access arrangements require a live check.",
+        "ja": "ティルタ・エンプルの沐浴池で来訪者が順に水口へ進み、池畔には石彫と供物が並びます。参加方法、服装、入場条件は最新情報の確認が必要です。",
+        "ko": "방문객들이 띠르따 엠풀 연못의 물줄기 앞에 차례로 서고, 연못 가장자리에는 석조 장식과 공물이 놓여 있습니다. 참여 방식과 복장, 출입 조건은 현장에서 확인해야 합니다.",
+        "id": "Pengunjung bergiliran di pancuran air Tirta Empul, dengan ukiran batu dan sesajen di tepi kolam. Tata cara, pakaian, dan akses perlu diperiksa langsung."
       }
     },
     {
@@ -2721,14 +3145,31 @@
       ],
       "intended_use": "WanderMind approved project image library; connect only where its destination/category metadata matches.",
       "alt_text": {
-        "zh": "?????????",
-        "en": "Bali travel experience scene"
+        "zh": "日落时分，多名参与者平躺在 Yoga Barn 面向树林的木平台上",
+        "en": "Participants lying on an outdoor wooden deck at The Yoga Barn with the sun setting over the trees",
+        "ja": "夕暮れの The Yoga Barn で、木々を望む屋外デッキに横たわる参加者",
+        "ko": "해 질 무렵 The Yoga Barn의 숲을 향한 야외 나무 데크에 누워 있는 참가자들",
+        "id": "Peserta berbaring di dek kayu luar ruang The Yoga Barn saat matahari terbenam di atas pepohonan"
       },
       "rights": {
         "status": "user_provided_with_consent",
         "source": "user_global_confirmation",
         "approval_date": "2026-08-05",
         "license_or_owner": "WanderMind user global confirmation"
+      },
+      "title": {
+        "zh": "Yoga Barn 日落户外课程",
+        "en": "Sunset outdoor session at The Yoga Barn",
+        "ja": "The Yoga Barn の夕暮れの屋外セッション",
+        "ko": "The Yoga Barn의 일몰 야외 세션",
+        "id": "Sesi luar ruang saat matahari terbenam di The Yoga Barn"
+      },
+      "description": {
+        "zh": "参与者在面向乌布绿意的木平台上平躺，夕阳从树林间落下。具体课程内容与适用性需实时确认。",
+        "en": "Participants lie on a wooden deck facing Ubud greenery as the sun sets through the trees. The specific class and suitability require a live check.",
+        "ja": "参加者がウブドの緑を望む木のデッキに横たわり、木々の間に夕日が沈みます。具体的なクラス内容と適性は最新情報の確認が必要です。",
+        "ko": "참가자들이 우붓의 녹음을 마주한 나무 데크에 누워 있고, 나무 사이로 해가 집니다. 구체적인 수업 내용과 적합성은 실시간 확인이 필요합니다.",
+        "id": "Peserta berbaring di dek kayu yang menghadap kehijauan Ubud saat matahari terbenam di antara pepohonan. Jenis kelas dan kesesuaiannya perlu diperiksa langsung."
       }
     },
     {
@@ -2753,14 +3194,31 @@
       ],
       "intended_use": "WanderMind approved project image library; connect only where its destination/category metadata matches.",
       "alt_text": {
-        "zh": "?????????",
-        "en": "Bali travel experience scene"
+        "zh": "绿植环绕的 Yoga Barn 木质入口招牌与通往茅草屋顶建筑的石径",
+        "en": "Wooden The Yoga Barn entrance sign amid dense greenery above a stone path to thatched buildings",
+        "ja": "濃い緑に囲まれた The Yoga Barn の木製入口看板と茅葺き建物へ続く石の小道",
+        "ko": "울창한 녹음 속 The Yoga Barn 나무 입구 간판과 초가지붕 건물로 이어지는 돌길",
+        "id": "Papan masuk kayu The Yoga Barn di tengah tanaman lebat di atas jalan batu menuju bangunan beratap ilalang"
       },
       "rights": {
         "status": "user_provided_with_consent",
         "source": "user_global_confirmation",
         "approval_date": "2026-08-05",
         "license_or_owner": "WanderMind user global confirmation"
+      },
+      "title": {
+        "zh": "Yoga Barn 花园入口",
+        "en": "Garden entrance to The Yoga Barn",
+        "ja": "The Yoga Barn の庭園入口",
+        "ko": "The Yoga Barn 정원 입구",
+        "id": "Pintu masuk taman The Yoga Barn"
+      },
+      "description": {
+        "zh": "The Yoga Barn 木质招牌悬在绿植环绕的入口上方，石径通向园内的茅草屋顶建筑。",
+        "en": "The Yoga Barn's wooden sign hangs above a plant-filled entrance, where a stone path leads toward thatched buildings.",
+        "ja": "The Yoga Barn の木製看板が緑に囲まれた入口に掛かり、石の小道が茅葺きの建物へ続いています。",
+        "ko": "The Yoga Barn의 나무 간판이 녹음 가득한 입구 위에 걸려 있고, 돌길이 초가지붕 건물로 이어집니다.",
+        "id": "Papan kayu The Yoga Barn tergantung di atas pintu masuk yang rimbun, dengan jalan batu menuju bangunan beratap ilalang."
       }
     },
     {
@@ -2770,8 +3228,9 @@
       "category": "experiences",
       "sub_category": "wellness-leisure",
       "tags": [
-        "wellness",
-        "experience"
+        "beach",
+        "ocean",
+        "leisure"
       ],
       "location_status": "bali-named",
       "region_ids": [
@@ -2781,17 +3240,36 @@
         "R3",
         "R6"
       ],
-      "poi_ids": [],
+      "poi_ids": [
+        "sundays_beach_club"
+      ],
       "intended_use": "WanderMind approved project image library; connect only where its destination/category metadata matches.",
       "alt_text": {
-        "zh": "?????????",
-        "en": "Bali travel experience scene"
+        "ja": "サンデーズ・ビーチクラブの茅葺き屋根の間に見えるビーチとリーフ",
+        "en": "Beach and reef seen between thatched roofs at Sundays Beach Club",
+        "ko": "선데이스 비치 클럽의 초가지붕 사이로 보이는 해변과 리프",
+        "zh": "茅草屋顶之间可见 Sundays Beach Club 的海滩与礁线",
+        "id": "Pantai dan terumbu terlihat di antara atap jerami di Sundays Beach Club"
       },
       "rights": {
         "status": "user_provided_with_consent",
         "source": "user_global_confirmation",
         "approval_date": "2026-08-05",
         "license_or_owner": "WanderMind user global confirmation"
+      },
+      "title": {
+        "ja": "サンデーズ・ビーチクラブからの海岸眺望",
+        "en": "Coastal view from Sundays Beach Club",
+        "ko": "선데이스 비치 클럽에서 보는 해안",
+        "zh": "Sundays Beach Club 的海岸视野",
+        "id": "Pemandangan pantai dari Sundays Beach Club"
+      },
+      "description": {
+        "ja": "茅葺き屋根の間からビーチ、リーフ、外洋が見えます。施設はウンガサンの崖下にあるため、アクセス、デイパス、潮汐、天候、海のアクティビティは当日の公式情報で確認してください。",
+        "en": "The beach, reef line and open ocean appear between thatched roofs. The venue sits below the Ungasan cliffs; confirm access, day passes, tides, weather and water activities with the official venue for the day.",
+        "ko": "초가지붕 사이로 해변과 리프, 탁 트인 바다가 보입니다. 장소는 웅아산 절벽 아래에 있으므로 접근, 데이 패스, 조수, 날씨, 해양 활동은 당일 공식 정보를 확인해야 합니다.",
+        "zh": "茅草屋顶之间可以看见海滩、礁线和开阔海面。这里位于乌干沙悬崖下方；通行、日票、潮汐、天气和海上活动须按当天官方信息确认。",
+        "id": "Pantai, garis terumbu, dan laut lepas terlihat di antara atap jerami. Lokasi ini berada di bawah tebing Ungasan; periksa akses, tiket harian, pasang surut, cuaca, dan aktivitas air melalui informasi resmi pada hari kunjungan."
       }
     },
     {
@@ -2801,8 +3279,9 @@
       "category": "experiences",
       "sub_category": "wellness-leisure",
       "tags": [
-        "wellness",
-        "experience"
+        "beach",
+        "ocean",
+        "leisure"
       ],
       "location_status": "bali-named",
       "region_ids": [
@@ -2812,17 +3291,36 @@
         "R3",
         "R6"
       ],
-      "poi_ids": [],
+      "poi_ids": [
+        "sundays_beach_club"
+      ],
       "intended_use": "WanderMind approved project image library; connect only where its destination/category metadata matches.",
       "alt_text": {
-        "zh": "?????????",
-        "en": "Bali travel experience scene"
+        "ja": "茅葺き屋根と海岸を背景にしたサンデーズのサイン",
+        "en": "Sundays sign with thatched roofs and the coast behind it",
+        "ko": "초가지붕과 해안을 배경으로 한 선데이스 표지",
+        "zh": "Sundays 标志、茅草屋顶和后方海岸",
+        "id": "Papan Sundays dengan atap jerami dan pantai di belakangnya"
       },
       "rights": {
         "status": "user_provided_with_consent",
         "source": "user_global_confirmation",
         "approval_date": "2026-08-05",
         "license_or_owner": "WanderMind user global confirmation"
+      },
+      "title": {
+        "ja": "海岸を望むサンデーズのサイン",
+        "en": "Sundays sign above the coast",
+        "ko": "해안 위 선데이스 표지",
+        "zh": "海岸上方的 Sundays 标志",
+        "id": "Papan Sundays di atas pantai"
+      },
+      "description": {
+        "ja": "白いサンデーズのサインが石壁と茅葺き屋根の間に立ち、その後ろに海とリーフが広がります。クラブの崖沿いの環境を示す写真です。営業、アクセス、海況はリアルタイムで確認してください。",
+        "en": "The white Sundays sign stands between a stone wall and thatched roofs, with the ocean and reef behind it. The image shows the club's cliff-coast setting; confirm opening, access and sea conditions in real time.",
+        "ko": "흰색 선데이스 표지가 돌담과 초가지붕 사이에 서 있고 뒤로 바다와 리프가 펼쳐집니다. 클럽의 절벽 해안 환경을 보여 주는 장면이며 운영, 접근, 해상 상태는 실시간 확인이 필요합니다.",
+        "zh": "白色 Sundays 标志立在石墙和茅草屋顶之间，后方是海面与礁线。画面展示俱乐部的悬崖海岸环境；开放、通行和海况请实时确认。",
+        "id": "Papan putih Sundays berdiri di antara dinding batu dan atap jerami, dengan laut dan terumbu di belakangnya. Foto ini menunjukkan suasana pesisir tebing klub; periksa jam buka, akses, dan kondisi laut secara langsung."
       }
     },
     {
@@ -2911,27 +3409,49 @@
       "sub_category": "balinese-culture",
       "tags": [
         "culture",
-        "temple"
+        "temple",
+        "highland",
+        "photography"
       ],
       "location_status": "bali-named",
       "region_ids": [
         "G6"
       ],
       "route_ids": [
-        "R4",
-        "R5"
+        "R1",
+        "R5",
+        "R6"
       ],
-      "poi_ids": [],
+      "poi_ids": [
+        "lempuyang_temple"
+      ],
       "intended_use": "Approved Bali culture portfolio image after user-confirmed manual watermark removal.",
       "alt_text": {
-        "zh": "????????????",
-        "en": "Lempuyang Temple gates framing Mount Agung in Bali"
+        "ja": "アグン山と鏡面反射を縁取るペナタラン・アグン・レンプヤンの割れ門",
+        "en": "Split gates at Penataran Agung Lempuyang framing Mount Agung with a mirrored reflection",
+        "ko": "아궁산과 거울 반사를 감싸는 페나타란 아궁 렘푸양의 쪼개진 문",
+        "zh": "伦普扬佩纳塔兰阿贡分裂门框住阿贡火山并呈现镜面倒影",
+        "id": "Gerbang terbelah Penataran Agung Lempuyang membingkai Gunung Agung dengan pantulan cermin"
       },
       "rights": {
         "status": "user_provided_with_consent",
         "source": "user_global_confirmation",
         "approval_date": "2026-08-05",
         "license_or_owner": "WanderMind user global confirmation"
+      },
+      "title": {
+        "ja": "ペナタラン・アグン・レンプヤンの割れ門",
+        "en": "Split gate at Penataran Agung Lempuyang",
+        "ko": "페나타란 아궁 렘푸양의 쪼개진 문",
+        "zh": "伦普扬佩纳塔兰阿贡的分裂门",
+        "id": "Gerbang terbelah di Penataran Agung Lempuyang"
+      },
+      "description": {
+        "ja": "バリ式の割れ門がアグン山を縁取り、手前には鏡のような反射が見えます。写真はレンプヤン寺院群のペナタラン・アグンで知られる門景で、山頂寺院ではありません。訪問区域、シャトル、待ち時間、服装、天候は当日確認してください。",
+        "en": "A Balinese split gate frames Mount Agung with a mirrored reflection in the foreground. The photographed gate is the familiar view at Penataran Agung within the Lempuyang complex, not the summit temple; confirm the exact section, shuttle, queue, dress and weather in real time.",
+        "ko": "발리식 쪼개진 문 사이로 아궁산이 보이고 앞쪽에는 거울 같은 반사가 나타납니다. 사진은 렘푸양 사원 단지의 페나타란 아궁에서 알려진 문 풍경이며 정상 사원과는 다릅니다. 방문 구역, 셔틀, 대기, 복장, 날씨는 실시간 확인이 필요합니다.",
+        "zh": "巴厘式分裂门框住阿贡火山，前景呈现镜面倒影。照片对应伦普扬寺庙群中常见的佩纳塔兰阿贡门景，并非山顶主庙；具体参观区、接驳、排队、着装和天气须实时确认。",
+        "id": "Gerbang terbelah bergaya Bali membingkai Gunung Agung dengan pantulan seperti cermin di bagian depan. Gerbang yang difoto adalah pemandangan populer di Penataran Agung dalam kompleks Lempuyang, bukan pura di puncak; periksa bagian yang dikunjungi, shuttle, antrean, pakaian, dan cuaca secara langsung."
       }
     }
   ]

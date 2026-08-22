@@ -1,0 +1,24 @@
+{
+  "schema_version": 1,
+  "evidence_id": "ev-20260820T152639Z-portfolio-d8-batch6",
+  "task_ref": "portfolio-d8-batch6",
+  "owner": "codex-sol",
+  "captured_at": "2026-08-20T15:26:39Z",
+  "status": "verified",
+  "claim": "bali-1.jpg no longer uses its filename as Bali location evidence; it is hash-bound unknown-location coastal content with complete zh/en/ja/ko/id metadata and no region, route or POI; complete D8 count is 25.",
+  "source": {
+    "kind": "git",
+    "repository": "https://github.com/lingfengai731/Agentstrip.git",
+    "commit": "4877aa30b6380ba0219012ccdec61277e52e222d",
+    "branch": "codex/portfolio-d8-batch6",
+    "worktree": "E:\\Agentstrip-wt-portfolio-d8-batch6"
+  },
+  "verification": {
+    "local": "57/57 product tests OK; image-intake PASS under PowerShell 7; diff-check PASS",
+    "image": "original SHA-256 matched manifest and CSV; original is 2275x1279 and WebP is 1600x900; EXIF had no location or time evidence",
+    "content": "five-language title, description and alt text describe only a coastal building, exposed rocky shore and twilight sky; location, building use and capture time stay unverified",
+    "independent_gate": "Luna Max first returned NO-GO/P1 for the Bali filename inference, then returned GO with P0/P1/P2 all zero for immutable commit 4877aa3"
+  },
+  "sources": [],
+  "notes": "The historical filename remains only as a stable asset path. No browser check was needed because no rendered UI or HTML changed. No upload, publication, Render access, merge or deployment was performed."
+}

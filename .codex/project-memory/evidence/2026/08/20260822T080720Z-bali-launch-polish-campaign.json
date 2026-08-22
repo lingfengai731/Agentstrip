@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "evidence_id": "ev-20260822T080720Z-bali-launch-polish-campaign",
+  "task_ref": "bali-launch-polish-campaign",
+  "owner": "codex-sol",
+  "captured_at": "2026-08-22T08:07:20Z",
+  "status": "verified",
+  "claim": "The Bali launch polish, Render-aware driver limiter repair, CSV integrity guard and three-platform campaign handbook are committed and pushed with local and GitHub CI evidence; production remains on the older p54/50-POI baseline.",
+  "source": {
+    "kind": "git",
+    "repository": "https://github.com/lingfengai731/Agentstrip.git",
+    "commit": "a24cd32ee9b1db0b4d9567e1533284f800ba156b",
+    "branch": "codex/account2-integration-20260816",
+    "worktree": "E:\\Agentstrip2-worktree",
+    "pull_request": "https://github.com/lingfengai731/Agentstrip/pull/3"
+  },
+  "verification": {
+    "local_backend": "61/61 product tests passed; complete discovery reported 73 tests with 61 passed and 12 isolated-PostgreSQL tests skipped by design",
+    "local_browser": "5/5 passed against a freshly restarted full backend: 320/390/768/1440, zh/en/ja/ko/id, R1-to-R3 route and professional-link sync, map, day accordion, same-region add callback, 12-item gallery preview and reveal-all, zero console errors, zero document overflow, reduced-motion animation count zero",
+    "csv": "108/108 rows parse against the declared header; every row is publishable and points to an existing Web-optimized image; bali-3.jpg now retains its English alt text without shifting columns",
+    "driver_protection": "Render runtime uses the first X-Forwarded-For address; non-Render direct traffic ignores spoofed forwarded headers; both cases have regression tests",
+    "github_ci": "Project memory validation run 32561281258 succeeded; PostgreSQL integration run 32561281247 succeeded with SQLite 61/61 and isolated PostgreSQL 12/12",
+    "production": "Fresh public HTTP returned health ok, bali-professional.js?v=p54, schema 1.2.0, 6 routes and 50 POIs; the warm route surface, 12-item gallery preview and p55 marker were absent",
+    "routing": "Canonical luna_worker Linnaeus completed a read-only approved-asset audit; Sol independently parsed the records, checked all eight paths and visually inspected all eight WebP files before accepting them"
+  },
+  "artifacts": {
+    "campaign_handbook": "wandermind-studio/MARKETING_LAUNCH_PLAYBOOK.md",
+    "visual_motion_plan": ".codex/plans/bali-launch-visual-motion-2026-08-22.md",
+    "local_visual_bundle": "E:\\Agentstrip2-worktree-artifacts\\20260822-bali-launch"
+  },
+  "external_references": [
+    "https://render.com/articles/how-render-handles-ddos-attacks",
+    "https://ads.tiktok.com/business/en-US/creative-codes",
+    "https://www.facebook.com/business/ads/facebook-instagram-reels-ads",
+    "https://www.facebook.com/business/ads/carousel-ad-format",
+    "https://creator.xiaohongshu.com/?source=official",
+    "https://pgy.xiaohongshu.com/help/detail?id=6495c527d1eedeeb48fb18b1f875650e&userType=4"
+  ],
+  "notes": "PR #3 remains draft. No Render environment value, production database row, user data, merge, deployment or production configuration was changed. Exact Luna launch time and duration were not exposed by the retained native callback and were not invented."
+}

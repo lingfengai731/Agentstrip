@@ -151,9 +151,16 @@ def _new_referral_code() -> str:
     return secrets.token_urlsafe(7).replace("-", "").replace("_", "")[:10].upper()
 
 
+def _request_origin_host(request: Request) -> str:
+    """Return the public client address forwarded by Render, with a direct fallback."""
+    forwarded = ""
+    if os.getenv("RENDER", "").strip():
+        forwarded = (request.headers.get("x-forwarded-for") or "").split(",", 1)[0].strip()
+    return forwarded or (request.client.host if request.client else "")
+
+
 def _request_ip_hash(request: Request) -> str:
-    forwarded = (request.headers.get("x-forwarded-for") or "").split(",", 1)[0].strip()
-    host = forwarded or (request.client.host if request.client else "")
+    host = _request_origin_host(request)
     if not host:
         return ""
     return hmac.new(_SECRET.encode(), f"signup-ip:{host}".encode(), hashlib.sha256).hexdigest()
@@ -782,8 +789,20 @@ def _validate_portfolio_metadata(payload: dict) -> dict:
         "status": status,
     }
     if status == "published":
-        if not cleaned["place_name"] or not cleaned["title"] or not cleaned["alt_text"]:
-            raise HTTPException(400, "Published assets require place_name, title, and alt_text")
+        if not cleaned["place_name"]:
+            raise HTTPException(400, "Published assets require place_name")
+        missing_locales = [
+            f"{field}.{lang}"
+            for field in ("title", "description", "alt_text")
+            for lang in _PORTFOLIO_LANGS
+            if not cleaned[field].get(lang)
+        ]
+        if missing_locales:
+            raise HTTPException(
+                400,
+                "Published assets require title, description, and alt_text in zh, en, ja, ko, and id; missing: "
+                + ", ".join(missing_locales),
+            )
     return cleaned
 
 
@@ -1756,6 +1775,23 @@ def _trip_owner(conn, trip_id: str, user, anon_id) -> dict:
     raise HTTPException(403, "This trip belongs to another account")
 
 
+def _lock_professional_route_transaction(conn, trip_id: str, user_id: str = "") -> None:
+    """Serialize entitlement writes without changing or exposing user data."""
+    is_postgres = backend_name() == "postgres"
+    if not is_postgres:
+        conn.execute("BEGIN IMMEDIATE")
+    lock_suffix = " FOR UPDATE" if is_postgres else ""
+    if user_id:
+        user_row = conn.execute(
+            f"SELECT id FROM users WHERE id=?{lock_suffix}", (user_id,)
+        ).fetchone()
+        if not user_row:
+            raise HTTPException(404, "User not found")
+    conn.execute(
+        f"SELECT id FROM product_trips WHERE id=?{lock_suffix}", (trip_id,)
+    ).fetchone()
+
+
 _BALI_DATA_PATH = Path(__file__).resolve().parents[2] / "wandermind-studio" / "frontend" / "assets" / "data" / "bali-travel-data.json"
 _BALI_DATA_CACHE = None
 PROFESSIONAL_ROUTE_ADJUSTMENT_LIMIT = int(os.getenv("PROFESSIONAL_ROUTE_ADJUSTMENT_LIMIT", "3"))
@@ -1867,7 +1903,9 @@ def _professional_route_document(profile: dict, route_id: str = "", lang: str = 
             theme = f"{region_name} · {experiences[index % len(experiences)].replace('_', ' ')}"
         route_pois = [
             poi for poi in pois
-            if poi.get("region_id") == region_id and route.get("id") in (poi.get("route_ids") or [])
+            if poi.get("region_id") == region_id
+            and route.get("id") in (poi.get("route_ids") or [])
+            and poi.get("verification_status") == "verified"
         ][:3]
         full_days.append({
             "day": index + 1,
@@ -2040,10 +2078,34 @@ def _consume_trip_action(conn, trip: dict, user, action: str) -> dict:
         "adjustment": "adjustments_used",
         "professional_route": "professional_used",
     }[action]
-    conn.execute(
-        f"UPDATE product_trips SET {column}={column}+1,updated_at=? WHERE id=?",
-        (int(time.time()), trip["id"]),
-    )
+    consumed = conn.execute(
+        f"""UPDATE product_trips
+            SET {column}=COALESCE({column},0)+1,updated_at=?
+            WHERE id=? AND COALESCE({column},0)<?
+            RETURNING {column}""",
+        (int(time.time()), trip["id"], allowance[quota_key]["limit"]),
+    ).fetchone()
+    if not consumed:
+        conn.rollback()
+        is_ai_action = action in {"rough_route", "adjustment"}
+        error = (
+            "ai_usage_exhausted"
+            if is_ai_action
+            else "professional_route_usage_exhausted"
+        )
+        raise HTTPException(
+            402,
+            detail={
+                "error": error,
+                "action": action,
+                "payment_reason": (
+                    "ai_usage_exhausted"
+                    if is_ai_action
+                    else "professional_route_adjustment"
+                ),
+                "professional_route_price": {"amount": 9.9, "currency": "CNY"},
+            },
+        )
     conn.commit()
     refreshed = dict(conn.execute("SELECT * FROM product_trips WHERE id=?", (trip["id"],)).fetchone())
     result = _trip_allowance(conn, refreshed, user)
@@ -2190,6 +2252,8 @@ async def adjust_bali_professional_route(
     conn = get_db()
     try:
         trip = _trip_owner(conn, trip_id, user, anon_id)
+        _lock_professional_route_transaction(conn, trip_id, user["sub"])
+        trip = _trip_owner(conn, trip_id, user, anon_id)
         allowance = _trip_allowance(conn, trip, user)
         if not allowance["professional_route_entitlement"]:
             raise HTTPException(402, detail={"error": "professional_route_unlock_required"})
@@ -2211,18 +2275,43 @@ async def adjust_bali_professional_route(
             brief = {}
         brief["trip_profile"] = profile
         brief["route_id"] = document["route_id"]
-        used = int(trip.get("professional_adjustments_used") or 0)
-        conn.execute(
-            """UPDATE product_trips
-               SET brief=?,professional_route_payload=?,professional_adjustments_used=?,updated_at=?
-               WHERE id=?""",
-            (
-                json.dumps(brief, ensure_ascii=False),
-                json.dumps(document, ensure_ascii=False),
-                used if allowance["admin_unlimited"] else used + 1,
-                int(time.time()), trip_id,
-            ),
-        )
+        if allowance["admin_unlimited"]:
+            updated = conn.execute(
+                """UPDATE product_trips
+                   SET brief=?,professional_route_payload=?,updated_at=?
+                   WHERE id=?
+                   RETURNING professional_adjustments_used""",
+                (
+                    json.dumps(brief, ensure_ascii=False),
+                    json.dumps(document, ensure_ascii=False),
+                    int(time.time()), trip_id,
+                ),
+            ).fetchone()
+        else:
+            updated = conn.execute(
+                """UPDATE product_trips
+                   SET brief=?,professional_route_payload=?,
+                       professional_adjustments_used=COALESCE(professional_adjustments_used,0)+1,
+                       updated_at=?
+                   WHERE id=? AND COALESCE(professional_adjustments_used,0)<?
+                   RETURNING professional_adjustments_used""",
+                (
+                    json.dumps(brief, ensure_ascii=False),
+                    json.dumps(document, ensure_ascii=False),
+                    int(time.time()), trip_id,
+                    allowance["professional_adjustment_limit"],
+                ),
+            ).fetchone()
+        if not updated:
+            conn.rollback()
+            raise HTTPException(
+                402,
+                detail={
+                    "error": "professional_route_adjustments_exhausted",
+                    "payment_reason": "professional_route_adjustment",
+                    "limit": allowance["professional_adjustment_limit"],
+                },
+            )
         conn.commit()
         refreshed = dict(conn.execute("SELECT * FROM product_trips WHERE id=?", (trip_id,)).fetchone())
         return _professional_route_response(conn, refreshed, user, document, lang)
@@ -2272,6 +2361,8 @@ async def create_professional_route_order(
 ):
     conn = get_db()
     try:
+        trip = _trip_owner(conn, data.trip_id, user, anon_id)
+        _lock_professional_route_transaction(conn, data.trip_id, user["sub"])
         trip = _trip_owner(conn, data.trip_id, user, anon_id)
         allowance = _trip_allowance(conn, trip, user)
         if allowance["professional_route_unlocked"]:
@@ -2369,6 +2460,13 @@ async def confirm_professional_route_order(
         if not row:
             raise HTTPException(404, "Order not found")
         order = dict(row)
+        _lock_professional_route_transaction(conn, order["trip_id"], order["user_id"])
+        row = conn.execute(
+            "SELECT * FROM professional_route_orders WHERE id=?", (order_id,)
+        ).fetchone()
+        if not row:
+            raise HTTPException(404, "Order not found")
+        order = dict(row)
         if order["status"] == "confirmed":
             return {"ok": True, "already_confirmed": True, "order_id": order_id}
         if order["status"] != "pending":
@@ -2438,6 +2536,8 @@ async def redeem_referral_points(
         now = int(time.time())
         _mature_referrals(conn, user["sub"], now)
         trip = _trip_owner(conn, data.trip_id, user, anon_id)
+        _lock_professional_route_transaction(conn, data.trip_id, user["sub"])
+        trip = _trip_owner(conn, data.trip_id, user, anon_id)
         allowance = _trip_allowance(conn, trip, user)
         if allowance["professional_route_unlocked"]:
             return {"ok": True, "already_unlocked": True, **allowance}
@@ -2447,23 +2547,38 @@ async def redeem_referral_points(
                 402,
                 detail={"error": "insufficient_route_points", "required": 30, "balance": balance},
             )
-        redemption_id = str(uuid.uuid4())
+        pending = conn.execute(
+            """SELECT * FROM professional_route_orders
+               WHERE trip_id=? AND user_id=? AND status='pending'
+               ORDER BY created_at ASC LIMIT 1""",
+            (data.trip_id, user["sub"]),
+        ).fetchone()
+        redemption_id = dict(pending)["id"] if pending else str(uuid.uuid4())
         conn.execute(
             """INSERT INTO route_points_ledger
                (id,user_id,delta,reason,ref_id,created_at)
                VALUES (?,?,?,?,?,?)""",
             (str(uuid.uuid4()), user["sub"], -30, "professional_route_redeem", redemption_id, now),
         )
-        conn.execute(
-            """INSERT INTO professional_route_orders
-               (id,trip_id,user_id,amount_cents,currency,status,payment_reference,
-                created_at,confirmed_at,confirmed_by)
-               VALUES (?,?,?,?,?,?,?,?,?,?)""",
-            (
-                redemption_id, data.trip_id, user["sub"], 0, "POINTS", "confirmed",
-                "route_points:30", now, now, user["sub"],
-            ),
-        )
+        if pending:
+            conn.execute(
+                """UPDATE professional_route_orders
+                   SET amount_cents=0,currency='POINTS',status='confirmed',
+                       payment_reference='route_points:30',confirmed_at=?,confirmed_by=?
+                   WHERE id=? AND status='pending'""",
+                (now, user["sub"], redemption_id),
+            )
+        else:
+            conn.execute(
+                """INSERT INTO professional_route_orders
+                   (id,trip_id,user_id,amount_cents,currency,status,payment_reference,
+                    created_at,confirmed_at,confirmed_by)
+                   VALUES (?,?,?,?,?,?,?,?,?,?)""",
+                (
+                    redemption_id, data.trip_id, user["sub"], 0, "POINTS", "confirmed",
+                    "route_points:30", now, now, user["sub"],
+                ),
+            )
         conn.execute(
             """UPDATE product_trips
                SET professional_route_entitlement=1,professional_adjustment_limit=?,updated_at=?
@@ -2932,19 +3047,81 @@ async def fusion_get(token: str):
 # details. The request is relayed once by email and never stored in the DB.
 _DRIVER_REQUEST_WINDOW_SECONDS = 30 * 60
 _DRIVER_REQUEST_LIMIT = 5
-_driver_request_attempts: dict[str, list[float]] = {}
+_DRIVER_REQUEST_LIMIT_RETENTION_SECONDS = 24 * 60 * 60
+
+
+def _driver_request_client_key(request: Request) -> str:
+    """Return a scoped pseudonymous key without storing the raw client address."""
+    host = _request_origin_host(request) or "unknown"
+    return hmac.new(
+        _SECRET.encode(), f"driver-request-rate:{host}".encode(), hashlib.sha256
+    ).hexdigest()
+
+
+def _consume_driver_request_attempt(client_key: str, now: int) -> int:
+    """Atomically consume one attempt in the client's first-request 30m window."""
+    cutoff = now - _DRIVER_REQUEST_WINDOW_SECONDS
+    conn = get_db()
+    try:
+        conn.execute(
+            "DELETE FROM driver_request_rate_limits WHERE updated_at < ?",
+            (now - _DRIVER_REQUEST_LIMIT_RETENTION_SECONDS,),
+        )
+        row = conn.execute(
+            """
+            INSERT INTO driver_request_rate_limits
+                (client_key,window_started_at,request_count,updated_at)
+            VALUES (?,?,1,?)
+            ON CONFLICT(client_key) DO UPDATE SET
+                request_count = CASE
+                    WHEN driver_request_rate_limits.window_started_at <= ? THEN 1
+                    WHEN driver_request_rate_limits.request_count < ?
+                        THEN driver_request_rate_limits.request_count + 1
+                    ELSE driver_request_rate_limits.request_count
+                END,
+                window_started_at = CASE
+                    WHEN driver_request_rate_limits.window_started_at <= ?
+                        THEN excluded.window_started_at
+                    ELSE driver_request_rate_limits.window_started_at
+                END,
+                updated_at = excluded.updated_at
+            RETURNING request_count
+            """,
+            (
+                client_key,
+                now,
+                now,
+                cutoff,
+                _DRIVER_REQUEST_LIMIT + 1,
+                cutoff,
+            ),
+        ).fetchone()
+        conn.commit()
+        if not row:
+            raise RuntimeError("driver request rate limit did not return a counter")
+        return int(dict(row)["request_count"])
+    except Exception:
+        try:
+            conn.rollback()
+        except Exception:
+            pass
+        raise
+    finally:
+        conn.close()
 
 
 def _check_driver_request_rate_limit(request: Request) -> None:
-    """Keep a short-lived per-client counter; traveller details are never persisted."""
-    client_key = (request.client.host if request.client else "unknown")[:128]
-    now = time.time()
-    attempts = [stamp for stamp in _driver_request_attempts.get(client_key, []) if now - stamp < _DRIVER_REQUEST_WINDOW_SECONDS]
-    if len(attempts) >= _DRIVER_REQUEST_LIMIT:
-        _driver_request_attempts[client_key] = attempts
+    """Apply a persistent pseudonymous counter; traveller details are not stored."""
+    try:
+        count = _consume_driver_request_attempt(
+            _driver_request_client_key(request), int(time.time())
+        )
+    except Exception:
+        raise HTTPException(
+            503, "Request protection is temporarily unavailable. Please retry shortly."
+        )
+    if count > _DRIVER_REQUEST_LIMIT:
         raise HTTPException(429, "Too many requests. Please wait before sending another request.")
-    attempts.append(now)
-    _driver_request_attempts[client_key] = attempts
 
 
 @app.post("/api/driver-request")

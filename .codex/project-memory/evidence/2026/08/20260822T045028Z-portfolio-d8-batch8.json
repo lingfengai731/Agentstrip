@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "evidence_id": "ev-20260822T045028Z-portfolio-d8-batch8",
+  "task_ref": "portfolio-d8-batch8",
+  "owner": "codex-sol",
+  "captured_at": "2026-08-22T04:50:28Z",
+  "status": "verified",
+  "claim": "bali-3.jpg is hash-bound to verified Kelingking Beach Viewpoint with G3, R1/R6 and kelingking_beach linkage, complete zh/en/ja/ko/id metadata, and explicit live safety checks; complete D8 count is 27.",
+  "source": {
+    "kind": "git",
+    "repository": "https://github.com/lingfengai731/Agentstrip.git",
+    "commit": "83735b4ef5a808e7dac9258efda330625cd73237",
+    "branch": "codex/portfolio-d8-batch8",
+    "worktree": "E:\\Agentstrip-wt-portfolio-d8-batch8"
+  },
+  "verification": {
+    "local": "59/59 product tests OK; image-intake PASS under PowerShell 7; diff-check PASS",
+    "image": "original SHA-256 matched manifest and CSV; WebP exists; rights fields did not change",
+    "content": "five-language copy describes the distinctive green headland, white sand, ocean and upper viewpoint without promising beach descent safety",
+    "routing": "codex-luna-worker kept this bounded unit in Sol due the user's low remaining budget; no Luna completion is claimed"
+  },
+  "sources": [
+    {
+      "publisher": "Ministry of Tourism, Republic of Indonesia",
+      "url": "https://www.indonesia.travel/id/en/destination/bali-nusa-tenggara/bali/kelingking-beach-a-marvelous-wonder-in-the-southwest-of-nusa-penida",
+      "scope": "identity, southwest Nusa Penida location, distinctive headland, white sand and viewpoint context"
+    },
+    {
+      "publisher": "Nusa Penida District, Klungkung Regency",
+      "url": "https://nusapenida.klungkungkab.go.id/sekilas-tentang-nusa-penida/",
+      "scope": "Kelingking Beach in Bungamekar and western Nusa Penida visitor cluster"
+    }
+  ],
+  "notes": "No browser check was needed because no rendered UI or HTML changed. No upload, publication, Render access, merge or deployment was performed."
+}

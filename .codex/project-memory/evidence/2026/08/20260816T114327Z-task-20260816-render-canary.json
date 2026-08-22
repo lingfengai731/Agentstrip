@@ -1,0 +1,22 @@
+{
+  "schema_version": 1,
+  "evidence_id": "ev-20260816T114327Z-task-20260816-render-canary",
+  "task_ref": "task-20260816-render-canary",
+  "owner": "account2-sol",
+  "captured_at": "2026-08-16T11:43:27Z",
+  "status": "claimed",
+  "claim": "Current PR branch passed local Edge five-language, dual-path, driver-privacy and 320/390/768/1440 browser regression; Render production canary remains fail-closed because the current task exposes no Computer Use node_repl channel and Render MCP is not logged in.",
+  "source": {
+    "kind": "git",
+    "repository": "https://github.com/lingfengai731/Agentstrip.git",
+    "commit": "6d9198f450d6081a102b4809caa8f83cb19f1208",
+    "branch": "codex/account2-integration-20260816",
+    "worktree": "E:\\Agentstrip2-worktree",
+    "dirty": true
+  },
+  "verification": {
+    "command": "python -m unittest wandermind.backend.tests.test_product_access; local Edge Playwright audit; git diff --check; codex mcp list",
+    "result": "43/43 backend tests passed; seven public pages passed five-language switching and four responsive widths; branch diff check passed; Render MCP enabled but not logged in; no Render secret values inspected."
+  },
+  "notes": "PR #3 head 6d9198f remains draft and undeployed. Public production baseline still serves older 50-POI data. Do not merge or deploy until presence-only DATABASE_URL/SECRET_KEY check, preview path verification, proxy isolation smoke and production E2E are complete."
+}

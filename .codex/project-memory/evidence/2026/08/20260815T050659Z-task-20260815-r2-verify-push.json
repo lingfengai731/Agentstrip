@@ -1,0 +1,22 @@
+{
+  "schema_version": 1,
+  "evidence_id": "ev-20260815T050659Z-task-20260815-r2-verify-push",
+  "task_ref": "TASK-20260815-R2-VERIFY-PUSH",
+  "owner": "codex-sol",
+  "captured_at": "2026-08-15T05:06:59Z",
+  "status": "verified",
+  "claim": "R2 verification branch pushed to the shared remote with source-backed route facts, regression tests, responsive browser evidence, and handoff.",
+  "source": {
+    "kind": "git",
+    "repository": "https://github.com/lingfengai731/Agentstrip.git",
+    "commit": "915de89d79f60521a520b207d407a03f0bbf65f8",
+    "branch": "codex/r2-route-verification",
+    "worktree": "E:\\Agentstrip-wt-r2",
+    "dirty": false
+  },
+  "verification": {
+    "command": "git fetch origin codex/r2-route-verification; git rev-list --left-right --count HEAD...origin/codex/r2-route-verification",
+    "result": "Local and remote both 915de89d79f60521a520b207d407a03f0bbf65f8; divergence 0 0."
+  },
+  "notes": "Task branch only. No pull request, merge to main, or production deployment was performed."
+}

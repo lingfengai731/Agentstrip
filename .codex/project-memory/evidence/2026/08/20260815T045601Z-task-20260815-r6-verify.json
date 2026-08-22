@@ -1,0 +1,22 @@
+{
+  "schema_version": 1,
+  "evidence_id": "ev-20260815T045601Z-task-20260815-r6-verify",
+  "task_ref": "TASK-20260815-R6-VERIFY",
+  "owner": "codex-sol",
+  "captured_at": "2026-08-15T04:56:01Z",
+  "status": "verified",
+  "claim": "R6 stable route facts verified for Pura Petitenget, Batu Bolong Beach and Echo Beach; all ten R6 free-outline nodes are verified without converting dynamic conditions into promises.",
+  "source": {
+    "kind": "git",
+    "repository": "https://github.com/lingfengai731/Agentstrip.git",
+    "commit": "8228587b07a61c40cd9fc9bbc50b8d7c3b2a860d",
+    "branch": "codex/r6-route-verification",
+    "worktree": "E:\\Agentstrip-wt-r6",
+    "dirty": false
+  },
+  "verification": {
+    "command": "python -m unittest wandermind.backend.tests.test_product_access; JSON count and R6 outline assertions; git diff --check; project-memory validate; Playwright Chrome 1440/768/320 and WebKit 390",
+    "result": "39 tests OK; 59 POIs = 35 verified + 21 pending + 3 supplier-gated; R6 status, three POIs, add-place interaction and zh/en redraw passed; document/detail overflow 0 at all four viewports."
+  },
+  "notes": "Official evidence: Indonesia Ministry of Tourism, Badung Tourism Office, North Kuta District and Bali religious-affairs registry. Live checks remain for ceremonies, dress, fees, tide, surf/swimming safety, lifeguards, weather, facilities and traffic. Production was not changed or reverified."
+}

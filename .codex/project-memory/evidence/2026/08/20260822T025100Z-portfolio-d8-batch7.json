@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "evidence_id": "ev-20260822T025100Z-portfolio-d8-batch7",
+  "task_ref": "portfolio-d8-batch7",
+  "owner": "codex-sol",
+  "captured_at": "2026-08-22T02:51:00Z",
+  "status": "verified",
+  "claim": "bali-2.jpg is hash-bound unknown-location Balinese-style split-gate content with complete zh/en/ja/ko/id metadata and no region, route or POI; visual resemblance was not treated as proof of Handara Gate; complete D8 count is 26.",
+  "source": {
+    "kind": "git",
+    "repository": "https://github.com/lingfengai731/Agentstrip.git",
+    "commit": "c055de40b248ed195d80cf8c14e9db9d26157a5b",
+    "branch": "codex/portfolio-d8-batch7",
+    "worktree": "E:\\Agentstrip-wt-portfolio-d8-batch7"
+  },
+  "verification": {
+    "local": "58/58 product tests OK; image-intake PASS under PowerShell 7; diff-check PASS",
+    "image": "original SHA-256 matched manifest and CSV; original and WebP are 1401x951; EXIF had no location or capture-time fields",
+    "content": "five-language title, description and alt text describe only the visible Balinese-style split gate, mountain landscape, greenery, road and cloth decorations; exact location, Handara identity, opening information and photography conditions stay unverified",
+    "independent_gate": "Luna Max first returned NO-GO/P1 for the existing Bali inference, then returned GO with P0/P1/P2 all zero for immutable commit c055de4"
+  },
+  "sources": [
+    {
+      "publisher": "Ministry of Tourism, Republic of Indonesia",
+      "url": "https://www.indonesia.travel/id/id/travel-ideas/adventure/15-destinasi-instagrammable-di-bali-yang-harus-sobat-pesona-kunjungi",
+      "scope": "comparison only; confirms Handara characteristics and location but does not prove the user image identity"
+    },
+    {
+      "publisher": "Buleleng Regency Culture and Tourism Office",
+      "url": "https://disbudpar.bulelengkab.go.id/informasi/detail/infografis/83_bali-handara-gerbang-surga-dunia-bali-utara",
+      "scope": "comparison only; confirms the Handara highland context but does not uniquely identify the user image"
+    }
+  ],
+  "notes": "The historical filename is a stable asset path only. No browser check was needed because no rendered UI or HTML changed. No upload, publication, Render access, merge or deployment was performed."
+}

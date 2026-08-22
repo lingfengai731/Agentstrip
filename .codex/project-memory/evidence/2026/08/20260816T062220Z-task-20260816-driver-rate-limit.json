@@ -1,0 +1,22 @@
+{
+  "schema_version": 1,
+  "evidence_id": "ev-20260816T062220Z-task-20260816-driver-rate-limit",
+  "task_ref": "TASK-20260816-DRIVER-RATE-LIMIT",
+  "owner": "codex-sol",
+  "captured_at": "2026-08-16T06:22:20Z",
+  "status": "verified",
+  "claim": "Replaced the process-local driver-request limiter with a SQLite/Postgres atomic HMAC pseudonymous counter while preserving 5 attempts per 30-minute first-request window and fail-closed email protection.",
+  "source": {
+    "kind": "git",
+    "repository": "https://github.com/lingfengai731/Agentstrip.git",
+    "commit": "eb434f58df06e5f4ff99cab1a3e5733f463a1252",
+    "branch": "codex/driver-request-rate-limit",
+    "worktree": "E:\\Agentstrip-wt-driver-limit",
+    "dirty": false
+  },
+  "verification": {
+    "command": "python -m unittest wandermind.backend.tests.test_product_access; atomic concurrency test repeated 10 times; git diff --check; project-memory validate",
+    "result": "43/43 tests OK; 8-thread counter allowed exactly five attempts; concurrency test passed 10/10; blocked attempts did not extend window; DB failure returned generic 503 without email; project-memory validation passed."
+  },
+  "notes": "Formal luna_worker gpt-5.6-luna max completed architecture audit and adversarial QA with GO and no P0/P1. PostgreSQL and SQLite official docs confirm ON CONFLICT DO UPDATE RETURNING semantics. No real Neon/Postgres connection, Render deploy or production proxy smoke test was performed."
+}

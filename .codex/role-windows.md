@@ -4,7 +4,8 @@
 
 | 角色 | 状态 | thread id | 来源窗口 | 当前职责 | 下一步 | 循环状态 |
 | --- | --- | --- | --- | --- | --- | --- |
-| 总控 | 已关闭 | 019f70c7-3985-7bb0-b395-b208373ca92b | 用户 | 图片自动分类、路线/POI 匹配与版权发布门禁 | 下一步由用户逐张确认权属与用途，再从 manifest 接入页面 | L3 已闭环 |
+| 总控 | 活跃 | 019fcbe4-146b-72a1-a3e6-9fac972a37d6 | 用户 | 接续跨账号主线、维护发布门禁与项目事实 | 先完成 Portfolio 历史素材 D8 批次，再恢复 Render/生产门禁 | L3 执行中 |
+| 总控 / 前主线 | 已停用并保持闲置 | 01a00b05-e145-7ae3-844b-f0cf62b78e6f | 用户 | 历史主线内容来源 | 不再派发；仅保留可审计记录 | 路由关闭 |
 | 架构 | 未建立 | 无 | 总控 | 定位 `/api/dest_info` 失败根因并限定最小修复 | 已回调总控：主模型余额不足，采用诚实前端降级 | 本地降级已完成 |
 | 内容主编 | 未建立 | 无 | 总控 | 阶段 2 文案与预算范围核对 | 无新增内容裁决 | 本地降级已完成 |
 | 开发 | 未建立 | 无 | 架构 | 增量图片扫描、审核保留、唯一哈希改名与发布清单 | 实现及本地回归已完成 | 本地降级已完成 |
@@ -13,7 +14,9 @@
 | QA | 未建立 | 无 | 架构 | 图片发布边界、匹配准确性与暂存范围审查 | Sol 最终 GO，P0/P1 为 0；唯一 P2 已补测试 | 本地降级已完成 |
 | 安全 | 待确认 | 待确认 | 架构 | 授权安全审计和低影响验证 | 无新增安全范围 | 待确认 |
 | DBA | 待确认 | 待确认 | 架构 | 数据库实例风险和只读诊断 | 本阶段不涉及 | 待确认 |
-| 运维 | 未建立 | 无 | 架构 | 部署与生产只读验证 | 3c04daa 已上线，关键页面均 200 | 本地降级已完成 |
+| 运维 / Render Work | 已退役，待用户侧归档 | 6a81da9a-1998-83e8-b2ca-34e1f6eb526d | 当前主线 | 历史 ChatGPT Work Browser 探针 | Cloud Work 无法承担已登录 Render；Codex 归档接口不支持该 ChatGPT 对话，需用户在其菜单中归档或删除 | 禁止继续派发 |
+| 运维 / 仓库回流 | 已归档 | 01a00b3a-b62f-7c60-ae73-f9e74ae7879d | 当前主线 | 历史仓库上下文与 Render 能力探针 | 已归档；Browser 探针为 BROWSER_CONTROL_UNAVAILABLE，零生产写入 | 已退役 |
+| 运维 / 本机 Browser runtime | 永久降级为非阻断限制 | 未建立 | 当前主线 | 保留历史证据，不再继续插件排障 | 使用 CLI、GitHub、可用的 Render connector/API、公共 HTTP 与确定性 Playwright；生产写入仍需独立门禁 | 新任务实测 callable control tools = 0，停止条件已满足 |
 | 公众号发布 | 待确认 | 待确认 | 内容主编 | 微信公众号草稿、预览、发布准备 | 本阶段不涉及 | 待确认 |
 | 小红书 | 待确认 | 待确认 | 内容主编 | 小红书内容实验、发布包、评论研究 | 本阶段不涉及 | 待确认 |
 | 视频 | 待确认 | 待确认 | 内容主编 | 视频脚本、分镜、素材和渲染计划 | 本阶段不涉及 | 待确认 |
@@ -23,6 +26,37 @@
 
 ## 最近回调
 
+- 2026-08-20 Portfolio D8 第四单元回调：Sol 与 Luna Max 独立核对 `Galungan.jpg` 的原图哈希、WebP、授权和官方文化资料；采用“与 Galungan–Kuningan 相关的 penjor”限定表述，移除错误 `temple` 标签，保留 R4 主题关联但不绑定未知 POI/区域。中英日韩印 manifest、静态弹窗文案和运营 CSV 已同步；55 项产品测试、image-intake、三档响应式及五语言运行时验收通过。未上传、发布、合并或部署。
+- 2026-08-17 主线迁回回调：已完整读取 `01a00b05-e145-7ae3-844b-f0cf62b78e6f` 的两页任务记录和用户粘贴的完整记录，并用安全工作树、共享项目记忆及 GitHub PR #3 重新核验；当前总控固定为 `019fcbe4-146b-72a1-a3e6-9fac972a37d6`，前主线保持闲置且禁止继续派发，不把聊天回忆当项目事实。
+- 2026-08-17 Browser 最终门禁回调：当前新任务可调用控制工具数量为 0，且没有新的 Desktop 日志证明运行时挂载成功；已按约定停止所有 Browser/Chrome/Computer Use 本机修复，将其永久降级为非阻断限制。环境右侧 ambient Render URL 仅证明页面被打开，不证明 Agent 能读取或控制。
+- 2026-08-17 Portfolio 批次审计与发布门禁回调：108 张唯一素材均已授权并在 manifest；D8 三类候选 52 张，其中 23 张关联路线、15 张关联 POI、20 张关联区域、15 张三类地理关联齐全，只有 1 张具有五语言替代文本。其余 56 张为 people/unclassified，前者主要进入 Driver Moments，后者须人工分类。管理员上传、Cloudinary 直传、生命周期、排序、替换和公开 API 已实现；新增前后端五语言发布门禁，草稿可不完整，发布必须补齐 zh/en/ja/ko/id 的标题、说明和替代文本。产品回归 51/51、图片收件专项和 Node 语法通过；Playwright 对五语言逐一触发正确提示，320/390/768/1440 均零横向溢出、最终控制台 0 error/0 warning。下一批从 15 张完整地理关联素材开始，不能把“已授权”误写成“已完成 D8 发布”。
+- 2026-08-17 Codex Desktop Browser runtime 最终一次尝试回调：GitHub `openai/codex#26501` 的 2026-08-15 新证据与本机完全同版，均为 Store `26.810.7004.0`、包内 bundled 插件 `26.810.52044`、本地旧源 `26.810.50856` 和同名 marketplace 双来源冲突；`#31023` 证明继续堆叠镜像/缓存不能保证会话工具注入。已备份用户配置，仅移除旧 `E:/CodexSkills/.sources/openai-bundled-26.810.50856` marketplace 注册，保留 Browser/Chrome/Computer Use 三项 enabled 记录，并只启用当前包完整、无 EFS 的资源镜像；未删除缓存/会话、未改 WindowsApps/AppX 卷、CLI override 保持为空。重启后只验收一次，失败即停止本机插件排障并回到项目 CLI/API/Playwright 主线。
+- 2026-08-17 Codex Desktop Browser runtime 纠偏回调：首次修复错误地只复制 `codex.exe` 后设置 `CODEX_CLI_PATH`，导致 Desktop 找不到同目录 `codex-code-mode-host.exe`；已明确承担并将 CLI override 在进程、用户和系统范围恢复为空，普通 code-mode 重新可用，仓库与生产未受损。重启后当前任务仍未获得 Browser/Chrome/Computer Use 控制工具，新日志继续显示 WindowsApps `cua_node` EFS relocation 失败；现只启用已做逐文件哈希校验且无 EFS 属性的 bundled-resources override，等待下一次完整重启验收，不同时改 marketplace 或删除缓存。
+- 2026-08-17 Codex Desktop Browser runtime 回调：确认 Windows Store/MSIX 官方资源带 EFS 保护，Desktop 日志持续出现 bundled marketplace `copyfile`、executable relocation 和 Computer Use helper path 失败，native pipe 没有 ready 记录。已将官方 `openai-bundled` 842 个文件、`cua_node` 3625 个文件和同包 CLI 用字节流复制到用户级 LOCALAPPDATA override，逐文件 SHA-256 零不一致，10 个关键入口均存在；设置两个可回滚用户级 override，未修改 WindowsApps、AppX 默认卷、既有缓存或任何 Secret。当前进程无法热注入工具，必须完整重启并在新任务做 Browser/native-pipe 实证后才能恢复 Render 门禁。
+- 2026-08-16 专业路线发布门禁回调：女娲现有 Steve Jobs、Paul Graham、Charlie Munger 三种顾问视角完成交叉评审；共同接受“冻结扩功能、先闭环真实发布门禁”，Munger 识别出的未核验付费 POI 与权益竞态被证据确认并实施，PG 的隐私安全漏斗建议延后到发布后，未引入支付/CMS/Redis 等扩张范围。
+- 2026-08-16 专业路线工程/QA 回调：正式 `luna_worker` / `gpt-5.6-luna` / `max` 完成只读权益审计；独立 QA 首轮发现 PostgreSQL 测试导入前保护和 CI 覆盖两个 P1，修复后复审 P0=0、P1=0。PR #3 head `4eb303a` 的 SQLite 50/50、隔离 PostgreSQL 16 12/12 和项目记忆检查均真实绿色；PR 继续 Draft，Render 配置、代理 canary、合并部署与部署后 E2E 未执行。
+- 2026-08-16 司机询价持久化反滥用开发回调：移除进程内 `_driver_request_attempts`，新增 SQLite/Postgres 共用的原子 UPSERT 计数；客户端地址只以 `SECRET_KEY` 作用域 HMAC 保存，表中仅含伪匿名键、窗口时间、计数和更新时间，不保存姓名、邮箱、预算或行程正文。数据库门禁异常 fail-closed 为 503，Dicky/Gede 继续共享 5 次/30 分钟额度。
+- 2026-08-16 司机询价测试/QA 回调：产品回归从 39 增至 43 项且全部通过；新增持久化字段、8 线程原子并发、不同客户端隔离、窗口恢复、blocked 不延长窗口和数据库故障不发邮件测试，并将原子并发测试连续运行 10 轮。正式 Luna Max 两轮只读审计最终 GO，P0/P1 为 0。
+- 2026-08-16 司机询价发布边界回调：PostgreSQL/SQLite 官方文档和 SQLite 3.39.4 本地运行支持当前 `ON CONFLICT ... DO UPDATE ... RETURNING`；未连接真实 Neon、未部署 Render。上线门禁保留真实 Postgres 集成测试及 `request.client.host` 在 Render 可信代理后的只读烟测，未擅自改信任头策略。
+- 2026-08-16 POI batch 2 内容回调：Heart Space Bali、Intuitive Flow、Munduk Waterfall、Gitgit Waterfall 与 Tulamben 已用场所官网及 Buleleng/Karangasem 政府来源核验稳定身份与区域语义；疗效、课程、教师、价格、水况、游泳与潜水执行条件不属于已核验范围。Thousand Islands Viewpoint 因官方来源不能证明唯一规范身份，继续 `pending_review`。
+- 2026-08-16 POI batch 2 测试/UI 回调：全库 59 个 POI 更新为 53 verified、3 pending、3 supplier-gated；产品回归 39/39。Chrome 1440/768/390/320 与 WebKit 390 英文均确认目标状态、R6 横滑可达且页面/路线详情横向溢出为 0；静态服务器唯一控制台错误是未启动后端导致 `/api/portfolio` 404，不替代生产验证。
+- 2026-08-16 POI batch 2 Luna 回调：正式 Agent `luna_worker` / `gpt-5.6-luna` / `max` 完成六节点只读来源审计并给出 5 GO / 1 NO-GO；任务前后 HEAD 均为 `93c4524`，工作树为空且零文件修改。Sol 已独立核对一手来源、实际 diff、JSON 计数、39 项测试与五视口浏览器证据后接受。
+- 2026-08-16 POI batch 1 内容回调：Ulun Danu Beratan、Tegenungan、Jatiluwih、Lempuyang、Taman Ujung 与 Virgin Beach 已用印尼旅游部、Tabanan、Bali、Karangasem 政府来源核验稳定身份与位置；Bedugul/Ubud 仅保留路线分组，Lempuyang 明确区分 Penataran Agung 拍照门区与山顶寺庙，Virgin Beach 统一 Pantai Perasi 别名且不承诺游泳条件。
+- 2026-08-16 POI batch 1 测试回调：全库 59 个 POI 更新为 48 verified、8 pending、3 supplier-gated；产品回归 39/39，测试锁定三处路线分组边界、Lempuyang 两地点层级和 Virgin Beach 安全承诺边界。
+- 2026-08-16 POI batch 1 Luna 回调：正式 Agent `luna_worker` / `gpt-5.6-luna` / `max` 完成六节点只读一手来源审计并给出 6 个 GO，任务前后 HEAD 均为 `a6b4a6d`、工作树为空、零文件修改；Sol 已独立核对来源、实际 diff、JSON 计数和测试后接受。
+- 2026-08-16 R5 内容回调：Tukad Cepung、Banyumala、Lake Tamblingan 与 Amed 已用 Bangli、Buleleng、Karangasem 政府及印尼旅游部来源核验稳定身份和区域语义；Mount Batur Sunrise Trailhead 因存在多个正式入口、Batur Hot Springs Area 因对应多个运营场所继续 `pending_review`，未擅自替用户选择入口或供应商。R5 与 Mount Batur Jeep 继续 `needs_supplier_confirmation`。
+- 2026-08-16 R5 测试回调：产品回归 39/39；全库 59 个 POI 更新为 42 verified、14 pending、3 supplier-gated。R5 测试明确约束四个新核验节点、两个命名待审节点和一个 Jeep 供应商门禁，防止后续误把地点身份核验扩张成实时安全或成交承诺。
+- 2026-08-16 R5 Luna 回调：正式 Agent `luna_worker` / `gpt-5.6-luna` / `max` 完成六节点只读来源审计，零文件修改；它反证了“六个全部升级”的初始假设并给出两个 NO-GO。Sol 已独立核对一手来源、实际 diff、JSON 状态和 39 项测试后接受该边界。
+- 2026-08-15 R2 内容回调：The Yoga Barn、Pyramids of Chi 与 Tibumana Waterfall 已用场所官网、印尼旅游部和 Susut/Bangli 政府来源核验稳定身份；R2 免费路线 10 个节点全部 `verified`。课程、价格、余位、教师/主持人、waiver、活动适用性、退款、天气、水况、步道与游泳安全仍为实时检查，任何 wellness 文案不得转写成医疗或保证性疗效。
+- 2026-08-15 R2 测试/UI 回调：产品回归 39/39；全库 59 个 POI 更新为 38 verified、18 pending、3 supplier-gated。Chrome 1440/768/320 与 WebKit 390 的 R2 状态、长场所名称、中英文重绘和控件可达性通过，页面与详情横向溢出均为 0。
+- 2026-08-15 R2 Luna 回调：正式 Agent `luna_worker` / `gpt-5.6-luna` / `max` 于 2026-08-15T12:58:01+08:00 启动，只读来源审计最终状态 `complete`，耗时约 5.5 分钟且零写入；Sol 已独立核对其位置与预约建议、实际 diff、39 项测试及四视口证据后接受。Tibumana 的 G4/Ubud 仅保留为路线分组，稳定事实明确为 Susut/Bangli 语境。
+- 2026-08-15 R6 内容回调：Pura Petitenget、Batu Bolong Beach 与 Echo Beach 已用 Badung 政府、印尼旅游部和宗教事务登记核验稳定身份、位置与文化/海岸语义；R6 免费路线 10 个节点全部 `verified`。仪式开放、着装、门票、潮汐、浪况、游泳安全、救生员、天气与交通仍为出发前动态检查。
+- 2026-08-15 R6 测试/UI 回调：产品回归 39/39；全库 59 个 POI 更新为 35 verified、21 pending、3 supplier-gated。Chrome 1440/768/320 与 WebKit 390 的 R6 状态、三节点、添加地点和中英文重绘通过，页面与详情横向溢出均为 0。
+- 2026-08-15 R6 Luna 回调：正式 Agent `luna_worker` / `gpt-5.6-luna` / `max` 于 2026-08-15T12:40:46+08:00 启动只读来源审计；因 Sol 按计划并行产生集成改动而触发任务包 STOP，最终状态为 `blocked`，未写文件。其来源审计已完整返回，Sol 独立核对来源、实际 diff、39 项测试和四视口证据后接受结论；不把该状态误写为“Luna 完成”。
+- 2026-08-15 Dicky 五日路线 / R4 回调：不新建 R7；把五日内容作为 R1 的在地压缩校准，接送、餐食、酒店、道路和泛化购物不伪装为 POI。Blue Point 归一为 Suluban Beach；补齐佩妮达西线 Angel's Billabong 与东线 Diamond Beach、Rumah Pohon、Atuh Beach，Thousand Islands Viewpoint 因精确身份不足继续 `pending_review`。
+- 2026-08-15 内容核验回调：R4 的 Goa Gajah、Kanto Lampo、Sidemen、Tirta Gangga 及 Celuk Village 已用政府/官方来源核验稳定事实；R4 Day 3 从“瀑布 + 稻田”纠正为“银饰村落 + 稻田”，免费路线 10 个节点全部 `verified`。Celuk 银饰课、Bali Fire Shooting Club 与 Mount Batur Jeep 保持供应商门禁。
+- 2026-08-15 测试/UI 回调：后端产品回归 39/39 通过；Chrome 1440/768/320 与 WebKit 390 均完成 R4 状态、R1 Day 7 佩妮达候选及 Angel's Billabong 添加交互，页面级横向溢出为 0。旧 WebKit 2311 与 Playwright 1.62.1 不匹配，已在用户缓存安装 2336 后重跑通过，未写入仓库。
+- 2026-08-15 Luna 审计回调：正式 Agent `luna_worker` / `gpt-5.6-luna` / `max` 执行只读 Dicky 差距与 backlog 审计，最终状态 `completed`；协作工具未暴露精确启动时间，台账不编造。Sol 已独立复核实际数据、diff、39 项测试、四视口浏览器证据和项目记忆校验后接受其审计结论。
 - 2026-08-03 QA 终态回调：Sol 首轮发现同路径换图继承批准、关键词地点冲突和内容字段未必填 3 个 P1；全部修复并复审 GO，P0/P1 为 0；Region、用途与双语替代文字的剩余 P2 断言也已补齐。
 - 2026-08-03 开发/测试回调：图片收件工具改为增量合并；唯一哈希改名保留人工字段，重复副本不继承批准；非巴厘岛明确地点不关联巴厘路线；专项测试、幂等检查和原后端 9 项 unittest 均通过。
 - 2026-08-03 图片发布门禁：108 张中 23 张建议关联路线、15 张建议关联 POI；当前 0 张人工确认，因此发布 manifest 为 0，来源图片未移动、改名、覆盖或删除。
@@ -63,6 +97,15 @@
 
 ## 技能命中
 
+- 2026-08-20 Galungan 单图闭环实际使用：cross-account-project-memory 约束独立 worktree、不可变 evidence 与 handoff；agent-role-orchestrator 采用 small/L2；codex-luna-worker 将图片文化语义与最终提交审计交给 Luna Max，Sol 保留文案边界、实现、响应式复核和发布判断；ui-implementation-workflow 将页面改动限制为既有 teal + gold 静态 gallery 的数据与文案，并通过 browser-automation-router 选择本地 Playwright CLI 做 1440/768/390 及五语言验收。未使用女娲人物、动画或 UI 组件库，因为本轮没有新商业决策、动效或组件设计。
+- 2026-08-16 专业路线发布门禁实际使用：cross-account-project-memory 恢复当前仓库、最新 handoff、PR #3、CI 和公开生产事实；agent-role-orchestrator 将任务定级 critical/L3，并在 `prepare_role_window.py` 因缺少 `registry/plugin-packages.json` 时 fail-closed，不伪造持久线程；codex-luna-worker 派发正式 Luna Max 只读权益审计；huashu-nuwa 路由 Steve Jobs、Paul Graham、Munger 现有角色交叉评审；browser-automation-router/Playwright 复核公开生产五语言与四视口；GitHub 连接器核验 PR 和 Actions。当前任务没有可调用的内嵌 Browser/Chrome 控制工具，故已登录 Render 标签页不能作为已检查证据。
+- 2026-08-16 司机询价持久化反滥用实际使用：cross-account-project-memory 从 batch 2 的远端 0/0 同步点建立独立 `codex/driver-request-rate-limit` worktree；agent-role-orchestrator 采用 medium/L2 和开发→测试→QA 回调；codex-luna-worker 派发正式 Luna Max 首轮架构审计与第二轮对抗性 QA，Sol 独立复核实际 diff、43 项测试和官方数据库语法文档。未加载 UI workflow、浏览器自动化、女娲或人物 Perspective：本轮无页面视觉、品牌、内容或商业判断，避免制造无关技能命中。
+- 2026-08-16 POI batch 2 实际使用：cross-account-project-memory 从 batch 1 远端同步点建立独立 `codex/poi-facts-batch2` worktree，并要求 evidence/handoff/远端一致性门禁；agent-role-orchestrator 采用 medium/L2 与来源 fail-closed；codex-luna-worker 派发正式 Luna Max 六节点只读审计并由 Sol 复核；ui-implementation-workflow 将范围限定为既有 content/detail 数据增量；browser-automation-router 选择 Playwright，Chrome 1440/768/390/320 与 WebKit 390 英文均无页面/详情横向溢出。`prepare_role_window.py` 仍因缺少 `registry/plugin-packages.json` fail-closed，未伪造持久角色窗口。未使用女娲/Perspective：地点身份、医疗与潜水安全边界必须由一手来源和实际供应商确认。
+- 2026-08-16 POI batch 1 实际使用：cross-account-project-memory 从 R5 远端同步点建立独立 `codex/poi-facts-batch1` worktree；agent-role-orchestrator 采用 medium/L2 和 fail-closed 来源门禁；codex-luna-worker 派发正式 Luna Max 六节点只读审计并由 Sol 复核；ui-implementation-workflow 将页面归为既有 content/detail 数据增量，不新增参考、token 或样式；browser-automation-router 选择 Playwright，Chrome 1440/768/390/320 与 WebKit 390 英文均无页面/详情横向溢出。`prepare_role_window.py` 仍因缺少 `registry/plugin-packages.json` fail-closed，未伪造持久角色窗口。未使用女娲/Perspective：事实身份、行政位置和安全边界不能由人物顾问替代。
+- 2026-08-16 R5 轮实际使用：agent-role-orchestrator 约束 medium/L2 路由、来源回调和 fail-closed 记录；codex-luna-worker 独立反证六节点可核验性；ui-implementation-workflow 将范围限定为既有 portfolio 页的数据增量；browser-automation-router/Playwright 用于四视口确定性验收。`prepare_role_window.py` 仍因缺少 `registry/plugin-packages.json` fail-closed，未伪造持久角色窗口。未使用女娲或人物 Perspective：本轮出现的是入口/供应商事实缺口，不应由顾问风格替代真实授权。
+- 2026-08-15 R2 轮实际使用：agent-role-orchestrator 继续约束 L3 回调与事实边界；codex-luna-worker 独立核验三个主路线节点；ui-implementation-workflow 限定既有 portfolio 页面内的数据增量；browser-automation-router/Playwright 完成 Chrome/WebKit 四视口验证。未使用女娲或人物 Perspective：医疗/疗效边界由一手来源、现有产品规则和最小承诺原则即可确定。
+- 2026-08-15 R6 轮实际使用：agent-role-orchestrator 约束 L3 路由、事实回调和 fail-closed 记录；codex-luna-worker 仅委派边界明确的只读来源审计；ui-implementation-workflow 将本轮限定为既有 portfolio 页面内的数据更新，不新建设计；browser-automation-router 选择确定性 Playwright，Chrome/WebKit 四视口完成交互与响应式验收。`prepare_role_window.py` 仍因缺少 `registry/plugin-packages.json` fail-closed，未伪造持久角色窗口；未调用女娲或人物 Perspective，因为没有新增商业、定价或品牌判断。
+- 2026-08-15 实际使用：agent-role-orchestrator 约束 L3 路由与回调；codex-luna-worker 仅委派只读、边界明确的差距审计；ui-implementation-workflow 保持 teal + gold 和 tiny/small 增量边界；browser-automation-router 选择确定性 Playwright；Playwright CLI 完成 Chrome/WebKit 四视口真实交互。未使用女娲或人物 Perspective，因为本轮没有新增商业承诺或定价裁决。
 - 2026-08-03 路线编辑器轮实际使用：agent-role-orchestrator、ui-implementation-workflow、browser-automation-router、Playwright CLI；按 medium/L3 路径完成现状审计、既有风格内实现、Chrome/WebKit 响应式交互验证并通过 Sol 最终门禁。WebKit 26.5 安装在 `E:\CodexBrowserCache`，未写入项目仓库。
 - 2026-08-03 本轮实际使用：agent-role-orchestrator、ui-implementation-workflow、browser-automation-router、Playwright CLI；分别约束 L3 角色台账、既有页面风格、确定性浏览器路径以及桌面/平板/手机验收。`prepare_role_window.py` 仍因缺少 `registry/plugin-packages.json` fail-closed，未伪造持久角色窗口；最终复用现有 Sol 审查窗口。
 - 2026-08-03 当前轮影响产出的 skill：agent-role-orchestrator 触发 L3 台账和 Sol 门禁；Sol 的独立反证直接发现并推动修复 3 个 P1。未使用 UI、浏览器、女娲或人物 Perspective，因为没有页面视觉或新商业判断。
@@ -108,8 +151,144 @@
 
 ## 压缩交接卡
 
-- 最近摘要：Google 登录、阶段 1/2、C1–C4 产品额度及六路线空间示意均已验收；108 张图片已具备增量复核、路线/POI 建议和 fail-closed 发布 manifest。
-- 关键决策：保持 Claudecode 既有风格；巴厘岛主、其他目的地次；桌面悬停/键盘和手机点击均可操作。
-- 当前证据：图片专项负向测试、幂等检查、12 项后端/数据测试、四目的地 × 五语言接口矩阵、1440/768/390 目的地情报响应式验收及既往 24 组路线尺寸矩阵；最新图片工作流最终 GO。
-- 下一步：等待 Dicky/Gede 真实报价；图片需完成权属确认后再按路线/POI 发布；自动支付和精确车程地图仍属于后续阶段。
-- 新窗口接续提示：不得删除用户根目录下的旅行图片分类规划 txt。
+- 最近摘要：巴厘岛 POI 为 53 verified、3 pending、3 supplier-gated；司机限流与专业路线权益均已完成 SQLite/PostgreSQL 原子化门禁，付费路线仅交付 verified POI，既有用户权益不降低。
+- 关键决策：保持 ClaudeCode teal + gold；巴厘岛主、其他目的地次；pending/supplier-gated 内容不得冒充付费执行事实；pending 手工订单使用积分时原子转换同一订单，历史 10 次与 admin unlimited 保留。
+- 当前证据：PR #3 head `4eb303a`，Draft/open/mergeable；SQLite 产品套件 50/50、隔离 PostgreSQL 16 12/12、项目记忆 CI 绿色，独立 QA P0=0/P1=0。公开生产仍为 p54、6 routes / 50 POIs，Render 配置与代理 canary 未核验，不得写成生产完成。
+- 下一步：在具备可调用内嵌 Browser 控制工具的新任务中复用已登录 Render，仅检查生产 PostgreSQL/强稳定 `SECRET_KEY` 的存在与结构，完成安全 canary 和双外部客户端代理隔离，再按绿色结果决定 ready/merge/deploy，并执行部署后完整 E2E。
+- 新窗口接续提示：从 `codex/account2-integration-20260816`、最新 evidence/handoff 和 PR #3 接续；不得删除用户数据、显示 Secret、降低既有用户权益，且不得触碰旧脏工作树或用户旅行图片规划文件。
+
+## 2026-08-16 cross-account recovery callback
+
+- 总控回调：`cross-account-project-memory` 成功定位上一账号累计成果于远端分支 `codex/driver-request-rate-limit`；当前账号在独立 `E:\Agentstrip2-worktree` / `codex/account2-integration-20260816` 接续，未触碰旧脏工作树。
+- 三层回调：GitHub `main` 为 `3fbf898`；累计分支 `1e3da86` 为 ahead 34 / behind 0；生产前端仍匹配 main 基线，Bali 数据为 6 routes / 50 POIs，累计分支为 6 routes / 59 POIs，故最新成果尚未部署。
+- 测试回调：Sol 复跑 43/43，通过 10 轮 SQLite 8 线程原子计数；正式 `luna_worker` / `gpt-5.6-luna` / `max` 完成只读对抗审查并确认本地实现可接受，但真实 PostgreSQL 和 Render 代理地址仍为生产 P0 门槛。
+- 路由终态：large / L2；Sol 保留集成、GitHub、发布和最终验收，Luna 只负责边界明确的只读复核；最终状态 `completed`，未把等待超时写成失败。
+- 技能命中：cross-account-project-memory 约束权威事实和一账号一 worktree；agent-role-orchestrator 约束分发与回调；codex-luna-worker 执行独立数据库风险复核；browser-automation-router/Playwright 完成生产浏览器验收；github/yeet 约束显式文件提交、分支推送与 Draft PR。
+- GitHub 回调：当前账号分支已推送并建立 Draft PR #3；PR 可合并但保持 Draft，Project memory validation 成功；未合并、未部署、未改 Render 变量或数据库，下一回调固定为隔离 PostgreSQL 门禁。
+- PostgreSQL 回调：新增只允许 localhost/127.0.0.1 的专项集成测试；GitHub Actions 临时 PostgreSQL 16 中 4/4 通过并明确使用 postgres 后端，覆盖并发、固定窗口、重初始化持久化和 BIGINT/索引。真实 PostgreSQL 门禁关闭，下一门禁为 Render canary 代理隔离与部署后生产 E2E。
+- 2026-08-16 Render canary 接续回调：Computer Use 插件与功能开关已启用，但当前任务未注入 `node_repl/@oai/sky`、Chrome 或 Browser 控制工具，故账号内 Render 配置、canary 和部署后 E2E 继续 fail-closed；PR #3 保持 draft/open/mergeable，当前两项 Actions 成功，公开生产仍为 health 200 与 6 routes / 50 POIs 旧基线。未读取或显示任何 Secret，未合并、未部署、未改变 PR 状态；下一步必须完整重启 Codex Desktop 并新建任务，先验证控制工具存在再接续。
+
+## 2026-08-16 Bali public-to-professional route sync callback
+
+- 路由：medium / L2。Sol 保留产品语义、权益保护、集成、浏览器验收和发布判断；正式 Agent `luna_worker`（Locke，`gpt-5.6-luna`，`max`）于 `2026-08-16T21:22:33+08:00` 启动，只读核对状态流与 Git 历史，最终状态 `completed`，从启动到首次收到 final 约 5 分钟；等待窗口超时未被写成失败。
+- Luna 回调：确认“首访画像匹配 R1”是既有规则，但公共 R2–R6 卡片只更新 `activeId`、未通知专业模块属于前端状态同步缺陷；未修改文件、未访问生产或凭据。Sol 对照实际代码和历史文档后接受该结论。
+- 实现回调：未解锁专业预览跟随公共路线选择并同步 URL/deep link；已解锁路线只记录待切换 route，普通浏览不扣次，提交“调整本次行程”才通过 `/adjust` 携带 route_id 并使用 1 次调整；3 次额度、¥9.9、30 积分、70% 预览和 AI 独立额度均未改变。
+- UI/QA 回调：UI UX Pro Max 要求明确 active state、URL state 与触屏布局；Vercel Web Interface Guidelines 要求 URL 反映状态并为异步反馈提供 `aria-live`。Edge 回调验证 R1→R3、已解锁不暗扣、提交后剩余 2 次、五语言提示、320/390/768/1440 零横向溢出，console/page errors 均为 0；43 项后端测试、Node 语法和 diff check 通过。
+- Skill 回调：安装并审查 `AgriciDaniel/claude-seo@seo`（MIT、约 14.2k GitHub Stars、活跃维护、安全策略完整）到用户级 Skills；未改项目仓库。拒绝安装较旧且会在个人目录持久化旅行偏好的通用 travel-planner 候选。
+- 生产边界：当前任务未注入右侧内嵌浏览器控制通道，按用户要求停止排障；Render、生产数据库、环境变量、合并和部署均未触碰，不能声称生产已更新。
+
+## 2026-08-16 Render Work routing callback
+
+- 已建立并固定复用 ChatGPT Work `6a81da9a-1998-83e8-b2ca-34e1f6eb526d`，专用于 Render 配置存在性、canary、部署记录、日志与生产 E2E；新鲜探针确认 Browser 可调用，但 Render 被已保存的用户站点权限阻止，尚未读取页面或确认登录态。
+- 已建立并固定复用仓库回流任务 `01a00b3a-b62f-7c60-ae73-f9e74ae7879d`；它完成项目记忆与 Git 恢复，但能力探针为 `BROWSER_CONTROL_UNAVAILABLE`，未访问 Render、未写仓库、未部署。
+- 路由边界：主线在遇到 Render 门禁时必须显式向上述任务发送最小任务包并读取回调；不同任务不会自动感知彼此内部进度，且 Browser 能力不会因右侧 ambient 页面自动继承。
+- Secret 边界：只报告变量是否存在、结构是否有效及强度结论，禁止显示、复制或写入实际值；删除数据、降低权益、生产部署和不可逆变更仍需独立门禁。
+- Skill 回调：`openai-docs` 确认 Projects/Work 与 Browser 的产品边界；`agent-role-orchestrator` 约束固定复用与回调台账；`cross-account-project-memory` 约束项目级持久化；`browser-automation-router` 使无控制面时 fail-closed。
+- Work 探针回流：`Browser=available`；无独立 Computer Use 工具但 Browser 自带交互；`Render=blocked_by_saved_user_permission`；零配置修改、零部署。下一步只需用户在该 Work 中授予 `dashboard.render.com` 访问权限。
+
+## 2026-08-17 Render task cleanup callback
+
+- `Agentstrip · Render 专用工作台` 已通过 Codex 任务管理接口归档，可从 Archived 恢复；它不再占用主线侧栏或接收 Render 任务包。
+- `Browser控制能力探针` 属于 ChatGPT 对话，Codex 归档接口返回不支持；已尝试取消置顶，但 ChatGPT 来源仍将其显示在置顶区，需用户通过该对话的 `…` 菜单手动归档或删除。
+- 两个历史 ID 均保留在项目记忆中仅作审计，路由状态改为 retired/disabled；后续不得自动派发。新的本地 Render Browser 任务只能在 Browser 插件实际注入并通过能力探针后登记。
+- 本轮未访问 Render、未读取 Secret、未修改配置、未部署；`agent-role-orchestrator` 约束台账退役，`cross-account-project-memory` 记录可审计事实，OpenAI 任务管理使用可恢复归档优先于永久删除。
+
+## 2026-08-20 Portfolio D8 batch 1 callback
+
+- 路由：medium / L2。Sol 保留图片语义、事实边界、集成、浏览器验收、提交和发布判断；正式 Agent `luna_worker`（`gpt-5.6-luna` / `max`）先完成 15 张候选的只读清单审计，再对实际 diff 做独立 QA；所有写入均在 `E:\Agentstrip-wt-portfolio-d8` / `codex/portfolio-d8-batch1`，旧脏工作树未触碰。
+- 内容回调：首批 15 张同时关联 G 区域、R 路线和已核验 POI 的 D8 图片均补齐中/英/日/韩/印标题、说明与替代文本；文案只描述可见画面和已核验地点，营业、课程、仪式或演出等动态信息明确要求实时确认，不新增医疗、价格或时刻承诺。
+- 工具回调：`image-intake.ps1` 现在按相同 SHA-256 保留人工审核后的 schema、policy、approval、Web 路径、标题、说明和日/韩/印替代文本；CSV 仍负责新鲜的中英文替代文本和结构化建议。回归测试覆盖重复扫描不丢人工成果。
+- UI/QA 回调：不改现有 teal + gold 页面，也不新增无目的动效。系统 Chrome 的确定性本地验收使用 mock 管理 API，选择用户原图后命中批准清单并自动填满五语言字段；390/768/1440 的页面、body 和编辑弹窗横向溢出均为 0。未上传、未发布、未访问生产。
+- Skill 回调：`cross-account-project-memory` 约束跨账号事实与独立 worktree；`agent-role-orchestrator` 与 `codex-luna-worker` 约束 Sol/Luna 分工；`ui-implementation-workflow` 只约束既有视觉和响应式验收；Nuwa 检索后复用 Paul Graham 小批量人工闭环原则，未制造新人物 Skill；本轮无 UI 动效变更，故 Emil/Find/Improve/Review Animations 不作表演性调用。
+- Browser 边界：当前任务仍无可调用右嵌 Browser/Chrome/Computer Use 控制面，ambient Render URL 不作已检查证据；按用户 stop 条件永久降级为非阻塞，不再修插件、不读取 Render、不改变环境变量、不部署。
+
+## 2026-08-20 Portfolio D8 batch 2 callback
+
+- 路由：medium / L2。Sol 在独立 `E:\Agentstrip-wt-portfolio-d8-batch2` / `codex/portfolio-d8-batch2` 负责事实来源、逐图语义、实现与验收；正式 Luna Max 逐张查看剩余 37 张候选，因主控并行写入检测到工作树漂移后严格 STOP，随后改为审查不可变提交范围，未把漂移中的计数写成 GO。
+- 数据回调：新增 `taman_ayun`、`taman_saraswati`、`sundays_beach_club` 三个 verified POI；来源限定为 UNESCO、印度尼西亚旅游部门与场所官网。票价、开放、仪式、演出、潮汐、海况、活动、接驳和停车保持实时检查，不从文案推断执行就绪。
+- 内容回调：Lempuyang、Taman Ayun、Taman Saraswati 两张、Sundays Beach Club 两张共 6 张补齐五语言 title/description/alt，并精确关联区域、路线与 POI。Lempuyang 明确区分 Penataran Agung 门景与山顶寺院；库存图中的泰国、夏威夷、希腊、帕劳文件不冒充巴厘岛。
+- QA 回调：53 项产品测试通过；完整 D8 资料由 15 增至 21，manifest 仍为 108 张，POI 由 59 增至 62；6/6 Web 图片存在、错位 0、未核验 POI 0。系统 Chrome 本地 mock 管理 API 选择 `Pura Taman Ayun.jpg` 后自动填满五语言资料，390/768/1440 页面、body 与弹窗横向溢出均为 0；未上传、未发布、未访问生产。
+- Skill 回调：继续使用 cross-account-project-memory、agent-role-orchestrator、codex-luna-worker 与 ui-implementation-workflow；本轮无页面布局或动效代码，故 Emil 与动画技能不作表演性调用。Browser/Computer Use 仍按永久非阻塞降级执行。
+
+## 2026-08-20 Draft PR #3 D8 integration callback
+
+- 路由：medium / L3。Sol 在独立 `E:\Agentstrip-wt-pr3-d8-integration` 完成线性 fast-forward、事实修正、提交与远端核验；Luna Max 先以两项 P1 拒绝过期计数和捕获时点矛盾，修正后复审 GO，P0/P1/P2 均为 0。
+- Git 回调：PR #3 从 `94a7a16` 快进至 `a53901e`，远端分支已同步；GitHub `validate` 与 `driver-request-rate-limit` 均成功。PR 保持 Draft，未 merge、未部署。
+- 验证回调：53/53 产品测试、图片导入回归、Node 语法、diff check 与项目记忆校验通过；快照 source commit 与文档 HEAD 不同的提示为已解释的预期警告。
+- Skill 回调：cross-account-project-memory 约束隔离 worktree、远端证据和 handoff；agent-role-orchestrator 采用 L3 门禁；codex-luna-worker 提供独立反证。无 UI 或动效改动，因此 UI/Emil/动画技能未调用。
+- Browser 边界：右嵌 ambient Render URL 仍不作为已查看证据；本轮没有 Render、环境变量、上传、发布或生产写入。
+
+## 2026-08-20 Portfolio D8 batch 3 first-unit callback
+
+- 路由：small / L2 / compact。Sol 在独立 `E:\Agentstrip-wt-portfolio-d8-batch3` 负责地点证据、五语言文案、测试、提交与最终验收；正式 `luna_worker`（`gpt-5.6-luna` / `max`，工具未暴露精确启动时间）负责只读视觉和不可变提交复审。
+- 内容回调：`bali-12.jpg` 的原图哈希与 manifest 一致；官方 Ubud Monkey Forest 资料及同一入口独立影像共同确认画面中的苔藓石雕、金色字样和入口牌属于乌布圣猴森林。外部影像只作识别证据，未进入仓库。
+- 实现回调：图片保持 Landscapes，细分为 `nature-wildlife`，关联 G4、R1/R2/R4 与 verified POI `ubud_monkey_forest`；五语言文案不声称画面中有活体猴子，不固化开放时间或票价。
+- QA 回调：Luna 首轮因父线程按计划产生目标 diff 而诚实标记 blocked，未写文件；代码冻结为 `6179c32` 后复审完成并 GO。54/54 产品测试、image-intake、Node 与 diff-check 通过。
+- Skill 回调：cross-account-project-memory 约束独立 worktree 与 evidence/handoff；agent-role-orchestrator 约束 L2 回调；codex-luna-worker 执行两阶段监工。本轮无 UI/动效修改，故 UI、Emil 与动画技能不调用。
+- 生产边界：未上传、未发布、未访问 Render、未 merge、未部署；ambient Render URL 仍不作为控制证据。
+
+## 2026-08-20 Portfolio D8 batch 5, Seminyak gathering callback
+
+- 路由：small / L2 / compact。Sol 在独立 `E:\Agentstrip-wt-portfolio-d8-batch5` / `codex/portfolio-d8-batch5` 保留图片语义、实现、浏览器验收、项目事实和发布判断；正式 Luna Max 对原图做事实审计，并对冻结提交 `a577f3a` 做不可变只读复审，最终 GO，P0/P1/P2 均为 0。
+- 内容回调：文件名 `Nyepi.jpg` 不能证明宁静日。画面门牌支持 `Pura Desa / Desa Adat Seminyak`，因此修正为塞米亚克村社神庙外的社区文化聚会；只描述白色仪式服装、寺庙入口、社区人群和 penjor，具体仪式、日期及与 Nyepi 的关系保持未核实。
+- 实现回调：manifest、运营 CSV、静态卡片和中/英/日/韩/印弹窗同步为 G1/R6、无 POI、`bali-named`；虽然保留主题路线关联，AI、司机和路线交接仍隐藏，进入、观察和拍摄只按现场许可表述。
+- QA 回调：56/56 产品测试、PowerShell 7 图片 intake、9 个内嵌脚本语法和 diff check 通过；本地 Chrome 在 1440/768/390 下五语言标题正确、页面横向溢出为 0、控制台 0 错误，390 中文弹窗视觉复核通过。
+- Skill 回调：cross-account-project-memory 约束隔离 worktree、evidence 与 handoff；agent-role-orchestrator/codex-luna-worker 约束 Sol/Luna 分工；ui-implementation-workflow 保持既有 teal + gold 与响应式边界；browser-automation-router 选择本地 Playwright。无新商业决策、动画或组件库需求，不作表演性 Skill 调用。
+- 生产边界：未上传、未发布、未访问 Render、未 merge、未部署；ambient Render URL 仍不是页面控制或生产证据。
+
+## 2026-08-20 Portfolio D8 batch 6, unknown coast callback
+
+- 路由：small / L2 / compact。Sol 在独立 `E:\Agentstrip-wt-portfolio-d8-batch6` / `codex/portfolio-d8-batch6` 负责实现、测试、项目事实与发布判断；Luna Max 先以 P1/NO-GO 拒绝从 `bali-1.jpg` 文件名推断地点，再对冻结提交 `4877aa3` 做不可变复审并返回 GO，P0/P1/P2 均为 0。
+- 内容回调：画面只支持临海建筑、退潮礁石海岸与暮色天空；EXIF 不含地点或时间。结构化字段修正为 `landscapes / ocean-beach`、`location_status=unknown`，移除 `bali` 标签，区域、路线和 POI 全部留空。
+- QA 回调：五语言 title/description/alt 明确地点、建筑用途和拍摄时间未核实；57/57 产品测试、PowerShell 7 图片 intake、hash/WebP/rights 与 diff check 全部通过。该图片未被静态 gallery 引用且 HTML 未变，UI 工作流判定本单元无需重复浏览器验收。
+- Skill 回调：cross-account-project-memory 约束独立 worktree、evidence 与 handoff；agent-role-orchestrator/codex-luna-worker 以 Luna 反证阻止文件名冒充地点；UI 与动画技能未作表演性调用。
+- 生产边界：未上传、未发布、未访问 Render、未 merge、未部署。
+
+## 2026-08-22 Portfolio D8 batch 7, unverified split-gate callback
+
+- 路由：small / L2 / compact。Sol 在独立 `E:\Agentstrip-wt-portfolio-d8-batch7` / `codex/portfolio-d8-batch7` 负责事实边界、实现、测试、项目记忆和发布判断；正式 Luna Max 先只读审计图片，再复核不可变提交 `c055de4`，最终 GO，P0/P1/P2 均为 0。原生角色窗口预检因缺少 registry 记录 fail-closed，未伪造持久线程 ID。
+- 内容回调：`bali-2.jpg` 可见巴厘式分体门、山地、绿树、道路和布饰，但原图无 EXIF 地点或时间，视觉相似性不足以唯一确认 Handara Gate。元数据改为 `culture / balinese-culture`、`location_status=unknown`，移除地点标签，区域、路线和 POI 全部留空。
+- QA 回调：原图 SHA-256、WebP 与授权字段保持一致；中/英/日/韩/印 title、description、alt 明确地点、Handara 身份、开放信息和拍摄条件未核实。58/58 产品测试、PowerShell 7 图片 intake 和 diff check 全部通过；静态 HTML 未引用该图，因此没有渲染 UI 变更或重复浏览器验收。
+- Skill 回调：cross-account-project-memory 约束隔离 worktree、evidence/handoff 和远端事实；agent-role-orchestrator/codex-luna-worker 以独立反证阻止视觉相似性升级为地点事实。UI 与动画技能本单元不作表演性调用。
+- 生产边界：未上传、未发布、未访问 Render、未 merge、未部署。
+
+## 2026-08-22 Portfolio D8 batch 8, Kelingking viewpoint callback
+
+- 路由：small / L2 / compact。Sol 在独立 `E:\Agentstrip-wt-portfolio-d8-batch8` / `codex/portfolio-d8-batch8` 完成单图事实核验、实现、测试和交接；`codex-luna-worker` 按“几分钟内可完成的小任务留在主线程”判定不委派，未宣称 Luna 完成。
+- 内容回调：`bali-3.jpg` 的标志性绿色岬角、白沙与蓝色海洋和印尼旅游部对 Kelingking Beach Viewpoint 的描述一致；绑定 G3、R1/R6 与既有 verified POI `kelingking_beach`。文案把陡峭下坡、快船、道路、崖边防护、天气和拥挤列为实时复核项。
+- QA 回调：原图 SHA-256、WebP 和授权字段一致；中/英/日/韩/印 title、description、alt 完整。59/59 产品测试、PowerShell 7 图片 intake 和 diff check 通过；静态 HTML 未引用该图，因此没有渲染 UI 变更。
+- 生产边界：未上传、未发布、未访问 Render、未 merge、未部署。
+
+## 2026-08-22 Bali launch polish and campaign callback
+
+- 路由：large / L2。Sol 保留恢复、产品边界、视觉融合、限流安全、集成、GitHub、生产判断与最终验收；正式 `luna_worker`（Linnaeus，任务 `01a0285a-d197-78c2-a2c8-da339f2e2c89`，`gpt-5.6-luna` / `max`）只读筛选社交图片，最终状态 `completed`，未修改文件。原生回调未暴露可审计的启动时间与精确耗时，因此明确记为 unavailable，未伪造数值；Sol 随后独立解析 CSV/manifest、核对 8 个路径并逐图复看。
+- UI 回调：Bali 公共路线详情从大面积绿色改为暖纸地图工作台，深墨绿只保留给司机承接带；所有日程标题仍可免费到达，只有活动日展开编辑控件；默认 Portfolio 从完整长瀑布流减为 12 个瞬间并提供五语言“展开全部”。R1→R3 专业路线链接、地图节点、日程折叠和同区域加点保持联动。
+- 动效回调：Find/Improve/Review Animations 只接受路线切换 180ms、4px 的状态反馈；拒绝滚动显现、视差、弹跳 CTA 和动画地图路径；`prefers-reduced-motion` 下动画数为 0，最终 verdict 为 approved。
+- 安全回调：Render 下司机防刷按首个 `X-Forwarded-For` 区分真实访客；非 Render 直连不信任客户端伪造头。新增正反测试，持久化内容仍只有 HMAC 伪匿名键、窗口与计数。
+- 图片回调：修复 `bali-3.jpg` 英文 alt 中未转义逗号造成的 CSV 字段漂移，并新增 108 行表头对齐、可发布标记和 WebP 存在性 CI 护栏。没有继续扩张剩余 25 张 D8 候选。
+- 推广回调：新增小红书图文、司机 Instagram 轮播、TikTok/抖音短视频、批准素材顺序、隐私/防跑单规则、UTM、14 天节奏与复盘表；帖子和评论不公开司机邮箱、WhatsApp 或微信。
+- Skill 回调：cross-account-project-memory 恢复 Git 权威状态；agent-role-orchestrator/codex-luna-worker 约束 Sol/Luna 边界；Nuwa 的 Steve Jobs、Paul Graham、MrBeast 视角分别约束单一决定、小批量需求验证和前两秒钩子；UI UX Pro Max、UI implementation workflow、Emil、frontend-design 与三项动画 Skills 共同约束视觉和验收。`pbakaus/impeccable` 经审查后未安装，因为现有技能已覆盖本轮相关反模式，发布分支不新增 hooks。
+- QA 回调：本地 61/61 产品测试；完整本地 discover 73 项中 61 通过、12 项按设计等待隔离 PostgreSQL；GitHub Actions 在 SQLite 61/61 和 PostgreSQL 12/12 均通过。完整后端下 320/390/768/1440、五语言、R3 联动、地图、按天编辑、加点、图库展开、零控制台错误和 reduced-motion 共 5/5 通过；`git diff --check` 通过。
+- GitHub/生产回调：实现提交 `a24cd32ee9b1db0b4d9567e1533284f800ba156b` 已推送 PR #3 分支；Project memory run `32561281258` 与 PostgreSQL run `32561281247` 成功。生产新鲜抓取仍为 p54、6 routes / 50 POIs，未出现暖纸详情或 12 图预览；PR 保持 Draft，未 merge、未部署、未修改 Render 环境变量或生产数据。
+- 下一回调：只读确认生产 PostgreSQL 与强稳定 `SECRET_KEY` 的存在，不显示值；安全 canary/部署 `a24cd32`，验证代理访客隔离与完整生产 E2E。全部绿色后才将 PR ready/merge；上线后再开始手册中的首发内容和 `bali-4.jpg` D8 单元。
+
+## 2026-08-22 Bali public status productization and D8 batch 9 callback
+
+- 路由：large / L2，生产仍为 L3。Sol 保留两账号计划收敛、产品语义、设计融合、提交、GitHub、生产判断与最终验收；正式 `luna_worker` 只承担边界明确的只读计划审计、单图事实审计和冻结提交反证审查。
+- Luna 初审：Turing（`01a0290c-04ac-7c11-893f-c51ee08f8693`）与 Kant（`01a0290c-05d0-7d93-8d09-94b2f3062477`）均因父线程按计划产生目标 diff 而诚实返回 blocked，没有写文件。Sol 独立核对 Git/项目记忆后接受两账号优先级清单，并独立查看 `bali-4.jpg` 原图/WebP、哈希和 EXIF 后接受 unknown 地点边界。
+- Luna 冻结审查：Lovelace（`01a0292a-97fc-7943-956a-4ccd5aa2769c`，正式 `luna_worker` / `gpt-5.6-luna` / `max`）于 `2026-08-22T19:10:52+08:00` 启动，`2026-08-22T19:21:39+08:00` 关闭，约 10 分 47 秒。工具层收到 completed final；产品结论为 P0/P1/P2 全 0、GO。它因观察到父线程有意更新 `current-state.json` 而在正文自标 blocked，但冻结的四个产品文件未改变，Sol 已独立复跑验收并纠正该归因。
+- 产品回调：游客界面不再展示“稳定事实已核验”等内部 QA 标签；verified 静默，只有 pending 与 supplier-gated 项显示五语言“出发前确认 / 预约前确认”行动提示。公开数据仍保留结构化 verification state，未削弱事实门禁。
+- 图片回调：`bali-4.jpg` 保持原 SHA、WebP 与授权字段，改为 Landscapes / mountains-volcano；只描述可见山脊、暗色岩地、森林坡地、云和零散建筑。原图无 EXIF/GPS，故地点、山名和日期均为 unknown，region/route/POI 为空；D8 五语言完整资料增至 28，剩余 24。
+- 设计回调：安装用户级 Impeccable 4.1.1 到 E 盘源码目录并通过 Junction 暴露，不安装项目 hook 或依赖；本轮只使用 polish/craft floor 与一次 detector。两个粗重单侧强调边框已改为完整细边框，Roboto/CJK 字体、动态 modal 图片和单一品牌 CTA 光晕按既有 `DESIGN.md` 保留。
+- QA 回调：62/62 产品测试、完整 discover 74 项（12 项 PostgreSQL 隔离测试按设计 skip）、image-intake、108/108 CSV/manifest 对账和 diff check 通过；Playwright 在 320/390/768/1440 与中英日韩印下验证行动标签、verified badge 隐藏和零横向溢出，控制台 0 error / 0 warning。
+- 发布边界：产品提交 `3af4c9c` 必须连同本节 evidence/handoff 推送后才视为 GitHub 同步；任何 GitHub 同步也不等于生产部署。公开生产仍为旧 p54 / 50 POI 基线；下一回调固定为 PR #3 当前 head 的 CI、Render presence-only 门禁、canary/部署、代理隔离烟测和生产 E2E。
+- GitHub 回调：产品提交 `3af4c9c` 与交接提交 `0eee350` 已推送，远端提交可读取，本地/远端为 0/0。Project Memory run `32570167879` 与 PostgreSQL run `32570167913` 均成功，后者的 SQLite 产品测试和 PostgreSQL 发布关键测试步骤均为 success。PR #3 保持 open/draft/mergeable，发布说明已更新；未 ready、未 merge、未部署。
+
+## 2026-08-22 Bali POI identity unit callback
+
+- 路由：small-to-medium / L2，生产仍为 L3。Sol 保留官方来源判断、数据边界、集成、GitHub 和发布结论；Raman 与 Lagrange 两个正式 `luna_worker`（`gpt-5.6-luna` / `max`）并行完成只读身份审计，分别确认 Thousand Islands 不应与附近三个政府列名景点合并，以及 Mount Batur 不存在可由当前记录代表的唯一通用入口、Batur Natural Hot Spring 可收敛到 Bangli 政府目录中的明确场所。两者均 completed、零文件修改。
+- 冻结复核：Jason（`01a029be-be74-7b22-a769-5242583f6be2`，正式 `luna_worker` / `gpt-5.6-luna` / `max`）于 `2026-08-22T21:53:00+08:00` 启动；达到 10 分钟只读窗口后按规则请求立即收敛，并在 `2026-08-22T22:03+08:00` 返回 completed final。结论 P0=0、P1=0、P2=2、GO；Sol 将两项 P2 转成“温泉必须进入专业路线”和“必须保留 Bangli 政府来源”的防回归断言后独立复验。
+- 数据回调：62 个 POI 现在为 57 verified / 2 pending_review / 3 supplier-gated。`batur_hot_springs` 收敛为 Batur Natural Hot Spring，只核验身份、广义地点和独立场所边界；开放、价格、池区、维护、卫生、水与场地安全、天气和火山限制仍需实时确认。`mount_batur_trailhead` 改为 area-level 的 Mount Batur Hiking Area 并保持 pending；`thousand_islands_viewpoint` 保持独立 pending，禁止与 Atuh、Rumah Pohon 或 Bukit Sunrise 静默合并。
+- QA 回调：62/62 产品测试、完整 74 项（12 项隔离 PostgreSQL 测试按设计 skip）和 `git diff --check` 通过；系统 Edge 确定性本地回调在 320/390/768/1440 下验证 R5 状态、地图/加点、零横向溢出、零 page/console errors，并验证中英日韩印 R5 标题。GitHub 产品提交 `409b275` 的 Project memory validation run `32577693724` 与 PostgreSQL integration run `32577693722` 均成功。
+- Browser/生产边界：按用户授权只重试一次右侧 Render；虽然本任务已有可调用 Browser runtime，Render 与 localhost 绑定均被 `admin-enforced policy could not be verified` 阻止，随后停止排障。未读取 Render 页面、Secret 或数据库，未修改环境变量，未部署；分支推送后于 `2026-08-22T14:12:17Z` 再用公开只读请求确认生产仍为 HTTP 200、schema 1.2.0、p54、6 routes / 50 POIs 旧基线，PR #3 保持 Draft。
+- Skill 回调：cross-account-project-memory 约束本地、远端、CI、生产四层事实和 evidence/handoff；agent-role-orchestrator 与 codex-luna-worker 约束 Sol/Luna 分工；Browser skill 只执行一次可逆能力门禁；Playwright 使用本机 Edge 完成本地确定性回归。本单元只改数据、缓存版本、测试与台账，无视觉布局或动效变更，因此不作表演性 UI/动画 Skill 调用。

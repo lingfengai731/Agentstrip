@@ -322,6 +322,21 @@ def init_db():
             "ON portfolio_assets(destination,sha256)"
         )
 
+        # Persistent abuse protection for the driver-request email relay. The
+        # client key is an HMAC digest; no raw IP or traveller details are kept.
+        conn.execute(f"""
+            CREATE TABLE IF NOT EXISTS driver_request_rate_limits (
+                client_key         TEXT PRIMARY KEY,
+                window_started_at  {ts_type} NOT NULL,
+                request_count      {ts_type} NOT NULL DEFAULT 0,
+                updated_at         {ts_type} NOT NULL
+            )
+        """)
+        conn.execute(
+            "CREATE INDEX IF NOT EXISTS idx_driver_request_limits_updated "
+            "ON driver_request_rate_limits(updated_at)"
+        )
+
         # Commit table/index creation BEFORE running migrations. On Postgres a
         # failing ALTER (e.g. column already exists) aborts the whole transaction;
         # without this commit the subsequent rollback would also undo any table

@@ -1,0 +1,22 @@
+{
+  "schema_version": 1,
+  "evidence_id": "ev-20260822T112651Z-bali-status-github-sync",
+  "task_ref": "bali-status-github-sync",
+  "owner": "codex-sol",
+  "captured_at": "2026-08-22T11:26:51Z",
+  "status": "verified",
+  "claim": "PR #3 head 0eee350 is pushed and remotely readable; Project Memory run 32570167879 and PostgreSQL run 32570167913 both completed successfully; PR remains open, draft and mergeable, and production remains unchanged.",
+  "source": {
+    "kind": "git",
+    "repository": "https://github.com/lingfengai731/Agentstrip.git",
+    "commit": "0eee350b37316db54e6720ed5db0658587640154",
+    "branch": "codex/account2-integration-20260816",
+    "worktree": "E:\\Agentstrip2-worktree",
+    "dirty": true
+  },
+  "verification": {
+    "command": "GitHub fetch commit 0eee350; fetch PR #3; fetch workflow runs/jobs/steps; git rev-list HEAD...origin branch",
+    "result": "Remote commit 0eee350b exists; local/remote 0/0; PR open/draft/mergeable; Project Memory success; PostgreSQL integration success including SQLite product and PostgreSQL release-critical steps."
+  },
+  "notes": "This is GitHub synchronization evidence only, not deployment evidence. Production remains the old p54/50-POI baseline. Render presence-only checks, canary/deploy, two-client proxy isolation and production browser E2E are still required."
+}

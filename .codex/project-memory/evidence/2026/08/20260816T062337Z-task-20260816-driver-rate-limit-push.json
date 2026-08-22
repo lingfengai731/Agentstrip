@@ -1,0 +1,22 @@
+{
+  "schema_version": 1,
+  "evidence_id": "ev-20260816T062337Z-task-20260816-driver-rate-limit-push",
+  "task_ref": "TASK-20260816-DRIVER-RATE-LIMIT-PUSH",
+  "owner": "codex-sol",
+  "captured_at": "2026-08-16T06:23:37Z",
+  "status": "verified",
+  "claim": "Pushed codex/driver-request-rate-limit and verified local HEAD exactly matched origin with divergence 0/0 and a clean worktree.",
+  "source": {
+    "kind": "git",
+    "repository": "https://github.com/lingfengai731/Agentstrip.git",
+    "commit": "87a2a5097efd9055b02511c53bc6ba025b9e120e",
+    "branch": "codex/driver-request-rate-limit",
+    "worktree": "E:\\Agentstrip-wt-driver-limit",
+    "dirty": false
+  },
+  "verification": {
+    "command": "git fetch origin codex/driver-request-rate-limit; git rev-parse HEAD; git rev-parse origin/codex/driver-request-rate-limit; git rev-list --left-right --count origin/codex/driver-request-rate-limit...HEAD; git status --short",
+    "result": "Before recording this evidence, local and remote were 87a2a5097efd9055b02511c53bc6ba025b9e120e, divergence 0/0, and status was clean."
+  },
+  "notes": "Branch push only. No pull request, merge, main update, Neon mutation, deploy or production verification."
+}

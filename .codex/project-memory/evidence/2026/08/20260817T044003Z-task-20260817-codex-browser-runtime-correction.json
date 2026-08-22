@@ -1,0 +1,22 @@
+{
+  "schema_version": 1,
+  "evidence_id": "ev-20260817T044003Z-task-20260817-codex-browser-runtime-correction",
+  "task_ref": "task-20260817-codex-browser-runtime-correction",
+  "owner": "codex-sol",
+  "captured_at": "2026-08-17T04:40:03Z",
+  "status": "verified",
+  "claim": "Rolled back the incomplete CLI override that caused the missing code-mode host, verified normal code-mode recovery, and staged only the EFS-safe bundled-resources override for a controlled restart test.",
+  "source": {
+    "kind": "git",
+    "repository": "https://github.com/lingfengai731/Agentstrip.git",
+    "commit": "58fbbe9dd5b1d7189258a74d22f1a7b459f8dfd0",
+    "branch": "codex/account2-integration-20260816",
+    "worktree": "E:\\Agentstrip2-worktree",
+    "dirty": true
+  },
+  "verification": {
+    "command": "Read process/user/machine override values; run project memory and Git checks; enumerate current tools; inspect post-restart Desktop log signatures; verify seven required mirrored runtime files and EFS attributes.",
+    "result": "CODEX_CLI_PATH empty at all scopes; code-mode host running; repository clean and remote 0/0 before memory update; current task still lacks Browser/Chrome/Computer Use control tools; cua_node relocation still fails from WindowsApps; resource-only override set with 7/7 required paths present and zero encrypted checks."
+  },
+  "notes": "The prior CLI override was the direct cause of the missing codex-code-mode-host error and must not be reused. No Render page, Secret, production configuration, AppX volume or cache was changed. A full restart is required to test the resource-only override."
+}

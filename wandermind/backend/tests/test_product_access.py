@@ -1,12 +1,15 @@
 import asyncio
+import csv
 import hashlib
 import json
 import os
+import subprocess
 import sys
 import tempfile
 import time
 import unittest
 import uuid
+from concurrent.futures import ThreadPoolExecutor
 from html.parser import HTMLParser
 from pathlib import Path
 from unittest.mock import AsyncMock, patch
@@ -19,6 +22,8 @@ TEST_DIR = tempfile.TemporaryDirectory(prefix="wandermind-product-test-")
 os.environ.pop("DATABASE_URL", None)
 os.environ["DB_PATH"] = str(Path(TEST_DIR.name) / "test.db")
 os.environ["ENVIRONMENT"] = "development"
+os.environ.pop("ADMIN_USERNAME", None)
+os.environ.pop("ADMIN_EMAIL", None)
 os.environ.pop("ADMIN_BOOTSTRAP_PASSWORD", None)
 
 BACKEND_DIR = Path(__file__).resolve().parents[1]
@@ -47,7 +52,12 @@ class ProductAccessTests(unittest.TestCase):
             conn.close()
 
     def setUp(self):
-        main._driver_request_attempts.clear()
+        conn = get_db()
+        try:
+            conn.execute("DELETE FROM driver_request_rate_limits")
+            conn.commit()
+        finally:
+            conn.close()
 
     @staticmethod
     def _create_user(email: str, name: str) -> str:
@@ -82,13 +92,16 @@ class ProductAccessTests(unittest.TestCase):
     def _run(coro):
         return asyncio.run(coro)
 
-    async def _request(self, method, path, *, token=None, json=None, anon_id=None, headers=None):
+    async def _request(
+        self, method, path, *, token=None, json=None, anon_id=None,
+        headers=None, client_ip="127.0.0.1",
+    ):
         headers = dict(headers or {})
         if token:
             headers["Authorization"] = f"Bearer {token}"
         if anon_id:
             headers["X-Anon-Id"] = anon_id
-        transport = httpx.ASGITransport(app=main.app)
+        transport = httpx.ASGITransport(app=main.app, client=(client_ip, 12345))
         async with httpx.AsyncClient(
             transport=transport, base_url="http://testserver"
         ) as client:
@@ -336,6 +349,295 @@ class ProductAccessTests(unittest.TestCase):
                     expected[1],
                 )
 
+    def test_professional_route_places_are_verified_execution_facts(self):
+        excluded = {
+            "thousand_islands_viewpoint",
+            "mount_batur_trailhead",
+            "mount_batur_jeep",
+            "bali_fire_shooting_club",
+            "celuk_silver_class",
+        }
+        seen = set()
+        for route_id in ("R1", "R2", "R3", "R4", "R5", "R6"):
+            with self.subTest(route_id=route_id):
+                route = main._professional_route_document(
+                    {
+                        "audience": "first",
+                        "goals": ["local", "photo"],
+                        "travel_style": "comfort",
+                        "travellers": 2,
+                        "days": 12,
+                        "pace": "balanced",
+                    },
+                    route_id=route_id,
+                    lang="en",
+                )
+                for day in route["full_days"]:
+                    for place in day["places"]:
+                        seen.add(place["id"])
+                        self.assertEqual(place["verification_status"], "verified")
+        self.assertTrue(seen)
+        self.assertIn("batur_hot_springs", seen)
+        self.assertTrue(excluded.isdisjoint(seen))
+
+    def test_concurrent_professional_order_creation_returns_one_order(self):
+        email = f"order-race-{uuid.uuid4().hex}@example.test"
+        user_id = self._create_user(email, "order-race")
+        token = main.make_token(user_id, email)
+        trip_id = self._new_trip(token=token)
+
+        def create_order(_):
+            return self._run(
+                self._request(
+                    "POST",
+                    "/api/professional-route/orders",
+                    token=token,
+                    json={"trip_id": trip_id},
+                )
+            )
+
+        with ThreadPoolExecutor(max_workers=8) as pool:
+            responses = list(pool.map(create_order, range(8)))
+        self.assertEqual([response.status_code for response in responses], [200] * 8)
+        order_ids = {response.json()["order"]["id"] for response in responses}
+        self.assertEqual(len(order_ids), 1)
+        conn = get_db()
+        try:
+            row = conn.execute(
+                """SELECT COUNT(*) AS n FROM professional_route_orders
+                   WHERE trip_id=? AND status IN ('pending','confirmed')""",
+                (trip_id,),
+            ).fetchone()
+        finally:
+            conn.close()
+        self.assertEqual(row["n"], 1)
+
+    def test_postgres_tests_reject_unsafe_database_before_backend_import(self):
+        cases = (
+            (
+                "wandermind.backend.tests.test_driver_rate_limit_postgres",
+                "postgresql://ci:ci@localhost.evil/wandermind",
+                True,
+            ),
+            (
+                "wandermind.backend.tests.test_entitlements_postgres",
+                "postgresql://ci:ci@127.0.0.1.evil/wandermind",
+                True,
+            ),
+            (
+                "wandermind.backend.tests.test_entitlements_postgres",
+                "postgresql://ci:ci@127.0.0.1/wandermind",
+                False,
+            ),
+        )
+        for module_name, database_url, allow_local in cases:
+            env = os.environ.copy()
+            env["DATABASE_URL"] = database_url
+            if allow_local:
+                env["WANDERMIND_ALLOW_LOCAL_POSTGRES_TESTS"] = "1"
+            else:
+                env.pop("WANDERMIND_ALLOW_LOCAL_POSTGRES_TESTS", None)
+            probe = subprocess.run(
+                [
+                    sys.executable,
+                    "-c",
+                    f"import importlib; importlib.import_module('{module_name}')",
+                ],
+                cwd=BACKEND_DIR.parents[1],
+                env=env,
+                capture_output=True,
+                text=True,
+                check=False,
+            )
+            output = probe.stdout + probe.stderr
+            self.assertNotEqual(probe.returncode, 0)
+            self.assertIn("explicitly allowed loopback database", output)
+            self.assertNotIn("[wandermind] DB backend", output)
+
+    def test_concurrent_rough_route_consumption_is_atomic(self):
+        email = f"rough-race-{uuid.uuid4().hex}@example.test"
+        user_id = self._create_user(email, "rough-race")
+        token = main.make_token(user_id, email)
+        trip_id = self._new_trip(token=token)
+
+        def consume(_):
+            return self._run(
+                self._request(
+                    "POST",
+                    f"/api/product-trips/{trip_id}/consume",
+                    token=token,
+                    json={"action": "rough_route"},
+                )
+            )
+
+        with ThreadPoolExecutor(max_workers=8) as pool:
+            responses = list(pool.map(consume, range(8)))
+        self.assertEqual(sum(response.status_code == 200 for response in responses), 1)
+        self.assertEqual(sum(response.status_code == 402 for response in responses), 7)
+        conn = get_db()
+        try:
+            row = conn.execute(
+                "SELECT rough_used FROM product_trips WHERE id=?", (trip_id,)
+            ).fetchone()
+        finally:
+            conn.close()
+        self.assertEqual(row["rough_used"], 1)
+
+    def test_concurrent_points_redemption_cannot_overspend_across_trips(self):
+        email = f"points-race-{uuid.uuid4().hex}@example.test"
+        user_id = self._create_user(email, "points-race")
+        token = main.make_token(user_id, email)
+        trip_ids = [self._new_trip(token=token), self._new_trip(token=token)]
+        conn = get_db()
+        try:
+            conn.execute(
+                """INSERT INTO route_points_ledger
+                   (id,user_id,delta,reason,ref_id,created_at)
+                   VALUES (?,?,?,?,?,?)""",
+                (
+                    str(uuid.uuid4()), user_id, 30, "test_credit",
+                    str(uuid.uuid4()), int(time.time()),
+                ),
+            )
+            conn.commit()
+        finally:
+            conn.close()
+
+        def redeem(trip_id):
+            return self._run(
+                self._request(
+                    "POST",
+                    "/api/referrals/redeem-professional-route",
+                    token=token,
+                    json={"trip_id": trip_id},
+                )
+            )
+
+        with ThreadPoolExecutor(max_workers=2) as pool:
+            responses = list(pool.map(redeem, trip_ids))
+        self.assertEqual(sorted(response.status_code for response in responses), [200, 402])
+        conn = get_db()
+        try:
+            balance = main._points_balance(conn, user_id)
+            confirmed = conn.execute(
+                """SELECT COUNT(*) AS n FROM professional_route_orders
+                   WHERE user_id=? AND status='confirmed'""",
+                (user_id,),
+            ).fetchone()
+        finally:
+            conn.close()
+        self.assertEqual(balance, 0)
+        self.assertEqual(confirmed["n"], 1)
+
+    def test_concurrent_professional_adjustments_stop_at_three(self):
+        email = f"adjust-race-{uuid.uuid4().hex}@example.test"
+        user_id = self._create_user(email, "adjust-race")
+        token = main.make_token(user_id, email)
+        trip_id = self._new_trip(token=token)
+        conn = get_db()
+        try:
+            conn.execute(
+                """UPDATE product_trips
+                   SET professional_route_entitlement=1,
+                       professional_adjustment_limit=3,
+                       professional_adjustments_used=0
+                   WHERE id=?""",
+                (trip_id,),
+            )
+            conn.commit()
+        finally:
+            conn.close()
+
+        def adjust(index):
+            return self._run(
+                self._request(
+                    "POST",
+                    f"/api/bali/professional-route/{trip_id}/adjust",
+                    token=token,
+                    json={
+                        "trip_profile": {
+                            "audience": "first",
+                            "goals": ["local"],
+                            "travel_style": "comfort",
+                            "travellers": 2,
+                            "days": 5 + (index % 2),
+                            "pace": "balanced",
+                        },
+                        "lang": "en",
+                    },
+                )
+            )
+
+        with ThreadPoolExecutor(max_workers=8) as pool:
+            responses = list(pool.map(adjust, range(8)))
+        self.assertEqual(sum(response.status_code == 200 for response in responses), 3)
+        self.assertEqual(sum(response.status_code == 402 for response in responses), 5)
+        conn = get_db()
+        try:
+            row = conn.execute(
+                "SELECT professional_adjustments_used FROM product_trips WHERE id=?",
+                (trip_id,),
+            ).fetchone()
+        finally:
+            conn.close()
+        self.assertEqual(row["professional_adjustments_used"], 3)
+
+    def test_points_redemption_converts_pending_order_without_duplication(self):
+        email = f"points-pending-{uuid.uuid4().hex}@example.test"
+        user_id = self._create_user(email, "points-pending")
+        token = main.make_token(user_id, email)
+        trip_id = self._new_trip(token=token)
+        pending = self._run(
+            self._request(
+                "POST",
+                "/api/professional-route/orders",
+                token=token,
+                json={"trip_id": trip_id},
+            )
+        )
+        self.assertEqual(pending.status_code, 200, pending.text)
+        pending_id = pending.json()["order"]["id"]
+        conn = get_db()
+        try:
+            conn.execute(
+                """INSERT INTO route_points_ledger
+                   (id,user_id,delta,reason,ref_id,created_at)
+                   VALUES (?,?,?,?,?,?)""",
+                (
+                    str(uuid.uuid4()), user_id, 30, "test_credit",
+                    str(uuid.uuid4()), int(time.time()),
+                ),
+            )
+            conn.commit()
+        finally:
+            conn.close()
+
+        redeemed = self._run(
+            self._request(
+                "POST",
+                "/api/referrals/redeem-professional-route",
+                token=token,
+                json={"trip_id": trip_id},
+            )
+        )
+        self.assertEqual(redeemed.status_code, 200, redeemed.text)
+        conn = get_db()
+        try:
+            rows = conn.execute(
+                """SELECT id,amount_cents,currency,status,payment_reference
+                   FROM professional_route_orders WHERE trip_id=?""",
+                (trip_id,),
+            ).fetchall()
+        finally:
+            conn.close()
+        self.assertEqual(len(rows), 1)
+        order = dict(rows[0])
+        self.assertEqual(order["id"], pending_id)
+        self.assertEqual(order["amount_cents"], 0)
+        self.assertEqual(order["currency"], "POINTS")
+        self.assertEqual(order["status"], "confirmed")
+        self.assertEqual(order["payment_reference"], "route_points:30")
+
     def test_professional_adjustment_endpoint_is_separate_from_ai_quota(self):
         self.assertEqual(main.PROFESSIONAL_ROUTE_ADJUSTMENT_LIMIT, 3)
         profile = {
@@ -515,14 +817,20 @@ class ProductAccessTests(unittest.TestCase):
         self.assertIn("bali.html#professional-planner", index_html)
         self.assertIn("ai-tool.html?mode=diy", index_html)
         self.assertIn('id="professional-planner"', bali_html)
-        self.assertIn("assets/js/bali-professional.js", bali_html)
+        self.assertIn("assets/js/bali-professional.js?v=p55", bali_html)
         self.assertNotIn("ai-tool.html?professional=1", bali_html)
         self.assertNotIn("professional_requested", ai_js)
         self.assertIn("history.replaceState({}, document.title, window.location.pathname);", ai_js)
         self.assertIn("authHeaders()", ai_js)
         self.assertIn("requestAuthRecovery()", ai_js)
         self.assertIn("/adjust", professional_js)
+        self.assertIn("wm:bali-route-selected", bali_html)
+        self.assertIn("window.history.replaceState", bali_html)
+        self.assertIn("window.addEventListener('wm:bali-route-selected'", professional_js)
+        self.assertIn("route_id:state.pendingRouteId || ''", professional_js)
+        self.assertIn("bali-professional-adjustments-badge", bali_html)
         self.assertEqual(professional_js.count("adjustScope:"), 5)
+        self.assertEqual(professional_js.count("routeSwitchPending:"), 5)
         self.assertIn('data-i18n="baliRouteSectionSub"', bali_html)
 
     def test_public_login_uses_email_without_exposing_admin_username(self):
@@ -1125,6 +1433,163 @@ class ProductAccessTests(unittest.TestCase):
         self.assertEqual(responses[5].status_code, 429, responses[5].text)
         self.assertEqual(send.await_count, 5)
 
+    def test_driver_request_rate_limit_separates_clients_behind_render_proxy(self):
+        payload = {
+            "driver_id": "dicky", "first_name": "Test",
+            "contact_email": "traveller@example.test", "privacy_consent": True,
+        }
+        with patch.dict(os.environ, {"RENDER": "true"}), patch.object(
+            main, "send_driver_request", new_callable=AsyncMock
+        ) as send:
+            send.return_value = {"ok": True}
+            first_client = [
+                self._run(
+                    self._request(
+                        "POST", "/api/driver-request", json=payload,
+                        client_ip="10.0.0.7",
+                        headers={"X-Forwarded-For": "203.0.113.17, 10.0.0.7"},
+                    )
+                )
+                for _ in range(main._DRIVER_REQUEST_LIMIT)
+            ]
+            second_client = self._run(
+                self._request(
+                    "POST", "/api/driver-request", json=payload,
+                    client_ip="10.0.0.7",
+                    headers={"X-Forwarded-For": "203.0.113.18, 10.0.0.7"},
+                )
+            )
+            blocked_first_client = self._run(
+                self._request(
+                    "POST", "/api/driver-request", json=payload,
+                    client_ip="10.0.0.7",
+                    headers={"X-Forwarded-For": "203.0.113.17, 10.0.0.7"},
+                )
+            )
+        self.assertEqual([response.status_code for response in first_client], [200] * 5)
+        self.assertEqual(second_client.status_code, 200, second_client.text)
+        self.assertEqual(blocked_first_client.status_code, 429, blocked_first_client.text)
+        self.assertEqual(send.await_count, 6)
+
+    def test_driver_request_rate_limit_ignores_spoofed_forwarded_for_off_render(self):
+        payload = {
+            "driver_id": "dicky", "first_name": "Test",
+            "contact_email": "traveller@example.test", "privacy_consent": True,
+        }
+        with patch.dict(os.environ, {"RENDER": ""}), patch.object(
+            main, "send_driver_request", new_callable=AsyncMock
+        ) as send:
+            send.return_value = {"ok": True}
+            responses = [
+                self._run(
+                    self._request(
+                        "POST", "/api/driver-request", json=payload,
+                        client_ip="10.0.0.7",
+                        headers={"X-Forwarded-For": f"203.0.113.{index}"},
+                    )
+                )
+                for index in range(1, main._DRIVER_REQUEST_LIMIT + 2)
+            ]
+        self.assertEqual([response.status_code for response in responses[:5]], [200] * 5)
+        self.assertEqual(responses[5].status_code, 429, responses[5].text)
+        self.assertEqual(send.await_count, 5)
+
+    def test_driver_request_rate_limit_persists_only_pseudonymous_counter(self):
+        payload = {
+            "driver_id": "dicky", "first_name": "Private Name",
+            "contact_email": "private@example.test", "privacy_consent": True,
+            "attractions": "Private itinerary text", "budget_range": "Private budget",
+        }
+        with patch.object(main, "send_driver_request", new_callable=AsyncMock) as send:
+            send.return_value = {"ok": True}
+            response = self._run(
+                self._request(
+                    "POST", "/api/driver-request", json=payload,
+                    client_ip="203.0.113.17",
+                )
+            )
+        self.assertEqual(response.status_code, 200, response.text)
+        conn = get_db()
+        try:
+            row = conn.execute("SELECT * FROM driver_request_rate_limits").fetchone()
+        finally:
+            conn.close()
+        self.assertIsNotNone(row)
+        stored = dict(row)
+        self.assertEqual(
+            set(stored),
+            {"client_key", "window_started_at", "request_count", "updated_at"},
+        )
+        self.assertRegex(stored["client_key"], r"^[0-9a-f]{64}$")
+        self.assertEqual(stored["request_count"], 1)
+        self.assertNotIn("203.0.113.17", json.dumps(stored))
+        self.assertNotIn("Private", json.dumps(stored))
+
+    def test_driver_request_rate_limit_is_atomic_and_separates_clients(self):
+        key = hashlib.sha256(b"same-client").hexdigest()
+        with ThreadPoolExecutor(max_workers=8) as pool:
+            counts = list(
+                pool.map(
+                    lambda _: main._consume_driver_request_attempt(key, 1_000_000),
+                    range(8),
+                )
+            )
+        self.assertEqual(
+            sum(count <= main._DRIVER_REQUEST_LIMIT for count in counts), 5
+        )
+        self.assertEqual(max(counts), main._DRIVER_REQUEST_LIMIT + 1)
+        other_count = main._consume_driver_request_attempt(
+            hashlib.sha256(b"other-client").hexdigest(), 1_000_000
+        )
+        self.assertEqual(other_count, 1)
+
+    def test_driver_request_rate_limit_resets_after_window(self):
+        key = hashlib.sha256(b"expiring-client").hexdigest()
+        counts = [
+            main._consume_driver_request_attempt(key, 1_000_000)
+            for _ in range(main._DRIVER_REQUEST_LIMIT)
+        ]
+        self.assertEqual(counts[-1], main._DRIVER_REQUEST_LIMIT)
+        self.assertEqual(
+            main._consume_driver_request_attempt(key, 1_000_060),
+            main._DRIVER_REQUEST_LIMIT + 1,
+        )
+        conn = get_db()
+        try:
+            blocked_row = dict(
+                conn.execute(
+                    "SELECT window_started_at,request_count,updated_at "
+                    "FROM driver_request_rate_limits WHERE client_key=?",
+                    (key,),
+                ).fetchone()
+            )
+        finally:
+            conn.close()
+        self.assertEqual(blocked_row["window_started_at"], 1_000_000)
+        self.assertEqual(blocked_row["request_count"], main._DRIVER_REQUEST_LIMIT + 1)
+        self.assertEqual(blocked_row["updated_at"], 1_000_060)
+        self.assertEqual(
+            main._consume_driver_request_attempt(
+                key, 1_000_000 + main._DRIVER_REQUEST_WINDOW_SECONDS
+            ),
+            1,
+        )
+
+    def test_driver_request_rate_limit_fails_closed_when_db_is_unavailable(self):
+        payload = {
+            "driver_id": "dicky", "first_name": "Test",
+            "contact_email": "traveller@example.test", "privacy_consent": True,
+        }
+        with patch.object(main, "get_db", side_effect=RuntimeError("db unavailable")), patch.object(
+            main, "send_driver_request", new_callable=AsyncMock
+        ) as send:
+            response = self._run(
+                self._request("POST", "/api/driver-request", json=payload)
+            )
+        self.assertEqual(response.status_code, 503, response.text)
+        self.assertNotIn("db unavailable", response.text)
+        send.assert_not_awaited()
+
     def test_bali_route_map_has_coordinates_for_every_region(self):
         data_path = (
             BACKEND_DIR.parents[1]
@@ -1189,6 +1654,7 @@ class ProductAccessTests(unittest.TestCase):
         route_ids = {route["id"] for route in data["routes"]}
         poi_ids = [poi["id"] for poi in data["pois"]]
         poi_by_id = {poi["id"]: poi for poi in data["pois"]}
+        self.assertEqual(len(poi_ids), 62)
         self.assertEqual(len(poi_ids), len(set(poi_ids)))
         verification_states = {
             "verified",
@@ -1210,6 +1676,12 @@ class ProductAccessTests(unittest.TestCase):
             "ubud_monkey_forest",
             "uluwatu_temple",
             "seminyak_beach",
+            "batu_bolong_beach",
+            "echo_beach",
+            "petitenget_temple",
+            "yoga_barn",
+            "pyramids_of_chi",
+            "tibumana_waterfall",
             "melasti_beach",
             "jimbaran_bay",
             "sanur_beach",
@@ -1222,6 +1694,38 @@ class ProductAccessTests(unittest.TestCase):
             "pandawa_beach",
             "bingin_beach",
             "nusa_dua_beach",
+            "suluban_beach",
+            "kelingking_beach",
+            "broken_beach",
+            "angels_billabong",
+            "crystal_bay",
+            "diamond_beach",
+            "rumah_pohon_molenteng",
+            "atuh_beach",
+            "celuk_village",
+            "goa_gajah",
+            "kanto_lampo_waterfall",
+            "tirta_gangga",
+            "sidemen_valley",
+            "banyumala_waterfall",
+            "tamblingan_lake",
+            "tukad_cepung_waterfall",
+            "amed_beach",
+            "ulun_danu_beratan",
+            "tegenungan_waterfall",
+            "jatiluwih_rice_terraces",
+            "lempuyang_temple",
+            "taman_ujung",
+            "virgin_beach",
+            "heart_space_bali",
+            "intuitive_flow",
+            "munduk_waterfall",
+            "gitgit_waterfall",
+            "tulamben",
+            "taman_ayun",
+            "taman_saraswati",
+            "sundays_beach_club",
+            "batur_hot_springs",
         }
         self.assertEqual(
             {poi["id"] for poi in data["pois"] if poi["verification_status"] == "verified"},
@@ -1229,18 +1733,69 @@ class ProductAccessTests(unittest.TestCase):
         )
         self.assertEqual(
             sum(poi["verification_status"] == "pending_review" for poi in data["pois"]),
-            30,
+            2,
+        )
+        for route_grouped_id in {
+            "ulun_danu_beratan",
+            "tegenungan_waterfall",
+            "jatiluwih_rice_terraces",
+        }:
+            self.assertIn("itinerary grouping", poi_by_id[route_grouped_id]["notes"])
+        self.assertIn("Penataran Agung", poi_by_id["lempuyang_temple"]["notes"])
+        self.assertIn("summit temple", poi_by_id["lempuyang_temple"]["notes"])
+        self.assertIn("Pantai Perasi", poi_by_id["virgin_beach"]["name"])
+        self.assertIn("does not promise", poi_by_id["virgin_beach"]["notes"])
+        self.assertIn("does not verify medical benefit", poi_by_id["heart_space_bali"]["notes"])
+        self.assertIn("does not verify medical benefit", poi_by_id["intuitive_flow"]["notes"])
+        self.assertIn("must not be merged", poi_by_id["munduk_waterfall"]["notes"])
+        self.assertIn("must not be merged", poi_by_id["gitgit_waterfall"]["notes"])
+        self.assertIn("does not verify any dive operator", poi_by_id["tulamben"]["notes"])
+        self.assertIn("World Heritage", poi_by_id["taman_ayun"]["notes"])
+        self.assertIn("public access", poi_by_id["taman_saraswati"]["notes"])
+        self.assertIn("tide", poi_by_id["sundays_beach_club"]["verification"]["live_checks"])
+        self.assertEqual(
+            poi_by_id["thousand_islands_viewpoint"]["verification_status"],
+            "pending_review",
+        )
+        self.assertIn(
+            "exact public identity",
+            poi_by_id["thousand_islands_viewpoint"]["notes"],
         )
         self.assertEqual(
-            poi_by_id["mount_batur_jeep"]["verification_status"],
-            "needs_supplier_confirmation",
+            poi_by_id["mount_batur_trailhead"]["name"],
+            "Mount Batur Hiking Area",
+        )
+        self.assertIn(
+            "multiple hiking posts",
+            poi_by_id["mount_batur_trailhead"]["notes"],
+        )
+        self.assertEqual(
+            poi_by_id["batur_hot_springs"]["name"],
+            "Batur Natural Hot Spring",
+        )
+        self.assertIn(
+            "hygiene",
+            poi_by_id["batur_hot_springs"]["verification"]["live_checks"],
+        )
+        supplier_confirmation_ids = {
+            "mount_batur_jeep",
+            "bali_fire_shooting_club",
+            "celuk_silver_class",
+        }
+        self.assertEqual(
+            {
+                poi["id"]
+                for poi in data["pois"]
+                if poi["verification_status"] == "needs_supplier_confirmation"
+            },
+            supplier_confirmation_ids,
         )
         self.assertEqual(
             sum(
                 poi["verification_status"] == "needs_supplier_confirmation"
                 for poi in data["pois"]
             ),
-            1,
+            3,
         )
         r1 = next(route for route in data["routes"] if route["id"] == "R1")
         self.assertEqual(
@@ -1269,6 +1824,18 @@ class ProductAccessTests(unittest.TestCase):
             },
             {"mount_batur_jeep"},
         )
+        r2 = next(route for route in data["routes"] if route["id"] == "R2")
+        self.assertEqual(r2["verification_status"], "verified")
+        r2_outline_ids = {
+            poi_id
+            for day in r2["free_outline"]
+            for poi_id in day["suggested_poi_ids"]
+        }
+        self.assertEqual(len(r2_outline_ids), 10)
+        self.assertEqual(
+            {poi_by_id[poi_id]["verification_status"] for poi_id in r2_outline_ids},
+            {"verified"},
+        )
         r3 = next(route for route in data["routes"] if route["id"] == "R3")
         self.assertEqual(r3["verification_status"], "verified")
         r3_outline_ids = {
@@ -1281,10 +1848,79 @@ class ProductAccessTests(unittest.TestCase):
             {poi_by_id[poi_id]["verification_status"] for poi_id in r3_outline_ids},
             {"verified"},
         )
+        r4 = next(route for route in data["routes"] if route["id"] == "R4")
+        self.assertEqual(r4["verification_status"], "verified")
+        r4_outline_ids = {
+            poi_id
+            for day in r4["free_outline"]
+            for poi_id in day["suggested_poi_ids"]
+        }
+        self.assertEqual(len(r4_outline_ids), 10)
+        self.assertEqual(
+            {poi_by_id[poi_id]["verification_status"] for poi_id in r4_outline_ids},
+            {"verified"},
+        )
+        self.assertEqual(
+            r4["free_outline"][2]["suggested_poi_ids"],
+            ["celuk_village", "tegalalang_rice_terrace"],
+        )
+        r5 = next(route for route in data["routes"] if route["id"] == "R5")
+        self.assertEqual(r5["verification_status"], "needs_supplier_confirmation")
+        r5_outline_ids = {
+            poi_id
+            for day in r5["free_outline"]
+            for poi_id in day["suggested_poi_ids"]
+        }
+        self.assertEqual(len(r5_outline_ids), 9)
+        self.assertEqual(
+            {
+                poi_by_id[poi_id]["verification_status"]
+                for poi_id in r5_outline_ids
+            },
+            {"verified", "pending_review", "needs_supplier_confirmation"},
+        )
+        self.assertEqual(
+            {
+                poi_id
+                for poi_id in r5_outline_ids
+                if poi_by_id[poi_id]["verification_status"] == "pending_review"
+            },
+            {"mount_batur_trailhead"},
+        )
+        self.assertEqual(
+            {
+                poi_id
+                for poi_id in r5_outline_ids
+                if poi_by_id[poi_id]["verification_status"]
+                == "needs_supplier_confirmation"
+            },
+            {"mount_batur_jeep"},
+        )
+        r6 = next(route for route in data["routes"] if route["id"] == "R6")
+        self.assertEqual(r6["verification_status"], "verified")
+        r6_outline_ids = {
+            poi_id
+            for day in r6["free_outline"]
+            for poi_id in day["suggested_poi_ids"]
+        }
+        self.assertEqual(len(r6_outline_ids), 10)
+        self.assertEqual(
+            {poi_by_id[poi_id]["verification_status"] for poi_id in r6_outline_ids},
+            {"verified"},
+        )
         self.assertIn("opening_hours", data["verification_policy"]["live_checks_required"])
         bali_html = (data_path.parents[2] / "bali.html").read_text(encoding="utf-8")
-        self.assertIn("Stable route facts reviewed", bali_html)
-        self.assertIn("路线稳定事实已核验", bali_html)
+        self.assertNotIn("Stable route facts reviewed", bali_html)
+        self.assertNotIn("路线稳定事实已核验", bali_html)
+        self.assertIn("Confirm before booking", bali_html)
+        self.assertIn("预约前确认", bali_html)
+        self.assertIn(
+            "https://maimelali.banglikab.go.id/objek/batur-natural-hot-spring",
+            {
+                source["url"]
+                for source in poi_by_id["batur_hot_springs"]["verification"]["sources"]
+            },
+        )
         for poi_id in verified_ids:
             poi = poi_by_id[poi_id]
             self.assertTrue(poi["official_url"].startswith("https://"), poi_id)
@@ -1297,7 +1933,13 @@ class ProductAccessTests(unittest.TestCase):
                 self.assertTrue(source["url"].startswith("https://"), (poi_id, source))
                 self.assertIn(
                     source["kind"],
-                    {"official_venue", "official_booking", "government_tourism", "government_registry"},
+                    {
+                        "official_venue",
+                        "official_booking",
+                        "government_tourism",
+                        "government_registry",
+                        "international_heritage_registry",
+                    },
                     (poi_id, source),
                 )
         for route in data["routes"]:
@@ -1334,6 +1976,51 @@ class ProductAccessTests(unittest.TestCase):
                     )
                     suggested_ids.append(poi_id)
             self.assertEqual(len(suggested_ids), len(set(suggested_ids)), route["id"])
+
+    def test_dicky_five_day_route_gaps_are_normalized_without_generic_pois(self):
+        data_path = (
+            BACKEND_DIR.parents[1]
+            / "wandermind-studio"
+            / "frontend"
+            / "assets"
+            / "data"
+            / "bali-travel-data.json"
+        )
+        data = json.loads(data_path.read_text(encoding="utf-8"))
+        poi_by_id = {poi["id"]: poi for poi in data["pois"]}
+
+        for poi_id in {
+            "suluban_beach",
+            "kelingking_beach",
+            "broken_beach",
+            "angels_billabong",
+            "crystal_bay",
+            "diamond_beach",
+            "rumah_pohon_molenteng",
+            "atuh_beach",
+        }:
+            self.assertEqual(poi_by_id[poi_id]["verification_status"], "verified")
+            self.assertIn("R1", poi_by_id[poi_id]["route_ids"])
+
+        self.assertIn("Blue Point", poi_by_id["suluban_beach"]["name"])
+        self.assertEqual(
+            poi_by_id["thousand_islands_viewpoint"]["verification_status"],
+            "pending_review",
+        )
+        self.assertEqual(
+            poi_by_id["bali_fire_shooting_club"]["verification_status"],
+            "needs_supplier_confirmation",
+        )
+        for generic_id in {
+            "airport_pickup",
+            "airport_dropoff",
+            "hotel_check_in",
+            "lunch_dinner",
+            "cliff_road",
+            "shopping",
+            "blue_point",
+        }:
+            self.assertNotIn(generic_id, poi_by_id)
 
     def test_bali_route_map_uses_pinned_leaflet_with_fallback(self):
         html = (
@@ -1726,6 +2413,12 @@ class ProductAccessTests(unittest.TestCase):
             }
 
         def create_asset(filename, suffix, title, status="draft"):
+            def localized(value):
+                return {
+                    lang: value if lang == "en" else f"{value} [{lang}]"
+                    for lang in ("zh", "en", "ja", "ko", "id")
+                }
+
             payload = {
                 "destination": "bali",
                 "primary_theme": "experiences",
@@ -1740,9 +2433,9 @@ class ProductAccessTests(unittest.TestCase):
                 "tags": ["wildlife", "golden-hour"],
                 "mood": "curious",
                 "photography_style": "sunrise-documentary",
-                "title": {"en": title, "zh": "罗威纳追海豚"},
-                "description": {"en": "A sunrise wildlife experience in North Bali."},
-                "alt_text": {"en": "Dolphins seen from a Lovina sunrise boat"},
+                "title": localized(title),
+                "description": localized("A sunrise wildlife experience in North Bali."),
+                "alt_text": localized("Dolphins seen from a Lovina sunrise boat"),
                 "verification_status": "route-linked",
                 "status": status,
             }
@@ -1882,6 +2575,41 @@ class ProductAccessTests(unittest.TestCase):
             )
             self.assertNotIn(first["id"], {item["id"] for item in public_hidden.json()["assets"]})
 
+    def test_portfolio_publish_requires_all_five_locales_but_draft_does_not(self):
+        incomplete = {
+            "primary_theme": "experiences",
+            "place_name": "Lovina Dolphin Watching",
+            "title": {"en": "Lovina at sunrise"},
+            "description": {"en": "A North Bali wildlife experience."},
+            "alt_text": {"en": "Dolphins seen from a Lovina boat"},
+            "status": "draft",
+        }
+        draft = main._validate_portfolio_metadata(incomplete)
+        self.assertEqual(draft["status"], "draft")
+        self.assertEqual(draft["title"], {"en": "Lovina at sunrise"})
+
+        with self.assertRaises(main.HTTPException) as caught:
+            main._validate_portfolio_metadata({**incomplete, "status": "published"})
+        self.assertEqual(caught.exception.status_code, 400)
+        self.assertIn("title.zh", caught.exception.detail)
+        self.assertIn("description.ja", caught.exception.detail)
+        self.assertIn("alt_text.id", caught.exception.detail)
+
+        localized = {
+            lang: f"Complete metadata {lang}"
+            for lang in ("zh", "en", "ja", "ko", "id")
+        }
+        published = main._validate_portfolio_metadata(
+            {
+                **incomplete,
+                "title": localized,
+                "description": localized,
+                "alt_text": localized,
+                "status": "published",
+            }
+        )
+        self.assertEqual(published["status"], "published")
+
     def test_portfolio_publish_approval_fails_closed_for_invalid_manifest(self):
         with patch.object(main.json, "loads", return_value=[]):
             with self.assertRaises(main.HTTPException) as caught:
@@ -1903,7 +2631,7 @@ class ProductAccessTests(unittest.TestCase):
         self.assertIn("multiple", admin_html)
         self.assertIn('id="manifestStatus"', admin_html)
         self.assertIn('id="queueDialog"', admin_html)
-        self.assertIn("admin-portfolio.js?v=p5", admin_html)
+        self.assertIn("admin-portfolio.js?v=p6", admin_html)
         self.assertIn('id="uploadDefaults"', admin_html)
         self.assertNotIn('id="uploadDefaults" open', admin_html)
         self.assertIn("Approved images are filled automatically", admin_html)
@@ -1919,6 +2647,7 @@ class ProductAccessTests(unittest.TestCase):
         self.assertIn("localizedSuggestion(item.title", admin_js)
         self.assertIn("localizedSuggestion(item.description", admin_js)
         self.assertIn("reviewAutoMetadata", admin_js)
+        self.assertIn("hasCompletePublishedMetadata", admin_js)
         self.assertIn("draftUploadFinished", admin_js)
         self.assertIn("/api/admin/portfolio/upload-cleanup", admin_js)
         self.assertIn("retryUploadCleanup", admin_js)
@@ -1942,6 +2671,16 @@ class ProductAccessTests(unittest.TestCase):
 
     def test_approved_image_manifest_contains_unique_108_and_new_lempuyang_hash(self):
         frontend = BACKEND_DIR.parents[1] / "wandermind-studio" / "frontend"
+        intake_path = frontend / "assets" / "data" / "image-intake-review.csv"
+        with intake_path.open(encoding="utf-8", newline="") as handle:
+            intake_rows = list(csv.DictReader(handle))
+        self.assertEqual(len(intake_rows), 108)
+        for row in intake_rows:
+            self.assertNotIn(None, row, row.get("Filename"))
+            self.assertEqual(row["EligibleForPublish"], "True", row["Filename"])
+            self.assertTrue(row["WebOptimizedPath"], row["Filename"])
+            self.assertTrue((frontend / row["WebOptimizedPath"]).is_file(), row["Filename"])
+
         manifest = json.loads(
             (frontend / "assets" / "data" / "image-publish-manifest.json").read_text(
                 encoding="utf-8"
@@ -1982,6 +2721,431 @@ class ProductAccessTests(unittest.TestCase):
         for field in ("title", "description", "alt_text"):
             self.assertEqual(set(tanah_lot[field]), {"zh", "en", "ja", "ko", "id"})
             self.assertTrue(all("?" not in value for value in tanah_lot[field].values()))
+
+    def test_first_route_linked_d8_portfolio_batch_has_reviewed_five_language_copy(self):
+        frontend = BACKEND_DIR.parents[1] / "wandermind-studio" / "frontend"
+        manifest = json.loads(
+            (frontend / "assets" / "data" / "image-publish-manifest.json").read_text(
+                encoding="utf-8"
+            )
+        )
+        bali_data = json.loads(
+            (frontend / "assets" / "data" / "bali-travel-data.json").read_text(
+                encoding="utf-8"
+            )
+        )
+        expected_paths = {
+            "assets/images/Garuda Wisnu Kencana.jpg",
+            "assets/images/Intuitive Flow1.jpg",
+            "assets/images/Pura Besakih1.png",
+            "assets/images/Pura Besakih2.png",
+            "assets/images/Pura Besakih3.png",
+            "assets/images/Pura Besakih4.png",
+            "assets/images/Pura Luhur Uluwatu1.jpg",
+            "assets/images/Pura Luhur Uluwatu2.jpg",
+            "assets/images/Pura Tanah Lot.jpg",
+            "assets/images/Pura Ulun Danu.jpg",
+            "assets/images/Pyramids_Of_Chi音疗1.jpg",
+            "assets/images/Pyramids_Of_Chi音疗2.jpg",
+            "assets/images/Tirta Empul Water Purification Temple.jpg",
+            "assets/images/ubud yogabarn1.jpg",
+            "assets/images/ubud yogabarn2.jpg",
+        }
+        d8_themes = {"landscapes", "culture", "experiences"}
+        batch = [
+            item
+            for item in manifest["images"]
+            if item["relative_path"] in expected_paths
+            and item["category"] in d8_themes
+            and item["region_ids"]
+            and item["route_ids"]
+            and item["poi_ids"]
+        ]
+        self.assertEqual({item["relative_path"] for item in batch}, expected_paths)
+
+        poi_status = {item["id"]: item["verification_status"] for item in bali_data["pois"]}
+        languages = {"zh", "en", "ja", "ko", "id"}
+        for item in batch:
+            self.assertTrue((frontend / item["web_optimized_path"]).is_file())
+            for field in ("title", "description", "alt_text"):
+                self.assertEqual(set(item[field]), languages)
+                self.assertTrue(all(value.strip() for value in item[field].values()))
+                self.assertTrue(all("?" not in value for value in item[field].values()))
+            for poi_id in item["poi_ids"]:
+                self.assertEqual(poi_status.get(poi_id), "verified")
+
+        gwk = next(item for item in batch if item["poi_ids"] == ["gwk"])
+        self.assertNotIn("temple", gwk["tags"])
+        self.assertIn("cultural-park", gwk["tags"])
+
+    def test_second_d8_portfolio_batch_has_verified_pois_and_five_language_copy(self):
+        frontend = BACKEND_DIR.parents[1] / "wandermind-studio" / "frontend"
+        manifest = json.loads(
+            (frontend / "assets" / "data" / "image-publish-manifest.json").read_text(
+                encoding="utf-8"
+            )
+        )
+        bali_data = json.loads(
+            (frontend / "assets" / "data" / "bali-travel-data.json").read_text(
+                encoding="utf-8"
+            )
+        )
+        expected = {
+            "assets/images/Pura Taman Ayun.jpg": "taman_ayun",
+            "assets/images/Pura Taman Saraswati1.jpg": "taman_saraswati",
+            "assets/images/Pura Taman Saraswati2.jpg": "taman_saraswati",
+            "assets/images/uluwatu_sunday beach club1.jpg": "sundays_beach_club",
+            "assets/images/uluwatu_sunday beach club2.jpg": "sundays_beach_club",
+            "assets/images/Lempuyang Temple.jpg": "lempuyang_temple",
+        }
+        by_path = {item["relative_path"]: item for item in manifest["images"]}
+        poi_by_id = {item["id"]: item for item in bali_data["pois"]}
+        languages = {"zh", "en", "ja", "ko", "id"}
+
+        for path, poi_id in expected.items():
+            item = by_path[path]
+            self.assertEqual(item["poi_ids"], [poi_id])
+            self.assertEqual(poi_by_id[poi_id]["verification_status"], "verified")
+            self.assertTrue((frontend / item["web_optimized_path"]).is_file())
+            for field in ("title", "description", "alt_text"):
+                self.assertEqual(set(item[field]), languages)
+                self.assertTrue(all(value.strip() for value in item[field].values()))
+                self.assertTrue(all("?" not in value for value in item[field].values()))
+
+        complete_d8 = [
+            item
+            for item in manifest["images"]
+            if item["category"] in {"landscapes", "culture", "experiences"}
+            and all(
+                set(item.get(field, {})) == languages
+                and all(value.strip() for value in item[field].values())
+                for field in ("title", "description", "alt_text")
+            )
+        ]
+        self.assertEqual(len(complete_d8), 28)
+
+        lempuyang = by_path["assets/images/Lempuyang Temple.jpg"]
+        self.assertIn("Penataran Agung", lempuyang["title"]["en"])
+        self.assertIn("not the summit temple", lempuyang["description"]["en"])
+
+    def test_third_d8_portfolio_batch_maps_bali_12_to_verified_monkey_forest(self):
+        frontend = BACKEND_DIR.parents[1] / "wandermind-studio" / "frontend"
+        manifest = json.loads(
+            (frontend / "assets" / "data" / "image-publish-manifest.json").read_text(
+                encoding="utf-8"
+            )
+        )
+        bali_data = json.loads(
+            (frontend / "assets" / "data" / "bali-travel-data.json").read_text(
+                encoding="utf-8"
+            )
+        )
+        by_path = {item["relative_path"]: item for item in manifest["images"]}
+        poi_by_id = {item["id"]: item for item in bali_data["pois"]}
+        item = by_path["assets/images/bali-12.jpg"]
+        languages = {"zh", "en", "ja", "ko", "id"}
+
+        self.assertEqual(
+            item["sha256"],
+            "3d75af3a6b693c122721ed8c0ab8a01be453a641f7daf06482af4cc2cea217e8",
+        )
+        self.assertEqual(item["web_optimized_path"], "assets/images/web/3d75af3a6b693c12.webp")
+        self.assertTrue((frontend / item["web_optimized_path"]).is_file())
+        self.assertEqual(item["category"], "landscapes")
+        self.assertEqual(item["sub_category"], "nature-wildlife")
+        self.assertEqual(item["region_ids"], ["G4"])
+        self.assertEqual(item["route_ids"], ["R1", "R2", "R4"])
+        self.assertEqual(item["poi_ids"], ["ubud_monkey_forest"])
+        self.assertEqual(
+            poi_by_id["ubud_monkey_forest"]["verification_status"], "verified"
+        )
+        self.assertTrue(
+            {"forest", "wildlife", "culture", "entrance"}.issubset(item["tags"])
+        )
+        for field in ("title", "description", "alt_text"):
+            self.assertEqual(set(item[field]), languages)
+            self.assertTrue(all(value.strip() for value in item[field].values()))
+            self.assertTrue(all("?" not in value for value in item[field].values()))
+        self.assertIn("official", item["description"]["en"].lower())
+
+    def test_fourth_d8_portfolio_batch_describes_galungan_without_inventing_a_place(self):
+        frontend = BACKEND_DIR.parents[1] / "wandermind-studio" / "frontend"
+        html = (frontend / "bali.html").read_text(encoding="utf-8")
+        intake_csv = (
+            frontend / "assets" / "data" / "image-intake-review.csv"
+        ).read_text(encoding="utf-8")
+        intake_line = next(
+            line for line in intake_csv.splitlines() if line.startswith("Galungan.jpg,")
+        )
+        manifest = json.loads(
+            (frontend / "assets" / "data" / "image-publish-manifest.json").read_text(
+                encoding="utf-8"
+            )
+        )
+        by_path = {item["relative_path"]: item for item in manifest["images"]}
+        item = by_path["assets/images/Galungan.jpg"]
+        languages = {"zh", "en", "ja", "ko", "id"}
+
+        self.assertEqual(
+            item["sha256"],
+            "a637d36cf0e9f53a7b940cdff9787e5581af61cdfcd7882c03d87c3ba0591006",
+        )
+        self.assertEqual(
+            item["web_optimized_path"], "assets/images/web/a637d36cf0e9f53a.webp"
+        )
+        self.assertTrue((frontend / item["web_optimized_path"]).is_file())
+        self.assertEqual(item["category"], "culture")
+        self.assertEqual(item["sub_category"], "balinese-culture")
+        self.assertTrue({"culture", "festival", "penjor"}.issubset(item["tags"]))
+        self.assertNotIn("temple", item["tags"])
+        self.assertEqual(item["location_status"], "bali-named")
+        self.assertEqual(item["region_ids"], [])
+        self.assertEqual(item["route_ids"], ["R4"])
+        self.assertEqual(item["poi_ids"], [])
+        for field in ("title", "description", "alt_text"):
+            self.assertEqual(set(item[field]), languages)
+            self.assertTrue(all(value.strip() for value in item[field].values()))
+            self.assertTrue(all("?" not in value for value in item[field].values()))
+        self.assertIn("associated", item["title"]["en"].lower())
+        self.assertIn("unverified", item["description"]["en"].lower())
+        self.assertIn(
+            'data-place="galungan" data-category="culture"', html
+        )
+        self.assertIn('data-tags="culture festival penjor"', html)
+        self.assertIn('data-route-ids="R4"', html)
+        self.assertIn(
+            'alt="Rows of curved bamboo penjor decorations beside a road in Bali under a blue sky"',
+            html,
+        )
+        self.assertIn("galungan:'galungan'", html)
+        self.assertIn("culture;festival;penjor", intake_line)
+        self.assertNotIn("culture;temple", intake_line)
+        self.assertIn(item["alt_text"]["en"], intake_line)
+        for copy in (
+            "Balinese penjor associated with Galungan",
+            "与加隆安节相关的巴厘岛佩恩乔尔",
+            "ガルンガンに関連するバリ島のペンジョール",
+            "갈룽안과 관련된 발리의 펜조르",
+            "Penjor Bali yang berkaitan dengan Galungan",
+        ):
+            self.assertIn(copy, html)
+
+    def test_fifth_d8_portfolio_batch_corrects_nyepi_filename_to_visible_seminyak_scene(self):
+        frontend = BACKEND_DIR.parents[1] / "wandermind-studio" / "frontend"
+        html = (frontend / "bali.html").read_text(encoding="utf-8")
+        intake_csv = (
+            frontend / "assets" / "data" / "image-intake-review.csv"
+        ).read_text(encoding="utf-8")
+        intake_line = next(
+            line for line in intake_csv.splitlines() if line.startswith("Nyepi.jpg,")
+        )
+        manifest = json.loads(
+            (frontend / "assets" / "data" / "image-publish-manifest.json").read_text(
+                encoding="utf-8"
+            )
+        )
+        by_path = {item["relative_path"]: item for item in manifest["images"]}
+        item = by_path["assets/images/Nyepi.jpg"]
+        languages = {"zh", "en", "ja", "ko", "id"}
+
+        self.assertEqual(
+            item["sha256"],
+            "5ea1261626ebac26342958d6ca299cfff578f8f01ec04c41a1281f05ced1a550",
+        )
+        self.assertEqual(
+            item["web_optimized_path"], "assets/images/web/5ea1261626ebac26.webp"
+        )
+        self.assertTrue((frontend / item["web_optimized_path"]).is_file())
+        self.assertEqual(item["category"], "culture")
+        self.assertEqual(item["sub_category"], "balinese-culture")
+        self.assertTrue(
+            {"culture", "community", "temple", "penjor"}.issubset(item["tags"])
+        )
+        self.assertEqual(item["location_status"], "bali-named")
+        self.assertEqual(item["region_ids"], ["G1"])
+        self.assertEqual(item["route_ids"], ["R6"])
+        self.assertEqual(item["poi_ids"], [])
+        for field in ("title", "description", "alt_text"):
+            self.assertEqual(set(item[field]), languages)
+            self.assertTrue(all(value.strip() for value in item[field].values()))
+            self.assertTrue(all("?" not in value for value in item[field].values()))
+        self.assertIn("unverified", item["description"]["en"].lower())
+        self.assertIn("culture;community;temple;penjor", intake_line)
+        self.assertIn(item["alt_text"]["en"], intake_line)
+        self.assertIn('data-place="pura-desa-seminyak-gathering"', html)
+        self.assertIn('data-region="G1" data-area="Seminyak"', html)
+        self.assertIn('data-route-ids="R6"', html)
+        self.assertNotIn('data-place="nyepi"', html)
+        self.assertNotIn('alt="Nyepi cultural moment in Bali"', html)
+        for copy in (
+            "Balinese cultural gathering at Pura Desa Adat Seminyak",
+            "塞米亚克村社神庙的巴厘文化聚会",
+            "プラ・デサ・アダット・スミニャックのバリ文化の集い",
+            "푸라 데사 아다트 스미냑의 발리 문화 모임",
+            "Pertemuan budaya Bali di Pura Desa Adat Seminyak",
+        ):
+            self.assertIn(copy, html)
+
+    def test_sixth_d8_portfolio_batch_does_not_treat_bali_filename_as_location_evidence(self):
+        frontend = BACKEND_DIR.parents[1] / "wandermind-studio" / "frontend"
+        intake_csv = (
+            frontend / "assets" / "data" / "image-intake-review.csv"
+        ).read_text(encoding="utf-8")
+        intake_line = next(
+            line for line in intake_csv.splitlines() if line.startswith("bali-1.jpg,")
+        )
+        manifest = json.loads(
+            (frontend / "assets" / "data" / "image-publish-manifest.json").read_text(
+                encoding="utf-8"
+            )
+        )
+        item = next(
+            image
+            for image in manifest["images"]
+            if image["relative_path"] == "assets/images/bali-1.jpg"
+        )
+        languages = {"zh", "en", "ja", "ko", "id"}
+
+        self.assertEqual(
+            item["sha256"],
+            "51ab7ab45565e4b5238bda9a7991263b8fdbf31dd4c076242bd4b3ef58eb0966",
+        )
+        self.assertEqual(
+            item["web_optimized_path"], "assets/images/web/51ab7ab45565e4b5.webp"
+        )
+        self.assertTrue((frontend / item["web_optimized_path"]).is_file())
+        self.assertEqual(item["category"], "landscapes")
+        self.assertEqual(item["sub_category"], "ocean-beach")
+        self.assertEqual(
+            item["tags"],
+            ["coast", "ocean", "intertidal", "rocky-shore", "twilight", "coastal-building"],
+        )
+        self.assertEqual(item["location_status"], "unknown")
+        self.assertEqual(item["region_ids"], [])
+        self.assertEqual(item["route_ids"], [])
+        self.assertEqual(item["poi_ids"], [])
+        for field in ("title", "description", "alt_text"):
+            self.assertEqual(set(item[field]), languages)
+            self.assertTrue(all(value.strip() for value in item[field].values()))
+            self.assertTrue(all("?" not in value for value in item[field].values()))
+        self.assertIn("unverified", item["description"]["en"].lower())
+        self.assertNotIn("bali", " ".join(item["tags"]).lower())
+        self.assertIn(
+            "coast;ocean;intertidal;rocky-shore;twilight;coastal-building",
+            intake_line,
+        )
+        self.assertIn(",unknown,,,,", intake_line)
+        self.assertIn(item["alt_text"]["en"], intake_line)
+
+    def test_seventh_d8_portfolio_batch_keeps_unverified_split_gate_location_unknown(self):
+        frontend = BACKEND_DIR.parents[1] / "wandermind-studio" / "frontend"
+        intake_csv = (
+            frontend / "assets" / "data" / "image-intake-review.csv"
+        ).read_text(encoding="utf-8")
+        intake_line = next(
+            line for line in intake_csv.splitlines() if line.startswith("bali-2.jpg,")
+        )
+        manifest = json.loads(
+            (frontend / "assets" / "data" / "image-publish-manifest.json").read_text(
+                encoding="utf-8"
+            )
+        )
+        item = next(
+            image
+            for image in manifest["images"]
+            if image["relative_path"] == "assets/images/bali-2.jpg"
+        )
+        languages = {"zh", "en", "ja", "ko", "id"}
+
+        self.assertEqual(
+            item["sha256"],
+            "94036e2811302fc80417370f6ca64f13a6d85b667a1c222751d8b0f6f5bd6d90",
+        )
+        self.assertEqual(
+            item["web_optimized_path"], "assets/images/web/94036e2811302fc8.webp"
+        )
+        self.assertTrue((frontend / item["web_optimized_path"]).is_file())
+        self.assertEqual(item["category"], "culture")
+        self.assertEqual(item["sub_category"], "balinese-culture")
+        self.assertEqual(
+            item["tags"],
+            [
+                "culture",
+                "architecture",
+                "split-gate",
+                "mountain",
+                "greenery",
+                "road",
+                "cloth-decoration",
+            ],
+        )
+        self.assertEqual(item["location_status"], "unknown")
+        self.assertEqual(item["region_ids"], [])
+        self.assertEqual(item["route_ids"], [])
+        self.assertEqual(item["poi_ids"], [])
+        for field in ("title", "description", "alt_text"):
+            self.assertEqual(set(item[field]), languages)
+            self.assertTrue(all(value.strip() for value in item[field].values()))
+            self.assertTrue(all("?" not in value for value in item[field].values()))
+        self.assertIn("Handara Gate", item["description"]["en"])
+        self.assertIn("unverified", item["description"]["en"].lower())
+        self.assertNotIn("handara", " ".join(item["tags"]).lower())
+        self.assertIn(
+            "culture;architecture;split-gate;mountain;greenery;road;cloth-decoration",
+            intake_line,
+        )
+        self.assertIn(",unknown,,,,", intake_line)
+        self.assertIn(item["alt_text"]["en"], intake_line)
+
+    def test_eighth_d8_portfolio_batch_maps_kelingking_viewpoint_safely(self):
+        frontend = BACKEND_DIR.parents[1] / "wandermind-studio" / "frontend"
+        intake_csv = (frontend / "assets" / "data" / "image-intake-review.csv").read_text(encoding="utf-8")
+        intake_line = next(line for line in intake_csv.splitlines() if line.startswith("bali-3.jpg,"))
+        manifest = json.loads((frontend / "assets" / "data" / "image-publish-manifest.json").read_text(encoding="utf-8"))
+        item = next(image for image in manifest["images"] if image["relative_path"] == "assets/images/bali-3.jpg")
+
+        self.assertEqual(item["sha256"], "c11a45dfcccc8767d48929e159242a184b9521a295b07498684e1df04265a857")
+        self.assertEqual(item["web_optimized_path"], "assets/images/web/c11a45dfcccc8767.webp")
+        self.assertTrue((frontend / item["web_optimized_path"]).is_file())
+        self.assertEqual(item["category"], "landscapes")
+        self.assertEqual(item["sub_category"], "ocean-beach")
+        self.assertEqual(item["location_status"], "route-linked")
+        self.assertEqual(item["region_ids"], ["G3"])
+        self.assertEqual(item["route_ids"], ["R1", "R6"])
+        self.assertEqual(item["poi_ids"], ["kelingking_beach"])
+        for field in ("title", "description", "alt_text"):
+            self.assertEqual(set(item[field]), {"zh", "en", "ja", "ko", "id"})
+            self.assertTrue(all(value.strip() and "?" not in value for value in item[field].values()))
+        self.assertIn("steep descent", item["description"]["en"].lower())
+        self.assertIn("G3,R1;R6,kelingking_beach", intake_line)
+
+    def test_ninth_d8_portfolio_batch_keeps_unverified_mountain_location_unknown(self):
+        frontend = BACKEND_DIR.parents[1] / "wandermind-studio" / "frontend"
+        intake_csv = (frontend / "assets" / "data" / "image-intake-review.csv").read_text(encoding="utf-8")
+        intake_line = next(line for line in intake_csv.splitlines() if line.startswith("bali-4.jpg,"))
+        manifest = json.loads((frontend / "assets" / "data" / "image-publish-manifest.json").read_text(encoding="utf-8"))
+        item = next(image for image in manifest["images"] if image["relative_path"] == "assets/images/bali-4.jpg")
+
+        self.assertEqual(item["sha256"], "353e3b2879150547b42f7ee92518a6423416effa123b045c4fea5805e3502fad")
+        self.assertEqual(item["web_optimized_path"], "assets/images/web/353e3b2879150547.webp")
+        self.assertTrue((frontend / item["web_optimized_path"]).is_file())
+        self.assertEqual(item["category"], "landscapes")
+        self.assertEqual(item["sub_category"], "mountains-volcano")
+        self.assertEqual(item["tags"], ["mountain", "rocky-terrain", "forest", "clouds", "scattered-buildings"])
+        self.assertEqual(item["location_status"], "unknown")
+        self.assertEqual(item["region_ids"], [])
+        self.assertEqual(item["route_ids"], [])
+        self.assertEqual(item["poi_ids"], [])
+        for field in ("title", "description", "alt_text"):
+            self.assertEqual(set(item[field]), {"zh", "en", "ja", "ko", "id"})
+            self.assertTrue(all(value.strip() and "?" not in value for value in item[field].values()))
+        self.assertIn("unverified", item["description"]["en"].lower())
+        self.assertNotIn("bali", " ".join(item["tags"]).lower())
+        self.assertNotIn("batur", json.dumps(item).lower())
+        self.assertNotIn("kintamani", json.dumps(item).lower())
+        self.assertIn("mountain;rocky-terrain;forest;clouds;scattered-buildings", intake_line)
+        self.assertIn(",unknown,,,,", intake_line)
+        self.assertIn(item["alt_text"]["en"], intake_line)
 
     def test_bali_gallery_uses_theme_and_tag_taxonomy(self):
         frontend_dir = (
@@ -2081,13 +3245,20 @@ class ProductAccessTests(unittest.TestCase):
         self.assertIn("place_verification: placeVerification", html)
         self.assertIn("verification_summary: verificationSummary", html)
         for localized_status in (
-            "Planning anchor · verify details",
-            "规划参考 · 细节待核验",
-            "計画用候補 · 最新情報を要確認",
-            "일정 참고 · 최신 정보 확인 필요",
-            "Titik rencana · verifikasi detail",
+            "Check before travel",
+            "出发前确认",
+            "出発前に確認",
+            "출발 전 확인",
+            "Periksa sebelum berangkat",
         ):
             self.assertIn(localized_status, html)
+        for internal_status in (
+            "Stable facts reviewed",
+            "稳定事实已核验",
+            "Planning anchor · verify details",
+            "规划参考 · 细节待核验",
+        ):
+            self.assertNotIn(internal_status, html)
         for localized_route_copy in (
             "おすすめの順序と場所に戻しますか？",
             "추천 순서와 장소로 복원할까요?",

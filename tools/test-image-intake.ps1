@@ -88,6 +88,46 @@ try {
     Assert-True (@($approvedManifest.images).Count -eq 1) "eligible image should enter the manifest"
     Assert-True ($approvedManifest.images[0].sub_category -eq "wellness") "manifest should retain the visual sub-category"
 
+    $approvedManifest.schema_version = 2
+    $approvedManifest.policy = "Reviewed test policy"
+    $approvedManifest | Add-Member -NotePropertyName approval -NotePropertyValue ([pscustomobject]@{
+        approval_source = "test-review"
+        approval_date = "2026-08-20"
+    }) -Force
+    $approvedManifest.images[0] | Add-Member -NotePropertyName web_optimized_path -NotePropertyValue "assets/images/web/test.webp" -Force
+    $approvedManifest.images[0] | Add-Member -NotePropertyName title -NotePropertyValue ([pscustomobject]@{
+        zh = "乌布瑜伽空间"
+        en = "Ubud yoga space"
+        ja = "ウブドのヨガ空間"
+        ko = "우붓 요가 공간"
+        id = "Ruang yoga Ubud"
+    }) -Force
+    $approvedManifest.images[0] | Add-Member -NotePropertyName description -NotePropertyValue ([pscustomobject]@{
+        zh = "已人工审核的说明。"
+        en = "A reviewed description."
+        ja = "確認済みの説明。"
+        ko = "검토된 설명입니다."
+        id = "Deskripsi yang telah ditinjau."
+    }) -Force
+    $approvedManifest.images[0].alt_text | Add-Member -NotePropertyName ja -NotePropertyValue "ヨガマットのある室内" -Force
+    $approvedManifest.images[0].alt_text | Add-Member -NotePropertyName ko -NotePropertyValue "요가 매트가 놓인 실내" -Force
+    $approvedManifest.images[0].alt_text | Add-Member -NotePropertyName id -NotePropertyValue "Ruang dalam dengan matras yoga" -Force
+    $approvedManifest.images[0].alt_text.zh = "stale zh alt"
+    $approvedManifest.images[0].alt_text.en = "stale en alt"
+    $approvedManifest | ConvertTo-Json -Depth 8 | Set-Content -LiteralPath $manifestJson -Encoding UTF8
+
+    & $ToolPath -InputDirectory $imageRoot -OutputCsv $reviewCsv -PublishManifest $manifestJson | Out-Null
+    $preservedManifest = Get-Content -LiteralPath $manifestJson -Raw -Encoding UTF8 | ConvertFrom-Json
+    Assert-True ($preservedManifest.schema_version -eq 2) "repeat scans should preserve the reviewed manifest schema"
+    Assert-True ($preservedManifest.policy -eq "Reviewed test policy") "repeat scans should preserve the reviewed manifest policy"
+    Assert-True ($preservedManifest.approval.approval_source -eq "test-review") "repeat scans should preserve approval metadata"
+    Assert-True ($preservedManifest.images[0].web_optimized_path -eq "assets/images/web/test.webp") "repeat scans should preserve optimized asset paths"
+    Assert-True ($preservedManifest.images[0].title.ja -eq "ウブドのヨガ空間") "repeat scans should preserve localized titles"
+    Assert-True ($preservedManifest.images[0].description.id -eq "Deskripsi yang telah ditinjau.") "repeat scans should preserve localized descriptions"
+    Assert-True ($preservedManifest.images[0].alt_text.zh -eq $approvedRows[0].AltTextZh) "fresh CSV Chinese alt text should override stale manifest copy"
+    Assert-True ($preservedManifest.images[0].alt_text.en -eq $approvedRows[0].AltTextEn) "fresh CSV English alt text should override stale manifest copy"
+    Assert-True ($preservedManifest.images[0].alt_text.ko -eq "요가 매트가 놓인 실내") "repeat scans should preserve extended alt text"
+
     $duplicatePath = Join-Path $imageRoot "copy.jpg"
     Copy-Item -LiteralPath $renamedPath -Destination $duplicatePath
     & $ToolPath -InputDirectory $imageRoot -OutputCsv $reviewCsv -PublishManifest $manifestJson | Out-Null

@@ -1,0 +1,22 @@
+{
+  "schema_version": 1,
+  "evidence_id": "ev-20260816T154714Z-task-20260816-render-work-routing",
+  "task_ref": "task-20260816-render-work-routing",
+  "owner": "codex-sol",
+  "captured_at": "2026-08-16T15:47:14Z",
+  "status": "verified",
+  "claim": "Dedicated ChatGPT Work and Codex repository-relay tasks were created, pinned, and recorded for explicit Render operations routing; the repository relay proved Browser control unavailable, while the ChatGPT Work is waiting for Browser activation and has not produced a control result.",
+  "source": {
+    "kind": "git",
+    "repository": "https://github.com/lingfengai731/Agentstrip.git",
+    "commit": "f455d7c3297fee61f7f1cb1afbdd4dec6ce15305",
+    "branch": "codex/account2-integration-20260816",
+    "worktree": "E:\\Agentstrip2-worktree",
+    "dirty": true
+  },
+  "verification": {
+    "command": "create/list/read thread checks; project-memory validate; git diff --check",
+    "result": "Work thread 6a81da9a-1998-83e8-b2ca-34e1f6eb526d and relay 01a00b3a-b62f-7c60-ae73-f9e74ae7879d exist and are pinned; relay returned BROWSER_CONTROL_UNAVAILABLE; Work browser status remains unknown."
+  },
+  "notes": "Routing is explicit, not event-driven or cross-task auto-sensing. Open the Work task and activate @Browser/site permissions before Render inspection. No Render values, secrets, deployment, database, or production configuration were touched."
+}
