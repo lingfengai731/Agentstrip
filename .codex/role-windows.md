@@ -243,3 +243,11 @@
 - QA 回调：五语言 title/description/alt 明确地点、建筑用途和拍摄时间未核实；57/57 产品测试、PowerShell 7 图片 intake、hash/WebP/rights 与 diff check 全部通过。该图片未被静态 gallery 引用且 HTML 未变，UI 工作流判定本单元无需重复浏览器验收。
 - Skill 回调：cross-account-project-memory 约束独立 worktree、evidence 与 handoff；agent-role-orchestrator/codex-luna-worker 以 Luna 反证阻止文件名冒充地点；UI 与动画技能未作表演性调用。
 - 生产边界：未上传、未发布、未访问 Render、未 merge、未部署。
+
+## 2026-08-22 Portfolio D8 batch 7, unverified split-gate callback
+
+- 路由：small / L2 / compact。Sol 在独立 `E:\Agentstrip-wt-portfolio-d8-batch7` / `codex/portfolio-d8-batch7` 负责事实边界、实现、测试、项目记忆和发布判断；正式 Luna Max 先只读审计图片，再复核不可变提交 `c055de4`，最终 GO，P0/P1/P2 均为 0。原生角色窗口预检因缺少 registry 记录 fail-closed，未伪造持久线程 ID。
+- 内容回调：`bali-2.jpg` 可见巴厘式分体门、山地、绿树、道路和布饰，但原图无 EXIF 地点或时间，视觉相似性不足以唯一确认 Handara Gate。元数据改为 `culture / balinese-culture`、`location_status=unknown`，移除地点标签，区域、路线和 POI 全部留空。
+- QA 回调：原图 SHA-256、WebP 与授权字段保持一致；中/英/日/韩/印 title、description、alt 明确地点、Handara 身份、开放信息和拍摄条件未核实。58/58 产品测试、PowerShell 7 图片 intake 和 diff check 全部通过；静态 HTML 未引用该图，因此没有渲染 UI 变更或重复浏览器验收。
+- Skill 回调：cross-account-project-memory 约束隔离 worktree、evidence/handoff 和远端事实；agent-role-orchestrator/codex-luna-worker 以独立反证阻止视觉相似性升级为地点事实。UI 与动画技能本单元不作表演性调用。
+- 生产边界：未上传、未发布、未访问 Render、未 merge、未部署。
