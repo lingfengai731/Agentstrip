@@ -13,7 +13,7 @@
   },
   "snapshot": {
     "status": "verified",
-    "captured_at": "2026-08-22T11:10:52Z",
+    "captured_at": "2026-08-22T11:26:15Z",
     "captured_by": "codex-sol",
     "source_commit": "3af4c9c0a00ef5eb925e6366c97c2de83940b583",
     "source_branch": "codex/account2-integration-20260816",
@@ -101,7 +101,7 @@
         "repeat image-intake scans preserve reviewed manifest version, approval, optimized paths and localized copy for the same SHA-256"
       ],
       "verification": {
-        "product_tests": "62/62 locally for commit 3af4c9c; remote CI pending this handoff",
+        "product_tests": "62/62 locally and in GitHub Actions run 32570167913",
         "image_intake_tests": "pass",
         "node_syntax": "pass",
         "browser_languages": "zh/en/ja/ko/id route-card action labels passed deterministic local browser checks; verified labels are absent",
@@ -119,7 +119,7 @@
       "verified_at": "2026-08-22T08:05:00Z",
       "frontend_matches_commit": "3fbf898fb6a27da8d7b87476d6fd941a24c3d05c",
       "backend_commit": "unknown",
-      "latest_branch_commit": "3af4c9c0a00ef5eb925e6366c97c2de83940b583",
+      "latest_branch_commit": "0eee350b37316db54e6720ed5db0658587640154",
       "latest_branch_deployed": false,
       "health": "200 ok",
       "bali_routes": 6,
@@ -128,7 +128,8 @@
       "branch_frontend_asset_marker": "bali-professional.js?v=p55",
       "evidence_ids": [
         "ev-20260816T092243Z-task-20260816-cross-account-recovery",
-        "ev-20260816T143048Z-release-baseline-and-roadmap-sync"
+        "ev-20260816T143048Z-release-baseline-and-roadmap-sync",
+        "ev-20260822T112651Z-bali-status-github-sync"
       ]
     }
   },
@@ -141,9 +142,10 @@
       "url": "https://github.com/lingfengai731/Agentstrip/pull/3",
       "status": "draft",
       "mergeable": true,
-      "head_commit": "3af4c9c0a00ef5eb925e6366c97c2de83940b583",
-      "project_memory_ci": "pending for current head",
-      "postgres_integration_ci": "pending for current head",
+      "head_commit": "0eee350b37316db54e6720ed5db0658587640154",
+      "project_memory_ci": "success; run 32570167879",
+      "postgres_integration_ci": "success; run 32570167913",
+      "evidence_id": "ev-20260822T112651Z-bali-status-github-sync",
       "release_gate": "presence-only PostgreSQL and stable strong SECRET_KEY confirmation, safe Render deploy, proxy smoke and production browser regression"
     },
     "render_operations_thread": {

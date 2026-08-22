@@ -282,3 +282,4 @@
 - 设计回调：安装用户级 Impeccable 4.1.1 到 E 盘源码目录并通过 Junction 暴露，不安装项目 hook 或依赖；本轮只使用 polish/craft floor 与一次 detector。两个粗重单侧强调边框已改为完整细边框，Roboto/CJK 字体、动态 modal 图片和单一品牌 CTA 光晕按既有 `DESIGN.md` 保留。
 - QA 回调：62/62 产品测试、完整 discover 74 项（12 项 PostgreSQL 隔离测试按设计 skip）、image-intake、108/108 CSV/manifest 对账和 diff check 通过；Playwright 在 320/390/768/1440 与中英日韩印下验证行动标签、verified badge 隐藏和零横向溢出，控制台 0 error / 0 warning。
 - 发布边界：产品提交 `3af4c9c` 必须连同本节 evidence/handoff 推送后才视为 GitHub 同步；任何 GitHub 同步也不等于生产部署。公开生产仍为旧 p54 / 50 POI 基线；下一回调固定为 PR #3 当前 head 的 CI、Render presence-only 门禁、canary/部署、代理隔离烟测和生产 E2E。
+- GitHub 回调：产品提交 `3af4c9c` 与交接提交 `0eee350` 已推送，远端提交可读取，本地/远端为 0/0。Project Memory run `32570167879` 与 PostgreSQL run `32570167913` 均成功，后者的 SQLite 产品测试和 PostgreSQL 发布关键测试步骤均为 success。PR #3 保持 open/draft/mergeable，发布说明已更新；未 ready、未 merge、未部署。
