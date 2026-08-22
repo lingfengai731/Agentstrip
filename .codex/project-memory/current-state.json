@@ -13,27 +13,28 @@
   },
   "snapshot": {
     "status": "verified",
-    "captured_at": "2026-08-22T11:26:15Z",
+    "captured_at": "2026-08-22T14:06:41Z",
     "captured_by": "codex-sol",
-    "source_commit": "3af4c9c0a00ef5eb925e6366c97c2de83940b583",
+    "source_commit": "409b2752b0bbdf3abecb77c98bc7fad49c80a3ea",
     "source_branch": "codex/account2-integration-20260816",
-    "working_tree_at_capture": "immutable code commit 3af4c9c; documentation, evidence and handoff changes follow",
+    "working_tree_at_capture": "immutable product commit 409b275; project-memory evidence and handoff changes follow",
     "wandermind_bali": {
       "status": "verified",
       "routes": 6,
       "pois": 62,
-      "verified_pois": 56,
-      "pending_review_pois": 3,
+      "verified_pois": 57,
+      "pending_review_pois": 2,
       "supplier_gated_pois": 3,
       "verified_route_families": ["R2", "R3", "R4", "R6"],
       "notes": [
-        "R2, R3, R4 and R6 free-outline stable facts are verified; Pura Taman Ayun, Pura Taman Saraswati and Sundays Beach Club now have official, government or international heritage identity and location evidence.",
-        "Thousand Islands Viewpoint and two Mount Batur anchors remain pending because their exact public identity, entrance or venue is not uniquely resolved; supplier-gated experiences remain non-execution-ready.",
+        "R2, R3, R4 and R6 free-outline stable facts are verified; Batur Natural Hot Spring now has Bangli government identity and broad-location evidence while all live access, price, hygiene, safety, weather and volcanic checks remain dynamic.",
+        "Thousand Islands Viewpoint remains a distinct unresolved identity, and Mount Batur remains an area-level planning node because government records show multiple hiking posts; supplier-gated experiences remain non-execution-ready.",
         "Dicky's five-day itinerary is treated as an R1 field calibration, not a seventh route family.",
         "Production was freshly reverified on 2026-08-22 at the prior main frontend baseline: schema 1.2.0 with 6 routes, 50 POIs and p54; this 62-POI/p55 branch and the Bali launch polish are not deployed.",
         "The Bali route detail now uses a warm paper atlas surface, keeps every public day reachable, previews 12 Portfolio moments before an explicit reveal-all action, and localizes the changed controls across zh/en/ja/ko/id.",
         "Customer-facing route and POI chips no longer expose internal verified labels; verified is silent, while pending and supplier-gated items show localized action copy only."
-      ]
+      ],
+      "evidence_id": "ev-20260822T140828Z-task-20260822-bali-poi-identity-unit"
     },
     "driver_request_protection": {
       "status": "verified_ci",
@@ -73,7 +74,7 @@
         "conditional atomic allowance updates",
         "single transaction for points ledger, order, and entitlement"
       ],
-      "product_tests_passed": 61,
+      "product_tests_passed": 62,
       "postgres_entitlement_tests_passed": 8,
       "postgres_workflow_run": 31955571721,
       "evidence_id": "ev-20260816T152709Z-task-20260816-entitlement-release-gate",
@@ -101,7 +102,7 @@
         "repeat image-intake scans preserve reviewed manifest version, approval, optimized paths and localized copy for the same SHA-256"
       ],
       "verification": {
-        "product_tests": "62/62 locally and in GitHub Actions run 32570167913",
+        "product_tests": "62/62 locally; product commit 409b275 passed GitHub PostgreSQL integration run 32577693722",
         "image_intake_tests": "pass",
         "node_syntax": "pass",
         "browser_languages": "zh/en/ja/ko/id route-card action labels passed deterministic local browser checks; verified labels are absent",
@@ -119,7 +120,7 @@
       "verified_at": "2026-08-22T08:05:00Z",
       "frontend_matches_commit": "3fbf898fb6a27da8d7b87476d6fd941a24c3d05c",
       "backend_commit": "unknown",
-      "latest_branch_commit": "0eee350b37316db54e6720ed5db0658587640154",
+      "latest_branch_commit": "409b2752b0bbdf3abecb77c98bc7fad49c80a3ea",
       "latest_branch_deployed": false,
       "health": "200 ok",
       "bali_routes": 6,
@@ -142,10 +143,10 @@
       "url": "https://github.com/lingfengai731/Agentstrip/pull/3",
       "status": "draft",
       "mergeable": true,
-      "head_commit": "0eee350b37316db54e6720ed5db0658587640154",
-      "project_memory_ci": "success; run 32570167879",
-      "postgres_integration_ci": "success; run 32570167913",
-      "evidence_id": "ev-20260822T112651Z-bali-status-github-sync",
+      "head_commit": "409b2752b0bbdf3abecb77c98bc7fad49c80a3ea",
+      "project_memory_ci": "success; run 32577693724",
+      "postgres_integration_ci": "success; run 32577693722",
+      "evidence_id": "ev-20260822T140828Z-task-20260822-bali-poi-identity-unit",
       "release_gate": "presence-only PostgreSQL and stable strong SECRET_KEY confirmation, safe Render deploy, proxy smoke and production browser regression"
     },
     "render_operations_thread": {
@@ -172,19 +173,19 @@
       "transfer_basis": "all paginated task turns plus the user-provided transcript were read; repository facts were revalidated against the safe worktree, PR and project memory"
     },
     "desktop_browser_control_repair": {
-      "status": "permanently_downgraded_non_blocking",
-      "verified_at": "2026-08-17T07:08:14Z",
+      "status": "runtime_injected_but_admin_policy_blocks_binding_non_blocking",
+      "verified_at": "2026-08-22T14:06:41Z",
       "codex_app_version": "26.810.7004.0",
       "root_cause": "two stacked Windows Store failure classes match openai/codex issue 26501 and its 26.810.7004.0 follow-up: the package is a C-path junction to non-system E AppX storage with Application Protected copy history, and a persisted openai-bundled source still pinned 26.810.50856 while the package contains 26.810.52044, causing same-name marketplace ownership conflict",
-      "repair": "The final bounded marketplace-ownership repair was staged and a fresh task was checked once. No callable Browser, Chrome or Computer Use control tool was injected, so the authorized stop condition was reached and no further local plugin repair is allowed in this workstream.",
+      "repair": "A later fresh task exposed the callable in-app Browser runtime, but one authorized Render retry and one local-page binding both failed with admin-enforced policy could not be verified. Per the user stop condition, no more Browser policy troubleshooting is allowed in this workstream.",
       "verification": {
         "plugin_files": "842/842 with zero SHA-256 mismatches",
         "cua_node_files": "3625/3625 with zero SHA-256 mismatches",
         "code_mode_host": "restored after CODEX_CLI_PATH was cleared at process, user and machine scope",
         "required_runtime_paths": "7/7 present and not EFS encrypted",
-        "browser": "fresh-task callable control tool count was zero; ambient Render URL was not treated as page-inspection evidence",
+        "browser": "callable runtime is present, but Render and localhost binding both failed at the admin-policy gate; ambient Render URL was not treated as page-inspection evidence",
         "chrome": "the stale configured marketplace source was E:/CodexSkills/.sources/openai-bundled-26.810.50856 while the verified packaged mirror is 26.810.52044",
-        "computer_use": "fresh-task callable control tool count was zero; no window or page control was claimed",
+        "computer_use": "not used for this retry; no window or page control was claimed",
         "appx_layout": "InstallLocation is a junction from C:/Program Files/WindowsApps to non-system E:/WindowsApps; system, D and E AppX volumes were read-only enumerated",
         "marketplace_repair": "config backup created; stale external openai-bundled registration removed; three enabled plugin records retained",
         "override_variables": "CODEX_ELECTRON_BUNDLED_PLUGINS_RESOURCES_PATH points to the verified 26.810.7004.0 user mirror; CODEX_CLI_PATH remains empty"
@@ -197,9 +198,9 @@
   "limitations": [
     "The existing root AGENTS.md has not been changed, so automatic loading is not guaranteed.",
     "bali-4.jpg remains the approved generic Bali-page hero, but its exact place, mountain name and capture date are unverified; it must not be reused as a location-specific route or advertising claim without new evidence.",
-    "Production was checked only through public HTTP behavior; authenticated Render environment values, the production backend commit and database contents were not read because this existing task has no injected browser-control handle.",
+    "Production was checked only through public HTTP behavior; authenticated Render environment values, the production backend commit and database contents were not read because the injected Browser runtime could not pass the admin-policy binding gate.",
     "The latest branch passed isolated real PostgreSQL 16 integration tests but still requires a post-deploy Render proxy-address smoke test before release completion.",
-    "The one-shot native Browser/Chrome/Computer Use gate failed with zero callable control tools. Native control is a permanent non-blocking limitation for this workstream; no further local plugin repair is authorized.",
+    "The callable in-app Browser runtime is now injected, but the one authorized Render and localhost retry failed at the admin-enforced policy gate. Native control remains a non-blocking limitation for this workstream; no further policy repair is authorized.",
     "Conversation history and hidden reasoning are not project facts."
   ]
 }

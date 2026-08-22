@@ -1,0 +1,22 @@
+{
+  "schema_version": 1,
+  "evidence_id": "ev-20260822T140828Z-task-20260822-bali-poi-identity-unit",
+  "task_ref": "task-20260822-bali-poi-identity-unit",
+  "owner": "codex-sol",
+  "captured_at": "2026-08-22T14:08:28Z",
+  "status": "verified",
+  "claim": "Bali canonical POI identity unit is verified at product commit 409b275: 62 POIs now contain 57 verified, 2 pending-review and 3 supplier-gated records; Batur Natural Hot Spring is government-grounded while Mount Batur and Thousand Islands remain deliberately pending.",
+  "source": {
+    "kind": "git",
+    "repository": "https://github.com/lingfengai731/Agentstrip.git",
+    "commit": "409b2752b0bbdf3abecb77c98bc7fad49c80a3ea",
+    "branch": "codex/account2-integration-20260816",
+    "worktree": "E:\\Agentstrip2-worktree",
+    "dirty": true
+  },
+  "verification": {
+    "command": "python -m unittest discover -s wandermind/backend/tests; git diff --check; GitHub commit workflow lookup for 409b275",
+    "result": "Local product 62/62; full discovery 74 OK with 12 isolated PostgreSQL skips; Edge 320/390/768/1440 and zh/en/ja/ko/id callbacks passed; GitHub runs 32577693724 and 32577693722 succeeded."
+  },
+  "notes": "Luna frozen review completed with P0=0 P1=0 and two P2 test suggestions, both added and revalidated. Render Browser binding failed once at the admin-policy gate and troubleshooting stopped. No Render value, database row, environment variable or production deployment changed."
+}
