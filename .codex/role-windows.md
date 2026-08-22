@@ -251,3 +251,10 @@
 - QA 回调：原图 SHA-256、WebP 与授权字段保持一致；中/英/日/韩/印 title、description、alt 明确地点、Handara 身份、开放信息和拍摄条件未核实。58/58 产品测试、PowerShell 7 图片 intake 和 diff check 全部通过；静态 HTML 未引用该图，因此没有渲染 UI 变更或重复浏览器验收。
 - Skill 回调：cross-account-project-memory 约束隔离 worktree、evidence/handoff 和远端事实；agent-role-orchestrator/codex-luna-worker 以独立反证阻止视觉相似性升级为地点事实。UI 与动画技能本单元不作表演性调用。
 - 生产边界：未上传、未发布、未访问 Render、未 merge、未部署。
+
+## 2026-08-22 Portfolio D8 batch 8, Kelingking viewpoint callback
+
+- 路由：small / L2 / compact。Sol 在独立 `E:\Agentstrip-wt-portfolio-d8-batch8` / `codex/portfolio-d8-batch8` 完成单图事实核验、实现、测试和交接；`codex-luna-worker` 按“几分钟内可完成的小任务留在主线程”判定不委派，未宣称 Luna 完成。
+- 内容回调：`bali-3.jpg` 的标志性绿色岬角、白沙与蓝色海洋和印尼旅游部对 Kelingking Beach Viewpoint 的描述一致；绑定 G3、R1/R6 与既有 verified POI `kelingking_beach`。文案把陡峭下坡、快船、道路、崖边防护、天气和拥挤列为实时复核项。
+- QA 回调：原图 SHA-256、WebP 和授权字段一致；中/英/日/韩/印 title、description、alt 完整。59/59 产品测试、PowerShell 7 图片 intake 和 diff check 通过；静态 HTML 未引用该图，因此没有渲染 UI 变更。
+- 生产边界：未上传、未发布、未访问 Render、未 merge、未部署。

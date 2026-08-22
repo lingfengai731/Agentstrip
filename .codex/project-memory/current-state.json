@@ -13,10 +13,10 @@
   },
   "snapshot": {
     "status": "verified",
-    "captured_at": "2026-08-22T02:51:00Z",
+    "captured_at": "2026-08-22T04:50:28Z",
     "captured_by": "codex-sol",
-    "source_commit": "c055de40b248ed195d80cf8c14e9db9d26157a5b",
-    "source_branch": "codex/portfolio-d8-batch7",
+    "source_commit": "83735b4ef5a808e7dac9258efda330625cd73237",
+    "source_branch": "codex/portfolio-d8-batch8",
     "working_tree_at_capture": "clean at immutable code commit; documentation and evidence changes follow",
     "wandermind_bali": {
       "status": "verified",
@@ -78,16 +78,16 @@
       "production_status": "not_deployed"
     },
     "portfolio_content_manager": {
-      "status": "implementation_verified_local; seven D8 units have 26 complete five-language assets; remaining batch migration pending",
+      "status": "implementation_verified_local; eight D8 units have 27 complete five-language assets; remaining batch migration pending",
       "approved_unique_assets": 108,
       "d8_theme_candidates": 52,
       "driver_or_unclassified_assets": 56,
-      "d8_route_linked": 23,
-      "d8_poi_linked": 22,
-      "d8_region_linked": 23,
-      "d8_all_geo_links": 22,
-      "d8_five_language_copy_complete": 26,
-      "d8_five_language_alt_complete": 26,
+      "d8_route_linked": 24,
+      "d8_poi_linked": 23,
+      "d8_region_linked": 24,
+      "d8_all_geo_links": 23,
+      "d8_five_language_copy_complete": 27,
+      "d8_five_language_alt_complete": 27,
       "static_gallery_fallback_assets": 37,
       "verified_capabilities": [
         "multi-file browser upload with progress and SHA-256 duplicate checks",
@@ -99,17 +99,17 @@
         "repeat image-intake scans preserve reviewed manifest version, approval, optimized paths and localized copy for the same SHA-256"
       ],
       "verification": {
-        "product_tests": "58/58",
+        "product_tests": "59/59",
         "image_intake_tests": "pass",
         "node_syntax": "pass",
-        "browser_languages": "not applicable to batch 7 because bali-2.jpg is not referenced by the static gallery and no HTML or runtime copy changed; batch 5 browser evidence remains valid",
-        "browser_widths": "not applicable to batch 7; no rendered UI changed",
-        "browser_console": "not applicable to batch 7; no browser request, upload, publication or production request was made",
-        "independent_gate": "Luna Max returned GO with P0/P1/P2 all zero for immutable commit c055de4"
+        "browser_languages": "not applicable to batch 8 because bali-3.jpg is not referenced by the static gallery and no HTML or runtime copy changed; batch 5 browser evidence remains valid",
+        "browser_widths": "not applicable to batch 8; no rendered UI changed",
+        "browser_console": "not applicable to batch 8; no browser request, upload, publication or production request was made",
+        "routing_gate": "codex-luna-worker kept this bounded low-budget unit in the Sol main thread; no independent Luna completion is claimed"
       },
-      "evidence_id": "ev-20260822T025100Z-portfolio-d8-batch7",
+      "evidence_id": "ev-20260822T045028Z-portfolio-d8-batch8",
       "batch_boundary": "Only Landscapes, Culture and Experiences belong in D8 Portfolio. People assets primarily belong in Driver Moments; unclassified assets require manual classification. Approval alone does not prove place, route or five-language metadata.",
-      "next_batch": "Review the remaining 26 D8 theme candidates, starting with a visual and metadata audit of bali-3.jpg. bali-2.jpg remains a stable resource filename only and is now unknown-location Balinese-style split-gate content with no region, route or POI; visual resemblance alone does not prove Handara Gate. Stock images naming Thailand, Hawaii, Greece or Palau must not be relabelled as Bali. Publication remains a separate authenticated production action.",
+      "next_batch": "Review the remaining 25 D8 theme candidates, starting with a visual and metadata audit of bali-4.jpg. bali-3.jpg is linked to verified Kelingking Beach Viewpoint at G3/R1/R6, while steep descent, fast boats, roads, cliff barriers, weather and crowding remain live checks. Stock images naming Thailand, Hawaii, Greece or Palau must not be relabelled as Bali. Publication remains a separate authenticated production action.",
       "production_status": "not_verified"
     },
     "production": {
