@@ -13,10 +13,10 @@
   },
   "snapshot": {
     "status": "verified",
-    "captured_at": "2026-08-22T04:50:28Z",
+    "captured_at": "2026-08-22T08:07:20Z",
     "captured_by": "codex-sol",
-    "source_commit": "83735b4ef5a808e7dac9258efda330625cd73237",
-    "source_branch": "codex/portfolio-d8-batch8",
+    "source_commit": "a24cd32ee9b1db0b4d9567e1533284f800ba156b",
+    "source_branch": "codex/account2-integration-20260816",
     "working_tree_at_capture": "clean at immutable code commit; documentation and evidence changes follow",
     "wandermind_bali": {
       "status": "verified",
@@ -30,7 +30,8 @@
         "R2, R3, R4 and R6 free-outline stable facts are verified; Pura Taman Ayun, Pura Taman Saraswati and Sundays Beach Club now have official, government or international heritage identity and location evidence.",
         "Thousand Islands Viewpoint and two Mount Batur anchors remain pending because their exact public identity, entrance or venue is not uniquely resolved; supplier-gated experiences remain non-execution-ready.",
         "Dicky's five-day itinerary is treated as an R1 field calibration, not a seventh route family.",
-        "Production was freshly reverified at the prior main frontend baseline: schema 1.2.0 with 6 routes and 50 POIs; this 62-POI branch is not deployed."
+        "Production was freshly reverified on 2026-08-22 at the prior main frontend baseline: schema 1.2.0 with 6 routes, 50 POIs and p54; this 62-POI/p55 branch and the Bali launch polish are not deployed.",
+        "The Bali route detail now uses a warm paper atlas surface, keeps every public day reachable, previews 12 Portfolio moments before an explicit reveal-all action, and localizes the changed controls across zh/en/ja/ko/id."
       ]
     },
     "driver_request_protection": {
@@ -45,7 +46,7 @@
         "updated timestamp"
       ],
       "failure_policy": "fail_closed_503",
-      "tests_passed": 50,
+      "tests_passed": 61,
       "production_status": "not_deployed",
       "postgres_integration": {
         "status": "verified",
@@ -55,7 +56,7 @@
         "job": 95185585092
       },
       "remaining_gates": [
-        "Render request.client.host anonymous distribution smoke test"
+        "Render X-Forwarded-For anonymous distribution smoke test after deployment"
       ]
     },
     "professional_route_entitlements": {
@@ -71,14 +72,14 @@
         "conditional atomic allowance updates",
         "single transaction for points ledger, order, and entitlement"
       ],
-      "product_tests_passed": 50,
+      "product_tests_passed": 61,
       "postgres_entitlement_tests_passed": 8,
       "postgres_workflow_run": 31955571721,
       "evidence_id": "ev-20260816T152709Z-task-20260816-entitlement-release-gate",
       "production_status": "not_deployed"
     },
     "portfolio_content_manager": {
-      "status": "implementation_verified_local; eight D8 units have 27 complete five-language assets; remaining batch migration pending",
+      "status": "implementation_verified_local; eight D8 units have 27 complete five-language assets; launch gallery defaults to 12 moments with an explicit reveal-all action; remaining batch migration pending",
       "approved_unique_assets": 108,
       "d8_theme_candidates": 52,
       "driver_or_unclassified_assets": 56,
@@ -99,25 +100,25 @@
         "repeat image-intake scans preserve reviewed manifest version, approval, optimized paths and localized copy for the same SHA-256"
       ],
       "verification": {
-        "product_tests": "59/59",
+        "product_tests": "61/61 locally and in CI",
         "image_intake_tests": "pass",
         "node_syntax": "pass",
-        "browser_languages": "not applicable to batch 8 because bali-3.jpg is not referenced by the static gallery and no HTML or runtime copy changed; batch 5 browser evidence remains valid",
-        "browser_widths": "not applicable to batch 8; no rendered UI changed",
-        "browser_console": "not applicable to batch 8; no browser request, upload, publication or production request was made",
-        "routing_gate": "codex-luna-worker kept this bounded low-budget unit in the Sol main thread; no independent Luna completion is claimed"
+        "browser_languages": "zh/en/ja/ko/id route-card and gallery reveal labels passed deterministic local browser checks",
+        "browser_widths": "320/390/768/1440 passed with zero document-level horizontal overflow",
+        "browser_console": "zero Bali-page console errors in the final five-test local run",
+        "routing_gate": "canonical luna_worker completed the bounded read-only social-asset audit; Sol independently parsed the CSV, checked all eight files and inspected all eight WebP images before accepting the campaign set"
       },
-      "evidence_id": "ev-20260822T045028Z-portfolio-d8-batch8",
+      "evidence_id": "ev-20260822T080720Z-bali-launch-polish-campaign",
       "batch_boundary": "Only Landscapes, Culture and Experiences belong in D8 Portfolio. People assets primarily belong in Driver Moments; unclassified assets require manual classification. Approval alone does not prove place, route or five-language metadata.",
-      "next_batch": "Review the remaining 25 D8 theme candidates, starting with a visual and metadata audit of bali-4.jpg. bali-3.jpg is linked to verified Kelingking Beach Viewpoint at G3/R1/R6, while steep descent, fast boats, roads, cliff barriers, weather and crowding remain live checks. Stock images naming Thailand, Hawaii, Greece or Palau must not be relabelled as Bali. Publication remains a separate authenticated production action.",
+      "next_batch": "First complete the Render presence-only production gate, safe canary/deploy and post-deploy E2E for a24cd32. After launch, review the remaining 25 D8 theme candidates starting with bali-4.jpg; stock images naming Thailand, Hawaii, Greece or Palau must not be relabelled as Bali.",
       "production_status": "not_verified"
     },
     "production": {
       "status": "verified_frontend_baseline",
-      "verified_at": "2026-08-16T14:28:27Z",
+      "verified_at": "2026-08-22T08:05:00Z",
       "frontend_matches_commit": "3fbf898fb6a27da8d7b87476d6fd941a24c3d05c",
       "backend_commit": "unknown",
-      "latest_branch_commit": "45f566e7f05a0ad0af079c3660be6ef8a169811a",
+      "latest_branch_commit": "a24cd32ee9b1db0b4d9567e1533284f800ba156b",
       "latest_branch_deployed": false,
       "health": "200 ok",
       "bali_routes": 6,
@@ -139,10 +140,10 @@
       "url": "https://github.com/lingfengai731/Agentstrip/pull/3",
       "status": "draft",
       "mergeable": true,
-      "head_commit": "1d1edbe46fdca48d4be9c36ad59ebdb8f9bbba28",
+      "head_commit": "a24cd32ee9b1db0b4d9567e1533284f800ba156b",
       "project_memory_ci": "success",
       "postgres_integration_ci": "success",
-      "release_gate": "post-deploy Render proxy smoke and production browser regression"
+      "release_gate": "presence-only PostgreSQL and stable strong SECRET_KEY confirmation, safe Render deploy, proxy smoke and production browser regression"
     },
     "render_operations_thread": {
       "work_thread_id": "6a81da9a-1998-83e8-b2ca-34e1f6eb526d",

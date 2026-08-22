@@ -258,3 +258,16 @@
 - 内容回调：`bali-3.jpg` 的标志性绿色岬角、白沙与蓝色海洋和印尼旅游部对 Kelingking Beach Viewpoint 的描述一致；绑定 G3、R1/R6 与既有 verified POI `kelingking_beach`。文案把陡峭下坡、快船、道路、崖边防护、天气和拥挤列为实时复核项。
 - QA 回调：原图 SHA-256、WebP 和授权字段一致；中/英/日/韩/印 title、description、alt 完整。59/59 产品测试、PowerShell 7 图片 intake 和 diff check 通过；静态 HTML 未引用该图，因此没有渲染 UI 变更。
 - 生产边界：未上传、未发布、未访问 Render、未 merge、未部署。
+
+## 2026-08-22 Bali launch polish and campaign callback
+
+- 路由：large / L2。Sol 保留恢复、产品边界、视觉融合、限流安全、集成、GitHub、生产判断与最终验收；正式 `luna_worker`（Linnaeus，任务 `01a0285a-d197-78c2-a2c8-da339f2e2c89`，`gpt-5.6-luna` / `max`）只读筛选社交图片，最终状态 `completed`，未修改文件。原生回调未暴露可审计的启动时间与精确耗时，因此明确记为 unavailable，未伪造数值；Sol 随后独立解析 CSV/manifest、核对 8 个路径并逐图复看。
+- UI 回调：Bali 公共路线详情从大面积绿色改为暖纸地图工作台，深墨绿只保留给司机承接带；所有日程标题仍可免费到达，只有活动日展开编辑控件；默认 Portfolio 从完整长瀑布流减为 12 个瞬间并提供五语言“展开全部”。R1→R3 专业路线链接、地图节点、日程折叠和同区域加点保持联动。
+- 动效回调：Find/Improve/Review Animations 只接受路线切换 180ms、4px 的状态反馈；拒绝滚动显现、视差、弹跳 CTA 和动画地图路径；`prefers-reduced-motion` 下动画数为 0，最终 verdict 为 approved。
+- 安全回调：Render 下司机防刷按首个 `X-Forwarded-For` 区分真实访客；非 Render 直连不信任客户端伪造头。新增正反测试，持久化内容仍只有 HMAC 伪匿名键、窗口与计数。
+- 图片回调：修复 `bali-3.jpg` 英文 alt 中未转义逗号造成的 CSV 字段漂移，并新增 108 行表头对齐、可发布标记和 WebP 存在性 CI 护栏。没有继续扩张剩余 25 张 D8 候选。
+- 推广回调：新增小红书图文、司机 Instagram 轮播、TikTok/抖音短视频、批准素材顺序、隐私/防跑单规则、UTM、14 天节奏与复盘表；帖子和评论不公开司机邮箱、WhatsApp 或微信。
+- Skill 回调：cross-account-project-memory 恢复 Git 权威状态；agent-role-orchestrator/codex-luna-worker 约束 Sol/Luna 边界；Nuwa 的 Steve Jobs、Paul Graham、MrBeast 视角分别约束单一决定、小批量需求验证和前两秒钩子；UI UX Pro Max、UI implementation workflow、Emil、frontend-design 与三项动画 Skills 共同约束视觉和验收。`pbakaus/impeccable` 经审查后未安装，因为现有技能已覆盖本轮相关反模式，发布分支不新增 hooks。
+- QA 回调：本地 61/61 产品测试；完整本地 discover 73 项中 61 通过、12 项按设计等待隔离 PostgreSQL；GitHub Actions 在 SQLite 61/61 和 PostgreSQL 12/12 均通过。完整后端下 320/390/768/1440、五语言、R3 联动、地图、按天编辑、加点、图库展开、零控制台错误和 reduced-motion 共 5/5 通过；`git diff --check` 通过。
+- GitHub/生产回调：实现提交 `a24cd32ee9b1db0b4d9567e1533284f800ba156b` 已推送 PR #3 分支；Project memory run `32561281258` 与 PostgreSQL run `32561281247` 成功。生产新鲜抓取仍为 p54、6 routes / 50 POIs，未出现暖纸详情或 12 图预览；PR 保持 Draft，未 merge、未部署、未修改 Render 环境变量或生产数据。
+- 下一回调：只读确认生产 PostgreSQL 与强稳定 `SECRET_KEY` 的存在，不显示值；安全 canary/部署 `a24cd32`，验证代理访客隔离与完整生产 E2E。全部绿色后才将 PR ready/merge；上线后再开始手册中的首发内容和 `bali-4.jpg` D8 单元。
