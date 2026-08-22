@@ -1893,8 +1893,10 @@ class ProductAccessTests(unittest.TestCase):
         )
         self.assertIn("opening_hours", data["verification_policy"]["live_checks_required"])
         bali_html = (data_path.parents[2] / "bali.html").read_text(encoding="utf-8")
-        self.assertIn("Stable route facts reviewed", bali_html)
-        self.assertIn("路线稳定事实已核验", bali_html)
+        self.assertNotIn("Stable route facts reviewed", bali_html)
+        self.assertNotIn("路线稳定事实已核验", bali_html)
+        self.assertIn("Confirm before booking", bali_html)
+        self.assertIn("预约前确认", bali_html)
         for poi_id in verified_ids:
             poi = poi_by_id[poi_id]
             self.assertTrue(poi["official_url"].startswith("https://"), poi_id)
@@ -2796,7 +2798,7 @@ class ProductAccessTests(unittest.TestCase):
                 for field in ("title", "description", "alt_text")
             )
         ]
-        self.assertEqual(len(complete_d8), 27)
+        self.assertEqual(len(complete_d8), 28)
 
         lempuyang = by_path["assets/images/Lempuyang Temple.jpg"]
         self.assertIn("Penataran Agung", lempuyang["title"]["en"])
@@ -3093,6 +3095,34 @@ class ProductAccessTests(unittest.TestCase):
         self.assertIn("steep descent", item["description"]["en"].lower())
         self.assertIn("G3,R1;R6,kelingking_beach", intake_line)
 
+    def test_ninth_d8_portfolio_batch_keeps_unverified_mountain_location_unknown(self):
+        frontend = BACKEND_DIR.parents[1] / "wandermind-studio" / "frontend"
+        intake_csv = (frontend / "assets" / "data" / "image-intake-review.csv").read_text(encoding="utf-8")
+        intake_line = next(line for line in intake_csv.splitlines() if line.startswith("bali-4.jpg,"))
+        manifest = json.loads((frontend / "assets" / "data" / "image-publish-manifest.json").read_text(encoding="utf-8"))
+        item = next(image for image in manifest["images"] if image["relative_path"] == "assets/images/bali-4.jpg")
+
+        self.assertEqual(item["sha256"], "353e3b2879150547b42f7ee92518a6423416effa123b045c4fea5805e3502fad")
+        self.assertEqual(item["web_optimized_path"], "assets/images/web/353e3b2879150547.webp")
+        self.assertTrue((frontend / item["web_optimized_path"]).is_file())
+        self.assertEqual(item["category"], "landscapes")
+        self.assertEqual(item["sub_category"], "mountains-volcano")
+        self.assertEqual(item["tags"], ["mountain", "rocky-terrain", "forest", "clouds", "scattered-buildings"])
+        self.assertEqual(item["location_status"], "unknown")
+        self.assertEqual(item["region_ids"], [])
+        self.assertEqual(item["route_ids"], [])
+        self.assertEqual(item["poi_ids"], [])
+        for field in ("title", "description", "alt_text"):
+            self.assertEqual(set(item[field]), {"zh", "en", "ja", "ko", "id"})
+            self.assertTrue(all(value.strip() and "?" not in value for value in item[field].values()))
+        self.assertIn("unverified", item["description"]["en"].lower())
+        self.assertNotIn("bali", " ".join(item["tags"]).lower())
+        self.assertNotIn("batur", json.dumps(item).lower())
+        self.assertNotIn("kintamani", json.dumps(item).lower())
+        self.assertIn("mountain;rocky-terrain;forest;clouds;scattered-buildings", intake_line)
+        self.assertIn(",unknown,,,,", intake_line)
+        self.assertIn(item["alt_text"]["en"], intake_line)
+
     def test_bali_gallery_uses_theme_and_tag_taxonomy(self):
         frontend_dir = (
             BACKEND_DIR.parents[1] / "wandermind-studio" / "frontend"
@@ -3191,13 +3221,20 @@ class ProductAccessTests(unittest.TestCase):
         self.assertIn("place_verification: placeVerification", html)
         self.assertIn("verification_summary: verificationSummary", html)
         for localized_status in (
-            "Planning anchor · verify details",
-            "规划参考 · 细节待核验",
-            "計画用候補 · 最新情報を要確認",
-            "일정 참고 · 최신 정보 확인 필요",
-            "Titik rencana · verifikasi detail",
+            "Check before travel",
+            "出发前确认",
+            "出発前に確認",
+            "출발 전 확인",
+            "Periksa sebelum berangkat",
         ):
             self.assertIn(localized_status, html)
+        for internal_status in (
+            "Stable facts reviewed",
+            "稳定事实已核验",
+            "Planning anchor · verify details",
+            "规划参考 · 细节待核验",
+        ):
+            self.assertNotIn(internal_status, html)
         for localized_route_copy in (
             "おすすめの順序と場所に戻しますか？",
             "추천 순서와 장소로 복원할까요?",

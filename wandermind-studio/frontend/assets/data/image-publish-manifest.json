@@ -671,19 +671,39 @@
       "web_optimized_path": "assets/images/web/353e3b2879150547.webp",
       "sha256": "353e3b2879150547b42f7ee92518a6423416effa123b045c4fea5805e3502fad",
       "category": "landscapes",
-      "sub_category": "bali-landscape",
+      "sub_category": "mountains-volcano",
       "tags": [
-        "bali",
-        "landscape"
+        "mountain",
+        "rocky-terrain",
+        "forest",
+        "clouds",
+        "scattered-buildings"
       ],
-      "location_status": "bali-named",
+      "location_status": "unknown",
       "region_ids": [],
       "route_ids": [],
       "poi_ids": [],
       "intended_use": "WanderMind approved project image library; connect only where its destination/category metadata matches.",
+      "title": {
+        "zh": "厚重云层下的山地景观",
+        "en": "Mountain landscape beneath heavy clouds",
+        "ja": "厚い雲の下に広がる山岳風景",
+        "ko": "짙은 구름 아래의 산악 풍경",
+        "id": "Bentang pegunungan di bawah awan tebal"
+      },
+      "description": {
+        "zh": "画面显示一座山脊与宽阔的深色岩地，前景是森林覆盖的山坡，远处可见零散建筑；拍摄地点、山名和拍摄日期尚未核实。",
+        "en": "The image shows a mountain ridge above a broad dark rocky expanse, with forested slopes and a few scattered buildings. The exact place, mountain name and capture date are unverified.",
+        "ja": "山の稜線と広い暗色の岩地、森林に覆われた斜面、点在する建物が写っています。正確な場所、山名、撮影日は未確認です。",
+        "ko": "산 능선과 넓은 어두운 바위 지형, 숲이 우거진 비탈면과 흩어진 건물이 보입니다. 정확한 장소, 산 이름과 촬영일은 확인되지 않았습니다.",
+        "id": "Foto ini menampilkan punggungan gunung di atas bentang batuan gelap yang luas, lereng berhutan, dan beberapa bangunan yang tersebar. Lokasi tepat, nama gunung, dan tanggal pengambilan gambar belum terverifikasi."
+      },
       "alt_text": {
-        "zh": "???????",
-        "en": "Bali landscape scene"
+        "zh": "厚重云层下的山脊、深色岩地、森林坡地和零散建筑",
+        "en": "Mountain ridge above dark rocky terrain with forested slopes and scattered buildings beneath heavy clouds",
+        "ja": "厚い雲の下にある山の稜線、暗色の岩地、森林の斜面と点在する建物",
+        "ko": "짙은 구름 아래의 산 능선, 어두운 바위 지형, 숲이 우거진 비탈면과 흩어진 건물",
+        "id": "Punggungan gunung, bentang batuan gelap, lereng berhutan, dan bangunan yang tersebar di bawah awan tebal"
       },
       "rights": {
         "status": "user_provided_with_consent",
