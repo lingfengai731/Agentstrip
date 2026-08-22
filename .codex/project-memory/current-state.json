@@ -13,11 +13,11 @@
   },
   "snapshot": {
     "status": "verified",
-    "captured_at": "2026-08-22T08:07:20Z",
+    "captured_at": "2026-08-22T11:10:52Z",
     "captured_by": "codex-sol",
-    "source_commit": "a24cd32ee9b1db0b4d9567e1533284f800ba156b",
+    "source_commit": "3af4c9c0a00ef5eb925e6366c97c2de83940b583",
     "source_branch": "codex/account2-integration-20260816",
-    "working_tree_at_capture": "clean at immutable code commit; documentation and evidence changes follow",
+    "working_tree_at_capture": "immutable code commit 3af4c9c; documentation, evidence and handoff changes follow",
     "wandermind_bali": {
       "status": "verified",
       "routes": 6,
@@ -31,7 +31,8 @@
         "Thousand Islands Viewpoint and two Mount Batur anchors remain pending because their exact public identity, entrance or venue is not uniquely resolved; supplier-gated experiences remain non-execution-ready.",
         "Dicky's five-day itinerary is treated as an R1 field calibration, not a seventh route family.",
         "Production was freshly reverified on 2026-08-22 at the prior main frontend baseline: schema 1.2.0 with 6 routes, 50 POIs and p54; this 62-POI/p55 branch and the Bali launch polish are not deployed.",
-        "The Bali route detail now uses a warm paper atlas surface, keeps every public day reachable, previews 12 Portfolio moments before an explicit reveal-all action, and localizes the changed controls across zh/en/ja/ko/id."
+        "The Bali route detail now uses a warm paper atlas surface, keeps every public day reachable, previews 12 Portfolio moments before an explicit reveal-all action, and localizes the changed controls across zh/en/ja/ko/id.",
+        "Customer-facing route and POI chips no longer expose internal verified labels; verified is silent, while pending and supplier-gated items show localized action copy only."
       ]
     },
     "driver_request_protection": {
@@ -79,7 +80,7 @@
       "production_status": "not_deployed"
     },
     "portfolio_content_manager": {
-      "status": "implementation_verified_local; eight D8 units have 27 complete five-language assets; launch gallery defaults to 12 moments with an explicit reveal-all action; remaining batch migration pending",
+      "status": "implementation_verified_local; nine D8 units have 28 complete five-language assets; launch gallery defaults to 12 moments with an explicit reveal-all action; remaining batch migration pending",
       "approved_unique_assets": 108,
       "d8_theme_candidates": 52,
       "driver_or_unclassified_assets": 56,
@@ -87,8 +88,8 @@
       "d8_poi_linked": 23,
       "d8_region_linked": 24,
       "d8_all_geo_links": 23,
-      "d8_five_language_copy_complete": 27,
-      "d8_five_language_alt_complete": 27,
+      "d8_five_language_copy_complete": 28,
+      "d8_five_language_alt_complete": 28,
       "static_gallery_fallback_assets": 37,
       "verified_capabilities": [
         "multi-file browser upload with progress and SHA-256 duplicate checks",
@@ -100,17 +101,17 @@
         "repeat image-intake scans preserve reviewed manifest version, approval, optimized paths and localized copy for the same SHA-256"
       ],
       "verification": {
-        "product_tests": "61/61 locally and in CI",
+        "product_tests": "62/62 locally for commit 3af4c9c; remote CI pending this handoff",
         "image_intake_tests": "pass",
         "node_syntax": "pass",
-        "browser_languages": "zh/en/ja/ko/id route-card and gallery reveal labels passed deterministic local browser checks",
+        "browser_languages": "zh/en/ja/ko/id route-card action labels passed deterministic local browser checks; verified labels are absent",
         "browser_widths": "320/390/768/1440 passed with zero document-level horizontal overflow",
-        "browser_console": "zero Bali-page console errors in the final five-test local run",
-        "routing_gate": "canonical luna_worker completed the bounded read-only social-asset audit; Sol independently parsed the CSV, checked all eight files and inspected all eight WebP images before accepting the campaign set"
+        "browser_console": "zero Bali-page console errors and warnings after the public-status copy change",
+        "routing_gate": "two exploratory luna_worker audits stopped honestly on parent worktree drift. The immutable 3af4c9c review returned a completed final with P0/P1/P2 all zero and product GO; it self-labeled blocked only because it observed the parent thread's intentional current-state documentation edit, while all four frozen product files remained unchanged."
       },
-      "evidence_id": "ev-20260822T080720Z-bali-launch-polish-campaign",
+      "evidence_id": "ev-20260822T112232Z-bali-public-status-d8-batch9",
       "batch_boundary": "Only Landscapes, Culture and Experiences belong in D8 Portfolio. People assets primarily belong in Driver Moments; unclassified assets require manual classification. Approval alone does not prove place, route or five-language metadata.",
-      "next_batch": "First complete the Render presence-only production gate, safe canary/deploy and post-deploy E2E for a24cd32. After launch, review the remaining 25 D8 theme candidates starting with bali-4.jpg; stock images naming Thailand, Hawaii, Greece or Palau must not be relabelled as Bali.",
+      "next_batch": "First complete the Render presence-only production gate, safe canary/deploy and post-deploy E2E for the current PR #3 head. After launch, review the remaining 24 D8 theme candidates; stock images naming Thailand, Hawaii, Greece or Palau must not be relabelled as Bali.",
       "production_status": "not_verified"
     },
     "production": {
@@ -118,7 +119,7 @@
       "verified_at": "2026-08-22T08:05:00Z",
       "frontend_matches_commit": "3fbf898fb6a27da8d7b87476d6fd941a24c3d05c",
       "backend_commit": "unknown",
-      "latest_branch_commit": "a24cd32ee9b1db0b4d9567e1533284f800ba156b",
+      "latest_branch_commit": "3af4c9c0a00ef5eb925e6366c97c2de83940b583",
       "latest_branch_deployed": false,
       "health": "200 ok",
       "bali_routes": 6,
@@ -140,9 +141,9 @@
       "url": "https://github.com/lingfengai731/Agentstrip/pull/3",
       "status": "draft",
       "mergeable": true,
-      "head_commit": "a24cd32ee9b1db0b4d9567e1533284f800ba156b",
-      "project_memory_ci": "success",
-      "postgres_integration_ci": "success",
+      "head_commit": "3af4c9c0a00ef5eb925e6366c97c2de83940b583",
+      "project_memory_ci": "pending for current head",
+      "postgres_integration_ci": "pending for current head",
       "release_gate": "presence-only PostgreSQL and stable strong SECRET_KEY confirmation, safe Render deploy, proxy smoke and production browser regression"
     },
     "render_operations_thread": {
@@ -193,6 +194,7 @@
   },
   "limitations": [
     "The existing root AGENTS.md has not been changed, so automatic loading is not guaranteed.",
+    "bali-4.jpg remains the approved generic Bali-page hero, but its exact place, mountain name and capture date are unverified; it must not be reused as a location-specific route or advertising claim without new evidence.",
     "Production was checked only through public HTTP behavior; authenticated Render environment values, the production backend commit and database contents were not read because this existing task has no injected browser-control handle.",
     "The latest branch passed isolated real PostgreSQL 16 integration tests but still requires a post-deploy Render proxy-address smoke test before release completion.",
     "The one-shot native Browser/Chrome/Computer Use gate failed with zero callable control tools. Native control is a permanent non-blocking limitation for this workstream; no further local plugin repair is authorized.",

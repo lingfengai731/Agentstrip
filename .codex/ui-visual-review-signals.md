@@ -77,3 +77,16 @@ rejected aspects: 不接受把分类、地区、路线、标签和五语言资�
 reason in reviewer words: 上传要填写的东西会不会太多，像这张照片我都不知道怎么填写
 scope: this surface
 recorded at: 2026-08-14
+
+workflow: ui-implementation-workflow-v2
+status: raw
+task: Bali 发布前状态文案产品化
+page/surface: WanderMind 巴厘岛页（公共路线卡与按天地点）
+screenshot or artifact: 当前 PR 分支的 bali.html 动态路线界面
+reviewer: 用户
+decision: rejected
+accepted aspects: 开发阶段可以保留事实核验状态和证据门禁
+rejected aspects: 不接受把“稳定事实已核验”等内部执行标签展示给正式上线后的游客
+reason in reviewer words: 只是要客户使用看到的东西就行，这个应该算是我们执行过程中的标签
+scope: this surface
+recorded at: 2026-08-22

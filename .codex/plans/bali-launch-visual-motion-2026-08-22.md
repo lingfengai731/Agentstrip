@@ -17,6 +17,7 @@ Make the public-route area faster to scan without changing WanderMind's identity
 | `DESIGN.md` | Travel Paper, Warm Canvas, ink text, teal actions, restrained motion | A new page-specific identity |
 | User review, 2026-08-22 | Reduce the uninterrupted green area and repeated copy | Removing R1-R6 detail or the full free route promise |
 | UI UX Pro Max query | One or two meaningful motion cues, visible focus, reduced-motion support | Its unrelated dark newsletter palette and GSAP dependency |
+| Impeccable 4.1.1 | Hide internal QA vocabulary, preserve the incumbent world, run one bounded detector pass | Installing project hooks or smuggling in a redesign during release polish |
 
 ## Find Animation Opportunities audit
 
@@ -39,7 +40,7 @@ Make the public-route area faster to scan without changing WanderMind's identity
 
 1. Replace the route-detail teal slab with a warm paper atlas surface, dark text, white day cards, and a quiet topographic background.
 2. Keep all day headings visible; show place controls only for the active day so the complete route remains free but the editor is less dense.
-3. Move verification language into a compact notice and preserve every status chip.
+3. Keep verification state in data/admin handoff, hide the public `verified` badge, and show only actionable `check before travel` or `confirm before booking` labels when needed.
 4. Change the driver band from bright teal to deep ink-teal so teal returns to being an action color.
 5. Do not add a component library; the static HTML page already has the required controls and Leaflet map.
 
@@ -60,4 +61,6 @@ Make the public-route area faster to scan without changing WanderMind's identity
 
 ## Tooling decision
 
-`pbakaus/impeccable` was reviewed as an Apache-2.0 design skill collection. It was not installed into this release branch because the relevant anti-pattern checks are already covered by the active frontend, UI workflow and animation skills; adding project hooks during a release cycle would increase surface area without changing the accepted implementation.
+`pbakaus/impeccable` 4.1.1 was installed outside the repository at `E:/CodexSkills/.sources/impeccable` and exposed through a user-scope Junction. This release uses its `polish` guidance and one manual detector pass only. Project hooks remain intentionally uninstalled because they add a separate trust/configuration surface and are not required for this bounded release correction.
+
+The bounded detector pass found two thick one-sided accent borders and three incumbent/intentional signals. The two borders were replaced with complete one-pixel borders. Roboto remains because `DESIGN.md` deliberately selects it with full CJK fallbacks; the empty modal image receives its source before the modal opens; the amber hover shadow remains a narrowly scoped brand CTA treatment. The detector ran in degraded regex mode because its optional parser modules are not installed, so browser and screenshot QA remain the visual authority.

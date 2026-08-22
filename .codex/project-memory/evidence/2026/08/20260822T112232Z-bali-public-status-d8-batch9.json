@@ -1,0 +1,22 @@
+{
+  "schema_version": 1,
+  "evidence_id": "ev-20260822T112232Z-bali-public-status-d8-batch9",
+  "task_ref": "bali-public-status-d8-batch9",
+  "owner": "codex-sol",
+  "captured_at": "2026-08-22T11:22:32Z",
+  "status": "verified",
+  "claim": "Commit 3af4c9c hides internal verified labels from Bali visitors, keeps only five-language actionable status copy, and completes the ninth D8 unit for bali-4 without unsupported location claims.",
+  "source": {
+    "kind": "git",
+    "repository": "https://github.com/lingfengai731/Agentstrip.git",
+    "commit": "3af4c9c0a00ef5eb925e6366c97c2de83940b583",
+    "branch": "codex/account2-integration-20260816",
+    "worktree": "E:\\Agentstrip2-worktree",
+    "dirty": true
+  },
+  "verification": {
+    "command": "python -m unittest discover -s wandermind/backend/tests; tools/test-image-intake.ps1; Playwright 320/390/768/1440 x zh/en/ja/ko/id; CSV/manifest reconciliation; git diff --check; immutable luna_worker review",
+    "result": "74 tests OK with 12 isolated PostgreSQL skips; product suite 62/62; image intake PASS; 108/108 inventory with 28 complete D8 items; zero horizontal overflow and zero console errors/warnings; Luna P0/P1/P2=0 product GO."
+  },
+  "notes": "Production remains the prior p54/50-POI baseline and was not changed. Render presence-only checks, canary/deploy, proxy-isolation smoke and production E2E remain the release gate. bali-4 exact place, mountain name and date remain unknown; it must not receive route/region/POI or location-specific ad claims. Impeccable was installed at user scope on E: with no project hook."
+}

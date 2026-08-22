@@ -271,3 +271,14 @@
 - QA 回调：本地 61/61 产品测试；完整本地 discover 73 项中 61 通过、12 项按设计等待隔离 PostgreSQL；GitHub Actions 在 SQLite 61/61 和 PostgreSQL 12/12 均通过。完整后端下 320/390/768/1440、五语言、R3 联动、地图、按天编辑、加点、图库展开、零控制台错误和 reduced-motion 共 5/5 通过；`git diff --check` 通过。
 - GitHub/生产回调：实现提交 `a24cd32ee9b1db0b4d9567e1533284f800ba156b` 已推送 PR #3 分支；Project memory run `32561281258` 与 PostgreSQL run `32561281247` 成功。生产新鲜抓取仍为 p54、6 routes / 50 POIs，未出现暖纸详情或 12 图预览；PR 保持 Draft，未 merge、未部署、未修改 Render 环境变量或生产数据。
 - 下一回调：只读确认生产 PostgreSQL 与强稳定 `SECRET_KEY` 的存在，不显示值；安全 canary/部署 `a24cd32`，验证代理访客隔离与完整生产 E2E。全部绿色后才将 PR ready/merge；上线后再开始手册中的首发内容和 `bali-4.jpg` D8 单元。
+
+## 2026-08-22 Bali public status productization and D8 batch 9 callback
+
+- 路由：large / L2，生产仍为 L3。Sol 保留两账号计划收敛、产品语义、设计融合、提交、GitHub、生产判断与最终验收；正式 `luna_worker` 只承担边界明确的只读计划审计、单图事实审计和冻结提交反证审查。
+- Luna 初审：Turing（`01a0290c-04ac-7c11-893f-c51ee08f8693`）与 Kant（`01a0290c-05d0-7d93-8d09-94b2f3062477`）均因父线程按计划产生目标 diff 而诚实返回 blocked，没有写文件。Sol 独立核对 Git/项目记忆后接受两账号优先级清单，并独立查看 `bali-4.jpg` 原图/WebP、哈希和 EXIF 后接受 unknown 地点边界。
+- Luna 冻结审查：Lovelace（`01a0292a-97fc-7943-956a-4ccd5aa2769c`，正式 `luna_worker` / `gpt-5.6-luna` / `max`）于 `2026-08-22T19:10:52+08:00` 启动，`2026-08-22T19:21:39+08:00` 关闭，约 10 分 47 秒。工具层收到 completed final；产品结论为 P0/P1/P2 全 0、GO。它因观察到父线程有意更新 `current-state.json` 而在正文自标 blocked，但冻结的四个产品文件未改变，Sol 已独立复跑验收并纠正该归因。
+- 产品回调：游客界面不再展示“稳定事实已核验”等内部 QA 标签；verified 静默，只有 pending 与 supplier-gated 项显示五语言“出发前确认 / 预约前确认”行动提示。公开数据仍保留结构化 verification state，未削弱事实门禁。
+- 图片回调：`bali-4.jpg` 保持原 SHA、WebP 与授权字段，改为 Landscapes / mountains-volcano；只描述可见山脊、暗色岩地、森林坡地、云和零散建筑。原图无 EXIF/GPS，故地点、山名和日期均为 unknown，region/route/POI 为空；D8 五语言完整资料增至 28，剩余 24。
+- 设计回调：安装用户级 Impeccable 4.1.1 到 E 盘源码目录并通过 Junction 暴露，不安装项目 hook 或依赖；本轮只使用 polish/craft floor 与一次 detector。两个粗重单侧强调边框已改为完整细边框，Roboto/CJK 字体、动态 modal 图片和单一品牌 CTA 光晕按既有 `DESIGN.md` 保留。
+- QA 回调：62/62 产品测试、完整 discover 74 项（12 项 PostgreSQL 隔离测试按设计 skip）、image-intake、108/108 CSV/manifest 对账和 diff check 通过；Playwright 在 320/390/768/1440 与中英日韩印下验证行动标签、verified badge 隐藏和零横向溢出，控制台 0 error / 0 warning。
+- 发布边界：产品提交 `3af4c9c` 必须连同本节 evidence/handoff 推送后才视为 GitHub 同步；任何 GitHub 同步也不等于生产部署。公开生产仍为旧 p54 / 50 POI 基线；下一回调固定为 PR #3 当前 head 的 CI、Render presence-only 门禁、canary/部署、代理隔离烟测和生产 E2E。
