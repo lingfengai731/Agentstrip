@@ -575,20 +575,42 @@
       "relative_path": "assets/images/bali-2.jpg",
       "web_optimized_path": "assets/images/web/94036e2811302fc8.webp",
       "sha256": "94036e2811302fc80417370f6ca64f13a6d85b667a1c222751d8b0f6f5bd6d90",
-      "category": "landscapes",
-      "sub_category": "bali-landscape",
+      "category": "culture",
+      "sub_category": "balinese-culture",
       "tags": [
-        "bali",
-        "landscape"
+        "culture",
+        "architecture",
+        "split-gate",
+        "mountain",
+        "greenery",
+        "road",
+        "cloth-decoration"
       ],
-      "location_status": "bali-named",
+      "location_status": "unknown",
       "region_ids": [],
       "route_ids": [],
       "poi_ids": [],
       "intended_use": "WanderMind approved project image library; connect only where its destination/category metadata matches.",
       "alt_text": {
-        "zh": "???????",
-        "en": "Bali landscape scene"
+        "zh": "山地绿树背景前的巴厘式分体门",
+        "en": "Balinese-style split gate with green mountains and trees",
+        "ja": "緑の山と木々を背景にしたバリ様式の分離門",
+        "ko": "푸른 산과 나무를 배경으로 한 발리 양식의 분리문",
+        "id": "Gerbang terbelah bergaya Bali dengan latar pegunungan dan pepohonan hijau"
+      },
+      "title": {
+        "zh": "山景中的巴厘式分体门",
+        "en": "Balinese-style split gate in a mountain landscape",
+        "ja": "山景に立つバリ様式の分離門",
+        "ko": "산악 풍경 속 발리 양식의 분리문",
+        "id": "Gerbang terbelah bergaya Bali dalam lanskap pegunungan"
+      },
+      "description": {
+        "zh": "照片显示一座高大的巴厘式分体门，门后可见山地、绿树、道路和布饰。具体地点、是否为 Handara Gate、开放信息与拍摄条件均尚未核实。",
+        "en": "The photo shows a tall Balinese-style split gate with mountains, greenery, a road and cloth decorations. The exact location, whether it is Handara Gate, opening information and photography conditions are unverified.",
+        "ja": "写真には、高いバリ様式の分離門、山地、緑、道路、布飾りが写っています。正確な場所、Handara Gateであるか、開門情報と撮影条件は未確認です。",
+        "ko": "사진에는 높은 발리 양식의 분리문과 산지, 녹지, 도로, 천 장식이 보입니다. 정확한 위치, Handara Gate인지 여부, 운영 정보와 촬영 조건은 확인되지 않았습니다.",
+        "id": "Foto ini menampilkan gerbang terbelah bergaya Bali dengan pegunungan, pepohonan hijau, jalan, dan hiasan kain. Lokasi persis, apakah ini Handara Gate, informasi buka, dan kondisi pemotretan belum terverifikasi."
       },
       "rights": {
         "status": "user_provided_with_consent",
