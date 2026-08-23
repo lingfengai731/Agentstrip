@@ -1,0 +1,22 @@
+{
+  "schema_version": 1,
+  "evidence_id": "ev-20260823T051823Z-mobile-bali-first-20260823",
+  "task_ref": "mobile-bali-first-20260823",
+  "owner": "Sol",
+  "captured_at": "2026-08-23T05:18:23Z",
+  "status": "verified",
+  "claim": "Bali mobile-first journey UI and exact-POI visual picker are deployed from 6878dce on wandermind.cc; desktop layout remains expanded.",
+  "source": {
+    "kind": "git",
+    "repository": "https://github.com/lingfengai731/Agentstrip.git",
+    "commit": "6878dce7b02245f943e214fa4aa668b659c87c50",
+    "branch": "codex/mobile-bali-first-20260823",
+    "worktree": "E:\\Agentstrip2-worktree",
+    "dirty": false
+  },
+  "verification": {
+    "command": "75 unittest; Node and inline syntax; diff check; Edge production 5 languages x 320/390/768/1440 plus mobile picker/add/R3 sync/gallery flow",
+    "result": "75 tests OK with 12 isolated-PostgreSQL skips; production p62; 20/20 viewport-language cases had zero overflow/page/console/same-origin errors; exact Taman Ayun image loaded 600x600; Luna final PASS."
+  },
+  "notes": "Product commits d4fcdbf, 9aeeb33, 6878dce. No backend behavior, Render variables, payments, user data, emails, or database records changed. Production screenshots: E:\\Agentstrip2-worktree-artifacts\\20260823-production-mobile."
+}

@@ -313,3 +313,13 @@
 - QA 回调：本地 74 项中 62 通过、12 项隔离 PostgreSQL 测试按设计跳过；`git diff --check` 与 Node 语法通过。系统 Edge/Playwright 完成 7 个公开页面 × 5 种语言 × 4 个宽度，共 140/140，零横向溢出；生产最终控制台 0 error / 0 warning，关键页面桌面/手机截图已人工复看。
 - GitHub/生产回调：产品提交 `fe1b811` 经 PR #4 合并为 `b9b4f47`；联系修复 `e265f62` 经 PR #5 合并为 `865544f`，PostgreSQL integration run `32610598308` 成功。Render 自动部署已由生产 `i18n.js?v=p61` 和新联系表单标记确认；未修改环境变量、未发送邮件、未写支付/管理员/真实用户数据。
 - 下一回调：网站已具备小批量推广条件；按 `wandermind-studio/MARKETING_LAUNCH_PLAYBOOK.md` 使用 UTM 开始首发并记录 14 天数据。随后优先升级公开个人邮箱为已验证角色/域名邮箱，并以小批量继续剩余 24 张 D8 资料；支付、积分和管理员生产写回调仍需专用测试账号。
+
+## 2026-08-23 Bali mobile-first journey callback
+
+- 路由：large / L2，发布为 L3。Sol 在隔离工作树 `E:\Agentstrip2-worktree` 保留移动产品方向、设计融合、代码集成、GitHub、部署与生产验收；正式 `luna_worker` Avicenna（`01a02cd2-41ec-7d20-b6fc-1cf0aa4a03f9`，`gpt-5.6-luna` / `max`）只读审查冻结提交，零文件修改。初始审计因父线程按计划产生 diff 而 blocked；`d4fcdbf` 审查发现地点理由、折叠状态和图片故障语义；`9aeeb33` 复审继续发现 hover gate 不完整；`6878dce` 最终针对性复审 completed / PASS。一次错误提交前缀由 Sol 立即纠正，未冒充代码失败。
+- 移动产品回调：575px 以下改为单开信息架构和四项底部旅程导航；六条公共路线一次显示一条并提供显式前后切换，地图按需展开，默认图库缩为 6 张。桌面 768/1440 继续完整显示 6 张路线卡与四个展开模块，未改成移动折叠版。
+- 地点决策回调：原生下拉框改为可视地点浏览器。桌面 hover/focus 显示精确图片，手机点按后进入详情并显式加入当天；图片只读取 manifest 的 `poi_ids` 精确映射。存在精确图时读取五语言 description 解释“为什么值得考虑”；无图和 manifest 加载失败使用不同诚实空态，禁止用泛巴厘岛图片冒充具体地点。
+- 动效回调：Nuwa / Steve Jobs、UI UX Pro Max、UI implementation workflow、Frontend、Emil、Impeccable 与 Find/Improve/Review Animations 共同约束移动焦点与克制动效。只保留 160–220ms 状态反馈；所有 hover 位移均 gated 到 fine pointer，reduced-motion 下 picker transform 为 none / 1ms；不加入滚动显现、视差、弹跳、动画地图或新依赖。
+- QA 回调：本地 75 项中 63 通过、12 项隔离 PostgreSQL 测试按设计跳过；Node、4 个 inline scripts、HTML duplicate IDs 和 diff check 通过。系统 Edge 本地 320/390/768/1440、五语言、键盘 Enter/Arrow/Escape、焦点返回、图片故障和 reduced-motion 均通过。Impeccable 在缺少可选 parser 时降级扫描，只报告既有 Roboto、动态 modal 图片和品牌 CTA 光晕，没有新增阻断项。
+- GitHub/生产回调：产品提交 `d4fcdbf`、`9aeeb33`、`6878dce` 已推送分支并 fast-forward 到 `main`；远端 `main` 为 `6878dce7b02245f943e214fa4aa668b659c87c50`。Render 自动部署后公开 Bali 从 p61 切换到 p62。生产 Edge 20/20（中英日韩印 × 320/390/768/1440）零横向溢出、零 page/console/同源 HTTP 错误；Taman Ayun 精确 WebP 实际加载 600×600，加入第 1 天、R1→R3 同步和移动图库 6 图均通过。未修改 Render 环境变量、后端行为、支付、邮件、数据库或真实用户记录。
+- 下一回调：按现有推广手册启动小批量传播并记录 14 天转化；产品侧优先继续 exact POI 图片覆盖审计和剩余 D8 内容批次。涉及支付、积分、管理员发布或真实司机邮件的生产写回调仍使用专用测试账号与单独门禁。
