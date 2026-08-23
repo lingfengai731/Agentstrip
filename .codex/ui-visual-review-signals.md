@@ -90,3 +90,16 @@ rejected aspects: 不接受把“稳定事实已核验”等内部执行标签�
 reason in reviewer words: 只是要客户使用看到的东西就行，这个应该算是我们执行过程中的标签
 scope: this surface
 recorded at: 2026-08-22
+
+workflow: ui-implementation-workflow-v2
+status: raw
+task: Bali 移动端独立布局与地点选择体验
+page/surface: WanderMind 巴厘岛页（手机端）
+screenshot or artifact: 生产 p61 的 390px 页面截图与用户真机查看结果
+reviewer: 用户
+decision: rejected
+accepted aspects: 桌面端布局可以保持；巴厘岛内容、路线基础和现有功能方向继续保留
+rejected aspects: 不接受手机端只是桌面内容纵向堆叠；不接受超长页面让游客持续下拉；不接受首次游客只能看到陌生英文或印尼文地点名而无法判断是否喜欢
+reason in reviewer words: 手机屏幕明显比桌面小，页面太长会让客户没耐心；手机端可以不完全照搬桌面版本；地点名称需要配图帮助判断
+scope: this surface
+recorded at: 2026-08-23

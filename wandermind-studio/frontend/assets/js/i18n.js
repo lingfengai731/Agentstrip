@@ -1216,6 +1216,13 @@ Object.assign(LANGS.ja, { aboutPrimaryCta:'バリ島プロルートを提案', a
 Object.assign(LANGS.ko, { aboutPrimaryCta:'발리 전문 경로 매칭', aboutSecondaryCta:'무료 발리 경로 보기', contactFormSub:'작성 후 이메일 앱이 열립니다. 내용을 확인한 뒤 보내 주세요.', contactFormBtn:'이메일에서 확인' });
 Object.assign(LANGS.id, { aboutPrimaryCta:'Cocokkan rute profesional Bali', aboutSecondaryCta:'Lihat rute Bali gratis', contactFormSub:'Setelah diisi, aplikasi email akan terbuka. Tinjau lalu kirim pesan Anda.', contactFormBtn:'Tinjau di email' });
 
+/* Bali mobile journey navigation. */
+Object.assign(LANGS.en, { baliMobileNavLabel:'Bali journey sections', baliMobileNavRoutes:'Routes', baliMobileNavProfessional:'My route', baliMobileNavGallery:'Photos', baliMobileNavJourney:'Journey', baliMobileRoutePickerLabel:'Choose a public route', baliMobileRoutePrevious:'Previous route', baliMobileRouteNext:'Next route' });
+Object.assign(LANGS.zh, { baliMobileNavLabel:'巴厘岛行程分区', baliMobileNavRoutes:'路线', baliMobileNavProfessional:'我的路线', baliMobileNavGallery:'照片', baliMobileNavJourney:'行程', baliMobileRoutePickerLabel:'选择公共路线', baliMobileRoutePrevious:'上一条路线', baliMobileRouteNext:'下一条路线' });
+Object.assign(LANGS.ja, { baliMobileNavLabel:'バリ旅行セクション', baliMobileNavRoutes:'ルート', baliMobileNavProfessional:'自分の旅', baliMobileNavGallery:'写真', baliMobileNavJourney:'旅程', baliMobileRoutePickerLabel:'公開ルートを選ぶ', baliMobileRoutePrevious:'前のルート', baliMobileRouteNext:'次のルート' });
+Object.assign(LANGS.ko, { baliMobileNavLabel:'발리 여행 섹션', baliMobileNavRoutes:'경로', baliMobileNavProfessional:'내 경로', baliMobileNavGallery:'사진', baliMobileNavJourney:'여정', baliMobileRoutePickerLabel:'공개 경로 선택', baliMobileRoutePrevious:'이전 경로', baliMobileRouteNext:'다음 경로' });
+Object.assign(LANGS.id, { baliMobileNavLabel:'Bagian perjalanan Bali', baliMobileNavRoutes:'Rute', baliMobileNavProfessional:'Rute saya', baliMobileNavGallery:'Foto', baliMobileNavJourney:'Perjalanan', baliMobileRoutePickerLabel:'Pilih rute publik', baliMobileRoutePrevious:'Rute sebelumnya', baliMobileRouteNext:'Rute berikutnya' });
+
 /* ──────────────────────────────────────────────────────
    apply / persist / wire up the picker
    ────────────────────────────────────────────────────── */

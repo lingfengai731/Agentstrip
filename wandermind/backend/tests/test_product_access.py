@@ -2040,7 +2040,7 @@ class ProductAccessTests(unittest.TestCase):
         self.assertIn("event.key !== 'Enter' && event.key !== ' '", html)
         self.assertIn("prefers-reduced-motion: reduce", html)
 
-    def test_bali_route_editor_reports_add_place_outcomes(self):
+    def test_bali_route_editor_uses_visual_place_picker_and_reports_outcomes(self):
         html = (
             BACKEND_DIR.parents[1]
             / "wandermind-studio"
@@ -2048,18 +2048,37 @@ class ProductAccessTests(unittest.TestCase):
             / "bali.html"
         ).read_text(encoding="utf-8")
         for message in (
-            "Choose a place before adding it.",
-            "请先选择一个地点，再点击添加。",
-            "追加する場所を先に選択してください。",
-            "추가할 장소를 먼저 선택해 주세요.",
-            "Pilih tempat terlebih dahulu sebelum menambahkannya.",
+            "Point to a place to preview it.",
+            "将鼠标移到地点上可预览",
+            "場所にポインターを合わせるとプレビューできます。",
+            "장소에 마우스를 올리면 미리 볼 수 있습니다.",
+            "Arahkan penunjuk untuk melihat pratinjau.",
         ):
             self.assertIn(message, html)
         self.assertIn('class="bali-day-feedback', html)
         self.assertIn("aria-describedby=\"' + feedbackId + '\"", html)
-        self.assertIn("showRouteEditorFeedback(route, index, 'error'", html)
-        self.assertIn("routeEditorFeedback = { routeId: route.id", html)
-        self.assertIn("nextSelect.focus({ preventScroll: true })", html)
+        self.assertIn('role="listbox"', html)
+        self.assertIn('data-open-place-picker="', html)
+        self.assertIn('data-route-picker-confirm', html)
+        self.assertIn("image-publish-manifest.json?v=20260823m1", html)
+        self.assertIn("routeEditorFeedback = { routeId:context.route.id", html)
+        self.assertIn("nextTrigger.focus({ preventScroll:true })", html)
+
+    def test_bali_mobile_journey_uses_progressive_disclosure_without_hiding_desktop(self):
+        html = (
+            BACKEND_DIR.parents[1]
+            / "wandermind-studio"
+            / "frontend"
+            / "bali.html"
+        ).read_text(encoding="utf-8")
+        self.assertEqual(html.count('data-mobile-section="'), 4)
+        self.assertEqual(html.count('data-mobile-nav="'), 4)
+        self.assertIn("function openExclusive(section)", html)
+        self.assertIn("setActiveMobileNav(section.dataset.mobileSection)", html)
+        self.assertIn(".bali-mobile-section-body { display:contents; }", html)
+        self.assertIn("[data-mobile-section].bali-mobile-collapsed .bali-mobile-section-body { display:none; }", html)
+        self.assertIn("window.matchMedia('(max-width:575px)').matches ? 6 : 12", html)
+        self.assertIn("body { padding-bottom:calc(66px + env(safe-area-inset-bottom)); }", html)
 
     def test_portfolio_manager_requires_admin_and_storage_configuration(self):
         denied = self._run(
