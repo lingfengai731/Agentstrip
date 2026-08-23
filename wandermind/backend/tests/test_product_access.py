@@ -2061,6 +2061,8 @@ class ProductAccessTests(unittest.TestCase):
         self.assertIn('data-open-place-picker="', html)
         self.assertIn('data-route-picker-confirm', html)
         self.assertIn("image-publish-manifest.json?v=20260823m1", html)
+        self.assertIn("text(media.description) || copy.fit", html)
+        self.assertIn("poiMediaState === 'failed' ? copy.mediaErrorBody", html)
         self.assertIn("routeEditorFeedback = { routeId:context.route.id", html)
         self.assertIn("nextTrigger.focus({ preventScroll:true })", html)
 
@@ -2075,10 +2077,12 @@ class ProductAccessTests(unittest.TestCase):
         self.assertEqual(html.count('data-mobile-nav="'), 4)
         self.assertIn("function openExclusive(section)", html)
         self.assertIn("setActiveMobileNav(section.dataset.mobileSection)", html)
+        self.assertIn("setActiveMobileNav(null)", html)
         self.assertIn(".bali-mobile-section-body { display:contents; }", html)
         self.assertIn("[data-mobile-section].bali-mobile-collapsed .bali-mobile-section-body { display:none; }", html)
         self.assertIn("window.matchMedia('(max-width:575px)').matches ? 6 : 12", html)
         self.assertIn("body { padding-bottom:calc(66px + env(safe-area-inset-bottom)); }", html)
+        self.assertIn("@media (hover:hover) and (pointer:fine)", html)
 
     def test_portfolio_manager_requires_admin_and_storage_configuration(self):
         denied = self._run(

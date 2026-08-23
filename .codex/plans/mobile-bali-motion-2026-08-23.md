@@ -1,7 +1,7 @@
 # 001 — Explain Bali mobile state changes without decorative motion
 
 - **Status**: DONE
-- **Commit**: pending branch commit
+- **Commit**: d4fcdbf implementation baseline; reviewed follow-up in the containing commit
 - **Severity**: MEDIUM
 - **Category**: missed opportunities, accessibility, performance
 - **Estimated scope**: 1 file, small CSS and interaction changes
