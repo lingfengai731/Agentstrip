@@ -3367,6 +3367,8 @@ class ProductAccessTests(unittest.TestCase):
         self.assertNotIn("wa.me/", about_html)
         self.assertNotIn("Xiaohongshu: Wander with ky", about_html)
         self.assertNotIn("Dicky · trusted local driver", contact_html)
+        self.assertNotIn('action="mailto:', contact_html)
+        self.assertIn("window.location.href = 'mailto:lfwu22@126.com?subject='", contact_html)
 
         ai_js = (frontend_dir / "assets" / "js" / "ai-tool.js").read_text(
             encoding="utf-8"
