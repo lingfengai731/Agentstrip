@@ -13,11 +13,12 @@
     <meta property="og:title" content="WanderMind Studio · Easier Bali Trip Planning">
     <meta property="og:description" content="Plan an easier, more realistic Bali trip around your time, budget and travel style. Kyoto, Paris, Santorini and other destinations remain open in the same planner.">
     <meta property="og:url" content="https://wandermind.cc/">
-    <meta property="og:image" content="https://wandermind.cc/assets/images/logo-mark.png">
+    <meta property="og:image" content="https://wandermind.cc/assets/images/web/18029bd74c32ef72.webp">
+    <meta property="og:image:alt" content="Bali coast seen from above">
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="WanderMind Studio · Easier Bali Trip Planning">
     <meta name="twitter:description" content="Plan an easier, more realistic Bali trip around your time, budget and travel style. Kyoto, Paris, Santorini and other destinations remain open in the same planner.">
-    <meta name="twitter:image" content="https://wandermind.cc/assets/images/logo-mark.png">
+    <meta name="twitter:image" content="https://wandermind.cc/assets/images/web/18029bd74c32ef72.webp">
 
     <!-- Favicon -->
   <link rel="icon" type="image/png" href="assets/images/logo-mark-256.png">
@@ -276,6 +277,10 @@
       body:not(.dark) .w3l-teams-15 .para { color: #4b5563; }
       body:not(.dark) .wm-brief-form .btn-primary { background: #0a695b; border-color: #0a695b; color: #fff; }
       body:not(.dark) .w3l-teams-15 .action-button { background: #0a695b; border-color: #0a695b; color: #fff; }
+      .w3l-main-slider a.btn-theme2 { background:#fcbf1e; border-color:#fcbf1e; color:#1a1a1a; font-weight:700; }
+      .w3l-main-slider a.btn-theme2:hover, .w3l-main-slider a.btn-theme2:focus-visible { background:#f59e0b; border-color:#f59e0b; color:#1a1a1a; box-shadow:0 8px 24px rgba(15,23,42,.16); }
+      .w3l-clients a.btn-theme2 { background:#0e7c6b; border-color:#0e7c6b; color:#fff; font-weight:700; }
+      .w3l-clients a.btn-theme2:hover, .w3l-clients a.btn-theme2:focus-visible { background:#0a695b; border-color:#0a695b; color:#fff; }
       .w3l-main-slider .owl-one { min-height: 500px; }
       .w3l-main-slider .owl-one:not(.owl-loaded) { display: block; overflow: hidden; }
       .w3l-main-slider .owl-one:not(.owl-loaded) .item:not(:first-child) { display: none; }
@@ -816,10 +821,8 @@ $(function () { $('.navbar-toggler').click(function () { $('body').toggleClass('
 					<h2 class="footer-title-29" data-i18n="footContactTitle">Contact Us</h2>
 					<ul>
 						<li class="footer-contact-line"><span class="fa fa-envelope"></span><a href="mailto:lfwu22@126.com">lfwu22@126.com</a></li>
-						<li class="footer-contact-line"><span class="fa fa-github"></span><a href="https://github.com/lingfengai731/Agentstrip" target="_blank">github.com/lingfengai731/Agentstrip</a></li>
 					</ul>
 					<div class="main-social-footer-29">
-						<a href="https://github.com/lingfengai731/Agentstrip" class="facebook" target="_blank" aria-label="WanderMind on GitHub"><span class="fa fa-github"></span></a>
 						<a href="mailto:lfwu22@126.com" class="twitter" aria-label="Email WanderMind"><span class="fa fa-envelope"></span></a>
 					</div>
 				</div>
@@ -890,11 +893,12 @@ $(function () { $('.navbar-toggler').click(function () { $('body').toggleClass('
 		var defaults = { zh:'CNY', en:'USD', ja:'JPY', ko:'KRW', id:'IDR' };
 		function applyCurrencyDefault() {
 			if (currencyTouched || !currency) return;
-			var lang = (langPicker && langPicker.value) || localStorage.getItem('wm_studio_lang') || 'en';
+			var lang = localStorage.getItem('wm_studio_lang') || (langPicker && langPicker.value) || 'en';
 			currency.value = defaults[lang] || 'USD';
 		}
 		if (currency) currency.addEventListener('change', function () { currencyTouched = true; });
 		if (langPicker) langPicker.addEventListener('change', applyCurrencyDefault);
+		document.addEventListener('wm:language-change', applyCurrencyDefault);
 		applyCurrencyDefault();
 		form.addEventListener('submit', function (event) {
 			event.preventDefault();
@@ -978,7 +982,7 @@ $(function () { $('.navbar-toggler').click(function () { $('body').toggleClass('
 <!-- ════════════════════════════════════════════════════
      i18n — 5-language switcher (en / zh / ja / ko / id)
      ════════════════════════════════════════════════════ -->
-<script src="assets/js/i18n.js?v=p58"></script>
+<script src="assets/js/i18n.js?v=p61"></script>
 
 <script src="assets/js/global-auth.js?v=p52"></script>
 </body>

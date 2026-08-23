@@ -11,11 +11,12 @@
     <meta property="og:title" content="Find a Bali Driver · WanderMind Studio">
     <meta property="og:description" content="Request a trusted local Bali driver from WanderMind: Dicky or Gede Nico.">
     <meta property="og:url" content="https://wandermind.cc/find-driver">
-    <meta property="og:image" content="https://wandermind.cc/assets/images/logo-mark.png">
+    <meta property="og:image" content="https://wandermind.cc/assets/images/web/service-private-guide.webp">
+    <meta property="og:image:alt" content="Travellers meeting a local Bali guide">
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="Find a Bali Driver · WanderMind Studio">
     <meta name="twitter:description" content="Request a trusted local Bali driver from WanderMind: Dicky or Gede Nico.">
-    <meta name="twitter:image" content="https://wandermind.cc/assets/images/logo-mark.png">
+    <meta name="twitter:image" content="https://wandermind.cc/assets/images/web/service-private-guide.webp">
   <link rel="icon" type="image/png" href="assets/images/logo-mark-256.png">
   <link rel="apple-touch-icon" href="assets/images/logo-mark-256.png">
     <link rel="stylesheet" href="assets/css/style-starter.css?v=p47">
@@ -111,7 +112,8 @@
       .fd-spin { animation: fdspin 1s linear infinite; } @keyframes fdspin { to { transform: rotate(360deg); } }
 
       /* Driver card */
-      .fd-driver { background: linear-gradient(160deg, #0e7c6b, #0a5e51); color: #fff; border-radius: 16px; padding: 28px 26px; box-shadow: 0 10px 40px rgba(14,124,107,.25); }
+      .fd-driver { background: #f3f1ea; color: var(--fd-ink); border: 1px solid #e5e2da; border-radius: 16px; padding: 28px 26px; box-shadow: 0 10px 34px rgba(35,47,43,.09); }
+      body.dark .fd-driver { background: #1f2226; color: #f3f1ea; border-color: #2d3036; }
       .fd-driver-top { display: flex; align-items: center; gap: 14px; margin-bottom: 18px; }
       .fd-driver-avatar { width: 56px; height: 56px; border-radius: 50%; background: rgba(255,255,255,.16); display: inline-flex; align-items: center; justify-content: center; font-size: 26px; flex-shrink: 0; }
       .fd-driver-top h3 { margin: 0; font-size: 19px; font-weight: 700; }
@@ -128,25 +130,36 @@
       .fd-driver-choice strong { display:block; color:var(--fd-ink); font-size:15px; }
       body.dark .fd-driver-choice strong { color:#f3f4f6; }
       .fd-driver-choice span { display:block; margin-top:3px; color:var(--fd-muted); font-size:11.5px; line-height:1.45; }
-      .fd-profile { margin-top:18px; padding-top:18px; border-top:1px solid rgba(255,255,255,.2); }
+      .fd-profile { margin-top:18px; padding-top:18px; border-top:1px solid #ddd8cc; }
+      body.dark .fd-profile { border-top-color:#34383e; }
       .fd-profile:first-of-type { margin-top:0; padding-top:0; border-top:0; }
       .fd-profile-head { display:grid; grid-template-columns:72px 1fr; gap:13px; align-items:center; }
       .fd-profile-head img { width:72px; height:72px; border-radius:14px; object-fit:cover; }
-      .fd-profile-name { margin:0; font-size:20px; color:#fff; }
-      .fd-profile-role { margin:4px 0 0; color:rgba(255,255,255,.78); font-size:12px; line-height:1.45; }
-      .fd-profile-intro { margin:16px 0 0; color:rgba(255,255,255,.94); font-size:13.5px; line-height:1.72; white-space:pre-line; }
-      .fd-vehicle-title, .fd-moments-title { margin:20px 0 9px; color:var(--fd-gold); font-size:12px; font-weight:700; letter-spacing:.08em; text-transform:uppercase; }
+      .fd-profile-name { margin:0; font-size:20px; color:var(--fd-ink); }
+      body.dark .fd-profile-name { color:#f3f1ea; }
+      .fd-profile-role { margin:4px 0 0; color:#64748b; font-size:12px; line-height:1.45; }
+      body.dark .fd-profile-role { color:#c9c6bd; }
+      .fd-profile-intro { margin:16px 0 0; color:#475569; font-size:13.5px; line-height:1.72; white-space:pre-line; }
+      body.dark .fd-profile-intro { color:#e2e8f0; }
+      .fd-vehicle-title, .fd-moments-title { margin:20px 0 9px; color:var(--fd-teal); font-size:12px; font-weight:700; letter-spacing:.08em; text-transform:uppercase; }
+      body.dark .fd-vehicle-title, body.dark .fd-moments-title { color:#5eead4; }
       .fd-vehicles { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:10px; }
-      .fd-vehicle { margin:0; padding:7px; border-radius:12px; background:rgba(255,255,255,.11); min-width:0; }
-      .fd-vehicle img { display:block; width:100%; aspect-ratio:4/3; object-fit:contain; object-position:center bottom; border-radius:8px; background:rgba(5,52,45,.55); }
-      .fd-vehicle figcaption { margin-top:6px; color:rgba(255,255,255,.84); font-size:11px; line-height:1.4; }
+      .fd-vehicle { margin:0; padding:7px; border:1px solid #ded8ca; border-radius:12px; background:#fff; min-width:0; }
+      body.dark .fd-vehicle { background:#272b30; border-color:#3b4047; }
+      .fd-vehicle img { display:block; width:100%; aspect-ratio:4/3; object-fit:contain; object-position:center bottom; border-radius:8px; background:#e9e5dc; }
+      body.dark .fd-vehicle img { background:#171b1f; }
+      .fd-vehicle figcaption { margin-top:6px; color:#52605c; font-size:11px; line-height:1.4; }
+      body.dark .fd-vehicle figcaption { color:#d8d5cc; }
       .fd-moments { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:8px; }
       .fd-moment { margin:0; min-width:0; }
-      .fd-moment img { display:block; width:100%; aspect-ratio:1/1; object-fit:cover; border-radius:9px; background:rgba(5,52,45,.55); }
+      .fd-moment img { display:block; width:100%; aspect-ratio:1/1; object-fit:cover; border-radius:9px; background:#e9e5dc; }
+      body.dark .fd-moment img { background:#171b1f; }
       .fd-quote-boundary { margin-top:18px; padding:13px; border-radius:10px; background:rgba(255,255,255,.12); font-size:12px; line-height:1.6; color:rgba(255,255,255,.9); }
       @media(max-width:575px){ .fd-driver-picker{grid-template-columns:1fr}.fd-driver-choice{grid-template-columns:56px 1fr}.fd-driver-choice img{width:56px;height:56px} }
-      .fd-price-box { background: rgba(255,255,255,.10); border-radius: 12px; padding: 14px 16px; font-size: 13px; line-height: 1.8; }
-      .fd-price-box strong { color: var(--fd-gold); }
+      .fd-price-box { background: rgba(14,124,107,.08); border:1px solid rgba(14,124,107,.18); border-radius: 12px; padding: 14px 16px; color:#334155; font-size: 13px; line-height: 1.8; }
+      .fd-price-box strong { color: #0a695b; }
+      body.dark .fd-price-box { background:rgba(20,184,166,.09); border-color:rgba(94,234,212,.18); color:#e2e8f0; }
+      body.dark .fd-price-box strong { color:#5eead4; }
       .fd-success { text-align: center; padding: 26px 6px; }
       .fd-success .fa { font-size: 56px; color: var(--fd-teal); margin-bottom: 14px; }
       .fd-success h2 { color: var(--fd-ink); } body.dark .fd-success h2 { color: #f0f0ec; }
@@ -608,7 +621,7 @@
     };
   })();
 </script>
-<script src="assets/js/i18n.js?v=p60"></script>
+<script src="assets/js/i18n.js?v=p61"></script>
 <script>
   // Expose JS-side strings for the dynamic messages (filled after i18n load)
   (function () {

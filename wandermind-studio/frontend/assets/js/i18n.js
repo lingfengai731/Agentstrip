@@ -1134,6 +1134,49 @@ Object.assign(LANGS.ja, { baliRouteSectionEyebrow:'無料の公開ルート', ba
 Object.assign(LANGS.ko, { baliRouteSectionEyebrow:'무료 공개 경로', baliRouteSectionTitle:'공개 경로 전체를 무료로 둘러보세요', baliRouteSectionSub:'R1–R6 전체를 무료로 확인하세요. 개인 전문 경로는 약 70%를 먼저 보여 주며, 잠금 해제 후 모든 장소와 실행 정보를 볼 수 있습니다.', baliProfessionalEyebrow:'개인 맞춤 전문 경로', baliProfessionalTitle:'여행 정보로 전문 경로 매칭', baliProfessionalSub:'AI 셀프 플래닝과 별도이며, 잠금 해제 후 같은 일정에 3회 조정이 포함됩니다.' });
 Object.assign(LANGS.id, { baliRouteSectionEyebrow:'Rute publik gratis', baliRouteSectionTitle:'Jelajahi seluruh rute publik secara gratis', baliRouteSectionSub:'Lihat R1–R6 secara lengkap dan gratis. Rute profesional menampilkan sekitar 70% lebih dulu; buka akses untuk semua tempat dan detail pelaksanaan.', baliProfessionalEyebrow:'Rute profesional personal', baliProfessionalTitle:'Cocokkan rute dari profil perjalananmu', baliProfessionalSub:'Terpisah dari AI mandiri, dengan tiga penyesuaian untuk perjalanan yang sama setelah dibuka.' });
 
+// Promotion-ready public path: keep Bali focused on its route library and
+// professional match. AI DIY remains a separate entry from the homepage.
+Object.assign(LANGS.en, {
+  baliHeroSub:'Explore six complete public routes, then match a professional route to your dates, pace and budget. Contact a local driver only when the route feels right.',
+  baliHeroCtaProfessional:'Match my professional route', baliHeroCtaRoutes:'Browse free public routes',
+  baliRouteSectionEyebrow:'Bali route library · R1–R6', baliRouteSectionTitle:'Six public routes, all free to explore',
+  baliRouteSectionSub:'Compare each complete route first. For a route shaped around your own dates, pace and budget, preview about 70% before unlocking every place and execution detail.',
+  baliRouteLoading:'Loading the Bali route library…', baliProfessionalLoading:'Reading your trip profile and Bali route foundation…',
+  contactRouteTitle:'Professional Bali route', contactRouteValue:'Preview a route matched to your trip', contactRouteTag:'Start with dates, pace and budget'
+});
+Object.assign(LANGS.zh, {
+  baliHeroSub:'先浏览 6 条完整公共路线，再按日期、节奏和预算匹配专业路线；路线合适后，再联系当地司机。',
+  baliHeroCtaProfessional:'匹配我的专业路线', baliHeroCtaRoutes:'浏览免费公共路线',
+  baliRouteSectionEyebrow:'巴厘岛路线库 · R1–R6', baliRouteSectionTitle:'6 条公共路线，全部免费浏览',
+  baliRouteSectionSub:'先比较每条完整路线。需要贴合自己的日期、节奏和预算时，再生成个性化专业路线；先预览约 70%，解锁后查看全部地点与执行细节。',
+  baliRouteLoading:'正在加载巴厘岛路线库…', baliProfessionalLoading:'正在读取你的旅行信息与巴厘岛路线基础…',
+  contactRouteTitle:'巴厘岛专业路线', contactRouteValue:'先预览与你行程匹配的路线', contactRouteTag:'从日期、节奏和预算开始'
+});
+Object.assign(LANGS.ja, {
+  baliHeroSub:'6つの公開ルートをすべて確認し、日程・ペース・予算に合うプロルートを選びます。納得できたら現地ドライバーへ相談できます。',
+  baliHeroCtaProfessional:'プロルートを提案', baliHeroCtaRoutes:'無料の公開ルートを見る',
+  baliRouteSectionEyebrow:'バリ島ルート集 · R1–R6', baliRouteSectionTitle:'6つの公開ルートをすべて無料で閲覧',
+  baliRouteSectionSub:'まず各ルートを最後まで比較できます。日程・ペース・予算に合わせた個別プロルートは約70%を先に表示し、解除後に全スポットと実行詳細を確認できます。',
+  baliRouteLoading:'バリ島ルート集を読み込んでいます…', baliProfessionalLoading:'旅行情報とバリ島のルート基盤を読み込んでいます…',
+  contactRouteTitle:'バリ島プロルート', contactRouteValue:'旅行に合うルートを先にプレビュー', contactRouteTag:'日程・ペース・予算から開始'
+});
+Object.assign(LANGS.ko, {
+  baliHeroSub:'6개의 공개 경로를 모두 살펴본 뒤 날짜, 여행 속도와 예산에 맞는 전문 경로를 추천받으세요. 경로가 마음에 들면 현지 기사에게 문의할 수 있습니다.',
+  baliHeroCtaProfessional:'내 전문 경로 매칭', baliHeroCtaRoutes:'무료 공개 경로 보기',
+  baliRouteSectionEyebrow:'발리 경로 라이브러리 · R1–R6', baliRouteSectionTitle:'6개 공개 경로를 모두 무료로 확인',
+  baliRouteSectionSub:'먼저 각 경로 전체를 비교하세요. 날짜, 속도와 예산에 맞춘 개인 전문 경로는 약 70%를 먼저 보여 주며, 잠금 해제 후 모든 장소와 실행 정보를 확인할 수 있습니다.',
+  baliRouteLoading:'발리 경로 라이브러리를 불러오는 중…', baliProfessionalLoading:'여행 정보와 발리 경로 기반을 불러오는 중…',
+  contactRouteTitle:'발리 전문 경로', contactRouteValue:'내 여행에 맞는 경로 먼저 보기', contactRouteTag:'날짜, 속도와 예산부터 시작'
+});
+Object.assign(LANGS.id, {
+  baliHeroSub:'Jelajahi enam rute publik lengkap, lalu cocokkan rute profesional dengan tanggal, tempo, dan anggaranmu. Hubungi driver lokal setelah rutenya terasa tepat.',
+  baliHeroCtaProfessional:'Cocokkan rute profesional', baliHeroCtaRoutes:'Lihat rute publik gratis',
+  baliRouteSectionEyebrow:'Koleksi rute Bali · R1–R6', baliRouteSectionTitle:'Enam rute publik, semuanya gratis dijelajahi',
+  baliRouteSectionSub:'Bandingkan setiap rute lengkap lebih dulu. Untuk rute yang mengikuti tanggal, tempo, dan anggaranmu, lihat pratinjau sekitar 70% sebelum membuka semua tempat dan detail pelaksanaan.',
+  baliRouteLoading:'Memuat koleksi rute Bali…', baliProfessionalLoading:'Membaca profil perjalanan dan dasar rute Bali…',
+  contactRouteTitle:'Rute profesional Bali', contactRouteValue:'Pratinjau rute yang cocok dengan perjalananmu', contactRouteTag:'Mulai dari tanggal, tempo, dan anggaran'
+});
+
 /* Private driver requests are public; individual contact accounts are not. */
 Object.assign(LANGS.en, {
   partnerTitle:'Private local support, when you need it', partnerSub:'A route is only useful when it can work on the ground. For Bali, requests are handled privately through WanderMind — no personal driver accounts are published here.', partnerDickyEyebrow:'Bali · private request channel', partnerDickyName:'Choose a driver only when your route is ready', partnerDickyRole:'Airport transfers, full-day private tours and route-based requests.', partnerDickyDesc:'Share your dates, route and travel details through the private driver request. WanderMind forwards the request for availability and a final quote; individual contact accounts stay private.', partnerDickyCta:'Open a private driver request →',
@@ -1165,6 +1208,13 @@ Object.assign(LANGS.id, {
   baliDriverTitle:'Jadikan rute Anda bisa dijalankan bersama driver lokal', baliDriverSub:'Kirim tanggal dan rute Anda. Pilih driver setelah ketersediaan dan harga akhir dikonfirmasi.', baliDriverBtn:'Kirim permintaan driver',
   fdDickyShort:'Driver lokal Bali', fdGedeShort:'Driver lokal Bali', fdQuoteBoundary:'<strong>Seharian: dasar IDR 700k + IDR 50k per tamu</strong> (maks. 10 jam), atau <strong>setengah hari: dasar IDR 500k + IDR 50k per tamu</strong> (maks. 6 jam). Termasuk mobil, bahan bakar, driver sekaligus pemandu, air mineral, parkir, dan tol. Setelah 10 jam dikenakan tambahan IDR 75k per jam. Antar-jemput bandara dan pindah hotel dihitung berdasarkan jarak; harga akhir sesuai rute dikonfirmasi sebelum pemesanan.'
 });
+
+/* Promotion-ready next steps and an honest mail-app contact handoff. */
+Object.assign(LANGS.en, { aboutPrimaryCta:'Match a professional Bali route', aboutSecondaryCta:'Browse free Bali routes', contactFormSub:'Complete the form, then review and send it from your email app.', contactFormBtn:'Review in email' });
+Object.assign(LANGS.zh, { aboutPrimaryCta:'匹配巴厘岛专业路线', aboutSecondaryCta:'浏览免费巴厘岛路线', contactFormSub:'填写后会打开邮件应用，请确认内容再发送。', contactFormBtn:'前往邮件确认' });
+Object.assign(LANGS.ja, { aboutPrimaryCta:'バリ島プロルートを提案', aboutSecondaryCta:'無料のバリ島ルートを見る', contactFormSub:'入力後にメールアプリが開きます。内容を確認して送信してください。', contactFormBtn:'メールで確認' });
+Object.assign(LANGS.ko, { aboutPrimaryCta:'발리 전문 경로 매칭', aboutSecondaryCta:'무료 발리 경로 보기', contactFormSub:'작성 후 이메일 앱이 열립니다. 내용을 확인한 뒤 보내 주세요.', contactFormBtn:'이메일에서 확인' });
+Object.assign(LANGS.id, { aboutPrimaryCta:'Cocokkan rute profesional Bali', aboutSecondaryCta:'Lihat rute Bali gratis', contactFormSub:'Setelah diisi, aplikasi email akan terbuka. Tinjau lalu kirim pesan Anda.', contactFormBtn:'Tinjau di email' });
 
 /* ──────────────────────────────────────────────────────
    apply / persist / wire up the picker

@@ -3295,7 +3295,7 @@ class ProductAccessTests(unittest.TestCase):
         self.assertIn("profile.moments.map", driver_html)
         self.assertIn("DRIVER_PROFILES[choice.querySelector('input').value]", driver_html)
         self.assertIn("document.addEventListener('wm:language-change'", driver_html)
-        self.assertIn('assets/js/i18n.js?v=p60', driver_html)
+        self.assertIn('assets/js/i18n.js?v=p61', driver_html)
         self.assertIn("IDR 700k base + IDR 50k per guest", driver_html)
         self.assertIn("IDR 500k base + IDR 50k per guest", driver_html)
         self.assertIn("IDR 75k per hour", driver_html)
