@@ -304,3 +304,12 @@
 - 浏览器回调：系统 Edge/Playwright 生产验收完成 Bali 20/20（中英日韩印 × 320/390/768/1440）与全局 50/50（首页、About、Contact、Find Driver、AI Tool × 五语言 × 320/1440）；R1→R3 公共/专业同步、同区域加点、6 个地图点、Portfolio 12→37、移动菜单语言切换和首页两入口实际点击均通过，最终复跑为零控制台/页面/同源 HTTP 错误及零横向溢出。一次快速连续地图重绘出现的外部 403 未在两次独立复跑中再现，不归因于本站。
 - 权益与隐私边界：匿名 7 天专业预览已在生产验证；历史 10 次、新用户 3 次、支付/积分原子权益仍由 SQLite 与隔离 PostgreSQL CI 覆盖。为避免制造财务或管理员记录，生产支付、调整扣次和 Portfolio 管理员写操作未执行。司机个人邮箱、WhatsApp 和微信未出现在公开页面；测试没有发送司机邮件。
 - 回滚：若后续出现 P0/P1，优先使用 Render previous deploy；控制面不可用时 revert merge commit `f7a133d`。本次迁移只有 add-only 限流表/索引，旧版本可忽略，未见不可逆用户数据迁移。
+
+## 2026-08-23 Prelaunch public UI polish callback
+
+- 路由：large / L2，发布为 L3。Sol 保留产品方向、视觉融合、集成、GitHub 合并、Render 部署判断与生产验收；正式 `luna_worker` Chandrasekhar（`01a02c14-b6de-7e12-9cef-688a484948cf`，`gpt-5.6-luna` / `max`）完成只读基线审计且未写文件。工具未暴露精确启动时间；等待约 20 分钟后收到 completed final。它因父线程按计划产生目标 diff 而将基线审计标为 blocked，Sol 随后按实际 diff 和回调证据独立验收，未把该状态冒充产品失败或 Luna GO。
+- UI 回调：Bali Hero 现在直接进入专业路线或六条免费公共路线；首页专业/AI 双路径、五语言首屏货币、Bali 路线/图库首屏语言、R3 联动、地图路线点和 Driver Moments 均保持正确。司机介绍面板从大面积绿色改为暖纸层，About 移动卡片收紧，公开页移除 GitHub 仓库和内部图片核验文案，首页/司机社交预览改用真实旅行图。
+- 联系回调：PR #5 将 `mailto:` 从 form action 移到受控 submit handler，保留收件人、主题和正文交接但消除 Chromium Mixed Content 警告；浏览器验收没有实际发送邮件。
+- QA 回调：本地 74 项中 62 通过、12 项隔离 PostgreSQL 测试按设计跳过；`git diff --check` 与 Node 语法通过。系统 Edge/Playwright 完成 7 个公开页面 × 5 种语言 × 4 个宽度，共 140/140，零横向溢出；生产最终控制台 0 error / 0 warning，关键页面桌面/手机截图已人工复看。
+- GitHub/生产回调：产品提交 `fe1b811` 经 PR #4 合并为 `b9b4f47`；联系修复 `e265f62` 经 PR #5 合并为 `865544f`，PostgreSQL integration run `32610598308` 成功。Render 自动部署已由生产 `i18n.js?v=p61` 和新联系表单标记确认；未修改环境变量、未发送邮件、未写支付/管理员/真实用户数据。
+- 下一回调：网站已具备小批量推广条件；按 `wandermind-studio/MARKETING_LAUNCH_PLAYBOOK.md` 使用 UTM 开始首发并记录 14 天数据。随后优先升级公开个人邮箱为已验证角色/域名邮箱，并以小批量继续剩余 24 张 D8 资料；支付、积分和管理员生产写回调仍需专用测试账号。
