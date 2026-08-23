@@ -267,7 +267,7 @@
 					<h3 class="header-name" data-i18n="contactFormTitle">Send a quick message</h3>
 					<p class="tiltle-para" data-i18n="contactFormSub">Or fill in the form below and we'll come back to you by email.</p>
 				</div>
-				<form action="mailto:lfwu22@126.com" method="post" enctype="text/plain">
+				<form id="contact-email-form">
 					<div class="twice-two">
 						<input type="text" class="form-control" name="Name" placeholder="Name" required data-i18n="contactFormName" data-i18n-attr="placeholder">
 						<input type="email" class="form-control" name="Email" placeholder="Email" required data-i18n="contactFormEmail" data-i18n-attr="placeholder">
@@ -342,6 +342,18 @@
 <script>
 	window.onscroll = function () { if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) { document.getElementById("movetop").style.display = "block"; } else { document.getElementById("movetop").style.display = "none"; } };
 	function topFunction() { document.body.scrollTop = 0; document.documentElement.scrollTop = 0; }
+	document.getElementById('contact-email-form').addEventListener('submit', function (event) {
+		event.preventDefault();
+		var formData = new FormData(event.currentTarget);
+		var subject = formData.get('Subject') || 'WanderMind enquiry';
+		var body = [
+			'Name: ' + (formData.get('Name') || ''),
+			'Email: ' + (formData.get('Email') || ''),
+			'',
+			formData.get('Message') || ''
+		].join('\n');
+		window.location.href = 'mailto:lfwu22@126.com?subject=' + encodeURIComponent(subject) + '&body=' + encodeURIComponent(body);
+	});
 </script>
 <script src="assets/js/i18n.js?v=p61"></script>
 <script src="assets/js/global-auth.js?v=p52"></script>
