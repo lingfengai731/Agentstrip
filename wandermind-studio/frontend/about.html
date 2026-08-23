@@ -141,6 +141,13 @@
       body.dark .agent-card p.desc { color: rgba(255,255,255,.65); }
       .agents-row { margin-top: 30px; }
       .agents-row > [class*="col-"] { margin-bottom: 24px; }
+      @media (max-width:767px) {
+        .agent-card { display:grid; grid-template-columns:54px 1fr; column-gap:14px; align-items:start; padding:20px; text-align:left; }
+        .agent-icon-circle { grid-row:1 / span 3; width:54px; height:54px; margin:0; font-size:23px; }
+        .agent-card h4 { margin:1px 0 3px; }
+        .agent-card .role { margin-bottom:7px; }
+        .agent-card p.desc { margin:0; line-height:1.55; }
+      }
 
 /* —— Private local support card —— */
       .partner-card {
@@ -148,7 +155,7 @@
         border-radius: 14px;
         padding: 32px;
         box-shadow: 0 6px 24px rgba(0,0,0,.06);
-        border-left: 6px solid #0e7c6b;
+        border: 1px solid rgba(14,124,107,.18);
       }
       body.dark .partner-card { background: rgba(255,255,255,.05); }
       .partner-card .partner-eyebrow { font-size: 12px; color: #0e7c6b; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 8px; }
@@ -164,6 +171,15 @@
       }
       .partner-contact:hover { background: #0e7c6b; color: #fff; text-decoration: none; }
       body.dark .partner-contact { background: rgba(255,255,255,.08); color: #f5f5f5; }
+      .about-action-strip { display:flex; flex-wrap:wrap; gap:12px; margin-top:24px; }
+      .about-action-strip a { display:inline-flex; align-items:center; justify-content:center; gap:8px; min-height:46px; padding:11px 20px; border-radius:999px; font-weight:700; text-decoration:none; transition:transform .2s ease, box-shadow .2s ease, background .2s ease; }
+      .about-action-strip a:hover { transform:translateY(-2px); text-decoration:none; }
+      .about-action-primary { background:#f59e0b; color:#172033; box-shadow:0 10px 24px rgba(15,23,42,.16); }
+      .about-action-primary:hover { color:#172033; background:#fcbf1e; }
+      .about-action-secondary { border:1px solid rgba(14,124,107,.35); color:#0e7c6b; background:rgba(14,124,107,.06); }
+      .about-action-secondary:hover { color:#fff; background:#0e7c6b; }
+      body.dark .about-action-secondary { color:#8de0d1; border-color:rgba(141,224,209,.4); background:rgba(14,124,107,.16); }
+      @media (max-width:575px) { .about-action-strip a { width:100%; } }
     </style>
   </head>
   <body id="home">
@@ -271,6 +287,10 @@
 				<h3 class="mt-lg-4 mt-3" data-i18n="aboutStoryTitle">Travel, reimagined — when six minds plan as one.</h3>
 				<p class="para mb-3" data-i18n="aboutStoryP1">WanderMind Studio was born from a simple frustration: planning a great trip still takes hours of switching between blog posts, booking sites, weather apps, and currency converters — only to end up with a generic itinerary that doesn't really fit you.</p>
 				<p class="para mb-lg-3" data-i18n="aboutStoryP2">We built six AI agents — a trip planner, an accommodation advisor, a food explorer, an activity curator, a budget manager, and a live web search — and taught them to collaborate. The result is a single conversation where every detail of your journey is considered, refined, and personalised. From Bali to Kyoto to Paris to Santorini, or any city you type in, your trip is built in minutes, not weekends.</p>
+				<div class="about-action-strip">
+					<a class="about-action-primary" href="bali.html#professional-planner"><span class="fa fa-map-signs" aria-hidden="true"></span><span data-i18n="aboutPrimaryCta">Match a professional Bali route</span></a>
+					<a class="about-action-secondary" href="bali.html#route-families"><span class="fa fa-compass" aria-hidden="true"></span><span data-i18n="aboutSecondaryCta">Browse free Bali routes</span></a>
+				</div>
 			</div>
 		</div>
 	</div>
@@ -386,10 +406,8 @@
 					<h2 class="footer-title-29" data-i18n="footContactTitle">Contact Us</h2>
 					<ul>
 						<li class="footer-contact-line"><span class="fa fa-envelope"></span><a href="mailto:lfwu22@126.com">lfwu22@126.com</a></li>
-						<li class="footer-contact-line"><span class="fa fa-github"></span><a href="https://github.com/lingfengai731/Agentstrip" target="_blank">github.com/lingfengai731/Agentstrip</a></li>
 					</ul>
 					<div class="main-social-footer-29">
-						<a href="https://github.com/lingfengai731/Agentstrip" class="facebook" target="_blank"><span class="fa fa-github"></span></a>
 						<a href="mailto:lfwu22@126.com" class="twitter"><span class="fa fa-envelope"></span></a>
 					</div>
 				</div>
@@ -440,7 +458,7 @@
 	function scrollFunction() { if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) { document.getElementById("movetop").style.display = "block"; } else { document.getElementById("movetop").style.display = "none"; } }
 	function topFunction() { document.body.scrollTop = 0; document.documentElement.scrollTop = 0; }
 </script>
-<script src="assets/js/i18n.js?v=p58"></script>
+<script src="assets/js/i18n.js?v=p61"></script>
 <script src="assets/js/global-auth.js?v=p52"></script>
 </body>
 </html>
