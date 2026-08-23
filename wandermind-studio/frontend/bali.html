@@ -65,9 +65,7 @@
       .bali-hero-cta { display: flex; gap: 14px; flex-wrap: wrap; }
       .bali-btn { display: inline-flex; align-items: center; gap: 8px; padding: 14px 28px; border-radius: 28px; font-size: 15px; font-weight: 700; text-decoration: none; transition: transform .15s, box-shadow .2s; cursor: pointer; border: none; font-family: inherit; }
       .bali-btn-primary { background: linear-gradient(135deg, var(--bali-gold), #d97706); color: #fff; }
-      .bali-btn-primary:hover { transform: translateY(-2px); box-shadow: 0 12px 30px rgba(252,191,30,.45); color: #fff; text-decoration: none; }
       .bali-btn-ghost { background: rgba(255,255,255,.12); color: #fff; border: 1.5px solid rgba(255,255,255,.5); backdrop-filter: blur(4px); }
-      .bali-btn-ghost:hover { background: rgba(255,255,255,.22); color: #fff; text-decoration: none; transform: translateY(-2px); }
       .bali-section { padding: 80px 0; }
       .bali-sec-head { text-align: center; max-width: 680px; margin: 0 auto 50px; }
       .bali-sec-eyebrow { font-size: 12px; letter-spacing: .2em; text-transform: uppercase; font-weight: 700; color: #d97706; margin-bottom: 12px; }
@@ -131,8 +129,12 @@
       .bali-route-card { position:relative; min-width:0; padding:22px; border:1px solid #e2e8e4; border-radius:16px; background:#fff; color:#1e293b; text-align:left; cursor:pointer; box-shadow:0 6px 22px rgba(15,23,42,.06); transition:transform .18s,border-color .18s,box-shadow .18s; }
       .bali-route-card:focus-visible { transform:translateY(-2px); border-color:#0e7c6b; box-shadow:0 14px 34px rgba(14,124,107,.13); outline:none; }
       @media (hover:hover) and (pointer:fine) {
+        .bali-btn-primary:hover { transform:translateY(-2px); box-shadow:0 12px 30px rgba(252,191,30,.45); color:#fff; text-decoration:none; }
+        .bali-btn-ghost:hover { background:rgba(255,255,255,.22); color:#fff; text-decoration:none; transform:translateY(-2px); }
         .bali-shot:hover img { transform:scale(1.025); opacity:.86; }
         .bali-route-card:hover { transform:translateY(-2px); border-color:#0e7c6b; box-shadow:0 14px 34px rgba(14,124,107,.13); outline:none; }
+        .bali-map-region:hover { transform:translate(-50%,-50%) scale(1.13); }
+        .wm-leaflet-marker-shell:hover .wm-leaflet-marker { transform:scale(1.12); }
       }
       .bali-route-card.active { border:2px solid #0e7c6b; padding:21px; box-shadow:0 14px 34px rgba(14,124,107,.17); }
       body.dark .bali-route-card { background:#232622; color:#f3f4f6; border-color:#3a3d38; }
@@ -166,11 +168,9 @@
       .bali-map-region { position:absolute; transform:translate(-50%,-50%); z-index:2; width:44px; height:44px; padding:0; border:2px solid #fff; border-radius:50%; background:#0e7c6b; color:#fff; font-size:10px; font-weight:900; line-height:1; box-shadow:0 2px 8px rgba(0,0,0,.48); cursor:pointer; pointer-events:auto; }
       .bali-map-region.optional { background:#475569; border-style:dashed; }
       .bali-map-region.day-active, .bali-map-region:focus-visible { background:#fcbf1e; color:#083d37; outline:3px solid rgba(252,191,30,.38); outline-offset:2px; }
-      .bali-map-region:hover { transform:translate(-50%,-50%) scale(1.13); }
       .wm-leaflet-marker-shell { width:44px !important; height:44px !important; margin:0 !important; border:0 !important; background:transparent !important; touch-action:manipulation; }
       .wm-leaflet-marker { display:grid; place-items:center; width:32px; height:32px; margin:6px; border:2px solid #fff; border-radius:50%; background:#0e7c6b; color:#fff; font-size:10px; font-weight:900; line-height:1; box-shadow:0 2px 8px rgba(0,0,0,.48); transition:transform .15s,background .15s,color .15s; }
       .wm-leaflet-marker.optional { background:#475569; border-style:dashed; }
-      .wm-leaflet-marker-shell:hover .wm-leaflet-marker { transform:scale(1.12); }
       .wm-leaflet-marker-shell:focus { outline:0; }
       .wm-leaflet-marker-shell:focus-visible .wm-leaflet-marker, .wm-leaflet-marker.day-active { background:#fcbf1e; color:#083d37; outline:3px solid rgba(252,191,30,.42); outline-offset:2px; }
       .bali-route-map-live .leaflet-control-attribution { font-size:9px; line-height:1.35; }
