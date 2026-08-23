@@ -13,11 +13,11 @@
   },
   "snapshot": {
     "status": "verified",
-    "captured_at": "2026-08-22T15:43:46Z",
+    "captured_at": "2026-08-23T01:37:30Z",
     "captured_by": "codex-sol",
-    "source_commit": "f7a133da018b6f15091140e004a836a6981c2997",
-    "source_branch": "codex/postdeploy-evidence-20260822",
-    "working_tree_at_capture": "clean origin/main merge commit f7a133d before post-deploy evidence updates",
+    "source_commit": "865544fbb10b2d8072010fd3eaecb163c9c79953",
+    "source_branch": "codex/prelaunch-handoff-20260823",
+    "working_tree_at_capture": "clean origin/main merge commit 865544f before post-deploy evidence updates",
     "wandermind_bali": {
       "status": "verified",
       "routes": 6,
@@ -32,9 +32,10 @@
         "Dicky's five-day itinerary is treated as an R1 field calibration, not a seventh route family.",
         "PR #3 merged to main as f7a133d and Render auto-deployed it on 2026-08-22. Production now serves schema 1.8.0 with 6 routes, 62 POIs and p55.",
         "The Bali route detail now uses a warm paper atlas surface, keeps every public day reachable, previews 12 Portfolio moments before an explicit reveal-all action, and localizes the changed controls across zh/en/ja/ko/id.",
-        "Customer-facing route and POI chips no longer expose internal verified labels; verified is silent, while pending and supplier-gated items show localized action copy only."
+        "Customer-facing route and POI chips no longer expose internal verified labels; verified is silent, while pending and supplier-gated items show localized action copy only.",
+        "PR #4 and PR #5 are merged. Production now serves the p61 five-language UI, concise Bali hero with direct public/professional-route choices, real-photo social previews, warm-paper driver presentation and a contact email handoff with zero Chromium mixed-content warnings."
       ],
-      "evidence_id": "ev-20260822T154346Z-task-20260822-pr3-production-release"
+      "evidence_id": "ev-20260823T013842Z-task-20260823-prelaunch-ui-production-release"
     },
     "driver_request_protection": {
       "status": "verified_production",
@@ -79,7 +80,7 @@
       "production_status": "deployed_preview_verified; paid unlock and adjustment mutations were not exercised against production"
     },
     "portfolio_content_manager": {
-      "status": "implementation_verified_local; nine D8 units have 28 complete five-language assets; launch gallery defaults to 12 moments with an explicit reveal-all action; remaining batch migration pending",
+      "status": "implementation_verified_and_public_gallery_deployed; nine D8 units have 28 complete five-language assets; launch gallery defaults to 12 moments with an explicit reveal-all action; remaining batch migration pending",
       "approved_unique_assets": 108,
       "d8_theme_candidates": 52,
       "driver_or_unclassified_assets": 56,
@@ -100,12 +101,12 @@
         "repeat image-intake scans preserve reviewed manifest version, approval, optimized paths and localized copy for the same SHA-256"
       ],
       "verification": {
-        "product_tests": "62/62 locally; product commit 409b275 passed GitHub PostgreSQL integration run 32577693722",
+        "product_tests": "62/62 locally in the 74-test suite; 12 isolated PostgreSQL tests skipped by design; GitHub PostgreSQL integration run 32610598308 passed for the latest production fix",
         "image_intake_tests": "pass",
         "node_syntax": "pass",
-        "browser_languages": "zh/en/ja/ko/id route-card action labels passed deterministic local browser checks; verified labels are absent",
+        "browser_languages": "zh/en/ja/ko/id first-load route, hero, gallery and currency labels passed deterministic local and production browser checks; verified labels are absent",
         "browser_widths": "320/390/768/1440 passed with zero document-level horizontal overflow",
-        "browser_console": "zero Bali-page console errors and warnings after the public-status copy change",
+        "browser_console": "zero production console errors and warnings after the contact form mailto-action correction",
         "routing_gate": "two exploratory luna_worker audits stopped honestly on parent worktree drift. The immutable 3af4c9c review returned a completed final with P0/P1/P2 all zero and product GO; it self-labeled blocked only because it observed the parent thread's intentional current-state documentation edit, while all four frozen product files remained unchanged."
       },
       "evidence_id": "ev-20260822T112232Z-bali-public-status-d8-batch9",
@@ -115,22 +116,23 @@
     },
     "production": {
       "status": "deployed_verified",
-      "verified_at": "2026-08-22T15:43:46Z",
-      "frontend_matches_commit": "f7a133da018b6f15091140e004a836a6981c2997",
+      "verified_at": "2026-08-23T01:37:30Z",
+      "frontend_matches_commit": "865544fbb10b2d8072010fd3eaecb163c9c79953",
       "backend_commit": "unknown",
-      "latest_branch_commit": "f7a133da018b6f15091140e004a836a6981c2997",
+      "latest_branch_commit": "865544fbb10b2d8072010fd3eaecb163c9c79953",
       "latest_branch_deployed": true,
       "health": "200 ok",
       "bali_routes": 6,
       "bali_pois": 62,
-      "frontend_asset_marker": "bali-professional.js?v=p55",
-      "branch_frontend_asset_marker": "bali-professional.js?v=p55",
+      "frontend_asset_marker": "i18n.js?v=p61",
+      "branch_frontend_asset_marker": "i18n.js?v=p61",
       "evidence_ids": [
         "ev-20260816T092243Z-task-20260816-cross-account-recovery",
         "ev-20260816T143048Z-release-baseline-and-roadmap-sync",
         "ev-20260822T112651Z-bali-status-github-sync",
         "ev-20260822T141217Z-task-20260822-production-baseline-after-poi-sync",
-        "ev-20260822T154346Z-task-20260822-pr3-production-release"
+        "ev-20260822T154346Z-task-20260822-pr3-production-release",
+        "ev-20260823T013842Z-task-20260823-prelaunch-ui-production-release"
       ]
     }
   },
@@ -139,16 +141,16 @@
     "code_isolation": "one account, one worktree, one task branch",
     "integration_gate": "reviewed pull request",
     "integration_pull_request": {
-      "number": 3,
-      "url": "https://github.com/lingfengai731/Agentstrip/pull/3",
+      "number": 5,
+      "url": "https://github.com/lingfengai731/Agentstrip/pull/5",
       "status": "merged",
       "mergeable": true,
-      "head_commit": "3dba3a737a0d76d937687001489bf70d61f3ac35",
-      "merge_commit": "f7a133da018b6f15091140e004a836a6981c2997",
-      "project_memory_ci": "success; run 32578042102",
-      "postgres_integration_ci": "success; run 32578042100",
-      "evidence_id": "ev-20260822T154346Z-task-20260822-pr3-production-release",
-      "release_gate": "complete for public and anonymous production flows; paid/admin mutation flows remain intentionally unexercised"
+      "head_commit": "e265f625dc3a5b7be055f7e94f757e6556800ff8",
+      "merge_commit": "865544fbb10b2d8072010fd3eaecb163c9c79953",
+      "project_memory_ci": "not run on product-only PR #5; local project-memory validation passed before the evidence handoff",
+      "postgres_integration_ci": "success; run 32610598308",
+      "evidence_id": "ev-20260823T013842Z-task-20260823-prelaunch-ui-production-release",
+      "release_gate": "PR #4 delivered the public UI polish and PR #5 removed the last contact-page console warning; public and anonymous production flows are verified, while paid/admin mutation flows remain intentionally unexercised"
     },
     "render_operations_thread": {
       "work_thread_id": "6a81da9a-1998-83e8-b2ca-34e1f6eb526d",
@@ -199,7 +201,7 @@
   "limitations": [
     "The existing root AGENTS.md has not been changed, so automatic loading is not guaranteed.",
     "bali-4.jpg remains the approved generic Bali-page hero, but its exact place, mountain name and capture date are unverified; it must not be reused as a location-specific route or advertising claim without new evidence.",
-    "The production backend commit is not exposed by a public endpoint; frontend p55/schema 1.8.0/62-POI markers prove the merged release is serving, and the user separately confirmed PostgreSQL plus a stable strong SECRET_KEY by presence only.",
+    "The production backend commit is not exposed by a public endpoint; frontend p61/contact-form markers and schema 1.8.0/62-POI behavior prove the merged release is serving, and the user separately confirmed PostgreSQL plus a stable strong SECRET_KEY by presence only.",
     "Paid unlock, adjustment mutation and admin-only Portfolio mutation were not exercised against production to avoid creating financial or privileged records; their release-critical behavior remains covered by SQLite and isolated PostgreSQL CI.",
     "The callable in-app Browser runtime is now injected, but the one authorized Render and localhost retry failed at the admin-enforced policy gate. Native control remains a non-blocking limitation for this workstream; no further policy repair is authorized.",
     "Conversation history and hidden reasoning are not project facts."

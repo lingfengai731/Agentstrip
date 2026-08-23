@@ -1,0 +1,22 @@
+{
+  "schema_version": 1,
+  "evidence_id": "ev-20260823T013842Z-task-20260823-prelaunch-ui-production-release",
+  "task_ref": "task-20260823-prelaunch-ui-production-release",
+  "owner": "codex-sol",
+  "captured_at": "2026-08-23T01:38:42Z",
+  "status": "verified",
+  "claim": "PR #4 and PR #5 are merged and Render production serves the prelaunch UI polish plus the contact-form console fix at main merge commit 865544f. Public pages, dual paths, five languages, responsive layouts, Bali routes, driver content and contact handoff are browser-verified.",
+  "source": {
+    "kind": "git",
+    "repository": "https://github.com/lingfengai731/Agentstrip.git",
+    "commit": "865544fbb10b2d8072010fd3eaecb163c9c79953",
+    "branch": "codex/prelaunch-handoff-20260823",
+    "worktree": "E:\\Agentstrip2-worktree",
+    "dirty": true
+  },
+  "verification": {
+    "command": "74-test unittest discover; git diff --check; GitHub PostgreSQL run 32610598308; production Edge 140-page-language-width matrix plus targeted callbacks and screenshots",
+    "result": "62 local tests passed and 12 isolated-PostgreSQL tests skipped by design; CI success; production 140/140 with zero horizontal overflow; final production console 0 errors and 0 warnings; no email or financial/admin mutation sent."
+  },
+  "notes": "Render variables and production data were not changed. Paid unlock, points, adjustment deductions and Portfolio admin mutations remain intentionally unexercised against production. Remaining launch work is distribution measurement, verified role/domain email, and 24 D8 assets."
+}
