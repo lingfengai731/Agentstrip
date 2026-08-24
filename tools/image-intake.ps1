@@ -1,4 +1,4 @@
-param(
+﻿param(
     [Parameter(Mandatory = $false)]
     [string]$InputDirectory = "E:\Agentstrip\wandermind-studio\frontend\assets\images",
 
@@ -83,6 +83,38 @@ function Get-ManifestValue {
     return $property.Value
 }
 
+function Get-PreferredManifestValue {
+    param(
+        [AllowNull()]
+        [object]$Entry,
+        [string]$Name,
+        [AllowNull()]
+        [object]$Fallback = $null
+    )
+
+    if ($null -eq $Entry) {
+        if ($Fallback -is [System.Array]) { return ,$Fallback }
+        return $Fallback
+    }
+    $property = $Entry.PSObject.Properties[$Name]
+    if ($null -eq $property) {
+        if ($Fallback -is [System.Array]) { return ,$Fallback }
+        return $Fallback
+    }
+    if ($property.Value -is [System.Array]) { return ,$property.Value }
+    return $property.Value
+}
+
+function Test-UsableLocalizedText {
+    param([AllowNull()][object]$Value)
+
+    $text = [string]$Value
+    if ([string]::IsNullOrWhiteSpace($text)) {
+        return $false
+    }
+    return $text.Trim() -notmatch "^\?+$"
+}
+
 function Get-ImageHints {
     param([string]$FileName)
 
@@ -112,7 +144,7 @@ function Get-ImageHints {
         $captureStyle = "phone_authentic"
         $tags += "driver"
     }
-    if ($name -match "car|vehicle") {
+    if ($name -match "(^|[^a-z])car([^a-z]|$)|vehicle") {
         $category = "places"
         $subCategory = "road-trip"
         $captureStyle = "phone_authentic"
@@ -180,6 +212,51 @@ function Get-ImageHints {
         $category = "places"
         $subCategory = "hotels-resorts"
         $tags += "stay"
+    }
+    if ($name -match "campuhan\s+ridge\s+walk") {
+        $category = "landscapes"
+        $subCategory = "nature-walk"
+        $tags += "ridge", "walk", "nature"
+        $locationStatus = "bali_named"
+        $regions += "G4"
+        $routes += "R1", "R2", "R4", "R6"
+        $pois += "campuhan_ridge_walk"
+    }
+    if ($name -match "tegal+a?lang\s+rice\s+terraces?") {
+        $category = "landscapes"
+        $subCategory = "rice-terrace-countryside"
+        $tags += "rice-terrace", "countryside", "photography"
+        $locationStatus = "bali_named"
+        $regions += "G4"
+        $routes += "R1", "R2", "R4", "R6"
+        $pois += "tegalalang_rice_terrace"
+    }
+    if ($name -match "ubud\s+(art\s+)?market") {
+        $category = "culture"
+        $subCategory = "market-craft"
+        $tags += "market", "craft", "culture"
+        $locationStatus = "bali_named"
+        $regions += "G4"
+        $routes += "R1", "R2", "R4", "R6"
+        $pois += "ubud_art_market"
+    }
+    if ($name -match "melasti\s+beach") {
+        $category = "landscapes"
+        $subCategory = "ocean-beach"
+        $tags += "beach", "coast", "cliff"
+        $locationStatus = "bali_named"
+        $regions += "G2"
+        $routes += "R1", "R3", "R6"
+        $pois += "melasti_beach"
+    }
+    if ($name -match "ubud\s+palace") {
+        $category = "culture"
+        $subCategory = "heritage-architecture"
+        $tags += "palace", "architecture", "culture"
+        $locationStatus = "bali_named"
+        $regions += "G4"
+        $routes += "R1", "R2", "R4"
+        $pois += "ubud_palace"
     }
     if ($name -match "nyepi|galungan") {
         $category = "culture"
@@ -365,6 +442,12 @@ $rows = foreach ($item in $inventory) {
         if ($pathReview.Sha256 -eq $item.Sha256) {
             $review = $pathReview
         }
+        elseif ($currentHashCounts[$item.Sha256] -eq 1 -and $existingByUniqueHash.ContainsKey($item.Sha256)) {
+            # Exact bytes that were already reviewed under another path keep
+            # their approval; this is a rename/alias, not unknown replacement
+            # content.
+            $review = $existingByUniqueHash[$item.Sha256]
+        }
         else {
             # Replacing bytes at the same path requires a fresh human review.
             $reviewResetReason = "sha256_changed"
@@ -376,6 +459,7 @@ $rows = foreach ($item in $inventory) {
     }
 
     $hints = Get-ImageHints -FileName $file.Name
+    $existingEntry = $existingManifestByHash[$item.Sha256]
     $rightsStatus = [string](Get-ReviewValue -Review $review -Name "RightsStatus" -Fallback $hints.RightsStatus)
     $publishable = ConvertTo-ReviewBoolean -Value (Get-ReviewValue -Review $review -Name "Publishable" -Fallback $hints.Publishable)
     $humanConfirmed = ConvertTo-ReviewBoolean -Value (Get-ReviewValue -Review $review -Name "HumanConfirmed" -Fallback $false)
@@ -407,6 +491,38 @@ $rows = foreach ($item in $inventory) {
         [string]::IsNullOrWhiteSpace($readError)
     )
 
+    $webOptimizedPath = [string](Get-ReviewValue -Review $review -Name "WebOptimizedPath")
+    if ([string]::IsNullOrWhiteSpace($webOptimizedPath)) {
+        $webOptimizedPath = [string](Get-ManifestValue -Entry $existingEntry -Name "web_optimized_path")
+    }
+    $thumbnailPath = [string](Get-ReviewValue -Review $review -Name "ThumbnailPath")
+    if ([string]::IsNullOrWhiteSpace($thumbnailPath)) {
+        $thumbnailPath = [string](Get-ManifestValue -Entry $existingEntry -Name "thumbnail_path")
+    }
+    $hashStem = $item.Sha256.Substring(0, 16)
+    if ([string]::IsNullOrWhiteSpace($webOptimizedPath) -and (Test-Path -LiteralPath (Join-Path $resolvedInput "web\$hashStem.webp"))) {
+        $webOptimizedPath = "assets/images/web/$hashStem.webp"
+    }
+    if ([string]::IsNullOrWhiteSpace($thumbnailPath) -and (Test-Path -LiteralPath (Join-Path $resolvedInput "thumbs\$hashStem.webp"))) {
+        $thumbnailPath = "assets/images/thumbs/$hashStem.webp"
+    }
+
+    $manifestCategory = [string](Get-ManifestValue -Entry $existingEntry -Name "category")
+    $manifestSubCategory = [string](Get-ManifestValue -Entry $existingEntry -Name "sub_category")
+    $manifestLocationStatus = [string](Get-ManifestValue -Entry $existingEntry -Name "location_status")
+    $manifestTags = @((Get-ManifestValue -Entry $existingEntry -Name "tags") | Where-Object { -not [string]::IsNullOrWhiteSpace([string]$_) }) -join ";"
+    $manifestRegionIds = @((Get-ManifestValue -Entry $existingEntry -Name "region_ids") | Where-Object { -not [string]::IsNullOrWhiteSpace([string]$_) }) -join ";"
+    $manifestRouteIds = @((Get-ManifestValue -Entry $existingEntry -Name "route_ids") | Where-Object { -not [string]::IsNullOrWhiteSpace([string]$_) }) -join ";"
+    $manifestPoiIds = @((Get-ManifestValue -Entry $existingEntry -Name "poi_ids") | Where-Object { -not [string]::IsNullOrWhiteSpace([string]$_) }) -join ";"
+    $suggestedCategory = if ($manifestCategory) { $manifestCategory } else { [string](Get-ReviewValue -Review $review -Name "SuggestedCategory" -Fallback $hints.Category) }
+    $suggestedSubCategory = if ($manifestSubCategory) { $manifestSubCategory } else { [string](Get-ReviewValue -Review $review -Name "SuggestedSubCategory" -Fallback $hints.SubCategory) }
+    $suggestedTags = if ($manifestTags) { $manifestTags } else { [string](Get-ReviewValue -Review $review -Name "SuggestedTags" -Fallback $hints.Tags) }
+    $suggestedCaptureStyle = [string](Get-ReviewValue -Review $review -Name "SuggestedCaptureStyle" -Fallback $hints.CaptureStyle)
+    $suggestedLocationStatus = if ($manifestLocationStatus) { $manifestLocationStatus } else { [string](Get-ReviewValue -Review $review -Name "SuggestedLocationStatus" -Fallback $hints.LocationStatus) }
+    $suggestedRegionIds = if ($manifestRegionIds) { $manifestRegionIds } else { [string](Get-ReviewValue -Review $review -Name "SuggestedRegionIds" -Fallback $hints.RegionIds) }
+    $suggestedRouteIds = if ($manifestRouteIds) { $manifestRouteIds } else { [string](Get-ReviewValue -Review $review -Name "SuggestedRouteIds" -Fallback $hints.RouteIds) }
+    $suggestedPoiIds = if ($manifestPoiIds) { $manifestPoiIds } else { [string](Get-ReviewValue -Review $review -Name "SuggestedPoiIds" -Fallback $hints.PoiIds) }
+
     [pscustomobject][ordered]@{
         Filename = $file.Name
         RelativePath = $item.RelativePath
@@ -414,14 +530,14 @@ $rows = foreach ($item in $inventory) {
         Width = $width
         Height = $height
         Sha256 = $item.Sha256
-        SuggestedCategory = $hints.Category
-        SuggestedSubCategory = $hints.SubCategory
-        SuggestedTags = $hints.Tags
-        SuggestedCaptureStyle = $hints.CaptureStyle
-        SuggestedLocationStatus = $hints.LocationStatus
-        SuggestedRegionIds = $hints.RegionIds
-        SuggestedRouteIds = $hints.RouteIds
-        SuggestedPoiIds = $hints.PoiIds
+        SuggestedCategory = $suggestedCategory
+        SuggestedSubCategory = $suggestedSubCategory
+        SuggestedTags = $suggestedTags
+        SuggestedCaptureStyle = $suggestedCaptureStyle
+        SuggestedLocationStatus = $suggestedLocationStatus
+        SuggestedRegionIds = $suggestedRegionIds
+        SuggestedRouteIds = $suggestedRouteIds
+        SuggestedPoiIds = $suggestedPoiIds
         RightsStatus = $rightsStatus
         SourceUrl = $sourceUrl
         LicenseOrOwner = $licenseOrOwner
@@ -434,47 +550,103 @@ $rows = foreach ($item in $inventory) {
         ReviewResetReason = $reviewResetReason
         ReadError = $readError
         EligibleForPublish = $eligibleForPublish
+        WebOptimizedPath = $webOptimizedPath
+        ThumbnailPath = $thumbnailPath
     }
 }
 
+$currentInventoryPaths = @{}
+$currentInventoryHashes = @{}
+foreach ($item in $inventory) {
+    $currentInventoryPaths[$item.RelativePath] = $true
+    $currentInventoryHashes[$item.Sha256] = $true
+}
+foreach ($existingRow in $existingRows) {
+    $existingPath = [string](Get-ReviewValue -Review $existingRow -Name "RelativePath")
+    $existingHash = [string](Get-ReviewValue -Review $existingRow -Name "Sha256")
+    if (-not $currentInventoryPaths.ContainsKey($existingPath) -and -not $currentInventoryHashes.ContainsKey($existingHash)) {
+        $rows += $existingRow
+    }
+}
 $rows = @($rows | Sort-Object RelativePath)
-$rows | Export-Csv -LiteralPath $OutputCsv -NoTypeInformation -Encoding UTF8
+$utf8NoBom = [System.Text.UTF8Encoding]::new($false)
+function ConvertTo-MinimalCsvField {
+    param([AllowNull()]$Value)
+
+    $text = if ($null -eq $Value) { "" } else { [string]$Value }
+    if ($text -match '[,"\r\n]') {
+        return '"' + $text.Replace('"', '""') + '"'
+    }
+    return $text
+}
+
+$csvColumns = @($rows[0].PSObject.Properties.Name)
+$csvLines = @(
+    ($csvColumns | ForEach-Object { ConvertTo-MinimalCsvField -Value $_ }) -join ','
+    foreach ($row in $rows) {
+        ($csvColumns | ForEach-Object { ConvertTo-MinimalCsvField -Value $row.$_ }) -join ','
+    }
+)
+[System.IO.File]::WriteAllLines($OutputCsv, $csvLines, $utf8NoBom)
 
 $manifestImages = @(
     $rows |
-        Where-Object { $_.EligibleForPublish } |
+        Where-Object { ConvertTo-ReviewBoolean -Value $_.EligibleForPublish } |
         ForEach-Object {
             $existingEntry = $existingManifestByHash[$_.Sha256]
-            $localizedAlt = [ordered]@{
-                zh = $_.AltTextZh
-                en = $_.AltTextEn
+            if ($null -ne $existingEntry) {
+                $preservedEntry = [ordered]@{}
+                foreach ($property in $existingEntry.PSObject.Properties) {
+                    $preservedEntry[$property.Name] = $property.Value
+                }
+                foreach ($pathMapping in @(
+                    @{ Manifest = "web_optimized_path"; Review = "WebOptimizedPath" },
+                    @{ Manifest = "thumbnail_path"; Review = "ThumbnailPath" }
+                )) {
+                    $existingPathValue = [string](Get-ManifestValue -Entry $existingEntry -Name $pathMapping.Manifest)
+                    $reviewPathValue = [string](Get-ReviewValue -Review $_ -Name $pathMapping.Review)
+                    if ([string]::IsNullOrWhiteSpace($existingPathValue) -and -not [string]::IsNullOrWhiteSpace($reviewPathValue)) {
+                        $preservedEntry[$pathMapping.Manifest] = $reviewPathValue
+                    }
+                }
+                $preservedEntry
+                return
             }
             $existingAlt = Get-ManifestValue -Entry $existingEntry -Name "alt_text"
-            foreach ($language in @("ja", "ko", "id")) {
-                $value = [string](Get-ManifestValue -Entry $existingAlt -Name $language)
-                if (-not [string]::IsNullOrWhiteSpace($value)) {
-                    $localizedAlt[$language] = $value
+            $localizedAlt = [ordered]@{}
+            foreach ($language in @("zh", "en", "ja", "ko", "id")) {
+                $freshValue = if ($language -eq "zh") { $_.AltTextZh } elseif ($language -eq "en") { $_.AltTextEn } else { "" }
+                $existingValue = [string](Get-ManifestValue -Entry $existingAlt -Name $language)
+                if (Test-UsableLocalizedText -Value $freshValue) {
+                    $localizedAlt[$language] = [string]$freshValue
+                }
+                elseif (-not [string]::IsNullOrWhiteSpace($existingValue)) {
+                    $localizedAlt[$language] = $existingValue
                 }
             }
 
+            $existingRelativePath = [string](Get-ManifestValue -Entry $existingEntry -Name "relative_path")
             $manifestItem = [ordered]@{
-                relative_path = $_.RelativePath
+                relative_path = if ([string]::IsNullOrWhiteSpace($existingRelativePath)) { $_.RelativePath } else { $existingRelativePath }
             }
-            foreach ($pathField in @("web_optimized_path", "thumbnail_path")) {
-                $pathValue = [string](Get-ManifestValue -Entry $existingEntry -Name $pathField)
+            foreach ($pathMapping in @(
+                @{ Manifest = "web_optimized_path"; Review = "WebOptimizedPath" },
+                @{ Manifest = "thumbnail_path"; Review = "ThumbnailPath" }
+            )) {
+                $pathValue = [string](Get-ReviewValue -Review $_ -Name $pathMapping.Review)
                 if (-not [string]::IsNullOrWhiteSpace($pathValue)) {
-                    $manifestItem[$pathField] = $pathValue
+                    $manifestItem[$pathMapping.Manifest] = $pathValue
                 }
             }
             $manifestItem["sha256"] = $_.Sha256
-            $manifestItem["category"] = $_.SuggestedCategory
-            $manifestItem["sub_category"] = $_.SuggestedSubCategory
-            $manifestItem["tags"] = @($_.SuggestedTags -split ";" | Where-Object { $_ })
-            $manifestItem["location_status"] = $_.SuggestedLocationStatus
-            $manifestItem["region_ids"] = @($_.SuggestedRegionIds -split ";" | Where-Object { $_ })
-            $manifestItem["route_ids"] = @($_.SuggestedRouteIds -split ";" | Where-Object { $_ })
-            $manifestItem["poi_ids"] = @($_.SuggestedPoiIds -split ";" | Where-Object { $_ })
-            $manifestItem["intended_use"] = $_.IntendedUse
+            $manifestItem["category"] = Get-PreferredManifestValue -Entry $existingEntry -Name "category" -Fallback $_.SuggestedCategory
+            $manifestItem["sub_category"] = Get-PreferredManifestValue -Entry $existingEntry -Name "sub_category" -Fallback $_.SuggestedSubCategory
+            $manifestItem["tags"] = Get-PreferredManifestValue -Entry $existingEntry -Name "tags" -Fallback @($_.SuggestedTags -split ";" | Where-Object { $_ })
+            $manifestItem["location_status"] = Get-PreferredManifestValue -Entry $existingEntry -Name "location_status" -Fallback $_.SuggestedLocationStatus
+            $manifestItem["region_ids"] = Get-PreferredManifestValue -Entry $existingEntry -Name "region_ids" -Fallback @($_.SuggestedRegionIds -split ";" | Where-Object { $_ })
+            $manifestItem["route_ids"] = Get-PreferredManifestValue -Entry $existingEntry -Name "route_ids" -Fallback @($_.SuggestedRouteIds -split ";" | Where-Object { $_ })
+            $manifestItem["poi_ids"] = Get-PreferredManifestValue -Entry $existingEntry -Name "poi_ids" -Fallback @($_.SuggestedPoiIds -split ";" | Where-Object { $_ })
+            $manifestItem["intended_use"] = Get-PreferredManifestValue -Entry $existingEntry -Name "intended_use" -Fallback $_.IntendedUse
             foreach ($copyField in @("title", "description")) {
                 $copyValue = Get-ManifestValue -Entry $existingEntry -Name $copyField
                 if ($null -ne $copyValue) {
@@ -491,6 +663,51 @@ $manifestImages = @(
         }
 )
 
+# Some reviewed assets keep only their published WebP in this checkout. A fresh
+# source scan must not silently delete those approved manifest entries. An
+# ineligible file with the same SHA-256 removes its own published identity; a
+# different file placed at the same path does not silently retire the previous
+# reviewed asset.
+$currentInventoryByHash = @{}
+foreach ($item in $inventory) {
+    $currentInventoryByHash[$item.Sha256] = $true
+}
+$generatedByHash = @{}
+foreach ($entry in $manifestImages) {
+    $generatedByHash[[string]$entry.sha256] = $entry
+}
+$mergedManifestImages = @()
+$mergedHashes = @{}
+$preservedReviewedCount = 0
+foreach ($entry in @($existingManifest.images)) {
+    if ($null -eq $entry) {
+        continue
+    }
+    $entryHash = [string](Get-ManifestValue -Entry $entry -Name "sha256")
+    if ([string]::IsNullOrWhiteSpace($entryHash)) {
+        continue
+    }
+    if ($generatedByHash.ContainsKey($entryHash)) {
+        $mergedManifestImages += $generatedByHash[$entryHash]
+        $mergedHashes[$entryHash] = $true
+        continue
+    }
+    if ($currentInventoryByHash.ContainsKey($entryHash)) {
+        continue
+    }
+    $mergedManifestImages += $entry
+    $mergedHashes[$entryHash] = $true
+    $preservedReviewedCount += 1
+}
+foreach ($entry in $manifestImages) {
+    $entryHash = [string]$entry.sha256
+    if (-not $mergedHashes.ContainsKey($entryHash)) {
+        $mergedManifestImages += $entry
+        $mergedHashes[$entryHash] = $true
+    }
+}
+$manifestImages = @($mergedManifestImages)
+
 $manifest = [ordered]@{
     schema_version = if ($null -ne $existingManifest) { Get-ManifestValue -Entry $existingManifest -Name "schema_version" -Fallback 1 } else { 1 }
     policy = if ($null -ne $existingManifest) { Get-ManifestValue -Entry $existingManifest -Name "policy" -Fallback "Only HumanConfirmed + Publishable images with approved rights and provenance are included." } else { "Only HumanConfirmed + Publishable images with approved rights and provenance are included." }
@@ -500,9 +717,13 @@ if ($null -ne $existingApproval) {
     $manifest["approval"] = $existingApproval
 }
 $manifest["images"] = $manifestImages
-$manifest | ConvertTo-Json -Depth 8 | Set-Content -LiteralPath $PublishManifest -Encoding UTF8
+$manifestJson = $manifest | ConvertTo-Json -Depth 8
+$manifestJson = $manifestJson -replace '\[\r?\n\s*\]', '[]'
+$manifestJson = $manifestJson -replace "`r`n", "`n"
+[System.IO.File]::WriteAllText($PublishManifest, $manifestJson + "`n", $utf8NoBom)
 
 Write-Output "Image intake complete: $($rows.Count) files"
 Write-Output "Review CSV: $OutputCsv"
 Write-Output "Publish manifest: $PublishManifest ($($manifestImages.Count) eligible files)"
+Write-Output "Preserved reviewed manifest entries without local source originals: $preservedReviewedCount"
 Write-Output "No source images were moved, renamed, overwritten, or deleted."

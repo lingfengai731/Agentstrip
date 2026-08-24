@@ -2060,7 +2060,11 @@ class ProductAccessTests(unittest.TestCase):
         self.assertIn('role="listbox"', html)
         self.assertIn('data-open-place-picker="', html)
         self.assertIn('data-route-picker-confirm', html)
-        self.assertIn("image-publish-manifest.json?v=20260823m1", html)
+        self.assertIn("image-publish-manifest.json?v=20260825p1", html)
+        self.assertIn("variant === 'thumbnail'", html)
+        self.assertIn("pickerAttributionMarkup(media, copy)", html)
+        self.assertIn('rel="noopener noreferrer"', html)
+        self.assertIn('decoding="async"', html)
         self.assertIn("text(media.description) || copy.fit", html)
         self.assertIn("poiMediaState === 'failed' ? copy.mediaErrorBody", html)
         self.assertIn("routeEditorFeedback = { routeId:context.route.id", html)
@@ -2723,12 +2727,12 @@ class ProductAccessTests(unittest.TestCase):
         self.assertIn("dynamicGalleryCopy", bali_html)
         self.assertGreaterEqual(bali_html.count('class="bali-shot"'), 37)
 
-    def test_approved_image_manifest_contains_unique_108_and_new_lempuyang_hash(self):
+    def test_approved_image_manifest_contains_unique_113_and_new_lempuyang_hash(self):
         frontend = BACKEND_DIR.parents[1] / "wandermind-studio" / "frontend"
         intake_path = frontend / "assets" / "data" / "image-intake-review.csv"
         with intake_path.open(encoding="utf-8", newline="") as handle:
             intake_rows = list(csv.DictReader(handle))
-        self.assertEqual(len(intake_rows), 108)
+        self.assertEqual(len(intake_rows), 112)
         for row in intake_rows:
             self.assertNotIn(None, row, row.get("Filename"))
             self.assertEqual(row["EligibleForPublish"], "True", row["Filename"])
@@ -2741,7 +2745,8 @@ class ProductAccessTests(unittest.TestCase):
             )
         )
         images = manifest["images"]
-        self.assertEqual(len(images), 108)
+        self.assertEqual(len(images), 113)
+        self.assertEqual(len(images), len(intake_rows) + 1)
         hashes = [item["sha256"] for item in images]
         self.assertEqual(len(hashes), len(set(hashes)))
         self.assertEqual(manifest["approval"]["approval_source"], "user_global_confirmation")
@@ -2775,6 +2780,83 @@ class ProductAccessTests(unittest.TestCase):
         for field in ("title", "description", "alt_text"):
             self.assertEqual(set(tanah_lot[field]), {"zh", "en", "ja", "ko", "id"})
             self.assertTrue(all("?" not in value for value in tanah_lot[field].values()))
+
+    def test_external_exact_poi_image_batch_has_mobile_assets_locales_and_rights(self):
+        frontend = BACKEND_DIR.parents[1] / "wandermind-studio" / "frontend"
+        manifest = json.loads(
+            (frontend / "assets" / "data" / "image-publish-manifest.json").read_text(
+                encoding="utf-8"
+            )
+        )
+        rights_manifest = json.loads(
+            (frontend / "assets" / "data" / "image-rights-manifest.json").read_text(
+                encoding="utf-8"
+            )
+        )
+        bali_data = json.loads(
+            (frontend / "assets" / "data" / "bali-travel-data.json").read_text(
+                encoding="utf-8"
+            )
+        )
+        expected = {
+            "assets/images/Campuhan Ridge Walk - Artem Beliaikin.jpg": (
+                "campuhan_ridge_walk",
+                "CC0 1.0",
+            ),
+            "assets/images/Tegallalang Rice Terraces - Philip Nalangan.jpg": (
+                "tegalalang_rice_terrace",
+                "CC BY 4.0",
+            ),
+            "assets/images/Ubud Art Market - Jorge Lascar.jpg": (
+                "ubud_art_market",
+                "CC BY 2.0",
+            ),
+            "assets/images/Melasti Beach - Dare2Leap.jpg": (
+                "melasti_beach",
+                "CC BY-SA 4.0",
+            ),
+            "assets/images/Ubud Palace - Jorge Lascar.jpg": (
+                "ubud_palace",
+                "CC BY 2.0",
+            ),
+        }
+        by_path = {item["relative_path"]: item for item in manifest["images"]}
+        rights_by_hash = {
+            item["sha256"]: item
+            for item in rights_manifest["assets"]
+            if item.get("sha256")
+        }
+        poi_by_id = {item["id"]: item for item in bali_data["pois"]}
+        languages = {"zh", "en", "ja", "ko", "id"}
+
+        self.assertEqual(len(rights_manifest["assets"]), 113)
+        for path, (poi_id, license_name) in expected.items():
+            item = by_path[path]
+            self.assertEqual(item["poi_ids"], [poi_id])
+            self.assertEqual(poi_by_id[poi_id]["verification_status"], "verified")
+            self.assertEqual(item["rights"]["license_name"], license_name)
+            self.assertTrue(item["rights"]["creator"])
+            self.assertTrue(item["rights"]["source_url"].startswith("https://commons.wikimedia.org/"))
+            self.assertTrue(item["rights"]["license_url"].startswith("https://creativecommons.org/"))
+            self.assertIn("WebP", item["rights"]["adaptation_notice"])
+            for field in ("title", "description", "alt_text"):
+                self.assertEqual(set(item[field]), languages)
+                self.assertTrue(all(value.strip() for value in item[field].values()))
+            original = frontend / item["relative_path"]
+            web = frontend / item["web_optimized_path"]
+            thumbnail = frontend / item["thumbnail_path"]
+            self.assertTrue(original.is_file())
+            self.assertTrue(web.is_file())
+            self.assertTrue(thumbnail.is_file())
+            self.assertLess(thumbnail.stat().st_size, web.stat().st_size)
+            self.assertLess(web.stat().st_size, original.stat().st_size)
+            rights_item = rights_by_hash[item["sha256"]]
+            self.assertEqual(rights_item["license_name"], license_name)
+            self.assertEqual(rights_item["approval_source"], "source_license_audit")
+            self.assertTrue(rights_item["publishable"])
+
+        melasti = by_path["assets/images/Melasti Beach - Dare2Leap.jpg"]
+        self.assertIn("CC BY-SA 4.0", melasti["rights"]["adaptation_notice"])
 
     def test_first_route_linked_d8_portfolio_batch_has_reviewed_five_language_copy(self):
         frontend = BACKEND_DIR.parents[1] / "wandermind-studio" / "frontend"
@@ -2876,7 +2958,7 @@ class ProductAccessTests(unittest.TestCase):
                 for field in ("title", "description", "alt_text")
             )
         ]
-        self.assertEqual(len(complete_d8), 28)
+        self.assertEqual(len(complete_d8), 33)
 
         lempuyang = by_path["assets/images/Lempuyang Temple.jpg"]
         self.assertIn("Penataran Agung", lempuyang["title"]["en"])

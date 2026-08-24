@@ -634,9 +634,16 @@
         "photography"
       ],
       "location_status": "route-linked",
-      "region_ids": ["G3"],
-      "route_ids": ["R1", "R6"],
-      "poi_ids": ["kelingking_beach"],
+      "region_ids": [
+        "G3"
+      ],
+      "route_ids": [
+        "R1",
+        "R6"
+      ],
+      "poi_ids": [
+        "kelingking_beach"
+      ],
       "intended_use": "WanderMind approved project image library; connect only where its destination/category metadata matches.",
       "alt_text": {
         "zh": "从观景台俯瞰克林金海滩的绿色岬角、白沙与蓝色海洋",
@@ -3452,6 +3459,304 @@
         "ko": "발리식 쪼개진 문 사이로 아궁산이 보이고 앞쪽에는 거울 같은 반사가 나타납니다. 사진은 렘푸양 사원 단지의 페나타란 아궁에서 알려진 문 풍경이며 정상 사원과는 다릅니다. 방문 구역, 셔틀, 대기, 복장, 날씨는 실시간 확인이 필요합니다.",
         "zh": "巴厘式分裂门框住阿贡火山，前景呈现镜面倒影。照片对应伦普扬寺庙群中常见的佩纳塔兰阿贡门景，并非山顶主庙；具体参观区、接驳、排队、着装和天气须实时确认。",
         "id": "Gerbang terbelah bergaya Bali membingkai Gunung Agung dengan pantulan seperti cermin di bagian depan. Gerbang yang difoto adalah pemandangan populer di Penataran Agung dalam kompleks Lempuyang, bukan pura di puncak; periksa bagian yang dikunjungi, shuttle, antrean, pakaian, dan cuaca secara langsung."
+      }
+    },
+    {
+      "relative_path": "assets/images/Campuhan Ridge Walk - Artem Beliaikin.jpg",
+      "web_optimized_path": "assets/images/web/ad5dfa80292a85e6.webp",
+      "thumbnail_path": "assets/images/thumbs/ad5dfa80292a85e6.webp",
+      "sha256": "ad5dfa80292a85e6a4c964292175c25da4116c65363471c45bee798baf05b996",
+      "category": "landscapes",
+      "sub_category": "nature-walk",
+      "tags": [
+        "ridge",
+        "walk",
+        "nature"
+      ],
+      "location_status": "bali_named",
+      "region_ids": [
+        "G4"
+      ],
+      "route_ids": [
+        "R1",
+        "R2",
+        "R4",
+        "R6"
+      ],
+      "poi_ids": [
+        "campuhan_ridge_walk"
+      ],
+      "intended_use": "Bali Portfolio and campuhan_ridge_walk place picker",
+      "title": {
+        "zh": "坎普罕山脊步道",
+        "en": "Campuhan Ridge Walk",
+        "ja": "チャンプアン・リッジ・ウォーク",
+        "ko": "짬뿌한 리지 워크",
+        "id": "Campuhan Ridge Walk"
+      },
+      "description": {
+        "zh": "从乌布出发的绿色山脊步道，适合清晨或傍晚散步；日晒、雨后路况和返程交通请当天确认。",
+        "en": "A green ridge walk from Ubud that suits an early-morning or late-afternoon stroll; check heat, post-rain trail conditions and return transport on the day.",
+        "ja": "ウブドから歩ける緑豊かな尾根道で、早朝や夕方の散策向きです。暑さ、雨後の路面、帰りの交通は当日に確認してください。",
+        "ko": "우붓에서 시작하는 푸른 능선 산책로로 이른 아침이나 늦은 오후에 좋습니다. 더위, 비 온 뒤 노면, 귀가 교통편은 당일 확인하세요.",
+        "id": "Jalur punggung bukit hijau dari Ubud yang cocok untuk berjalan pagi atau sore; periksa panas, kondisi jalur setelah hujan, dan transportasi pulang pada hari kunjungan."
+      },
+      "alt_text": {
+        "zh": "乌布坎普罕山脊步道的绿色山谷航拍景观",
+        "en": "Aerial view of the green Campuhan Ridge Walk valley in Ubud",
+        "ja": "ウブドのチャンプアン・リッジ・ウォークと緑の谷の空撮",
+        "ko": "우붓 짬뿌한 리지 워크와 푸른 계곡의 항공 사진",
+        "id": "Pemandangan udara lembah hijau Campuhan Ridge Walk di Ubud"
+      },
+      "rights": {
+        "status": "cc0",
+        "source_url": "https://commons.wikimedia.org/wiki/File:Aerial_picture_of_Campuhan_Ridge_Walk_,_Scenic_Green_Valley_in_Ubud_Bali._Drone_photo._(46112155712).jpg",
+        "license_or_owner": "Artem Beliaikin · CC0 1.0",
+        "creator": "Artem Beliaikin",
+        "license_name": "CC0 1.0",
+        "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+        "source_title": "Aerial picture of Campuhan Ridge Walk, Scenic Green Valley in Ubud Bali",
+        "original_file_url": "https://upload.wikimedia.org/wikipedia/commons/2/21/Aerial_picture_of_Campuhan_Ridge_Walk_%2C_Scenic_Green_Valley_in_Ubud_Bali._Drone_photo._%2846112155712%29.jpg",
+        "attribution_text": "Artem Beliaikin · CC0 1.0 · Wikimedia Commons",
+        "adaptation_notice": "Resized and compressed to WebP and thumbnail by WanderMind; no other changes."
+      }
+    },
+    {
+      "relative_path": "assets/images/Melasti Beach - Dare2Leap.jpg",
+      "web_optimized_path": "assets/images/web/e83d45a5b8fb0143.webp",
+      "thumbnail_path": "assets/images/thumbs/e83d45a5b8fb0143.webp",
+      "sha256": "e83d45a5b8fb0143fce59680bdb618be39bf8cecfb4ac76a03473fdebd07656f",
+      "category": "landscapes",
+      "sub_category": "ocean-beach",
+      "tags": [
+        "coast",
+        "beach",
+        "cliff"
+      ],
+      "location_status": "bali_named",
+      "region_ids": [
+        "G2"
+      ],
+      "route_ids": [
+        "R1",
+        "R3",
+        "R6"
+      ],
+      "poi_ids": [
+        "melasti_beach"
+      ],
+      "intended_use": "Bali Portfolio and melasti_beach place picker",
+      "title": {
+        "zh": "梅拉斯蒂海滩",
+        "en": "Melasti Beach",
+        "ja": "メラスティ・ビーチ",
+        "ko": "멜라스티 비치",
+        "id": "Pantai Melasti"
+      },
+      "description": {
+        "zh": "南部悬崖下的开阔海滩，适合海岸散步和日落前停留；潮汐、天气、交通和现场开放情况请当天确认。",
+        "en": "A broad beach beneath the southern cliffs for a coastal walk or pre-sunset stop; confirm tides, weather, traffic and on-site access on the day.",
+        "ja": "南部の断崖下に広がるビーチで、海辺の散歩や夕日前の立ち寄りに向いています。潮汐、天候、交通、現地の入場状況は当日に確認してください。",
+        "ko": "남부 절벽 아래 펼쳐진 해변으로 해안 산책이나 일몰 전 방문에 좋습니다. 조수, 날씨, 교통, 현장 출입 여부는 당일 확인하세요.",
+        "id": "Pantai luas di bawah tebing selatan yang cocok untuk berjalan di pesisir atau singgah sebelum matahari terbenam; periksa pasang surut, cuaca, lalu lintas, dan akses pada hari kunjungan."
+      },
+      "alt_text": {
+        "zh": "梅拉斯蒂海滩的蓝色海岸与悬崖景观",
+        "en": "Blue coastline and cliffs at Melasti Beach in Bali",
+        "ja": "バリ島メラスティ・ビーチの青い海岸と断崖",
+        "ko": "발리 멜라스티 비치의 푸른 해안과 절벽",
+        "id": "Garis pantai biru dan tebing di Pantai Melasti, Bali"
+      },
+      "rights": {
+        "status": "licensed",
+        "source_url": "https://commons.wikimedia.org/wiki/File:Melasti_Beach_coast.jpg",
+        "license_or_owner": "Dare2Leap · CC BY-SA 4.0",
+        "creator": "Dare2Leap",
+        "license_name": "CC BY-SA 4.0",
+        "license_url": "https://creativecommons.org/licenses/by-sa/4.0/",
+        "source_title": "Melasti Beach coast",
+        "original_file_url": "https://upload.wikimedia.org/wikipedia/commons/b/b3/Melasti_Beach_coast.jpg",
+        "attribution_text": "Dare2Leap · CC BY-SA 4.0 · Wikimedia Commons",
+        "adaptation_notice": "Resized and compressed to WebP and thumbnail by WanderMind; adaptations are distributed under CC BY-SA 4.0."
+      }
+    },
+    {
+      "relative_path": "assets/images/Tegallalang Rice Terraces - Philip Nalangan.jpg",
+      "web_optimized_path": "assets/images/web/d99824e8e7bfa08a.webp",
+      "thumbnail_path": "assets/images/thumbs/d99824e8e7bfa08a.webp",
+      "sha256": "d99824e8e7bfa08ad4d341c971bc2f2f79530e2031dcb762c080896743c230b2",
+      "category": "landscapes",
+      "sub_category": "rice-terrace-countryside",
+      "tags": [
+        "countryside",
+        "rice-terrace",
+        "photography"
+      ],
+      "location_status": "bali_named",
+      "region_ids": [
+        "G4"
+      ],
+      "route_ids": [
+        "R1",
+        "R2",
+        "R4",
+        "R6"
+      ],
+      "poi_ids": [
+        "tegalalang_rice_terrace"
+      ],
+      "intended_use": "Bali Portfolio and tegalalang_rice_terrace place picker",
+      "title": {
+        "zh": "德格拉朗梯田",
+        "en": "Tegallalang Rice Terraces",
+        "ja": "テガララン・ライステラス",
+        "ko": "뜨갈랄랑 라이스 테라스",
+        "id": "Teras Sawah Tegallalang"
+      },
+      "description": {
+        "zh": "乌布北侧的层叠稻田景观，清晨光线更柔和；入口、步道、收费和拥挤程度会变化，请当天确认。",
+        "en": "Layered rice-terrace scenery north of Ubud, with softer light in the morning; entrances, paths, fees and crowd levels can change, so confirm them on the day.",
+        "ja": "ウブド北部の段々状の棚田で、朝は光がやわらかくなります。入口、歩道、料金、混雑状況は変わるため当日に確認してください。",
+        "ko": "우붓 북쪽의 계단식 논 풍경으로 아침 빛이 더 부드럽습니다. 입구, 산책로, 요금, 혼잡도는 달라질 수 있으니 당일 확인하세요.",
+        "id": "Pemandangan sawah bertingkat di utara Ubud dengan cahaya pagi yang lebih lembut; pintu masuk, jalur, biaya, dan tingkat keramaian dapat berubah, jadi periksa pada hari kunjungan."
+      },
+      "alt_text": {
+        "zh": "德格拉朗层叠稻田与棕榈树景观",
+        "en": "Layered Tegallalang rice terraces and palms in Bali",
+        "ja": "バリ島テガラランの段々状の棚田とヤシの木",
+        "ko": "발리 뜨갈랄랑의 계단식 논과 야자수",
+        "id": "Teras sawah bertingkat dan pohon palem di Tegallalang, Bali"
+      },
+      "rights": {
+        "status": "licensed",
+        "source_url": "https://commons.wikimedia.org/wiki/File:Tegallalang_Rice_Terraces_Bali.jpg",
+        "license_or_owner": "Philip Nalangan · CC BY 4.0",
+        "creator": "Philip Nalangan",
+        "license_name": "CC BY 4.0",
+        "license_url": "https://creativecommons.org/licenses/by/4.0/",
+        "source_title": "Tegallalang Rice Terraces Bali",
+        "original_file_url": "https://upload.wikimedia.org/wikipedia/commons/3/3a/Tegallalang_Rice_Terraces_Bali.jpg",
+        "attribution_text": "Philip Nalangan · CC BY 4.0 · Wikimedia Commons",
+        "adaptation_notice": "Resized and compressed to WebP and thumbnail by WanderMind; no other changes."
+      }
+    },
+    {
+      "relative_path": "assets/images/Ubud Art Market - Jorge Lascar.jpg",
+      "web_optimized_path": "assets/images/web/d4a55cf89e4c3d42.webp",
+      "thumbnail_path": "assets/images/thumbs/d4a55cf89e4c3d42.webp",
+      "sha256": "d4a55cf89e4c3d42a123beaaa310e8449115fe572663f8a925e906661b4d328e",
+      "category": "culture",
+      "sub_category": "market-craft",
+      "tags": [
+        "market",
+        "craft",
+        "culture"
+      ],
+      "location_status": "bali_named",
+      "region_ids": [
+        "G4"
+      ],
+      "route_ids": [
+        "R1",
+        "R2",
+        "R4",
+        "R6"
+      ],
+      "poi_ids": [
+        "ubud_art_market"
+      ],
+      "intended_use": "Bali Portfolio and ubud_art_market place picker",
+      "title": {
+        "zh": "乌布艺术市场",
+        "en": "Ubud Art Market",
+        "ja": "ウブド・アート・マーケット",
+        "ko": "우붓 아트 마켓",
+        "id": "Pasar Seni Ubud"
+      },
+      "description": {
+        "zh": "乌布皇宫正前方的传统市场，可浏览风筝、织物和小型手工艺品；摊位、营业时段和议价空间以当天为准。",
+        "en": "A traditional market in front of Ubud Palace for kites, textiles and small crafts; stalls, trading hours and room for bargaining vary by day.",
+        "ja": "ウブド王宮の正面にある伝統市場で、凧、布製品、小さな工芸品を見られます。店、営業時間、値段交渉の幅は日によって異なります。",
+        "ko": "우붓 왕궁 앞의 전통 시장으로 연, 직물, 소형 공예품을 둘러볼 수 있습니다. 매장, 영업 시간, 흥정 가능 범위는 당일 상황에 따라 달라집니다.",
+        "id": "Pasar tradisional di depan Puri Ubud untuk melihat layang-layang, tekstil, dan kerajinan kecil; kios, jam berdagang, dan ruang tawar-menawar berbeda setiap hari."
+      },
+      "alt_text": {
+        "zh": "乌布艺术市场内陈列的彩色传统风筝与手工艺品",
+        "en": "Colorful traditional kites and crafts displayed inside Ubud Art Market",
+        "ja": "ウブド・アート・マーケットに並ぶ色鮮やかな伝統凧と工芸品",
+        "ko": "우붓 아트 마켓에 진열된 다채로운 전통 연과 공예품",
+        "id": "Layang-layang tradisional berwarna-warni dan kerajinan di Pasar Seni Ubud"
+      },
+      "rights": {
+        "status": "licensed",
+        "source_url": "https://commons.wikimedia.org/wiki/File:Ubud_market_(16435596274).jpg",
+        "license_or_owner": "Jorge Láscar · CC BY 2.0",
+        "creator": "Jorge Láscar",
+        "license_name": "CC BY 2.0",
+        "license_url": "https://creativecommons.org/licenses/by/2.0/",
+        "source_title": "Ubud market (16435596274)",
+        "original_file_url": "https://upload.wikimedia.org/wikipedia/commons/3/36/Ubud_market_%2816435596274%29.jpg",
+        "attribution_text": "Jorge Láscar · CC BY 2.0 · Wikimedia Commons",
+        "adaptation_notice": "Resized and compressed to WebP and thumbnail by WanderMind; no other changes."
+      }
+    },
+    {
+      "relative_path": "assets/images/Ubud Palace - Jorge Lascar.jpg",
+      "web_optimized_path": "assets/images/web/2d7bd5e9178e651b.webp",
+      "thumbnail_path": "assets/images/thumbs/2d7bd5e9178e651b.webp",
+      "sha256": "2d7bd5e9178e651bb7ceed8df483e3ee2ff717d1475e1f26e6c10db93266f56b",
+      "category": "culture",
+      "sub_category": "heritage-architecture",
+      "tags": [
+        "palace",
+        "architecture",
+        "culture"
+      ],
+      "location_status": "bali_named",
+      "region_ids": [
+        "G4"
+      ],
+      "route_ids": [
+        "R1",
+        "R2",
+        "R4"
+      ],
+      "poi_ids": [
+        "ubud_palace"
+      ],
+      "intended_use": "Bali Portfolio and ubud_palace place picker",
+      "title": {
+        "zh": "乌布皇宫",
+        "en": "Ubud Palace",
+        "ja": "ウブド王宮",
+        "ko": "우붓 왕궁",
+        "id": "Puri Ubud"
+      },
+      "description": {
+        "zh": "乌布中心的传统宫殿建筑，适合与艺术市场同段步行游览；开放区域、时段和演出安排请实时确认。",
+        "en": "Traditional palace architecture in central Ubud that pairs naturally with a walk to the art market; confirm public areas, hours and performance schedules in real time.",
+        "ja": "ウブド中心部の伝統的な王宮建築で、アートマーケットと合わせて歩いて回れます。公開区域、時間、公演予定は最新情報を確認してください。",
+        "ko": "우붓 중심의 전통 왕궁 건축으로 아트 마켓과 함께 도보로 둘러보기 좋습니다. 공개 구역, 운영 시간, 공연 일정은 실시간으로 확인하세요.",
+        "id": "Arsitektur puri tradisional di pusat Ubud yang mudah dipadukan dengan berjalan ke pasar seni; periksa area publik, jam buka, dan jadwal pertunjukan secara langsung."
+      },
+      "alt_text": {
+        "zh": "乌布皇宫传统巴厘建筑与雕刻细节",
+        "en": "Traditional Balinese architecture and carved details at Ubud Palace",
+        "ja": "ウブド王宮の伝統的なバリ建築と彫刻",
+        "ko": "우붓 왕궁의 전통 발리 건축과 조각 디테일",
+        "id": "Arsitektur Bali tradisional dan detail ukiran di Puri Ubud"
+      },
+      "rights": {
+        "status": "licensed",
+        "source_url": "https://commons.wikimedia.org/wiki/File:Ubud_Palace_(17058342285).jpg",
+        "license_or_owner": "Jorge Láscar · CC BY 2.0",
+        "creator": "Jorge Láscar",
+        "license_name": "CC BY 2.0",
+        "license_url": "https://creativecommons.org/licenses/by/2.0/",
+        "source_title": "Ubud Palace (17058342285)",
+        "original_file_url": "https://upload.wikimedia.org/wikipedia/commons/0/0a/Ubud_Palace_%2817058342285%29.jpg",
+        "attribution_text": "Jorge Láscar · CC BY 2.0 · Wikimedia Commons",
+        "adaptation_notice": "Resized and compressed to WebP and thumbnail by WanderMind; no other changes."
       }
     }
   ]
