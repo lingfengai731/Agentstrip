@@ -333,3 +333,13 @@
 - QA 回调：完整本地 discover 76 项中 64 通过、12 项隔离 PostgreSQL 测试按设计 skip；GitHub PostgreSQL integration run `32679372455` 的 SQLite 与 PostgreSQL 发布关键步骤均成功。系统 Edge 生产验证 7 页 × 320/390 × 深浅模式 28/28、五语言 × 320/390 10/10、车辆 320/390/768/1440 4/4；浅色最低对比度 5.45:1、深色 8.14:1，横向溢出、page error、console error 和同源 HTTP error 均为 0。
 - GitHub/生产回调：产品提交 `cef3eec9c6642f7934c4089cbd5ce860694108c3` 经 PR #7 合并为 `507bc0720961e75d3259c98a90b32ff9548daa65`。Render 自动部署后生产从旧 `p49` 样式切换到 `p63`；未修改 Render 环境变量、后端行为、支付、邮件、数据库、图片授权或真实用户数据。
 - 下一回调：网站可进入推广小批量；按 `MARKETING_LAUNCH_PLAYBOOK.md` 记录 UTM 与 14 天数据。产品侧先为 `campuhan_ridge_walk`、`tegalalang_rice_terrace`、`ubud_art_market`、`melasti_beach`、`ubud_palace` 获取地点精确且批准的素材，再进入 manifest/Portfolio 发布流程。
+
+## 2026-08-25 Exact POI images and mobile picker callback
+
+- 路由：large / L2，发布为 L3。Sol 在隔离工作树 `E:\Agentstrip2-worktree` 负责外部来源与许可判断、移动产品方向、集成、GitHub、部署与最终生产验收；旧脏工作树 `E:\Agentstrip` 未触碰。
+- 图片回调：从 Wikimedia Commons 引入 Campuhan Ridge Walk、Tegallalang Rice Terraces、Ubud Art Market、Melasti Beach 和 Ubud Palace 五张地点精确图片；原图、1600px WebP、480px 缩略图、SHA-256、创作者、来源页和许可证均入库。Campuhan 为 CC0；Tegallalang 为 CC BY 4.0；市场和王宫为 CC BY 2.0；Melasti 为 CC BY-SA 4.0 并保留衍生作品同许可证说明。没有付费采购。
+- 移动回调：575px 以下地点选择器使用“地点列表 → 图片/理由详情 → 显式加入当天”的单列决策流；图片、授权署名与 CTA 均在 320/390 内可达。768/1440 保留有限高双栏；缩略图与预览图分离、懒加载、五语言署名和无精确图片诚实空态不回退。
+- Luna 回调：早先正式 `luna_worker` 完成来源初审并否决首个不够精确且含可识别儿童的 Ubud Market 候选，Sol 改用 Jorge Láscar 的市场来源。冻结提交复审 Gauss（`01a034bc-3025-7710-b8ec-35f054378f3a`，`gpt-5.6-luna` / `max`）于 `2026-08-25T01:05:43+08:00` 启动，10 分钟后收到立即收敛指令，追加 2 分钟仍无 final，于 `2026-08-25T01:17:46+08:00` 关闭；关闭前状态为 `running`，最终通知为 `shutdown`，不得写成 Luna 完成或 GO。
+- QA 回调：图片 intake PASS；完整本地 discover 77 项中 65 通过、12 项隔离 PostgreSQL 测试按设计 skip；diff check PASS。GitHub PR #9 的 PostgreSQL integration 检查通过。系统 Edge 生产验收覆盖 320/390/768/1440 与中英日韩印，零横向溢出；五张图片全部解码、署名/许可证链接可见、确认按钮可达。
+- GitHub/生产回调：产品提交 `980c331093419d9289fccc6d99f86ec222d0aab7` 经 PR #9 合并为 `5c66b0f741be83cd678477887bc6111b40052e9f`。Render 自动部署后公开 Bali 使用 `image-publish-manifest.json?v=20260825p1`；发布 manifest 113 张 / 113 唯一哈希，rights manifest 113 条 / 5 条外部来源许可记录，十个 WebP/缩略图端点均为 200。没有修改 Render 变量、数据库、用户、权益、支付、管理员 Portfolio 或真实司机邮件。
+- 下一回调：按 `MARKETING_LAUNCH_PLAYBOOK.md` 启动可追踪的小批量推广并记录 14 天数据；产品侧继续下一批地点精确图和剩余 D8，不再为此阻塞首发。支付、积分、管理员发布和真实邮件生产写回调继续单独设门禁。

@@ -22,6 +22,7 @@ desktop.ini
 .commit-msg.tmp
 *.tmp
 output/playwright/
+.playwright-cli/
 
 # Downloaded template scratch — not part of the project
 module/
