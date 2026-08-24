@@ -323,3 +323,13 @@
 - QA 回调：本地 75 项中 63 通过、12 项隔离 PostgreSQL 测试按设计跳过；Node、4 个 inline scripts、HTML duplicate IDs 和 diff check 通过。系统 Edge 本地 320/390/768/1440、五语言、键盘 Enter/Arrow/Escape、焦点返回、图片故障和 reduced-motion 均通过。Impeccable 在缺少可选 parser 时降级扫描，只报告既有 Roboto、动态 modal 图片和品牌 CTA 光晕，没有新增阻断项。
 - GitHub/生产回调：产品提交 `d4fcdbf`、`9aeeb33`、`6878dce` 已推送分支并 fast-forward 到 `main`；远端 `main` 为 `6878dce7b02245f943e214fa4aa668b659c87c50`。Render 自动部署后公开 Bali 从 p61 切换到 p62。生产 Edge 20/20（中英日韩印 × 320/390/768/1440）零横向溢出、零 page/console/同源 HTTP 错误；Taman Ayun 精确 WebP 实际加载 600×600，加入第 1 天、R1→R3 同步和移动图库 6 图均通过。未修改 Render 环境变量、后端行为、支付、邮件、数据库或真实用户记录。
 - 下一回调：按现有推广手册启动小批量传播并记录 14 天转化；产品侧优先继续 exact POI 图片覆盖审计和剩余 D8 内容批次。涉及支付、积分、管理员发布或真实司机邮件的生产写回调仍使用专用测试账号与单独门禁。
+
+## 2026-08-24 Mobile navigation and driver photo callback
+
+- 路由：medium / L2，发布为 L3。Sol 在隔离工作树 `E:\Agentstrip2-worktree` 负责跨账号恢复、移动视觉判断、实现、GitHub 合并、生产部署判断与最终 E2E；旧脏工作树 `E:\Agentstrip` 未触碰。
+- UI 回调：浅色模式手机折叠菜单改为暖纸背景、深青正文和琥珀当前态；深色模式保持原深蓝面板。7 个公共页面统一加载 `style-starter.css?v=p63`。Bali 司机车辆在手机端取消 16:10 强裁剪，恢复 1200×1600 原图的 3:4 全幅，车标、车身和车牌可见；768/1440 桌面比例未改变。本轮没有新增动效，Review Animations 结论为无需增加 motion。
+- Luna 图片审计：Hegel（`01a03148-5740-7c32-ab58-1c12654adf94`，正式 `luna_worker` / `gpt-5.6-luna` / `max`）只读复核 62 POI 与 108 资产，因父线程按计划产生目标 diff 而自标 blocked，未修改文件。Sol 独立复算确认精确图片覆盖 15/62、未覆盖 47、现有批准资产可安全新增精确映射为 0；禁止拿通用或身份未核验图片冒充 POI。
+- Luna 冻结审查：Plato（`01a03158-297b-7661-aa81-9b321db2fdfe`，正式 `luna_worker` / `gpt-5.6-luna` / `max`）于 `2026-08-24T09:17:36+08:00` 启动；10 分钟基线后收到立即收敛指令，于 `2026-08-24T09:30:55+08:00` 关闭。工具层收到 completed final，P0/P1/P2 均为 0，结论 GO（仅代码/本地证据，不替代生产验证）。其生成的单个 17KB 忽略态 Playwright 快照由 Sol 精确清理，未删除用户文件。
+- QA 回调：完整本地 discover 76 项中 64 通过、12 项隔离 PostgreSQL 测试按设计 skip；GitHub PostgreSQL integration run `32679372455` 的 SQLite 与 PostgreSQL 发布关键步骤均成功。系统 Edge 生产验证 7 页 × 320/390 × 深浅模式 28/28、五语言 × 320/390 10/10、车辆 320/390/768/1440 4/4；浅色最低对比度 5.45:1、深色 8.14:1，横向溢出、page error、console error 和同源 HTTP error 均为 0。
+- GitHub/生产回调：产品提交 `cef3eec9c6642f7934c4089cbd5ce860694108c3` 经 PR #7 合并为 `507bc0720961e75d3259c98a90b32ff9548daa65`。Render 自动部署后生产从旧 `p49` 样式切换到 `p63`；未修改 Render 环境变量、后端行为、支付、邮件、数据库、图片授权或真实用户数据。
+- 下一回调：网站可进入推广小批量；按 `MARKETING_LAUNCH_PLAYBOOK.md` 记录 UTM 与 14 天数据。产品侧先为 `campuhan_ridge_walk`、`tegalalang_rice_terrace`、`ubud_art_market`、`melasti_beach`、`ubud_palace` 获取地点精确且批准的素材，再进入 manifest/Portfolio 发布流程。
