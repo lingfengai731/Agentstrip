@@ -1,0 +1,72 @@
+{
+  "schema_version": 1,
+  "evidence_id": "ev-20260824T172507Z-poi-images-mobile-20260825",
+  "task_ref": "poi-images-mobile-20260825",
+  "owner": "Sol",
+  "captured_at": "2026-08-24T17:25:07Z",
+  "status": "verified",
+  "claim": "Five exact, source-licensed Bali POI photos and the mobile-first visual place picker are deployed from PR #9 merge 5c66b0f.",
+  "source": {
+    "kind": "git",
+    "repository": "https://github.com/lingfengai731/Agentstrip.git",
+    "product_commit": "980c331093419d9289fccc6d99f86ec222d0aab7",
+    "merge_commit": "5c66b0f741be83cd678477887bc6111b40052e9f",
+    "branch": "codex/poi-images-batch-20260824",
+    "worktree": "E:\\Agentstrip2-worktree",
+    "dirty_before_evidence": false
+  },
+  "image_sources": [
+    {
+      "poi_id": "campuhan_ridge_walk",
+      "sha256": "ad5dfa80292a85e6a4c964292175c25da4116c65363471c45bee798baf05b996",
+      "creator": "Artem Beliaikin",
+      "license": "CC0 1.0",
+      "source_url": "https://commons.wikimedia.org/wiki/File:Aerial_picture_of_Campuhan_Ridge_Walk_,_Scenic_Green_Valley_in_Ubud_Bali._Drone_photo._(46112155712).jpg"
+    },
+    {
+      "poi_id": "tegalalang_rice_terrace",
+      "sha256": "d99824e8e7bfa08ad4d341c971bc2f2f79530e2031dcb762c080896743c230b2",
+      "creator": "Philip Nalangan",
+      "license": "CC BY 4.0",
+      "source_url": "https://commons.wikimedia.org/wiki/File:Tegallalang_Rice_Terraces_Bali.jpg"
+    },
+    {
+      "poi_id": "ubud_art_market",
+      "sha256": "d4a55cf89e4c3d42a123beaaa310e8449115fe572663f8a925e906661b4d328e",
+      "creator": "Jorge Láscar",
+      "license": "CC BY 2.0",
+      "source_url": "https://commons.wikimedia.org/wiki/File:Ubud_market_(16435596274).jpg"
+    },
+    {
+      "poi_id": "melasti_beach",
+      "sha256": "e83d45a5b8fb0143fce59680bdb618be39bf8cecfb4ac76a03473fdebd07656f",
+      "creator": "Dare2Leap",
+      "license": "CC BY-SA 4.0",
+      "source_url": "https://commons.wikimedia.org/wiki/File:Melasti_Beach_coast.jpg"
+    },
+    {
+      "poi_id": "ubud_palace",
+      "sha256": "2d7bd5e9178e651bb7ceed8df483e3ee2ff717d1475e1f26e6c10db93266f56b",
+      "creator": "Jorge Láscar",
+      "license": "CC BY 2.0",
+      "source_url": "https://commons.wikimedia.org/wiki/File:Ubud_Palace_(17058342285).jpg"
+    }
+  ],
+  "verification": {
+    "local": "image-intake PASS; backend unittest 77 total, 65 passed and 12 isolated-PostgreSQL skips; git diff --check PASS",
+    "github": "PR #9 merged; PostgreSQL integration driver-request-rate-limit check passed in 30 seconds",
+    "production": "bali marker 20260825p1; publish manifest 113 images / 113 unique hashes; rights manifest 113 assets / five source-license records; ten optimized image endpoints returned 200 image/webp",
+    "browser": "system Edge production E2E passed at 320/390/768/1440 with zero horizontal overflow; en/zh/ja/ko/id picker copy passed; all five exact images decoded, use thumbnail/web split, show source and license links, and keep the confirm action reachable"
+  },
+  "luna": {
+    "source_review": "completed earlier; four initial sources accepted, first Ubud Market candidate rejected and replaced by the exact Jorge Láscar source",
+    "frozen_review_agent": "01a034bc-3025-7710-b8ec-35f054378f3a",
+    "model": "gpt-5.6-luna",
+    "effort": "max",
+    "started_at": "2026-08-24T17:05:43Z",
+    "closed_at": "2026-08-24T17:17:46Z",
+    "status": "shutdown_without_final_after_running_timeout",
+    "acceptance_owner": "Sol"
+  },
+  "notes": "No paid image purchase was needed. No Render environment variables, database rows, users, entitlements, payments, admin portfolio records or driver emails were modified. CC BY assets retain visible attribution; the Melasti derivative explicitly remains under CC BY-SA 4.0."
+}
