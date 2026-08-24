@@ -2084,6 +2084,37 @@ class ProductAccessTests(unittest.TestCase):
         self.assertIn("body { padding-bottom:calc(66px + env(safe-area-inset-bottom)); }", html)
         self.assertIn("@media (hover:hover) and (pointer:fine)", html)
 
+    def test_mobile_navigation_and_driver_photo_keep_their_readable_full_frame_contract(self):
+        frontend = BACKEND_DIR.parents[1] / "wandermind-studio" / "frontend"
+        css = (frontend / "assets" / "css" / "style-starter.css").read_text(
+            encoding="utf-8"
+        )
+        bali_html = (frontend / "bali.html").read_text(encoding="utf-8")
+
+        self.assertIn("body:not(.dark) .w3l-header-4 .navbar .navbar-collapse.show", css)
+        self.assertIn("background: #fffaf0 !important", css)
+        self.assertIn("color: #17373a !important", css)
+        self.assertIn(
+            ".bali-driver-car { aspect-ratio:auto; height:auto; object-fit:contain; object-position:center bottom; }",
+            bali_html,
+        )
+        self.assertNotIn(
+            ".bali-driver-car { aspect-ratio:16/10; object-fit:cover; }",
+            bali_html,
+        )
+        for page_name in (
+            "index.html",
+            "about.html",
+            "services.html",
+            "bali.html",
+            "ai-tool.html",
+            "find-driver.html",
+            "contact.html",
+        ):
+            with self.subTest(page=page_name):
+                html = (frontend / page_name).read_text(encoding="utf-8")
+                self.assertIn("assets/css/style-starter.css?v=p63", html)
+
     def test_portfolio_manager_requires_admin_and_storage_configuration(self):
         denied = self._run(
             self._request("GET", "/api/admin/portfolio", token=self.user_token)

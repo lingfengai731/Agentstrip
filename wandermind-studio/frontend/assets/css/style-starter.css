@@ -12766,4 +12766,46 @@ h3.color-white {
     font-size: 32px;
     line-height: 42px; } }
 
+/* Mobile navigation follows the active surface instead of inheriting hero text. */
+@media (max-width: 991.98px) {
+  body:not(.dark) .w3l-header-4 .navbar .navbar-collapse.show,
+  body:not(.dark) .w3l-header-4 .navbar .navbar-collapse.collapsing {
+    background: #fffaf0 !important;
+    border: 1px solid rgba(23, 55, 58, .12);
+    box-shadow: 0 18px 42px rgba(23, 55, 58, .18);
+  }
+
+  body:not(.dark) .w3l-header-4 .navbar .navbar-collapse.show .nav-link,
+  body:not(.dark) .w3l-header-4 .navbar .navbar-collapse.collapsing .nav-link,
+  body:not(.dark) .w3l-header-4 .navbar .navbar-collapse.show .nav-link.phone,
+  body:not(.dark) .w3l-header-4 .navbar .navbar-collapse.collapsing .nav-link.phone,
+  body:not(.dark) .w3l-header-4 .navbar .navbar-collapse.show .nav-link .fa,
+  body:not(.dark) .w3l-header-4 .navbar .navbar-collapse.collapsing .nav-link .fa,
+  body:not(.dark) .w3l-header-4 .navbar .navbar-collapse.show .lang-picker,
+  body:not(.dark) .w3l-header-4 .navbar .navbar-collapse.collapsing .lang-picker,
+  body:not(.dark) .w3l-header-4 .navbar .navbar-collapse.show .lang-picker .fa,
+  body:not(.dark) .w3l-header-4 .navbar .navbar-collapse.collapsing .lang-picker .fa,
+  body:not(.dark) .w3l-header-4 .navbar .navbar-collapse.show .lang-picker select,
+  body:not(.dark) .w3l-header-4 .navbar .navbar-collapse.collapsing .lang-picker select {
+    color: #17373a !important;
+    opacity: 1;
+    text-shadow: none;
+  }
+
+  body:not(.dark) .w3l-header-4 .navbar .navbar-collapse.show .nav-item.active > .nav-link,
+  body:not(.dark) .w3l-header-4 .navbar .navbar-collapse.collapsing .nav-item.active > .nav-link,
+  body:not(.dark) .w3l-header-4 .navbar .navbar-collapse.show .nav-link.ai-tool-link,
+  body:not(.dark) .w3l-header-4 .navbar .navbar-collapse.collapsing .nav-link.ai-tool-link,
+  body:not(.dark) .w3l-header-4 .navbar .navbar-collapse.show #ws-nav-auth-slot .fa,
+  body:not(.dark) .w3l-header-4 .navbar .navbar-collapse.collapsing #ws-nav-auth-slot .fa {
+    color: #9a5600 !important;
+  }
+
+  body:not(.dark) .w3l-header-4 .navbar .navbar-collapse.show .lang-picker,
+  body:not(.dark) .w3l-header-4 .navbar .navbar-collapse.collapsing .lang-picker {
+    background: rgba(23, 55, 58, .06) !important;
+    border-color: rgba(23, 55, 58, .16) !important;
+  }
+}
+
 /*# sourceMappingURL=style-freedom.css.map */
