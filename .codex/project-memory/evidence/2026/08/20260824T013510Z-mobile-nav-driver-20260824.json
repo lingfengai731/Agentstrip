@@ -1,0 +1,22 @@
+{
+  "schema_version": 1,
+  "evidence_id": "ev-20260824T013510Z-mobile-nav-driver-20260824",
+  "task_ref": "mobile-nav-driver-20260824",
+  "owner": "Sol",
+  "captured_at": "2026-08-24T01:35:10Z",
+  "status": "verified",
+  "claim": "Mobile light-theme navigation contrast and Bali driver vehicle full-frame rendering are deployed from PR #7 merge 507bc07.",
+  "source": {
+    "kind": "git",
+    "repository": "https://github.com/lingfengai731/Agentstrip.git",
+    "commit": "cef3eec9c6642f7934c4089cbd5ce860694108c3",
+    "branch": "codex/mobile-nav-driver-20260824",
+    "worktree": "E:\\Agentstrip2-worktree",
+    "dirty": false
+  },
+  "verification": {
+    "command": "76 local unittest; GitHub PostgreSQL run 32679372455; Edge production 7 pages x 320/390 x light/dark, 5 languages x 320/390, vehicle 320/390/768/1440",
+    "result": "pass: 28/28 menu, 10/10 language, 4/4 vehicle; p63; zero overflow/page/console/same-origin HTTP errors; Luna frozen commit P0/P1/P2=0 GO"
+  },
+  "notes": "Product cef3eec merged by PR #7 as 507bc07. No Render variables, backend behavior, payments, email, database or user data changed. Exact POI audit independently reconfirmed 15/62 covered, 47 missing, and zero safe new mappings from the current 108 approved assets."
+}
