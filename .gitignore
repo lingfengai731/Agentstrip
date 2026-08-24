@@ -21,6 +21,7 @@ desktop.ini
 # ── 临时文件 ──────────────────────────────────
 .commit-msg.tmp
 *.tmp
+output/playwright/
 
 # Downloaded template scratch — not part of the project
 module/

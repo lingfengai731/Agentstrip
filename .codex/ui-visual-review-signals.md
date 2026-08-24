@@ -116,3 +116,16 @@ rejected aspects: 不接受浅色模式滚动后的手机菜单出现深色字�
 reason in reviewer words: 白天模式下首页、关于、探索、巴厘岛等字样看不清楚；手机端司机图片只看到上半张，车牌没看到
 scope: this project
 recorded at: 2026-08-24
+
+workflow: ui-implementation-workflow-v2
+status: raw
+task: Bali 五个精确地点图片与移动地点选择器
+page/surface: WanderMind 巴厘岛页（公共路线地点选择器与 Portfolio）
+screenshot or artifact: output/playwright/poi-picker-320.png、poi-picker-390.png、poi-picker-768.png、poi-picker-1440.png
+reviewer: 用户
+decision: mixed
+accepted aspects: 允许从明确可商用来源取得五个指定地点的新照片；继续使用图片帮助首次游客判断地点；桌面端保持双栏预览
+rejected aspects: 不接受来源不清的图片；不接受手机端照搬桌面双栏或出现长空白、按钮越界和横向溢出
+reason in reviewer words: 上述 5 个地点的新照片由你来允许这一轮从明确可商用来源进行采购或下载并直接使用；特别是手机端的要设计好
+scope: this surface
+recorded at: 2026-08-25

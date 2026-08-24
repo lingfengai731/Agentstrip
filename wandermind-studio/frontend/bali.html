@@ -252,8 +252,8 @@
       .bali-route-picker-head p { margin:3px 0 0; color:#64748b; font-size:12px; line-height:1.45; }
       .bali-route-picker-close, .bali-route-picker-back { flex:0 0 44px; width:44px; height:44px; display:grid; place-items:center; border:1px solid #d8d5cc; border-radius:11px; background:#fafaf7; color:#334155; cursor:pointer; }
       .bali-route-picker-back { display:none; }
-      .bali-route-picker-body { display:grid; grid-template-columns:minmax(260px,.9fr) minmax(340px,1.1fr); min-height:460px; max-height:calc(min(720px,100vh - 48px) - 73px); }
-      .bali-route-picker-list-pane { min-width:0; padding:16px; overflow:auto; border-right:1px solid #e5e2da; }
+      .bali-route-picker-body { display:grid; grid-template-columns:minmax(260px,.9fr) minmax(340px,1.1fr); height:min(647px,calc(100vh - 121px)); min-height:min(460px,calc(100vh - 121px)); max-height:calc(min(720px,100vh - 48px) - 73px); }
+      .bali-route-picker-list-pane { min-width:0; min-height:0; padding:16px; overflow:auto; border-right:1px solid #e5e2da; }
       .bali-route-picker-hint { margin:0 0 12px; color:#64748b; font-size:12px; line-height:1.5; }
       .bali-route-picker-list { display:grid; gap:8px; }
       .bali-route-picker-option { display:grid; grid-template-columns:64px minmax(0,1fr); gap:11px; align-items:center; width:100%; min-height:72px; padding:7px; border:1px solid transparent; border-radius:12px; background:transparent; color:#1e293b; text-align:left; cursor:pointer; }
@@ -262,9 +262,12 @@
       .bali-route-picker-thumb img { width:100%; height:100%; object-fit:cover; }
       .bali-route-picker-option strong { display:block; font-size:13px; line-height:1.35; }
       .bali-route-picker-option small { display:block; margin-top:4px; color:#64748b; font-size:10.5px; line-height:1.4; }
-      .bali-route-picker-preview { display:flex; flex-direction:column; min-width:0; padding:18px; overflow:auto; }
+      .bali-route-picker-preview { display:flex; flex-direction:column; min-width:0; min-height:0; padding:18px; overflow:auto; }
       .bali-route-picker-media { position:relative; min-height:220px; overflow:hidden; border-radius:14px; background:#dce8e5; }
       .bali-route-picker-media img { width:100%; height:240px; display:block; object-fit:cover; }
+      .bali-route-picker-credit { display:flex; flex-wrap:wrap; gap:3px 6px; margin:0; padding:8px 10px; background:#eef6f3; color:#52605c; font-size:11px; line-height:1.45; }
+      .bali-route-picker-credit span { font-weight:700; color:#24443e; }
+      .bali-route-picker-credit a { color:#0f6258; text-decoration:underline; text-decoration-thickness:1px; text-underline-offset:2px; }
       .bali-route-picker-placeholder { min-height:220px; display:grid; place-items:center; padding:24px; color:#0f6258; text-align:center; }
       .bali-route-picker-placeholder .fa { display:block; margin-bottom:10px; font-size:28px; }
       .bali-route-picker-preview h4 { margin:16px 0 6px; color:#1e293b; font-size:22px; line-height:1.25; }
@@ -454,16 +457,17 @@
          .bali-route-picker-head { min-height:64px; padding:10px 12px; }
          .bali-route-picker-head h3 { font-size:17px; }
          .bali-route-picker-head p { white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
-         .bali-route-picker-body { display:block; min-height:0; max-height:calc(86svh - 65px); overflow:auto; }
+          .bali-route-picker-body { display:block; height:auto; min-height:0; max-height:calc(86svh - 65px); overflow:auto; }
          .bali-route-picker-list-pane { padding:12px; border-right:0; }
          .bali-route-picker-option { grid-template-columns:76px minmax(0,1fr); min-height:82px; }
          .bali-route-picker-thumb { width:76px; height:66px; }
-         .bali-route-picker-preview { display:none; min-height:calc(86svh - 65px); padding:12px; }
+          .bali-route-picker-preview { display:none; min-height:0; padding:12px; }
          .bali-route-picker.has-selection .bali-route-picker-list-pane { display:none; }
          .bali-route-picker.has-selection .bali-route-picker-preview { display:flex; }
          .bali-route-picker.has-selection .bali-route-picker-back { display:grid; }
          .bali-route-picker-media, .bali-route-picker-placeholder { min-height:210px; }
          .bali-route-picker-media img { height:240px; }
+         .bali-route-picker-credit { padding:8px 10px 9px; font-size:10.5px; }
          .bali-route-picker-confirm { width:100%; margin-top:18px; }
          .bali-mobile-section-toggle:active, .bali-route-mobile-toolbar button:active, .bali-mobile-journey-nav a:active, .bali-route-picker-option:active, .bali-route-picker-confirm:active { transform:scale(.97); transition:transform 140ms var(--bali-ease-out); }
        }
@@ -1019,11 +1023,11 @@
 
   function pickerUiCopy() {
     var copy = {
-      en:{title:function(day){return 'Choose a place for Day ' + day;},hint:'Point to a place to preview it. Select it, then add it to your day.',browse:function(count){return 'Browse ' + count + ' places in this area';},close:'Close place browser',back:'Back to places',list:'Places in this area',why:'Why it may fit',noPhoto:'Exact photo not added yet',noPhotoBody:'We will not show a generic Bali image as if it were this exact place.',mediaError:'Photo library unavailable',mediaErrorBody:'The exact-photo library did not load. Refresh before deciding; no generic image has been substituted.',genericFit:function(type){return 'Consider it if you want a ' + type.toLowerCase() + ' experience in this part of the route.';},fit:'Use the real photo, area and place type to decide whether this stop fits your day.',add:function(day){return 'Add to Day ' + day;},preview:'Place preview'},
-      zh:{title:function(day){return '为第 ' + day + ' 天选择地点';},hint:'将鼠标移到地点上可预览；手机点按地点后，再确认加入当天。',browse:function(count){return '查看同区域 ' + count + ' 个地点';},close:'关闭地点选择',back:'返回地点列表',list:'此区域地点',why:'为什么值得考虑',noPhoto:'该地点照片尚未接入',noPhotoBody:'我们不会用泛巴厘岛图片冒充这个具体地点。',mediaError:'照片库暂时无法加载',mediaErrorBody:'精确地点照片没有成功载入，请刷新后再判断；系统没有用通用图片替代。',genericFit:function(type){return '如果你想在这个区域加入“' + type + '”体验，可以考虑这个地点。';},fit:'结合真实照片、所在区域和地点类型判断是否喜欢。',add:function(day){return '加入第 ' + day + ' 天';},preview:'地点预览'},
-      ja:{title:function(day){return day + '日目の場所を選ぶ';},hint:'場所にポインターを合わせるとプレビューできます。スマートフォンではタップしてから追加を確定します。',browse:function(count){return '同じエリアの' + count + 'か所を見る';},close:'場所選択を閉じる',back:'場所一覧に戻る',list:'このエリアの場所',why:'向いている理由',noPhoto:'この場所の写真は未登録です',noPhotoBody:'別のバリ写真をこの場所として表示することはありません。',mediaError:'写真ライブラリを読み込めません',mediaErrorBody:'正確な場所の写真を読み込めませんでした。更新してから判断してください。一般的な写真への置き換えはしていません。',genericFit:function(type){return 'このエリアで「' + type + '」を旅程に加えたい人向けです。';},fit:'実際の写真、エリア、場所の種類から旅程に合うか判断してください。',add:function(day){return day + '日目に追加';},preview:'場所プレビュー'},
-      ko:{title:function(day){return day + '일차 장소 선택';},hint:'장소에 마우스를 올리면 미리 볼 수 있습니다. 모바일에서는 장소를 누른 뒤 추가를 확인하세요.',browse:function(count){return '같은 지역 장소 ' + count + '곳 보기';},close:'장소 선택 닫기',back:'장소 목록으로',list:'이 지역의 장소',why:'추천하는 이유',noPhoto:'이 장소의 사진은 아직 없습니다',noPhotoBody:'다른 발리 사진을 이 장소의 사진처럼 표시하지 않습니다.',mediaError:'사진 라이브러리를 불러올 수 없음',mediaErrorBody:'정확한 장소 사진을 불러오지 못했습니다. 새로 고친 뒤 판단하세요. 일반 사진으로 대체하지 않았습니다.',genericFit:function(type){return '이 지역에서 ‘' + type + '’ 경험을 일정에 넣고 싶다면 고려해 보세요.';},fit:'실제 사진, 지역, 장소 유형을 보고 일정에 맞는지 판단하세요.',add:function(day){return day + '일차에 추가';},preview:'장소 미리보기'},
-      id:{title:function(day){return 'Pilih tempat untuk Hari ' + day;},hint:'Arahkan penunjuk untuk melihat pratinjau. Di ponsel, ketuk tempat lalu konfirmasi untuk menambahkannya.',browse:function(count){return 'Lihat ' + count + ' tempat di area ini';},close:'Tutup pilihan tempat',back:'Kembali ke daftar tempat',list:'Tempat di area ini',why:'Mengapa mungkin cocok',noPhoto:'Foto tempat ini belum ditambahkan',noPhotoBody:'Kami tidak akan menampilkan foto umum Bali seolah-olah ini tempat yang sama.',mediaError:'Pustaka foto tidak tersedia',mediaErrorBody:'Foto lokasi yang tepat gagal dimuat. Muat ulang sebelum memilih; tidak ada foto umum yang digunakan sebagai pengganti.',genericFit:function(type){return 'Pertimbangkan tempat ini bila Anda ingin menambahkan pengalaman ' + type + ' di area ini.';},fit:'Gunakan foto nyata, area, dan jenis tempat untuk menilai apakah tempat ini cocok.',add:function(day){return 'Tambahkan ke Hari ' + day;},preview:'Pratinjau tempat'}
+      en:{title:function(day){return 'Choose a place for Day ' + day;},hint:'Point to a place to preview it. Select it, then add it to your day.',browse:function(count){return 'Browse ' + count + ' places in this area';},close:'Close place browser',back:'Back to places',list:'Places in this area',why:'Why it may fit',noPhoto:'Exact photo not added yet',noPhotoBody:'We will not show a generic Bali image as if it were this exact place.',mediaError:'Photo library unavailable',mediaErrorBody:'The exact-photo library did not load. Refresh before deciding; no generic image has been substituted.',genericFit:function(type){return 'Consider it if you want a ' + type.toLowerCase() + ' experience in this part of the route.';},fit:'Use the real photo, area and place type to decide whether this stop fits your day.',add:function(day){return 'Add to Day ' + day;},preview:'Place preview',photoCredit:'Photo'},
+      zh:{title:function(day){return '为第 ' + day + ' 天选择地点';},hint:'将鼠标移到地点上可预览；手机点按地点后，再确认加入当天。',browse:function(count){return '查看同区域 ' + count + ' 个地点';},close:'关闭地点选择',back:'返回地点列表',list:'此区域地点',why:'为什么值得考虑',noPhoto:'该地点照片尚未接入',noPhotoBody:'我们不会用泛巴厘岛图片冒充这个具体地点。',mediaError:'照片库暂时无法加载',mediaErrorBody:'精确地点照片没有成功载入，请刷新后再判断；系统没有用通用图片替代。',genericFit:function(type){return '如果你想在这个区域加入“' + type + '”体验，可以考虑这个地点。';},fit:'结合真实照片、所在区域和地点类型判断是否喜欢。',add:function(day){return '加入第 ' + day + ' 天';},preview:'地点预览',photoCredit:'图片'},
+      ja:{title:function(day){return day + '日目の場所を選ぶ';},hint:'場所にポインターを合わせるとプレビューできます。スマートフォンではタップしてから追加を確定します。',browse:function(count){return '同じエリアの' + count + 'か所を見る';},close:'場所選択を閉じる',back:'場所一覧に戻る',list:'このエリアの場所',why:'向いている理由',noPhoto:'この場所の写真は未登録です',noPhotoBody:'別のバリ写真をこの場所として表示することはありません。',mediaError:'写真ライブラリを読み込めません',mediaErrorBody:'正確な場所の写真を読み込めませんでした。更新してから判断してください。一般的な写真への置き換えはしていません。',genericFit:function(type){return 'このエリアで「' + type + '」を旅程に加えたい人向けです。';},fit:'実際の写真、エリア、場所の種類から旅程に合うか判断してください。',add:function(day){return day + '日目に追加';},preview:'場所プレビュー',photoCredit:'写真'},
+      ko:{title:function(day){return day + '일차 장소 선택';},hint:'장소에 마우스를 올리면 미리 볼 수 있습니다. 모바일에서는 장소를 누른 뒤 추가를 확인하세요.',browse:function(count){return '같은 지역 장소 ' + count + '곳 보기';},close:'장소 선택 닫기',back:'장소 목록으로',list:'이 지역의 장소',why:'추천하는 이유',noPhoto:'이 장소의 사진은 아직 없습니다',noPhotoBody:'다른 발리 사진을 이 장소의 사진처럼 표시하지 않습니다.',mediaError:'사진 라이브러리를 불러올 수 없음',mediaErrorBody:'정확한 장소 사진을 불러오지 못했습니다. 새로 고친 뒤 판단하세요. 일반 사진으로 대체하지 않았습니다.',genericFit:function(type){return '이 지역에서 ‘' + type + '’ 경험을 일정에 넣고 싶다면 고려해 보세요.';},fit:'실제 사진, 지역, 장소 유형을 보고 일정에 맞는지 판단하세요.',add:function(day){return day + '일차에 추가';},preview:'장소 미리보기',photoCredit:'사진'},
+      id:{title:function(day){return 'Pilih tempat untuk Hari ' + day;},hint:'Arahkan penunjuk untuk melihat pratinjau. Di ponsel, ketuk tempat lalu konfirmasi untuk menambahkannya.',browse:function(count){return 'Lihat ' + count + ' tempat di area ini';},close:'Tutup pilihan tempat',back:'Kembali ke daftar tempat',list:'Tempat di area ini',why:'Mengapa mungkin cocok',noPhoto:'Foto tempat ini belum ditambahkan',noPhotoBody:'Kami tidak akan menampilkan foto umum Bali seolah-olah ini tempat yang sama.',mediaError:'Pustaka foto tidak tersedia',mediaErrorBody:'Foto lokasi yang tepat gagal dimuat. Muat ulang sebelum memilih; tidak ada foto umum yang digunakan sebagai pengganti.',genericFit:function(type){return 'Pertimbangkan tempat ini bila Anda ingin menambahkan pengalaman ' + type + ' di area ini.';},fit:'Gunakan foto nyata, area, dan jenis tempat untuk menilai apakah tempat ini cocok.',add:function(day){return 'Tambahkan ke Hari ' + day;},preview:'Pratinjau tempat',photoCredit:'Foto'}
     };
     return copy[language()] || copy.en;
   }
@@ -1045,10 +1049,21 @@
     });
   }
 
-  function pickerMediaMarkup(media, poi, copy) {
+  function pickerMediaMarkup(media, poi, copy, variant) {
     if (!media) return '<div class="bali-route-picker-placeholder"><span><span class="fa fa-map-marker" aria-hidden="true"></span><strong>' + escapeHtml(poiMediaState === 'failed' ? copy.mediaError : copy.noPhoto) + '</strong></span></div>';
     var alt = text(media.alt_text) || poiDisplayName(poi);
-    return '<img src="' + escapeHtml(media.web_optimized_path || media.relative_path) + '" alt="' + escapeHtml(alt) + '" loading="lazy">';
+    var source = variant === 'thumbnail' ? (media.thumbnail_path || media.web_optimized_path || media.relative_path) : (media.web_optimized_path || media.relative_path);
+    return '<img src="' + escapeHtml(source) + '" alt="' + escapeHtml(alt) + '" loading="lazy" decoding="async">';
+  }
+
+  function pickerAttributionMarkup(media, copy) {
+    var rights = (media || {}).rights || {};
+    var creator = rights.creator || '';
+    var license = rights.license_name || '';
+    if (!creator && !license) return '';
+    var creatorMarkup = rights.source_url ? '<a href="' + escapeHtml(rights.source_url) + '" target="_blank" rel="noopener noreferrer">' + escapeHtml(creator || copy.photoCredit) + '</a>' : escapeHtml(creator);
+    var licenseMarkup = rights.license_url ? '<a href="' + escapeHtml(rights.license_url) + '" target="_blank" rel="noopener noreferrer">' + escapeHtml(license) + '</a>' : escapeHtml(license);
+    return '<p class="bali-route-picker-credit"><span>' + escapeHtml(copy.photoCredit) + ':</span>' + creatorMarkup + (creatorMarkup && licenseMarkup ? '<span aria-hidden="true">·</span>' : '') + licenseMarkup + '</p>';
   }
 
   function renderPickerPreview(poi) {
@@ -1061,7 +1076,7 @@
     var meta = [text(region.name) || poi.region_id, poiTypeLabel(poi.type), status].filter(Boolean).join(' · ');
     var reason = media ? (text(media.description) || copy.fit) : copy.genericFit(poiTypeLabel(poi.type));
     if (!media) reason += ' ' + (poiMediaState === 'failed' ? copy.mediaErrorBody : copy.noPhotoBody);
-    preview.innerHTML = '<div class="bali-route-picker-media">' + pickerMediaMarkup(media, poi, copy) + '</div>' +
+    preview.innerHTML = '<div class="bali-route-picker-media">' + pickerMediaMarkup(media, poi, copy, 'preview') + pickerAttributionMarkup(media, copy) + '</div>' +
       '<h4 id="bali-route-picker-preview-title" tabindex="-1">' + escapeHtml(poiDisplayName(poi)) + '</h4>' +
       '<p class="bali-route-picker-meta">' + escapeHtml(meta) + '</p>' +
       '<p class="bali-route-picker-preview-copy"><strong>' + escapeHtml(copy.why) + '</strong>' + escapeHtml(reason) + '</p>' +
@@ -1102,7 +1117,7 @@
       var media = poiMedia[poi.id];
       var regionName = text((regions[poi.region_id] || {}).name) || poi.region_id;
       return '<button class="bali-route-picker-option" type="button" role="option" aria-selected="false" data-picker-poi="' + escapeHtml(poi.id) + '">' +
-        '<span class="bali-route-picker-thumb">' + (media ? pickerMediaMarkup(media, poi, copy) : '<span class="fa fa-map-marker" aria-hidden="true"></span>') + '</span>' +
+        '<span class="bali-route-picker-thumb">' + (media ? pickerMediaMarkup(media, poi, copy, 'thumbnail') : '<span class="fa fa-map-marker" aria-hidden="true"></span>') + '</span>' +
         '<span><strong translate="no">' + escapeHtml(poiDisplayName(poi)) + '</strong><small>' + escapeHtml(regionName + ' · ' + poiTypeLabel(poi.type)) + '</small></span></button>';
     }).join('');
     list.querySelectorAll('[data-picker-poi]').forEach(function (option) {
@@ -1818,8 +1833,8 @@
   }
 
   Promise.all([
-    fetch('assets/data/bali-travel-data.json?v=20260823m1').then(function (response) { if (!response.ok) throw new Error('HTTP ' + response.status); return response.json(); }),
-    fetch('assets/data/image-publish-manifest.json?v=20260823m1').then(function (response) { if (!response.ok) throw new Error('HTTP ' + response.status); return response.json(); }).catch(function () { poiMediaState = 'failed'; return {images:[]}; })
+    fetch('assets/data/bali-travel-data.json?v=20260825p1').then(function (response) { if (!response.ok) throw new Error('HTTP ' + response.status); return response.json(); }),
+    fetch('assets/data/image-publish-manifest.json?v=20260825p1').then(function (response) { if (!response.ok) throw new Error('HTTP ' + response.status); return response.json(); }).catch(function () { poiMediaState = 'failed'; return {images:[]}; })
   ])
     .then(function (result) { buildPoiMedia(result[1]); if (poiMediaState !== 'failed') poiMediaState = 'ready'; useData(result[0]); })
     .catch(function () {
