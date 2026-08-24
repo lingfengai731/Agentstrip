@@ -103,3 +103,16 @@ rejected aspects: 不接受手机端只是桌面内容纵向堆叠；不接受�
 reason in reviewer words: 手机屏幕明显比桌面小，页面太长会让客户没耐心；手机端可以不完全照搬桌面版本；地点名称需要配图帮助判断
 scope: this surface
 recorded at: 2026-08-23
+
+workflow: ui-implementation-workflow-v2
+status: raw
+task: 全站手机导航浅色模式与 Bali 司机车辆展示
+page/surface: WanderMind 全站手机导航、巴厘岛司机承接区
+screenshot or artifact: 用户手机端生产页面与 20260824-mobile-baseline 回调截图
+reviewer: 用户
+decision: rejected
+accepted aspects: 深色模式菜单可读；桌面版车辆展示已经正确；现有品牌和内容方向继续保留
+rejected aspects: 不接受浅色模式滚动后的手机菜单出现深色字叠深色背景；不接受手机端把竖版车辆图裁成 16:10 而遮掉车牌
+reason in reviewer words: 白天模式下首页、关于、探索、巴厘岛等字样看不清楚；手机端司机图片只看到上半张，车牌没看到
+scope: this project
+recorded at: 2026-08-24
