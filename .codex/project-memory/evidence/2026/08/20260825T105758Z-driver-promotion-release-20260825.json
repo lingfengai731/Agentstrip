@@ -1,0 +1,22 @@
+{
+  "schema_version": 1,
+  "evidence_id": "ev-20260825T105758Z-driver-promotion-release-20260825",
+  "task_ref": "driver-promotion-release-20260825",
+  "owner": "sol-main",
+  "captured_at": "2026-08-25T10:57:58Z",
+  "status": "verified",
+  "claim": "PR #18 merged the two driver promotion packs and owner Instagram playbook into main at af11a3830c555d06219226abec793fbbf798ba7a.",
+  "source": {
+    "kind": "git",
+    "repository": "https://github.com/lingfengai731/Agentstrip.git",
+    "commit": "af11a3830c555d06219226abec793fbbf798ba7a",
+    "branch": "codex/driver-promotion-release-evidence-20260825",
+    "worktree": "E:\\Agentstrip-wt-promotion-manuals",
+    "dirty": true
+  },
+  "verification": {
+    "command": "GitHub PR #18 fixed-head merge; fetch origin/main; merge-base ancestry check.",
+    "result": "PASS: merged true; origin/main af11a383; promotion head is ancestor of main; Project memory run 32839645943 success."
+  },
+  "notes": "Repository sync only. No social post, driver email, order, Render setting, database, payment or entitlement write."
+}
