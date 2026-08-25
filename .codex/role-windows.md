@@ -369,3 +369,15 @@
 - QA 回调：图片 intake PASS；完整本地 discover 83 项中 70 通过、13 项隔离 PostgreSQL 测试按设计 skip；diff check 与 24 条目标差异的不可变字段审计通过。GitHub PR #15 的 PostgreSQL integration run `32805986033` 成功。生产 Edge/Playwright 完成五语言 × 320/390/768/1440 共 20/20，零横向溢出；47 张画廊卡在手机默认 6 张、桌面 12 张，Broken Beach 图片解码为 1600×1067，控制台 0 error / 0 warning。
 - GitHub/生产回调：产品提交 `ba0fd093ea6bf0da4ac54f3811dec3bbf5b8be29` 经 PR #15 squash 合并为 `43ee10f2eb9ddf10dd6be48cbddeb5e251dbb90b`。Render 自动部署后公开 Bali 使用 `20260825p3`；publish/rights manifest 均为 118，核心 D8 62 条中 53 条具备完整五语言资料，剩余 9 条全部无 Bali 路由。未修改 Render 变量、数据库、用户、权益、支付、管理员内容或真实司机邮件。
 - 下一回调：网站产品侧已不再因“剩余 19 条 Bali D8”阻塞首发；站长按 `MARKETING_LAUNCH_PLAYBOOK.md` 发布首日小红书 UTM 内容并记录公开 URL。工程侧随后继续 2 个 pending-review POI、3 个 supplier-gated 体验和逐司机路线级报价的来源核验；付费搜索广告仍需账户、付款和预算确认。
+
+## 2026-08-25 Driver reference estimator and safe cache callback
+
+- 路由：medium / L2。Sol 在隔离工作树 `E:\Agentstrip-worktree-driver-estimate` 保留价格语义、移动体验、集成、提交与发布边界；生产写、真实邮件、支付、管理员操作和公开发布均为 STOP 条件。
+- Luna 缓存审计：Kierkegaard（`/root/cache_audit`，正式 `luna_worker` / `gpt-5.6-luna` / `max`）completed；工具未暴露精确启动时间与稳定耗时。它只读确认原始脏工作树中仅两个 Python `__pycache__` 可安全再生成，合计 454,195 bytes；Sol 复核绝对路径后删除这两个目录，原工作树仍为 65 条状态项。`.playwright-cli`、`output`、`.idea`、`module`、图片、规划文档、数据库、环境配置和 Git 对象均保留。
+- Luna 优先级审计：Zeno（`/root/next_ui_goal`，正式 `luna_worker` / `gpt-5.6-luna` / `max`）completed；工具未暴露精确启动时间与稳定耗时。它只读确认透明 IDR 参考预算器是当前唯一能在外部事实门禁之外完整闭环的高价值小单元，未修改文件。Sol 接受其“不修改后端、邮件、POST 字段或生产”的边界，并独立实现与验收。
+- UI 回调：找司机页新增五语全天/半天参考预算器，沿用 teal + gold + warm-paper，不增加 UI 库或新视觉体系。公式严格使用已确认基线：全天 `700,000 + 50,000 × 人数`、半天 `500,000 + 50,000 × 人数`，按所选用车日相加；2 人全天明确为 800,000，而不是把两人的附加费合计为 50,000。结果只作为 IDR 参考，不写入司机邮件，也不声称最终报价。
+- 手机与动效回调：320/390 为单列，576 以上为紧凑双列；输入高 48px，结果使用 `aria-live`，大金额可换行且保持右对齐。估算结果不做数字跳动或入场动效；只保留 160ms 按压反馈、fine-pointer hover 和 reduced-motion 位移关闭。UI Implementation Workflow、UI/UX Pro Max、Frontend、Emil、Impeccable 与 Find/Improve/Review Animations 用于约束现有风格和克制动效；Nuwa 诊断选择复用现有 Emil 高级设计工程师能力，不重复制造同类人物 Skill。
+- QA 回调：71/71 产品测试、Node 语法和 `git diff --check` 通过；测试覆盖 1 人、2 人、全天、半天和混合用车，五语键均完整。Impeccable 因可选 parser 缺失进入降级扫描，只报告既有 Roboto 与品牌 CTA 光晕，无新增阻断项。右嵌浏览器一次 localhost 尝试被 admin-policy gate 阻止，按既定停止条件不重试、不绕过；因此本轮没有浏览器截图或生产 E2E，不得写成响应式浏览器实测或已部署。
+- Luna 冻结审查：Zeno 对固定提交 `0e8c62f` 做第二轮只读审查，约 10 分钟后 completed / NO-GO，未修改文件。它发现新增数字输入继承 `outline:none` 导致键盘焦点仅剩低对比度边框这一项 P1，并列出空状态 `IDR 0` 与过宽 live region 两项 P2。Sol 接受并修复：输入增加浅色深青 / 深色金色 3px `focus-visible` 环，空状态改为破折号，静态排除说明移出 live region 并通过 `aria-describedby` 关联；最终复验和新提交不得沿用 `0e8c62f` 的旧 NO-GO 结论。
+- Luna 修复复核：Zeno 对固定提交 `3ee994154dd95a944b3c5eab33210df4bfb9a152` 做只读 targeted review，约 2 分钟后 completed / GO，未修改文件。浅色深青焦点环约 5.10:1、深色金色约 8.66:1；空状态、live region 和说明关联均通过，71/71 测试、Node 与 diff check 通过。唯一保留 P2 是本轮浏览器策略门禁导致未取得 320/390/768/1440 实测证据，不影响代码冻结但仍阻止宣称生产响应式已验证。
+- 下一回调：先提交并推送隔离分支、等待 CI；代码合入和 Render 自动部署属于下一次单独发布回调。司机路线级最终报价仍需 Dicky/Gede 对机场、换酒店、超时、佩妮达船车、区域和活动附加费的授权；2 个 pending-review POI、3 个 supplier-gated 体验与自动支付继续保持未闭环。

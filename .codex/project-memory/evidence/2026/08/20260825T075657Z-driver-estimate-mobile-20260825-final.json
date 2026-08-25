@@ -1,0 +1,22 @@
+{
+  "schema_version": 1,
+  "evidence_id": "ev-20260825T075657Z-driver-estimate-mobile-20260825-final",
+  "task_ref": "driver-estimate-mobile-20260825-final",
+  "owner": "codex-sol",
+  "captured_at": "2026-08-25T07:56:57Z",
+  "status": "verified",
+  "claim": "Final code freeze for the five-language driver reference estimator after Luna focus and live-region findings were fixed; PR 17 CI on code commit 3ee9941 is green.",
+  "source": {
+    "kind": "git",
+    "repository": "https://github.com/lingfengai731/Agentstrip.git",
+    "commit": "b3b25e2c38ca85864c6a9fd890d371e866201f98",
+    "branch": "codex/driver-estimate-mobile-20260825",
+    "worktree": "E:\\Agentstrip-worktree-driver-estimate",
+    "dirty": false
+  },
+  "verification": {
+    "command": "71 product tests; Node syntax; git diff check; GitHub Project Memory and PostgreSQL integration workflows",
+    "result": "71/71 local tests passed; Node and diff checks passed; Luna targeted review completed GO; GitHub runs 32823866890 and 32823866892 both succeeded on 3ee9941."
+  },
+  "notes": "No browser viewport matrix was obtained because the single in-app localhost attempt hit the admin-policy gate. No merge, Render deployment, production test, real email, payment, or admin write is claimed."
+}

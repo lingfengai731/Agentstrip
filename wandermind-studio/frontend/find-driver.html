@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no, viewport-fit=cover">
     <title data-i18n="fdPageTitle">Find a Bali Driver | WanderMind Studio</title>
     <meta name="description" content="Request a trusted local Bali driver from WanderMind — airport transfers, hotel pickups and full-day private tours with Dicky or Gede Nico.">
     <link rel="canonical" href="https://wandermind.cc/find-driver">
@@ -79,6 +79,29 @@
       .fd-input:focus, .fd-textarea:focus, .fd-num:focus { border-color: var(--fd-teal-lt); }
       .fd-textarea { resize: vertical; min-height: 90px; line-height: 1.6; }
       .fd-hint { font-size: 11.5px; color: #94a3b8; margin-top: 5px; }
+      .fd-estimator { margin: 2px 0 20px; padding: 20px 0; border-top: 1px solid #e5e2da; border-bottom: 1px solid #e5e2da; }
+      body.dark .fd-estimator { border-color: #34383e; }
+      .fd-estimator h3 { margin: 0; color: var(--fd-ink); font-size: 17px; line-height: 1.35; }
+      body.dark .fd-estimator h3 { color: #f3f1ea; }
+      .fd-estimator-intro { margin: 6px 0 16px; color: #64748b; font-size: 12.5px; line-height: 1.6; }
+      body.dark .fd-estimator-intro { color: #c9c6bd; }
+      .fd-estimator-grid { display: grid; grid-template-columns: 1fr; gap: 12px; }
+      .fd-estimator-input { min-height: 48px; font-size: 16px; font-variant-numeric: tabular-nums; }
+      .fd-estimator-input:focus-visible { border-color: var(--fd-teal); outline: 3px solid var(--fd-teal); outline-offset: 2px; }
+      body.dark .fd-estimator-input:focus-visible { border-color: var(--fd-gold); outline-color: var(--fd-gold); }
+      .fd-estimator-output { margin-top: 16px; padding-top: 15px; border-top: 1px dashed #d8d2c5; }
+      body.dark .fd-estimator-output { border-color: #3b4047; }
+      .fd-estimator-total-row { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 8px 16px; color: var(--fd-ink); }
+      body.dark .fd-estimator-total-row { color: #f3f1ea; }
+      .fd-estimator-total-label { font-size: 12.5px; font-weight: 700; }
+      .fd-estimator-total { margin-left: auto; color: var(--fd-teal); font-size: clamp(22px, 6vw, 28px); font-weight: 800; line-height: 1.15; font-variant-numeric: tabular-nums; white-space: nowrap; }
+      body.dark .fd-estimator-total { color: #5eead4; }
+      .fd-estimator-lines { margin-top: 10px; color: #52605c; font-size: 12px; line-height: 1.6; }
+      body.dark .fd-estimator-lines { color: #d8d5cc; }
+      .fd-estimator-lines p { margin: 3px 0; }
+      .fd-estimator-boundary { margin: 12px 0 0; color: #64748b; font-size: 11.5px; line-height: 1.55; }
+      body.dark .fd-estimator-boundary { color: #b8b6af; }
+      @media (min-width: 576px) { .fd-estimator-grid { grid-template-columns: 1fr 1fr; } }
       .fd-service-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
       .fd-service { position: relative; margin: 0; }
       .fd-service input { position: absolute; opacity: 0; }
@@ -103,8 +126,9 @@
       body.dark .fd-consent { color:rgba(255,255,255,.76); }
       .fd-honeypot { position:absolute !important; width:1px !important; height:1px !important; overflow:hidden !important; clip:rect(1px,1px,1px,1px) !important; white-space:nowrap !important; }
 
-      .fd-submit { width: 100%; padding: 14px; background: linear-gradient(135deg, var(--fd-gold), var(--fd-gold-dk)); color: #fff; border: none; border-radius: 11px; font-size: 15px; font-weight: 700; cursor: pointer; font-family: inherit; display: inline-flex; align-items: center; justify-content: center; gap: 8px; transition: transform .15s, box-shadow .2s; }
-      .fd-submit:hover { transform: translateY(-1px); box-shadow: 0 8px 22px rgba(252,191,30,.4); }
+      .fd-submit { width: 100%; padding: 14px; background: linear-gradient(135deg, var(--fd-gold), var(--fd-gold-dk)); color: #fff; border: none; border-radius: 11px; font-size: 15px; font-weight: 700; cursor: pointer; font-family: inherit; display: inline-flex; align-items: center; justify-content: center; gap: 8px; transition: transform 160ms cubic-bezier(.23,1,.32,1), box-shadow 200ms cubic-bezier(.23,1,.32,1); }
+      .fd-submit:active { transform: scale(.98); }
+      @media (hover: hover) and (pointer: fine) { .fd-submit:hover { transform: translateY(-1px); box-shadow: 0 8px 22px rgba(252,191,30,.4); } }
       .fd-submit:disabled { opacity: .55; cursor: not-allowed; transform: none; box-shadow: none; }
       .fd-msg { font-size: 13px; margin-top: 12px; min-height: 16px; text-align: center; }
       .fd-msg.err { color: #dc2626; }
@@ -163,6 +187,11 @@
       .fd-success { text-align: center; padding: 26px 6px; }
       .fd-success .fa { font-size: 56px; color: var(--fd-teal); margin-bottom: 14px; }
       .fd-success h2 { color: var(--fd-ink); } body.dark .fd-success h2 { color: #f0f0ec; }
+
+      @media (prefers-reduced-motion: reduce) {
+        .fd-submit { transition: box-shadow 1ms linear; }
+        .fd-submit:active { transform: none; }
+      }
 
       .footer-contact-line { display: flex; align-items: center; gap: 8px; padding: 4px 0; flex-wrap: wrap; }
       .footer-contact-line .fa { color: #fcbf1e !important; width: 18px; text-align: center; flex-shrink: 0; font-size: 15px; }
@@ -282,6 +311,44 @@
         </div>
       </div>
 
+      <div class="fd-row">
+        <div class="fd-field">
+          <label class="fd-label" for="fd-people" data-i18n="fdPeople">How many people</label>
+          <input type="number" min="1" max="40" class="fd-num" id="fd-people" inputmode="numeric" placeholder="2">
+        </div>
+        <div class="fd-field">
+          <label class="fd-label" for="fd-days" data-i18n="fdDays">Days in Bali</label>
+          <input type="number" min="1" max="60" class="fd-num" id="fd-days" inputmode="numeric" placeholder="10">
+        </div>
+      </div>
+
+      <section class="fd-estimator" aria-labelledby="fd-estimator-title">
+        <h3 id="fd-estimator-title" data-i18n="fdEstimateTitle">Estimate your driver days</h3>
+        <p class="fd-estimator-intro" data-i18n="fdEstimateIntro">Choose only the days you expect to use the car. This reference uses the confirmed public baseline and does not replace the driver's final route quote.</p>
+        <div class="fd-estimator-grid">
+          <div>
+            <label class="fd-label" for="fd-full-days" data-i18n="fdEstimateFullDays">Full driver days · up to 10 hours</label>
+            <input class="fd-num fd-estimator-input" id="fd-full-days" type="number" min="0" max="60" step="1" inputmode="numeric" value="0" aria-describedby="fd-estimator-boundary">
+          </div>
+          <div>
+            <label class="fd-label" for="fd-half-days" data-i18n="fdEstimateHalfDays">Half driver days · up to 6 hours</label>
+            <input class="fd-num fd-estimator-input" id="fd-half-days" type="number" min="0" max="60" step="1" inputmode="numeric" value="0" aria-describedby="fd-estimator-boundary">
+          </div>
+        </div>
+        <div class="fd-estimator-output">
+          <div class="fd-estimator-live" aria-live="polite" aria-atomic="true">
+            <div class="fd-estimator-total-row">
+              <span class="fd-estimator-total-label" data-i18n="fdEstimateTotal">Reference total</span>
+              <strong class="fd-estimator-total" id="fd-estimator-total">—</strong>
+            </div>
+            <div class="fd-estimator-lines" id="fd-estimator-lines">
+              <p data-i18n="fdEstimateStart">Enter the number of travellers and driver days to see the breakdown.</p>
+            </div>
+          </div>
+          <p class="fd-estimator-boundary" id="fd-estimator-boundary" data-i18n="fdEstimateBoundary">Not included: overtime, airport or hotel transfers, Penida boat/car combinations, activity fees or route-specific additions. Confirm the final price with your selected driver before booking.</p>
+        </div>
+      </section>
+
       <div class="fd-field">
         <label class="fd-label" for="fd-budget" data-i18n="fdBudget">Estimated total budget</label>
         <select class="fd-input" id="fd-budget">
@@ -314,17 +381,6 @@
       <div class="fd-field">
         <label class="fd-label" data-i18n="fdIntro">A little about you</label>
         <textarea class="fd-textarea" id="fd-intro" data-i18n="fdIntroPh" data-i18n-attr="placeholder" placeholder="e.g. A couple on honeymoon, love photography and beaches…"></textarea>
-      </div>
-
-      <div class="fd-row">
-        <div class="fd-field">
-          <label class="fd-label" data-i18n="fdPeople">How many people</label>
-          <input type="number" min="1" max="40" class="fd-num" id="fd-people" placeholder="2">
-        </div>
-        <div class="fd-field">
-          <label class="fd-label" data-i18n="fdDays">Days in Bali</label>
-          <input type="number" min="1" max="60" class="fd-num" id="fd-days" placeholder="10">
-        </div>
       </div>
 
       <div class="fd-field">
@@ -622,7 +678,8 @@
     };
   })();
 </script>
-<script src="assets/js/i18n.js?v=p64"></script>
+<script src="assets/js/i18n.js?v=p65"></script>
+<script src="assets/js/driver-estimate.js?v=p1"></script>
 <script>
   // Expose JS-side strings for the dynamic messages (filled after i18n load)
   (function () {

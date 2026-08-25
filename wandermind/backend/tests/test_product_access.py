@@ -3744,7 +3744,18 @@ class ProductAccessTests(unittest.TestCase):
         self.assertIn("profile.moments.map", driver_html)
         self.assertIn("DRIVER_PROFILES[choice.querySelector('input').value]", driver_html)
         self.assertIn("document.addEventListener('wm:language-change'", driver_html)
-        self.assertIn('assets/js/i18n.js?v=p64', driver_html)
+        self.assertIn('assets/js/i18n.js?v=p65', driver_html)
+        self.assertIn('assets/js/driver-estimate.js?v=p1', driver_html)
+        self.assertIn('id="fd-full-days"', driver_html)
+        self.assertIn('id="fd-half-days"', driver_html)
+        self.assertIn('id="fd-estimator-total"', driver_html)
+        self.assertIn('aria-live="polite"', driver_html)
+        self.assertIn('aria-describedby="fd-estimator-boundary"', driver_html)
+        self.assertIn('.fd-estimator-input:focus-visible', driver_html)
+        self.assertIn('outline: 3px solid var(--fd-teal)', driver_html)
+        self.assertIn('id="fd-estimator-total">—</strong>', driver_html)
+        self.assertIn('inputmode="numeric"', driver_html)
+        self.assertIn('viewport-fit=cover', driver_html)
         self.assertIn("IDR 700k base + IDR 50k per guest", driver_html)
         self.assertIn("IDR 500k base + IDR 50k per guest", driver_html)
         self.assertIn("IDR 75k per hour", driver_html)
@@ -3764,6 +3775,19 @@ class ProductAccessTests(unittest.TestCase):
         for language in ("en", "zh", "ja", "ko", "id"):
             self.assertIn(f"Object.assign(LANGS.{language}", i18n_js)
         self.assertIn("fdQuoteBoundary", i18n_js)
+        for estimate_key in (
+            "fdEstimateTitle",
+            "fdEstimateIntro",
+            "fdEstimateFullDays",
+            "fdEstimateHalfDays",
+            "fdEstimateTotal",
+            "fdEstimateStart",
+            "fdEstimateBoundary",
+            "fdEstimateFullLine",
+            "fdEstimateHalfLine",
+            "fdEstimateGuestLine",
+        ):
+            self.assertEqual(i18n_js.count(estimate_key), 5)
         for confirmed_quote in (
             "IDR 700k base + IDR 50k per guest",
             "基础价 70 万印尼盾 + 每位游客 5 万印尼盾",
@@ -3824,6 +3848,44 @@ class ProductAccessTests(unittest.TestCase):
         )
         self.assertIn("const routeId = q.get('route') || ''", ai_js)
         self.assertIn("routeHints", ai_js)
+
+    def test_driver_estimate_uses_confirmed_public_baseline(self):
+        estimator = (
+            BACKEND_DIR.parents[1]
+            / "wandermind-studio"
+            / "frontend"
+            / "assets"
+            / "js"
+            / "driver-estimate.js"
+        )
+        script = """
+const estimate = require(process.argv[1]);
+const cases = [
+  [{people: 1, fullDays: 1, halfDays: 0}, 750000],
+  [{people: 2, fullDays: 1, halfDays: 0}, 800000],
+  [{people: 2, fullDays: 0, halfDays: 1}, 600000],
+  [{people: 2, fullDays: 3, halfDays: 1}, 3000000],
+  [{people: 0, fullDays: 3, halfDays: 1}, 2600000]
+];
+for (const [input, total] of cases) {
+  if (estimate.calculate(input).total !== total) process.exit(1);
+}
+if (estimate.constants.perGuestPerDay !== 50000) process.exit(1);
+"""
+        result = subprocess.run(
+            ["node", "-e", script, str(estimator)],
+            capture_output=True,
+            text=True,
+            check=False,
+        )
+        self.assertEqual(result.returncode, 0, result.stderr)
+        estimator_js = estimator.read_text(encoding="utf-8")
+        self.assertNotIn("fetch(", estimator_js)
+        self.assertNotIn("localStorage.setItem", estimator_js)
+        driver_html = (
+            BACKEND_DIR.parents[1] / "wandermind-studio" / "frontend" / "find-driver.html"
+        ).read_text(encoding="utf-8")
+        self.assertNotIn("WMDriverEstimate.requestSummary", driver_html)
 
     def test_unknown_driver_is_rejected_before_email_delivery(self):
         response = self._run(
