@@ -307,6 +307,10 @@
       .bali-place-copy h3 { color:#1e293b; font-size:26px; margin:10px 0 12px; }
       body.dark .bali-place-copy h3 { color:#f3f4f6; }
       .bali-place-copy p { color:#64748b; font-size:14px; line-height:1.7; }
+      .bali-place-credit { display:flex; flex-wrap:wrap; gap:3px 6px; margin:6px 0 0; color:#64748b; font-size:11px; line-height:1.45; }
+      .bali-place-credit[hidden] { display:none; }
+      .bali-place-credit a { color:#0f6258; text-decoration:underline; text-underline-offset:2px; }
+      body.dark .bali-place-credit, body.dark .bali-place-credit a { color:#99f6e4; }
       .bali-place-decision { display:grid; grid-template-columns:1fr 1fr; gap:10px; margin:16px 0; }
       .bali-place-decision-card { min-width:0; padding:13px 14px; border:1px solid #e5e2da; border-radius:10px; background:#f8faf9; }
       .bali-place-decision-card strong { display:block; margin-bottom:5px; color:#0e7c6b; font-size:10px; font-weight:800; letter-spacing:.08em; text-transform:uppercase; }
@@ -765,6 +769,7 @@
     <img id="bali-place-image" alt="">
     <div class="bali-place-copy">
       <div class="bali-sec-eyebrow" id="bali-place-tags"></div>
+      <p class="bali-place-credit" id="bali-place-credit" hidden></p>
       <h3 id="bali-place-title"></h3>
       <div class="bali-place-decision">
         <div class="bali-place-decision-card">
@@ -1833,8 +1838,8 @@
   }
 
   Promise.all([
-    fetch('assets/data/bali-travel-data.json?v=20260825p1').then(function (response) { if (!response.ok) throw new Error('HTTP ' + response.status); return response.json(); }),
-    fetch('assets/data/image-publish-manifest.json?v=20260825p1').then(function (response) { if (!response.ok) throw new Error('HTTP ' + response.status); return response.json(); }).catch(function () { poiMediaState = 'failed'; return {images:[]}; })
+    fetch('assets/data/bali-travel-data.json?v=20260825p2').then(function (response) { if (!response.ok) throw new Error('HTTP ' + response.status); return response.json(); }),
+    fetch('assets/data/image-publish-manifest.json?v=20260825p2').then(function (response) { if (!response.ok) throw new Error('HTTP ' + response.status); return response.json(); }).catch(function () { poiMediaState = 'failed'; return {images:[]}; })
   ])
     .then(function (result) { buildPoiMedia(result[1]); if (poiMediaState !== 'failed') poiMediaState = 'ready'; useData(result[0]); })
     .catch(function () {
@@ -1887,6 +1892,7 @@
   var modal = document.getElementById('bali-place-modal');
   var activeShot = null;
   var routeCatalog = {};
+  var portfolioPoiCatalog = {};
   var dynamicGalleryCopy = {};
   var dynamicGalleryShots = [];
   function lang() { return (document.getElementById('langPicker') || {}).value || localStorage.getItem('wm_studio_lang') || 'en'; }
@@ -1934,9 +1940,29 @@
       handoff.set('route', routeId);
       driverHandoff.set('route', routeId);
     }
-    document.getElementById('bali-place-image').src = activeShot.querySelector('img').src;
+    document.getElementById('bali-place-image').src = activeShot.dataset.fullImage || activeShot.querySelector('img').src;
     document.getElementById('bali-place-image').alt = activeShot.querySelector('img').alt;
     document.getElementById('bali-place-tags').textContent = Array.from(activeShot.querySelectorAll('.bali-shot-meta span')).map(function(x){return x.textContent}).join(' · ');
+    var credit = document.getElementById('bali-place-credit');
+    var rights = dynamicAsset && dynamicAsset.rights;
+    credit.replaceChildren();
+    credit.hidden = true;
+    if (rights && (rights.creator || rights.license_name)) {
+      var creditLabels = {en:'Photo',zh:'图片',ja:'写真',ko:'사진',id:'Foto'};
+      credit.appendChild(document.createTextNode((creditLabels[lang()] || creditLabels.en) + ': '));
+      var creator = document.createElement(rights.source_url ? 'a' : 'span');
+      creator.textContent = rights.creator || creditLabels[lang()] || creditLabels.en;
+      if (rights.source_url) { creator.href = rights.source_url; creator.target = '_blank'; creator.rel = 'noopener noreferrer'; }
+      credit.appendChild(creator);
+      if (rights.license_name) {
+        credit.appendChild(document.createTextNode(' · '));
+        var license = document.createElement(rights.license_url ? 'a' : 'span');
+        license.textContent = rights.license_name;
+        if (rights.license_url) { license.href = rights.license_url; license.target = '_blank'; license.rel = 'noopener noreferrer'; }
+        credit.appendChild(license);
+      }
+      credit.hidden = false;
+    }
     document.getElementById('bali-place-title').textContent = data[0]; document.getElementById('bali-place-desc').textContent = data[1];
     document.getElementById('bali-place-purpose').textContent = data[2]; document.getElementById('bali-place-route').textContent = data[3];
     var routeLink = document.getElementById('bali-place-route-link');
@@ -1958,13 +1984,54 @@
       driver.removeAttribute('href');
     }
   }
-    fetch('assets/data/bali-travel-data.json?v=20260822r7')
-    .then(function(response) { if (!response.ok) throw new Error('HTTP ' + response.status); return response.json(); })
-    .then(function(data) {
+  function appendApprovedLibraryPortfolio(manifest) {
+    var images = ((manifest || {}).images || []).filter(function(image) {
+      return String(image.intended_use || '').indexOf('Bali Portfolio') === 0 && image.web_optimized_path;
+    });
+    if (!images.length) return;
+    var fragment = document.createDocumentFragment();
+    images.forEach(function(image) {
+      var poiId = (image.poi_ids || [])[0] || '';
+      var poi = portfolioPoiCatalog[poiId] || {};
+      fragment.appendChild(createDynamicGalleryShot({
+        id: 'library-' + String(image.sha256 || '').slice(0, 16),
+        destination: image.destination || 'bali',
+        primary_theme: image.primary_theme || image.category || '',
+        sub_category: image.sub_category || '',
+        region: image.region || (image.region_ids || [])[0] || poi.region_id || '',
+        area: image.area || poi.node_id || '',
+        place_name: image.place_name || poi.name || '',
+        place_type: image.place_type || poi.type || '',
+        prominence: image.prominence || 'supporting',
+        route_ids: image.route_ids || poi.route_ids || [],
+        extension_ids: image.extension_ids || [],
+        tags: image.tags || [],
+        mood: image.mood || '',
+        photography_style: image.photography_style || '',
+        verification_status: image.verification_status || (poi.verification_status === 'verified' ? 'route-linked' : 'caption-only'),
+        title: image.title || {},
+        description: image.description || {},
+        alt_text: image.alt_text || {},
+        thumbnail_url: image.thumbnail_path || image.web_optimized_path,
+        web_url: image.web_optimized_path,
+        rights: image.rights || {}
+      }));
+    });
+    document.getElementById('bali-gallery-grid').prepend(fragment);
+    applyGalleryFilters();
+  }
+  Promise.all([
+    fetch('assets/data/bali-travel-data.json?v=20260825p2').then(function(response) { if (!response.ok) throw new Error('HTTP ' + response.status); return response.json(); }),
+    fetch('assets/data/image-publish-manifest.json?v=20260825p2').then(function(response) { if (!response.ok) throw new Error('HTTP ' + response.status); return response.json(); })
+  ])
+    .then(function(result) {
+      var data = result[0];
       (data.routes || []).forEach(function(route) { routeCatalog[route.id] = route; });
+      (data.pois || []).forEach(function(poi) { portfolioPoiCatalog[poi.id] = poi; });
+      appendApprovedLibraryPortfolio(result[1]);
       if (activeShot) renderModal();
     })
-    .catch(function() { routeCatalog = {}; });
+    .catch(function() { routeCatalog = {}; portfolioPoiCatalog = {}; });
   var galleryFilters = { category:'all', tag:'all' };
   var galleryExpanded = false;
   function galleryPreviewLimit() { return window.matchMedia('(max-width:575px)').matches ? 6 : 12; }
@@ -2041,6 +2108,13 @@
     ko:{landscapes:'풍경',culture:'문화',experiences:'체험'},
     id:{landscapes:'Lanskap',culture:'Budaya',experiences:'Pengalaman'}
   };
+  var PORTFOLIO_SUBCATEGORY_LABELS = {
+    en:{'nature-walk':'Nature walk','ocean-beach':'Ocean & beach','rice-terrace-countryside':'Rice terraces','market-craft':'Market & craft','heritage-architecture':'Heritage & architecture'},
+    zh:{'nature-walk':'自然步道','ocean-beach':'海岸与沙滩','rice-terrace-countryside':'梯田乡野','market-craft':'市集与手作','heritage-architecture':'文化遗产与建筑'},
+    ja:{'nature-walk':'自然散策','ocean-beach':'海岸とビーチ','rice-terrace-countryside':'棚田と田園','market-craft':'市場と工芸','heritage-architecture':'文化遺産と建築'},
+    ko:{'nature-walk':'자연 산책','ocean-beach':'해안과 해변','rice-terrace-countryside':'계단식 논과 전원','market-craft':'시장과 공예','heritage-architecture':'문화유산과 건축'},
+    id:{'nature-walk':'Jalan alam','ocean-beach':'Pesisir & pantai','rice-terrace-countryside':'Sawah terasering','market-craft':'Pasar & kerajinan','heritage-architecture':'Warisan & arsitektur'}
+  };
   function localizedPortfolioValue(value) {
     value = value || {};
     return value[lang()] || value.en || value.zh || Object.keys(value).map(function(key){return value[key];})[0] || '';
@@ -2055,8 +2129,9 @@
     image.alt = localizedPortfolioValue(asset.alt_text) || localizedPortfolioValue(asset.title) || asset.place_name || 'Bali portfolio image';
     var meta = shot.querySelectorAll('.bali-shot-meta span');
     var labels = PORTFOLIO_THEME_LABELS[lang()] || PORTFOLIO_THEME_LABELS.en;
+    var subcategoryLabels = PORTFOLIO_SUBCATEGORY_LABELS[lang()] || PORTFOLIO_SUBCATEGORY_LABELS.en;
     if (meta[0]) meta[0].textContent = labels[asset.primary_theme] || readablePortfolioSlug(asset.primary_theme);
-    if (meta[1]) meta[1].textContent = readablePortfolioSlug(asset.sub_category || asset.place_type);
+    if (meta[1]) meta[1].textContent = subcategoryLabels[asset.sub_category] || readablePortfolioSlug(asset.sub_category || asset.place_type);
   }
   function createDynamicGalleryShot(asset) {
     var shot = document.createElement('button');
@@ -2076,6 +2151,7 @@
     shot.dataset.tags = (asset.tags || []).join(' ');
     shot.dataset.mood = asset.mood || '';
     shot.dataset.routeIds = (asset.route_ids || []).join(' ');
+    shot.dataset.fullImage = asset.web_url || asset.thumbnail_url || '';
     var image = document.createElement('img');
     image.src = asset.thumbnail_url || asset.web_url;
     image.loading = 'lazy';
