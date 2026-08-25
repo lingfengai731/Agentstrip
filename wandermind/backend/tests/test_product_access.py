@@ -2247,7 +2247,7 @@ class ProductAccessTests(unittest.TestCase):
         self.assertIn('role="listbox"', html)
         self.assertIn('data-open-place-picker="', html)
         self.assertIn('data-route-picker-confirm', html)
-        self.assertIn("image-publish-manifest.json?v=20260825p1", html)
+        self.assertIn("image-publish-manifest.json?v=20260825p2", html)
         self.assertIn("variant === 'thumbnail'", html)
         self.assertIn("pickerAttributionMarkup(media, copy)", html)
         self.assertIn('rel="noopener noreferrer"', html)
@@ -2256,6 +2256,18 @@ class ProductAccessTests(unittest.TestCase):
         self.assertIn("poiMediaState === 'failed' ? copy.mediaErrorBody", html)
         self.assertIn("routeEditorFeedback = { routeId:context.route.id", html)
         self.assertIn("nextTrigger.focus({ preventScroll:true })", html)
+        self.assertIn("appendApprovedLibraryPortfolio", html)
+        self.assertIn("shot.dataset.fullImage", html)
+        self.assertIn('id="bali-place-credit"', html)
+        self.assertIn("rights.license_name", html)
+        for localized_subcategory in (
+            "Ocean & beach",
+            "海岸与沙滩",
+            "海岸とビーチ",
+            "해안과 해변",
+            "Pesisir & pantai",
+        ):
+            self.assertIn(localized_subcategory, html)
 
     def test_bali_mobile_journey_uses_progressive_disclosure_without_hiding_desktop(self):
         html = (
@@ -2914,12 +2926,12 @@ class ProductAccessTests(unittest.TestCase):
         self.assertIn("dynamicGalleryCopy", bali_html)
         self.assertGreaterEqual(bali_html.count('class="bali-shot"'), 37)
 
-    def test_approved_image_manifest_contains_unique_113_and_new_lempuyang_hash(self):
+    def test_approved_image_manifest_contains_unique_118_and_new_lempuyang_hash(self):
         frontend = BACKEND_DIR.parents[1] / "wandermind-studio" / "frontend"
         intake_path = frontend / "assets" / "data" / "image-intake-review.csv"
         with intake_path.open(encoding="utf-8", newline="") as handle:
             intake_rows = list(csv.DictReader(handle))
-        self.assertEqual(len(intake_rows), 112)
+        self.assertEqual(len(intake_rows), 117)
         for row in intake_rows:
             self.assertNotIn(None, row, row.get("Filename"))
             self.assertEqual(row["EligibleForPublish"], "True", row["Filename"])
@@ -2932,7 +2944,7 @@ class ProductAccessTests(unittest.TestCase):
             )
         )
         images = manifest["images"]
-        self.assertEqual(len(images), 113)
+        self.assertEqual(len(images), 118)
         self.assertEqual(len(images), len(intake_rows) + 1)
         hashes = [item["sha256"] for item in images]
         self.assertEqual(len(hashes), len(set(hashes)))
@@ -3006,6 +3018,26 @@ class ProductAccessTests(unittest.TestCase):
                 "ubud_palace",
                 "CC BY 2.0",
             ),
+            "assets/images/Broken Beach - Aaron Rentfrew.jpg": (
+                "broken_beach",
+                "CC BY-SA 4.0",
+            ),
+            "assets/images/Jatiluwih Rice Terraces - Jorge Franganillo.jpg": (
+                "jatiluwih_rice_terraces",
+                "CC BY 2.0",
+            ),
+            "assets/images/Jimbaran Bay Sunset - Simon Sees.jpg": (
+                "jimbaran_bay",
+                "CC BY 2.0",
+            ),
+            "assets/images/Seminyak Beach Sunset - Christophe95.jpg": (
+                "seminyak_beach",
+                "CC BY-SA 4.0",
+            ),
+            "assets/images/Tirta Gangga - Bair175.jpg": (
+                "tirta_gangga",
+                "CC BY-SA 3.0",
+            ),
         }
         by_path = {item["relative_path"]: item for item in manifest["images"]}
         rights_by_hash = {
@@ -3016,7 +3048,7 @@ class ProductAccessTests(unittest.TestCase):
         poi_by_id = {item["id"]: item for item in bali_data["pois"]}
         languages = {"zh", "en", "ja", "ko", "id"}
 
-        self.assertEqual(len(rights_manifest["assets"]), 113)
+        self.assertEqual(len(rights_manifest["assets"]), 118)
         for path, (poi_id, license_name) in expected.items():
             item = by_path[path]
             self.assertEqual(item["poi_ids"], [poi_id])
@@ -3029,6 +3061,22 @@ class ProductAccessTests(unittest.TestCase):
             for field in ("title", "description", "alt_text"):
                 self.assertEqual(set(item[field]), languages)
                 self.assertTrue(all(value.strip() for value in item[field].values()))
+            for field in (
+                "destination",
+                "primary_theme",
+                "region",
+                "area",
+                "place_name",
+                "place_type",
+                "prominence",
+                "mood",
+                "photography_style",
+                "verification_status",
+            ):
+                self.assertTrue(item[field], (path, field))
+            self.assertEqual(item["destination"], "bali")
+            self.assertEqual(item["verification_status"], "route-linked")
+            self.assertIsInstance(item["extension_ids"], list)
             original = frontend / item["relative_path"]
             web = frontend / item["web_optimized_path"]
             thumbnail = frontend / item["thumbnail_path"]
@@ -3145,7 +3193,7 @@ class ProductAccessTests(unittest.TestCase):
                 for field in ("title", "description", "alt_text")
             )
         ]
-        self.assertEqual(len(complete_d8), 33)
+        self.assertEqual(len(complete_d8), 38)
 
         lempuyang = by_path["assets/images/Lempuyang Temple.jpg"]
         self.assertIn("Penataran Agung", lempuyang["title"]["en"])

@@ -3487,6 +3487,17 @@
         "campuhan_ridge_walk"
       ],
       "intended_use": "Bali Portfolio and campuhan_ridge_walk place picker",
+      "destination": "bali",
+      "primary_theme": "landscapes",
+      "region": "G4",
+      "area": "Ubud",
+      "place_name": "Campuhan Ridge Walk",
+      "place_type": "walk",
+      "prominence": "signature",
+      "extension_ids": [],
+      "mood": "restorative",
+      "photography_style": "aerial landscape",
+      "verification_status": "route-linked",
       "title": {
         "zh": "坎普罕山脊步道",
         "en": "Campuhan Ridge Walk",
@@ -3546,6 +3557,17 @@
         "melasti_beach"
       ],
       "intended_use": "Bali Portfolio and melasti_beach place picker",
+      "destination": "bali",
+      "primary_theme": "landscapes",
+      "region": "G2",
+      "area": "Melasti",
+      "place_name": "Melasti Beach",
+      "place_type": "beach",
+      "prominence": "signature",
+      "extension_ids": [],
+      "mood": "relaxed",
+      "photography_style": "coastal landscape",
+      "verification_status": "route-linked",
       "title": {
         "zh": "梅拉斯蒂海滩",
         "en": "Melasti Beach",
@@ -3606,6 +3628,17 @@
         "tegalalang_rice_terrace"
       ],
       "intended_use": "Bali Portfolio and tegalalang_rice_terrace place picker",
+      "destination": "bali",
+      "primary_theme": "landscapes",
+      "region": "G4",
+      "area": "Tegallalang",
+      "place_name": "Tegallalang Rice Terraces",
+      "place_type": "rice_terrace",
+      "prominence": "iconic",
+      "extension_ids": [],
+      "mood": "restorative",
+      "photography_style": "landscape documentary",
+      "verification_status": "route-linked",
       "title": {
         "zh": "德格拉朗梯田",
         "en": "Tegallalang Rice Terraces",
@@ -3666,6 +3699,17 @@
         "ubud_art_market"
       ],
       "intended_use": "Bali Portfolio and ubud_art_market place picker",
+      "destination": "bali",
+      "primary_theme": "culture",
+      "region": "G4",
+      "area": "Ubud",
+      "place_name": "Ubud Art Market",
+      "place_type": "market",
+      "prominence": "signature",
+      "extension_ids": [],
+      "mood": "curious",
+      "photography_style": "cultural documentary",
+      "verification_status": "route-linked",
       "title": {
         "zh": "乌布艺术市场",
         "en": "Ubud Art Market",
@@ -3725,6 +3769,17 @@
         "ubud_palace"
       ],
       "intended_use": "Bali Portfolio and ubud_palace place picker",
+      "destination": "bali",
+      "primary_theme": "culture",
+      "region": "G4",
+      "area": "Ubud",
+      "place_name": "Ubud Palace",
+      "place_type": "palace",
+      "prominence": "iconic",
+      "extension_ids": [],
+      "mood": "reflective",
+      "photography_style": "architectural documentary",
+      "verification_status": "route-linked",
       "title": {
         "zh": "乌布皇宫",
         "en": "Ubud Palace",
@@ -3757,6 +3812,359 @@
         "original_file_url": "https://upload.wikimedia.org/wikipedia/commons/0/0a/Ubud_Palace_%2817058342285%29.jpg",
         "attribution_text": "Jorge Láscar · CC BY 2.0 · Wikimedia Commons",
         "adaptation_notice": "Resized and compressed to WebP and thumbnail by WanderMind; no other changes."
+      }
+    },
+    {
+      "relative_path": "assets/images/Broken Beach - Aaron Rentfrew.jpg",
+      "web_optimized_path": "assets/images/web/9b06887c6aa0a898.webp",
+      "thumbnail_path": "assets/images/thumbs/9b06887c6aa0a898.webp",
+      "sha256": "9b06887c6aa0a8986e839442858791f18d7995c29f01f5fc581a74ffb1134d49",
+      "category": "landscapes",
+      "sub_category": "ocean-beach",
+      "tags": [
+        "cliff",
+        "natural-arch",
+        "island",
+        "coast"
+      ],
+      "location_status": "bali_named",
+      "region_ids": [
+        "G3"
+      ],
+      "route_ids": [
+        "R1",
+        "R6"
+      ],
+      "poi_ids": [
+        "broken_beach"
+      ],
+      "intended_use": "Bali Portfolio and broken_beach place picker",
+      "destination": "bali",
+      "primary_theme": "landscapes",
+      "region": "G3",
+      "area": "Nusa Penida West",
+      "place_name": "Broken Beach",
+      "place_type": "viewpoint",
+      "prominence": "iconic",
+      "extension_ids": [],
+      "mood": "dramatic",
+      "photography_style": "coastal landscape",
+      "verification_status": "route-linked",
+      "title": {
+        "zh": "破碎海滩",
+        "en": "Broken Beach",
+        "ja": "ブロークン・ビーチ",
+        "ko": "브로큰 비치",
+        "id": "Broken Beach"
+      },
+      "description": {
+        "zh": "努沙佩尼达西部的天然石拱海湾，适合观景与摄影；出发前请确认快船、道路、天气、炎热和悬崖护栏情况。",
+        "en": "A natural rock-arch cove on western Nusa Penida for views and photography; confirm fast boats, road access, weather, heat and cliff barriers before travelling.",
+        "ja": "ヌサ・ペニダ西部にある天然の岩のアーチと入り江で、景観や撮影向きです。高速船、道路、天候、暑さ、崖の柵を出発前に確認してください。",
+        "ko": "누사 페니다 서부의 천연 바위 아치 만으로 전망과 사진 촬영에 좋습니다. 출발 전 쾌속선, 도로, 날씨, 더위, 절벽 안전시설을 확인하세요.",
+        "id": "Teluk dengan lengkungan batu alami di Nusa Penida barat untuk menikmati pemandangan dan fotografi; periksa kapal cepat, akses jalan, cuaca, panas, dan pagar tebing sebelum berangkat."
+      },
+      "alt_text": {
+        "zh": "努沙佩尼达破碎海滩的天然石拱与蓝色海湾",
+        "en": "Natural rock arch and blue cove at Broken Beach on Nusa Penida",
+        "ja": "ヌサ・ペニダのブロークン・ビーチにある天然の岩のアーチと青い入り江",
+        "ko": "누사 페니다 브로큰 비치의 천연 바위 아치와 푸른 만",
+        "id": "Lengkungan batu alami dan teluk biru di Broken Beach, Nusa Penida"
+      },
+      "rights": {
+        "status": "licensed",
+        "source_url": "https://commons.wikimedia.org/wiki/File:Broken_Beach.jpg",
+        "license_or_owner": "Aaron Rentfrew · CC BY-SA 4.0",
+        "creator": "Aaron Rentfrew",
+        "license_name": "CC BY-SA 4.0",
+        "license_url": "https://creativecommons.org/licenses/by-sa/4.0/",
+        "source_title": "Broken Beach",
+        "original_file_url": "https://upload.wikimedia.org/wikipedia/commons/3/3f/Broken_Beach.jpg",
+        "attribution_text": "Aaron Rentfrew · CC BY-SA 4.0 · Wikimedia Commons",
+        "adaptation_notice": "Resized and compressed to WebP and thumbnail by WanderMind; adaptations are distributed under CC BY-SA 4.0."
+      }
+    },
+    {
+      "relative_path": "assets/images/Jatiluwih Rice Terraces - Jorge Franganillo.jpg",
+      "web_optimized_path": "assets/images/web/91f74da3d1b94d27.webp",
+      "thumbnail_path": "assets/images/thumbs/91f74da3d1b94d27.webp",
+      "sha256": "91f74da3d1b94d27f4d9e880ebd4f9eadf50545ed3d5cb02b76c02c82a5a961a",
+      "category": "landscapes",
+      "sub_category": "rice-terrace-countryside",
+      "tags": [
+        "rice-terrace",
+        "countryside",
+        "subak",
+        "photography"
+      ],
+      "location_status": "bali_named",
+      "region_ids": [
+        "G5"
+      ],
+      "route_ids": [
+        "R1",
+        "R4",
+        "R6"
+      ],
+      "poi_ids": [
+        "jatiluwih_rice_terraces"
+      ],
+      "intended_use": "Bali Portfolio and jatiluwih_rice_terraces place picker",
+      "destination": "bali",
+      "primary_theme": "landscapes",
+      "region": "G5",
+      "area": "Jatiluwih",
+      "place_name": "Jatiluwih Rice Terraces",
+      "place_type": "rice_terrace",
+      "prominence": "iconic",
+      "extension_ids": [],
+      "mood": "restorative",
+      "photography_style": "landscape documentary",
+      "verification_status": "route-linked",
+      "title": {
+        "zh": "贾蒂卢维梯田",
+        "en": "Jatiluwih Rice Terraces",
+        "ja": "ジャティルウィの棚田",
+        "ko": "자틸루위 계단식 논",
+        "id": "Sawah Terasering Jatiluwih"
+      },
+      "description": {
+        "zh": "塔巴南县的梯田与 Subak 文化景观，适合慢走和乡野摄影；请遵守指定步道，并在当天确认天气、田间作业和道路情况。",
+        "en": "A terraced-rice and Subak cultural landscape in Tabanan for slow walks and countryside photography; stay on designated paths and confirm weather, farm activity and road conditions on the day.",
+        "ja": "タバナンの棚田とスバック文化景観で、ゆっくり歩く散策や田園撮影に向いています。指定ルートを守り、天候、農作業、道路状況を当日に確認してください。",
+        "ko": "타바난의 계단식 논과 수박 문화 경관으로 느린 산책과 전원 사진 촬영에 좋습니다. 지정된 길을 이용하고 날씨, 농사 일정, 도로 상태를 당일 확인하세요.",
+        "id": "Lanskap sawah terasering dan budaya Subak di Tabanan untuk berjalan santai dan fotografi pedesaan; tetap di jalur yang ditentukan serta periksa cuaca, kegiatan bertani, dan kondisi jalan pada hari kunjungan."
+      },
+      "alt_text": {
+        "zh": "贾蒂卢维层叠稻田与棕榈树景观",
+        "en": "Layered Jatiluwih rice terraces with palms and field shelters",
+        "ja": "ヤシの木と田小屋が点在するジャティルウィの棚田",
+        "ko": "야자수와 논 쉼터가 있는 자틸루위 계단식 논",
+        "id": "Sawah terasering Jatiluwih dengan pohon palem dan pondok sawah"
+      },
+      "rights": {
+        "status": "licensed",
+        "source_url": "https://commons.wikimedia.org/wiki/File:Bali-_Jatiluwih_rice_terraces_-_50281829296.jpg",
+        "license_or_owner": "Jorge Franganillo · CC BY 2.0",
+        "creator": "Jorge Franganillo",
+        "license_name": "CC BY 2.0",
+        "license_url": "https://creativecommons.org/licenses/by/2.0/",
+        "source_title": "Bali - Jatiluwih rice terraces - 50281829296",
+        "original_file_url": "https://upload.wikimedia.org/wikipedia/commons/1/1b/Bali-_Jatiluwih_rice_terraces_-_50281829296.jpg",
+        "attribution_text": "Jorge Franganillo · CC BY 2.0 · Wikimedia Commons",
+        "adaptation_notice": "Resized and compressed to WebP and thumbnail by WanderMind; no other changes."
+      }
+    },
+    {
+      "relative_path": "assets/images/Jimbaran Bay Sunset - Simon Sees.jpg",
+      "web_optimized_path": "assets/images/web/1e471b5b28c626f5.webp",
+      "thumbnail_path": "assets/images/thumbs/1e471b5b28c626f5.webp",
+      "sha256": "1e471b5b28c626f5c2268210d8ce4c83439703e0300c8a0136b3eb6856f49f25",
+      "category": "landscapes",
+      "sub_category": "ocean-beach",
+      "tags": [
+        "beach",
+        "sunset",
+        "coast",
+        "waves"
+      ],
+      "location_status": "bali_named",
+      "region_ids": [
+        "G2"
+      ],
+      "route_ids": [
+        "R1",
+        "R3"
+      ],
+      "poi_ids": [
+        "jimbaran_bay"
+      ],
+      "intended_use": "Bali Portfolio and jimbaran_bay place picker",
+      "destination": "bali",
+      "primary_theme": "landscapes",
+      "region": "G2",
+      "area": "Jimbaran",
+      "place_name": "Jimbaran Bay",
+      "place_type": "coast",
+      "prominence": "signature",
+      "extension_ids": [],
+      "mood": "warm",
+      "photography_style": "sunset documentary",
+      "verification_status": "route-linked",
+      "title": {
+        "zh": "金巴兰湾",
+        "en": "Jimbaran Bay",
+        "ja": "ジンバラン湾",
+        "ko": "짐바란 베이",
+        "id": "Teluk Jimbaran"
+      },
+      "description": {
+        "zh": "金巴兰湾的西向海岸适合傍晚看日落和停留；具体餐厅、预约、天气与接送交通请当天确认。",
+        "en": "Jimbaran Bay's west-facing coast suits a sunset stop; confirm the restaurant, reservation, weather and pickup traffic for the day.",
+        "ja": "西向きのジンバラン湾は夕日の時間の立ち寄りに向いています。店、予約、天候、送迎交通は当日に確認してください。",
+        "ko": "서쪽을 향한 짐바란 베이는 일몰 시간에 머물기 좋습니다. 식당, 예약, 날씨, 픽업 교통은 당일 확인하세요.",
+        "id": "Pesisir Teluk Jimbaran yang menghadap barat cocok untuk singgah saat matahari terbenam; pastikan restoran, reservasi, cuaca, dan lalu lintas penjemputan pada hari kunjungan."
+      },
+      "alt_text": {
+        "zh": "金巴兰湾日落下的海浪与橙色天空",
+        "en": "Ocean waves and orange sky at sunset in Jimbaran Bay",
+        "ja": "ジンバラン湾の夕日に染まる波とオレンジ色の空",
+        "ko": "짐바란 베이 일몰의 파도와 주황빛 하늘",
+        "id": "Ombak laut dan langit jingga saat matahari terbenam di Teluk Jimbaran"
+      },
+      "rights": {
+        "status": "licensed",
+        "source_url": "https://commons.wikimedia.org/wiki/File:Jimbaran_Bay_sunset_(7188342461).jpg",
+        "license_or_owner": "Simon Sees · CC BY 2.0",
+        "creator": "Simon Sees",
+        "license_name": "CC BY 2.0",
+        "license_url": "https://creativecommons.org/licenses/by/2.0/",
+        "source_title": "Jimbaran Bay sunset (7188342461)",
+        "original_file_url": "https://upload.wikimedia.org/wikipedia/commons/0/04/Jimbaran_Bay_sunset_%287188342461%29.jpg",
+        "attribution_text": "Simon Sees · CC BY 2.0 · Wikimedia Commons",
+        "adaptation_notice": "Resized and compressed to WebP and thumbnail by WanderMind; no other changes."
+      }
+    },
+    {
+      "relative_path": "assets/images/Seminyak Beach Sunset - Christophe95.jpg",
+      "web_optimized_path": "assets/images/web/c373834d509b5807.webp",
+      "thumbnail_path": "assets/images/thumbs/c373834d509b5807.webp",
+      "sha256": "c373834d509b58079b92b0c47467ae0c870fe2b82ddb7f1dad44e09744c49010",
+      "category": "landscapes",
+      "sub_category": "ocean-beach",
+      "tags": [
+        "beach",
+        "sunset",
+        "coast",
+        "local-life"
+      ],
+      "location_status": "bali_named",
+      "region_ids": [
+        "G1"
+      ],
+      "route_ids": [
+        "R1",
+        "R6"
+      ],
+      "poi_ids": [
+        "seminyak_beach"
+      ],
+      "intended_use": "Bali Portfolio and seminyak_beach place picker",
+      "destination": "bali",
+      "primary_theme": "landscapes",
+      "region": "G1",
+      "area": "Seminyak",
+      "place_name": "Seminyak Beach",
+      "place_type": "beach",
+      "prominence": "signature",
+      "extension_ids": [],
+      "mood": "lively",
+      "photography_style": "sunset documentary",
+      "verification_status": "route-linked",
+      "title": {
+        "zh": "水明漾海滩",
+        "en": "Seminyak Beach",
+        "ja": "スミニャック・ビーチ",
+        "ko": "스미냑 비치",
+        "id": "Pantai Seminyak"
+      },
+      "description": {
+        "zh": "西海岸的日落海滩，适合傍晚散步和感受热闹氛围；天气、海浪、游泳条件与道路拥堵请当天确认。",
+        "en": "A west-coast sunset beach for an evening walk and lively atmosphere; confirm weather, surf, swimming conditions and road traffic on the day.",
+        "ja": "夕日の見える西海岸のビーチで、夕方の散歩や活気ある雰囲気を楽しめます。天候、波、遊泳条件、道路渋滞は当日に確認してください。",
+        "ko": "서해안의 일몰 해변으로 저녁 산책과 활기찬 분위기를 즐기기 좋습니다. 날씨, 파도, 수영 조건, 도로 정체는 당일 확인하세요.",
+        "id": "Pantai matahari terbenam di pesisir barat untuk berjalan sore dan menikmati suasana ramai; periksa cuaca, ombak, kondisi berenang, dan kemacetan pada hari kunjungan."
+      },
+      "alt_text": {
+        "zh": "水明漾海滩日落与彩色遮阳伞",
+        "en": "Sunset and colourful beach umbrellas at Seminyak Beach",
+        "ja": "スミニャック・ビーチの夕日と色鮮やかなビーチパラソル",
+        "ko": "스미냑 비치의 일몰과 다채로운 해변 파라솔",
+        "id": "Matahari terbenam dan payung pantai berwarna-warni di Pantai Seminyak"
+      },
+      "rights": {
+        "status": "licensed",
+        "source_url": "https://commons.wikimedia.org/wiki/File:Seminyak_Beach_at_sunset.jpg",
+        "license_or_owner": "Christophe95 · CC BY-SA 4.0",
+        "creator": "Christophe95",
+        "license_name": "CC BY-SA 4.0",
+        "license_url": "https://creativecommons.org/licenses/by-sa/4.0/",
+        "source_title": "Seminyak Beach at sunset",
+        "original_file_url": "https://upload.wikimedia.org/wikipedia/commons/f/f4/Seminyak_Beach_at_sunset.jpg",
+        "attribution_text": "Christophe95 · CC BY-SA 4.0 · Wikimedia Commons",
+        "adaptation_notice": "Resized and compressed to WebP and thumbnail by WanderMind; adaptations are distributed under CC BY-SA 4.0."
+      }
+    },
+    {
+      "relative_path": "assets/images/Tirta Gangga - Bair175.jpg",
+      "web_optimized_path": "assets/images/web/b2705a7da77d19a9.webp",
+      "thumbnail_path": "assets/images/thumbs/b2705a7da77d19a9.webp",
+      "sha256": "b2705a7da77d19a9f444d851c6aeec63370b1cec50cf69c681d93c6756eefc0e",
+      "category": "culture",
+      "sub_category": "heritage-architecture",
+      "tags": [
+        "water-palace",
+        "fountain",
+        "garden",
+        "culture"
+      ],
+      "location_status": "bali_named",
+      "region_ids": [
+        "G7"
+      ],
+      "route_ids": [
+        "R1",
+        "R4",
+        "R5",
+        "R6"
+      ],
+      "poi_ids": [
+        "tirta_gangga"
+      ],
+      "intended_use": "Bali Portfolio and tirta_gangga place picker",
+      "destination": "bali",
+      "primary_theme": "culture",
+      "region": "G7",
+      "area": "Karangasem",
+      "place_name": "Tirta Gangga Water Palace",
+      "place_type": "water_palace",
+      "prominence": "iconic",
+      "extension_ids": [],
+      "mood": "reflective",
+      "photography_style": "architectural documentary",
+      "verification_status": "route-linked",
+      "title": {
+        "zh": "蒂尔塔冈加水宫",
+        "en": "Tirta Gangga Water Palace",
+        "ja": "ティルタ・ガンガ水の宮殿",
+        "ko": "티르타 강가 수궁",
+        "id": "Taman Air Tirta Gangga"
+      },
+      "description": {
+        "zh": "卡朗阿森的皇家水上花园，以池塘、喷泉和石雕为主；开放时间、费用、入池规定、仪式与维护情况请当天确认。",
+        "en": "A former royal water garden in Karangasem with pools, fountains and stone sculpture; confirm hours, fees, pool rules, ceremonies and maintenance on the day.",
+        "ja": "カランガスムにある旧王家の水の庭園で、池、噴水、石彫が見どころです。営業時間、料金、入水規則、儀式、整備状況は当日に確認してください。",
+        "ko": "카라앙아셈의 옛 왕실 수상 정원으로 연못, 분수, 석조물이 중심입니다. 운영 시간, 요금, 입수 규정, 의식, 정비 상황은 당일 확인하세요.",
+        "id": "Bekas taman air kerajaan di Karangasem dengan kolam, air mancur, dan patung batu; periksa jam buka, biaya, aturan kolam, upacara, dan pemeliharaan pada hari kunjungan."
+      },
+      "alt_text": {
+        "zh": "蒂尔塔冈加水宫的喷泉池塘与石雕花园",
+        "en": "Fountain ponds and stone garden at Tirta Gangga Water Palace",
+        "ja": "ティルタ・ガンガ水の宮殿の噴水池と石彫の庭園",
+        "ko": "티르타 강가 수궁의 분수 연못과 석조 정원",
+        "id": "Kolam air mancur dan taman batu di Taman Air Tirta Gangga"
+      },
+      "rights": {
+        "status": "licensed",
+        "source_url": "https://commons.wikimedia.org/wiki/File:Tirta_Gangga_water_palace%2C_Bali%2C_Indonesia.JPG",
+        "license_or_owner": "Bair175 · CC BY-SA 3.0",
+        "creator": "Bair175",
+        "license_name": "CC BY-SA 3.0",
+        "license_url": "https://creativecommons.org/licenses/by-sa/3.0/",
+        "source_title": "Tirta Gangga water palace, Bali, Indonesia",
+        "original_file_url": "https://upload.wikimedia.org/wikipedia/commons/8/85/Tirta_Gangga_water_palace%2C_Bali%2C_Indonesia.JPG",
+        "attribution_text": "Bair175 · CC BY-SA 3.0 · Wikimedia Commons",
+        "adaptation_notice": "Resized and compressed to WebP and thumbnail by WanderMind; adaptations are distributed under CC BY-SA 3.0."
       }
     }
   ]
