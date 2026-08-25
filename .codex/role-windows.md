@@ -381,3 +381,18 @@
 - Luna 冻结审查：Zeno 对固定提交 `0e8c62f` 做第二轮只读审查，约 10 分钟后 completed / NO-GO，未修改文件。它发现新增数字输入继承 `outline:none` 导致键盘焦点仅剩低对比度边框这一项 P1，并列出空状态 `IDR 0` 与过宽 live region 两项 P2。Sol 接受并修复：输入增加浅色深青 / 深色金色 3px `focus-visible` 环，空状态改为破折号，静态排除说明移出 live region 并通过 `aria-describedby` 关联；最终复验和新提交不得沿用 `0e8c62f` 的旧 NO-GO 结论。
 - Luna 修复复核：Zeno 对固定提交 `3ee994154dd95a944b3c5eab33210df4bfb9a152` 做只读 targeted review，约 2 分钟后 completed / GO，未修改文件。浅色深青焦点环约 5.10:1、深色金色约 8.66:1；空状态、live region 和说明关联均通过，71/71 测试、Node 与 diff check 通过。唯一保留 P2 是本轮浏览器策略门禁导致未取得 320/390/768/1440 实测证据，不影响代码冻结但仍阻止宣称生产响应式已验证。
 - 下一回调：先提交并推送隔离分支、等待 CI；代码合入和 Render 自动部署属于下一次单独发布回调。司机路线级最终报价仍需 Dicky/Gede 对机场、换酒店、超时、佩妮达船车、区域和活动附加费的授权；2 个 pending-review POI、3 个 supplier-gated 体验与自动支付继续保持未闭环。
+
+## 2026-08-25 Driver estimator production release callback
+
+- 路由：L3 发布回调。Sol 保留固定提交、合并、生产事实与浏览器验收；正式 `luna_worker` Noether（`/root/pr17_release_gate`，`gpt-5.6-luna` / `max`）完成 PR #17 冻结只读门禁。工具层未暴露精确启动时间和稳定耗时，最终状态为 completed / GO，零文件修改。
+- GitHub 回调：PR #17 固定 head `718007dd35974de576bc2f4ed706096c0c43fb27` 的 71/71 测试、Node 语法、diff check、Project memory run `32824123209` 和 PostgreSQL run `32824123268` 均通过；PR 合并为 main 提交 `ab3337782f83444a80cb880b87d7f8f0b2d5290b`。
+- 生产回调：Render 自动部署后，公开 `find-driver.html` 已加载 `driver-estimate.js?v=p1`，`/healthz` 返回 ok。Playwright 生产矩阵完成中英日韩印 × 320/390/768/1440 共 20/20；空状态为破折号，2 人 1 全天 + 1 半天为 IDR 1,400,000（印尼格式为 1.400.000），所有视口零横向溢出。Dicky/Gede `driver_id` 均正确预选；键盘焦点环为 3px solid；控制台 0 error / 0 warning。
+- 边界：未发送司机邮件、未创建订单、未修改 Render 环境变量、数据库、支付、权益或管理员内容。生产验收只使用公共 GET 与浏览器只读交互。
+
+## 2026-08-25 Driver promotion packs callback
+
+- 路由：medium / L2。Sol 保留人物事实边界、文案、视觉整合、文档逐页验收、Git 与发布判断；正式 `luna_worker` Heisenberg（`/root/driver_promo_audit`，`gpt-5.6-luna` / `max`）完成司机公开资料、专属链接、批准图片和价格表述的只读审计。工具层未暴露精确启动时间和稳定耗时，最终状态 completed，零文件修改。
+- 内容回调：Dicky 与 Gede Nico 各有独立印尼语 DOCX 和三张可直接上传图片。手册内嵌相同图片，并提供 Instagram Feed 中/英文 caption、Story、Reels、Facebook、WhatsApp Status、常见问题回复和 5 分钟操作步骤。站主 `MARKETING_LAUNCH_PLAYBOOK.md` 新增 Instagram Bio、Feed、Story、Reels 和带 UTM 链接。
+- 安全回调：专属链接必须带 `driver_id`；公开材料不含私人邮箱、WhatsApp、密码或 Secret。车辆颜色、未确认语言能力、容量和固定最终价均不作为承诺；网站估价明确为参考，最终日期、车辆、时长、路线与价格仍需司机确认。
+- 文档 QA：两份 DOCX 均为 7 页、4 个内嵌媒体（logo + 3 图）、3 个独立 JPG、外部链接有效；逐页 LibreOffice 原尺寸渲染复看，无空白页、截断或字体替代故障。内部扫描确认无串错 `driver_id`、私人 Gmail、`123456` 或 `SECRET_KEY`。
+- Skill 回调：cross-account-project-memory 约束隔离 worktree 与 evidence/handoff；agent-role-orchestrator/codex-luna-worker 约束 Sol/Luna 分工；delivery-document-package、documents 与 LibreOffice 负责可交付文档闭环；Huashu Nuwa、MrBeast 与 humanizer-zh 只改善真实转化、易复制性和人类表达，不替代 WanderMind teal + gold 品牌与事实门禁。未调用动画技能，因为本单元不改网站动效。
