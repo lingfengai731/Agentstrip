@@ -1,0 +1,22 @@
+{
+  "schema_version": 1,
+  "evidence_id": "ev-20260825T105356Z-driver-promotion-packs-20260825",
+  "task_ref": "driver-promotion-packs-20260825",
+  "owner": "sol-main",
+  "captured_at": "2026-08-25T10:53:56Z",
+  "status": "verified",
+  "claim": "Created separate copy-ready Indonesian promotion guides and three approved companion images for Dicky and Gede Nico; added owner Instagram launch copy.",
+  "source": {
+    "kind": "git",
+    "repository": "https://github.com/lingfengai731/Agentstrip.git",
+    "commit": "ab3337782f83444a80cb880b87d7f8f0b2d5290b",
+    "branch": "codex/driver-promotion-manuals-20260825",
+    "worktree": "E:\\Agentstrip-wt-promotion-manuals",
+    "dirty": true
+  },
+  "verification": {
+    "command": "LibreOffice render of every DOCX page plus DOCX media/link/privacy audit and git diff check.",
+    "result": "PASS: 2 guides x 7 nonblank pages; 4 embedded media each; 3 JPG each; correct driver_id; no private email or secret markers."
+  },
+  "notes": "Prepared only; not posted to Instagram, Facebook or WhatsApp."
+}

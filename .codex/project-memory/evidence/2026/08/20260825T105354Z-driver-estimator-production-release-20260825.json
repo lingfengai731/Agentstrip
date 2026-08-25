@@ -1,0 +1,22 @@
+{
+  "schema_version": 1,
+  "evidence_id": "ev-20260825T105354Z-driver-estimator-production-release-20260825",
+  "task_ref": "driver-estimator-production-release-20260825",
+  "owner": "sol-main",
+  "captured_at": "2026-08-25T10:53:54Z",
+  "status": "verified",
+  "claim": "PR #17 merged and production driver estimator passed 5-language by 4-viewport browser QA, driver preselection, focus-visible and zero-console-error checks.",
+  "source": {
+    "kind": "git",
+    "repository": "https://github.com/lingfengai731/Agentstrip.git",
+    "commit": "ab3337782f83444a80cb880b87d7f8f0b2d5290b",
+    "branch": "codex/driver-promotion-manuals-20260825",
+    "worktree": "E:\\Agentstrip-wt-promotion-manuals",
+    "dirty": true
+  },
+  "verification": {
+    "command": "Public marker and health check; Playwright CLI matrix zh/en/ja/ko/id x 320/390/768/1440; Dicky/Gede preselection; focus-visible; console error scan.",
+    "result": "PASS: main ab333778; marker live; health ok; 20/20; 3px solid focus ring; console 0 errors and 0 warnings."
+  },
+  "notes": "Read-only production verification. No email, order, Render environment, database, payment, entitlement or admin writes."
+}

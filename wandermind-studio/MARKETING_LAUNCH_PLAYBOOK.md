@@ -102,8 +102,8 @@ AI 自助规划是另一条独立路径、使用独立额度。首发帖子不�
 
 - 形式：7 张 4:5 轮播图。
 - 图片顺序：Tanah Lot → Uluwatu → Saraswati → Taman Ayun → Yoga Barn → Lempuyang → Sundays Beach Club。
-- Dicky 链接：`https://wandermind.cc/find-driver.html?utm_source=instagram&utm_medium=organic&utm_campaign=bali_launch_01&utm_content=dicky`
-- Gede Nico 链接：将最后一个参数改为 `utm_content=gede_nico`。
+- Dicky 链接：`https://wandermind.cc/find-driver?driver_id=dicky&utm_source=instagram&utm_medium=organic&utm_campaign=bali_launch_01&utm_content=dicky`
+- Gede Nico 链接：`https://wandermind.cc/find-driver?driver_id=gede&utm_source=instagram&utm_medium=organic&utm_campaign=bali_launch_01&utm_content=gede_nico`
 - 两位司机分别发自己的版本；不要在图片或正文放私人联系方式。
 
 ### Caption（英文）
@@ -140,7 +140,64 @@ Untuk menjaga privasi dan catatan perjalanan, permintaan hanya dikirim melalui f
 
 `#BaliDriver #BaliItinerary #VisitBali #BaliTravel #WanderMind`
 
-## 6. 帖子三：TikTok / 抖音短视频
+## 6. 帖子三：站长 Instagram
+
+这一版由 WanderMind 官方账号发布，不冒充司机，也不把两位司机的照片混成同一个人。第一轮只把用户带到巴厘岛公共路线，再由用户自己进入专业路线或司机需求页。
+
+### 账号主页
+
+- Bio：`Bali routes first. Local driver requests when your plan is ready.`
+- 主页链接：`https://wandermind.cc/bali.html?utm_source=instagram&utm_medium=organic&utm_campaign=bali_brand_bio`
+- 头像：使用 `frontend/assets/images/logo-mark-256.png`。
+- 不在 Bio 放司机私人联系方式、即时预订或最低价承诺。
+
+### 官方 Carousel
+
+- 形式：7 张 4:5 轮播图。
+- 图片顺序：Lempuyang → Tanah Lot → Uluwatu → Saraswati → Taman Ayun → Yoga Barn → Sundays Beach Club。
+- 落地页：`https://wandermind.cc/bali.html?utm_source=instagram&utm_medium=organic&utm_campaign=bali_launch_01&utm_content=wandermind_owner`
+
+### Caption（英文）
+
+**Start with the kind of Bali day you want, not the longest attraction list.**
+
+WanderMind has organised Bali into six public route families so you can compare direction, pace and daily structure before adding more places. The public routes are free to explore.
+
+If you want a route matched to your dates, group size, budget and interests, the professional version first shows an approximately 70% preview. Unlocking the full version adds the exact place order and execution notes for the same trip, with three parameter adjustments.
+
+When the route is ready, carry the same details into a private request for Dicky or Gede Nico. Availability, vehicle details, duration and the final quote are confirmed after review.
+
+Explore the six Bali route directions through the link in bio. Which one fits you first: coast, culture, wellness or sunrise?
+
+`#BaliItinerary #BaliTravel #BaliRoute #TravelPlanning #WanderMind`
+
+### Caption（中文短版）
+
+第一次排巴厘岛，不要先把景点塞满。
+
+WanderMind 把巴厘岛整理成 6 条可以免费浏览的路线方向。先看区域、节奏和每天怎么走，再决定要不要按日期、人数、预算和兴趣继续匹配。需要司机时，同一份路线可以直接带进私密需求表，不用重新解释。
+
+路线与司机入口都在主页链接。你会先选海岸、文化、疗愈，还是日出？
+
+`#巴厘岛旅行 #巴厘岛攻略 #巴厘岛自由行 #WanderMind`
+
+### Story 三屏
+
+1. `第一次去巴厘岛，先选方向，不先塞满景点。`
+2. `6 条公共路线免费浏览：海岸 / 文化 / 疗愈 / 日出。`
+3. `路线准备好后，再带入专业路线或司机需求。` 第三屏添加主页链接贴纸。
+
+### Reel（20–24 秒）
+
+- 0–3 秒：`Bali is easy to overplan.`，直接展示路线地图变化。
+- 3–9 秒：切换 R1、R3、R5，字幕 `Choose direction first.`
+- 9–15 秒：展开一天并添加同区域地点，字幕 `Build one workable day.`
+- 15–20 秒：打开司机页，字幕 `Carry the same route into one request.`
+- 20–24 秒：品牌与 CTA，字幕 `Explore six public routes on WanderMind.`
+
+发布后只观察 UTM 访问、公共路线选择、专业路线入口和司机表单开始数。没有数据前不改成夸张标题，也不提前投广告。
+
+## 7. 帖子四：TikTok / 抖音短视频
 
 ### 视频结构（22–26 秒）
 
@@ -175,7 +232,7 @@ Instagram/TikTok：`https://wandermind.cc/bali.html?utm_source=tiktok&utm_medium
 
 若平台不允许外链，使用账号主页中平台允许的链接，不在字幕中使用规避审核的联系方式。
 
-## 7. Google / Microsoft 浏览器搜索推广
+## 8. Google / Microsoft 浏览器搜索推广
 
 ### 它在浏览器里以什么形式出现
 
@@ -248,7 +305,7 @@ Microsoft 版本只把 `utm_source` 改为 `bing`，其余 campaign/content 命�
 - Google 网站转化与 Google tag：`https://support.google.com/google-ads/answer/1722022?hl=en`、`https://support.google.com/google-ads/answer/12002338?hl=en`
 - Microsoft Search Ads、UET 与 Google Import：`https://www.about.ads.microsoft.com/en/solutions/ad-products-formats/search`、`https://learn.microsoft.com/en-us/advertising/guides/google-ads-import?view=bingads-13`
 
-## 8. 14 天最小传播计划
+## 9. 14 天最小传播计划
 
 | 日期 | 动作 | 目的 |
 |---|---|---|
@@ -262,7 +319,7 @@ Microsoft 版本只把 `utm_source` 改为 `bing`，其余 campaign/content 命�
 
 不要在首周一次性制作十几条内容。先发布、观察、再复用表现最好的钩子和画面。
 
-## 9. 每周复盘表
+## 10. 每周复盘表
 
 | 指标 | 从哪里看 | 说明 |
 |---|---|---|
@@ -280,7 +337,7 @@ Microsoft 版本只把 `utm_source` 改为 `bing`，其余 campaign/content 命�
 - 有提交、没有司机确认：检查日期、路线可执行性和报价流程。
 - 没有访问：先改封面、前 2 秒和分发频次，不先重写网站。
 
-## 10. 平台规范参考
+## 11. 平台规范参考
 
 - TikTok Creative Codes：竖屏、高分辨率、安全区、hook–body–close 与声音设计。
   `https://ads.tiktok.com/business/en-US/creative-codes`
