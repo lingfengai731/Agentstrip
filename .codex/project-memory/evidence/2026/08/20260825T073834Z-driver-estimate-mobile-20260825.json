@@ -1,0 +1,22 @@
+{
+  "schema_version": 1,
+  "evidence_id": "ev-20260825T073834Z-driver-estimate-mobile-20260825",
+  "task_ref": "driver-estimate-mobile-20260825",
+  "owner": "codex-sol",
+  "captured_at": "2026-08-25T07:38:34Z",
+  "status": "verified",
+  "claim": "Five-language mobile-first IDR driver day estimator implemented from confirmed public full-day and half-day baselines without changing backend, email payload, payment, or production.",
+  "source": {
+    "kind": "git",
+    "repository": "https://github.com/lingfengai731/Agentstrip.git",
+    "commit": "c3de8f24ea9cf34911feb0b090f3889e69c4c006",
+    "branch": "codex/driver-estimate-mobile-20260825",
+    "worktree": "E:\\Agentstrip-worktree-driver-estimate",
+    "dirty": false
+  },
+  "verification": {
+    "command": "python -m unittest wandermind.backend.tests.test_product_access; node --check driver-estimate.js and i18n.js; git diff --check",
+    "result": "71/71 product tests passed; both Node syntax checks passed; diff check passed; Impeccable degraded scan found only existing Roboto and brand CTA glow warnings."
+  },
+  "notes": "In-app Browser localhost binding failed once at the admin-policy gate; no retry or workaround. No browser screenshot, production verification, email, payment, admin write, Render change, merge, or deployment is claimed."
+}
