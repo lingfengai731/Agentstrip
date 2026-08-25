@@ -55,6 +55,8 @@ class ProductAccessTests(unittest.TestCase):
         conn = get_db()
         try:
             conn.execute("DELETE FROM driver_request_rate_limits")
+            conn.execute("DELETE FROM marketing_event_rate_limits")
+            conn.execute("DELETE FROM marketing_events")
             conn.commit()
         finally:
             conn.close()
@@ -196,6 +198,170 @@ class ProductAccessTests(unittest.TestCase):
                     "https://preview.wandermind.cc",
                 ],
             )
+
+    def test_marketing_events_are_bounded_anonymous_and_queryable_by_admin(self):
+        response = self._run(
+            self._request(
+                "POST",
+                "/api/marketing/events",
+                client_ip="203.0.113.10",
+                json={
+                    "event_name": "bali_public_route_select",
+                    "page_path": "/bali.html?email=private@example.test#routes",
+                    "source": "Google Search!!",
+                    "medium": "CPC",
+                    "campaign": "Bali Search ZH 01",
+                    "content": "R3",
+                    "lang": "zh",
+                    "device_class": "mobile",
+                },
+            )
+        )
+        self.assertEqual(response.status_code, 204, response.text)
+
+        conn = get_db()
+        try:
+            row = conn.execute(
+                "SELECT event_name,page_path,source,medium,campaign,content,lang,device_class "
+                "FROM marketing_events"
+            ).fetchone()
+            limiter = conn.execute(
+                "SELECT client_key FROM marketing_event_rate_limits"
+            ).fetchone()
+        finally:
+            conn.close()
+        self.assertEqual(
+            dict(row),
+            {
+                "event_name": "bali_public_route_select",
+                "page_path": "/bali.html",
+                "source": "google_search",
+                "medium": "cpc",
+                "campaign": "bali_search_zh_01",
+                "content": "r3",
+                "lang": "zh",
+                "device_class": "mobile",
+            },
+        )
+        self.assertNotIn("203.0.113.10", dict(limiter)["client_key"])
+        self.assertNotIn("private@example.test", json.dumps(dict(row)))
+
+        expired_event_id = str(uuid.uuid4())
+        conn = get_db()
+        try:
+            conn.execute(
+                "INSERT INTO marketing_events "
+                "(id,event_name,page_path,source,medium,campaign,content,lang,device_class,created_at) "
+                "VALUES (?,?,?,?,?,?,?,?,?,?)",
+                (
+                    expired_event_id, "page_view", "/old", "", "", "", "",
+                    "en", "desktop", int(time.time()) - main._MARKETING_EVENT_RETENTION_SECONDS - 1,
+                ),
+            )
+            conn.execute(
+                "INSERT INTO marketing_event_rate_limits "
+                "(client_key,window_started_at,request_count,updated_at) VALUES (?,?,?,?)",
+                (
+                    "expired-client", 1, 1,
+                    int(time.time()) - main._MARKETING_LIMIT_RETENTION_SECONDS - 1,
+                ),
+            )
+            conn.commit()
+        finally:
+            conn.close()
+
+        anonymous = self._run(self._request("GET", "/api/admin/marketing-summary"))
+        member = self._run(
+            self._request("GET", "/api/admin/marketing-summary", token=self.user_token)
+        )
+        admin = self._run(
+            self._request(
+                "GET", "/api/admin/marketing-summary?days=14", token=self.admin_token
+            )
+        )
+        self.assertEqual(anonymous.status_code, 401)
+        self.assertEqual(member.status_code, 403)
+        self.assertEqual(admin.status_code, 200, admin.text)
+        summary = admin.json()
+        self.assertEqual(summary["events"][0], {"event_name": "bali_public_route_select", "count": 1})
+        self.assertEqual(summary["channels"][0]["source"], "google_search")
+        self.assertEqual(summary["campaigns"][0]["campaign"], "bali_search_zh_01")
+        conn = get_db()
+        try:
+            expired_event = conn.execute(
+                "SELECT 1 FROM marketing_events WHERE id=?", (expired_event_id,)
+            ).fetchone()
+            expired_limiter = conn.execute(
+                "SELECT 1 FROM marketing_event_rate_limits WHERE client_key=?",
+                ("expired-client",),
+            ).fetchone()
+        finally:
+            conn.close()
+        self.assertIsNone(expired_event)
+        self.assertIsNone(expired_limiter)
+
+    def test_marketing_event_allowlist_and_rate_limit(self):
+        self.assertEqual(main._marketing_token("private@example.test"), "")
+        self.assertEqual(main._marketing_token("+62 87860353273"), "")
+        self.assertEqual(main._marketing_token("+1 (202) 555-0123"), "")
+        self.assertEqual(main._marketing_token("https://example.test"), "")
+        self.assertEqual(main._marketing_page_path("/private-202-555-0123"), "/")
+        self.assertEqual(main._marketing_page_path("/bali.html?private=1"), "/bali.html")
+        oversized = self._run(
+            self._request(
+                "POST",
+                "/api/marketing/events",
+                json={"event_name": "page_view", "campaign": "x" * 257},
+            )
+        )
+        self.assertEqual(oversized.status_code, 422)
+        unknown = self._run(
+            self._request(
+                "POST", "/api/marketing/events", json={"event_name": "email_capture"}
+            )
+        )
+        self.assertEqual(unknown.status_code, 400)
+
+        with patch.object(main, "_MARKETING_EVENT_LIMIT", 2):
+            statuses = [
+                self._run(
+                    self._request(
+                        "POST",
+                        "/api/marketing/events",
+                        client_ip="198.51.100.9",
+                        json={"event_name": "page_view", "page_path": "/bali"},
+                    )
+                ).status_code
+                for _ in range(3)
+            ]
+        self.assertEqual(statuses, [204, 204, 429])
+
+    def test_launch_measurement_assets_privacy_and_sitemap(self):
+        studio = BACKEND_DIR.parents[1] / "wandermind-studio" / "frontend"
+        measurement = (studio / "assets" / "js" / "marketing-events.js").read_text(encoding="utf-8")
+        privacy = (studio / "privacy.html").read_text(encoding="utf-8")
+        i18n = (studio / "assets" / "js" / "i18n.js").read_text(encoding="utf-8")
+        self.assertNotIn("cookie", measurement.lower())
+        self.assertIn("sessionStorage", measurement)
+        self.assertIn("driver_request_submitted", measurement)
+        self.assertIn("window.addEventListener('wm:bali-route-selected'", measurement)
+        driver_html = (studio / "find-driver.html").read_text(encoding="utf-8")
+        self.assertIn("data && data.delivered === true", driver_html)
+        self.assertIn("entries older than 24 hours", i18n)
+        self.assertIn("超过 24 小时", i18n)
+        self.assertIn("marketing-events.js", privacy)
+        for lang in ("en", "zh", "ja", "ko", "id"):
+            self.assertIn(f"Object.assign(LANGS.{lang}", i18n)
+        for name in (
+            "index.html", "about.html", "services.html", "contact.html",
+            "ai-tool.html", "bali.html", "find-driver.html",
+        ):
+            source = (studio / name).read_text(encoding="utf-8")
+            self.assertIn("marketing-events.js?v=p2", source, name)
+            self.assertIn('href="privacy.html"', source, name)
+        sitemap = self._run(self._request("GET", "/sitemap.xml"))
+        self.assertEqual(sitemap.status_code, 200)
+        self.assertIn("https://wandermind.cc/privacy", sitemap.text)
 
     def _new_trip(self, token=None, anon_id=None):
         response = self._run(
@@ -865,7 +1031,9 @@ class ProductAccessTests(unittest.TestCase):
 
         self.assertIn("authUser.role === 'admin'", ai_js)
         self.assertIn('href="admin/portfolio"', ai_js)
+        self.assertIn('href="admin/marketing"', ai_js)
         self.assertIn("accountPortfolioOpen", ai_js)
+        self.assertIn("accountMarketingOpen", ai_js)
         for label in (
             "Open content manager",
             "打开内容管理器",
@@ -874,6 +1042,25 @@ class ProductAccessTests(unittest.TestCase):
             "Buka pengelola konten",
         ):
             self.assertIn(label, ai_js)
+
+    def test_admin_launch_measurement_page_is_private_responsive_and_multilingual(self):
+        frontend = BACKEND_DIR.parents[1] / "wandermind-studio" / "frontend"
+        admin_html = (frontend / "admin" / "marketing.html").read_text(
+            encoding="utf-8"
+        )
+        admin_js = (frontend / "assets" / "js" / "admin-marketing.js").read_text(
+            encoding="utf-8"
+        )
+        self.assertIn('name="robots" content="noindex,nofollow"', admin_html)
+        self.assertIn('admin-marketing.js?v=p1', admin_html)
+        self.assertIn('@media(max-width:520px)', admin_html)
+        self.assertIn("wm_studio_token", admin_js)
+        self.assertIn("/api/admin/marketing-summary?days=", admin_js)
+        self.assertIn("Authorization:'Bearer ' + token", admin_js)
+        self.assertIn("window.location.assign('../ai-tool.html?auth=login", admin_js)
+        for lang in ("en", "zh", "ja", "ko", "id"):
+            self.assertIn(f"{lang}:{{", admin_js)
+        self.assertNotIn("innerHTML", admin_js)
 
     def test_only_admin_can_confirm_and_confirmation_is_idempotent(self):
         trip_id = self._new_trip(token=self.user_token)
@@ -3431,7 +3618,7 @@ class ProductAccessTests(unittest.TestCase):
         self.assertIn("profile.moments.map", driver_html)
         self.assertIn("DRIVER_PROFILES[choice.querySelector('input').value]", driver_html)
         self.assertIn("document.addEventListener('wm:language-change'", driver_html)
-        self.assertIn('assets/js/i18n.js?v=p61', driver_html)
+        self.assertIn('assets/js/i18n.js?v=p64', driver_html)
         self.assertIn("IDR 700k base + IDR 50k per guest", driver_html)
         self.assertIn("IDR 500k base + IDR 50k per guest", driver_html)
         self.assertIn("IDR 75k per hour", driver_html)

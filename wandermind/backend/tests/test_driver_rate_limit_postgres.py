@@ -50,6 +50,7 @@ class DriverRateLimitPostgresTests(unittest.TestCase):
     def setUpClass(cls):
         db.init_db()
         cls.keys = []
+        cls.marketing_keys = []
 
     @classmethod
     def tearDownClass(cls):
@@ -60,6 +61,11 @@ class DriverRateLimitPostgresTests(unittest.TestCase):
                     "DELETE FROM driver_request_rate_limits WHERE client_key=?",
                     (key,),
                 )
+            for key in cls.marketing_keys:
+                conn.execute(
+                    "DELETE FROM marketing_event_rate_limits WHERE client_key=?",
+                    (key,),
+                )
             conn.commit()
         finally:
             conn.close()
@@ -68,6 +74,12 @@ class DriverRateLimitPostgresTests(unittest.TestCase):
     def new_key(cls, label):
         key = f"ci-{label}-{uuid.uuid4().hex}"
         cls.keys.append(key)
+        return key
+
+    @classmethod
+    def new_marketing_key(cls, label):
+        key = f"ci-marketing-{label}-{uuid.uuid4().hex}"
+        cls.marketing_keys.append(key)
         return key
 
     def test_schema_uses_bigint_and_expected_index(self):
@@ -158,6 +170,83 @@ class DriverRateLimitPostgresTests(unittest.TestCase):
                 key, started + main._DRIVER_REQUEST_WINDOW_SECONDS
             ),
             1,
+        )
+
+    def test_marketing_counter_and_schema_are_postgres_safe(self):
+        key = self.new_marketing_key("atomic")
+        now = int(time.time())
+        with ThreadPoolExecutor(max_workers=8) as pool:
+            counts = list(
+                pool.map(
+                    lambda _: main._consume_marketing_event_attempt(key, now),
+                    range(8),
+                )
+            )
+        self.assertEqual(sorted(counts), list(range(1, 9)))
+
+        conn = db.get_db()
+        try:
+            expired_event_id = str(uuid.uuid4())
+            expired_key = self.new_marketing_key("expired")
+            conn.execute(
+                "INSERT INTO marketing_events "
+                "(id,event_name,page_path,source,medium,campaign,content,lang,device_class,created_at) "
+                "VALUES (?,?,?,?,?,?,?,?,?,?)",
+                (
+                    expired_event_id, "page_view", "/old", "", "", "", "",
+                    "en", "desktop", now - main._MARKETING_EVENT_RETENTION_SECONDS - 1,
+                ),
+            )
+            conn.execute(
+                "INSERT INTO marketing_event_rate_limits "
+                "(client_key,window_started_at,request_count,updated_at) VALUES (?,?,?,?)",
+                (
+                    expired_key, 1, 1,
+                    now - main._MARKETING_LIMIT_RETENTION_SECONDS - 1,
+                ),
+            )
+            conn.commit()
+        finally:
+            conn.close()
+
+        main._consume_marketing_event_attempt(self.new_marketing_key("purge"), now)
+
+        conn = db.get_db()
+        try:
+            self.assertIsNone(
+                conn.execute(
+                    "SELECT 1 FROM marketing_events WHERE id=?", (expired_event_id,)
+                ).fetchone()
+            )
+            self.assertIsNone(
+                conn.execute(
+                    "SELECT 1 FROM marketing_event_rate_limits WHERE client_key=?",
+                    (expired_key,),
+                ).fetchone()
+            )
+            columns = conn.execute(
+                """
+                SELECT column_name,data_type
+                FROM information_schema.columns
+                WHERE table_schema=current_schema()
+                  AND table_name='marketing_events'
+                """
+            ).fetchall()
+            indexes = conn.execute(
+                """
+                SELECT indexname FROM pg_indexes
+                WHERE schemaname=current_schema()
+                  AND tablename='marketing_events'
+                """
+            ).fetchall()
+        finally:
+            conn.close()
+        column_types = {row["column_name"]: row["data_type"] for row in columns}
+        self.assertEqual(column_types["created_at"], "bigint")
+        self.assertEqual(column_types["event_name"], "text")
+        self.assertIn(
+            "idx_marketing_events_name_created",
+            {row["indexname"] for row in indexes},
         )
 
 

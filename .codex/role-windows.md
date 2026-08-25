@@ -343,3 +343,11 @@
 - QA 回调：图片 intake PASS；完整本地 discover 77 项中 65 通过、12 项隔离 PostgreSQL 测试按设计 skip；diff check PASS。GitHub PR #9 的 PostgreSQL integration 检查通过。系统 Edge 生产验收覆盖 320/390/768/1440 与中英日韩印，零横向溢出；五张图片全部解码、署名/许可证链接可见、确认按钮可达。
 - GitHub/生产回调：产品提交 `980c331093419d9289fccc6d99f86ec222d0aab7` 经 PR #9 合并为 `5c66b0f741be83cd678477887bc6111b40052e9f`。Render 自动部署后公开 Bali 使用 `image-publish-manifest.json?v=20260825p1`；发布 manifest 113 张 / 113 唯一哈希，rights manifest 113 条 / 5 条外部来源许可记录，十个 WebP/缩略图端点均为 200。没有修改 Render 变量、数据库、用户、权益、支付、管理员 Portfolio 或真实司机邮件。
 - 下一回调：按 `MARKETING_LAUNCH_PLAYBOOK.md` 启动可追踪的小批量推广并记录 14 天数据；产品侧继续下一批地点精确图和剩余 D8，不再为此阻塞首发。支付、积分、管理员发布和真实邮件生产写回调继续单独设门禁。
+
+## 2026-08-25 Privacy-first launch measurement callback
+
+- 路由：large / L2，发布为 L3。Sol 在独立工作树 `E:\Agentstrip2-worktree` 保留隐私与统计产品边界、实现、浏览器回调、GitHub、部署和最终验收；旧脏工作树 `E:\Agentstrip` 未触碰。
+- Luna 清单回调：Curie（`01a0364f-57ee-7fd2-9823-790f1f7c9121`，正式 `luna_worker` / `gpt-5.6-luna` / `max`）完成两账号未完成事项的只读优先级收敛；结论继续以首发测量、D8/POI、供应商与司机路线级报价为前列，不重启 Browser/Render 配置排障。
+- Luna 审查回调：Lovelace（`01a03679-c3a0-7670-9434-6221078920f8`，正式 `luna_worker` / `gpt-5.6-luna` / `max`）首轮因工作树按计划漂移返回 NO-GO，并准确找出格式化手机号过滤、留存清理语义、honeypot 成功计数三个 P1；Sol 修复后冻结工作树，Lovelace 约 10 分钟 targeted re-review 返回 completed / GO，P0/P1 为 0。Sol 随后进一步把页面路径收紧为公开页白名单并复跑全部验收。
+- QA 回调：产品提交 `51626d7`；完整本地 discover 82 项中 69 通过、13 项隔离 PostgreSQL 测试按设计 skip，4 个 JavaScript 语法检查和 diff check 通过。Playwright 验证管理员统计页及隐私页在 320/390/768/1440 零横向溢出、五语言正确、控制台 0 error/warning；司机模拟 `delivered:false` 不记录提交，`delivered:true` 才记录一次。
+- 生产边界：提交前公开生产 `/privacy` 与 `marketing-events.js` 均为 404，证明本地改动尚未上线。GitHub PostgreSQL CI、合并、Render 自动部署和生产 E2E 必须作为下一发布回调，未完成前不得写成生产一致。

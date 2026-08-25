@@ -22,7 +22,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.middleware.gzip import GZipMiddleware
 from fastapi.responses import HTMLResponse, JSONResponse, PlainTextResponse, Response, StreamingResponse
 from fastapi.staticfiles import StaticFiles
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 
 from db import get_db, init_db, IntegrityError, backend_name
 from email_service import (
@@ -579,6 +579,17 @@ class DriverReq(BaseModel):
     lang: str = "en"
     privacy_consent: bool = False
     website: str = ""
+
+
+class MarketingEventReq(BaseModel):
+    event_name: str = Field(max_length=64)
+    page_path: str = Field(default="/", max_length=256)
+    source: str = Field(default="", max_length=256)
+    medium: str = Field(default="", max_length=256)
+    campaign: str = Field(default="", max_length=256)
+    content: str = Field(default="", max_length=256)
+    lang: str = Field(default="en", max_length=16)
+    device_class: str = Field(default="", max_length=16)
 
 
 class ProductTripCreateReq(BaseModel):
@@ -3042,6 +3053,199 @@ async def fusion_get(token: str):
         conn.close()
 
 
+# ─── Privacy-minimised launch measurement ───────────────────
+_MARKETING_EVENTS = {
+    "page_view",
+    "home_ai_plan",
+    "home_professional_route",
+    "bali_public_route_select",
+    "bali_professional_route_start",
+    "driver_form_start",
+    "driver_request_submitted",
+}
+_MARKETING_WINDOW_SECONDS = 10 * 60
+_MARKETING_EVENT_LIMIT = 120
+_MARKETING_LIMIT_RETENTION_SECONDS = 24 * 60 * 60
+_MARKETING_EVENT_RETENTION_SECONDS = 180 * 24 * 60 * 60
+_MARKETING_PAGE_PATHS = {
+    "/", "/index", "/index.html", "/about", "/about.html",
+    "/services", "/services.html", "/contact", "/contact.html",
+    "/ai-tool", "/ai-tool.html", "/bali", "/bali.html",
+    "/find-driver", "/find-driver.html", "/privacy", "/privacy.html",
+}
+
+
+def _purge_expired_marketing_data(conn, now: int) -> None:
+    conn.execute(
+        "DELETE FROM marketing_event_rate_limits WHERE updated_at < ?",
+        (now - _MARKETING_LIMIT_RETENTION_SECONDS,),
+    )
+    conn.execute(
+        "DELETE FROM marketing_events WHERE created_at < ?",
+        (now - _MARKETING_EVENT_RETENTION_SECONDS,),
+    )
+
+
+def _marketing_token(value: str, max_length: int = 80) -> str:
+    """Keep only campaign-safe labels; never accept free-form visitor text."""
+    raw = (value or "").strip().lower()
+    if "@" in raw or "://" in raw or sum(char.isdigit() for char in raw) >= 7:
+        return ""
+    normalized = re.sub(r"[^a-z0-9._-]+", "_", raw)
+    return normalized.strip("_")[:max_length]
+
+
+def _marketing_page_path(value: str) -> str:
+    path = (value or "/").split("?", 1)[0].split("#", 1)[0]
+    return path if path in _MARKETING_PAGE_PATHS else "/"
+
+
+def _marketing_client_key(request: Request) -> str:
+    host = _request_origin_host(request) or "unknown"
+    return hmac.new(
+        _SECRET.encode(), f"marketing-event-rate:{host}".encode(), hashlib.sha256
+    ).hexdigest()
+
+
+def _consume_marketing_event_attempt(client_key: str, now: int) -> int:
+    cutoff = now - _MARKETING_WINDOW_SECONDS
+    conn = get_db()
+    try:
+        _purge_expired_marketing_data(conn, now)
+        row = conn.execute(
+            """
+            INSERT INTO marketing_event_rate_limits
+                (client_key,window_started_at,request_count,updated_at)
+            VALUES (?,?,1,?)
+            ON CONFLICT(client_key) DO UPDATE SET
+                request_count = CASE
+                    WHEN marketing_event_rate_limits.window_started_at <= ? THEN 1
+                    WHEN marketing_event_rate_limits.request_count < ?
+                        THEN marketing_event_rate_limits.request_count + 1
+                    ELSE marketing_event_rate_limits.request_count
+                END,
+                window_started_at = CASE
+                    WHEN marketing_event_rate_limits.window_started_at <= ?
+                        THEN excluded.window_started_at
+                    ELSE marketing_event_rate_limits.window_started_at
+                END,
+                updated_at = excluded.updated_at
+            RETURNING request_count
+            """,
+            (
+                client_key,
+                now,
+                now,
+                cutoff,
+                _MARKETING_EVENT_LIMIT + 1,
+                cutoff,
+            ),
+        ).fetchone()
+        conn.commit()
+        if not row:
+            raise RuntimeError("marketing event rate limit did not return a counter")
+        return int(dict(row)["request_count"])
+    except Exception:
+        try:
+            conn.rollback()
+        except Exception:
+            pass
+        raise
+    finally:
+        conn.close()
+
+
+@app.post("/api/marketing/events", status_code=204)
+async def marketing_event(data: MarketingEventReq, request: Request):
+    event_name = (data.event_name or "").strip()
+    if event_name not in _MARKETING_EVENTS:
+        raise HTTPException(400, "Unknown marketing event")
+    now = int(time.time())
+    try:
+        count = _consume_marketing_event_attempt(_marketing_client_key(request), now)
+    except Exception:
+        raise HTTPException(503, "Measurement is temporarily unavailable")
+    if count > _MARKETING_EVENT_LIMIT:
+        raise HTTPException(429, "Too many measurement events")
+
+    conn = get_db()
+    try:
+        conn.execute(
+            """
+            INSERT INTO marketing_events
+                (id,event_name,page_path,source,medium,campaign,content,lang,
+                 device_class,created_at)
+            VALUES (?,?,?,?,?,?,?,?,?,?)
+            """,
+            (
+                str(uuid.uuid4()),
+                event_name,
+                _marketing_page_path(data.page_path),
+                _marketing_token(data.source),
+                _marketing_token(data.medium),
+                _marketing_token(data.campaign),
+                _marketing_token(data.content),
+                _clean_lang(data.lang),
+                data.device_class if data.device_class in {"mobile", "tablet", "desktop"} else "",
+                now,
+            ),
+        )
+        conn.commit()
+    except Exception:
+        try:
+            conn.rollback()
+        except Exception:
+            pass
+        raise HTTPException(503, "Measurement is temporarily unavailable")
+    finally:
+        conn.close()
+    return Response(status_code=204)
+
+
+@app.get("/api/admin/marketing-summary")
+async def marketing_summary(days: int = 14, _admin=Depends(current_admin)):
+    days = min(90, max(1, days))
+    now = int(time.time())
+    since = now - days * 24 * 60 * 60
+    conn = get_db()
+    try:
+        _purge_expired_marketing_data(conn, now)
+        conn.commit()
+        events = conn.execute(
+            """
+            SELECT event_name,COUNT(*) AS count
+            FROM marketing_events WHERE created_at >= ?
+            GROUP BY event_name ORDER BY count DESC,event_name ASC
+            """,
+            (since,),
+        ).fetchall()
+        channels = conn.execute(
+            """
+            SELECT source,medium,COUNT(*) AS count
+            FROM marketing_events WHERE created_at >= ? AND source <> ''
+            GROUP BY source,medium ORDER BY count DESC,source ASC LIMIT 30
+            """,
+            (since,),
+        ).fetchall()
+        campaigns = conn.execute(
+            """
+            SELECT campaign,content,COUNT(*) AS count
+            FROM marketing_events WHERE created_at >= ? AND campaign <> ''
+            GROUP BY campaign,content ORDER BY count DESC,campaign ASC LIMIT 50
+            """,
+            (since,),
+        ).fetchall()
+        return {
+            "days": days,
+            "since": since,
+            "events": [dict(row) for row in events],
+            "channels": [dict(row) for row in channels],
+            "campaigns": [dict(row) for row in campaigns],
+        }
+    finally:
+        conn.close()
+
+
 # ─── Find a Driver → email the request to the driver ──────────
 # Privacy by design: we do NOT persist any of the traveller's contact
 # details. The request is relayed once by email and never stored in the DB.
@@ -4331,7 +4535,10 @@ async def _diag():
 
 # ─── SEO: robots.txt + sitemap.xml ───────────────────────────────────────
 _SITE_URL = os.getenv("PUBLIC_URL", "https://wandermind.cc").strip().rstrip("/")
-_SITEMAP_PATHS = ["/", "/about", "/services", "/bali", "/ai-tool", "/find-driver", "/contact"]
+_SITEMAP_PATHS = [
+    "/", "/about", "/services", "/bali", "/ai-tool", "/find-driver",
+    "/contact", "/privacy",
+]
 
 
 @app.api_route("/robots.txt", methods=["GET", "HEAD"])

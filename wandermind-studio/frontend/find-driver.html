@@ -392,7 +392,7 @@
       </div>
     </div>
   </div>
-  <div class="below-section"><div class="container"><div class="copy-footer-29"><p data-i18n="footCopy">© 2026 WanderMind Studio. All rights reserved.</p></div></div></div>
+  <div class="below-section"><div class="container"><div class="copy-footer-29"><p>© 2026 WanderMind Studio. <span data-i18n="footCopy">All rights reserved.</span> · <a href="privacy.html" data-i18n="footPrivacy">Privacy</a></p></div></div></div>
 </section>
 
 <button onclick="topFunction()" id="movetop" title="Go to top"><span class="fa fa-angle-up"></span></button>
@@ -608,6 +608,7 @@
         var r = await fetch('/api/driver-request', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
         var data = await r.json().catch(function () { return {}; });
         if (!r.ok) throw new Error((data && data.detail) || ('HTTP ' + r.status));
+        if (data && data.delivered === true && window.wmTrack) window.wmTrack('driver_request_submitted');
         document.getElementById('fd-form-card').innerHTML =
           '<div class="fd-success"><div><span class="fa fa-check-circle"></span></div>' +
           '<h2>' + (L.fdSuccessTitle || 'Request sent!') + '</h2>' +
@@ -621,7 +622,7 @@
     };
   })();
 </script>
-<script src="assets/js/i18n.js?v=p61"></script>
+<script src="assets/js/i18n.js?v=p64"></script>
 <script>
   // Expose JS-side strings for the dynamic messages (filled after i18n load)
   (function () {
@@ -640,6 +641,7 @@
     if (picker) picker.addEventListener('change', function () { pull(this.value); });
   })();
 </script>
+<script src="assets/js/marketing-events.js?v=p2"></script>
 <script src="assets/js/global-auth.js?v=p52"></script>
 </body>
 </html>

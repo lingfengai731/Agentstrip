@@ -1223,6 +1223,58 @@ Object.assign(LANGS.ja, { baliMobileNavLabel:'バリ旅行セクション', bali
 Object.assign(LANGS.ko, { baliMobileNavLabel:'발리 여행 섹션', baliMobileNavRoutes:'경로', baliMobileNavProfessional:'내 경로', baliMobileNavGallery:'사진', baliMobileNavJourney:'여정', baliMobileRoutePickerLabel:'공개 경로 선택', baliMobileRoutePrevious:'이전 경로', baliMobileRouteNext:'다음 경로' });
 Object.assign(LANGS.id, { baliMobileNavLabel:'Bagian perjalanan Bali', baliMobileNavRoutes:'Rute', baliMobileNavProfessional:'Rute saya', baliMobileNavGallery:'Foto', baliMobileNavJourney:'Perjalanan', baliMobileRoutePickerLabel:'Pilih rute publik', baliMobileRoutePrevious:'Rute sebelumnya', baliMobileRouteNext:'Rute berikutnya' });
 
+/* Privacy notice and first-party launch measurement. */
+Object.assign(LANGS.en, {
+  footPrivacy:'Privacy', privacyPageTitle:'Privacy | WanderMind Studio', privacyEyebrow:'Plain-language privacy notice',
+  privacyTitle:'Your trip details should stay yours.', privacyIntro:'WanderMind collects only what is needed to run accounts, plan routes, relay a driver request and understand whether our own launch pages work.', privacyUpdated:'Updated 25 August 2026',
+  privacyMeasureTitle:'Anonymous launch measurement', privacyMeasureBody:'We record a limited event name, page path, language, device class and campaign labels such as utm_source. We do not attach a cookie ID, raw IP address, contact detail or browser fingerprint. Campaign labels stay in session storage for the current browser session; anonymous events are shown to administrators only as aggregate counts. A 180-day retention rule applies: older events are deleted at service startup or during later measurement or summary access. To prevent abuse, the server derives a keyed pseudonymous rate-limit value from the request address; it is kept separately, never joined to events, and entries older than 24 hours are removed by the same cleanup points.',
+  privacyDriverTitle:'Driver requests', privacyDriverBody:'The name, email and itinerary details you submit are relayed once by email to the selected driver and WanderMind so they can reply. The request body is not stored in our website database. Do not place private trip details in public comments.',
+  privacyAccountTitle:'Accounts and AI planning', privacyAccountBody:'If you create an account, we store the details and entitlements required to provide it. Text you send to AI planning features may be processed by the model providers used to answer the request. Avoid submitting passport numbers, payment credentials or other unnecessary sensitive data.',
+  privacyAdsTitle:'Advertising technology', privacyAdsBody:'WanderMind currently does not load Google Ads, Google Analytics, Microsoft UET or retargeting cookies. If third-party advertising tags are enabled later, this notice and the required consent controls will be updated before activation.',
+  privacyControlTitle:'Your choices', privacyControlBody:'You can browse public Bali routes without an account. You may clear this site’s local or session storage in your browser. For an account-data or privacy request, email lfwu22@126.com.',
+  privacyBack:'Back to WanderMind'
+});
+Object.assign(LANGS.zh, {
+  footPrivacy:'隐私说明', privacyPageTitle:'隐私说明 | WanderMind Studio', privacyEyebrow:'简明隐私说明',
+  privacyTitle:'你的行程信息，应当由你掌控。', privacyIntro:'WanderMind 只收集维持账户、规划路线、转发司机需求，以及判断首发页面是否有效所必需的信息。', privacyUpdated:'更新于 2026 年 8 月 25 日',
+  privacyMeasureTitle:'匿名首发统计', privacyMeasureBody:'我们只记录有限的事件名称、页面路径、语言、设备类型和 utm_source 等推广标签；不绑定 Cookie 用户 ID，不保存原始 IP、联系方式或浏览器指纹。推广标签只在当前浏览器会话的 sessionStorage 中保留，管理员只能查看匿名事件的聚合计数。系统执行 180 天留存规则：服务启动或后续统计/汇总访问时会删除更早的事件。为防止滥用，服务器会根据请求地址生成带密钥的伪匿名限流值；它与事件分开保存、不会关联行为，并在相同清理节点删除超过 24 小时的记录。',
+  privacyDriverTitle:'司机需求', privacyDriverBody:'你提交的姓名、邮箱和行程信息会通过邮件一次性转发给所选司机及 WanderMind，以便回复；需求正文不保存在网站数据库中。请不要在公开评论区填写私人行程资料。',
+  privacyAccountTitle:'账户与 AI 规划', privacyAccountBody:'如果你创建账户，我们会保存提供账户及权益所需的信息。发送给 AI 规划功能的文字可能由用于回答请求的模型服务商处理。请勿提交护照号码、支付凭据或其他不必要的敏感信息。',
+  privacyAdsTitle:'广告技术', privacyAdsBody:'WanderMind 当前没有加载 Google Ads、Google Analytics、Microsoft UET 或再营销 Cookie。未来如启用第三方广告标签，会先更新本说明并加入适用的同意控制。',
+  privacyControlTitle:'你的选择', privacyControlBody:'你无需注册即可浏览巴厘岛公共路线；也可以在浏览器中清除本网站的本地或会话存储。如需处理账户数据或隐私事项，请发邮件至 lfwu22@126.com。',
+  privacyBack:'返回 WanderMind'
+});
+Object.assign(LANGS.ja, {
+  footPrivacy:'プライバシー', privacyPageTitle:'プライバシー | WanderMind Studio', privacyEyebrow:'わかりやすいプライバシー通知',
+  privacyTitle:'旅の情報は、あなたのものです。', privacyIntro:'WanderMind は、アカウント、ルート作成、ドライバー依頼の転送、公開ページの改善に必要な情報だけを扱います。', privacyUpdated:'2026年8月25日更新',
+  privacyMeasureTitle:'匿名の公開効果測定', privacyMeasureBody:'限定されたイベント名、ページパス、言語、端末区分、utm_source などのキャンペーン情報のみを記録します。Cookie ID、生の IP、連絡先、ブラウザ指紋は紐づけません。キャンペーン情報は現在のセッション中だけ sessionStorage に保持され、管理者には匿名イベントの集計値だけが表示されます。180日保存ルールにより、古いイベントはサービス起動時または後続の計測・集計アクセス時に削除されます。不正利用防止用の鍵付き仮名レート制限値はイベントと分離され、行動とは結合されず、24時間を超えた記録は同じ削除処理時点で削除されます。',
+  privacyDriverTitle:'ドライバー依頼', privacyDriverBody:'入力した氏名、メール、旅程は返信のため、選択したドライバーと WanderMind に一度だけメール転送されます。依頼本文はサイトのデータベースに保存しません。公開コメントに個人の旅程を書かないでください。',
+  privacyAccountTitle:'アカウントと AI 計画', privacyAccountBody:'アカウントを作成した場合、提供に必要な情報と権利を保存します。AI 計画へ送る文章は、回答に利用するモデル提供者が処理する場合があります。旅券番号や決済情報など不要な機密情報は送信しないでください。',
+  privacyAdsTitle:'広告技術', privacyAdsBody:'現在、Google Ads、Google Analytics、Microsoft UET、リターゲティング Cookie は読み込んでいません。将来有効化する場合は、事前に本通知と必要な同意機能を更新します。',
+  privacyControlTitle:'選択と問い合わせ', privacyControlBody:'公開バリルートはアカウントなしで閲覧できます。ブラウザで本サイトのローカル／セッションストレージを消去できます。データやプライバシーの問い合わせは lfwu22@126.com へ。',
+  privacyBack:'WanderMind に戻る'
+});
+Object.assign(LANGS.ko, {
+  footPrivacy:'개인정보', privacyPageTitle:'개인정보 | WanderMind Studio', privacyEyebrow:'쉬운 개인정보 안내',
+  privacyTitle:'여행 정보의 주인은 이용자입니다.', privacyIntro:'WanderMind는 계정 운영, 경로 계획, 기사 요청 전달과 출시 페이지 개선에 필요한 정보만 처리합니다.', privacyUpdated:'2026년 8월 25일 업데이트',
+  privacyMeasureTitle:'익명 출시 측정', privacyMeasureBody:'제한된 이벤트 이름, 페이지 경로, 언어, 기기 유형과 utm_source 같은 캠페인 라벨만 기록합니다. 쿠키 사용자 ID, 원본 IP, 연락처 또는 브라우저 지문은 연결하지 않습니다. 캠페인 라벨은 현재 세션의 sessionStorage에만 남고 관리자에게는 익명 이벤트의 집계 수치만 표시됩니다. 180일 보존 규칙에 따라 더 오래된 이벤트는 서비스 시작 또는 이후 측정·요약 접근 때 삭제됩니다. 악용 방지용 키 기반 가명 속도 제한 값은 이벤트와 분리되고 행동과 결합되지 않으며, 24시간이 지난 기록은 같은 정리 시점에 삭제됩니다.',
+  privacyDriverTitle:'기사 요청', privacyDriverBody:'입력한 이름, 이메일과 일정은 답변을 위해 선택한 기사와 WanderMind에 이메일로 한 번 전달됩니다. 요청 본문은 웹사이트 데이터베이스에 저장하지 않습니다. 공개 댓글에 개인 여행 정보를 남기지 마세요.',
+  privacyAccountTitle:'계정 및 AI 계획', privacyAccountBody:'계정을 만들면 서비스 제공에 필요한 계정 정보와 권리를 저장합니다. AI 계획 기능에 보낸 글은 답변에 사용하는 모델 제공업체가 처리할 수 있습니다. 여권 번호, 결제 정보 등 불필요한 민감 정보는 보내지 마세요.',
+  privacyAdsTitle:'광고 기술', privacyAdsBody:'현재 Google Ads, Google Analytics, Microsoft UET 또는 리타게팅 쿠키를 불러오지 않습니다. 향후 활성화할 경우 먼저 이 안내와 필요한 동의 기능을 업데이트합니다.',
+  privacyControlTitle:'선택과 문의', privacyControlBody:'계정 없이 공개 발리 경로를 볼 수 있으며 브라우저에서 이 사이트의 로컬/세션 저장소를 지울 수 있습니다. 계정 데이터 또는 개인정보 문의는 lfwu22@126.com으로 보내 주세요.',
+  privacyBack:'WanderMind로 돌아가기'
+});
+Object.assign(LANGS.id, {
+  footPrivacy:'Privasi', privacyPageTitle:'Privasi | WanderMind Studio', privacyEyebrow:'Pemberitahuan privasi yang jelas',
+  privacyTitle:'Detail perjalanan Anda tetap milik Anda.', privacyIntro:'WanderMind hanya memproses informasi yang diperlukan untuk akun, perencanaan rute, meneruskan permintaan driver, dan memahami apakah halaman peluncuran kami bekerja.', privacyUpdated:'Diperbarui 25 Agustus 2026',
+  privacyMeasureTitle:'Pengukuran peluncuran anonim', privacyMeasureBody:'Kami hanya mencatat nama peristiwa terbatas, jalur halaman, bahasa, kelas perangkat, dan label kampanye seperti utm_source. Kami tidak mengaitkan ID cookie, IP mentah, kontak, atau sidik jari browser. Label kampanye tersimpan di sessionStorage selama sesi saat ini dan administrator hanya melihat hitungan agregat peristiwa anonim. Aturan retensi 180 hari berlaku: peristiwa yang lebih lama dihapus saat layanan dimulai atau ketika pengukuran maupun ringkasan diakses berikutnya. Nilai pembatasan laju berpseudonim dan berkunci disimpan terpisah, tidak digabungkan dengan peristiwa, dan catatan yang lebih lama dari 24 jam dihapus pada titik pembersihan yang sama.',
+  privacyDriverTitle:'Permintaan driver', privacyDriverBody:'Nama, email, dan detail perjalanan yang Anda kirim diteruskan satu kali melalui email kepada driver terpilih dan WanderMind agar mereka dapat membalas. Isi permintaan tidak disimpan di basis data situs. Jangan menaruh detail perjalanan pribadi di komentar publik.',
+  privacyAccountTitle:'Akun dan perencanaan AI', privacyAccountBody:'Jika membuat akun, kami menyimpan informasi dan hak yang diperlukan untuk layanan tersebut. Teks yang dikirim ke fitur AI dapat diproses oleh penyedia model yang digunakan untuk menjawab. Jangan kirim nomor paspor, kredensial pembayaran, atau data sensitif yang tidak perlu.',
+  privacyAdsTitle:'Teknologi iklan', privacyAdsBody:'Saat ini WanderMind tidak memuat Google Ads, Google Analytics, Microsoft UET, atau cookie penargetan ulang. Jika tag iklan pihak ketiga diaktifkan nanti, pemberitahuan dan kontrol persetujuan yang diperlukan akan diperbarui terlebih dahulu.',
+  privacyControlTitle:'Pilihan Anda', privacyControlBody:'Rute publik Bali dapat dilihat tanpa akun. Anda dapat menghapus penyimpanan lokal atau sesi situs ini melalui browser. Untuk permintaan data akun atau privasi, email lfwu22@126.com.',
+  privacyBack:'Kembali ke WanderMind'
+});
+
 /* ──────────────────────────────────────────────────────
    apply / persist / wire up the picker
    ────────────────────────────────────────────────────── */

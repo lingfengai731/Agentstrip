@@ -151,6 +151,10 @@ https://wandermind.cc/api/*         ← 后端 API
 | GET/POST | `/api/admin/professional-route/orders` | 管理员查看待办并确认解锁 |
 | GET | `/api/referrals/status` | 推荐码、分享链接和积分余额 |
 | POST | `/api/referrals/redeem-professional-route` | 30 推荐积分兑换一次专业路线 |
+| POST | `/api/marketing/events` | 记录严格白名单的匿名首发事件；不接受自由文本、联系方式或稳定用户标识 |
+| GET | `/api/admin/marketing-summary?days=14` | 管理员查看事件、来源和 campaign 聚合（1–90 天） |
+
+管理员登录 AI Tool 的账户中心后，可打开 `/admin/marketing` 查看 7/14/30/90 天首发漏斗；该页面不展示或保存游客联系方式。
 
 完整 API 文档见：**[wandermind/README.md](../wandermind/README.md)**
 

@@ -1,0 +1,22 @@
+{
+  "schema_version": 1,
+  "evidence_id": "ev-20260825T014814Z-marketing-launch-measurement-20260825-local",
+  "task_ref": "marketing-launch-measurement-20260825-local",
+  "owner": "Sol",
+  "captured_at": "2026-08-25T01:48:14Z",
+  "status": "verified",
+  "claim": "Commit 51626d7 adds privacy-minimised launch events, five-language privacy notice, admin aggregate dashboard, fourteen-day campaign log, and Google/Microsoft Search launch guidance without enabling ad spend.",
+  "source": {
+    "kind": "git",
+    "repository": "https://github.com/lingfengai731/Agentstrip.git",
+    "commit": "51626d7e76c8f71a6467c9c31bd55cb08e869199",
+    "branch": "codex/marketing-measurement-20260825",
+    "worktree": "E:\\Agentstrip2-worktree",
+    "dirty": false
+  },
+  "verification": {
+    "command": "node --check four changed JavaScript files; python -B -m unittest discover -s wandermind/backend/tests -v; git diff --check; Playwright 320/390/768/1440 and five languages",
+    "result": "Node PASS; unittest 82 total with 69 pass and 13 isolated-PostgreSQL skips; diff-check PASS; dashboard/privacy zero overflow; delivered false=0 submitted event and delivered true=1."
+  },
+  "notes": "Production predeploy remained old: /privacy and marketing-events.js returned 404. PostgreSQL behavior requires GitHub isolated CI before merge. Luna review first returned NO-GO on three P1, fixes were applied, targeted frozen re-review returned GO with no P0/P1."
+}
