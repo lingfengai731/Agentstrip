@@ -1,0 +1,22 @@
+{
+  "schema_version": 1,
+  "evidence_id": "ev-20260825T034717Z-d8-metadata-final-20260825-production",
+  "task_ref": "d8-metadata-final-20260825-production",
+  "owner": "Sol",
+  "captured_at": "2026-08-25T03:47:17Z",
+  "status": "verified",
+  "claim": "PR #15 merged as 43ee10f and production now serves p3 with 53 complete five-language D8 records; nine non-Bali or unresolved records have no Bali routing.",
+  "source": {
+    "kind": "git",
+    "repository": "https://github.com/lingfengai731/Agentstrip.git",
+    "commit": "43ee10f2eb9ddf10dd6be48cbddeb5e251dbb90b",
+    "branch": "codex/d8-metadata-evidence-20260825",
+    "worktree": "E:\\Agentstrip2-worktree",
+    "dirty": false
+  },
+  "verification": {
+    "command": "image-intake PASS; 83-test unittest; GitHub PostgreSQL run 32805986033; production manifest and rights 118/118; Playwright five languages x 320/390/768/1440 plus Broken Beach picker and console",
+    "result": "PASS: CI success; production p3; 53 complete D8; 9 isolated and 0 routed; 20/20 language-width cases; 47 gallery cards; Broken Beach 1600x1067; zero console errors/warnings."
+  },
+  "notes": "No image, hash, optimized path, rights, environment variable, database, user, entitlement, payment, admin content or email write changed. Luna Bacon 01a036e7-3235-7591-9505-258aa79279f1 remained running after the 10-minute baseline plus 2-minute convergence window and was closed with shutdown; no Luna GO is claimed. Earlier Pasteur returned completed/blocked on worktree drift and James ended shutdown as already recorded."
+}
