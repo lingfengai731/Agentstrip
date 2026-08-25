@@ -22,6 +22,7 @@ Same interface as before. Internally:
 """
 import os
 import sqlite3
+import time
 from pathlib import Path
 
 # ─── Backend selection ───────────────────────────────────────
@@ -337,10 +338,61 @@ def init_db():
             "ON driver_request_rate_limits(updated_at)"
         )
 
+        # Privacy-minimised launch measurement. Events contain only a bounded
+        # event name, page path and campaign labels; no contact details, raw IP,
+        # cookie identifier or browser fingerprint is stored.
+        conn.execute(f"""
+            CREATE TABLE IF NOT EXISTS marketing_events (
+                id            TEXT PRIMARY KEY,
+                event_name    TEXT NOT NULL,
+                page_path     TEXT NOT NULL,
+                source        TEXT DEFAULT '',
+                medium        TEXT DEFAULT '',
+                campaign      TEXT DEFAULT '',
+                content       TEXT DEFAULT '',
+                lang          TEXT DEFAULT 'en',
+                device_class  TEXT DEFAULT '',
+                created_at    {ts_type} NOT NULL
+            )
+        """)
+        conn.execute(
+            "CREATE INDEX IF NOT EXISTS idx_marketing_events_created "
+            "ON marketing_events(created_at)"
+        )
+        conn.execute(
+            "CREATE INDEX IF NOT EXISTS idx_marketing_events_name_created "
+            "ON marketing_events(event_name,created_at)"
+        )
+        conn.execute(f"""
+            CREATE TABLE IF NOT EXISTS marketing_event_rate_limits (
+                client_key         TEXT PRIMARY KEY,
+                window_started_at  {ts_type} NOT NULL,
+                request_count      {ts_type} NOT NULL DEFAULT 0,
+                updated_at         {ts_type} NOT NULL
+            )
+        """)
+        conn.execute(
+            "CREATE INDEX IF NOT EXISTS idx_marketing_event_limits_updated "
+            "ON marketing_event_rate_limits(updated_at)"
+        )
+
         # Commit table/index creation BEFORE running migrations. On Postgres a
         # failing ALTER (e.g. column already exists) aborts the whole transaction;
         # without this commit the subsequent rollback would also undo any table
         # created above (this is exactly how guest_usage went missing in prod).
+        conn.commit()
+
+        # Retention cleanup also runs at service startup. Request-time cleanup
+        # in main.py handles long-running instances between restarts.
+        now = int(time.time())
+        conn.execute(
+            "DELETE FROM marketing_event_rate_limits WHERE updated_at < ?",
+            (now - 24 * 60 * 60,),
+        )
+        conn.execute(
+            "DELETE FROM marketing_events WHERE created_at < ?",
+            (now - 180 * 24 * 60 * 60,),
+        )
         conn.commit()
 
         # Legacy migrations: add columns on pre-existing tables (both backends)

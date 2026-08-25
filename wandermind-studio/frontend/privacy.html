@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title data-i18n="privacyPageTitle">Privacy | WanderMind Studio</title>
+  <meta name="description" content="How WanderMind handles account, route, driver-request and anonymous launch measurement data.">
+  <link rel="canonical" href="https://wandermind.cc/privacy">
+  <link rel="icon" type="image/png" href="assets/images/logo-mark-256.png">
+  <style>
+    :root { color-scheme: light; --ink:#172a2d; --muted:#5f6f72; --paper:#f7f3e8; --card:#fffdf8; --line:#d9ded8; --teal:#0e7467; --yellow:#f4bf2a; }
+    * { box-sizing:border-box; }
+    body { margin:0; color:var(--ink); background:var(--paper); font:16px/1.65 system-ui,-apple-system,"Segoe UI",sans-serif; }
+    a { color:inherit; }
+    .privacy-nav { position:sticky; top:0; z-index:5; display:flex; align-items:center; justify-content:space-between; gap:16px; padding:14px max(20px,calc((100vw - 1080px)/2)); background:rgba(247,243,232,.94); border-bottom:1px solid rgba(23,42,45,.1); backdrop-filter:blur(12px); }
+    .privacy-brand { display:inline-flex; align-items:center; gap:10px; text-decoration:none; font-weight:800; letter-spacing:.01em; }
+    .privacy-brand img { width:34px; height:34px; }
+    .privacy-nav-actions { display:flex; align-items:center; gap:10px; }
+    .privacy-nav select, .privacy-back { min-height:40px; border:1px solid var(--line); border-radius:999px; background:#fff; color:var(--ink); padding:0 14px; font:inherit; }
+    .privacy-back { display:inline-flex; align-items:center; text-decoration:none; font-size:14px; font-weight:700; }
+    .privacy-hero { position:relative; overflow:hidden; padding:84px 20px 56px; background:linear-gradient(135deg,#153b3b 0%,#0f665c 62%,#c38d17 140%); color:#fff; }
+    .privacy-hero::after { content:""; position:absolute; width:360px; height:360px; right:-110px; top:-180px; border:1px solid rgba(255,255,255,.22); border-radius:50%; box-shadow:0 0 0 55px rgba(255,255,255,.035),0 0 0 110px rgba(255,255,255,.025); }
+    .privacy-hero-inner { position:relative; z-index:1; max-width:900px; margin:auto; }
+    .privacy-eyebrow { margin:0 0 14px; color:#f9d66f; font-size:12px; font-weight:800; letter-spacing:.14em; text-transform:uppercase; }
+    h1 { max-width:720px; margin:0; font-family:Georgia,"Times New Roman",serif; font-size:clamp(38px,7vw,72px); line-height:1.04; font-weight:500; }
+    .privacy-intro { max-width:690px; margin:24px 0 12px; color:rgba(255,255,255,.86); font-size:clamp(16px,2.2vw,20px); }
+    .privacy-updated { margin:0; color:rgba(255,255,255,.62); font-size:13px; }
+    main { max-width:1080px; margin:0 auto; padding:52px 20px 76px; }
+    .privacy-grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:18px; }
+    .privacy-card { padding:28px; border:1px solid var(--line); border-radius:18px; background:var(--card); box-shadow:0 8px 28px rgba(23,42,45,.05); }
+    .privacy-card:first-child { grid-column:1/-1; border-top:4px solid var(--yellow); }
+    .privacy-card h2 { margin:0 0 10px; font-size:20px; line-height:1.3; }
+    .privacy-card p { margin:0; color:var(--muted); }
+    .privacy-card a { color:var(--teal); font-weight:700; }
+    footer { padding:24px 20px; border-top:1px solid var(--line); text-align:center; color:var(--muted); font-size:13px; }
+    @media (max-width:720px) {
+      .privacy-nav { padding:10px 14px; }
+      .privacy-brand span { display:none; }
+      .privacy-back { padding:0 11px; font-size:12px; }
+      .privacy-nav select { max-width:112px; padding:0 8px; }
+      .privacy-hero { padding:56px 20px 42px; }
+      .privacy-grid { grid-template-columns:1fr; }
+      .privacy-card:first-child { grid-column:auto; }
+      .privacy-card { padding:22px; }
+    }
+    @media (prefers-reduced-motion:reduce) { * { scroll-behavior:auto !important; } }
+  </style>
+</head>
+<body>
+  <nav class="privacy-nav" aria-label="Primary">
+    <a class="privacy-brand" href="index.html"><img src="assets/images/logo-mark-256.png" alt=""><span>WanderMind Studio</span></a>
+    <div class="privacy-nav-actions">
+      <select id="langPicker" aria-label="Language">
+        <option value="en">English</option><option value="zh">中文</option><option value="ja">日本語</option><option value="ko">한국어</option><option value="id">Bahasa</option>
+      </select>
+      <a class="privacy-back" href="index.html" data-i18n="privacyBack">Back to WanderMind</a>
+    </div>
+  </nav>
+
+  <header class="privacy-hero">
+    <div class="privacy-hero-inner">
+      <p class="privacy-eyebrow" data-i18n="privacyEyebrow">Plain-language privacy notice</p>
+      <h1 data-i18n="privacyTitle">Your trip details should stay yours.</h1>
+      <p class="privacy-intro" data-i18n="privacyIntro">WanderMind collects only what is needed to run accounts, plan routes, relay a driver request and understand whether our own launch pages work.</p>
+      <p class="privacy-updated" data-i18n="privacyUpdated">Updated 25 August 2026</p>
+    </div>
+  </header>
+
+  <main>
+    <div class="privacy-grid">
+      <section class="privacy-card">
+        <h2 data-i18n="privacyMeasureTitle">Anonymous launch measurement</h2>
+        <p data-i18n="privacyMeasureBody">We record a limited event name, page path, language, device class and campaign labels such as utm_source. We do not attach a cookie ID, raw IP address, contact detail or browser fingerprint. Campaign labels stay in session storage for the current browser session; anonymous events are shown to administrators only as aggregate counts. A 180-day retention rule applies: older events are deleted at service startup or during later measurement or summary access. To prevent abuse, the server derives a keyed pseudonymous rate-limit value from the request address; it is kept separately, never joined to events, and entries older than 24 hours are removed by the same cleanup points.</p>
+      </section>
+      <section class="privacy-card">
+        <h2 data-i18n="privacyDriverTitle">Driver requests</h2>
+        <p data-i18n="privacyDriverBody">The name, email and itinerary details you submit are relayed once by email to the selected driver and WanderMind so they can reply. The request body is not stored in our website database. Do not place private trip details in public comments.</p>
+      </section>
+      <section class="privacy-card">
+        <h2 data-i18n="privacyAccountTitle">Accounts and AI planning</h2>
+        <p data-i18n="privacyAccountBody">If you create an account, we store the details and entitlements required to provide it. Text you send to AI planning features may be processed by the model providers used to answer the request. Avoid submitting passport numbers, payment credentials or other unnecessary sensitive data.</p>
+      </section>
+      <section class="privacy-card">
+        <h2 data-i18n="privacyAdsTitle">Advertising technology</h2>
+        <p data-i18n="privacyAdsBody">WanderMind currently does not load Google Ads, Google Analytics, Microsoft UET or retargeting cookies. If third-party advertising tags are enabled later, this notice and the required consent controls will be updated before activation.</p>
+      </section>
+      <section class="privacy-card">
+        <h2 data-i18n="privacyControlTitle">Your choices</h2>
+        <p data-i18n="privacyControlBody">You can browse public Bali routes without an account. You may clear this site’s local or session storage in your browser. For an account-data or privacy request, email lfwu22@126.com.</p>
+      </section>
+    </div>
+  </main>
+
+  <footer>© 2026 WanderMind Studio · <a href="privacy.html" data-i18n="footPrivacy">Privacy</a></footer>
+  <script src="assets/js/i18n.js?v=p64"></script>
+  <script src="assets/js/marketing-events.js?v=p2"></script>
+</body>
+</html>

@@ -2704,11 +2704,11 @@ const AUTH_EXTRA = {
 Object.keys(AUTH_EXTRA).forEach(lang => Object.assign(TOOL_I18N[lang], AUTH_EXTRA[lang]));
 
 const ACCOUNT_ADMIN_EXTRA = {
-  en: { accountTitle:'My account', accountAdminBadge:'Admin', accountPortfolioTitle:'Portfolio Content Manager', accountPortfolioSub:'Check object storage, upload approved images, and manage what is published.', accountPortfolioOpen:'Open content manager' },
-  zh: { accountTitle:'我的账户', accountAdminBadge:'管理员', accountPortfolioTitle:'Portfolio 内容管理器', accountPortfolioSub:'检查对象存储、上传已获授权的图片，并管理已发布内容。', accountPortfolioOpen:'打开内容管理器' },
-  ja: { accountTitle:'マイアカウント', accountAdminBadge:'管理者', accountPortfolioTitle:'Portfolio コンテンツ管理', accountPortfolioSub:'ストレージを確認し、許可済み画像のアップロードと公開管理を行います。', accountPortfolioOpen:'コンテンツ管理を開く' },
-  ko: { accountTitle:'내 계정', accountAdminBadge:'관리자', accountPortfolioTitle:'Portfolio 콘텐츠 관리자', accountPortfolioSub:'개체 저장소를 확인하고 승인된 이미지를 업로드해 공개 상태를 관리합니다.', accountPortfolioOpen:'콘텐츠 관리자 열기' },
-  id: { accountTitle:'Akun saya', accountAdminBadge:'Admin', accountPortfolioTitle:'Pengelola Konten Portfolio', accountPortfolioSub:'Periksa penyimpanan objek, unggah gambar yang disetujui, dan kelola konten terbit.', accountPortfolioOpen:'Buka pengelola konten' }
+  en: { accountTitle:'My account', accountAdminBadge:'Admin', accountPortfolioTitle:'Portfolio Content Manager', accountPortfolioSub:'Check object storage, upload approved images, and manage what is published.', accountPortfolioOpen:'Open content manager', accountMarketingTitle:'Launch measurement', accountMarketingSub:'Review anonymous visits, route interest and delivered driver requests.', accountMarketingOpen:'Open measurement' },
+  zh: { accountTitle:'我的账户', accountAdminBadge:'管理员', accountPortfolioTitle:'Portfolio 内容管理器', accountPortfolioSub:'检查对象存储、上传已获授权的图片，并管理已发布内容。', accountPortfolioOpen:'打开内容管理器', accountMarketingTitle:'推广数据', accountMarketingSub:'查看匿名访问、路线兴趣和成功送达的司机请求。', accountMarketingOpen:'打开推广数据' },
+  ja: { accountTitle:'マイアカウント', accountAdminBadge:'管理者', accountPortfolioTitle:'Portfolio コンテンツ管理', accountPortfolioSub:'ストレージを確認し、許可済み画像のアップロードと公開管理を行います。', accountPortfolioOpen:'コンテンツ管理を開く', accountMarketingTitle:'ローンチ計測', accountMarketingSub:'匿名の訪問、ルートへの関心、配信済みドライバー依頼を確認します。', accountMarketingOpen:'計測を開く' },
+  ko: { accountTitle:'내 계정', accountAdminBadge:'관리자', accountPortfolioTitle:'Portfolio 콘텐츠 관리자', accountPortfolioSub:'개체 저장소를 확인하고 승인된 이미지를 업로드해 공개 상태를 관리합니다.', accountPortfolioOpen:'콘텐츠 관리자 열기', accountMarketingTitle:'출시 측정', accountMarketingSub:'익명 방문, 경로 관심, 전달된 기사 요청을 확인합니다.', accountMarketingOpen:'측정 열기' },
+  id: { accountTitle:'Akun saya', accountAdminBadge:'Admin', accountPortfolioTitle:'Pengelola Konten Portfolio', accountPortfolioSub:'Periksa penyimpanan objek, unggah gambar yang disetujui, dan kelola konten terbit.', accountPortfolioOpen:'Buka pengelola konten', accountMarketingTitle:'Pengukuran peluncuran', accountMarketingSub:'Tinjau kunjungan anonim, minat rute, dan permintaan driver yang terkirim.', accountMarketingOpen:'Buka pengukuran' }
 };
 Object.keys(ACCOUNT_ADMIN_EXTRA).forEach(lang => Object.assign(TOOL_I18N[lang], ACCOUNT_ADMIN_EXTRA[lang]));
 
@@ -3512,6 +3512,11 @@ async function openAccountModal() {
             <strong>${escapeHtml(T.accountPortfolioTitle)}</strong>
             <p style="font-size:13px;color:var(--ws-ink-3);margin:6px 0 10px">${escapeHtml(T.accountPortfolioSub)}</p>
             <a class="ws-action-btn secondary" href="admin/portfolio" style="margin:0;text-decoration:none;display:flex;justify-content:center;align-items:center;gap:8px"><span class="fa fa-images"></span> ${escapeHtml(T.accountPortfolioOpen)}</a>
+          </section>
+          <section style="margin-top:12px;padding:14px;border:1px solid var(--ws-border);border-radius:12px;background:var(--ws-surface)">
+            <strong>${escapeHtml(T.accountMarketingTitle)}</strong>
+            <p style="font-size:13px;color:var(--ws-ink-3);margin:6px 0 10px">${escapeHtml(T.accountMarketingSub)}</p>
+            <a class="ws-action-btn secondary" href="admin/marketing" style="margin:0;text-decoration:none;display:flex;justify-content:center;align-items:center;gap:8px"><span class="fa fa-line-chart"></span> ${escapeHtml(T.accountMarketingOpen)}</a>
           </section>
           <section style="margin-top:18px">
             <strong>${zh ? '待确认的专业路线订单' : 'Pending professional-route orders'}</strong>

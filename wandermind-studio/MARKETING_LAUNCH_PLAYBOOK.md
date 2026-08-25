@@ -1,7 +1,9 @@
 # WanderMind Bali 首发推广手册
 
-版本：2026-08-22
+版本：2026-08-25
 目标：用最少内容验证真实访问、路线兴趣和司机需求，不等网站“永远完美”才开始传播。
+
+配套记录表：`MARKETING_14_DAY_LOG.csv`。发布当天填写日期；管理员登录后从 `/admin/marketing` 查看 7/14/30/90 天聚合数据并抄入记录表，不在表格中记录游客姓名、邮箱或行程正文。
 
 ## 1. 首发定位与唯一转化路径
 
@@ -173,7 +175,80 @@ Instagram/TikTok：`https://wandermind.cc/bali.html?utm_source=tiktok&utm_medium
 
 若平台不允许外链，使用账号主页中平台允许的链接，不在字幕中使用规避审核的联系方式。
 
-## 7. 14 天最小传播计划
+## 7. Google / Microsoft 浏览器搜索推广
+
+### 它在浏览器里以什么形式出现
+
+浏览器本身不是购买入口。面向 Chrome/Google 用户，第一阶段使用 **Google Ads 搜索广告**；面向 Edge/Bing 用户，使用 **Microsoft Advertising 搜索广告**。两者都是用户主动搜索“Bali itinerary / 巴厘岛路线 / Bali driver”等词时出现的文字广告，再进入 WanderMind 的 Bali 或司机需求页。
+
+第一阶段不使用浏览器扩展、网页推送弹窗、Performance Max、展示广告或再营销。WanderMind 还没有足够转化样本，不应让自动广告系统在过宽的版位中消耗预算。
+
+### 上线顺序
+
+1. 先部署本站第一方匿名事件统计，并确认 `/privacy` 可访问。
+2. 只开 Google Search 小额测试；先观察搜索词、点击和站内动作。
+3. 找到有专业路线或司机表单动作的关键词后，再把胜出广告组导入 Microsoft Advertising。
+4. 导入后逐项复核预算、出价、地域、语言、网址、转化目标和网络设置；不得假设 Google 的设置会原样复制。
+5. Google tag 或 Microsoft UET 只有在广告账户 ID、隐私披露和适用的同意机制确认后才启用；当前版本不加载这些第三方标签。
+
+### 首批两个广告组
+
+| 广告组 | 建议关键词（词组/完全匹配起步） | 落地页 | 主要站内动作 |
+|---|---|---|---|
+| 中文路线 | 巴厘岛路线规划、巴厘岛行程安排、巴厘岛自由行路线、巴厘岛 7 天游 | `https://wandermind.cc/bali.html?utm_source=google&utm_medium=cpc&utm_campaign=bali_search_zh_01&utm_content=route` | `bali_public_route_select`、`bali_professional_route_start` |
+| English route / driver | bali itinerary planner、bali route planner、bali local driver、bali private driver | 路线词进入 `bali.html`；明确司机词进入 `find-driver.html`，使用 `utm_campaign=bali_search_en_01` | `bali_professional_route_start`、`driver_form_start`、`driver_request_submitted` |
+
+Microsoft 版本只把 `utm_source` 改为 `bing`，其余 campaign/content 命名保持一致，便于对比。
+
+### 首批广告文案草稿
+
+中文标题可组合：
+
+- 巴厘岛路线先按区域排
+- 免费比较 6 种路线方向
+- 需要司机时直接带入行程
+
+中文说明：
+
+> 先比较海岸、乌布、火山与文化路线，再按日期和节奏匹配。需要当地司机时，用同一份路线提交需求。
+
+英文标题可组合：
+
+- Plan Bali By Region
+- Compare 6 Bali Route Styles
+- Carry Your Route To A Local Driver
+
+英文说明：
+
+> Compare complete public route directions, then match a trip to your dates and pace. Send one structured driver request when needed.
+
+不要写“即时预订”“最低价”“保证有车”“最佳司机”或未经证实的安全、价格和可用性承诺。
+
+### 否定关键词起始表
+
+`job`、`jobs`、`hiring`、`salary`、`vacancy`、`free download`、`template`、`wallpaper`、`map download`、`apk`、`crack`、`course`、`license`、`driver job`。
+
+每天查看真实搜索词报告；只排除明显错误意图，不把 `free` 单独全局否定，因为 WanderMind 的公共路线本身可免费浏览。
+
+### 预算门禁
+
+建议的第一轮只是 **7 天、合计 ¥350–700（约 ¥50–100/天）** 的可撤回实验。该数字是计划上限，不代表已经授权消费。创建广告账户、绑定付款方式、开启 campaign 或产生任何花费之前，必须由站长确认投放地区、币种与总预算。
+
+### 投放前验收
+
+- 带 UTM 打开 Bali/司机页后，页面功能、语言切换和移动布局正常。
+- 第一方事件接口只记录事件、页面、语言、设备类和 campaign 标签，不记录联系方式、Cookie ID、原始 IP 或浏览器指纹。
+- 管理员可从 `/admin/marketing` 直接查看聚合事件、来源和 campaign；页面只调用管理员接口 `/api/admin/marketing-summary?days=14`。
+- `/privacy` 明确披露当前统计方式，并写明尚未加载 Google tag / Microsoft UET。
+- 广告点击后的首要转化是路线选择、专业路线入口和司机表单，不把普通页面访问伪装成成交。
+
+官方参考：
+
+- Google Search 关键词与否定关键词：`https://support.google.com/google-ads/answer/1704371?hl=en`、`https://support.google.com/google-ads/answer/105671?hl=en`
+- Google 网站转化与 Google tag：`https://support.google.com/google-ads/answer/1722022?hl=en`、`https://support.google.com/google-ads/answer/12002338?hl=en`
+- Microsoft Search Ads、UET 与 Google Import：`https://www.about.ads.microsoft.com/en/solutions/ad-products-formats/search`、`https://learn.microsoft.com/en-us/advertising/guides/google-ads-import?view=bingads-13`
+
+## 8. 14 天最小传播计划
 
 | 日期 | 动作 | 目的 |
 |---|---|---|
@@ -187,14 +262,14 @@ Instagram/TikTok：`https://wandermind.cc/bali.html?utm_source=tiktok&utm_medium
 
 不要在首周一次性制作十几条内容。先发布、观察、再复用表现最好的钩子和画面。
 
-## 8. 每周复盘表
+## 9. 每周复盘表
 
 | 指标 | 从哪里看 | 说明 |
 |---|---|---|
-| 各 UTM 访问量 | 网站分析工具 | 哪个平台真正带来访问 |
-| Bali 页面到专业路线点击 | 网站事件 | 用户是否理解产品分层 |
-| 司机表单开始数 | 网站事件 | 内容是否带来服务意向 |
-| 司机表单提交数 | 后台请求记录 | 表单是否顺畅、需求是否真实 |
+| 各 UTM 访问量 | 管理员营销汇总 | 哪个平台真正带来访问 |
+| Bali 页面到专业路线点击 | `bali_professional_route_start` | 用户是否理解产品分层 |
+| 司机表单开始数 | `driver_form_start` | 内容是否带来服务意向 |
+| 司机表单提交数 | `driver_request_submitted` | 表单是否顺畅、需求是否真实 |
 | 专业路线解锁数 | 支付/权益记录 | 流量是否产生收入 |
 | 有效司机确认数 | 后台人工台账 | 提交是否能转化为可服务订单 |
 
@@ -205,7 +280,7 @@ Instagram/TikTok：`https://wandermind.cc/bali.html?utm_source=tiktok&utm_medium
 - 有提交、没有司机确认：检查日期、路线可执行性和报价流程。
 - 没有访问：先改封面、前 2 秒和分发频次，不先重写网站。
 
-## 9. 平台规范参考
+## 10. 平台规范参考
 
 - TikTok Creative Codes：竖屏、高分辨率、安全区、hook–body–close 与声音设计。
   `https://ads.tiktok.com/business/en-US/creative-codes`
