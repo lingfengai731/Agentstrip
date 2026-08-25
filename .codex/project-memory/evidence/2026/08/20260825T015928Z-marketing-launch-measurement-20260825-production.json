@@ -1,0 +1,22 @@
+{
+  "schema_version": 1,
+  "evidence_id": "ev-20260825T015928Z-marketing-launch-measurement-20260825-production",
+  "task_ref": "marketing-launch-measurement-20260825-production",
+  "owner": "Sol",
+  "captured_at": "2026-08-25T01:59:28Z",
+  "status": "verified",
+  "claim": "Production deployment of privacy-first launch measurement is live at merge commit 960cb5b; privacy, marketing script, admin shell, sitemap and API callback verified.",
+  "source": {
+    "kind": "git",
+    "repository": "https://github.com/lingfengai731/Agentstrip.git",
+    "commit": "960cb5b82d6be6142437f7058ff2322f26288213",
+    "branch": "codex/marketing-production-evidence-20260825",
+    "worktree": "E:\\Agentstrip2-worktree",
+    "dirty": false
+  },
+  "verification": {
+    "command": "Invoke-WebRequest production URLs; Playwright five languages and 320/390/768/1440; marketing API valid/invalid/admin auth probes",
+    "result": "health/privacy/script/admin/sitemap=200; valid event=204; invalid event=400; unauth admin API=401; five languages correct; no overflow at 320/390/768/1440; console errors=0; admin redirect opened login UI after 500ms."
+  },
+  "notes": "One anonymous production smoke event was written with campaign=launch_measurement_20260825 and source=release_qa. No driver email, payment, order, user data, or secret was touched."
+}
