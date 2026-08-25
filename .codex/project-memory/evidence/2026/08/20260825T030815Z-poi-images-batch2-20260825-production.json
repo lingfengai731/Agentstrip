@@ -1,0 +1,22 @@
+{
+  "schema_version": 1,
+  "evidence_id": "ev-20260825T030815Z-poi-images-batch2-20260825-production",
+  "task_ref": "poi-images-batch2-20260825-production",
+  "owner": "Sol",
+  "captured_at": "2026-08-25T03:08:15Z",
+  "status": "verified",
+  "claim": "PR #13 merged as f402abd and production serves five additional exact licensed Bali POI images; the localized Portfolio now exposes 10 licensed exact-place cards, 47 total cards, and manifest/rights counts of 118.",
+  "source": {
+    "kind": "git",
+    "repository": "https://github.com/lingfengai731/Agentstrip.git",
+    "commit": "f402abda3bcdbd8d9655e239555363c7103ed2dd",
+    "branch": "codex/poi-images-batch2-evidence-20260825",
+    "worktree": "E:\\Agentstrip2-worktree",
+    "dirty": false
+  },
+  "verification": {
+    "command": "image-intake; 82-test unittest discover; GitHub PostgreSQL run 32802631710; production HTTP assets; Edge Playwright 5 languages x 4 widths plus modal and image decode checks",
+    "result": "PASS: intake; 82 OK with 13 expected PostgreSQL skips; CI success; p2/118 deployed; 20/20 responsive-language cases, 10/10 images decoded, zero console errors/warnings."
+  },
+  "notes": "Luna reviewer James 01a036ce-ab95-72e1-9f04-4f0e1f986a23 remained running after the 10-minute baseline and 2-minute convergence window, then was closed and notified shutdown; no Luna GO is claimed. No environment-variable, database, payment, email, entitlement or user-data writes occurred."
+}

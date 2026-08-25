@@ -351,3 +351,12 @@
 - Luna 审查回调：Lovelace（`01a03679-c3a0-7670-9434-6221078920f8`，正式 `luna_worker` / `gpt-5.6-luna` / `max`）首轮因工作树按计划漂移返回 NO-GO，并准确找出格式化手机号过滤、留存清理语义、honeypot 成功计数三个 P1；Sol 修复后冻结工作树，Lovelace 约 10 分钟 targeted re-review 返回 completed / GO，P0/P1 为 0。Sol 随后进一步把页面路径收紧为公开页白名单并复跑全部验收。
 - QA 回调：产品提交 `51626d7`；完整本地 discover 82 项中 69 通过、13 项隔离 PostgreSQL 测试按设计 skip，4 个 JavaScript 语法检查和 diff check 通过。Playwright 验证管理员统计页及隐私页在 320/390/768/1440 零横向溢出、五语言正确、控制台 0 error/warning；司机模拟 `delivered:false` 不记录提交，`delivered:true` 才记录一次。
 - 生产边界：提交前公开生产 `/privacy` 与 `marketing-events.js` 均为 404，证明本地改动尚未上线。GitHub PostgreSQL CI、合并、Render 自动部署和生产 E2E 必须作为下一发布回调，未完成前不得写成生产一致。
+
+## 2026-08-25 Second exact POI image batch callback
+
+- 路由：large / L2，发布为 L3。Sol 在隔离工作树 `E:\Agentstrip2-worktree` 负责图片来源与许可判断、Portfolio 集成、GitHub、部署和最终验收；旧脏工作树 `E:\Agentstrip` 未触碰。
+- 图片与产品回调：新增 Seminyak Beach、Jimbaran Bay、Broken Beach、Jatiluwih Rice Terraces、Tirta Gangga 五张 Wikimedia Commons 精确地点图片，保留原图、1600px WebP、480px 缩略图、SHA-256、创作者、来源页、CC 许可证和 share-alike 改编说明。Bali Portfolio 现在动态显示 10 张外部许可精确地点图片，共 47 张卡；手机默认仍只显示 6 张，桌面 12 张。
+- Luna 回调：James（`01a036ce-ab95-72e1-9f04-4f0e1f986a23`，正式 `luna_worker` / `gpt-5.6-luna` / `max`）对固定提交 `0dfff62` 做只读审查；达到 10 分钟基线并追加 2 分钟立即收敛窗口后仍为 `running`，关闭前状态为 `running`，最终通知为 `shutdown`。不得写成 Luna 完成或 GO。早先 Pasteur（`01a036a7-91e5-7123-913c-43d71d9e4cb1`）因父线程产生目标 diff 而按 STOP 条件返回 blocked，未修改文件。
+- QA 回调：图片 intake PASS；完整本地 discover 82 项通过、13 项隔离 PostgreSQL 测试按设计 skip；diff check PASS。PR #13 PostgreSQL integration run `32802631710` 成功。生产 Edge/Playwright 完成五语言 × 320/390/768/1440 共 20/20，零横向溢出、零 console/page error；五语言 Broken Beach 标题、可见署名与 CC 链接正确，10/10 缩略图解码成功。
+- GitHub/生产回调：产品提交 `0dfff626fea211d41e52ed4448216983da73ac14` 经 PR #13 合并为 `f402abda3bcdbd8d9655e239555363c7103ed2dd`。Render 自动部署后公开 Bali 使用 `20260825p2`；publish/rights manifest 均为 118，唯一发布哈希 118，五张新 WebP 与五张缩略图端点均返回 200 `image/webp`。未修改 Render 变量、数据库、支付、权益、管理员内容、真实用户或司机邮件。
+- 下一回调：按 `MARKETING_LAUNCH_PLAYBOOK.md` 开始首日有 UTM 的小批量传播；产品侧继续剩余 19 条五语言 D8 元数据与供应商/司机路线级报价核验。付费广告、支付/积分、管理员发布和真实邮件生产写仍保持独立门禁。
