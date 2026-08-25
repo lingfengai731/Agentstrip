@@ -360,3 +360,12 @@
 - QA 回调：图片 intake PASS；完整本地 discover 82 项通过、13 项隔离 PostgreSQL 测试按设计 skip；diff check PASS。PR #13 PostgreSQL integration run `32802631710` 成功。生产 Edge/Playwright 完成五语言 × 320/390/768/1440 共 20/20，零横向溢出、零 console/page error；五语言 Broken Beach 标题、可见署名与 CC 链接正确，10/10 缩略图解码成功。
 - GitHub/生产回调：产品提交 `0dfff626fea211d41e52ed4448216983da73ac14` 经 PR #13 合并为 `f402abda3bcdbd8d9655e239555363c7103ed2dd`。Render 自动部署后公开 Bali 使用 `20260825p2`；publish/rights manifest 均为 118，唯一发布哈希 118，五张新 WebP 与五张缩略图端点均返回 200 `image/webp`。未修改 Render 变量、数据库、支付、权益、管理员内容、真实用户或司机邮件。
 - 下一回调：按 `MARKETING_LAUNCH_PLAYBOOK.md` 开始首日有 UTM 的小批量传播；产品侧继续剩余 19 条五语言 D8 元数据与供应商/司机路线级报价核验。付费广告、支付/积分、管理员发布和真实邮件生产写仍保持独立门禁。
+
+## 2026-08-25 D8 metadata final alignment callback
+
+- 路由：large / L2，发布为 L3。Sol 在隔离工作树 `E:\Agentstrip2-worktree` 负责 D8 证据边界、数据同步、集成、GitHub、部署与生产验收；旧脏工作树 `E:\Agentstrip` 未触碰。
+- Luna 回调：Bacon（`01a036e7-3235-7591-9505-258aa79279f1`，正式 `luna_worker` / `gpt-5.6-luna` / `max`）执行只读 D8 审计；达到 10 分钟基线并追加 2 分钟立即收敛窗口后仍为 `running`，关闭前状态为 `running`，最终通知为 `shutdown`，不得写成 Luna 完成或 GO。早先 Pasteur 已按工作树漂移 STOP 条件完成为 blocked，James 已记录为 shutdown；Sol 独立完成差异与生产验收。
+- 数据回调：14 张既有 Bali 页面路线卡与 publish manifest 的 D8 区域、路线、视觉字段和中英日韩印文案对齐；`rock-ocean-landscape.jpg` 按实景交叉核对为 Broken Beach。5 张文件名明确属于其他目的地、1 张文件名/画面冲突、2 张通用未知海岸图和 1 张仅核验到印度尼西亚国家层级的素材全部保留原图，但清空 Bali region/route/POI 关联。118 个 SHA、优化路径、授权对象和统一审批记录均未改变。
+- QA 回调：图片 intake PASS；完整本地 discover 83 项中 70 通过、13 项隔离 PostgreSQL 测试按设计 skip；diff check 与 24 条目标差异的不可变字段审计通过。GitHub PR #15 的 PostgreSQL integration run `32805986033` 成功。生产 Edge/Playwright 完成五语言 × 320/390/768/1440 共 20/20，零横向溢出；47 张画廊卡在手机默认 6 张、桌面 12 张，Broken Beach 图片解码为 1600×1067，控制台 0 error / 0 warning。
+- GitHub/生产回调：产品提交 `ba0fd093ea6bf0da4ac54f3811dec3bbf5b8be29` 经 PR #15 squash 合并为 `43ee10f2eb9ddf10dd6be48cbddeb5e251dbb90b`。Render 自动部署后公开 Bali 使用 `20260825p3`；publish/rights manifest 均为 118，核心 D8 62 条中 53 条具备完整五语言资料，剩余 9 条全部无 Bali 路由。未修改 Render 变量、数据库、用户、权益、支付、管理员内容或真实司机邮件。
+- 下一回调：网站产品侧已不再因“剩余 19 条 Bali D8”阻塞首发；站长按 `MARKETING_LAUNCH_PLAYBOOK.md` 发布首日小红书 UTM 内容并记录公开 URL。工程侧随后继续 2 个 pending-review POI、3 个 supplier-gated 体验和逐司机路线级报价的来源核验；付费搜索广告仍需账户、付款和预算确认。

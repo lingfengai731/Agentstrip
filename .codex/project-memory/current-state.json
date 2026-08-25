@@ -13,11 +13,11 @@
   },
   "snapshot": {
     "status": "verified",
-    "captured_at": "2026-08-24T17:25:07Z",
+    "captured_at": "2026-08-25T03:46:59Z",
     "captured_by": "codex-sol",
-    "source_commit": "5c66b0f741be83cd678477887bc6111b40052e9f",
-    "source_branch": "codex/poi-images-release-evidence-20260825",
-    "working_tree_at_capture": "clean origin/main merge commit 5c66b0f before release evidence updates",
+    "source_commit": "43ee10f2eb9ddf10dd6be48cbddeb5e251dbb90b",
+    "source_branch": "codex/d8-metadata-evidence-20260825",
+    "working_tree_at_capture": "clean origin/main merge commit 43ee10f before D8 release evidence updates; portfolio and production facts were freshly verified while older subsystems retain their own evidence timestamps",
     "wandermind_bali": {
       "status": "verified",
       "routes": 6,
@@ -34,9 +34,10 @@
         "The Bali route detail now uses a warm paper atlas surface, keeps every public day reachable, previews 12 Portfolio moments before an explicit reveal-all action, and localizes the changed controls across zh/en/ja/ko/id.",
         "Customer-facing route and POI chips no longer expose internal verified labels; verified is silent, while pending and supplier-gated items show localized action copy only.",
         "PR #4 and PR #5 are merged. Production now serves the p61 five-language UI, concise Bali hero with direct public/professional-route choices, real-photo social previews, warm-paper driver presentation and a contact email handoff with zero Chromium mixed-content warnings.",
-        "PR #9 merged as 5c66b0f. Production now serves the 20260825p1 place-picker manifest with exact licensed photos for Campuhan Ridge Walk, Tegallalang Rice Terraces, Ubud Art Market, Melasti Beach and Ubud Palace; 320/390 mobile uses list to visual detail to explicit add."
+        "PR #9 merged as 5c66b0f. Production now serves the 20260825p1 place-picker manifest with exact licensed photos for Campuhan Ridge Walk, Tegallalang Rice Terraces, Ubud Art Market, Melasti Beach and Ubud Palace; 320/390 mobile uses list to visual detail to explicit add.",
+        "PR #13 and PR #15 are merged. Production p3 has 118 publish assets and 118 rights records, 53 complete five-language D8 records, 10 licensed exact-place cards and 47 total gallery cards. Nine non-Bali, conflicting or unresolved records have no Bali region, route or POI links."
       ],
-      "evidence_id": "ev-20260824T172507Z-poi-images-mobile-20260825"
+      "evidence_id": "ev-20260825T034717Z-d8-metadata-final-20260825-production"
     },
     "driver_request_protection": {
       "status": "verified_production",
@@ -81,16 +82,16 @@
       "production_status": "deployed_preview_verified; paid unlock and adjustment mutations were not exercised against production"
     },
     "portfolio_content_manager": {
-      "status": "implementation_verified_and_public_gallery_deployed; 33 D8 assets have complete five-language metadata; launch gallery defaults to 12 moments with an explicit reveal-all action; remaining batch migration pending",
-      "approved_unique_assets": 113,
-      "d8_theme_candidates": 57,
+      "status": "implementation_verified_and_public_gallery_deployed; 53 D8 assets have complete five-language metadata; launch gallery defaults to 6 mobile or 12 desktop moments with an explicit reveal-all action; nine non-Bali or unresolved records are isolated from Bali routing",
+      "approved_unique_assets": 118,
+      "d8_theme_candidates": 62,
       "driver_or_unclassified_assets": 56,
-      "d8_route_linked": 30,
-      "d8_poi_linked": 28,
-      "d8_region_linked": 29,
-      "d8_all_geo_links": 28,
-      "d8_five_language_copy_complete": 33,
-      "d8_five_language_alt_complete": 33,
+      "d8_route_linked": 50,
+      "d8_poi_linked": 34,
+      "d8_region_linked": 47,
+      "d8_all_geo_links": 34,
+      "d8_five_language_copy_complete": 53,
+      "d8_five_language_alt_complete": 53,
       "static_gallery_fallback_assets": 37,
       "verified_capabilities": [
         "multi-file browser upload with progress and SHA-256 duplicate checks",
@@ -102,31 +103,31 @@
         "repeat image-intake scans preserve reviewed manifest version, approval, optimized paths and localized copy for the same SHA-256"
       ],
       "verification": {
-        "product_tests": "65/65 locally in the 77-test suite; 12 isolated PostgreSQL tests skipped by design; GitHub PostgreSQL integration run 32755890569 passed for PR #9",
+        "product_tests": "70/70 locally in the 83-test suite; 13 isolated PostgreSQL tests skipped by design; GitHub PostgreSQL integration run 32805986033 passed for PR #15",
         "image_intake_tests": "pass",
         "node_syntax": "pass",
-        "browser_languages": "zh/en/ja/ko/id route picker title, photo label and confirm action passed deterministic production Edge checks; verified labels remain absent",
+        "browser_languages": "zh/en/ja/ko/id public-route heading and R1 card passed deterministic production Edge checks; Broken Beach remains available with an exact decoded image",
         "browser_widths": "320/390/768/1440 passed with zero document-level horizontal overflow",
-        "browser_console": "zero page errors in the exact-POI production picker matrix; prior full-site production console gate remains valid for p61/p63",
-        "routing_gate": "two exploratory luna_worker audits stopped honestly on parent worktree drift. The immutable 3af4c9c review returned a completed final with P0/P1/P2 all zero and product GO; it self-labeled blocked only because it observed the parent thread's intentional current-state documentation edit, while all four frozen product files remained unchanged."
+        "browser_console": "zero page errors or warnings in the p3 production language, width and Broken Beach picker checks",
+        "routing_gate": "The D8 audit worker Bacon remained running after the 10-minute baseline and 2-minute convergence window, then ended shutdown; no Luna GO is claimed. Sol independently audited the fixed diff, immutable image fields, CI and production E2E."
       },
-      "evidence_id": "ev-20260824T172507Z-poi-images-mobile-20260825",
+      "evidence_id": "ev-20260825T034717Z-d8-metadata-final-20260825-production",
       "batch_boundary": "Only Landscapes, Culture and Experiences belong in D8 Portfolio. People assets primarily belong in Driver Moments; unclassified assets require manual classification. Approval alone does not prove place, route or five-language metadata.",
-      "next_batch": "Continue exact POI sourcing and review the remaining 24 pre-existing D8 candidates; stock images naming Thailand, Hawaii, Greece or Palau must not be relabelled as Bali.",
-      "production_status": "public gallery verified with 12-to-37 reveal; admin-only mutation flow not exercised"
+      "next_batch": "No remaining Bali D8 copy batch is implied by the nine isolated records. Continue only with exact POI sourcing where route value justifies it; never relabel Thailand, Hawaii, Greece, Palau, conflict or unknown imagery as Bali.",
+      "production_status": "p3 public gallery verified with 6-mobile or 12-desktop preview to 47 total cards; admin-only mutation flow not exercised"
     },
     "production": {
       "status": "deployed_verified",
-      "verified_at": "2026-08-24T17:24:31Z",
-      "frontend_matches_commit": "5c66b0f741be83cd678477887bc6111b40052e9f",
+      "verified_at": "2026-08-25T03:45:21Z",
+      "frontend_matches_commit": "43ee10f2eb9ddf10dd6be48cbddeb5e251dbb90b",
       "backend_commit": "unknown",
-      "latest_branch_commit": "5c66b0f741be83cd678477887bc6111b40052e9f",
+      "latest_branch_commit": "43ee10f2eb9ddf10dd6be48cbddeb5e251dbb90b",
       "latest_branch_deployed": true,
       "health": "200 ok",
       "bali_routes": 6,
       "bali_pois": 62,
-      "frontend_asset_marker": "image-publish-manifest.json?v=20260825p1",
-      "branch_frontend_asset_marker": "image-publish-manifest.json?v=20260825p1",
+      "frontend_asset_marker": "image-publish-manifest.json?v=20260825p3",
+      "branch_frontend_asset_marker": "image-publish-manifest.json?v=20260825p3",
       "evidence_ids": [
         "ev-20260816T092243Z-task-20260816-cross-account-recovery",
         "ev-20260816T143048Z-release-baseline-and-roadmap-sync",
@@ -134,7 +135,9 @@
         "ev-20260822T141217Z-task-20260822-production-baseline-after-poi-sync",
         "ev-20260822T154346Z-task-20260822-pr3-production-release",
         "ev-20260823T013842Z-task-20260823-prelaunch-ui-production-release",
-        "ev-20260824T172507Z-poi-images-mobile-20260825"
+        "ev-20260824T172507Z-poi-images-mobile-20260825",
+        "ev-20260825T030815Z-poi-images-batch2-20260825-production",
+        "ev-20260825T034717Z-d8-metadata-final-20260825-production"
       ]
     }
   },
@@ -143,16 +146,16 @@
     "code_isolation": "one account, one worktree, one task branch",
     "integration_gate": "reviewed pull request",
     "integration_pull_request": {
-      "number": 9,
-      "url": "https://github.com/lingfengai731/Agentstrip/pull/9",
+      "number": 15,
+      "url": "https://github.com/lingfengai731/Agentstrip/pull/15",
       "status": "merged",
       "mergeable": true,
-      "head_commit": "980c331093419d9289fccc6d99f86ec222d0aab7",
-      "merge_commit": "5c66b0f741be83cd678477887bc6111b40052e9f",
+      "head_commit": "ba0fd093ea6bf0da4ac54f3811dec3bbf5b8be29",
+      "merge_commit": "43ee10f2eb9ddf10dd6be48cbddeb5e251dbb90b",
       "project_memory_ci": "local project-memory validation passed after production verification",
-      "postgres_integration_ci": "success; run 32755890569",
-      "evidence_id": "ev-20260824T172507Z-poi-images-mobile-20260825",
-      "release_gate": "PR #9 delivered five exact source-licensed POI assets and the mobile visual picker; public production is verified, while paid/admin/real-email mutation flows remain intentionally unexercised"
+      "postgres_integration_ci": "success; run 32805986033",
+      "evidence_id": "ev-20260825T034717Z-d8-metadata-final-20260825-production",
+      "release_gate": "PR #15 aligned the remaining existing Bali D8 records and isolated nine non-Bali or unresolved records; public production p3 is verified, while paid/admin/real-email mutation flows remain intentionally unexercised"
     },
     "render_operations_thread": {
       "work_thread_id": "6a81da9a-1998-83e8-b2ca-34e1f6eb526d",
