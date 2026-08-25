@@ -77,6 +77,7 @@ wandermind-studio/
 | **巴厘岛事实核验** | 62 个 POI 分离“稳定事实已核验”和“实时信息待复核”；R1 主干、R2、R3、R4 与 R6 的免费路线稳定事实已核验；全库 57 个 `verified`、2 个 `pending_review`、3 个 `needs_supplier_confirmation`，均保留出发前 live checks 与供应商门禁 |
 | **巴厘岛视觉数据库** | 默认先展示 12 张实拍；页面自动接入 10 张有来源审计的精确地点图与 37 个原有静态内容位。发布 manifest 中已有 38 张 D8 图片补齐五语言内容，剩余 19 张继续逐图审核。最新精确图覆盖 Seminyak Beach、Jimbaran Bay、Broken Beach、Jatiluwih 与 Tirta Gangga；图片按 Landscapes / Culture / Experiences 三大主题组织，只有地点证据充分的图片才绑定 region、routeIds 和 POI 并进入路线选择或司机交接 |
 | **预算计算器** | 按目的地 / 天数 / 人数 / 风格 / 出发城市估算全程预算 |
+| **司机参考预算** | 找司机页按已确认的 IDR 全天 / 半天公开基线即时计算五语参考费用；机场、换酒店、超时、佩妮达船车与路线附加费继续由司机最终确认 |
 | **平行宇宙** | 同一旅行 3 套方案并排对比（节俭 / 平衡 / 奢华） |
 | **行程管理** | Trip 创建 / 切换 / 持久化（localStorage） |
 | **旅行偏好** | 预算档次 · 旅行风格 · 同行方式，注入每次 AI 对话 |
