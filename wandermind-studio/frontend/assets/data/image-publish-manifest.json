@@ -158,7 +158,8 @@
         "source": "user_global_confirmation",
         "approval_date": "2026-08-05",
         "license_or_owner": "WanderMind user global confirmation"
-      }
+      },
+      "destination": "palau"
     },
     {
       "relative_path": "assets/images/aerial-view-tropical-beach-with-turquoise-ocean-waves.jpg",
@@ -168,9 +169,10 @@
       "sub_category": "bali-landscape",
       "tags": [
         "bali",
-        "landscape"
+        "landscape",
+        "location_unverified"
       ],
-      "location_status": "bali-named",
+      "location_status": "unknown",
       "region_ids": [],
       "route_ids": [],
       "poi_ids": [],
@@ -184,7 +186,8 @@
         "source": "user_global_confirmation",
         "approval_date": "2026-08-05",
         "license_or_owner": "WanderMind user global confirmation"
-      }
+      },
+      "destination": ""
     },
     {
       "relative_path": "assets/images/aerial-view-turquoise-water-boats-phuket-beach-thailand.jpg",
@@ -194,9 +197,10 @@
       "sub_category": "bali-landscape",
       "tags": [
         "bali",
-        "landscape"
+        "landscape",
+        "location_conflict"
       ],
-      "location_status": "bali-named",
+      "location_status": "non_bali_named",
       "region_ids": [],
       "route_ids": [],
       "poi_ids": [],
@@ -210,7 +214,8 @@
         "source": "user_global_confirmation",
         "approval_date": "2026-08-05",
         "license_or_owner": "WanderMind user global confirmation"
-      }
+      },
+      "destination": "phuket-thailand"
     },
     {
       "relative_path": "assets/images/aesthetic-summer-holidays.jpg",
@@ -288,26 +293,57 @@
       "relative_path": "assets/images/bali-10.jpg",
       "web_optimized_path": "assets/images/web/6e8cc0274dcff01f.webp",
       "sha256": "6e8cc0274dcff01f70a2d1a5a22632fbc3550a603a3582a0902d1abf2cfd0073",
-      "category": "landscapes",
-      "sub_category": "bali-landscape",
+      "category": "culture",
+      "sub_category": "art-heritage",
       "tags": [
-        "bali",
-        "landscape"
+        "traveller-moment",
+        "documentary"
       ],
-      "location_status": "bali-named",
+      "location_status": "caption-only",
       "region_ids": [],
-      "route_ids": [],
+      "route_ids": [
+        "R1",
+        "R4"
+      ],
       "poi_ids": [],
       "intended_use": "WanderMind approved project image library; connect only where its destination/category metadata matches.",
       "alt_text": {
-        "zh": "???????",
-        "en": "Bali landscape scene"
+        "zh": "巴厘文化地标",
+        "en": "Balinese cultural landmark",
+        "ja": "バリ文化のランドマーク",
+        "ko": "발리 문화 명소",
+        "id": "Landmark budaya Bali"
       },
       "rights": {
         "status": "user_provided_with_consent",
         "source": "user_global_confirmation",
         "approval_date": "2026-08-05",
         "license_or_owner": "WanderMind user global confirmation"
+      },
+      "destination": "bali",
+      "primary_theme": "culture",
+      "region": "",
+      "area": "",
+      "place_name": "Balinese coastal cultural monument",
+      "place_type": "cultural landmark",
+      "prominence": "supporting",
+      "extension_ids": [],
+      "mood": "reflective",
+      "photography_style": "documentary",
+      "verification_status": "caption-only",
+      "title": {
+        "zh": "巴厘文化地标",
+        "en": "Balinese cultural landmark",
+        "ja": "バリ文化のランドマーク",
+        "ko": "발리 문화 명소",
+        "id": "Landmark budaya Bali"
+      },
+      "description": {
+        "zh": "这是游客在现场能看到的公共艺术与宗教视觉符号。",
+        "en": "A visitor-level view of Bali’s symbolic public art and religious visual language.",
+        "ja": "写真だけでなく、移動・天候・混雑を含む現地の実際を伝える体験です。",
+        "ko": "사진뿐 아니라 이동, 날씨, 혼잡함까지 포함한 실제 현장 경험입니다.",
+        "id": "Pengalaman nyata di lokasi, termasuk perjalanan, cuaca, dan keramaian di balik foto."
       }
     },
     {
@@ -315,25 +351,57 @@
       "web_optimized_path": "assets/images/web/9455a6e3607e34b2.webp",
       "sha256": "9455a6e3607e34b27ea7e79c91e5f1e2c3a647b75d7c3d4a5a0fc2e95a8a3b5e",
       "category": "landscapes",
-      "sub_category": "bali-landscape",
+      "sub_category": "ocean-beach",
       "tags": [
-        "bali",
-        "landscape"
+        "traveller-moment",
+        "documentary"
       ],
-      "location_status": "bali-named",
+      "location_status": "caption-only",
       "region_ids": [],
-      "route_ids": [],
+      "route_ids": [
+        "R1",
+        "R3",
+        "R6"
+      ],
       "poi_ids": [],
       "intended_use": "WanderMind approved project image library; connect only where its destination/category metadata matches.",
       "alt_text": {
-        "zh": "???????",
-        "en": "Bali landscape scene"
+        "zh": "真实的巴厘岛海滩",
+        "en": "A real Bali beach day",
+        "ja": "ありのままのバリのビーチ",
+        "ko": "있는 그대로의 발리 해변",
+        "id": "Pantai Bali apa adanya"
       },
       "rights": {
         "status": "user_provided_with_consent",
         "source": "user_global_confirmation",
         "approval_date": "2026-08-05",
         "license_or_owner": "WanderMind user global confirmation"
+      },
+      "destination": "bali",
+      "primary_theme": "landscapes",
+      "region": "",
+      "area": "",
+      "place_name": "Bali beach",
+      "place_type": "beach landscape",
+      "prominence": "supporting",
+      "extension_ids": [],
+      "mood": "relaxed",
+      "photography_style": "traveller documentary",
+      "verification_status": "caption-only",
+      "title": {
+        "zh": "真实的巴厘岛海滩",
+        "en": "A real Bali beach day",
+        "ja": "ありのままのバリのビーチ",
+        "ko": "있는 그대로의 발리 해변",
+        "id": "Pantai Bali apa adanya"
+      },
+      "description": {
+        "zh": "遮阳伞、旗帜、海浪和其他游客，都是现场本来的样子。",
+        "en": "Umbrellas, flags, surf and other visitors are part of the actual scene.",
+        "ja": "写真だけでなく、移動・天候・混雑を含む現地の実際を伝える体験です。",
+        "ko": "사진뿐 아니라 이동, 날씨, 혼잡함까지 포함한 실제 현장 경험입니다.",
+        "id": "Pengalaman nyata di lokasi, termasuk perjalanan, cuaca, dan keramaian di balik foto."
       }
     },
     {
@@ -393,78 +461,176 @@
       "relative_path": "assets/images/bali-13.jpg",
       "web_optimized_path": "assets/images/web/4671473d0993bb44.webp",
       "sha256": "4671473d0993bb4488856f1aca1e259840ab5771a418eb1bfac4e0ab5e36b7bf",
-      "category": "landscapes",
-      "sub_category": "bali-landscape",
+      "category": "culture",
+      "sub_category": "temples-architecture",
       "tags": [
-        "bali",
-        "landscape"
+        "documentary"
       ],
-      "location_status": "bali-named",
-      "region_ids": [],
-      "route_ids": [],
+      "location_status": "route-linked",
+      "region_ids": [
+        "G4"
+      ],
+      "route_ids": [
+        "R1",
+        "R2",
+        "R4"
+      ],
       "poi_ids": [],
       "intended_use": "WanderMind approved project image library; connect only where its destination/category metadata matches.",
       "alt_text": {
-        "zh": "???????",
-        "en": "Bali landscape scene"
+        "zh": "乌布寺庙建筑",
+        "en": "Ubud temple architecture",
+        "ja": "ウブドの寺院建築",
+        "ko": "우붓 사원 건축",
+        "id": "Arsitektur pura Ubud"
       },
       "rights": {
         "status": "user_provided_with_consent",
         "source": "user_global_confirmation",
         "approval_date": "2026-08-05",
         "license_or_owner": "WanderMind user global confirmation"
+      },
+      "destination": "bali",
+      "primary_theme": "culture",
+      "region": "G4",
+      "area": "Ubud",
+      "place_name": "Ubud temple architecture",
+      "place_type": "temple architecture",
+      "prominence": "iconic",
+      "extension_ids": [],
+      "mood": "reflective",
+      "photography_style": "architectural documentary",
+      "verification_status": "route-linked",
+      "title": {
+        "zh": "乌布寺庙建筑",
+        "en": "Ubud temple architecture",
+        "ja": "ウブドの寺院建築",
+        "ko": "우붓 사원 건축",
+        "id": "Arsitektur pura Ubud"
+      },
+      "description": {
+        "zh": "石雕、红砖和仪式细节值得慢下来观察。",
+        "en": "Carved stone, brick and ceremonial details reward a slower look.",
+        "ja": "写真だけでなく、移動・天候・混雑を含む現地の実際を伝える体験です。",
+        "ko": "사진뿐 아니라 이동, 날씨, 혼잡함까지 포함한 실제 현장 경험입니다.",
+        "id": "Pengalaman nyata di lokasi, termasuk perjalanan, cuaca, dan keramaian di balik foto."
       }
     },
     {
       "relative_path": "assets/images/bali-14.jpg",
       "web_optimized_path": "assets/images/web/90284f633c68bb89.webp",
       "sha256": "90284f633c68bb89ac7e89eaa02981acd9ec3fc2f05bd83e861b95cc310a7949",
-      "category": "landscapes",
-      "sub_category": "bali-landscape",
+      "category": "experiences",
+      "sub_category": "food-journey",
       "tags": [
-        "bali",
-        "landscape"
+        "traveller-moment",
+        "documentary"
       ],
-      "location_status": "bali-named",
-      "region_ids": [],
-      "route_ids": [],
+      "location_status": "route-linked",
+      "region_ids": [
+        "G4"
+      ],
+      "route_ids": [
+        "R2",
+        "R4"
+      ],
       "poi_ids": [],
       "intended_use": "WanderMind approved project image library; connect only where its destination/category metadata matches.",
       "alt_text": {
-        "zh": "???????",
-        "en": "Bali landscape scene"
+        "zh": "高地咖啡体验",
+        "en": "Highland coffee experience",
+        "ja": "高原コーヒー体験",
+        "ko": "고원 커피 체험",
+        "id": "Pengalaman kopi dataran tinggi"
       },
       "rights": {
         "status": "user_provided_with_consent",
         "source": "user_global_confirmation",
         "approval_date": "2026-08-05",
         "license_or_owner": "WanderMind user global confirmation"
+      },
+      "destination": "bali",
+      "primary_theme": "experiences",
+      "region": "G4",
+      "area": "Ubud",
+      "place_name": "Ubud coffee garden",
+      "place_type": "food and garden visit",
+      "prominence": "supporting",
+      "extension_ids": [],
+      "mood": "slow",
+      "photography_style": "traveller documentary",
+      "verification_status": "route-linked",
+      "title": {
+        "zh": "高地咖啡体验",
+        "en": "Highland coffee experience",
+        "ja": "高原コーヒー体験",
+        "ko": "고원 커피 체험",
+        "id": "Pengalaman kopi dataran tinggi"
+      },
+      "description": {
+        "zh": "咖啡园和手工烘焙展示了常见旅游停留背后的制作过程。",
+        "en": "Gardens and hand roasting show the process behind a familiar Bali stop.",
+        "ja": "写真だけでなく、移動・天候・混雑を含む現地の実際を伝える体験です。",
+        "ko": "사진뿐 아니라 이동, 날씨, 혼잡함까지 포함한 실제 현장 경험입니다.",
+        "id": "Pengalaman nyata di lokasi, termasuk perjalanan, cuaca, dan keramaian di balik foto."
       }
     },
     {
       "relative_path": "assets/images/bali-15.jpg",
       "web_optimized_path": "assets/images/web/6258d4a12b1cb8f6.webp",
       "sha256": "6258d4a12b1cb8f62ad89feb1fbf42907a2c1f193e29bb2f6e3ef29c6a2e53b7",
-      "category": "landscapes",
-      "sub_category": "bali-landscape",
+      "category": "culture",
+      "sub_category": "local-lifestyle",
       "tags": [
-        "bali",
-        "landscape"
+        "documentary"
       ],
-      "location_status": "bali-named",
-      "region_ids": [],
-      "route_ids": [],
+      "location_status": "route-linked",
+      "region_ids": [
+        "G4"
+      ],
+      "route_ids": [
+        "R2",
+        "R4"
+      ],
       "poi_ids": [],
       "intended_use": "WanderMind approved project image library; connect only where its destination/category metadata matches.",
       "alt_text": {
-        "zh": "???????",
-        "en": "Bali landscape scene"
+        "zh": "高地咖啡体验",
+        "en": "Highland coffee experience",
+        "ja": "高原コーヒー体験",
+        "ko": "고원 커피 체험",
+        "id": "Pengalaman kopi dataran tinggi"
       },
       "rights": {
         "status": "user_provided_with_consent",
         "source": "user_global_confirmation",
         "approval_date": "2026-08-05",
         "license_or_owner": "WanderMind user global confirmation"
+      },
+      "destination": "bali",
+      "primary_theme": "culture",
+      "region": "G4",
+      "area": "Ubud",
+      "place_name": "Traditional coffee roasting",
+      "place_type": "local food practice",
+      "prominence": "supporting",
+      "extension_ids": [],
+      "mood": "warm",
+      "photography_style": "documentary",
+      "verification_status": "route-linked",
+      "title": {
+        "zh": "高地咖啡体验",
+        "en": "Highland coffee experience",
+        "ja": "高原コーヒー体験",
+        "ko": "고원 커피 체험",
+        "id": "Pengalaman kopi dataran tinggi"
+      },
+      "description": {
+        "zh": "咖啡园和手工烘焙展示了常见旅游停留背后的制作过程。",
+        "en": "Gardens and hand roasting show the process behind a familiar Bali stop.",
+        "ja": "写真だけでなく、移動・天候・混雑を含む現地の実際を伝える体験です。",
+        "ko": "사진뿐 아니라 이동, 날씨, 혼잡함까지 포함한 실제 현장 경험입니다.",
+        "id": "Pengalaman nyata di lokasi, termasuk perjalanan, cuaca, dan keramaian di balik foto."
       }
     },
     {
@@ -472,77 +638,177 @@
       "web_optimized_path": "assets/images/web/4f8f83b5fce5b55f.webp",
       "sha256": "4f8f83b5fce5b55fab50c3a89245bfe0e0c6973a95177f9e21fbdc4bc641fe3c",
       "category": "landscapes",
-      "sub_category": "bali-landscape",
+      "sub_category": "mountains-volcano",
       "tags": [
-        "bali",
-        "landscape"
+        "golden-hour",
+        "adventure"
       ],
-      "location_status": "bali-named",
-      "region_ids": [],
-      "route_ids": [],
+      "location_status": "route-linked",
+      "region_ids": [
+        "G6"
+      ],
+      "route_ids": [
+        "R1",
+        "R5",
+        "R6"
+      ],
       "poi_ids": [],
       "intended_use": "WanderMind approved project image library; connect only where its destination/category metadata matches.",
       "alt_text": {
-        "zh": "???????",
-        "en": "Bali landscape scene"
+        "zh": "巴杜尔火山黎明",
+        "en": "Mount Batur at dawn",
+        "ja": "バトゥール山の夜明け",
+        "ko": "바투르산 새벽",
+        "id": "Fajar di Gunung Batur"
       },
       "rights": {
         "status": "user_provided_with_consent",
         "source": "user_global_confirmation",
         "approval_date": "2026-08-05",
         "license_or_owner": "WanderMind user global confirmation"
+      },
+      "destination": "bali",
+      "primary_theme": "landscapes",
+      "region": "G6",
+      "area": "Kintamani",
+      "place_name": "Mount Batur at dawn",
+      "place_type": "volcanic landscape",
+      "prominence": "signature",
+      "extension_ids": [],
+      "mood": "awe",
+      "photography_style": "golden hour landscape",
+      "verification_status": "route-linked",
+      "title": {
+        "zh": "巴杜尔火山黎明",
+        "en": "Mount Batur at dawn",
+        "ja": "バトゥール山の夜明け",
+        "ko": "바투르산 새벽",
+        "id": "Fajar di Gunung Batur"
+      },
+      "description": {
+        "zh": "真实的清晨现场：气温偏低、吉普路颠簸，云层也会随时变化。",
+        "en": "A real early-morning view: cool air, rough jeep tracks and changing cloud cover.",
+        "ja": "写真だけでなく、移動・天候・混雑を含む現地の実際を伝える体験です。",
+        "ko": "사진뿐 아니라 이동, 날씨, 혼잡함까지 포함한 실제 현장 경험입니다.",
+        "id": "Pengalaman nyata di lokasi, termasuk perjalanan, cuaca, dan keramaian di balik foto."
       }
     },
     {
       "relative_path": "assets/images/bali-17.jpg",
       "web_optimized_path": "assets/images/web/8955be34cbcf96c6.webp",
       "sha256": "8955be34cbcf96c6b121ab509ee4c9c14057e1227b377abad1c9e8c0fb6548a3",
-      "category": "landscapes",
-      "sub_category": "bali-landscape",
+      "category": "experiences",
+      "sub_category": "hotels-resorts",
       "tags": [
-        "bali",
-        "landscape"
+        "golden-hour"
       ],
-      "location_status": "bali-named",
-      "region_ids": [],
-      "route_ids": [],
+      "location_status": "route-linked",
+      "region_ids": [
+        "G6"
+      ],
+      "route_ids": [
+        "R1",
+        "R5",
+        "R6"
+      ],
       "poi_ids": [],
       "intended_use": "WanderMind approved project image library; connect only where its destination/category metadata matches.",
       "alt_text": {
-        "zh": "???????",
-        "en": "Bali landscape scene"
+        "zh": "金塔马尼山景住宿",
+        "en": "Kintamani mountain stay",
+        "ja": "キンタマーニ山景ステイ",
+        "ko": "킨타마니 산 전망 숙소",
+        "id": "Menginap menghadap gunung Kintamani"
       },
       "rights": {
         "status": "user_provided_with_consent",
         "source": "user_global_confirmation",
         "approval_date": "2026-08-05",
         "license_or_owner": "WanderMind user global confirmation"
+      },
+      "destination": "bali",
+      "primary_theme": "experiences",
+      "region": "G6",
+      "area": "Kintamani",
+      "place_name": "Kintamani stay",
+      "place_type": "mountain accommodation",
+      "prominence": "supporting",
+      "extension_ids": [],
+      "mood": "restorative",
+      "photography_style": "golden hour",
+      "verification_status": "route-linked",
+      "title": {
+        "zh": "金塔马尼山景住宿",
+        "en": "Kintamani mountain stay",
+        "ja": "キンタマーニ山景ステイ",
+        "ko": "킨타마니 산 전망 숙소",
+        "id": "Menginap menghadap gunung Kintamani"
+      },
+      "description": {
+        "zh": "用较远的海滩距离，换取清凉空气和清晨火山景色。",
+        "en": "A mountain-facing stay trades beach access for cooler air and early volcano views.",
+        "ja": "写真だけでなく、移動・天候・混雑を含む現地の実際を伝える体験です。",
+        "ko": "사진뿐 아니라 이동, 날씨, 혼잡함까지 포함한 실제 현장 경험입니다.",
+        "id": "Pengalaman nyata di lokasi, termasuk perjalanan, cuaca, dan keramaian di balik foto."
       }
     },
     {
       "relative_path": "assets/images/bali-18.jpg",
       "web_optimized_path": "assets/images/web/c987ff171a0833ca.webp",
       "sha256": "c987ff171a0833cad04a3ea20cb9cae6fa7f17934a5521bb3e125c04764417de",
-      "category": "landscapes",
-      "sub_category": "bali-landscape",
+      "category": "experiences",
+      "sub_category": "road-trip",
       "tags": [
-        "bali",
-        "landscape"
+        "traveller-moment",
+        "documentary"
       ],
-      "location_status": "bali-named",
-      "region_ids": [],
-      "route_ids": [],
+      "location_status": "route-linked",
+      "region_ids": [
+        "G3"
+      ],
+      "route_ids": [
+        "R1",
+        "R3"
+      ],
       "poi_ids": [],
       "intended_use": "WanderMind approved project image library; connect only where its destination/category metadata matches.",
       "alt_text": {
-        "zh": "???????",
-        "en": "Bali landscape scene"
+        "zh": "离岛快船",
+        "en": "Island crossing by boat",
+        "ja": "離島へのボート移動",
+        "ko": "섬 이동 보트",
+        "id": "Penyeberangan pulau dengan boat"
       },
       "rights": {
         "status": "user_provided_with_consent",
         "source": "user_global_confirmation",
         "approval_date": "2026-08-05",
         "license_or_owner": "WanderMind user global confirmation"
+      },
+      "destination": "bali",
+      "primary_theme": "experiences",
+      "region": "G3",
+      "area": "Nusa Penida crossing",
+      "place_name": "Bali island crossing",
+      "place_type": "boat transfer",
+      "prominence": "supporting",
+      "extension_ids": [],
+      "mood": "practical",
+      "photography_style": "traveller documentary",
+      "verification_status": "route-linked",
+      "title": {
+        "zh": "离岛快船",
+        "en": "Island crossing by boat",
+        "ja": "離島へのボート移動",
+        "ko": "섬 이동 보트",
+        "id": "Penyeberangan pulau dengan boat"
+      },
+      "description": {
+        "zh": "真实的码头与乘船环节包括登船时间、行李和海况。",
+        "en": "A practical harbour-and-boat moment: boarding time, luggage and sea conditions matter.",
+        "ja": "写真だけでなく、移動・天候・混雑を含む現地の実際を伝える体験です。",
+        "ko": "사진뿐 아니라 이동, 날씨, 혼잡함까지 포함한 실제 현장 경험입니다.",
+        "id": "Pengalaman nyata di lokasi, termasuk perjalanan, cuaca, dan keramaian di balik foto."
       }
     },
     {
@@ -550,25 +816,58 @@
       "web_optimized_path": "assets/images/web/682e4b7b296cd26a.webp",
       "sha256": "682e4b7b296cd26ab17609f94ab49eca20ff66ec857153c936b64c993fd0c697",
       "category": "landscapes",
-      "sub_category": "bali-landscape",
+      "sub_category": "ocean-beach",
       "tags": [
-        "bali",
-        "landscape"
+        "adventure"
       ],
-      "location_status": "bali-named",
-      "region_ids": [],
-      "route_ids": [],
+      "location_status": "route-linked",
+      "region_ids": [
+        "G3"
+      ],
+      "route_ids": [
+        "R1",
+        "R3",
+        "R6"
+      ],
       "poi_ids": [],
       "intended_use": "WanderMind approved project image library; connect only where its destination/category metadata matches.",
       "alt_text": {
-        "zh": "???????",
-        "en": "Bali landscape scene"
+        "zh": "佩妮达岛悬崖海岸",
+        "en": "Nusa Penida cliffs",
+        "ja": "ヌサ・ペニダの断崖",
+        "ko": "누사 페니다 절벽",
+        "id": "Tebing Nusa Penida"
       },
       "rights": {
         "status": "user_provided_with_consent",
         "source": "user_global_confirmation",
         "approval_date": "2026-08-05",
         "license_or_owner": "WanderMind user global confirmation"
+      },
+      "destination": "bali",
+      "primary_theme": "landscapes",
+      "region": "G3",
+      "area": "Nusa Penida",
+      "place_name": "Nusa Penida bay",
+      "place_type": "coastal landscape",
+      "prominence": "signature",
+      "extension_ids": [],
+      "mood": "dramatic",
+      "photography_style": "dramatic coast",
+      "verification_status": "route-linked",
+      "title": {
+        "zh": "佩妮达岛悬崖海岸",
+        "en": "Nusa Penida cliffs",
+        "ja": "ヌサ・ペニダの断崖",
+        "ko": "누사 페니다 절벽",
+        "id": "Tebing Nusa Penida"
+      },
+      "description": {
+        "zh": "湛蓝海水与石灰岩很震撼，但画面之外还有炎热、台阶和较长车程。",
+        "en": "Bright water and dramatic limestone, with heat, stairs and road time outside the frame.",
+        "ja": "写真だけでなく、移動・天候・混雑を含む現地の実際を伝える体験です。",
+        "ko": "사진뿐 아니라 이동, 날씨, 혼잡함까지 포함한 실제 현장 경험입니다.",
+        "id": "Pengalaman nyata di lokasi, termasuk perjalanan, cuaca, dan keramaian di balik foto."
       }
     },
     {
@@ -723,52 +1022,119 @@
       "relative_path": "assets/images/bali-5.jpg",
       "web_optimized_path": "assets/images/web/15c41f6a0fe7fec3.webp",
       "sha256": "15c41f6a0fe7fec360fe5ce8ff3b3b9166ae28bcd6b0e556dafc999bee5d6da5",
-      "category": "landscapes",
-      "sub_category": "bali-landscape",
+      "category": "experiences",
+      "sub_category": "adventure",
       "tags": [
-        "bali",
-        "landscape"
+        "traveller-moment",
+        "golden-hour",
+        "adventure",
+        "documentary"
       ],
-      "location_status": "bali-named",
-      "region_ids": [],
-      "route_ids": [],
+      "location_status": "route-linked",
+      "region_ids": [
+        "G6"
+      ],
+      "route_ids": [
+        "R5"
+      ],
       "poi_ids": [],
       "intended_use": "WanderMind approved project image library; connect only where its destination/category metadata matches.",
       "alt_text": {
-        "zh": "???????",
-        "en": "Bali landscape scene"
+        "zh": "巴杜尔火山黎明",
+        "en": "Mount Batur at dawn",
+        "ja": "バトゥール山の夜明け",
+        "ko": "바투르산 새벽",
+        "id": "Fajar di Gunung Batur"
       },
       "rights": {
         "status": "user_provided_with_consent",
         "source": "user_global_confirmation",
         "approval_date": "2026-08-05",
         "license_or_owner": "WanderMind user global confirmation"
+      },
+      "destination": "bali",
+      "primary_theme": "experiences",
+      "region": "G6",
+      "area": "Kintamani",
+      "place_name": "Mount Batur sunrise viewpoint",
+      "place_type": "sunrise jeep route",
+      "prominence": "signature",
+      "extension_ids": [],
+      "mood": "energising",
+      "photography_style": "golden hour documentary",
+      "verification_status": "route-linked",
+      "title": {
+        "zh": "巴杜尔火山黎明",
+        "en": "Mount Batur at dawn",
+        "ja": "バトゥール山の夜明け",
+        "ko": "바투르산 새벽",
+        "id": "Fajar di Gunung Batur"
+      },
+      "description": {
+        "zh": "真实的清晨现场：气温偏低、吉普路颠簸，云层也会随时变化。",
+        "en": "A real early-morning view: cool air, rough jeep tracks and changing cloud cover.",
+        "ja": "写真だけでなく、移動・天候・混雑を含む現地の実際を伝える体験です。",
+        "ko": "사진뿐 아니라 이동, 날씨, 혼잡함까지 포함한 실제 현장 경험입니다.",
+        "id": "Pengalaman nyata di lokasi, termasuk perjalanan, cuaca, dan keramaian di balik foto."
       }
     },
     {
       "relative_path": "assets/images/bali-6.jpg",
       "web_optimized_path": "assets/images/web/c0298c79fcf3616a.webp",
       "sha256": "c0298c79fcf3616a2cde5919fa858aa382e2e52a811ff6649f742f9d194a6f71",
-      "category": "landscapes",
-      "sub_category": "bali-landscape",
+      "category": "experiences",
+      "sub_category": "adventure",
       "tags": [
-        "bali",
-        "landscape"
+        "traveller-moment",
+        "adventure",
+        "documentary"
       ],
-      "location_status": "bali-named",
-      "region_ids": [],
-      "route_ids": [],
+      "location_status": "route-linked",
+      "region_ids": [
+        "G6"
+      ],
+      "route_ids": [
+        "R5"
+      ],
       "poi_ids": [],
       "intended_use": "WanderMind approved project image library; connect only where its destination/category metadata matches.",
       "alt_text": {
-        "zh": "???????",
-        "en": "Bali landscape scene"
+        "zh": "巴杜尔火山吉普体验",
+        "en": "Batur jeep ride",
+        "ja": "バトゥール山ジープ体験",
+        "ko": "바투르 지프 체험",
+        "id": "Pengalaman jip Batur"
       },
       "rights": {
         "status": "user_provided_with_consent",
         "source": "user_global_confirmation",
         "approval_date": "2026-08-05",
         "license_or_owner": "WanderMind user global confirmation"
+      },
+      "destination": "bali",
+      "primary_theme": "experiences",
+      "region": "G6",
+      "area": "Kintamani",
+      "place_name": "Mount Batur jeep route",
+      "place_type": "mountain transfer experience",
+      "prominence": "supporting",
+      "extension_ids": [],
+      "mood": "active",
+      "photography_style": "passenger documentary",
+      "verification_status": "route-linked",
+      "title": {
+        "zh": "巴杜尔火山吉普体验",
+        "en": "Batur jeep ride",
+        "ja": "バトゥール山ジープ体験",
+        "ko": "바투르 지프 체험",
+        "id": "Pengalaman jip Batur"
+      },
+      "description": {
+        "zh": "游客座位上的视角保留了颠簸和尘土，这是精修照片往往不会展示的部分。",
+        "en": "The passenger view shows the bumpy, dusty part that polished photos usually omit.",
+        "ja": "写真だけでなく、移動・天候・混雑を含む現地の実際を伝える体験です。",
+        "ko": "사진뿐 아니라 이동, 날씨, 혼잡함까지 포함한 실제 현장 경험입니다.",
+        "id": "Pengalaman nyata di lokasi, termasuk perjalanan, cuaca, dan keramaian di balik foto."
       }
     },
     {
@@ -776,51 +1142,118 @@
       "web_optimized_path": "assets/images/web/7cf7c3dd8615bea9.webp",
       "sha256": "7cf7c3dd8615bea9176572197e18501190a76239df2312b3587682db38916363",
       "category": "landscapes",
-      "sub_category": "bali-landscape",
+      "sub_category": "ocean-beach",
       "tags": [
-        "bali",
-        "landscape"
+        "adventure"
       ],
-      "location_status": "bali-named",
-      "region_ids": [],
-      "route_ids": [],
+      "location_status": "route-linked",
+      "region_ids": [
+        "G3"
+      ],
+      "route_ids": [
+        "R1",
+        "R3",
+        "R6"
+      ],
       "poi_ids": [],
       "intended_use": "WanderMind approved project image library; connect only where its destination/category metadata matches.",
       "alt_text": {
-        "zh": "???????",
-        "en": "Bali landscape scene"
+        "zh": "佩妮达岛悬崖海岸",
+        "en": "Nusa Penida cliffs",
+        "ja": "ヌサ・ペニダの断崖",
+        "ko": "누사 페니다 절벽",
+        "id": "Tebing Nusa Penida"
       },
       "rights": {
         "status": "user_provided_with_consent",
         "source": "user_global_confirmation",
         "approval_date": "2026-08-05",
         "license_or_owner": "WanderMind user global confirmation"
+      },
+      "destination": "bali",
+      "primary_theme": "landscapes",
+      "region": "G3",
+      "area": "Nusa Penida",
+      "place_name": "Nusa Penida cliff coast",
+      "place_type": "coastal landscape",
+      "prominence": "signature",
+      "extension_ids": [],
+      "mood": "dramatic",
+      "photography_style": "dramatic coast",
+      "verification_status": "route-linked",
+      "title": {
+        "zh": "佩妮达岛悬崖海岸",
+        "en": "Nusa Penida cliffs",
+        "ja": "ヌサ・ペニダの断崖",
+        "ko": "누사 페니다 절벽",
+        "id": "Tebing Nusa Penida"
+      },
+      "description": {
+        "zh": "湛蓝海水与石灰岩很震撼，但画面之外还有炎热、台阶和较长车程。",
+        "en": "Bright water and dramatic limestone, with heat, stairs and road time outside the frame.",
+        "ja": "写真だけでなく、移動・天候・混雑を含む現地の実際を伝える体験です。",
+        "ko": "사진뿐 아니라 이동, 날씨, 혼잡함까지 포함한 실제 현장 경험입니다.",
+        "id": "Pengalaman nyata di lokasi, termasuk perjalanan, cuaca, dan keramaian di balik foto."
       }
     },
     {
       "relative_path": "assets/images/bali-8.jpg",
       "web_optimized_path": "assets/images/web/ee5a7046b62327d5.webp",
       "sha256": "ee5a7046b62327d549675210375617eae6b5a65cd4f9e879c3c946b4b33328cd",
-      "category": "landscapes",
-      "sub_category": "bali-landscape",
+      "category": "experiences",
+      "sub_category": "adventure",
       "tags": [
-        "bali",
-        "landscape"
+        "traveller-moment",
+        "adventure",
+        "documentary"
       ],
-      "location_status": "bali-named",
-      "region_ids": [],
-      "route_ids": [],
+      "location_status": "route-linked",
+      "region_ids": [
+        "G3"
+      ],
+      "route_ids": [
+        "R1",
+        "R3"
+      ],
       "poi_ids": [],
       "intended_use": "WanderMind approved project image library; connect only where its destination/category metadata matches.",
       "alt_text": {
-        "zh": "???????",
-        "en": "Bali landscape scene"
+        "zh": "离岛浮潜",
+        "en": "Island snorkelling",
+        "ja": "離島シュノーケリング",
+        "ko": "섬 스노클링",
+        "id": "Snorkeling antarpulau"
       },
       "rights": {
         "status": "user_provided_with_consent",
         "source": "user_global_confirmation",
         "approval_date": "2026-08-05",
         "license_or_owner": "WanderMind user global confirmation"
+      },
+      "destination": "bali",
+      "primary_theme": "experiences",
+      "region": "G3",
+      "area": "Nusa Penida",
+      "place_name": "Nusa Penida snorkelling",
+      "place_type": "water activity",
+      "prominence": "signature",
+      "extension_ids": [],
+      "mood": "active",
+      "photography_style": "traveller documentary",
+      "verification_status": "route-linked",
+      "title": {
+        "zh": "离岛浮潜",
+        "en": "Island snorkelling",
+        "ja": "離島シュノーケリング",
+        "ko": "섬 스노클링",
+        "id": "Snorkeling antarpulau"
+      },
+      "description": {
+        "zh": "近距离、需要参与的水上体验；能见度和海况每天都可能不同。",
+        "en": "A close, active water experience; visibility and sea conditions vary by day.",
+        "ja": "写真だけでなく、移動・天候・混雑を含む現地の実際を伝える体験です。",
+        "ko": "사진뿐 아니라 이동, 날씨, 혼잡함까지 포함한 실제 현장 경험입니다.",
+        "id": "Pengalaman nyata di lokasi, termasuk perjalanan, cuaca, dan keramaian di balik foto."
       }
     },
     {
@@ -828,25 +1261,58 @@
       "web_optimized_path": "assets/images/web/96a75cd30d5a6e07.webp",
       "sha256": "96a75cd30d5a6e075382b9dbbcc190f10a82c9fbc664d5da856667d4bea29307",
       "category": "landscapes",
-      "sub_category": "bali-landscape",
+      "sub_category": "iconic-attractions",
       "tags": [
-        "bali",
-        "landscape"
+        "adventure"
       ],
-      "location_status": "bali-named",
-      "region_ids": [],
-      "route_ids": [],
+      "location_status": "route-linked",
+      "region_ids": [
+        "G3"
+      ],
+      "route_ids": [
+        "R1",
+        "R3",
+        "R6"
+      ],
       "poi_ids": [],
       "intended_use": "WanderMind approved project image library; connect only where its destination/category metadata matches.",
       "alt_text": {
-        "zh": "???????",
-        "en": "Bali landscape scene"
+        "zh": "佩妮达岛悬崖海岸",
+        "en": "Nusa Penida cliffs",
+        "ja": "ヌサ・ペニダの断崖",
+        "ko": "누사 페니다 절벽",
+        "id": "Tebing Nusa Penida"
       },
       "rights": {
         "status": "user_provided_with_consent",
         "source": "user_global_confirmation",
         "approval_date": "2026-08-05",
         "license_or_owner": "WanderMind user global confirmation"
+      },
+      "destination": "bali",
+      "primary_theme": "landscapes",
+      "region": "G3",
+      "area": "Nusa Penida",
+      "place_name": "Nusa Penida sea stack",
+      "place_type": "coastal landmark",
+      "prominence": "iconic",
+      "extension_ids": [],
+      "mood": "dramatic",
+      "photography_style": "dramatic coast",
+      "verification_status": "route-linked",
+      "title": {
+        "zh": "佩妮达岛悬崖海岸",
+        "en": "Nusa Penida cliffs",
+        "ja": "ヌサ・ペニダの断崖",
+        "ko": "누사 페니다 절벽",
+        "id": "Tebing Nusa Penida"
+      },
+      "description": {
+        "zh": "湛蓝海水与石灰岩很震撼，但画面之外还有炎热、台阶和较长车程。",
+        "en": "Bright water and dramatic limestone, with heat, stairs and road time outside the frame.",
+        "ja": "写真だけでなく、移動・天候・混雑を含む現地の実際を伝える体験です。",
+        "ko": "사진뿐 아니라 이동, 날씨, 혼잡함까지 포함한 실제 현장 경험입니다.",
+        "id": "Pengalaman nyata di lokasi, termasuk perjalanan, cuaca, dan keramaian di balik foto."
       }
     },
     {
@@ -857,9 +1323,10 @@
       "sub_category": "bali-landscape",
       "tags": [
         "bali",
-        "landscape"
+        "landscape",
+        "location_conflict"
       ],
-      "location_status": "bali-named",
+      "location_status": "non_bali_named",
       "region_ids": [],
       "route_ids": [],
       "poi_ids": [],
@@ -873,7 +1340,8 @@
         "source": "user_global_confirmation",
         "approval_date": "2026-08-05",
         "license_or_owner": "WanderMind user global confirmation"
-      }
+      },
+      "destination": "koh-chang-thailand"
     },
     {
       "relative_path": "assets/images/car_photodicky.jpg",
@@ -1853,9 +2321,10 @@
       "sub_category": "bali-landscape",
       "tags": [
         "bali",
-        "landscape"
+        "landscape",
+        "location_conflict"
       ],
-      "location_status": "bali-named",
+      "location_status": "non_bali_named",
       "region_ids": [],
       "route_ids": [],
       "poi_ids": [],
@@ -1869,7 +2338,8 @@
         "source": "user_global_confirmation",
         "approval_date": "2026-08-05",
         "license_or_owner": "WanderMind user global confirmation"
-      }
+      },
+      "destination": "kauai-hawaii"
     },
     {
       "relative_path": "assets/images/Intuitive Flow1.jpg",
@@ -2028,9 +2498,10 @@
       "sub_category": "bali-landscape",
       "tags": [
         "bali",
-        "landscape"
+        "landscape",
+        "bali_unverified"
       ],
-      "location_status": "bali-named",
+      "location_status": "indonesia_named",
       "region_ids": [],
       "route_ids": [],
       "poi_ids": [],
@@ -2044,7 +2515,8 @@
         "source": "user_global_confirmation",
         "approval_date": "2026-08-05",
         "license_or_owner": "WanderMind user global confirmation"
-      }
+      },
+      "destination": "indonesia"
     },
     {
       "relative_path": "assets/images/Nyepi.jpg",
@@ -2858,25 +3330,62 @@
       "web_optimized_path": "assets/images/web/3f9cb8e70c34e9f8.webp",
       "sha256": "3f9cb8e70c34e9f87f90749921672cc4cc620129eb052846821c4f6f3807186d",
       "category": "landscapes",
-      "sub_category": "bali-landscape",
+      "sub_category": "ocean-beach",
       "tags": [
-        "bali",
-        "landscape"
+        "cliff",
+        "natural-arch",
+        "island",
+        "coast"
       ],
-      "location_status": "bali-named",
-      "region_ids": [],
-      "route_ids": [],
-      "poi_ids": [],
+      "location_status": "bali_named",
+      "region_ids": [
+        "G3"
+      ],
+      "route_ids": [
+        "R1",
+        "R6"
+      ],
+      "poi_ids": [
+        "broken_beach"
+      ],
       "intended_use": "WanderMind approved project image library; connect only where its destination/category metadata matches.",
       "alt_text": {
-        "zh": "???????",
-        "en": "Bali landscape scene"
+        "zh": "努沙佩尼达破碎海滩的天然石拱与蓝色海湾",
+        "en": "Natural rock arch and blue cove at Broken Beach on Nusa Penida",
+        "ja": "ヌサ・ペニダのブロークン・ビーチにある天然の岩のアーチと青い入り江",
+        "ko": "누사 페니다 브로큰 비치의 천연 바위 아치와 푸른 만",
+        "id": "Lengkungan batu alami dan teluk biru di Broken Beach, Nusa Penida"
       },
       "rights": {
         "status": "user_provided_with_consent",
         "source": "user_global_confirmation",
         "approval_date": "2026-08-05",
         "license_or_owner": "WanderMind user global confirmation"
+      },
+      "destination": "bali",
+      "primary_theme": "landscapes",
+      "region": "G3",
+      "area": "Nusa Penida West",
+      "place_name": "Broken Beach",
+      "place_type": "viewpoint",
+      "prominence": "iconic",
+      "extension_ids": [],
+      "mood": "dramatic",
+      "photography_style": "coastal landscape",
+      "verification_status": "route-linked",
+      "title": {
+        "zh": "破碎海滩",
+        "en": "Broken Beach",
+        "ja": "ブロークン・ビーチ",
+        "ko": "브로큰 비치",
+        "id": "Broken Beach"
+      },
+      "description": {
+        "zh": "努沙佩尼达西部的天然石拱海湾，适合观景与摄影；出发前请确认快船、道路、天气、炎热和悬崖护栏情况。",
+        "en": "A natural rock-arch cove on western Nusa Penida for views and photography; confirm fast boats, road access, weather, heat and cliff barriers before travelling.",
+        "ja": "ヌサ・ペニダ西部にある天然の岩のアーチと入り江で、景観や撮影向きです。高速船、道路、天候、暑さ、崖の柵を出発前に確認してください。",
+        "ko": "누사 페니다 서부의 천연 바위 아치 만으로 전망과 사진 촬영에 좋습니다. 출발 전 쾌속선, 도로, 날씨, 더위, 절벽 안전시설을 확인하세요.",
+        "id": "Teluk dengan lengkungan batu alami di Nusa Penida barat untuk menikmati pemandangan dan fotografi; periksa kapal cepat, akses jalan, cuaca, panas, dan pagar tebing sebelum berangkat."
       }
     },
     {
@@ -3112,9 +3621,10 @@
       "sub_category": "wellness-leisure",
       "tags": [
         "wellness",
-        "experience"
+        "experience",
+        "location_conflict"
       ],
-      "location_status": "bali-named",
+      "location_status": "location_conflict",
       "region_ids": [],
       "route_ids": [],
       "poi_ids": [],
@@ -3128,7 +3638,8 @@
         "source": "user_global_confirmation",
         "approval_date": "2026-08-05",
         "license_or_owner": "WanderMind user global confirmation"
-      }
+      },
+      "destination": ""
     },
     {
       "relative_path": "assets/images/ubud yogabarn1.jpg",
@@ -3338,9 +3849,10 @@
       "sub_category": "bali-landscape",
       "tags": [
         "bali",
-        "landscape"
+        "landscape",
+        "location_unverified"
       ],
-      "location_status": "bali-named",
+      "location_status": "unknown",
       "region_ids": [],
       "route_ids": [],
       "poi_ids": [],
@@ -3354,7 +3866,8 @@
         "source": "user_global_confirmation",
         "approval_date": "2026-08-05",
         "license_or_owner": "WanderMind user global confirmation"
-      }
+      },
+      "destination": ""
     },
     {
       "relative_path": "assets/images/wide-angle-shot-aegean-sea-rocky-coast-with-greenery-around-bushes-trees-hills-mountain-blue-water-with-waves-view-from-drone-greece.jpg",
@@ -3364,9 +3877,10 @@
       "sub_category": "bali-landscape",
       "tags": [
         "bali",
-        "landscape"
+        "landscape",
+        "location_conflict"
       ],
-      "location_status": "bali-named",
+      "location_status": "non_bali_named",
       "region_ids": [],
       "route_ids": [],
       "poi_ids": [],
@@ -3380,7 +3894,8 @@
         "source": "user_global_confirmation",
         "approval_date": "2026-08-05",
         "license_or_owner": "WanderMind user global confirmation"
-      }
+      },
+      "destination": "greece"
     },
     {
       "relative_path": "assets/images/world-1.jpg",
