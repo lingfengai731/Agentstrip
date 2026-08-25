@@ -2247,7 +2247,7 @@ class ProductAccessTests(unittest.TestCase):
         self.assertIn('role="listbox"', html)
         self.assertIn('data-open-place-picker="', html)
         self.assertIn('data-route-picker-confirm', html)
-        self.assertIn("image-publish-manifest.json?v=20260825p2", html)
+        self.assertIn("image-publish-manifest.json?v=20260825p3", html)
         self.assertIn("variant === 'thumbnail'", html)
         self.assertIn("pickerAttributionMarkup(media, copy)", html)
         self.assertIn('rel="noopener noreferrer"', html)
@@ -3193,11 +3193,89 @@ class ProductAccessTests(unittest.TestCase):
                 for field in ("title", "description", "alt_text")
             )
         ]
-        self.assertEqual(len(complete_d8), 38)
+        self.assertEqual(len(complete_d8), 53)
 
         lempuyang = by_path["assets/images/Lempuyang Temple.jpg"]
         self.assertIn("Penataran Agung", lempuyang["title"]["en"])
         self.assertIn("not the summit temple", lempuyang["description"]["en"])
+
+    def test_tenth_d8_batch_syncs_static_bali_cards_and_quarantines_non_bali_assets(self):
+        frontend = BACKEND_DIR.parents[1] / "wandermind-studio" / "frontend"
+        manifest = json.loads(
+            (frontend / "assets" / "data" / "image-publish-manifest.json").read_text(
+                encoding="utf-8"
+            )
+        )
+        by_path = {item["relative_path"]: item for item in manifest["images"]}
+        languages = {"zh", "en", "ja", "ko", "id"}
+        static_paths = {
+            f"assets/images/bali-{index}.jpg"
+            for index in (5, 6, 7, 8, 9, 10, 11, 13, 14, 15, 16, 17, 18, 19)
+        }
+
+        for path in static_paths:
+            item = by_path[path]
+            self.assertEqual(item["destination"], "bali")
+            self.assertTrue(item["route_ids"], path)
+            self.assertTrue(item["place_name"], path)
+            self.assertTrue(item["place_type"], path)
+            self.assertTrue(item["photography_style"], path)
+            for field in ("title", "description", "alt_text"):
+                self.assertEqual(set(item[field]), languages, path)
+                self.assertTrue(all(value.strip() for value in item[field].values()), path)
+
+        broken = by_path["assets/images/rock-ocean-landscape.jpg"]
+        self.assertEqual(broken["destination"], "bali")
+        self.assertEqual(broken["region_ids"], ["G3"])
+        self.assertEqual(broken["poi_ids"], ["broken_beach"])
+        self.assertTrue(broken["route_ids"])
+
+        foreign_destinations = {
+            "assets/images/aerial-view-lush-green-rock-islands-palau-turquoise-waters.jpg": "palau",
+            "assets/images/aerial-view-turquoise-water-boats-phuket-beach-thailand.jpg": "phuket-thailand",
+            "assets/images/beautiful-beach-view-koh-chang-island-seascape-trad-province-eastern-thailand-blue-sky-background.jpg": "koh-chang-thailand",
+            "assets/images/high-angle-shot-beautiful-foggy-cliffs-calm-blue-ocean-captured-kauai-hawaii.jpg": "kauai-hawaii",
+            "assets/images/wide-angle-shot-aegean-sea-rocky-coast-with-greenery-around-bushes-trees-hills-mountain-blue-water-with-waves-view-from-drone-greece.jpg": "greece",
+        }
+        for path, destination in foreign_destinations.items():
+            item = by_path[path]
+            self.assertEqual(item["location_status"], "non_bali_named")
+            self.assertEqual(item["destination"], destination)
+            self.assertFalse(item["region_ids"] or item["route_ids"] or item["poi_ids"])
+
+        isolated = {
+            "assets/images/travelling-china.jpg": ("location_conflict", ""),
+            "assets/images/aerial-view-tropical-beach-with-turquoise-ocean-waves.jpg": ("unknown", ""),
+            "assets/images/vertical-overhead-shot-beautiful-shoreline-sea-with-blue-clean-water-sandy-beach.jpg": ("unknown", ""),
+            "assets/images/mesmerizing-view-calm-ocean-trees-shore-sunset-indonesia.jpg": ("indonesia_named", "indonesia"),
+        }
+        for path, (status, destination) in isolated.items():
+            item = by_path[path]
+            self.assertEqual(item["location_status"], status)
+            self.assertEqual(item["destination"], destination)
+            self.assertFalse(item["region_ids"] or item["route_ids"] or item["poi_ids"])
+
+        core = [
+            item
+            for item in manifest["images"]
+            if item["category"] in {"landscapes", "culture", "experiences"}
+        ]
+        incomplete = [
+            item
+            for item in core
+            if not all(
+                set(item.get(field, {})) == languages
+                and all(value.strip() for value in item[field].values())
+                for field in ("title", "description", "alt_text")
+            )
+        ]
+        self.assertEqual(len(incomplete), 9)
+        self.assertTrue(
+            all(
+                not (item["region_ids"] or item["route_ids"] or item["poi_ids"])
+                for item in incomplete
+            )
+        )
 
     def test_third_d8_portfolio_batch_maps_bali_12_to_verified_monkey_forest(self):
         frontend = BACKEND_DIR.parents[1] / "wandermind-studio" / "frontend"
