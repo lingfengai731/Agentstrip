@@ -87,6 +87,8 @@
       body.dark .fd-estimator-intro { color: #c9c6bd; }
       .fd-estimator-grid { display: grid; grid-template-columns: 1fr; gap: 12px; }
       .fd-estimator-input { min-height: 48px; font-size: 16px; font-variant-numeric: tabular-nums; }
+      .fd-estimator-input:focus-visible { border-color: var(--fd-teal); outline: 3px solid var(--fd-teal); outline-offset: 2px; }
+      body.dark .fd-estimator-input:focus-visible { border-color: var(--fd-gold); outline-color: var(--fd-gold); }
       .fd-estimator-output { margin-top: 16px; padding-top: 15px; border-top: 1px dashed #d8d2c5; }
       body.dark .fd-estimator-output { border-color: #3b4047; }
       .fd-estimator-total-row { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 8px 16px; color: var(--fd-ink); }
@@ -326,22 +328,24 @@
         <div class="fd-estimator-grid">
           <div>
             <label class="fd-label" for="fd-full-days" data-i18n="fdEstimateFullDays">Full driver days · up to 10 hours</label>
-            <input class="fd-num fd-estimator-input" id="fd-full-days" type="number" min="0" max="60" step="1" inputmode="numeric" value="0">
+            <input class="fd-num fd-estimator-input" id="fd-full-days" type="number" min="0" max="60" step="1" inputmode="numeric" value="0" aria-describedby="fd-estimator-boundary">
           </div>
           <div>
             <label class="fd-label" for="fd-half-days" data-i18n="fdEstimateHalfDays">Half driver days · up to 6 hours</label>
-            <input class="fd-num fd-estimator-input" id="fd-half-days" type="number" min="0" max="60" step="1" inputmode="numeric" value="0">
+            <input class="fd-num fd-estimator-input" id="fd-half-days" type="number" min="0" max="60" step="1" inputmode="numeric" value="0" aria-describedby="fd-estimator-boundary">
           </div>
         </div>
-        <div class="fd-estimator-output" aria-live="polite" aria-atomic="true">
-          <div class="fd-estimator-total-row">
-            <span class="fd-estimator-total-label" data-i18n="fdEstimateTotal">Reference total</span>
-            <strong class="fd-estimator-total" id="fd-estimator-total">IDR 0</strong>
+        <div class="fd-estimator-output">
+          <div class="fd-estimator-live" aria-live="polite" aria-atomic="true">
+            <div class="fd-estimator-total-row">
+              <span class="fd-estimator-total-label" data-i18n="fdEstimateTotal">Reference total</span>
+              <strong class="fd-estimator-total" id="fd-estimator-total">—</strong>
+            </div>
+            <div class="fd-estimator-lines" id="fd-estimator-lines">
+              <p data-i18n="fdEstimateStart">Enter the number of travellers and driver days to see the breakdown.</p>
+            </div>
           </div>
-          <div class="fd-estimator-lines" id="fd-estimator-lines">
-            <p data-i18n="fdEstimateStart">Enter the number of travellers and driver days to see the breakdown.</p>
-          </div>
-          <p class="fd-estimator-boundary" data-i18n="fdEstimateBoundary">Not included: overtime, airport or hotel transfers, Penida boat/car combinations, activity fees or route-specific additions. Confirm the final price with your selected driver before booking.</p>
+          <p class="fd-estimator-boundary" id="fd-estimator-boundary" data-i18n="fdEstimateBoundary">Not included: overtime, airport or hotel transfers, Penida boat/car combinations, activity fees or route-specific additions. Confirm the final price with your selected driver before booking.</p>
         </div>
       </section>
 

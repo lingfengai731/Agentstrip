@@ -68,7 +68,7 @@
       var dictionary = typeof LANGS !== 'undefined' ? (LANGS[language] || LANGS.en || {}) : {};
       var result = calculate({ people: people.value, fullDays: fullDays.value, halfDays: halfDays.value });
       var ready = result.people && (result.fullDays || result.halfDays);
-      total.textContent = money(ready ? result.total : 0, language);
+      total.textContent = ready ? money(result.total, language) : '—';
       lines.replaceChildren();
 
       if (!ready) {
