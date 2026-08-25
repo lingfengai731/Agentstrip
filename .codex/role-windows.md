@@ -396,3 +396,4 @@
 - 安全回调：专属链接必须带 `driver_id`；公开材料不含私人邮箱、WhatsApp、密码或 Secret。车辆颜色、未确认语言能力、容量和固定最终价均不作为承诺；网站估价明确为参考，最终日期、车辆、时长、路线与价格仍需司机确认。
 - 文档 QA：两份 DOCX 均为 7 页、4 个内嵌媒体（logo + 3 图）、3 个独立 JPG、外部链接有效；逐页 LibreOffice 原尺寸渲染复看，无空白页、截断或字体替代故障。内部扫描确认无串错 `driver_id`、私人 Gmail、`123456` 或 `SECRET_KEY`。
 - Skill 回调：cross-account-project-memory 约束隔离 worktree 与 evidence/handoff；agent-role-orchestrator/codex-luna-worker 约束 Sol/Luna 分工；delivery-document-package、documents 与 LibreOffice 负责可交付文档闭环；Huashu Nuwa、MrBeast 与 humanizer-zh 只改善真实转化、易复制性和人类表达，不替代 WanderMind teal + gold 品牌与事实门禁。未调用动画技能，因为本单元不改网站动效。
+- GitHub 回调：文档分支固定 head `95946f448c9f758040fb55b5d63d2ad8da487e9b` 远端 0/0，Project memory run `32839645943` 成功；PR #18 按固定 head 合并为 main 提交 `af11a3830c555d06219226abec793fbbf798ba7a`。本次合并只同步文档、批准图片、README、evidence 和 handoff，不代表已经在社交平台发布。
