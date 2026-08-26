@@ -581,8 +581,8 @@ def build_rate_form(d: dict) -> Path:
     add_field_line(doc, "姓名", d["name"])
     add_field_line(doc, "确认日期")
 
-    doc.add_paragraph("当前网站参考值（不是司机已确认价格）", style="Heading 1")
-    add_callout(doc, "仅供核对", "目前网站参考：全天 Rp700,000（最多 10 小时）、半天 Rp500,000（最多 6 小时）、每位客人每天附加 Rp50,000、全天超时 Rp75,000/小时。司机签字确认前，这些数字不得作为该司机的最终报价。", PAPER)
+    doc.add_paragraph("Dicky 已提供的初始价格", style="Heading 1")
+    add_callout(doc, "价格说明", "全天 Rp700,000（最多 10 小时）、半天 Rp500,000（最多 6 小时）、每位客人每天附加 Rp50,000、全天超时 Rp75,000/小时。Dicky 可在查看用车天数和路线后调整；最终金额以司机回复为准。", PAPER)
     doc.add_paragraph("给用户的审阅问题", style="Heading 2")
     for item in (
         "这些字段是否覆盖你和司机谈过的全部收费情况？",

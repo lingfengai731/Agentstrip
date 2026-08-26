@@ -2406,7 +2406,7 @@ class ProductAccessTests(unittest.TestCase):
         ):
             with self.subTest(page=page_name):
                 html = (frontend / page_name).read_text(encoding="utf-8")
-                self.assertIn("assets/css/style-starter.css?v=p63", html)
+                self.assertIn("assets/css/style-starter.css?v=search1", html)
 
     def test_find_driver_light_dark_focus_and_mobile_styles_are_explicit(self):
         frontend = BACKEND_DIR.parents[1] / "wandermind-studio" / "frontend"
@@ -2442,7 +2442,7 @@ class ProductAccessTests(unittest.TestCase):
         )
 
         self.assertIn('aria-controls="navbarTogglerDemo02"', driver_html)
-        self.assertIn('aria-label="Search"', driver_html)
+        self.assertIn('aria-label="Search WanderMind"', driver_html)
         self.assertIn('aria-label="Toggle color theme"', driver_html)
         self.assertIn(".theme-selector input { display: block !important;", driver_html)
         self.assertIn(".theme-selector:focus-within", driver_html)
@@ -3887,7 +3887,7 @@ class ProductAccessTests(unittest.TestCase):
         self.assertIn("profile.moments.map", driver_html)
         self.assertIn("DRIVER_PROFILES[choice.querySelector('input').value]", driver_html)
         self.assertIn("document.addEventListener('wm:language-change'", driver_html)
-        self.assertIn('assets/js/i18n.js?v=p65', driver_html)
+        self.assertIn('assets/js/i18n.js?v=search1', driver_html)
         self.assertIn('assets/js/driver-estimate.js?v=p1', driver_html)
         self.assertIn('id="fd-full-days"', driver_html)
         self.assertIn('id="fd-half-days"', driver_html)

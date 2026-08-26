@@ -73,11 +73,13 @@ wandermind-studio/
 | **酒店比价** | SerpAPI Google Hotels · 区域 chips 筛选 · 评分 / 缩略图 / 设施 |
 | **机票比价** | SerpAPI Google Flights · 8 城市下拉 + 自由输入 · 往返/单程 |
 | **探索地图** | SVG 交互地图 · POI 按类别着色 · 24h 人流热力图 |
-| **巴厘岛路线编辑器** | R1–R6 按天调整顺序 · 添加/移除同区域 POI · 地图同步高亮 · 本机保存并交接 AI/司机；路线名称、说明、区域、每日主题和状态覆盖中文、英文、日文、韩文、印尼文 |
+| **巴厘岛路线编辑器** | R1–R6 按天调整顺序 · 添加/移除同区域 POI · 地图同步高亮 · 本机保存并交接 AI/司机；62/62 个 POI 均可在桌面悬停/聚焦或手机点按后查看视觉与介绍 |
 | **巴厘岛事实核验** | 62 个 POI 分离“稳定事实已核验”和“实时信息待复核”；R1 主干、R2、R3、R4 与 R6 的免费路线稳定事实已核验；全库 57 个 `verified`、2 个 `pending_review`、3 个 `needs_supplier_confirmation`，均保留出发前 live checks 与供应商门禁 |
-| **巴厘岛视觉数据库** | 默认先展示 12 张实拍；页面自动接入 10 张有来源审计的精确地点图与 37 个原有静态内容位。发布 manifest 中已有 38 张 D8 图片补齐五语言内容，剩余 19 张继续逐图审核。最新精确图覆盖 Seminyak Beach、Jimbaran Bay、Broken Beach、Jatiluwih 与 Tirta Gangga；图片按 Landscapes / Culture / Experiences 三大主题组织，只有地点证据充分的图片才绑定 region、routeIds 和 POI 并进入路线选择或司机交接 |
+| **巴厘岛视觉数据库** | 默认先展示 12 张 Portfolio；路线选择器的 62 个 POI 已全部有视觉，其中 54 个为已有/外部授权的精确地点图，8 个为明确标注的体验、区域或地形示意图；每张外部精确图保留可见作者、来源和许可证 |
 | **预算计算器** | 按目的地 / 天数 / 人数 / 风格 / 出发城市估算全程预算 |
-| **司机参考预算** | 找司机页按已确认的 IDR 全天 / 半天公开基线即时计算五语参考费用；机场、换酒店、超时、佩妮达船车与路线附加费继续由司机最终确认 |
+| **司机初始预算** | 找司机页按 Dicky 亲自提供的 IDR 全天 / 半天初始价格即时计算五语预算；Dicky 可按天数和路线调整，最终金额以回复为准；Gede Nico 单独报价 |
+| **体验套餐** | 首批 8 个一至两日产品覆盖 Batur、Ubud、Penida、南部悬崖和东部；按天数与强度筛选，选择后进入司机询价，不伪装成即时预订 |
+| **全站搜索** | 7 个公开页面统一放大镜入口，五语言搜索站点页面、R1–R6 和 62 个 POI；GET 查询可分享，桌面键盘和手机触控均可用 |
 | **平行宇宙** | 同一旅行 3 套方案并排对比（节俭 / 平衡 / 奢华） |
 | **行程管理** | Trip 创建 / 切换 / 持久化（localStorage） |
 | **旅行偏好** | 预算档次 · 旅行风格 · 同行方式，注入每次 AI 对话 |
@@ -234,7 +236,14 @@ pwsh -NoProfile -File .\tools\test-image-intake.ps1
 - [`promotion-packs/Dicky/WanderMind_Dicky_Promosi_Siap_Pakai.docx`](promotion-packs/Dicky/WanderMind_Dicky_Promosi_Siap_Pakai.docx)：Dicky 的印尼语懒人推广手册及 7 张独立上传图片（司机/服务 3 张、带署名的巴厘岛风景 4 张）。
 - [`promotion-packs/Gede-Nico/WanderMind_Gede_Nico_Promosi_Siap_Pakai.docx`](promotion-packs/Gede-Nico/WanderMind_Gede_Nico_Promosi_Siap_Pakai.docx)：Gede Nico 的印尼语懒人推广手册及 7 张独立上传图片（司机/服务 3 张、带署名的巴厘岛风景 4 张）。
 
-两位司机使用不同的 `driver_id` 专属链接，打开后会自动选择对应司机。推广包不包含私人联系方式；网站估价只作为参考，最终车辆、日期、路线和价格仍须确认。
+两位司机使用不同的 `driver_id` 专属链接，打开后会自动选择对应司机。推广包不包含私人联系方式；预算器采用 Dicky 给出的初始价格，Dicky 可按天数和路线调整并以邮件回复为最终金额，Gede Nico 单独报价。
+
+站长中文审阅已改为每位司机一份合并手册：
+
+- [`promotion-packs/Dicky/WanderMind_Dicky_Complete_Guide_Chinese_Review.docx`](promotion-packs/Dicky/WanderMind_Dicky_Complete_Guide_Chinese_Review.docx) 与配套手机 ZIP。
+- [`promotion-packs/Gede-Nico/WanderMind_Gede_Nico_Complete_Guide_Chinese_Review.docx`](promotion-packs/Gede-Nico/WanderMind_Gede_Nico_Complete_Guide_Chinese_Review.docx) 与配套手机 ZIP。
+
+合并手册包含网站介绍、游客使用方法、两组完整推广素材、3–5 天发布节奏、手机保存图片和独立报价授权；旧中文拆分版已删除，印尼语正式版待中文审阅后更新。
 
 运营与门禁资料：
 

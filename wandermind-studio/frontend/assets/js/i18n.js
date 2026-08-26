@@ -1151,45 +1151,45 @@ Object.assign(LANGS.ko, { fdStartDate:'시작일 <span class="fd-req">*</span>',
 Object.assign(LANGS.id, { fdStartDate:'Tanggal mulai <span class="fd-req">*</span>', fdEndDate:'Tanggal selesai <span class="fd-req">*</span>', fdPickupTime:'Waktu jemput pilihan', fdPickupLocation:'Hotel / lokasi jemput', fdPickupPh:'Hotel atau area jika sudah tahu', fdBudget:'Perkiraan anggaran total', fdBudgetFlexible:'Fleksibel / diskusi dulu', fdBudget1:'Di bawah 5 juta IDR', fdBudget2:'5–10 juta IDR', fdBudget3:'10–20 juta IDR', fdBudget4:'20+ juta IDR', fdServices:'Layanan untuk didiskusikan', fdServiceCar:'Driver / mobil privat', fdServiceAirport:'Antar-jemput bandara', fdServiceHotel:'Saran hotel', fdServiceBoat:'Boat dari Sanur', fdServiceFlight:'Koordinasi penerbangan', fdServiceTickets:'Tiket tempat wisata', fdBundleHint:'Ini permintaan penawaran gabungan, bukan pemesanan instan. Ketersediaan dan penyedia akan dikonfirmasi saat membalas.', fdArrival:'Detail pesawat, boat, atau kedatangan', fdArrivalPh:'Nomor penerbangan / waktu tiba / tanggal boat Sanur, jika tahu', fdErrDates:'Masukkan tanggal perjalanan yang valid' });
 Object.assign(LANGS.en, {
   fdEstimateTitle:'Estimate your driver days',
-  fdEstimateIntro:"Choose only the days you expect to use the car. This reference uses the confirmed public baseline and does not replace the driver's final route quote.",
+  fdEstimateIntro:"This uses Dicky's initial price. He may adjust it after reviewing your days and route; the amount in his reply is final. Gede Nico quotes separately.",
   fdEstimateFullDays:'Full driver days · up to 10 hours', fdEstimateHalfDays:'Half driver days · up to 6 hours',
-  fdEstimateTotal:'Reference total', fdEstimateStart:'Enter the number of travellers and driver days to see the breakdown.',
+  fdEstimateTotal:'Dicky initial total', fdEstimateStart:'Enter the number of travellers and driver days to see the breakdown.',
   fdEstimateBoundary:'Not included: overtime, airport or hotel-change transfers, Nusa Penida boat-and-car combinations, activities or route surcharges. Confirm the final price with your chosen driver before booking.',
   fdEstimateFullLine:'{days} full day(s) × {rate}', fdEstimateHalfLine:'{days} half day(s) × {rate}',
   fdEstimateGuestLine:'{people} guest(s) × IDR 50,000 = {supplement} guest supplement on each selected day.'
 });
 Object.assign(LANGS.zh, {
   fdEstimateTitle:'估算用车参考费用',
-  fdEstimateIntro:'只填写预计实际用车的天数。这里按照已确认的公开参考基线计算，不代替司机按路线给出的最终报价。',
+  fdEstimateIntro:'这里采用 Dicky 亲自提供的初始价格。他查看用车天数和路线后可作调整，最终金额以邮件回复为准；Gede Nico 单独报价。',
   fdEstimateFullDays:'全天用车天数 · 最多 10 小时', fdEstimateHalfDays:'半天用车天数 · 最多 6 小时',
-  fdEstimateTotal:'参考合计', fdEstimateStart:'填写出行人数和用车天数后查看明细。',
+  fdEstimateTotal:'Dicky 初始合计', fdEstimateStart:'填写出行人数和用车天数后查看明细。',
   fdEstimateBoundary:'暂不包含：超时、机场或换酒店接送、佩妮达船车组合、活动费用及路线附加费。预订前请与所选司机确认最终价格。',
   fdEstimateFullLine:'{days} 个全天 × {rate}', fdEstimateHalfLine:'{days} 个半天 × {rate}',
   fdEstimateGuestLine:'{people} 位游客 × IDR 50,000 = 每个所选用车日加收 {supplement}。'
 });
 Object.assign(LANGS.ja, {
   fdEstimateTitle:'ドライバー利用日の参考料金',
-  fdEstimateIntro:'実際に車を利用する予定の日数だけ入力してください。確認済みの公開基準による参考額で、ルート確認後の最終見積りではありません。',
+  fdEstimateIntro:'Dicky本人が提示した初期料金です。利用日数とルート確認後に調整される場合があり、返信メールの金額が最終です。Gede Nicoは別途見積ります。',
   fdEstimateFullDays:'終日利用日数 · 最長10時間', fdEstimateHalfDays:'半日利用日数 · 最長6時間',
-  fdEstimateTotal:'参考合計', fdEstimateStart:'旅行人数と利用日数を入力すると内訳を確認できます。',
+  fdEstimateTotal:'Dicky 初期合計', fdEstimateStart:'旅行人数と利用日数を入力すると内訳を確認できます。',
   fdEstimateBoundary:'延長時間、空港・ホテル移動、ヌサペニダの船と車の組み合わせ、体験料金、ルート追加料金は含みません。予約前に選んだドライバーへ最終料金をご確認ください。',
   fdEstimateFullLine:'終日 {days} 日 × {rate}', fdEstimateHalfLine:'半日 {days} 日 × {rate}',
   fdEstimateGuestLine:'{people} 名 × 50,000 IDR = 選択した各利用日に {supplement} を追加。'
 });
 Object.assign(LANGS.ko, {
   fdEstimateTitle:'기사 이용일 참고 요금',
-  fdEstimateIntro:'실제로 차량을 이용할 예정인 날짜만 입력하세요. 확인된 공개 기준에 따른 참고 금액이며, 경로 검토 후의 최종 견적을 대신하지 않습니다.',
+  fdEstimateIntro:'Dicky가 직접 제공한 초기 가격입니다. 이용 일수와 경로를 확인한 뒤 조정될 수 있으며 답장 금액이 최종입니다. Gede Nico는 별도로 견적합니다.',
   fdEstimateFullDays:'종일 이용 일수 · 최대 10시간', fdEstimateHalfDays:'반일 이용 일수 · 최대 6시간',
-  fdEstimateTotal:'참고 합계', fdEstimateStart:'여행 인원과 차량 이용 일수를 입력하면 상세 내역을 볼 수 있습니다.',
+  fdEstimateTotal:'Dicky 초기 합계', fdEstimateStart:'여행 인원과 차량 이용 일수를 입력하면 상세 내역을 볼 수 있습니다.',
   fdEstimateBoundary:'초과 시간, 공항·호텔 이동, 누사 페니다 선박·차량 조합, 체험 비용 및 경로 추가 요금은 포함되지 않습니다. 예약 전 선택한 기사에게 최종 가격을 확인하세요.',
   fdEstimateFullLine:'종일 {days}일 × {rate}', fdEstimateHalfLine:'반일 {days}일 × {rate}',
   fdEstimateGuestLine:'{people}명 × IDR 50,000 = 선택한 각 이용일에 {supplement} 추가.'
 });
 Object.assign(LANGS.id, {
   fdEstimateTitle:'Perkirakan biaya hari driver',
-  fdEstimateIntro:'Isi hanya jumlah hari saat mobil benar-benar akan digunakan. Angka ini memakai acuan publik yang sudah dikonfirmasi dan bukan penawaran akhir berdasarkan rute.',
+  fdEstimateIntro:'Ini memakai harga awal yang diberikan langsung oleh Dicky. Harga dapat disesuaikan setelah hari dan rute diperiksa; jumlah dalam balasan adalah final. Gede Nico memberi harga terpisah.',
   fdEstimateFullDays:'Hari penuh dengan driver · hingga 10 jam', fdEstimateHalfDays:'Setengah hari dengan driver · hingga 6 jam',
-  fdEstimateTotal:'Total acuan', fdEstimateStart:'Masukkan jumlah traveler dan hari penggunaan driver untuk melihat rincian.',
+  fdEstimateTotal:'Total awal Dicky', fdEstimateStart:'Masukkan jumlah traveler dan hari penggunaan driver untuk melihat rincian.',
   fdEstimateBoundary:'Belum termasuk lembur, transfer bandara atau pindah hotel, kombinasi boat dan mobil Nusa Penida, aktivitas, atau biaya tambahan rute. Konfirmasikan harga akhir dengan driver pilihan sebelum memesan.',
   fdEstimateFullLine:'{days} hari penuh × {rate}', fdEstimateHalfLine:'{days} setengah hari × {rate}',
   fdEstimateGuestLine:'{people} tamu × IDR 50.000 = tambahan {supplement} pada setiap hari yang dipilih.'
