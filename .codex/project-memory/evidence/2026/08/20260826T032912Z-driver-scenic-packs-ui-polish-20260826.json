@@ -1,0 +1,22 @@
+{
+  "schema_version": 1,
+  "evidence_id": "ev-20260826T032912Z-driver-scenic-packs-ui-polish-20260826",
+  "task_ref": "driver-scenic-packs-ui-polish-20260826",
+  "owner": "sol-main",
+  "captured_at": "2026-08-26T03:29:12Z",
+  "status": "verified",
+  "claim": "Commit 2dbbc87 adds four licensed Bali scenic photos to each driver package, updates both nine-page copy-ready manuals, and applies a narrow accessibility/mobile polish to find-driver.html while preserving the incumbent teal-gold design.",
+  "source": {
+    "kind": "git",
+    "repository": "https://github.com/lingfengai731/Agentstrip.git",
+    "commit": "2dbbc87e38e1d578694611cdd46bcc334d7385a6",
+    "branch": "codex/scenic-packs-ui-polish-20260826",
+    "worktree": "E:\\Agentstrip-wt-scenic-ui-20260826",
+    "dirty": false
+  },
+  "verification": {
+    "command": "python -B -m unittest discover -s wandermind/backend/tests -p 'test_*.py'; local Edge responsive QA; LibreOffice document render/audit",
+    "result": "PASS: 85 tests OK (13 skipped); 1440/768/390/320 layouts had zero horizontal overflow and visible 3px focus rings; both manuals rendered as 9 pages with 7 publishing photos and valid package-specific links."
+  },
+  "notes": "Repository/local verification only. This commit is not merged, deployed, or posted. Scenic assets retain their independent source/license attribution in the manuals and promotion-packs README."
+}
