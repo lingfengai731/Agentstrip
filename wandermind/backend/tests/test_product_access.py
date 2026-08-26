@@ -2419,6 +2419,16 @@ class ProductAccessTests(unittest.TestCase):
             driver_html,
         )
 
+    def test_find_driver_reuses_request_id_only_for_unchanged_retry(self):
+        frontend = BACKEND_DIR.parents[1] / "wandermind-studio" / "frontend"
+        driver_html = (frontend / "find-driver.html").read_text(encoding="utf-8")
+
+        self.assertIn("var driverRequestId = '';", driver_html)
+        self.assertIn("var driverRequestFingerprint = '';", driver_html)
+        self.assertIn("var fingerprint = JSON.stringify(payload);", driver_html)
+        self.assertIn("driverRequestFingerprint !== fingerprint", driver_html)
+        self.assertIn("payload.request_id = driverRequestId;", driver_html)
+
     def test_portfolio_manager_requires_admin_and_storage_configuration(self):
         denied = self._run(
             self._request("GET", "/api/admin/portfolio", token=self.user_token)

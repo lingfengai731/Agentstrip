@@ -34,3 +34,10 @@ Please confirm the date of this information. WanderMind will not call the experi
 - Advertised prices are not copied into the route quote while pages conflict or no operator is bound to the route.
 - The two area/name POIs `thousand_islands_viewpoint` and `mount_batur_trailhead` remain `pending_review`; they are not supplier records and require exact identity/entrance confirmation.
 
+## Public sources reviewed
+
+- Bali Provincial Tourism Office: [tourism directory](https://disparda.baliprov.go.id/wp-content/uploads/2024/02/Direktori-2023-Kode_compressed.pdf)
+- Bangli Regency: [Batur Geopark planning regulation](https://mpp.banglikab.go.id/storage/regulations/Batang%20Tubuh%20Perbup%20RDTR%20WP%20Geopark%20Batur.pdf)
+- Celuk Bali Silver Class: [current site](https://www.celuksilverclass.com/) and [older package article](https://www.celuksilverclass.com/2024/06/silver-making-class-celuk-village-bali.html)
+- Bali Fire Shooting Club: [venue site](https://balifireshootingclub.com/), [product page](https://balifireshootingclub.com/product/) and [published rules](https://balifireshootingclub.com/wp-content/uploads/2023/11/Rules-Regulations_BFS.pdf)
+- PERBAKIN: [association article mentioning the range](https://perbakin.or.id/ingin-latihan-bersama-klub-menembak-ini-rekomendasi-tempatnya/)
