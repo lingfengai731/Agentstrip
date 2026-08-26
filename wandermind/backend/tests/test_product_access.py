@@ -2403,6 +2403,22 @@ class ProductAccessTests(unittest.TestCase):
                 html = (frontend / page_name).read_text(encoding="utf-8")
                 self.assertIn("assets/css/style-starter.css?v=p63", html)
 
+    def test_find_driver_light_dark_focus_and_mobile_styles_are_explicit(self):
+        frontend = BACKEND_DIR.parents[1] / "wandermind-studio" / "frontend"
+        driver_html = (frontend / "find-driver.html").read_text(encoding="utf-8")
+
+        self.assertIn("--fd-muted: #52605c", driver_html)
+        self.assertIn("--fd-border: #d8d2c5", driver_html)
+        self.assertIn(".fd-driver-choice:focus-within", driver_html)
+        self.assertIn("body.dark .fd-driver-choice span { color:#c9c6bd; }", driver_html)
+        self.assertIn(".fd-input:focus-visible", driver_html)
+        self.assertIn("@media (max-width: 480px)", driver_html)
+        self.assertIn(".fd-spin { animation: none; }", driver_html)
+        self.assertNotIn(
+            ".fd-driver li { display: flex; align-items: flex-start; gap: 10px; font-size: 13.5px; line-height: 1.6; padding: 6px 0; color: rgba(255,255,255,.92); }",
+            driver_html,
+        )
+
     def test_portfolio_manager_requires_admin_and_storage_configuration(self):
         denied = self._run(
             self._request("GET", "/api/admin/portfolio", token=self.user_token)
