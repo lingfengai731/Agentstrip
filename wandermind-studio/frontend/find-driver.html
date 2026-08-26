@@ -626,6 +626,19 @@
     // —— Submit ——
     var btn = document.getElementById('fd-submit');
     var msg = document.getElementById('fd-msg');
+    var driverRequestId = '';
+    var driverRequestFingerprint = '';
+    function createRequestId() {
+      if (window.crypto && typeof window.crypto.randomUUID === 'function') return window.crypto.randomUUID();
+      var bytes = new Uint8Array(16);
+      if (window.crypto && typeof window.crypto.getRandomValues === 'function') window.crypto.getRandomValues(bytes);
+      else for (var i = 0; i < bytes.length; i += 1) bytes[i] = Math.floor(Math.random() * 256);
+      bytes[6] = (bytes[6] & 15) | 64;
+      bytes[8] = (bytes[8] & 63) | 128;
+      return Array.from(bytes, function (byte, index) {
+        return ([4, 6, 8, 10].indexOf(index) >= 0 ? '-' : '') + byte.toString(16).padStart(2, '0');
+      }).join('');
+    }
     btn.onclick = async function () {
       var L = (window.FD_T || {});
       msg.className = 'fd-msg'; msg.textContent = '';
@@ -657,6 +670,12 @@
         privacy_consent: true,
         website: document.getElementById('fd-website').value.trim()
       };
+      var fingerprint = JSON.stringify(payload);
+      if (!driverRequestId || driverRequestFingerprint !== fingerprint) {
+        driverRequestId = createRequestId();
+        driverRequestFingerprint = fingerprint;
+      }
+      payload.request_id = driverRequestId;
       btn.disabled = true;
       var old = btn.innerHTML;
       btn.innerHTML = '<span class="fa fa-spinner fd-spin"></span> ' + (L.fdSending || 'Sending…');

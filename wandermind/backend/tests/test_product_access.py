@@ -12,7 +12,7 @@ import uuid
 from concurrent.futures import ThreadPoolExecutor
 from html.parser import HTMLParser
 from pathlib import Path
-from unittest.mock import AsyncMock, patch
+from unittest.mock import AsyncMock, MagicMock, patch
 
 import httpx
 from fastapi import HTTPException
@@ -1532,6 +1532,53 @@ class ProductAccessTests(unittest.TestCase):
                 self.assertEqual(send.await_args.kwargs["bcc"], bcc)
                 self.assertEqual(send.await_args.kwargs["reply_to"], "traveller@example.test")
 
+    def test_driver_email_uses_provider_idempotency_key(self):
+        request_id = "61e9e884-359b-45bb-bc49-3f3b53c04c42"
+        with (
+            patch.object(email_service, "DRIVER_EMAIL", "dicky@example.test"),
+            patch.object(email_service, "send_email", new_callable=AsyncMock) as send,
+        ):
+            send.return_value = {"ok": True, "id": "email-test"}
+            result = self._run(
+                email_service.send_driver_request(
+                    {
+                        "request_id": request_id,
+                        "driver_id": "dicky",
+                        "first_name": "Test",
+                        "contact_email": "traveller@example.test",
+                    }
+                )
+            )
+        self.assertTrue(result["ok"])
+        self.assertEqual(
+            send.await_args.kwargs["idempotency_key"],
+            f"driver-request/dicky/{request_id}",
+        )
+
+    def test_send_email_sets_resend_idempotency_header(self):
+        response = MagicMock(status_code=200)
+        response.json.return_value = {"id": "email-test"}
+        client = AsyncMock()
+        client.__aenter__.return_value = client
+        client.post.return_value = response
+        with (
+            patch.object(email_service, "RESEND_API_KEY", "test-key"),
+            patch.object(email_service.httpx, "AsyncClient", return_value=client),
+        ):
+            result = self._run(
+                email_service.send_email(
+                    "driver@example.test",
+                    "Subject",
+                    "<p>Body</p>",
+                    idempotency_key="driver-request/dicky/test-id",
+                )
+            )
+        self.assertTrue(result["ok"])
+        self.assertEqual(
+            client.post.await_args.kwargs["headers"]["Idempotency-Key"],
+            "driver-request/dicky/test-id",
+        )
+
     def test_driver_request_passes_route_and_trip_details_to_selected_driver(self):
         with patch.object(main, "send_driver_request", new_callable=AsyncMock) as send:
             send.return_value = {"ok": True}
@@ -1541,6 +1588,7 @@ class ProductAccessTests(unittest.TestCase):
                     "/api/driver-request",
                     json={
                         "driver_id": "dicky",
+                        "request_id": "61e9e884-359b-45bb-bc49-3f3b53c04c42",
                         "route_id": "r5",
                         "first_name": "Test",
                         "contact_email": "traveller@example.test",
@@ -1557,12 +1605,31 @@ class ProductAccessTests(unittest.TestCase):
         self.assertEqual(response.status_code, 200, response.text)
         payload = send.await_args.args[0]
         self.assertEqual(payload["driver_id"], "dicky")
+        self.assertEqual(payload["request_id"], "61e9e884-359b-45bb-bc49-3f3b53c04c42")
         self.assertEqual(payload["route_id"], "R5")
         self.assertEqual(payload["num_people"], 3)
         self.assertEqual(payload["start_date"], "2026-10-01")
         self.assertEqual(payload["end_date"], "2026-10-08")
         self.assertEqual(payload["budget_range"], "USD 6000")
         self.assertIn("Day 2: Sidemen", payload["attractions"])
+
+    def test_driver_request_rejects_invalid_request_id(self):
+        with patch.object(main, "send_driver_request", new_callable=AsyncMock) as send:
+            response = self._run(
+                self._request(
+                    "POST",
+                    "/api/driver-request",
+                    json={
+                        "request_id": "not-a-uuid",
+                        "driver_id": "dicky",
+                        "first_name": "Test",
+                        "contact_email": "traveller@example.test",
+                        "privacy_consent": True,
+                    },
+                )
+            )
+        self.assertEqual(response.status_code, 400, response.text)
+        send.assert_not_awaited()
 
     def test_driver_request_requires_explicit_privacy_consent(self):
         with patch.object(main, "send_driver_request", new_callable=AsyncMock) as send:
@@ -1922,6 +1989,24 @@ class ProductAccessTests(unittest.TestCase):
             sum(poi["verification_status"] == "pending_review" for poi in data["pois"]),
             2,
         )
+        gated_ids = {
+            "thousand_islands_viewpoint": "pending_review",
+            "mount_batur_trailhead": "pending_review",
+            "bali_fire_shooting_club": "needs_supplier_confirmation",
+            "celuk_silver_class": "needs_supplier_confirmation",
+            "mount_batur_jeep": "needs_supplier_confirmation",
+        }
+        for poi_id, expected_status in gated_ids.items():
+            poi = poi_by_id[poi_id]
+            self.assertEqual(poi["verification_status"], expected_status, poi_id)
+            verification = poi["verification"]
+            self.assertEqual(verification["reviewed_at"], "2026-08-26", poi_id)
+            self.assertTrue(verification["verified_scope"], poi_id)
+            self.assertTrue(verification["live_checks"], poi_id)
+            self.assertTrue(verification["sources"], poi_id)
+            for source in verification["sources"]:
+                self.assertTrue(source["title"], (poi_id, source))
+                self.assertTrue(source["url"].startswith("https://"), (poi_id, source))
         for route_grouped_id in {
             "ulun_danu_beratan",
             "tegenungan_waterfall",
@@ -1945,7 +2030,7 @@ class ProductAccessTests(unittest.TestCase):
             "pending_review",
         )
         self.assertIn(
-            "exact public identity",
+            "do not uniquely bind",
             poi_by_id["thousand_islands_viewpoint"]["notes"],
         )
         self.assertEqual(

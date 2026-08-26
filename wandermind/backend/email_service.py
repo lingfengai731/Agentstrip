@@ -48,6 +48,7 @@ async def send_email(
     text: Optional[str] = None,
     reply_to: Optional[str] = None,
     bcc: Optional[str] = None,
+    idempotency_key: Optional[str] = None,
 ) -> dict:
     """Send an email. Returns {'ok': bool, 'id': str|None, 'reason': str|None}.
 
@@ -85,6 +86,8 @@ async def send_email(
         "Authorization": f"Bearer {RESEND_API_KEY}",
         "Content-Type": "application/json",
     }
+    if idempotency_key:
+        headers["Idempotency-Key"] = idempotency_key
     try:
         async with httpx.AsyncClient(timeout=15.0) as client:
             r = await client.post(_RESEND_ENDPOINT, headers=headers, json=payload)
@@ -409,4 +412,8 @@ async def send_driver_request(data: dict) -> dict:
         recipient, subject, html, text,
         reply_to=reply_to,
         bcc=bcc,
+        idempotency_key=(
+            f"driver-request/{driver_id}/{data['request_id']}"
+            if data.get("request_id") else None
+        ),
     )

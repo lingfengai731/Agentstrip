@@ -560,6 +560,7 @@ class FuseReq(BaseModel):
 
 
 class DriverReq(BaseModel):
+    request_id: str = Field(default="", max_length=64)
     driver_id: str = "dicky"
     route_id: str = ""
     first_name: str = ""
@@ -3344,7 +3345,19 @@ async def driver_request(data: DriverReq, request: Request):
     driver_id = data.driver_id.strip().lower()
     if driver_id not in {"dicky", "gede"}:
         raise HTTPException(400, "Unknown driver")
+    request_id = data.request_id.strip()
+    if request_id:
+        try:
+            request_id = str(uuid.UUID(request_id))
+        except ValueError:
+            raise HTTPException(400, "Invalid request ID")
+    else:
+        # Backwards-compatible fallback for older clients. The current web form
+        # always supplies a stable UUID so a network retry reuses the same
+        # provider idempotency key without storing traveller data on our side.
+        request_id = str(uuid.uuid4())
     payload = {
+        "request_id": request_id,
         "driver_id": driver_id,
         "route_id": data.route_id.strip().upper(),
         "first_name": data.first_name.strip(),
