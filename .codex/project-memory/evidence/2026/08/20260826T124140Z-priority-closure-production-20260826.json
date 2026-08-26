@@ -1,0 +1,22 @@
+{
+  "schema_version": 1,
+  "evidence_id": "ev-20260826T124140Z-priority-closure-production-20260826",
+  "task_ref": "priority-closure-production-20260826",
+  "owner": "codex-sol",
+  "captured_at": "2026-08-26T12:41:40Z",
+  "status": "claimed",
+  "claim": "PR #20 merged fixed head 24dbb73 as d71277f after Project memory validation run 32969301870 and PostgreSQL integration run 32969301855 succeeded. Render auto-deployed; healthz returned 200, find-driver served the new accessibility marker, production Chrome CDP passed 1440/768/390/320 with no horizontal overflow, images loaded, invalid email blocked, theme keyboard focus worked and the success heading received focus through a stubbed fetch. Bali data remains 57 verified, 2 pending-review and 3 supplier-gated.",
+  "source": {
+    "kind": "git",
+    "repository": "https://github.com/lingfengai731/Agentstrip.git",
+    "commit": "d71277f25ad08091c3b858fa973e014fcb0c9ca0",
+    "branch": "codex/priority-closure-production-evidence-20260826",
+    "worktree": "E:\\Agentstrip-wt-priority-closure-20260826",
+    "dirty": false
+  },
+  "verification": {
+    "command": "GitHub PR #20 fixed-head CI and merge; Invoke-WebRequest healthz/find-driver marker; Chrome CDP 1440/768/390/320 production matrix with local fetch stub; production bali-travel-data status parse",
+    "result": "PASS: PR merged; both CI workflows success; production health 200; new marker present; four viewports no overflow; semantic submit/focus probe passed without real email; five verification gates retained."
+  },
+  "notes": "No real email, payment, order, points, entitlement, admin content, public post, advertisement or spend occurred. Render deployment was code auto-deploy only."
+}
