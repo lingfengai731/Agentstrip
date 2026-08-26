@@ -1,0 +1,46 @@
+{
+  "schema_version": 1,
+  "evidence_id": "ev-20260826T164558Z-bali-media-search-packages-production",
+  "task_ref": "bali-media-search-packages-driver-docs-20260826-production",
+  "owner": "codex-sol",
+  "captured_at": "2026-08-26T16:45:58Z",
+  "status": "verified",
+  "claim": "PR #22 merged to main and Render serves the Bali POI media, global search and editable package release; production responsive browser smoke passed without executing booking, email or payment actions.",
+  "source": {
+    "kind": "production",
+    "repository": "https://github.com/lingfengai731/Agentstrip.git",
+    "commit": "33e7a0ff86797a5a2276c83172f74ff96ad444f7",
+    "branch": "main",
+    "worktree": "E:\\Agentstrip-wt-bali-packages-search-20260826",
+    "dirty": true,
+    "pull_request": "https://github.com/lingfengai731/Agentstrip/pull/22"
+  },
+  "verification": {
+    "command": "GET production health/search/media/packages/generated visual endpoints; WM_TEST_BASE=https://wandermind.cc node tools/test_bali_browser.cjs",
+    "result": "PASS: health/search/data/generated visual 200; Chromium 320/390/768/1440 route hover/tap media, eight packages, search, driver handoff and zero page overflow"
+  },
+  "release": {
+    "pull_request": 22,
+    "head_commit": "bd06308c60c4411054874189dcbdb75f9fce646d",
+    "merge_commit": "33e7a0ff86797a5a2276c83172f74ff96ad444f7",
+    "merge_method": "squash",
+    "github_mergeable_state_before_merge": "clean",
+    "github_actions": "No pull_request workflow run was emitted after open, synchronize, or one close/reopen trigger. CI success is not claimed; merge relied on the fixed local release suite and GitHub clean mergeability.",
+    "render": "auto-deploy verified by public source markers assets/js/i18n.js?v=search1 and assets/js/bali-packages.js?v=20260826p1"
+  },
+  "production_endpoints": [
+    {"url": "https://wandermind.cc/healthz", "status": 200},
+    {"url": "https://wandermind.cc/search.html", "status": 200},
+    {"url": "https://wandermind.cc/assets/data/poi-media-catalog.json", "status": 200},
+    {"url": "https://wandermind.cc/assets/data/bali-experience-packages.json", "status": 200},
+    {"url": "https://wandermind.cc/assets/images/generated/sound-healing-illustration.png", "status": 200}
+  ],
+  "external_side_effects": "Render code auto-deploy and anonymous first-party page-view QA events only. No real driver email, booking, payment, order, entitlement, points, admin mutation, public social post, advertisement, spend or Render environment-variable change.",
+  "remaining_gates": [
+    "owner review of both Chinese merged driver guides before Indonesian replacements",
+    "one dated Dicky reply to the concise Indonesian supplier/rate question set",
+    "Gede Nico's separate rates and route rules",
+    "merchant entity and provider approval before automatic card payments",
+    "separate authorization for production write E2E, public posting or paid advertising"
+  ]
+}
