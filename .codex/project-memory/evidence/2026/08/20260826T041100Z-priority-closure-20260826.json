@@ -1,0 +1,22 @@
+{
+  "schema_version": 1,
+  "evidence_id": "ev-20260826T041100Z-priority-closure-20260826",
+  "task_ref": "priority-closure-20260826",
+  "owner": "codex-sol",
+  "captured_at": "2026-08-26T04:11:00Z",
+  "status": "verified",
+  "claim": "Cross-account backlog was reconciled; five gated Bali records received structured evidence without status promotion; driver-request retries gained Resend idempotency; separate driver rate and supplier verification forms were added; the unmerged scenic promotion-pack and driver UI work was integrated.",
+  "source": {
+    "kind": "git",
+    "repository": "https://github.com/lingfengai731/Agentstrip.git",
+    "commit": "e4173f6b8356d1a410fa48eab49eeac4c1fb2441",
+    "branch": "codex/priority-closure-20260826",
+    "worktree": "E:\\Agentstrip-wt-priority-closure-20260826",
+    "dirty": false
+  },
+  "verification": {
+    "command": "python -B -m unittest discover -s wandermind/backend/tests -p 'test_*.py'; python -m json.tool bali-travel-data.json; git diff --check",
+    "result": "PASS: 89 tests, 13 environment skips; JSON valid; diff check passed."
+  },
+  "notes": "Local branch evidence only. No deploy, production mutation, email, payment, social post, advertisement or spend occurred."
+}

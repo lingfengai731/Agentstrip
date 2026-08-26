@@ -397,3 +397,15 @@
 - 文档 QA：两份 DOCX 均为 7 页、4 个内嵌媒体（logo + 3 图）、3 个独立 JPG、外部链接有效；逐页 LibreOffice 原尺寸渲染复看，无空白页、截断或字体替代故障。内部扫描确认无串错 `driver_id`、私人 Gmail、`123456` 或 `SECRET_KEY`。
 - Skill 回调：cross-account-project-memory 约束隔离 worktree 与 evidence/handoff；agent-role-orchestrator/codex-luna-worker 约束 Sol/Luna 分工；delivery-document-package、documents 与 LibreOffice 负责可交付文档闭环；Huashu Nuwa、MrBeast 与 humanizer-zh 只改善真实转化、易复制性和人类表达，不替代 WanderMind teal + gold 品牌与事实门禁。未调用动画技能，因为本单元不改网站动效。
 - GitHub 回调：文档分支固定 head `95946f448c9f758040fb55b5d63d2ad8da487e9b` 远端 0/0，Project memory run `32839645943` 成功；PR #18 按固定 head 合并为 main 提交 `af11a3830c555d06219226abec793fbbf798ba7a`。本次合并只同步文档、批准图片、README、evidence 和 handoff，不代表已经在社交平台发布。
+
+## 2026-08-26 Cross-account priority closure callback
+
+- 路由：large / L3。Sol 在隔离工作树 `E:\Agentstrip-wt-priority-closure-20260826` 负责跨账号事实恢复、优先级、外部门禁、代码集成、验收与 Git；原始脏工作树 `E:\Agentstrip` 未修改。
+- Luna 台账审计：Hooke（`/root/backlog_truth_audit`，正式 `luna_worker` / `gpt-5.6-luna` / `max`）completed，零文件修改，去重形成 17 项台账并识别旧路线图/D8 记录过期。工具层未提供精确启动时间和稳定耗时。
+- Luna 代码审计：Dalton（`/root/priority_code_audit`，正式 `luna_worker` / `gpt-5.6-luna` / `max`）completed，零文件修改；确认付费/积分/admin 逻辑有本地/CI 覆盖但无生产写入 E2E，司机邮件此前缺幂等，自动支付接口不存在。其只读 84-test 基线通过、13 项隔离 PostgreSQL 测试 skip。工具层未提供精确启动时间和稳定耗时。
+- Luna 来源审计：Parfit（`/root/poi_supplier_source_audit`，正式 `luna_worker` / `gpt-5.6-luna` / `max`）回传完整五项公开证据矩阵，但最终状态为 blocked，因为 Sol 在共享工作树中开始了预期改动，导致它的“前后 clean”验收条件不再成立；不得写成 Luna completed。Sol 独立复核来源、数据状态和最终差异。
+- 工程回调：两个 pending POI 与三个 supplier-gated 体验增加结构化 reviewed scope、live checks 和 source list，但状态保持不变；司机表单增加稳定 UUID，Resend 使用 provider idempotency key，重试不新增个人信息存储。Dicky/Gede 各自独立的印尼语报价授权表、供应商核验表、生产门禁和统一 17 项台账已落库。
+- 跨分支回调：已把另一个账号尚未合入 main 的 `2dbbc87` 集成到当前分支；两套司机手册现各含 3 张司机/服务图与 4 张带来源许可的巴厘岛风景图，找司机页补齐浅/深色对比、键盘焦点、480px 手机间距与 reduced-motion。该集成仍是本地分支事实，不是生产事实。
+- QA 回调：完整本地 discover 89 项通过、13 项隔离 PostgreSQL 测试按设计 skip；Bali JSON 解析、`git diff --check` 通过。无部署、生产数据库写入、真实邮件、订单、支付、公开发帖、广告或花费。
+- 下一回调：分别把 `operations/DICKY_RATE_AUTHORIZATION_ID.md` 与 `operations/GEDE_RATE_AUTHORIZATION_ID.md` 发给对应司机，把 `SUPPLIER_VERIFICATION_REGISTER.md` 发给选定供应商；收到带日期的答复后才开发版本化路线报价。生产付费/积分/admin E2E 需专用非真实账号和明确写入授权；自动支付、公开发布与广告继续独立门禁。
+- GitHub 回调：当前固定 head `84bfe1e` 已推送为 `origin/codex/priority-closure-20260826`，远端 0/0、工作树 clean；本机 `gh` 未认证，因此未创建 PR、未合并、未部署。准确下一步是通过 GitHub compare 创建到 `main` 的 PR，等待 Project memory 与 PostgreSQL integration 固定 head CI 后再决定合并；不得把远端分支写成 main 或生产。

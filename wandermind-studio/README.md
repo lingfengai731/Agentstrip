@@ -231,10 +231,17 @@ pwsh -NoProfile -File .\tools\test-image-intake.ps1
 ## 📣 推广材料
 
 - [`MARKETING_LAUNCH_PLAYBOOK.md`](MARKETING_LAUNCH_PLAYBOOK.md)：站主首发方案，现含小红书、Instagram Feed / Story / Reels、链接和 14 天复盘路径。
-- [`promotion-packs/Dicky/WanderMind_Dicky_Promosi_Siap_Pakai.docx`](promotion-packs/Dicky/WanderMind_Dicky_Promosi_Siap_Pakai.docx)：Dicky 的印尼语懒人推广手册及三张独立上传图片。
-- [`promotion-packs/Gede-Nico/WanderMind_Gede_Nico_Promosi_Siap_Pakai.docx`](promotion-packs/Gede-Nico/WanderMind_Gede_Nico_Promosi_Siap_Pakai.docx)：Gede Nico 的印尼语懒人推广手册及三张独立上传图片。
+- [`promotion-packs/Dicky/WanderMind_Dicky_Promosi_Siap_Pakai.docx`](promotion-packs/Dicky/WanderMind_Dicky_Promosi_Siap_Pakai.docx)：Dicky 的印尼语懒人推广手册及 7 张独立上传图片（司机/服务 3 张、带署名的巴厘岛风景 4 张）。
+- [`promotion-packs/Gede-Nico/WanderMind_Gede_Nico_Promosi_Siap_Pakai.docx`](promotion-packs/Gede-Nico/WanderMind_Gede_Nico_Promosi_Siap_Pakai.docx)：Gede Nico 的印尼语懒人推广手册及 7 张独立上传图片（司机/服务 3 张、带署名的巴厘岛风景 4 张）。
 
 两位司机使用不同的 `driver_id` 专属链接，打开后会自动选择对应司机。推广包不包含私人联系方式；网站估价只作为参考，最终车辆、日期、路线和价格仍须确认。
+
+运营与门禁资料：
+
+- [`operations/MASTER_BACKLOG_2026-08-26.md`](operations/MASTER_BACKLOG_2026-08-26.md)：两个账号统一后的完整未闭环台账与顺序。
+- [`operations/DICKY_RATE_AUTHORIZATION_ID.md`](operations/DICKY_RATE_AUTHORIZATION_ID.md) 与 [`operations/GEDE_RATE_AUTHORIZATION_ID.md`](operations/GEDE_RATE_AUTHORIZATION_ID.md)：两位司机各自独立的印尼语报价授权表。
+- [`operations/SUPPLIER_VERIFICATION_REGISTER.md`](operations/SUPPLIER_VERIFICATION_REGISTER.md)：三个供应商体验的公开证据边界和直接核验问题。
+- [`operations/PRODUCTION_GATES.md`](operations/PRODUCTION_GATES.md)：付费/积分/管理员 E2E、真实邮件、自动支付、公开发帖与广告门禁。
 
 ---
 

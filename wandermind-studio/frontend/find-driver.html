@@ -29,7 +29,7 @@
       @media (max-width: 767px) {
         .navbar-brand small { display: none !important; }
         .navbar-brand { gap: 4px !important; }
-        .wm-logo-img { height: 30px !important; width: 30px !important; }
+        .w3l-header-4 .navbar-brand .wm-logo-img { height: 30px !important; width: 30px !important; }
       }
       @media (min-width: 992px) {
         .navbar .navbar-nav { display: flex !important; align-items: center !important; }
@@ -43,6 +43,9 @@
       .lang-picker select { background: transparent; border: none; color: inherit; font-size: 13px; font-family: inherit; outline: none; cursor: pointer; height: 34px; text-align: center; text-align-last: center; -webkit-appearance: none; -moz-appearance: none; appearance: none; }
       .lang-picker select option { color: #333; background: #fff; }
       body.dark .lang-picker select option { color: #f0f0f0; background: #222; }
+      .theme-selector { min-width: 44px; min-height: 44px; display: inline-flex; align-items: center; justify-content: center; }
+      .theme-selector input { display: block !important; position: absolute !important; width: 1px !important; height: 1px !important; margin: -1px !important; overflow: hidden !important; clip: rect(0,0,0,0) !important; clip-path: inset(50%) !important; white-space: nowrap !important; }
+      .theme-selector:focus-within { outline: 3px solid rgba(252,191,30,.55); outline-offset: 2px; border-radius: 50%; }
       body:not(.dark) .nav-fixed .lang-picker, body:not(.dark) .nav-fixed .lang-picker .fa, body:not(.dark) .nav-fixed .lang-picker select,
       body:not(.dark) .nav-fixed .navbar-brand, body:not(.dark) .nav-fixed .navbar-brand small, body:not(.dark) .nav-fixed .navbar-nav .nav-link,
       body:not(.dark) .nav-fixed .navbar .nav-link.phone, body:not(.dark) .nav-fixed .navbar .nav-link.phone .fa,
@@ -51,7 +54,7 @@
         .navbar-collapse.show, .navbar-collapse.collapsing { background: rgba(10,18,35,.96) !important; border-radius: 0 0 16px 16px; padding: 12px 8px 20px !important; margin-top: 8px; box-shadow: 0 16px 40px rgba(0,0,0,.4); }
         .navbar-collapse.show .lang-picker, .navbar-collapse.show .lang-picker .fa, .navbar-collapse.show .lang-picker select, .navbar-collapse.show .nav-link { color: #f0f0ec !important; }
       }
-      :root { --fd-teal: #0e7c6b; --fd-teal-lt: #14b8a6; --fd-gold: #fcbf1e; --fd-gold-dk: #d97706; --fd-ink: #1e293b; }
+      :root { --fd-teal: #0e7c6b; --fd-teal-lt: #14b8a6; --fd-gold: #fcbf1e; --fd-gold-dk: #d97706; --fd-ink: #1e293b; --fd-muted: #52605c; --fd-border: #d8d2c5; }
 
       .fd-hero { background: linear-gradient(135deg, #0e7c6b, #14b8a6); color: #fff; padding: 130px 0 56px; }
       .fd-hero h1 { font-size: clamp(30px, 5vw, 46px); font-weight: 800; margin: 0 0 12px; letter-spacing: -.01em; }
@@ -74,9 +77,11 @@
       .fd-label { display: block; font-size: 12.5px; font-weight: 600; color: var(--fd-ink); margin-bottom: 6px; }
       body.dark .fd-label { color: #d8d8d2; }
       .fd-req { color: #dc2626; }
-      .fd-input, .fd-textarea, .fd-num { width: 100%; padding: 11px 13px; background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 10px; font-size: 14px; color: var(--fd-ink); font-family: inherit; outline: none; box-sizing: border-box; transition: border-color .2s; }
+      .fd-input, .fd-textarea, .fd-num { width: 100%; min-height: 44px; padding: 11px 13px; background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 10px; font-size: 14px; color: var(--fd-ink); font-family: inherit; outline: none; box-sizing: border-box; transition: border-color .2s; }
       body.dark .fd-input, body.dark .fd-textarea, body.dark .fd-num { background: #2a2a25; border-color: #3a3a32; color: #f0f0ec; }
       .fd-input:focus, .fd-textarea:focus, .fd-num:focus { border-color: var(--fd-teal-lt); }
+      .fd-input:focus-visible, .fd-textarea:focus-visible, .fd-num:focus-visible { outline: 3px solid rgba(20,184,166,.22); outline-offset: 2px; }
+      body.dark .fd-input:focus-visible, body.dark .fd-textarea:focus-visible, body.dark .fd-num:focus-visible { border-color: var(--fd-gold); outline-color: rgba(252,191,30,.38); }
       .fd-textarea { resize: vertical; min-height: 90px; line-height: 1.6; }
       .fd-hint { font-size: 11.5px; color: #94a3b8; margin-top: 5px; }
       .fd-estimator { margin: 2px 0 20px; padding: 20px 0; border-top: 1px solid #e5e2da; border-bottom: 1px solid #e5e2da; }
@@ -113,7 +118,7 @@
 
       .fd-source-toggle { display: inline-flex; background: #f1f5f9; border-radius: 10px; padding: 3px; margin-bottom: 10px; }
       body.dark .fd-source-toggle { background: #2a2a25; }
-      .fd-source-btn { border: none; background: transparent; padding: 7px 14px; border-radius: 8px; font-size: 12.5px; font-weight: 600; color: #64748b; cursor: pointer; font-family: inherit; }
+      .fd-source-btn { min-height: 44px; border: none; background: transparent; padding: 7px 14px; border-radius: 8px; font-size: 12.5px; font-weight: 600; color: #64748b; cursor: pointer; font-family: inherit; }
       .fd-source-btn.active { background: #fff; color: var(--fd-teal); box-shadow: 0 1px 4px rgba(0,0,0,.08); }
       body.dark .fd-source-btn.active { background: #14b8a6; color: #fff; }
 
@@ -128,7 +133,7 @@
 
       .fd-submit { width: 100%; padding: 14px; background: linear-gradient(135deg, var(--fd-gold), var(--fd-gold-dk)); color: #fff; border: none; border-radius: 11px; font-size: 15px; font-weight: 700; cursor: pointer; font-family: inherit; display: inline-flex; align-items: center; justify-content: center; gap: 8px; transition: transform 160ms cubic-bezier(.23,1,.32,1), box-shadow 200ms cubic-bezier(.23,1,.32,1); }
       .fd-submit:active { transform: scale(.98); }
-      @media (hover: hover) and (pointer: fine) { .fd-submit:hover { transform: translateY(-1px); box-shadow: 0 8px 22px rgba(252,191,30,.4); } }
+      @media (hover: hover) and (pointer: fine) { .fd-submit:hover { transform: translateY(-1px); box-shadow: 0 8px 22px rgba(35,47,43,.20); } }
       .fd-submit:disabled { opacity: .55; cursor: not-allowed; transform: none; box-shadow: none; }
       .fd-msg { font-size: 13px; margin-top: 12px; min-height: 16px; text-align: center; }
       .fd-msg.err { color: #dc2626; }
@@ -143,17 +148,21 @@
       .fd-driver-top h3 { margin: 0; font-size: 19px; font-weight: 700; }
       .fd-driver-top .fd-badge { font-size: 11px; font-weight: 700; background: var(--fd-gold); color: #5a3d00; padding: 2px 9px; border-radius: 10px; display: inline-block; margin-top: 4px; letter-spacing: .03em; }
       .fd-driver ul { list-style: none; padding: 0; margin: 0 0 18px; }
-      .fd-driver li { display: flex; align-items: flex-start; gap: 10px; font-size: 13.5px; line-height: 1.6; padding: 6px 0; color: rgba(255,255,255,.92); }
+      .fd-driver li { display: flex; align-items: flex-start; gap: 10px; font-size: 13.5px; line-height: 1.6; padding: 6px 0; color: #334155; }
+      body.dark .fd-driver li { color: rgba(255,255,255,.92); }
       .fd-driver li .fa { width: 18px; text-align: center; color: var(--fd-gold); flex-shrink: 0; margin-top: 2px; }
       .fd-driver-picker { display:grid; grid-template-columns:1fr 1fr; gap:12px; margin:4px 0 24px; }
       .fd-driver-choice { position:relative; display:grid; grid-template-columns:64px 1fr; gap:12px; align-items:center; min-width:0; padding:12px; border:1px solid var(--fd-border); border-radius:13px; cursor:pointer; background:#fff; transition:border-color .18s,box-shadow .18s; }
       .fd-driver-choice.selected { border:2px solid var(--fd-teal); padding:11px; box-shadow:0 8px 22px rgba(14,124,107,.13); }
+      .fd-driver-choice:focus-within { outline:3px solid rgba(20,184,166,.24); outline-offset:2px; }
       body.dark .fd-driver-choice { background:#262825; }
+      body.dark .fd-driver-choice:focus-within { outline-color:rgba(252,191,30,.42); }
       .fd-driver-choice input { position:absolute; opacity:0; pointer-events:none; }
       .fd-driver-choice img { width:64px; height:64px; border-radius:12px; object-fit:cover; }
       .fd-driver-choice strong { display:block; color:var(--fd-ink); font-size:15px; }
       body.dark .fd-driver-choice strong { color:#f3f4f6; }
       .fd-driver-choice span { display:block; margin-top:3px; color:var(--fd-muted); font-size:11.5px; line-height:1.45; }
+      body.dark .fd-driver-choice span { color:#c9c6bd; }
       .fd-profile { margin-top:18px; padding-top:18px; border-top:1px solid #ddd8cc; }
       body.dark .fd-profile { border-top-color:#34383e; }
       .fd-profile:first-of-type { margin-top:0; padding-top:0; border-top:0; }
@@ -178,7 +187,7 @@
       .fd-moment { margin:0; min-width:0; }
       .fd-moment img { display:block; width:100%; aspect-ratio:1/1; object-fit:cover; border-radius:9px; background:#e9e5dc; }
       body.dark .fd-moment img { background:#171b1f; }
-      .fd-quote-boundary { margin-top:18px; padding:13px; border-radius:10px; background:rgba(255,255,255,.12); font-size:12px; line-height:1.6; color:rgba(255,255,255,.9); }
+      .fd-quote-boundary { margin-top:18px; font-size:12px; line-height:1.6; }
       @media(max-width:575px){ .fd-driver-picker{grid-template-columns:1fr}.fd-driver-choice{grid-template-columns:56px 1fr}.fd-driver-choice img{width:56px;height:56px} }
       .fd-price-box { background: rgba(14,124,107,.08); border:1px solid rgba(14,124,107,.18); border-radius: 12px; padding: 14px 16px; color:#334155; font-size: 13px; line-height: 1.8; }
       .fd-price-box strong { color: #0a695b; }
@@ -191,6 +200,14 @@
       @media (prefers-reduced-motion: reduce) {
         .fd-submit { transition: box-shadow 1ms linear; }
         .fd-submit:active { transform: none; }
+        .fd-input, .fd-textarea, .fd-num, .fd-driver-choice { transition: none; }
+        .fd-spin { animation: none; }
+      }
+
+      @media (max-width: 480px) {
+        .fd-wrap { padding-inline: 12px; padding-bottom: 56px; }
+        .fd-card { padding: 24px 18px 28px; }
+        .fd-driver { padding: 24px 18px; }
       }
 
       .footer-contact-line { display: flex; align-items: center; gap: 8px; padding: 4px 0; flex-wrap: wrap; }
@@ -205,7 +222,7 @@
     <div class="container">
       <nav class="navbar navbar-expand-lg navbar-dark stroke">
         <h1><a class="navbar-brand" href="index.html"><img src="assets/images/logo-mark-256.png" alt="WanderMind" class="wm-logo-img" width="44" height="44"> WanderMind <small>STUDIO</small></a></h1>
-        <button class="navbar-toggler collapsed bg-gradient" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo02">
+        <button class="navbar-toggler collapsed bg-gradient" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo02" aria-controls="navbarTogglerDemo02" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon fa icon-expand fa-bars"></span>
           <span class="navbar-toggler-icon fa icon-close fa-times"></span>
         </button>
@@ -227,10 +244,10 @@
                 </select>
               </div>
             </li>
-            <li class="nav-item ml-3"><a href="#search" class="search-search nav-link"><span class="fa fa-search mr-2"></span></a></li>
+            <li class="nav-item ml-3"><a href="#search" class="search-search nav-link" aria-label="Search"><span class="fa fa-search mr-2" aria-hidden="true"></span></a></li>
           </ul>
         </div>
-        <div class="mobile-position"><label class="theme-selector"><input type="checkbox" id="themeToggle"><i class="gg-sun"></i><i class="gg-moon"></i></label></div>
+        <div class="mobile-position"><label class="theme-selector"><input type="checkbox" id="themeToggle" aria-label="Toggle color theme"><i class="gg-sun" aria-hidden="true"></i><i class="gg-moon" aria-hidden="true"></i></label></div>
       </nav>
     </div>
   </header>
@@ -260,7 +277,7 @@
   <div class="fd-grid">
 
     <!-- FORM -->
-    <div class="fd-card" id="fd-form-card">
+    <form class="fd-card" id="fd-form-card" novalidate>
       <h2 data-i18n="fdFormTitle">Your trip details</h2>
       <p class="fd-sub" data-i18n="fdFormSub">Choose a driver, then share your route. Availability and price are confirmed after review.</p>
 
@@ -280,11 +297,11 @@
 
       <div class="fd-row">
         <div class="fd-field">
-          <label class="fd-label" data-i18n="fdFirstLabel">First name <span class="fd-req">*</span></label>
+          <label class="fd-label" for="fd-first" data-i18n="fdFirstLabel">First name <span class="fd-req">*</span></label>
           <input type="text" class="fd-input" id="fd-first" data-i18n="fdFirstPh" data-i18n-attr="placeholder" placeholder="First name">
         </div>
         <div class="fd-field">
-          <label class="fd-label" data-i18n="fdLastLabel">Last name <span class="fd-req">*</span></label>
+          <label class="fd-label" for="fd-last" data-i18n="fdLastLabel">Last name <span class="fd-req">*</span></label>
           <input type="text" class="fd-input" id="fd-last" data-i18n="fdLastPh" data-i18n-attr="placeholder" placeholder="Last name">
         </div>
       </div>
@@ -392,8 +409,8 @@
       <div class="fd-field">
         <label class="fd-label" data-i18n="fdPlaces">Places you'd like to visit</label>
         <div class="fd-source-toggle">
-          <button type="button" class="fd-source-btn active" id="fd-src-manual" data-i18n="fdSrcManual">Write manually</button>
-          <button type="button" class="fd-source-btn" id="fd-src-import" data-i18n="fdSrcImport">Import from my AI plan</button>
+          <button type="button" class="fd-source-btn active" id="fd-src-manual" aria-pressed="true" data-i18n="fdSrcManual">Write manually</button>
+          <button type="button" class="fd-source-btn" id="fd-src-import" aria-pressed="false" data-i18n="fdSrcImport">Import from my AI plan</button>
         </div>
         <textarea class="fd-textarea" id="fd-places" data-i18n="fdPlacesPh" data-i18n-attr="placeholder" placeholder="e.g. Nusa Penida, Ubud rice terraces, Uluwatu temple…"></textarea>
         <div class="fd-hint" id="fd-import-hint" style="display:none"></div>
@@ -406,9 +423,9 @@
       <div class="fd-honeypot" aria-hidden="true"><label for="fd-website">Website</label><input id="fd-website" type="text" tabindex="-1" autocomplete="off"></div>
       <label class="fd-consent"><input id="fd-consent" type="checkbox" required><span data-i18n="fdConsent">I agree that WanderMind may forward this request and the contact details I entered to my selected driver to arrange a reply.</span></label>
 
-      <button class="fd-submit" id="fd-submit"><span class="fa fa-paper-plane"></span> <span data-i18n="fdSubmit">Send driver request</span></button>
-      <div class="fd-msg" id="fd-msg"></div>
-    </div>
+      <button type="submit" class="fd-submit" id="fd-submit"><span class="fa fa-paper-plane" aria-hidden="true"></span> <span data-i18n="fdSubmit">Send driver request</span></button>
+      <div class="fd-msg" id="fd-msg" role="status" aria-live="polite" aria-atomic="true"></div>
+    </form>
 
     <!-- DRIVER CARD -->
     <div class="fd-driver">
@@ -600,10 +617,12 @@
     })();
     manualBtn.onclick = function () {
       manualBtn.classList.add('active'); importBtn.classList.remove('active');
+      manualBtn.setAttribute('aria-pressed', 'true'); importBtn.setAttribute('aria-pressed', 'false');
       hint.style.display = 'none';
     };
     importBtn.onclick = function () {
       importBtn.classList.add('active'); manualBtn.classList.remove('active');
+      importBtn.setAttribute('aria-pressed', 'true'); manualBtn.setAttribute('aria-pressed', 'false');
       var d = readPlan();
       var L = (window.FD_T || {});
       if (d.plan && d.plan.text && (!requestedRoute || d.plan.route_id === requestedRoute)) {
@@ -620,20 +639,38 @@
         hint.textContent = L.fdImportNone || 'No AI plan found yet. Try planning a trip in the AI Tool first, or write manually.';
         hint.style.display = 'block';
         manualBtn.classList.add('active'); importBtn.classList.remove('active');
+        manualBtn.setAttribute('aria-pressed', 'true'); importBtn.setAttribute('aria-pressed', 'false');
       }
     };
 
     // —— Submit ——
     var btn = document.getElementById('fd-submit');
+    var form = document.getElementById('fd-form-card');
     var msg = document.getElementById('fd-msg');
-    btn.onclick = async function () {
+    var driverRequestId = '';
+    var driverRequestFingerprint = '';
+    function createRequestId() {
+      if (window.crypto && typeof window.crypto.randomUUID === 'function') return window.crypto.randomUUID();
+      var bytes = new Uint8Array(16);
+      if (window.crypto && typeof window.crypto.getRandomValues === 'function') window.crypto.getRandomValues(bytes);
+      else for (var i = 0; i < bytes.length; i += 1) bytes[i] = Math.floor(Math.random() * 256);
+      bytes[6] = (bytes[6] & 15) | 64;
+      bytes[8] = (bytes[8] & 63) | 128;
+      return Array.from(bytes, function (byte, index) {
+        return ([4, 6, 8, 10].indexOf(index) >= 0 ? '-' : '') + byte.toString(16).padStart(2, '0');
+      }).join('');
+    }
+    form.addEventListener('submit', async function (event) {
+      event.preventDefault();
       var L = (window.FD_T || {});
       msg.className = 'fd-msg'; msg.textContent = '';
       var first = document.getElementById('fd-first').value.trim();
       var last = document.getElementById('fd-last').value.trim();
-      var email = document.getElementById('fd-email').value.trim();
+      var emailEl = document.getElementById('fd-email');
+      var email = emailEl.value.trim();
       if (!first && !last) { msg.className = 'fd-msg err'; msg.textContent = L.fdErrName || 'Please enter your name'; return; }
       if (!email) { msg.className = 'fd-msg err'; msg.textContent = L.fdErrContact || 'Please provide an email address'; return; }
+      if (!emailEl.checkValidity()) { msg.className = 'fd-msg err'; msg.textContent = emailEl.validationMessage || 'Please enter a valid email address'; return; }
       if (!startEl.value || !endEl.value || endEl.value < startEl.value) { msg.className = 'fd-msg err'; msg.textContent = L.fdErrDates || 'Please enter valid travel dates'; return; }
       if (!document.getElementById('fd-consent').checked) { msg.className = 'fd-msg err'; msg.textContent = L.fdErrConsent || 'Please confirm that we may forward this request to your selected driver'; return; }
 
@@ -657,6 +694,12 @@
         privacy_consent: true,
         website: document.getElementById('fd-website').value.trim()
       };
+      var fingerprint = JSON.stringify(payload);
+      if (!driverRequestId || driverRequestFingerprint !== fingerprint) {
+        driverRequestId = createRequestId();
+        driverRequestFingerprint = fingerprint;
+      }
+      payload.request_id = driverRequestId;
       btn.disabled = true;
       var old = btn.innerHTML;
       btn.innerHTML = '<span class="fa fa-spinner fd-spin"></span> ' + (L.fdSending || 'Sending…');
@@ -667,15 +710,17 @@
         if (data && data.delivered === true && window.wmTrack) window.wmTrack('driver_request_submitted');
         document.getElementById('fd-form-card').innerHTML =
           '<div class="fd-success"><div><span class="fa fa-check-circle"></span></div>' +
-          '<h2>' + (L.fdSuccessTitle || 'Request sent!') + '</h2>' +
+          '<h2 id="fd-success-title" tabindex="-1">' + (L.fdSuccessTitle || 'Request sent!') + '</h2>' +
           '<p class="fd-sub" style="margin-top:8px">' + (L.fdSuccessSub || 'Your selected driver or WanderMind will reply using the contact you provided.') + '</p>' +
           '<a href="bali.html" class="fd-submit" style="display:inline-flex;width:auto;padding:12px 26px;text-decoration:none;margin-top:8px">' + (L.fdBackBali || 'Back to Bali') + '</a></div>';
+        var successTitle = document.getElementById('fd-success-title');
+        if (successTitle) successTitle.focus({ preventScroll: true });
         window.scrollTo({ top: 0, behavior: 'smooth' });
       } catch (e) {
         msg.className = 'fd-msg err'; msg.textContent = (e && e.message) || (L.fdErrSend || 'Failed to send, please retry');
         btn.disabled = false; btn.innerHTML = old;
       }
-    };
+    });
   })();
 </script>
 <script src="assets/js/i18n.js?v=p65"></script>
