@@ -18,7 +18,7 @@
     <meta name="twitter:image" content="https://wandermind.cc/assets/images/bali-4.jpg">
   <link rel="icon" type="image/png" href="assets/images/logo-mark-256.png">
   <link rel="apple-touch-icon" href="assets/images/logo-mark-256.png">
-    <link rel="stylesheet" href="assets/css/style-starter.css?v=p63">
+    <link rel="stylesheet" href="assets/css/style-starter.css?v=search1">
     <link rel="preconnect" href="https://unpkg.com" crossorigin>
     <link rel="preconnect" href="https://tile.openstreetmap.org" crossorigin>
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="">
@@ -38,7 +38,7 @@
         .navbar .navbar-nav .nav-link { white-space: nowrap; padding: 8px 9px !important; line-height: 1.2 !important; }
         .navbar .nav-link.phone { white-space: nowrap; display: inline-flex; align-items: center; gap: 5px; text-transform: none !important; }
         .navbar .nav-link.phone .fa { font-size: 14px; }
-        .navbar .search-search.nav-link { display: inline-flex !important; align-items: center; justify-content: center; height: 36px; padding: 0 8px !important; }
+        .navbar .search-search.nav-link { display: inline-flex !important; align-items: center; justify-content: center; min-width: 44px; min-height: 44px; height: 44px; padding: 0 8px !important; }
         .nav-link.bali-link { color: #d97706 !important; font-weight: 700; }
         body.dark .nav-link.bali-link { color: #ffd180 !important; }
       }
@@ -548,7 +548,7 @@
                 </select>
               </div>
             </li>
-            <li class="nav-item ml-3"><a href="#search" class="search-search nav-link"><span class="fa fa-search mr-2"></span></a></li>
+            <li class="nav-item ml-3"><a href="search.html" class="search-search nav-link" aria-label="Search WanderMind" data-i18n="searchAriaLabel" data-i18n-attr="aria-label"><span class="fa fa-search mr-2" aria-hidden="true"></span></a></li>
           </ul>
         </div>
         <div class="mobile-position"><label class="theme-selector"><input type="checkbox" id="themeToggle"><i class="gg-sun"></i><i class="gg-moon"></i></label></div>
@@ -906,7 +906,7 @@
 <script>
   function topFunction() { document.body.scrollTop = 0; document.documentElement.scrollTop = 0; }
 </script>
-<script src="assets/js/i18n.js?v=p64"></script>
+<script src="assets/js/i18n.js?v=search1"></script>
 <script src="assets/js/bali-packages.js?v=20260826p1"></script>
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
 <script>

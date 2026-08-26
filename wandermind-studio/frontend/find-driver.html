@@ -19,7 +19,7 @@
     <meta name="twitter:image" content="https://wandermind.cc/assets/images/web/service-private-guide.webp">
   <link rel="icon" type="image/png" href="assets/images/logo-mark-256.png">
   <link rel="apple-touch-icon" href="assets/images/logo-mark-256.png">
-    <link rel="stylesheet" href="assets/css/style-starter.css?v=p63">
+    <link rel="stylesheet" href="assets/css/style-starter.css?v=search1">
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=optional" rel="stylesheet">
     <style>
       .navbar-brand { font-weight: 700; letter-spacing: .02em; white-space: nowrap; display: inline-flex !important; align-items: center; gap: 8px; }
@@ -36,7 +36,7 @@
         .navbar .navbar-nav .nav-link { white-space: nowrap; padding: 8px 9px !important; line-height: 1.2 !important; }
         .navbar .nav-link.phone { white-space: nowrap; display: inline-flex; align-items: center; gap: 5px; text-transform: none !important; }
         .navbar .nav-link.phone .fa { font-size: 14px; }
-        .navbar .search-search.nav-link { display: inline-flex !important; align-items: center; justify-content: center; height: 36px; padding: 0 8px !important; }
+        .navbar .search-search.nav-link { display: inline-flex !important; align-items: center; justify-content: center; min-width: 44px; min-height: 44px; height: 44px; padding: 0 8px !important; }
       }
       .lang-picker { display: inline-flex; align-items: center; gap: 6px; padding: 0 10px; height: 36px; border-radius: 18px; background: rgba(255,255,255,.08); border: 1px solid rgba(255,255,255,.15); cursor: pointer; box-sizing: border-box; }
       .lang-picker .fa { font-size: 12px; opacity: .7; }
@@ -244,7 +244,7 @@
                 </select>
               </div>
             </li>
-            <li class="nav-item ml-3"><a href="#search" class="search-search nav-link" aria-label="Search"><span class="fa fa-search mr-2" aria-hidden="true"></span></a></li>
+            <li class="nav-item ml-3"><a href="search.html" class="search-search nav-link" aria-label="Search WanderMind" data-i18n="searchAriaLabel" data-i18n-attr="aria-label"><span class="fa fa-search mr-2" aria-hidden="true"></span></a></li>
           </ul>
         </div>
         <div class="mobile-position"><label class="theme-selector"><input type="checkbox" id="themeToggle" aria-label="Toggle color theme"><i class="gg-sun" aria-hidden="true"></i><i class="gg-moon" aria-hidden="true"></i></label></div>
@@ -727,7 +727,7 @@
     });
   })();
 </script>
-<script src="assets/js/i18n.js?v=p65"></script>
+    <script src="assets/js/i18n.js?v=search1"></script>
 <script src="assets/js/driver-estimate.js?v=p1"></script>
 <script>
   // Expose JS-side strings for the dynamic messages (filled after i18n load)

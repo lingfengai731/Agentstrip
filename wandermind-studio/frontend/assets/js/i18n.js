@@ -996,6 +996,52 @@ const LANGS = {
 };
 
 Object.assign(LANGS.en, {
+  searchPageTitle:'Search | WanderMind Studio', searchAriaLabel:'Search WanderMind', themeToggleLabel:'Toggle color theme',
+  searchEyebrow:'WANDERMIND INDEX', searchTitle:'Search WanderMind',
+  searchIntro:'Search public pages, Bali routes R1–R6 and curated places.',
+  searchInputLabel:'Search pages, routes or places', searchInputPlaceholder:'Try “Ubud”, “R5” or “Tirta Empul”', searchSubmit:'Search',
+  searchResultsHeading:'Results', searchPrompt:'Start with a page, route ID or place name.', searchLoading:'Loading Bali routes and places…', searchResultCount:'{n} results',
+  searchResultPage:'Page', searchResultRoute:'Bali route', searchResultPoi:'Place', searchNoResults:'No matches. Try another page, route or place.',
+  searchDataUnavailable:'Bali route data is unavailable right now. Public pages remain searchable.', searchStatusPending:'Check before travel', searchStatusSupplier:'Confirm before booking', searchStatusUnavailable:'Unavailable'
+});
+Object.assign(LANGS.zh, {
+  searchPageTitle:'搜索 | WanderMind Studio 游心臻选', searchAriaLabel:'搜索 WanderMind', themeToggleLabel:'切换颜色主题',
+  searchEyebrow:'WANDERMIND 内容索引', searchTitle:'搜索 WanderMind',
+  searchIntro:'搜索公开页面、巴厘岛 R1–R6 路线和精选地点。',
+  searchInputLabel:'搜索页面、路线或地点', searchInputPlaceholder:'试试“乌布”“R5”或“Tirta Empul”', searchSubmit:'搜索',
+  searchResultsHeading:'搜索结果', searchPrompt:'从页面、路线 ID 或地点名称开始。', searchLoading:'正在加载巴厘岛路线和地点…', searchResultCount:'{n} 条结果',
+  searchResultPage:'页面', searchResultRoute:'巴厘岛路线', searchResultPoi:'地点', searchNoResults:'暂时没有匹配结果，请换一个页面、路线或地点。',
+  searchDataUnavailable:'巴厘岛路线数据暂时不可用，但公开页面仍可搜索。', searchStatusPending:'出发前确认', searchStatusSupplier:'预约前确认', searchStatusUnavailable:'暂不可用'
+});
+Object.assign(LANGS.ja, {
+  searchPageTitle:'検索 | WanderMind Studio', searchAriaLabel:'WanderMindを検索', themeToggleLabel:'カラーテーマを切り替える',
+  searchEyebrow:'WANDERMIND INDEX', searchTitle:'WanderMindを検索',
+  searchIntro:'公開ページ、バリ島 R1〜R6 ルート、厳選スポットを検索できます。',
+  searchInputLabel:'ページ、ルート、スポットを検索', searchInputPlaceholder:'「Ubud」「R5」「Tirta Empul」など', searchSubmit:'検索',
+  searchResultsHeading:'検索結果', searchPrompt:'ページ、ルート ID、スポット名から検索してください。', searchLoading:'バリ島のルートとスポットを読み込んでいます…', searchResultCount:'{n}件の結果',
+  searchResultPage:'ページ', searchResultRoute:'バリ島ルート', searchResultPoi:'スポット', searchNoResults:'一致する結果がありません。別のページ、ルート、スポットをお試しください。',
+  searchDataUnavailable:'現在バリ島のルートデータを利用できません。公開ページは検索できます。', searchStatusPending:'出発前に確認', searchStatusSupplier:'予約前に確認', searchStatusUnavailable:'利用不可'
+});
+Object.assign(LANGS.ko, {
+  searchPageTitle:'검색 | WanderMind Studio', searchAriaLabel:'WanderMind 검색', themeToggleLabel:'색상 테마 전환',
+  searchEyebrow:'WANDERMIND 색인', searchTitle:'WanderMind 검색',
+  searchIntro:'공개 페이지, 발리 R1–R6 경로와 엄선한 장소를 검색하세요.',
+  searchInputLabel:'페이지, 경로 또는 장소 검색', searchInputPlaceholder:'“Ubud”, “R5” 또는 “Tirta Empul” 검색', searchSubmit:'검색',
+  searchResultsHeading:'검색 결과', searchPrompt:'페이지, 경로 ID 또는 장소 이름으로 시작하세요.', searchLoading:'발리 경로와 장소를 불러오는 중…', searchResultCount:'{n}개 결과',
+  searchResultPage:'페이지', searchResultRoute:'발리 경로', searchResultPoi:'장소', searchNoResults:'일치하는 결과가 없습니다. 다른 페이지, 경로 또는 장소를 입력해 보세요.',
+  searchDataUnavailable:'현재 발리 경로 데이터를 사용할 수 없습니다. 공개 페이지는 계속 검색할 수 있습니다.', searchStatusPending:'출발 전 확인', searchStatusSupplier:'예약 전 확인', searchStatusUnavailable:'사용 불가'
+});
+Object.assign(LANGS.id, {
+  searchPageTitle:'Cari | WanderMind Studio', searchAriaLabel:'Cari di WanderMind', themeToggleLabel:'Ganti tema warna',
+  searchEyebrow:'INDEKS WANDERMIND', searchTitle:'Cari di WanderMind',
+  searchIntro:'Cari halaman publik, rute Bali R1–R6, dan tempat pilihan.',
+  searchInputLabel:'Cari halaman, rute, atau tempat', searchInputPlaceholder:'Coba “Ubud”, “R5”, atau “Tirta Empul”', searchSubmit:'Cari',
+  searchResultsHeading:'Hasil', searchPrompt:'Mulai dari halaman, ID rute, atau nama tempat.', searchLoading:'Memuat rute dan tempat di Bali…', searchResultCount:'{n} hasil',
+  searchResultPage:'Halaman', searchResultRoute:'Rute Bali', searchResultPoi:'Tempat', searchNoResults:'Belum ada hasil yang cocok. Coba halaman, rute, atau tempat lain.',
+  searchDataUnavailable:'Data rute Bali sedang tidak tersedia. Halaman publik tetap dapat dicari.', searchStatusPending:'Periksa sebelum berangkat', searchStatusSupplier:'Konfirmasi sebelum memesan', searchStatusUnavailable:'Tidak tersedia'
+});
+
+Object.assign(LANGS.en, {
   formTitle:'Start with what matters to you', formSub:'We use these details for AI self-planning or to match a professional route, so you do not have to enter them twice.',
   formAudience:'Which Bali trip are you planning?', formAudienceFirst:'My first Bali trip', formAudienceReturn:"I've been before · go deeper",
   formGoal:'What matters most this time?', formGoalEasy:'Less planning · an easier trip', formGoalLocal:'Local culture · real experiences', formGoalPhoto:'Photography · scenic moments', formGoalValue:'Best value · control the budget',
