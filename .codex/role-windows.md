@@ -408,3 +408,4 @@
 - 跨分支回调：已把另一个账号尚未合入 main 的 `2dbbc87` 集成到当前分支；两套司机手册现各含 3 张司机/服务图与 4 张带来源许可的巴厘岛风景图，找司机页补齐浅/深色对比、键盘焦点、480px 手机间距与 reduced-motion。该集成仍是本地分支事实，不是生产事实。
 - QA 回调：完整本地 discover 89 项通过、13 项隔离 PostgreSQL 测试按设计 skip；Bali JSON 解析、`git diff --check` 通过。无部署、生产数据库写入、真实邮件、订单、支付、公开发帖、广告或花费。
 - 下一回调：分别把 `operations/DICKY_RATE_AUTHORIZATION_ID.md` 与 `operations/GEDE_RATE_AUTHORIZATION_ID.md` 发给对应司机，把 `SUPPLIER_VERIFICATION_REGISTER.md` 发给选定供应商；收到带日期的答复后才开发版本化路线报价。生产付费/积分/admin E2E 需专用非真实账号和明确写入授权；自动支付、公开发布与广告继续独立门禁。
+- GitHub 回调：当前固定 head `84bfe1e` 已推送为 `origin/codex/priority-closure-20260826`，远端 0/0、工作树 clean；本机 `gh` 未认证，因此未创建 PR、未合并、未部署。准确下一步是通过 GitHub compare 创建到 `main` 的 PR，等待 Project memory 与 PostgreSQL integration 固定 head CI 后再决定合并；不得把远端分支写成 main 或生产。

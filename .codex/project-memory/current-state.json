@@ -19,7 +19,7 @@
     "source_branch": "codex/priority-closure-20260826",
     "working_tree_at_capture": "clean isolated worktree at checkpoint; source branch is locally verified but not deployed, while production retains its separately dated evidence",
     "active_change": {
-      "status": "local_verified_not_deployed",
+      "status": "pushed_not_merged_not_deployed",
       "branch": "codex/priority-closure-20260826",
       "source_commit": "e4173f6b8356d1a410fa48eab49eeac4c1fb2441",
       "product_tests": "89 total passed with 13 environment-dependent PostgreSQL tests skipped by design",
@@ -30,7 +30,8 @@
         "integration of the previously unmerged seven-image driver promotion packs and mobile, theme, focus and reduced-motion driver-page polish"
       ],
       "external_side_effects": "none: no deployment, production mutation, real email, payment, public post, advertisement or spend",
-      "evidence_id": "ev-20260826T041100Z-priority-closure-20260826"
+      "remote_sync": "origin/codex/priority-closure-20260826 at 84bfe1e with 0/0 divergence; GitHub CLI was not authenticated, so no PR exists from this task",
+      "evidence_id": "ev-20260826T041322Z-priority-closure-push-20260826"
     },
     "wandermind_bali": {
       "status": "verified",
@@ -225,7 +226,7 @@
     "bali-4.jpg remains the approved generic Bali-page hero, but its exact place, mountain name and capture date are unverified; it must not be reused as a location-specific route or advertising claim without new evidence.",
     "The production backend commit is not exposed by a public endpoint; frontend 20260825p1 manifest behavior with 113 unique assets and schema 1.8.0/62-POI behavior prove the merged release is serving, and the user separately confirmed PostgreSQL plus a stable strong SECRET_KEY by presence only.",
     "Paid unlock, adjustment mutation and admin-only Portfolio mutation were not exercised against production to avoid creating financial or privileged records; their release-critical behavior remains covered by SQLite and isolated PostgreSQL CI.",
-    "The priority-closure branch is locally verified only. Its POI evidence, Resend idempotency, authorization forms, scenic promotion packs and driver-page polish must not be described as deployed until merged and production-checked.",
+    "The priority-closure branch is pushed but not merged or deployed. Its POI evidence, Resend idempotency, authorization forms, scenic promotion packs and driver-page polish must not be described as deployed until fixed-head CI, merge and production checks complete.",
     "The callable in-app Browser runtime is now injected, but the one authorized Render and localhost retry failed at the admin-enforced policy gate. Native control remains a non-blocking limitation for this workstream; no further policy repair is authorized.",
     "Conversation history and hidden reasoning are not project facts."
   ]
