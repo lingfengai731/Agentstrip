@@ -421,3 +421,5 @@
 - 文档回调：Dicky/Gede Nico 各生成一份 13 页中文合并审阅手册和手机 ZIP，包含网站初衷、使用方法、两组完整推广素材、3-5 天节奏、图片保存和独立报价授权；旧中文拆分版已在 26 页 LibreOffice 验收后删除，印尼语正式版等待站长中文确认。
 - QA 回调：完整本地 discover 90 项中 77 通过、13 项隔离 PostgreSQL 测试按设计 skip；POI/套餐静态门禁、Search 静态门禁、Node 语法和 diff check 通过。Chromium 320/390/768/1440 完成桌面悬停、手机点按、套餐、搜索、司机交接和零横向溢出。
 - 发布边界：当前 evidence 为 pre-release；尚未把分支写成 pushed/merged/deployed。没有发送邮件、预订、付款、写权益/积分/admin、公开发帖、投广告或修改 Render 环境变量。
+- GitHub 回调：PR #22 固定 head `bd06308c60c4411054874189dcbdb75f9fce646d` 在 GitHub 为 mergeable/clean，并 squash 合并为 main `33e7a0ff86797a5a2276c83172f74ff96ad444f7`。GitHub Actions 在 opened、synchronize 与一次 close/reopen 后均未产生 run，因此不写 CI 成功；合并依据为固定头本地完整门禁和 clean mergeability。
+- 生产回调：Render 自动部署后 `/healthz`、`/search.html`、POI 媒体 JSON、套餐 JSON 和生成视觉均 200；生产 Chromium 320/390/768/1440 的地点悬停/点按、8 套套餐、搜索、司机交接和页面溢出全部通过。没有发送司机邮件、预订、付款、写订单/权益/积分/admin、公开发帖、投广告或修改 Render 环境变量。
