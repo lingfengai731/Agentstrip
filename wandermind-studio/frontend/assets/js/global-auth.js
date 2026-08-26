@@ -73,6 +73,7 @@
   }
 
   langPicker.addEventListener('change', render);
+  document.addEventListener('wm:language-change', render);
   window.addEventListener('storage', render);
   render();
 })();

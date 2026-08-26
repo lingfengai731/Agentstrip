@@ -29,7 +29,7 @@
       @media (max-width: 767px) {
         .navbar-brand small { display: none !important; }
         .navbar-brand { gap: 4px !important; }
-        .wm-logo-img { height: 30px !important; width: 30px !important; }
+        .w3l-header-4 .navbar-brand .wm-logo-img { height: 30px !important; width: 30px !important; }
       }
       @media (min-width: 992px) {
         .navbar .navbar-nav { display: flex !important; align-items: center !important; }
@@ -43,6 +43,7 @@
       .lang-picker select { background: transparent; border: none; color: inherit; font-size: 13px; font-family: inherit; outline: none; cursor: pointer; height: 34px; text-align: center; text-align-last: center; -webkit-appearance: none; -moz-appearance: none; appearance: none; }
       .lang-picker select option { color: #333; background: #fff; }
       body.dark .lang-picker select option { color: #f0f0f0; background: #222; }
+      .theme-selector { min-width: 44px; min-height: 44px; display: inline-flex; align-items: center; justify-content: center; }
       body:not(.dark) .nav-fixed .lang-picker, body:not(.dark) .nav-fixed .lang-picker .fa, body:not(.dark) .nav-fixed .lang-picker select,
       body:not(.dark) .nav-fixed .navbar-brand, body:not(.dark) .nav-fixed .navbar-brand small, body:not(.dark) .nav-fixed .navbar-nav .nav-link,
       body:not(.dark) .nav-fixed .navbar .nav-link.phone, body:not(.dark) .nav-fixed .navbar .nav-link.phone .fa,
@@ -115,7 +116,7 @@
 
       .fd-source-toggle { display: inline-flex; background: #f1f5f9; border-radius: 10px; padding: 3px; margin-bottom: 10px; }
       body.dark .fd-source-toggle { background: #2a2a25; }
-      .fd-source-btn { border: none; background: transparent; padding: 7px 14px; border-radius: 8px; font-size: 12.5px; font-weight: 600; color: #64748b; cursor: pointer; font-family: inherit; }
+      .fd-source-btn { min-height: 44px; border: none; background: transparent; padding: 7px 14px; border-radius: 8px; font-size: 12.5px; font-weight: 600; color: #64748b; cursor: pointer; font-family: inherit; }
       .fd-source-btn.active { background: #fff; color: var(--fd-teal); box-shadow: 0 1px 4px rgba(0,0,0,.08); }
       body.dark .fd-source-btn.active { background: #14b8a6; color: #fff; }
 
@@ -205,6 +206,7 @@
         .fd-wrap { padding-inline: 12px; padding-bottom: 56px; }
         .fd-card { padding: 24px 18px 28px; }
         .fd-driver { padding: 24px 18px; }
+        .fd-input, .fd-num { min-height: 44px; }
       }
 
       .footer-contact-line { display: flex; align-items: center; gap: 8px; padding: 4px 0; flex-wrap: wrap; }
@@ -219,7 +221,7 @@
     <div class="container">
       <nav class="navbar navbar-expand-lg navbar-dark stroke">
         <h1><a class="navbar-brand" href="index.html"><img src="assets/images/logo-mark-256.png" alt="WanderMind" class="wm-logo-img" width="44" height="44"> WanderMind <small>STUDIO</small></a></h1>
-        <button class="navbar-toggler collapsed bg-gradient" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo02">
+        <button class="navbar-toggler collapsed bg-gradient" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo02" aria-controls="navbarTogglerDemo02" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon fa icon-expand fa-bars"></span>
           <span class="navbar-toggler-icon fa icon-close fa-times"></span>
         </button>
@@ -241,10 +243,10 @@
                 </select>
               </div>
             </li>
-            <li class="nav-item ml-3"><a href="#search" class="search-search nav-link"><span class="fa fa-search mr-2"></span></a></li>
+            <li class="nav-item ml-3"><a href="#search" class="search-search nav-link" aria-label="Search"><span class="fa fa-search mr-2" aria-hidden="true"></span></a></li>
           </ul>
         </div>
-        <div class="mobile-position"><label class="theme-selector"><input type="checkbox" id="themeToggle"><i class="gg-sun"></i><i class="gg-moon"></i></label></div>
+        <div class="mobile-position"><label class="theme-selector"><input type="checkbox" id="themeToggle" aria-label="Toggle color theme"><i class="gg-sun" aria-hidden="true"></i><i class="gg-moon" aria-hidden="true"></i></label></div>
       </nav>
     </div>
   </header>
@@ -274,7 +276,7 @@
   <div class="fd-grid">
 
     <!-- FORM -->
-    <div class="fd-card" id="fd-form-card">
+    <form class="fd-card" id="fd-form-card" novalidate>
       <h2 data-i18n="fdFormTitle">Your trip details</h2>
       <p class="fd-sub" data-i18n="fdFormSub">Choose a driver, then share your route. Availability and price are confirmed after review.</p>
 
@@ -420,9 +422,9 @@
       <div class="fd-honeypot" aria-hidden="true"><label for="fd-website">Website</label><input id="fd-website" type="text" tabindex="-1" autocomplete="off"></div>
       <label class="fd-consent"><input id="fd-consent" type="checkbox" required><span data-i18n="fdConsent">I agree that WanderMind may forward this request and the contact details I entered to my selected driver to arrange a reply.</span></label>
 
-      <button class="fd-submit" id="fd-submit"><span class="fa fa-paper-plane"></span> <span data-i18n="fdSubmit">Send driver request</span></button>
-      <div class="fd-msg" id="fd-msg"></div>
-    </div>
+      <button type="submit" class="fd-submit" id="fd-submit"><span class="fa fa-paper-plane" aria-hidden="true"></span> <span data-i18n="fdSubmit">Send driver request</span></button>
+      <div class="fd-msg" id="fd-msg" role="status" aria-live="polite" aria-atomic="true"></div>
+    </form>
 
     <!-- DRIVER CARD -->
     <div class="fd-driver">
@@ -639,6 +641,7 @@
 
     // —— Submit ——
     var btn = document.getElementById('fd-submit');
+    var form = document.getElementById('fd-form-card');
     var msg = document.getElementById('fd-msg');
     var driverRequestId = '';
     var driverRequestFingerprint = '';
@@ -653,7 +656,8 @@
         return ([4, 6, 8, 10].indexOf(index) >= 0 ? '-' : '') + byte.toString(16).padStart(2, '0');
       }).join('');
     }
-    btn.onclick = async function () {
+    form.addEventListener('submit', async function (event) {
+      event.preventDefault();
       var L = (window.FD_T || {});
       msg.className = 'fd-msg'; msg.textContent = '';
       var first = document.getElementById('fd-first').value.trim();
@@ -700,15 +704,17 @@
         if (data && data.delivered === true && window.wmTrack) window.wmTrack('driver_request_submitted');
         document.getElementById('fd-form-card').innerHTML =
           '<div class="fd-success"><div><span class="fa fa-check-circle"></span></div>' +
-          '<h2>' + (L.fdSuccessTitle || 'Request sent!') + '</h2>' +
+          '<h2 id="fd-success-title" tabindex="-1">' + (L.fdSuccessTitle || 'Request sent!') + '</h2>' +
           '<p class="fd-sub" style="margin-top:8px">' + (L.fdSuccessSub || 'Your selected driver or WanderMind will reply using the contact you provided.') + '</p>' +
           '<a href="bali.html" class="fd-submit" style="display:inline-flex;width:auto;padding:12px 26px;text-decoration:none;margin-top:8px">' + (L.fdBackBali || 'Back to Bali') + '</a></div>';
+        var successTitle = document.getElementById('fd-success-title');
+        if (successTitle) successTitle.focus({ preventScroll: true });
         window.scrollTo({ top: 0, behavior: 'smooth' });
       } catch (e) {
         msg.className = 'fd-msg err'; msg.textContent = (e && e.message) || (L.fdErrSend || 'Failed to send, please retry');
         btn.disabled = false; btn.innerHTML = old;
       }
-    };
+    });
   })();
 </script>
 <script src="assets/js/i18n.js?v=p65"></script>

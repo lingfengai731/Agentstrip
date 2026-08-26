@@ -2429,6 +2429,25 @@ class ProductAccessTests(unittest.TestCase):
         self.assertIn("driverRequestFingerprint !== fingerprint", driver_html)
         self.assertIn("payload.request_id = driverRequestId;", driver_html)
 
+    def test_find_driver_form_and_header_expose_mobile_accessibility_contracts(self):
+        frontend = BACKEND_DIR.parents[1] / "wandermind-studio" / "frontend"
+        driver_html = (frontend / "find-driver.html").read_text(encoding="utf-8")
+        global_auth = (frontend / "assets" / "js" / "global-auth.js").read_text(
+            encoding="utf-8"
+        )
+
+        self.assertIn('aria-controls="navbarTogglerDemo02"', driver_html)
+        self.assertIn('aria-label="Search"', driver_html)
+        self.assertIn('aria-label="Toggle color theme"', driver_html)
+        self.assertIn('<form class="fd-card" id="fd-form-card" novalidate>', driver_html)
+        self.assertIn('type="submit" class="fd-submit"', driver_html)
+        self.assertIn("form.addEventListener('submit'", driver_html)
+        self.assertIn('id="fd-msg" role="status" aria-live="polite"', driver_html)
+        self.assertIn('id="fd-success-title" tabindex="-1"', driver_html)
+        self.assertIn("successTitle.focus({ preventScroll: true })", driver_html)
+        self.assertIn(".fd-source-btn { min-height: 44px;", driver_html)
+        self.assertIn("document.addEventListener('wm:language-change', render)", global_auth)
+
     def test_portfolio_manager_requires_admin_and_storage_configuration(self):
         denied = self._run(
             self._request("GET", "/api/admin/portfolio", token=self.user_token)

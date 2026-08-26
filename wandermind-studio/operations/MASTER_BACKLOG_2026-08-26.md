@@ -27,7 +27,7 @@ Evidence order: fresh production checks > current Git/tests > project-memory evi
 - Cross-account truth was recovered from `origin/main`, the clean Agentstrip2 worktree and latest evidence; the old dirty `E:\Agentstrip` checkout was not edited.
 - All five unresolved records now contain structured `reviewed_at`, verified scope, live checks and source lists without changing their safety status.
 - Dicky and Gede Nico each have an independent copy-ready Indonesian rate authorization form.
+- Dicky and Gede Nico each have a separate Chinese owner-review promotion manual and rate-authorization review form; all four DOCX files passed LibreOffice page-by-page visual QA, and no blank driver rate was promoted into an authorized quote.
 - Driver email retries now send a stable Resend idempotency key while storing no new traveller PII.
 - The previously unmerged driver promotion/UI branch was integrated: each driver pack now has 3 service photos + 4 scenic images, and the driver page includes mobile spacing, light/dark contrast, keyboard focus and reduced-motion fixes.
 - Automatic payment, production mutations, public posting and paid advertising remain independent gates by design.
-

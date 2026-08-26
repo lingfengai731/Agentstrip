@@ -1,0 +1,22 @@
+{
+  "schema_version": 1,
+  "evidence_id": "ev-20260826T122954Z-priority-closure-release-20260826",
+  "task_ref": "priority-closure-release-20260826",
+  "owner": "codex-sol",
+  "captured_at": "2026-08-26T12:29:54Z",
+  "status": "claimed",
+  "claim": "Final pre-release closure: driver page mobile/accessibility fixes, separate Chinese owner-review promotion and rate-authorization DOCX files for Dicky and Gede Nico, and refreshed README/backlog documentation. No email, payment, production data, social post or ad spend.",
+  "source": {
+    "kind": "git",
+    "repository": "https://github.com/lingfengai731/Agentstrip.git",
+    "commit": "203e8517a6e1e32c225e9c969f7c3982ae904416",
+    "branch": "codex/priority-closure-20260826",
+    "worktree": "E:\\Agentstrip-wt-priority-closure-20260826",
+    "dirty": true
+  },
+  "verification": {
+    "command": "python -m unittest discover -s wandermind/backend/tests -p test_*.py -v; node --check global-auth.js; Chrome CDP 1440/768/390/320 overflow and stubbed-submit focus probe; LibreOffice render and page-by-page review of four DOCX files; python -m zipfile -t; git diff --check; project-memory validate",
+    "result": "PASS: 90 tests passed with 13 isolated-PostgreSQL skips; four responsive widths no horizontal overflow; stubbed semantic submit succeeded and focused success heading; DOCX pages 8/8/3/3 with no blank/cropped pages; package integrity and project-memory validation passed."
+  },
+  "notes": "Pre-release branch evidence only until PR CI, merge, Render auto-deploy and fresh production verification complete. The 13 skips require an isolated PostgreSQL URL and are expected to be covered by CI. Driver rates, two pending POIs and three supplier-gated experiences remain externally gated."
+}
