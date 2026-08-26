@@ -5,7 +5,7 @@ Reviewed: 2026-08-26. Public webpages establish only the scope stated below. The
 | Experience | Public evidence now recorded | Direct confirmation still required | Gate |
 |---|---|---|---|
 | Mount Batur Jeep | Bali government directories and supplier sites show multiple operators, start points and differing packages. | One legal operator; exact route/pickup; driver/guide qualification; vehicle condition; insurance; weather/volcano policy; inclusions; cancellation; final price. | `needs_supplier_confirmation` |
-| Celuk Bali Silver Class | The named site publishes an address and packages; Gianyar sources support Celuk's craft context. The supplier's own pages conflict on prices, silver weight and hours. | Current package, silver allowance and extra-material fee; instructor; safety; children/accessibility; insurance; transport; cancellation; availability; final price. | `needs_supplier_confirmation` |
+| Parallel Universe Silver Jewelry Class | The official site publishes an Ubud class, duration, starting prices and terms. The legal/payment identity shown across the official site and a marketplace listing is not fully consistent. | Legal/payment entity; current slot and package; silver/material extras; instructor; safety; children/accessibility; insurance; transport; cancellation; final total. | `needs_supplier_confirmation` |
 | Bali Fire Shooting Club | The venue site publishes its identity, address, bullet-count packages and safety rules; PERBAKIN provides association-level context. | Current licence and validity; trainer credential; PPE; insurance; age/health limits; availability; current price; transport; cancellation. | `needs_supplier_confirmation` |
 
 ## Copy-and-send supplier questions
@@ -38,6 +38,6 @@ Please confirm the date of this information. WanderMind will not call the experi
 
 - Bali Provincial Tourism Office: [tourism directory](https://disparda.baliprov.go.id/wp-content/uploads/2024/02/Direktori-2023-Kode_compressed.pdf)
 - Bangli Regency: [Batur Geopark planning regulation](https://mpp.banglikab.go.id/storage/regulations/Batang%20Tubuh%20Perbup%20RDTR%20WP%20Geopark%20Batur.pdf)
-- Celuk Bali Silver Class: [current site](https://www.celuksilverclass.com/) and [older package article](https://www.celuksilverclass.com/2024/06/silver-making-class-celuk-village-bali.html)
+- Parallel Universe: [class page](https://paralleluniversejewelry.com/silver-jewelry-class-bali/), [private class](https://paralleluniversejewelry.com/private-silver-making-class-bali/) and [terms](https://paralleluniversejewelry.com/terms-and-conditions/)
 - Bali Fire Shooting Club: [venue site](https://balifireshootingclub.com/), [product page](https://balifireshootingclub.com/product/) and [published rules](https://balifireshootingclub.com/wp-content/uploads/2023/11/Rules-Regulations_BFS.pdf)
 - PERBAKIN: [association article mentioning the range](https://perbakin.or.id/ingin-latihan-bersama-klub-menembak-ini-rekomendasi-tempatnya/)

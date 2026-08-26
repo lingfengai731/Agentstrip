@@ -1,0 +1,15 @@
+WanderMind · Dicky 图片包
+
+这个 ZIP 内含中文审阅版 Word 和 01–07 JPG 原图。
+
+iPhone：
+1. 在“文件”App 点开 ZIP，系统会生成同名文件夹。
+2. 打开需要的 JPG。
+3. 点“分享”→“存储图像”，即可从“照片”App 发布。
+
+Android：
+1. 在 Files / My Files / 下载 中点 ZIP，选择“解压”。
+2. 打开 images 文件夹中的 JPG。
+3. 直接点“分享”发布，或保存/移动到 Pictures 后从相册选择。
+
+请每 3–5 天发布一次。两组素材都已在 Word 中写好文案；不要改错 Dicky 的专属链接。

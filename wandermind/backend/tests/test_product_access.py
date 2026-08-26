@@ -1471,6 +1471,7 @@ class ProductAccessTests(unittest.TestCase):
             {
                 "driver_id": "gede",
                 "route_id": "R5",
+                "package_id": "batur-dawn-choice",
                 "first_name": "Test",
                 "last_name": "Traveller",
                 "contact_email": "traveller@example.test",
@@ -1482,6 +1483,8 @@ class ProductAccessTests(unittest.TestCase):
         self.assertIn("Gede", text)
         self.assertIn("R5", html)
         self.assertIn("R5", text)
+        self.assertIn("batur-dawn-choice", html)
+        self.assertIn("batur-dawn-choice", text)
         self.assertNotIn("550", html)
         self.assertNotIn("550", text)
 
@@ -1590,6 +1593,7 @@ class ProductAccessTests(unittest.TestCase):
                         "driver_id": "dicky",
                         "request_id": "61e9e884-359b-45bb-bc49-3f3b53c04c42",
                         "route_id": "r5",
+                        "package_id": "batur-dawn-choice",
                         "first_name": "Test",
                         "contact_email": "traveller@example.test",
                         "num_people": 3,
@@ -1607,6 +1611,7 @@ class ProductAccessTests(unittest.TestCase):
         self.assertEqual(payload["driver_id"], "dicky")
         self.assertEqual(payload["request_id"], "61e9e884-359b-45bb-bc49-3f3b53c04c42")
         self.assertEqual(payload["route_id"], "R5")
+        self.assertEqual(payload["package_id"], "batur-dawn-choice")
         self.assertEqual(payload["num_people"], 3)
         self.assertEqual(payload["start_date"], "2026-10-01")
         self.assertEqual(payload["end_date"], "2026-10-08")

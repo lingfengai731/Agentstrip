@@ -563,6 +563,7 @@ class DriverReq(BaseModel):
     request_id: str = Field(default="", max_length=64)
     driver_id: str = "dicky"
     route_id: str = ""
+    package_id: str = Field(default="", max_length=80)
     first_name: str = ""
     last_name: str = ""
     intro: str = ""
@@ -3360,6 +3361,7 @@ async def driver_request(data: DriverReq, request: Request):
         "request_id": request_id,
         "driver_id": driver_id,
         "route_id": data.route_id.strip().upper(),
+        "package_id": data.package_id.strip().lower(),
         "first_name": data.first_name.strip(),
         "last_name": data.last_name.strip(),
         "intro": data.intro.strip(),

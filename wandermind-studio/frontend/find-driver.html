@@ -564,6 +564,7 @@
      var requestParams = new URLSearchParams(window.location.search);
      var requestedRoute = requestParams.get('route') || '';
      var requestedPlace = requestParams.get('place') || '';
+     var requestedPackage = requestParams.get('package') || '';
      var requestedDriver = requestParams.get('driver_id') || '';
      var requestedBudget = requestParams.get('budget') || '';
      var requestedCurrency = requestParams.get('currency') || '';
@@ -591,8 +592,10 @@
          var current = JSON.parse(localStorage.getItem('wm_studio_currentTrip') || 'null');
          var brief = current || JSON.parse(localStorage.getItem('wm_studio_trip_brief') || 'null');
          var profile = (brief && brief.trip_profile) || JSON.parse(localStorage.getItem('wm_studio_trip_profile') || 'null');
-        if (requestedPlace && !places.value) {
-          places.value = [requestedRoute, requestedPlace].filter(Boolean).join(' · ');
+        if ((requestedPlace || requestedPackage) && !places.value) {
+          var requestedStops = [requestedRoute, requestedPlace];
+          if (requestedPackage) requestedStops.splice(1, 0, 'Package: ' + requestedPackage);
+          places.value = requestedStops.filter(Boolean).join(' · ');
         }
          if (!brief && !profile) return;
          if (brief && brief.people) peopleEl.value = brief.people;
@@ -677,6 +680,7 @@
       var payload = {
         driver_id: (document.querySelector('input[name="fd-driver"]:checked') || {}).value || 'dicky',
         route_id: requestedRoute || (readPlan().plan && readPlan().plan.route_id) || '',
+        package_id: requestedPackage,
         first_name: first, last_name: last,
         intro: document.getElementById('fd-intro').value.trim(),
         contact_email: email,
