@@ -13,11 +13,25 @@
   },
   "snapshot": {
     "status": "verified",
-    "captured_at": "2026-08-25T03:46:59Z",
+    "captured_at": "2026-08-26T04:11:00Z",
     "captured_by": "codex-sol",
-    "source_commit": "43ee10f2eb9ddf10dd6be48cbddeb5e251dbb90b",
-    "source_branch": "codex/d8-metadata-evidence-20260825",
-    "working_tree_at_capture": "clean origin/main merge commit 43ee10f before D8 release evidence updates; portfolio and production facts were freshly verified while older subsystems retain their own evidence timestamps",
+    "source_commit": "e4173f6b8356d1a410fa48eab49eeac4c1fb2441",
+    "source_branch": "codex/priority-closure-20260826",
+    "working_tree_at_capture": "clean isolated worktree at checkpoint; source branch is locally verified but not deployed, while production retains its separately dated evidence",
+    "active_change": {
+      "status": "local_verified_not_deployed",
+      "branch": "codex/priority-closure-20260826",
+      "source_commit": "e4173f6b8356d1a410fa48eab49eeac4c1fb2441",
+      "product_tests": "89 total passed with 13 environment-dependent PostgreSQL tests skipped by design",
+      "changes": [
+        "structured public evidence for two pending POIs and three supplier-gated experiences without promoting their status",
+        "stable client request UUID and Resend idempotency key for driver-request retries without new traveller PII storage",
+        "separate Indonesian Dicky and Gede route-rate authorization forms plus supplier verification and production-gate registers",
+        "integration of the previously unmerged seven-image driver promotion packs and mobile, theme, focus and reduced-motion driver-page polish"
+      ],
+      "external_side_effects": "none: no deployment, production mutation, real email, payment, public post, advertisement or spend",
+      "evidence_id": "ev-20260826T041100Z-priority-closure-20260826"
+    },
     "wandermind_bali": {
       "status": "verified",
       "routes": 6,
@@ -29,6 +43,7 @@
       "notes": [
         "R2, R3, R4 and R6 free-outline stable facts are verified; Batur Natural Hot Spring now has Bangli government identity and broad-location evidence while all live access, price, hygiene, safety, weather and volcanic checks remain dynamic.",
         "Thousand Islands Viewpoint remains a distinct unresolved identity, and Mount Batur remains an area-level planning node because government records show multiple hiking posts; supplier-gated experiences remain non-execution-ready.",
+        "The 2026-08-26 public-source review added structured scope, live checks and sources to both pending POIs and all three supplier-gated experiences. Their statuses remain unchanged until exact local or supplier evidence is received.",
         "Dicky's five-day itinerary is treated as an R1 field calibration, not a seventh route family.",
         "PR #3 merged to main as f7a133d and Render auto-deployed it on 2026-08-22. Production now serves schema 1.8.0 with 6 routes, 62 POIs and p55.",
         "The Bali route detail now uses a warm paper atlas surface, keeps every public day reachable, previews 12 Portfolio moments before an explicit reveal-all action, and localizes the changed controls across zh/en/ja/ko/id.",
@@ -61,6 +76,8 @@
         "job": 97043180412
       },
       "remaining_gates": []
+      ,
+      "email_retry_idempotency": "locally verified on codex/priority-closure-20260826; not deployed"
     },
     "professional_route_entitlements": {
       "status": "deployed_verified_ci",
@@ -208,6 +225,7 @@
     "bali-4.jpg remains the approved generic Bali-page hero, but its exact place, mountain name and capture date are unverified; it must not be reused as a location-specific route or advertising claim without new evidence.",
     "The production backend commit is not exposed by a public endpoint; frontend 20260825p1 manifest behavior with 113 unique assets and schema 1.8.0/62-POI behavior prove the merged release is serving, and the user separately confirmed PostgreSQL plus a stable strong SECRET_KEY by presence only.",
     "Paid unlock, adjustment mutation and admin-only Portfolio mutation were not exercised against production to avoid creating financial or privileged records; their release-critical behavior remains covered by SQLite and isolated PostgreSQL CI.",
+    "The priority-closure branch is locally verified only. Its POI evidence, Resend idempotency, authorization forms, scenic promotion packs and driver-page polish must not be described as deployed until merged and production-checked.",
     "The callable in-app Browser runtime is now injected, but the one authorized Render and localhost retry failed at the admin-enforced policy gate. Native control remains a non-blocking limitation for this workstream; no further policy repair is authorized.",
     "Conversation history and hidden reasoning are not project facts."
   ]
