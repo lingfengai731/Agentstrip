@@ -13,15 +13,15 @@
   },
   "snapshot": {
     "status": "verified",
-    "captured_at": "2026-08-26T16:29:20Z",
+    "captured_at": "2026-08-26T16:37:18Z",
     "captured_by": "codex-sol",
-    "source_commit": "c267be0df8a9aaa0d25a214b474c548804691009",
+    "source_commit": "0e3eb7d932eef30c82c1aed21119f0b86f20e6d6",
     "source_branch": "codex/bali-packages-search-driver-docs-20260826",
-    "working_tree_at_capture": "isolated worktree with implementation commits plus a pending evidence commit; only local untracked QA render output remains and is not staged",
+    "working_tree_at_capture": "isolated worktree after pushing PR #22 head; only local untracked QA render output remains and is not staged",
     "active_change": {
-      "status": "implementation_verified_not_yet_pushed_or_deployed",
+      "status": "pushed_pr_open_not_deployed",
       "branch": "codex/bali-packages-search-driver-docs-20260826",
-      "source_commit": "c267be0df8a9aaa0d25a214b474c548804691009",
+      "source_commit": "0e3eb7d932eef30c82c1aed21119f0b86f20e6d6",
       "product_tests": "90 total run with 13 environment-dependent PostgreSQL tests skipped locally by design; static media/search gates and Chromium 320/390/768/1440 browser matrix passed",
       "changes": [
         "62 of 62 active Bali POIs have route-picker visuals and descriptions, with contextual visuals explicitly labelled",
@@ -32,7 +32,7 @@
         "public-source supplier/payment decision notes without weakening execution gates"
       ],
       "external_side_effects": "none; no production change, real email, payment, order, points, entitlement, admin record, public post, advertisement or spend",
-      "remote_sync": "not yet pushed at this snapshot",
+      "remote_sync": "origin branch synchronized 0/0; PR #22 open and mergeable at fixed head 0e3eb7d932eef30c82c1aed21119f0b86f20e6d6; CI not yet observed",
       "evidence_id": "ev-20260826T162920Z-bali-media-search-packages-pre-release"
     },
     "wandermind_bali": {
@@ -229,7 +229,7 @@
     "bali-4.jpg remains the approved generic Bali-page hero, but its exact place, mountain name and capture date are unverified; it must not be reused as a location-specific route or advertising claim without new evidence.",
     "The production backend commit is not exposed by a public endpoint; frontend 20260825p1 manifest behavior with 113 unique assets and schema 1.8.0/62-POI behavior prove the merged release is serving, and the user separately confirmed PostgreSQL plus a stable strong SECRET_KEY by presence only.",
     "Paid unlock, adjustment mutation and admin-only Portfolio mutation were not exercised against production to avoid creating financial or privileged records; their release-critical behavior remains covered by SQLite and isolated PostgreSQL CI.",
-    "The current Bali media/search/packages branch is locally verified but not yet pushed, merged or deployed at the pre-release checkpoint; production remains on the previous verified main release until post-deploy evidence says otherwise.",
+    "The current Bali media/search/packages branch is pushed in PR #22 but is not merged or deployed at this snapshot; production remains on the previous verified main release until post-deploy evidence says otherwise.",
     "The callable in-app Browser runtime is now injected, but the one authorized Render and localhost retry failed at the admin-enforced policy gate. Native control remains a non-blocking limitation for this workstream; no further policy repair is authorized.",
     "Conversation history and hidden reasoning are not project facts."
   ]
