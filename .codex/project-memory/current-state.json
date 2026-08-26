@@ -13,15 +13,15 @@
   },
   "snapshot": {
     "status": "verified",
-    "captured_at": "2026-08-26T16:37:18Z",
+    "captured_at": "2026-08-26T16:45:58Z",
     "captured_by": "codex-sol",
-    "source_commit": "0e3eb7d932eef30c82c1aed21119f0b86f20e6d6",
-    "source_branch": "codex/bali-packages-search-driver-docs-20260826",
-    "working_tree_at_capture": "isolated worktree after pushing PR #22 head; only local untracked QA render output remains and is not staged",
+    "source_commit": "33e7a0ff86797a5a2276c83172f74ff96ad444f7",
+    "source_branch": "main",
+    "working_tree_at_capture": "isolated release worktree after PR #22 production verification; post-release evidence changes are pending a separate evidence-only commit and local QA render output is not staged",
     "active_change": {
-      "status": "pushed_pr_open_not_deployed",
-      "branch": "codex/bali-packages-search-driver-docs-20260826",
-      "source_commit": "0e3eb7d932eef30c82c1aed21119f0b86f20e6d6",
+      "status": "merged_deployed_verified",
+      "branch": "main",
+      "source_commit": "33e7a0ff86797a5a2276c83172f74ff96ad444f7",
       "product_tests": "90 total run with 13 environment-dependent PostgreSQL tests skipped locally by design; static media/search gates and Chromium 320/390/768/1440 browser matrix passed",
       "changes": [
         "62 of 62 active Bali POIs have route-picker visuals and descriptions, with contextual visuals explicitly labelled",
@@ -31,9 +31,9 @@
         "two merged Chinese driver review guides plus mobile image ZIP packs",
         "public-source supplier/payment decision notes without weakening execution gates"
       ],
-      "external_side_effects": "none; no production change, real email, payment, order, points, entitlement, admin record, public post, advertisement or spend",
-      "remote_sync": "origin branch synchronized 0/0; PR #22 open and mergeable at fixed head 0e3eb7d932eef30c82c1aed21119f0b86f20e6d6; CI not yet observed",
-      "evidence_id": "ev-20260826T162920Z-bali-media-search-packages-pre-release"
+      "external_side_effects": "Render code auto-deploy and anonymous first-party browser QA events only; no real email, payment, order, points, entitlement, admin record, public post, advertisement, spend or environment-variable change",
+      "remote_sync": "PR #22 fixed head bd06308c was squash merged as 33e7a0f; GitHub did not emit a pull_request workflow run, so CI success is not claimed",
+      "evidence_id": "ev-20260826T164558Z-bali-media-search-packages-production"
     },
     "wandermind_bali": {
       "status": "verified",
@@ -44,6 +44,7 @@
       "supplier_gated_pois": 3,
       "verified_route_families": ["R2", "R3", "R4", "R6"],
       "notes": [
+        "PR #22 and Render now serve 62/62 route-picker POI visuals, five-language global search, eight editable one-to-two-day experience packages and explicit Dicky initial-price wording. Production Chromium 320/390/768/1440 smoke passed.",
         "R2, R3, R4 and R6 free-outline stable facts are verified; Batur Natural Hot Spring now has Bangli government identity and broad-location evidence while all live access, price, hygiene, safety, weather and volcanic checks remain dynamic.",
         "Thousand Islands Viewpoint remains a distinct unresolved identity, and Mount Batur remains an area-level planning node because government records show multiple hiking posts; supplier-gated experiences remain non-execution-ready.",
         "The 2026-08-26 public-source review added structured scope, live checks and sources to both pending POIs and all three supplier-gated experiences. Their statuses remain unchanged until exact local or supplier evidence is received.",
@@ -138,16 +139,16 @@
     },
     "production": {
       "status": "deployed_verified",
-      "verified_at": "2026-08-26T12:41:40Z",
-      "frontend_matches_commit": "d71277f25ad08091c3b858fa973e014fcb0c9ca0",
+      "verified_at": "2026-08-26T16:45:58Z",
+      "frontend_matches_commit": "33e7a0ff86797a5a2276c83172f74ff96ad444f7",
       "backend_commit": "unknown",
-      "latest_branch_commit": "d71277f25ad08091c3b858fa973e014fcb0c9ca0",
+      "latest_branch_commit": "33e7a0ff86797a5a2276c83172f74ff96ad444f7",
       "latest_branch_deployed": true,
       "health": "200 ok",
       "bali_routes": 6,
       "bali_pois": 62,
-      "frontend_asset_marker": "image-publish-manifest.json?v=20260825p3",
-      "branch_frontend_asset_marker": "image-publish-manifest.json?v=20260825p3",
+      "frontend_asset_marker": "assets/js/i18n.js?v=search1; assets/js/bali-packages.js?v=20260826p1",
+      "branch_frontend_asset_marker": "assets/js/i18n.js?v=search1; assets/js/bali-packages.js?v=20260826p1",
       "evidence_ids": [
         "ev-20260816T092243Z-task-20260816-cross-account-recovery",
         "ev-20260816T143048Z-release-baseline-and-roadmap-sync",
@@ -158,7 +159,8 @@
         "ev-20260824T172507Z-poi-images-mobile-20260825",
         "ev-20260825T030815Z-poi-images-batch2-20260825-production",
         "ev-20260825T034717Z-d8-metadata-final-20260825-production",
-        "ev-20260826T124140Z-priority-closure-production-20260826"
+        "ev-20260826T124140Z-priority-closure-production-20260826",
+        "ev-20260826T164558Z-bali-media-search-packages-production"
       ]
     }
   },
@@ -167,16 +169,16 @@
     "code_isolation": "one account, one worktree, one task branch",
     "integration_gate": "reviewed pull request",
     "integration_pull_request": {
-      "number": 20,
-      "url": "https://github.com/lingfengai731/Agentstrip/pull/20",
+      "number": 22,
+      "url": "https://github.com/lingfengai731/Agentstrip/pull/22",
       "status": "merged",
       "mergeable": true,
-      "head_commit": "24dbb73f484e6b8dc0cb2d20741069d511b1b7f0",
-      "merge_commit": "d71277f25ad08091c3b858fa973e014fcb0c9ca0",
-      "project_memory_ci": "success; run 32969301870",
-      "postgres_integration_ci": "success; run 32969301855",
-      "evidence_id": "ev-20260826T124140Z-priority-closure-production-20260826",
-      "release_gate": "PR #20 deployed the priority closure, separate Chinese review documents and find-driver accessibility closure; production health, source marker and 1440/768/390/320 rendering were verified, while paid/admin/real-email/public-post/ad-spend mutations remain intentionally unexercised"
+      "head_commit": "bd06308c60c4411054874189dcbdb75f9fce646d",
+      "merge_commit": "33e7a0ff86797a5a2276c83172f74ff96ad444f7",
+      "project_memory_ci": "not emitted by GitHub Actions; local validation passed",
+      "postgres_integration_ci": "not emitted by GitHub Actions; local SQLite suite passed and environment-only PostgreSQL tests were skipped",
+      "evidence_id": "ev-20260826T164558Z-bali-media-search-packages-production",
+      "release_gate": "PR #22 deployed 62/62 POI media, global search, editable packages and merged Chinese review guides; production health, public assets and 1440/768/390/320 rendering were verified. CI success is not claimed because no workflow run was emitted."
     },
     "render_operations_thread": {
       "work_thread_id": "6a81da9a-1998-83e8-b2ca-34e1f6eb526d",
@@ -229,7 +231,7 @@
     "bali-4.jpg remains the approved generic Bali-page hero, but its exact place, mountain name and capture date are unverified; it must not be reused as a location-specific route or advertising claim without new evidence.",
     "The production backend commit is not exposed by a public endpoint; frontend 20260825p1 manifest behavior with 113 unique assets and schema 1.8.0/62-POI behavior prove the merged release is serving, and the user separately confirmed PostgreSQL plus a stable strong SECRET_KEY by presence only.",
     "Paid unlock, adjustment mutation and admin-only Portfolio mutation were not exercised against production to avoid creating financial or privileged records; their release-critical behavior remains covered by SQLite and isolated PostgreSQL CI.",
-    "The current Bali media/search/packages branch is pushed in PR #22 but is not merged or deployed at this snapshot; production remains on the previous verified main release until post-deploy evidence says otherwise.",
+    "PR #22 did not emit GitHub Actions pull-request workflow runs after open, synchronize or one close/reopen trigger. CI success is not claimed; the recorded local fixed-head suite and production browser verification are the release evidence.",
     "The callable in-app Browser runtime is now injected, but the one authorized Render and localhost retry failed at the admin-enforced policy gate. Native control remains a non-blocking limitation for this workstream; no further policy repair is authorized.",
     "Conversation history and hidden reasoning are not project facts."
   ]
