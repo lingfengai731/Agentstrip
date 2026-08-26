@@ -13,27 +13,27 @@
   },
   "snapshot": {
     "status": "verified",
-    "captured_at": "2026-08-26T12:41:40Z",
+    "captured_at": "2026-08-26T16:29:20Z",
     "captured_by": "codex-sol",
-    "source_commit": "d71277f25ad08091c3b858fa973e014fcb0c9ca0",
-    "source_branch": "main",
-    "working_tree_at_capture": "clean isolated worktree at the production checkpoint; PR #20 was merged and its Render auto-deploy was verified before this evidence-only snapshot",
+    "source_commit": "c267be0df8a9aaa0d25a214b474c548804691009",
+    "source_branch": "codex/bali-packages-search-driver-docs-20260826",
+    "working_tree_at_capture": "isolated worktree with implementation commits plus a pending evidence commit; only local untracked QA render output remains and is not staged",
     "active_change": {
-      "status": "merged_deployed_verified",
-      "branch": "main",
-      "source_commit": "d71277f25ad08091c3b858fa973e014fcb0c9ca0",
-      "product_tests": "90 total passed with 13 environment-dependent PostgreSQL tests skipped locally by design; PR PostgreSQL integration CI succeeded",
+      "status": "implementation_verified_not_yet_pushed_or_deployed",
+      "branch": "codex/bali-packages-search-driver-docs-20260826",
+      "source_commit": "c267be0df8a9aaa0d25a214b474c548804691009",
+      "product_tests": "90 total run with 13 environment-dependent PostgreSQL tests skipped locally by design; static media/search gates and Chromium 320/390/768/1440 browser matrix passed",
       "changes": [
-        "structured public evidence for two pending POIs and three supplier-gated experiences without promoting their status",
-        "stable client request UUID and Resend idempotency key for driver-request retries without new traveller PII storage",
-        "separate Indonesian Dicky and Gede route-rate authorization forms plus supplier verification and production-gate registers",
-        "integration of the seven-image driver promotion packs and mobile, theme, focus and reduced-motion driver-page polish",
-        "separate Chinese owner-review promotion manuals and rate-authorization review forms for Dicky and Gede Nico",
-        "find-driver semantic form, keyboard, touch-target, email-format and responsive accessibility closure"
+        "62 of 62 active Bali POIs have route-picker visuals and descriptions, with contextual visuals explicitly labelled",
+        "five-language global search across seven public pages, R1-R6 and 62 POIs",
+        "eight editable one-to-two-day Bali experience packages with private driver-request handoff",
+        "Dicky initial-price attribution and separate Gede Nico quote boundary",
+        "two merged Chinese driver review guides plus mobile image ZIP packs",
+        "public-source supplier/payment decision notes without weakening execution gates"
       ],
-      "external_side_effects": "Render code auto-deploy only; no real email, payment, order, points, entitlement, admin record, public post, advertisement or spend",
-      "remote_sync": "PR #20 merged fixed head 24dbb73 as d71277f after Project memory validation run 32969301870 and PostgreSQL integration run 32969301855 succeeded",
-      "evidence_id": "ev-20260826T124140Z-priority-closure-production-20260826"
+      "external_side_effects": "none; no production change, real email, payment, order, points, entitlement, admin record, public post, advertisement or spend",
+      "remote_sync": "not yet pushed at this snapshot",
+      "evidence_id": "ev-20260826T162920Z-bali-media-search-packages-pre-release"
     },
     "wandermind_bali": {
       "status": "verified",
@@ -229,7 +229,7 @@
     "bali-4.jpg remains the approved generic Bali-page hero, but its exact place, mountain name and capture date are unverified; it must not be reused as a location-specific route or advertising claim without new evidence.",
     "The production backend commit is not exposed by a public endpoint; frontend 20260825p1 manifest behavior with 113 unique assets and schema 1.8.0/62-POI behavior prove the merged release is serving, and the user separately confirmed PostgreSQL plus a stable strong SECRET_KEY by presence only.",
     "Paid unlock, adjustment mutation and admin-only Portfolio mutation were not exercised against production to avoid creating financial or privileged records; their release-critical behavior remains covered by SQLite and isolated PostgreSQL CI.",
-    "The priority-closure branch is pushed but not merged or deployed. Its POI evidence, Resend idempotency, authorization forms, scenic promotion packs and driver-page polish must not be described as deployed until fixed-head CI, merge and production checks complete.",
+    "The current Bali media/search/packages branch is locally verified but not yet pushed, merged or deployed at the pre-release checkpoint; production remains on the previous verified main release until post-deploy evidence says otherwise.",
     "The callable in-app Browser runtime is now injected, but the one authorized Render and localhost retry failed at the admin-enforced policy gate. Native control remains a non-blocking limitation for this workstream; no further policy repair is authorized.",
     "Conversation history and hidden reasoning are not project facts."
   ]

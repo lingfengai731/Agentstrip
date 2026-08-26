@@ -409,3 +409,15 @@
 - QA 回调：完整本地 discover 89 项通过、13 项隔离 PostgreSQL 测试按设计 skip；Bali JSON 解析、`git diff --check` 通过。无部署、生产数据库写入、真实邮件、订单、支付、公开发帖、广告或花费。
 - 下一回调：分别把 `operations/DICKY_RATE_AUTHORIZATION_ID.md` 与 `operations/GEDE_RATE_AUTHORIZATION_ID.md` 发给对应司机，把 `SUPPLIER_VERIFICATION_REGISTER.md` 发给选定供应商；收到带日期的答复后才开发版本化路线报价。生产付费/积分/admin E2E 需专用非真实账号和明确写入授权；自动支付、公开发布与广告继续独立门禁。
 - GitHub 回调：当前固定 head `84bfe1e` 已推送为 `origin/codex/priority-closure-20260826`，远端 0/0、工作树 clean；本机 `gh` 未认证，因此未创建 PR、未合并、未部署。准确下一步是通过 GitHub compare 创建到 `main` 的 PR，等待 Project memory 与 PostgreSQL integration 固定 head CI 后再决定合并；不得把远端分支写成 main 或生产。
+
+## 2026-08-27 Bali media, search, packages and driver-doc callback
+
+- 路由：large / L3。Sol 在隔离工作树 `E:\Agentstrip-wt-bali-packages-search-20260826` 保留产品判断、媒体真实性、套餐结构、文档整合、跨模块集成、最终验收和发布；原始脏工作树 `E:\Agentstrip` 未修改。
+- Skill 回调：cross-account-project-memory 恢复项目事实并约束 evidence/handoff；agent-role-orchestrator 与 codex-luna-worker 约束 Sol/Luna 边界；UI Implementation Workflow 保持 teal + gold + warm-paper 和桌面/手机差异；Huashu Nuwa 选择 Paul Graham 视角，把套餐收敛为一个可编辑模块系统而非复制 OTA 大目录；documents + LibreOffice 完成手机友好 DOCX 渲染验收；browser-automation-router/Playwright 完成真实交互矩阵。
+- Luna 图片审计：`bali_image_coverage_audit` 完成 62 POI 基线清单，但因其观察到项目记忆校验异常将最终状态写为 blocked；Sol 不把它记作 completed，独立实现并复验 62/62 覆盖。
+- Luna 供应商审计：`poi_supplier_source_audit`（正式 `luna_worker` / `gpt-5.6-luna` / `max`）completed，零文件修改；Parallel Universe 与 Bali Fire 的公开身份、条款、安全和价格边界完成来源核对，证照、保险、实时可订性与最终价仍保留门禁。
+- Luna 搜索实现：`global_search_ui_audit`（正式 `luna_worker` / `gpt-5.6-luna` / `max`）completed，独立提交 `24638dbc5d812f0769729728cb1e619bbe6779f`；Sol cherry-pick 后解决 Bali script 冲突并复跑全套测试与浏览器矩阵。
+- 产品回调：路线选择器 62/62 POI 有视觉和介绍；54 个精确地点图，8 个明确标注的体验/区域/地形示意。新增 8 个一至两日可编辑套餐，全站搜索覆盖 7 页面、R1-R6 和 62 POI。Dicky 价格改为其亲自提供的初始价，最终以回复为准；Gede 单独报价。
+- 文档回调：Dicky/Gede Nico 各生成一份 13 页中文合并审阅手册和手机 ZIP，包含网站初衷、使用方法、两组完整推广素材、3-5 天节奏、图片保存和独立报价授权；旧中文拆分版已在 26 页 LibreOffice 验收后删除，印尼语正式版等待站长中文确认。
+- QA 回调：完整本地 discover 90 项中 77 通过、13 项隔离 PostgreSQL 测试按设计 skip；POI/套餐静态门禁、Search 静态门禁、Node 语法和 diff check 通过。Chromium 320/390/768/1440 完成桌面悬停、手机点按、套餐、搜索、司机交接和零横向溢出。
+- 发布边界：当前 evidence 为 pre-release；尚未把分支写成 pushed/merged/deployed。没有发送邮件、预订、付款、写权益/积分/admin、公开发帖、投广告或修改 Render 环境变量。

@@ -74,6 +74,12 @@ Create a handoff before changing accounts or ending incomplete work:
 
 ## Current integration boundary
 
+The 2026-08-27 Bali media/search/packages implementation is locally verified on
+`codex/bali-packages-search-driver-docs-20260826`; its pre-release evidence is
+`.codex/project-memory/evidence/2026/08/20260826T162920Z-bali-media-search-packages-pre-release.json`.
+At that checkpoint it is not yet pushed, merged, or deployed. Use the newest immutable evidence
+and Git/PR/production state to determine whether that boundary has since advanced.
+
 The existing root `AGENTS.md` is intentionally unchanged. Therefore Codex cannot be guaranteed
 to auto-load this file solely because it exists. Until the project owner permits a small entry-rule
 addition to `AGENTS.md`, each account must open this file or run `project-memory.ps1 brief` at the
