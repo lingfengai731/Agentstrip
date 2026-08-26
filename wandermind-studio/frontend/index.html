@@ -24,7 +24,7 @@
   <link rel="icon" type="image/png" href="assets/images/logo-mark-256.png">
   <link rel="apple-touch-icon" href="assets/images/logo-mark-256.png">
     <!-- Template CSS -->
-    <link rel="stylesheet" href="assets/css/style-starter.css?v=p63">
+    <link rel="stylesheet" href="assets/css/style-starter.css?v=search1">
 <link rel="preload" as="image" href="assets/images/web/18029bd74c32ef72.webp" fetchpriority="high">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -52,7 +52,7 @@
         /* Trim the bootstrap ml-3/ml-4 */
         .navbar .ml-3, .navbar .ml-4 { margin-left: .35rem !important; }
         /* Search icon: aligned to row */
-        .navbar .search-search.nav-link { display: inline-flex !important; align-items: center; justify-content: center; height: 36px; padding: 0 8px !important; }
+        .navbar .search-search.nav-link { display: inline-flex !important; align-items: center; justify-content: center; min-width: 44px; min-height: 44px; height: 44px; padding: 0 8px !important; }
         .navbar .search-search.nav-link .fa { margin-right: 0 !important; }
         /* Theme toggle: static flow after search, flex-shrink:0 so it is never squished */
         .navbar .mobile-position { position: static !important; top: auto !important; right: auto !important; margin-left: .35rem !important; display: inline-flex !important; align-items: center; flex-shrink: 0; }
@@ -414,18 +414,7 @@
 								</select>
 							</div>
 						</li>
-						<li class="nav-item ml-3" title="Search"><a href="#search" class="search-search nav-link"><span class="fa fa-search mr-2" aria-hidden="true"></span></a></li>
-						<div class="search-right">
-							<div id="search" class="pop-overlay">
-								<div class="popup">
-									<form action="#" method="GET" class="d-flex">
-										<input type="search" placeholder="Search.." name="search" required autofocus>
-										<button type="submit" data-i18n="searchBtn">Search</button>
-									</form>
-									<a class="close" href="#close">&times;</a>
-								</div>
-							</div>
-						</div>
+            <li class="nav-item ml-3" title="Search"><a href="search.html" class="search-search nav-link" aria-label="Search WanderMind" data-i18n="searchAriaLabel" data-i18n-attr="aria-label"><span class="fa fa-search mr-2" aria-hidden="true"></span></a></li>
 					</ul>
 				</div>
 				<!-- toggle switch for light and dark theme -->
@@ -982,7 +971,7 @@ $(function () { $('.navbar-toggler').click(function () { $('body').toggleClass('
 <!-- ════════════════════════════════════════════════════
      i18n — 5-language switcher (en / zh / ja / ko / id)
      ════════════════════════════════════════════════════ -->
-<script src="assets/js/i18n.js?v=p64"></script>
+    <script src="assets/js/i18n.js?v=search1"></script>
 <script src="assets/js/marketing-events.js?v=p2"></script>
 <script src="assets/js/global-auth.js?v=p52"></script>
 </body>

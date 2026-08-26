@@ -1,0 +1,821 @@
+{
+  "schema_version": "1.0.0",
+  "updated_at": "2026-08-26",
+  "policy": "Exact reusable place photos are preferred. Generated or area-level media is labelled and must never be presented as an exact venue photo.",
+  "images": [
+    {
+      "image_url": "https://upload.wikimedia.org/wikipedia/commons/thumb/2/2e/Bali-amed-village-fishing-beach-boats.jpg/1280px-Bali-amed-village-fishing-beach-boats.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "thumbnail_url": "https://upload.wikimedia.org/wikipedia/commons/thumb/2/2e/Bali-amed-village-fishing-beach-boats.jpg/1280px-Bali-amed-village-fishing-beach-boats.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "rights": {
+        "status": "licensed",
+        "creator": "Marklchaves",
+        "license_name": "CC BY-SA 4.0",
+        "license_url": "https://creativecommons.org/licenses/by-sa/4.0",
+        "source_url": "https://commons.wikimedia.org/wiki/File:Bali-amed-village-fishing-beach-boats.jpg"
+      },
+      "poi_ids": [
+        "amed_beach"
+      ],
+      "media_scope": "exact_place",
+      "alt_text": {
+        "en": "Amed Beach visual reference",
+        "zh": "Amed Beach 视觉参考",
+        "ja": "Amed Beach のビジュアル参考",
+        "ko": "Amed Beach 시각 참고",
+        "id": "Referensi visual Amed Beach"
+      }
+    },
+    {
+      "image_url": "https://upload.wikimedia.org/wikipedia/commons/thumb/2/28/Angel_Billabong%2C_Nusa_Penida.jpg/1280px-Angel_Billabong%2C_Nusa_Penida.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "thumbnail_url": "https://upload.wikimedia.org/wikipedia/commons/thumb/2/28/Angel_Billabong%2C_Nusa_Penida.jpg/1280px-Angel_Billabong%2C_Nusa_Penida.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "rights": {
+        "status": "licensed",
+        "creator": "Haryanti",
+        "license_name": "CC BY-SA 4.0",
+        "license_url": "https://creativecommons.org/licenses/by-sa/4.0",
+        "source_url": "https://commons.wikimedia.org/wiki/File:Angel_Billabong,_Nusa_Penida.jpg"
+      },
+      "poi_ids": [
+        "angels_billabong"
+      ],
+      "media_scope": "exact_place",
+      "alt_text": {
+        "en": "Angel's Billabong visual reference",
+        "zh": "Angel's Billabong 视觉参考",
+        "ja": "Angel's Billabong のビジュアル参考",
+        "ko": "Angel's Billabong 시각 참고",
+        "id": "Referensi visual Angel's Billabong"
+      }
+    },
+    {
+      "image_url": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/59/Atuh_Beach%2C_Nusa_Penida_Bali.jpg/1280px-Atuh_Beach%2C_Nusa_Penida_Bali.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "thumbnail_url": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/59/Atuh_Beach%2C_Nusa_Penida_Bali.jpg/1280px-Atuh_Beach%2C_Nusa_Penida_Bali.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "rights": {
+        "status": "licensed",
+        "creator": "Hendrojkson",
+        "license_name": "CC BY-SA 4.0",
+        "license_url": "https://creativecommons.org/licenses/by-sa/4.0",
+        "source_url": "https://commons.wikimedia.org/wiki/File:Atuh_Beach,_Nusa_Penida_Bali.jpg"
+      },
+      "poi_ids": [
+        "atuh_beach"
+      ],
+      "media_scope": "exact_place",
+      "alt_text": {
+        "en": "Atuh Beach visual reference",
+        "zh": "Atuh Beach 视觉参考",
+        "ja": "Atuh Beach のビジュアル参考",
+        "ko": "Atuh Beach 시각 참고",
+        "id": "Referensi visual Atuh Beach"
+      }
+    },
+    {
+      "image_url": "assets/images/generated/indoor-range-illustration.png",
+      "thumbnail_url": "assets/images/generated/indoor-range-illustration.png",
+      "rights": {
+        "status": "wanderMind_illustration",
+        "creator": "WanderMind Studio",
+        "license_name": "WanderMind project use",
+        "license_url": "",
+        "source_url": "https://balifireshootingclub.com/"
+      },
+      "poi_ids": [
+        "bali_fire_shooting_club"
+      ],
+      "media_scope": "experience_context",
+      "alt_text": {
+        "en": "Bali Fire Shooting Club visual reference",
+        "zh": "Bali Fire Shooting Club 视觉参考",
+        "ja": "Bali Fire Shooting Club のビジュアル参考",
+        "ko": "Bali Fire Shooting Club 시각 참고",
+        "id": "Referensi visual Bali Fire Shooting Club"
+      }
+    },
+    {
+      "image_url": "https://upload.wikimedia.org/wikipedia/commons/thumb/7/77/Banyumala_Waterfall.jpg/1280px-Banyumala_Waterfall.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "thumbnail_url": "https://upload.wikimedia.org/wikipedia/commons/thumb/7/77/Banyumala_Waterfall.jpg/1280px-Banyumala_Waterfall.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "rights": {
+        "status": "licensed",
+        "creator": "Made agus devayana",
+        "license_name": "CC BY-SA 4.0",
+        "license_url": "https://creativecommons.org/licenses/by-sa/4.0",
+        "source_url": "https://commons.wikimedia.org/wiki/File:Banyumala_Waterfall.jpg"
+      },
+      "poi_ids": [
+        "banyumala_waterfall"
+      ],
+      "media_scope": "exact_place",
+      "alt_text": {
+        "en": "Banyumala Twin Waterfall visual reference",
+        "zh": "Banyumala Twin Waterfall 视觉参考",
+        "ja": "Banyumala Twin Waterfall のビジュアル参考",
+        "ko": "Banyumala Twin Waterfall 시각 참고",
+        "id": "Referensi visual Banyumala Twin Waterfall"
+      }
+    },
+    {
+      "image_url": "https://upload.wikimedia.org/wikipedia/commons/thumb/7/78/Batu_Bolong_Beach%2C_Canggu.jpg/1280px-Batu_Bolong_Beach%2C_Canggu.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "thumbnail_url": "https://upload.wikimedia.org/wikipedia/commons/thumb/7/78/Batu_Bolong_Beach%2C_Canggu.jpg/1280px-Batu_Bolong_Beach%2C_Canggu.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "rights": {
+        "status": "licensed",
+        "creator": "Alharomain354",
+        "license_name": "CC BY-SA 4.0",
+        "license_url": "https://creativecommons.org/licenses/by-sa/4.0",
+        "source_url": "https://commons.wikimedia.org/wiki/File:Batu_Bolong_Beach,_Canggu.jpg"
+      },
+      "poi_ids": [
+        "batu_bolong_beach"
+      ],
+      "media_scope": "exact_place",
+      "alt_text": {
+        "en": "Batu Bolong Beach visual reference",
+        "zh": "Batu Bolong Beach 视觉参考",
+        "ja": "Batu Bolong Beach のビジュアル参考",
+        "ko": "Batu Bolong Beach 시각 참고",
+        "id": "Referensi visual Batu Bolong Beach"
+      }
+    },
+    {
+      "image_url": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b6/Hot_spring_of_Toyabungkah_200507.jpg/1280px-Hot_spring_of_Toyabungkah_200507.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "thumbnail_url": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b6/Hot_spring_of_Toyabungkah_200507.jpg/1280px-Hot_spring_of_Toyabungkah_200507.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "rights": {
+        "status": "licensed",
+        "creator": "Wikimedia Commons contributor",
+        "license_name": "CC BY-SA 3.0",
+        "license_url": "http://creativecommons.org/licenses/by-sa/3.0/",
+        "source_url": "https://commons.wikimedia.org/wiki/File:Hot_spring_of_Toyabungkah_200507.jpg"
+      },
+      "poi_ids": [
+        "batur_hot_springs"
+      ],
+      "media_scope": "exact_place",
+      "alt_text": {
+        "en": "Batur Natural Hot Spring visual reference",
+        "zh": "Batur Natural Hot Spring 视觉参考",
+        "ja": "Batur Natural Hot Spring のビジュアル参考",
+        "ko": "Batur Natural Hot Spring 시각 참고",
+        "id": "Referensi visual Batur Natural Hot Spring"
+      }
+    },
+    {
+      "image_url": "https://upload.wikimedia.org/wikipedia/commons/a/ad/Bingin_Beach.PNG?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled",
+      "thumbnail_url": "https://upload.wikimedia.org/wikipedia/commons/a/ad/Bingin_Beach.PNG?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled",
+      "rights": {
+        "status": "licensed",
+        "creator": "Gsarwa",
+        "license_name": "CC BY-SA 3.0",
+        "license_url": "https://creativecommons.org/licenses/by-sa/3.0",
+        "source_url": "https://commons.wikimedia.org/wiki/File:Bingin_Beach.PNG"
+      },
+      "poi_ids": [
+        "bingin_beach"
+      ],
+      "media_scope": "exact_place",
+      "alt_text": {
+        "en": "Bingin Beach visual reference",
+        "zh": "Bingin Beach 视觉参考",
+        "ja": "Bingin Beach のビジュアル参考",
+        "ko": "Bingin Beach 시각 참고",
+        "id": "Referensi visual Bingin Beach"
+      }
+    },
+    {
+      "image_url": "assets/images/generated/silver-workshop-illustration.png",
+      "thumbnail_url": "assets/images/generated/silver-workshop-illustration.png",
+      "rights": {
+        "status": "wanderMind_illustration",
+        "creator": "WanderMind Studio",
+        "license_name": "WanderMind project use",
+        "license_url": "",
+        "source_url": "https://paralleluniversejewelry.com/"
+      },
+      "poi_ids": [
+        "celuk_silver_class"
+      ],
+      "media_scope": "experience_context",
+      "alt_text": {
+        "en": "Parallel Universe Silver Jewelry Class visual reference",
+        "zh": "Parallel Universe Silver Jewelry Class 视觉参考",
+        "ja": "Parallel Universe Silver Jewelry Class のビジュアル参考",
+        "ko": "Parallel Universe Silver Jewelry Class 시각 참고",
+        "id": "Referensi visual Parallel Universe Silver Jewelry Class"
+      }
+    },
+    {
+      "image_url": "assets/images/generated/silver-workshop-illustration.png",
+      "thumbnail_url": "assets/images/generated/silver-workshop-illustration.png",
+      "rights": {
+        "status": "wanderMind_illustration",
+        "creator": "WanderMind Studio",
+        "license_name": "WanderMind project use",
+        "license_url": "",
+        "source_url": "https://www.indonesia.travel/kr/en/travel-ideas/culture/kerajinan-perak"
+      },
+      "poi_ids": [
+        "celuk_village"
+      ],
+      "media_scope": "experience_context",
+      "alt_text": {
+        "en": "Celuk Village visual reference",
+        "zh": "Celuk Village 视觉参考",
+        "ja": "Celuk Village のビジュアル参考",
+        "ko": "Celuk Village 시각 참고",
+        "id": "Referensi visual Celuk Village"
+      }
+    },
+    {
+      "image_url": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4c/Crystal_Bay%2C_Nusa_Penida_2017-08-20_%2812%29.jpg/1280px-Crystal_Bay%2C_Nusa_Penida_2017-08-20_%2812%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "thumbnail_url": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4c/Crystal_Bay%2C_Nusa_Penida_2017-08-20_%2812%29.jpg/1280px-Crystal_Bay%2C_Nusa_Penida_2017-08-20_%2812%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "rights": {
+        "status": "licensed",
+        "creator": "Panina Manina",
+        "license_name": "CC BY-SA 4.0",
+        "license_url": "https://creativecommons.org/licenses/by-sa/4.0",
+        "source_url": "https://commons.wikimedia.org/wiki/File:Crystal_Bay,_Nusa_Penida_2017-08-20_(12).jpg"
+      },
+      "poi_ids": [
+        "crystal_bay"
+      ],
+      "media_scope": "exact_place",
+      "alt_text": {
+        "en": "Crystal Bay visual reference",
+        "zh": "Crystal Bay 视觉参考",
+        "ja": "Crystal Bay のビジュアル参考",
+        "ko": "Crystal Bay 시각 참고",
+        "id": "Referensi visual Crystal Bay"
+      }
+    },
+    {
+      "image_url": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/49/Diamond_Beach_in_Nusa_Penida%2C_Bali.jpg/1280px-Diamond_Beach_in_Nusa_Penida%2C_Bali.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "thumbnail_url": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/49/Diamond_Beach_in_Nusa_Penida%2C_Bali.jpg/1280px-Diamond_Beach_in_Nusa_Penida%2C_Bali.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "rights": {
+        "status": "licensed",
+        "creator": "Stryn",
+        "license_name": "CC BY-SA 4.0",
+        "license_url": "https://creativecommons.org/licenses/by-sa/4.0",
+        "source_url": "https://commons.wikimedia.org/wiki/File:Diamond_Beach_in_Nusa_Penida,_Bali.jpg"
+      },
+      "poi_ids": [
+        "diamond_beach"
+      ],
+      "media_scope": "exact_place",
+      "alt_text": {
+        "en": "Diamond Beach visual reference",
+        "zh": "Diamond Beach 视觉参考",
+        "ja": "Diamond Beach のビジュアル参考",
+        "ko": "Diamond Beach 시각 참고",
+        "id": "Referensi visual Diamond Beach"
+      }
+    },
+    {
+      "image_url": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e5/La_Brisa_beach_club_at_Echo_Beach%2C_Canggu%2C_Bali.jpg/1280px-La_Brisa_beach_club_at_Echo_Beach%2C_Canggu%2C_Bali.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "thumbnail_url": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e5/La_Brisa_beach_club_at_Echo_Beach%2C_Canggu%2C_Bali.jpg/1280px-La_Brisa_beach_club_at_Echo_Beach%2C_Canggu%2C_Bali.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "rights": {
+        "status": "licensed",
+        "creator": "Meetvas",
+        "license_name": "CC BY-SA 4.0",
+        "license_url": "https://creativecommons.org/licenses/by-sa/4.0",
+        "source_url": "https://commons.wikimedia.org/wiki/File:La_Brisa_beach_club_at_Echo_Beach,_Canggu,_Bali.jpg"
+      },
+      "poi_ids": [
+        "echo_beach"
+      ],
+      "media_scope": "exact_place",
+      "alt_text": {
+        "en": "Echo Beach visual reference",
+        "zh": "Echo Beach 视觉参考",
+        "ja": "Echo Beach のビジュアル参考",
+        "ko": "Echo Beach 시각 참고",
+        "id": "Referensi visual Echo Beach"
+      }
+    },
+    {
+      "image_url": "https://upload.wikimedia.org/wikipedia/commons/e/e2/Gitgit_Waterfall%2C_Campuhan_area%2C_Bali%2C_Indonesia.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled",
+      "thumbnail_url": "https://upload.wikimedia.org/wikipedia/commons/e/e2/Gitgit_Waterfall%2C_Campuhan_area%2C_Bali%2C_Indonesia.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled",
+      "rights": {
+        "status": "licensed",
+        "creator": "Ken Eckert",
+        "license_name": "CC BY-SA 4.0",
+        "license_url": "https://creativecommons.org/licenses/by-sa/4.0",
+        "source_url": "https://commons.wikimedia.org/wiki/File:Gitgit_Waterfall,_Campuhan_area,_Bali,_Indonesia.jpg"
+      },
+      "poi_ids": [
+        "gitgit_waterfall"
+      ],
+      "media_scope": "exact_place",
+      "alt_text": {
+        "en": "Gitgit Waterfall visual reference",
+        "zh": "Gitgit Waterfall 视觉参考",
+        "ja": "Gitgit Waterfall のビジュアル参考",
+        "ko": "Gitgit Waterfall 시각 참고",
+        "id": "Referensi visual Gitgit Waterfall"
+      }
+    },
+    {
+      "image_url": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/54/Goa_Gajah_temple%2C_Bedulu%2C_Bali%2C_Indonesia%2C_20220824_0929_0544.jpg/1280px-Goa_Gajah_temple%2C_Bedulu%2C_Bali%2C_Indonesia%2C_20220824_0929_0544.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "thumbnail_url": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/54/Goa_Gajah_temple%2C_Bedulu%2C_Bali%2C_Indonesia%2C_20220824_0929_0544.jpg/1280px-Goa_Gajah_temple%2C_Bedulu%2C_Bali%2C_Indonesia%2C_20220824_0929_0544.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "rights": {
+        "status": "licensed",
+        "creator": "Jakub Hałun",
+        "license_name": "CC BY-SA 4.0",
+        "license_url": "https://creativecommons.org/licenses/by-sa/4.0",
+        "source_url": "https://commons.wikimedia.org/wiki/File:Goa_Gajah_temple,_Bedulu,_Bali,_Indonesia,_20220824_0929_0544.jpg"
+      },
+      "poi_ids": [
+        "goa_gajah"
+      ],
+      "media_scope": "exact_place",
+      "alt_text": {
+        "en": "Goa Gajah visual reference",
+        "zh": "Goa Gajah 视觉参考",
+        "ja": "Goa Gajah のビジュアル参考",
+        "ko": "Goa Gajah 시각 참고",
+        "id": "Referensi visual Goa Gajah"
+      }
+    },
+    {
+      "image_url": "assets/images/generated/sound-healing-illustration.png",
+      "thumbnail_url": "assets/images/generated/sound-healing-illustration.png",
+      "rights": {
+        "status": "wanderMind_illustration",
+        "creator": "WanderMind Studio",
+        "license_name": "WanderMind project use",
+        "license_url": "",
+        "source_url": "https://www.heartspacebali.com/sound-healing-ubud"
+      },
+      "poi_ids": [
+        "heart_space_bali"
+      ],
+      "media_scope": "experience_context",
+      "alt_text": {
+        "en": "Heart Space Bali visual reference",
+        "zh": "Heart Space Bali 视觉参考",
+        "ja": "Heart Space Bali のビジュアル参考",
+        "ko": "Heart Space Bali 시각 참고",
+        "id": "Referensi visual Heart Space Bali"
+      }
+    },
+    {
+      "image_url": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/ac/Kanto_lampo_waterfall.jpg/1280px-Kanto_lampo_waterfall.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "thumbnail_url": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/ac/Kanto_lampo_waterfall.jpg/1280px-Kanto_lampo_waterfall.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "rights": {
+        "status": "licensed",
+        "creator": "RienShin14",
+        "license_name": "CC BY 4.0",
+        "license_url": "https://creativecommons.org/licenses/by/4.0",
+        "source_url": "https://commons.wikimedia.org/wiki/File:Kanto_lampo_waterfall.jpg"
+      },
+      "poi_ids": [
+        "kanto_lampo_waterfall"
+      ],
+      "media_scope": "exact_place",
+      "alt_text": {
+        "en": "Kanto Lampo Waterfall visual reference",
+        "zh": "Kanto Lampo Waterfall 视觉参考",
+        "ja": "Kanto Lampo Waterfall のビジュアル参考",
+        "ko": "Kanto Lampo Waterfall 시각 참고",
+        "id": "Referensi visual Kanto Lampo Waterfall"
+      }
+    },
+    {
+      "image_url": "https://upload.wikimedia.org/wikipedia/commons/4/48/Sunset_di_Pantai_Mertasari.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled",
+      "thumbnail_url": "https://upload.wikimedia.org/wikipedia/commons/4/48/Sunset_di_Pantai_Mertasari.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled",
+      "rights": {
+        "status": "licensed",
+        "creator": "Yanik Gol",
+        "license_name": "CC BY-SA 4.0",
+        "license_url": "https://creativecommons.org/licenses/by-sa/4.0",
+        "source_url": "https://commons.wikimedia.org/wiki/File:Sunset_di_Pantai_Mertasari.jpg"
+      },
+      "poi_ids": [
+        "mertasari_beach"
+      ],
+      "media_scope": "exact_place",
+      "alt_text": {
+        "en": "Mertasari Beach visual reference",
+        "zh": "Mertasari Beach 视觉参考",
+        "ja": "Mertasari Beach のビジュアル参考",
+        "ko": "Mertasari Beach 시각 참고",
+        "id": "Referensi visual Mertasari Beach"
+      }
+    },
+    {
+      "image_url": "assets/images/web/15c41f6a0fe7fec3.webp",
+      "thumbnail_url": "assets/images/web/15c41f6a0fe7fec3.webp",
+      "rights": {
+        "status": "user_provided_with_consent",
+        "creator": "WanderMind Studio",
+        "license_name": "WanderMind project use",
+        "license_url": "",
+        "source_url": ""
+      },
+      "poi_ids": [
+        "mount_batur_jeep"
+      ],
+      "media_scope": "area_context",
+      "alt_text": {
+        "en": "Mount Batur Jeep Sunrise Area visual reference",
+        "zh": "Mount Batur Jeep Sunrise Area 视觉参考",
+        "ja": "Mount Batur Jeep Sunrise Area のビジュアル参考",
+        "ko": "Mount Batur Jeep Sunrise Area 시각 참고",
+        "id": "Referensi visual Mount Batur Jeep Sunrise Area"
+      }
+    },
+    {
+      "image_url": "assets/images/web/8955be34cbcf96c6.webp",
+      "thumbnail_url": "assets/images/web/8955be34cbcf96c6.webp",
+      "rights": {
+        "status": "user_provided_with_consent",
+        "creator": "WanderMind Studio",
+        "license_name": "WanderMind project use",
+        "license_url": "",
+        "source_url": "https://disparda.baliprov.go.id/en/batur-mountain/2020/04/"
+      },
+      "poi_ids": [
+        "mount_batur_trailhead"
+      ],
+      "media_scope": "area_context",
+      "alt_text": {
+        "en": "Mount Batur Hiking Area visual reference",
+        "zh": "Mount Batur Hiking Area 视觉参考",
+        "ja": "Mount Batur Hiking Area のビジュアル参考",
+        "ko": "Mount Batur Hiking Area 시각 참고",
+        "id": "Referensi visual Mount Batur Hiking Area"
+      }
+    },
+    {
+      "image_url": "https://upload.wikimedia.org/wikipedia/commons/thumb/2/23/Munduk_Tutub_Waterfall_SF0001.jpg/1280px-Munduk_Tutub_Waterfall_SF0001.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "thumbnail_url": "https://upload.wikimedia.org/wikipedia/commons/thumb/2/23/Munduk_Tutub_Waterfall_SF0001.jpg/1280px-Munduk_Tutub_Waterfall_SF0001.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "rights": {
+        "status": "licensed",
+        "creator": "Stefan Fussan",
+        "license_name": "CC BY-SA 3.0",
+        "license_url": "https://creativecommons.org/licenses/by-sa/3.0",
+        "source_url": "https://commons.wikimedia.org/wiki/File:Munduk_Tutub_Waterfall_SF0001.jpg"
+      },
+      "poi_ids": [
+        "munduk_waterfall"
+      ],
+      "media_scope": "exact_place",
+      "alt_text": {
+        "en": "Munduk Waterfall / Red Coral Waterfall visual reference",
+        "zh": "Munduk Waterfall / Red Coral Waterfall 视觉参考",
+        "ja": "Munduk Waterfall / Red Coral Waterfall のビジュアル参考",
+        "ko": "Munduk Waterfall / Red Coral Waterfall 시각 참고",
+        "id": "Referensi visual Munduk Waterfall / Red Coral Waterfall"
+      }
+    },
+    {
+      "image_url": "https://upload.wikimedia.org/wikipedia/commons/3/3e/Nusa_Dua_beach_Bali.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled",
+      "thumbnail_url": "https://upload.wikimedia.org/wikipedia/commons/3/3e/Nusa_Dua_beach_Bali.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled",
+      "rights": {
+        "status": "licensed",
+        "creator": "Susanne Koch",
+        "license_name": "CC BY-SA 3.0",
+        "license_url": "http://creativecommons.org/licenses/by-sa/3.0/",
+        "source_url": "https://commons.wikimedia.org/wiki/File:Nusa_Dua_beach_Bali.jpg"
+      },
+      "poi_ids": [
+        "nusa_dua_beach"
+      ],
+      "media_scope": "exact_place",
+      "alt_text": {
+        "en": "Nusa Dua Beach visual reference",
+        "zh": "Nusa Dua Beach 视觉参考",
+        "ja": "Nusa Dua Beach のビジュアル参考",
+        "ko": "Nusa Dua Beach 시각 참고",
+        "id": "Referensi visual Nusa Dua Beach"
+      }
+    },
+    {
+      "image_url": "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f6/Padang_Padang_Beach_Bali.jpg/1280px-Padang_Padang_Beach_Bali.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "thumbnail_url": "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f6/Padang_Padang_Beach_Bali.jpg/1280px-Padang_Padang_Beach_Bali.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "rights": {
+        "status": "licensed",
+        "creator": "TMFalkner",
+        "license_name": "CC BY-SA 4.0",
+        "license_url": "https://creativecommons.org/licenses/by-sa/4.0",
+        "source_url": "https://commons.wikimedia.org/wiki/File:Padang_Padang_Beach_Bali.jpg"
+      },
+      "poi_ids": [
+        "padang_padang_beach"
+      ],
+      "media_scope": "exact_place",
+      "alt_text": {
+        "en": "Padang Padang Beach visual reference",
+        "zh": "Padang Padang Beach 视觉参考",
+        "ja": "Padang Padang Beach のビジュアル参考",
+        "ko": "Padang Padang Beach 시각 참고",
+        "id": "Referensi visual Padang Padang Beach"
+      }
+    },
+    {
+      "image_url": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/ab/Pandawa_Beach%2C_Kuta_Selatan_-_Bali.jpg/1280px-Pandawa_Beach%2C_Kuta_Selatan_-_Bali.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "thumbnail_url": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/ab/Pandawa_Beach%2C_Kuta_Selatan_-_Bali.jpg/1280px-Pandawa_Beach%2C_Kuta_Selatan_-_Bali.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "rights": {
+        "status": "licensed",
+        "creator": "Herryz",
+        "license_name": "CC BY-SA 4.0",
+        "license_url": "https://creativecommons.org/licenses/by-sa/4.0",
+        "source_url": "https://commons.wikimedia.org/wiki/File:Pandawa_Beach,_Kuta_Selatan_-_Bali.jpg"
+      },
+      "poi_ids": [
+        "pandawa_beach"
+      ],
+      "media_scope": "exact_place",
+      "alt_text": {
+        "en": "Pandawa Beach visual reference",
+        "zh": "Pandawa Beach 视觉参考",
+        "ja": "Pandawa Beach のビジュアル参考",
+        "ko": "Pandawa Beach 시각 참고",
+        "id": "Referensi visual Pandawa Beach"
+      }
+    },
+    {
+      "image_url": "https://upload.wikimedia.org/wikipedia/commons/9/9a/Pura_Petitenget.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled",
+      "thumbnail_url": "https://upload.wikimedia.org/wikipedia/commons/9/9a/Pura_Petitenget.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled",
+      "rights": {
+        "status": "licensed",
+        "creator": "antwerpenR",
+        "license_name": "CC BY 2.0",
+        "license_url": "https://creativecommons.org/licenses/by/2.0",
+        "source_url": "https://commons.wikimedia.org/wiki/File:Pura_Petitenget.jpg"
+      },
+      "poi_ids": [
+        "petitenget_temple"
+      ],
+      "media_scope": "exact_place",
+      "alt_text": {
+        "en": "Pura Petitenget visual reference",
+        "zh": "Pura Petitenget 视觉参考",
+        "ja": "Pura Petitenget のビジュアル参考",
+        "ko": "Pura Petitenget 시각 참고",
+        "id": "Referensi visual Pura Petitenget"
+      }
+    },
+    {
+      "image_url": "https://upload.wikimedia.org/wikipedia/commons/thumb/8/81/Amazing_Tree_House_at_Nusa_Penida.jpg/1280px-Amazing_Tree_House_at_Nusa_Penida.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "thumbnail_url": "https://upload.wikimedia.org/wikipedia/commons/thumb/8/81/Amazing_Tree_House_at_Nusa_Penida.jpg/1280px-Amazing_Tree_House_at_Nusa_Penida.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "rights": {
+        "status": "licensed",
+        "creator": "Dini Rosyadah Tridya",
+        "license_name": "CC BY-SA 4.0",
+        "license_url": "https://creativecommons.org/licenses/by-sa/4.0",
+        "source_url": "https://commons.wikimedia.org/wiki/File:Amazing_Tree_House_at_Nusa_Penida.jpg"
+      },
+      "poi_ids": [
+        "rumah_pohon_molenteng"
+      ],
+      "media_scope": "exact_place",
+      "alt_text": {
+        "en": "Rumah Pohon Molenteng visual reference",
+        "zh": "Rumah Pohon Molenteng 视觉参考",
+        "ja": "Rumah Pohon Molenteng のビジュアル参考",
+        "ko": "Rumah Pohon Molenteng 시각 참고",
+        "id": "Referensi visual Rumah Pohon Molenteng"
+      }
+    },
+    {
+      "image_url": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/30/Pantai_Sanur_di_waktu_terbit_matahari.jpg/1280px-Pantai_Sanur_di_waktu_terbit_matahari.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "thumbnail_url": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/30/Pantai_Sanur_di_waktu_terbit_matahari.jpg/1280px-Pantai_Sanur_di_waktu_terbit_matahari.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "rights": {
+        "status": "licensed",
+        "creator": "Nleni1976",
+        "license_name": "CC BY-SA 4.0",
+        "license_url": "https://creativecommons.org/licenses/by-sa/4.0",
+        "source_url": "https://commons.wikimedia.org/wiki/File:Pantai_Sanur_di_waktu_terbit_matahari.jpg"
+      },
+      "poi_ids": [
+        "sanur_beach"
+      ],
+      "media_scope": "exact_place",
+      "alt_text": {
+        "en": "Sanur Beach visual reference",
+        "zh": "Sanur Beach 视觉参考",
+        "ja": "Sanur Beach のビジュアル参考",
+        "ko": "Sanur Beach 시각 참고",
+        "id": "Referensi visual Sanur Beach"
+      }
+    },
+    {
+      "image_url": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/49/Sidemen_sawah_countryside_%28Bali%2C_Indonesia_2016%29_%2830039194120%29.jpg/1280px-Sidemen_sawah_countryside_%28Bali%2C_Indonesia_2016%29_%2830039194120%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "thumbnail_url": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/49/Sidemen_sawah_countryside_%28Bali%2C_Indonesia_2016%29_%2830039194120%29.jpg/1280px-Sidemen_sawah_countryside_%28Bali%2C_Indonesia_2016%29_%2830039194120%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "rights": {
+        "status": "licensed",
+        "creator": "Paul Arps from The Netherlands",
+        "license_name": "CC BY 2.0",
+        "license_url": "https://creativecommons.org/licenses/by/2.0",
+        "source_url": "https://commons.wikimedia.org/wiki/File:Sidemen_sawah_countryside_(Bali,_Indonesia_2016)_(30039194120).jpg"
+      },
+      "poi_ids": [
+        "sidemen_valley"
+      ],
+      "media_scope": "exact_place",
+      "alt_text": {
+        "en": "Sidemen Valley visual reference",
+        "zh": "Sidemen Valley 视觉参考",
+        "ja": "Sidemen Valley のビジュアル参考",
+        "ko": "Sidemen Valley 시각 참고",
+        "id": "Referensi visual Sidemen Valley"
+      }
+    },
+    {
+      "image_url": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/47/Pantai_suluban_blue_point_bali.jpg/1280px-Pantai_suluban_blue_point_bali.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "thumbnail_url": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/47/Pantai_suluban_blue_point_bali.jpg/1280px-Pantai_suluban_blue_point_bali.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "rights": {
+        "status": "licensed",
+        "creator": "I made jon arinata",
+        "license_name": "CC BY-SA 4.0",
+        "license_url": "https://creativecommons.org/licenses/by-sa/4.0",
+        "source_url": "https://commons.wikimedia.org/wiki/File:Pantai_suluban_blue_point_bali.jpg"
+      },
+      "poi_ids": [
+        "suluban_beach"
+      ],
+      "media_scope": "exact_place",
+      "alt_text": {
+        "en": "Suluban Beach (Blue Point) visual reference",
+        "zh": "Suluban Beach (Blue Point) 视觉参考",
+        "ja": "Suluban Beach (Blue Point) のビジュアル参考",
+        "ko": "Suluban Beach (Blue Point) 시각 참고",
+        "id": "Referensi visual Suluban Beach (Blue Point)"
+      }
+    },
+    {
+      "image_url": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b6/Taman_Ujung_%22Istana_Air%22%2C_Bali_2.jpg/1280px-Taman_Ujung_%22Istana_Air%22%2C_Bali_2.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "thumbnail_url": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b6/Taman_Ujung_%22Istana_Air%22%2C_Bali_2.jpg/1280px-Taman_Ujung_%22Istana_Air%22%2C_Bali_2.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "rights": {
+        "status": "licensed",
+        "creator": "Dhimasadj",
+        "license_name": "CC BY 4.0",
+        "license_url": "https://creativecommons.org/licenses/by/4.0",
+        "source_url": "https://commons.wikimedia.org/wiki/File:Taman_Ujung_%22Istana_Air%22,_Bali_2.jpg"
+      },
+      "poi_ids": [
+        "taman_ujung"
+      ],
+      "media_scope": "exact_place",
+      "alt_text": {
+        "en": "Taman Ujung Water Palace visual reference",
+        "zh": "Taman Ujung Water Palace 视觉参考",
+        "ja": "Taman Ujung Water Palace のビジュアル参考",
+        "ko": "Taman Ujung Water Palace 시각 참고",
+        "id": "Referensi visual Taman Ujung Water Palace"
+      }
+    },
+    {
+      "image_url": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e6/Lake_Tamblingan.jpg/1280px-Lake_Tamblingan.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "thumbnail_url": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e6/Lake_Tamblingan.jpg/1280px-Lake_Tamblingan.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "rights": {
+        "status": "licensed",
+        "creator": "Dave",
+        "license_name": "CC BY 2.0",
+        "license_url": "https://creativecommons.org/licenses/by/2.0",
+        "source_url": "https://commons.wikimedia.org/wiki/File:Lake_Tamblingan.jpg"
+      },
+      "poi_ids": [
+        "tamblingan_lake"
+      ],
+      "media_scope": "exact_place",
+      "alt_text": {
+        "en": "Lake Tamblingan visual reference",
+        "zh": "Lake Tamblingan 视觉参考",
+        "ja": "Lake Tamblingan のビジュアル参考",
+        "ko": "Lake Tamblingan 시각 참고",
+        "id": "Referensi visual Lake Tamblingan"
+      }
+    },
+    {
+      "image_url": "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f1/Tegenungan_Waterfall_2017-08-18_%282%29.jpg/1280px-Tegenungan_Waterfall_2017-08-18_%282%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "thumbnail_url": "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f1/Tegenungan_Waterfall_2017-08-18_%282%29.jpg/1280px-Tegenungan_Waterfall_2017-08-18_%282%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "rights": {
+        "status": "licensed",
+        "creator": "Magul",
+        "license_name": "CC BY-SA 4.0",
+        "license_url": "https://creativecommons.org/licenses/by-sa/4.0",
+        "source_url": "https://commons.wikimedia.org/wiki/File:Tegenungan_Waterfall_2017-08-18_(2).jpg"
+      },
+      "poi_ids": [
+        "tegenungan_waterfall"
+      ],
+      "media_scope": "exact_place",
+      "alt_text": {
+        "en": "Tegenungan Waterfall visual reference",
+        "zh": "Tegenungan Waterfall 视觉参考",
+        "ja": "Tegenungan Waterfall のビジュアル参考",
+        "ko": "Tegenungan Waterfall 시각 참고",
+        "id": "Referensi visual Tegenungan Waterfall"
+      }
+    },
+    {
+      "image_url": "assets/images/web/682e4b7b296cd26a.webp",
+      "thumbnail_url": "assets/images/web/682e4b7b296cd26a.webp",
+      "rights": {
+        "status": "user_provided_with_consent",
+        "creator": "WanderMind Studio",
+        "license_name": "WanderMind project use",
+        "license_url": "",
+        "source_url": ""
+      },
+      "poi_ids": [
+        "thousand_islands_viewpoint"
+      ],
+      "media_scope": "area_context",
+      "alt_text": {
+        "en": "Thousand Islands Viewpoint visual reference",
+        "zh": "Thousand Islands Viewpoint 视觉参考",
+        "ja": "Thousand Islands Viewpoint のビジュアル参考",
+        "ko": "Thousand Islands Viewpoint 시각 참고",
+        "id": "Referensi visual Thousand Islands Viewpoint"
+      }
+    },
+    {
+      "image_url": "assets/images/generated/tropical-waterfall-illustration.png",
+      "thumbnail_url": "assets/images/generated/tropical-waterfall-illustration.png",
+      "rights": {
+        "status": "wanderMind_illustration",
+        "creator": "WanderMind Studio",
+        "license_name": "WanderMind project use",
+        "license_url": "",
+        "source_url": "https://www.indonesia.travel/id/en/destination/bali-nusa-tenggara/bali/air-terjun-tibumama"
+      },
+      "poi_ids": [
+        "tibumana_waterfall"
+      ],
+      "media_scope": "terrain_context",
+      "alt_text": {
+        "en": "Tibumana Waterfall visual reference",
+        "zh": "Tibumana Waterfall 视觉参考",
+        "ja": "Tibumana Waterfall のビジュアル参考",
+        "ko": "Tibumana Waterfall 시각 참고",
+        "id": "Referensi visual Tibumana Waterfall"
+      }
+    },
+    {
+      "image_url": "https://upload.wikimedia.org/wikipedia/commons/thumb/1/12/Tukad_Cepung_Waterfall_%2852462237566%29.jpg/1280px-Tukad_Cepung_Waterfall_%2852462237566%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "thumbnail_url": "https://upload.wikimedia.org/wikipedia/commons/thumb/1/12/Tukad_Cepung_Waterfall_%2852462237566%29.jpg/1280px-Tukad_Cepung_Waterfall_%2852462237566%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "rights": {
+        "status": "licensed",
+        "creator": "Bex Walton from London, England",
+        "license_name": "CC BY 2.0",
+        "license_url": "https://creativecommons.org/licenses/by/2.0",
+        "source_url": "https://commons.wikimedia.org/wiki/File:Tukad_Cepung_Waterfall_(52462237566).jpg"
+      },
+      "poi_ids": [
+        "tukad_cepung_waterfall"
+      ],
+      "media_scope": "exact_place",
+      "alt_text": {
+        "en": "Tukad Cepung Waterfall visual reference",
+        "zh": "Tukad Cepung Waterfall 视觉参考",
+        "ja": "Tukad Cepung Waterfall のビジュアル参考",
+        "ko": "Tukad Cepung Waterfall 시각 참고",
+        "id": "Referensi visual Tukad Cepung Waterfall"
+      }
+    },
+    {
+      "image_url": "https://upload.wikimedia.org/wikipedia/commons/e/e4/21-Indonesia-Bali_Tulamben_35_%28School_of_Jack_Fish%29-APiazza.JPG?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled",
+      "thumbnail_url": "https://upload.wikimedia.org/wikipedia/commons/e/e4/21-Indonesia-Bali_Tulamben_35_%28School_of_Jack_Fish%29-APiazza.JPG?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled",
+      "rights": {
+        "status": "licensed",
+        "creator": "Andrepiazza",
+        "license_name": "CC BY-SA 3.0",
+        "license_url": "https://creativecommons.org/licenses/by-sa/3.0",
+        "source_url": "https://commons.wikimedia.org/wiki/File:21-Indonesia-Bali_Tulamben_35_(School_of_Jack_Fish)-APiazza.JPG"
+      },
+      "poi_ids": [
+        "tulamben"
+      ],
+      "media_scope": "exact_place",
+      "alt_text": {
+        "en": "Tulamben Dive Area visual reference",
+        "zh": "Tulamben Dive Area 视觉参考",
+        "ja": "Tulamben Dive Area のビジュアル参考",
+        "ko": "Tulamben Dive Area 시각 참고",
+        "id": "Referensi visual Tulamben Dive Area"
+      }
+    },
+    {
+      "image_url": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/56/Virgin_Beach_Bali.jpg/1280px-Virgin_Beach_Bali.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "thumbnail_url": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/56/Virgin_Beach_Bali.jpg/1280px-Virgin_Beach_Bali.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "rights": {
+        "status": "licensed",
+        "creator": "Tisa0603",
+        "license_name": "CC0",
+        "license_url": "http://creativecommons.org/publicdomain/zero/1.0/deed.en",
+        "source_url": "https://commons.wikimedia.org/wiki/File:Virgin_Beach_Bali.jpg"
+      },
+      "poi_ids": [
+        "virgin_beach"
+      ],
+      "media_scope": "exact_place",
+      "alt_text": {
+        "en": "Virgin Beach / Pantai Perasi visual reference",
+        "zh": "Virgin Beach / Pantai Perasi 视觉参考",
+        "ja": "Virgin Beach / Pantai Perasi のビジュアル参考",
+        "ko": "Virgin Beach / Pantai Perasi 시각 참고",
+        "id": "Referensi visual Virgin Beach / Pantai Perasi"
+      }
+    }
+  ]
+}

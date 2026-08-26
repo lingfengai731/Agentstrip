@@ -30,7 +30,7 @@ DRIVERS = {
         "utm": "https://wandermind.cc/find-driver?driver_id=dicky&utm_source=driver_dicky&utm_medium=instagram&utm_campaign=bali_driver_launch",
         "service": "机场接送、巴厘岛私人一日游，以及根据客人行程方向安排顺路路线。",
         "photos": [
-            ("01-Dicky-profile.jpg", "01 · 个人照片", "用于 Instagram/Facebook 的首图，让客人先认识接收请求的人。"),
+            ("01-Dicky-profile.jpg", "01 · 个人照片", "可作为首图；如果不想发个人照片，也可从本资料包的风景图开始。"),
             ("02-Dicky-guest-moment.jpg", "02 · 与客人的真实服务时刻", "体现真实服务经验，但公开文案中不要写出客人身份。"),
             ("03-Dicky-vehicle.jpg", "03 · 车辆参考", "仅作车辆视觉参考；具体车辆、座位和行李容量仍须逐单确认。"),
             ("04-Dicky-Melasti-Beach.jpg", "04 · Melasti Beach", "Dare2Leap · CC BY-SA 4.0"),
@@ -47,7 +47,7 @@ DRIVERS = {
         "utm": "https://wandermind.cc/find-driver?driver_id=gede&utm_source=driver_gede&utm_medium=instagram&utm_campaign=bali_driver_launch",
         "service": "把巴厘岛文化、美食、活动和本地体验串成更顺路、可执行的一天。",
         "photos": [
-            ("01-Gede-profile.jpg", "01 · 个人照片", "用于 Instagram/Facebook 的首图，让客人先认识接收请求的人。"),
+            ("01-Gede-profile.jpg", "01 · 个人照片", "可作为首图；如果不想发个人照片，也可从本资料包的风景图开始。"),
             ("02-Gede-guest-moment.jpg", "02 · 与客人的真实服务时刻", "体现真实服务经验，但公开文案中不要写出客人身份。"),
             ("03-Gede-vehicle.jpg", "03 · 车辆参考", "仅作车辆视觉参考；具体车辆、座位和行李容量仍须逐单确认。"),
             ("04-Gede-Campuhan-Ridge.jpg", "04 · Campuhan Ridge Walk", "Artem Beliaikin · CC0 1.0"),
@@ -237,10 +237,10 @@ def add_cover(doc: Document, d: dict) -> None:
     add_brand_rule(doc)
     p = doc.add_paragraph("WanderMind Studio", style="Subtitle")
     p.paragraph_format.space_before = Pt(18)
-    p = doc.add_paragraph("个人推广手册", style="Title")
+    p = doc.add_paragraph("完整合作与推广指南", style="Title")
     p = doc.add_paragraph(d["name"], style="Title")
     p.runs[0].font.color.rgb = RGBColor.from_string(GOLD)
-    doc.add_paragraph("可直接复制的中文审阅译文、司机专属链接与已授权图片", style="Subtitle")
+    doc.add_paragraph("网站介绍 · 手机使用 · 两组推广素材 · 报价授权", style="Subtitle")
 
     hero = d["pack"] / d["photos"][0][0]
     p = doc.add_paragraph()
@@ -248,18 +248,36 @@ def add_cover(doc: Document, d: dict) -> None:
     p.add_run().add_picture(image_stream(hero), width=Inches(4.35))
     add_callout(doc, "审阅说明", "本文件用于你先检查中文含义。司机实际收到和使用的仍是各自的印尼语版本；姓名、专属链接和图片包不得互换。")
 
-    doc.add_paragraph("7 张可用图片 · 5 个推广渠道 · 1 条司机专属链接", style="Subtitle")
+    doc.add_paragraph("7 张可用图片 · 2 组现成发布 · 1 条司机专属链接", style="Subtitle")
+
+
+def add_site_orientation(doc: Document, d: dict) -> None:
+    doc.add_page_break()
+    doc.add_paragraph("先了解 WanderMind", style="Heading 1")
+    add_callout(doc, "我们的初衷", "WanderMind 希望让旅行者先看懂真实地点、路线强度与时间成本，再把完整需求交给本地司机确认。网站不把精修照片当作现实，也不把未核验价格写成最终报价。", PALE_TEAL)
+    doc.add_paragraph("网站能帮助游客做什么", style="Heading 2")
+    for item in (
+        "浏览巴厘岛公开路线、地点实景和可编辑的一日/两日体验套餐。",
+        "填写日期、人数、预算、酒店区域与想去地点，生成更顺路的路线方向。",
+        f"在司机请求页选择 {d['name']}，把同一份需求通过邮件发给司机确认。",
+        "先看网站的初始价格，再等待司机根据实际天数、路线、接送和超时规则回复最终报价。",
+    ):
+        doc.add_paragraph(item, style="List Bullet")
+    doc.add_paragraph("游客问你时，可以这样回答", style="Heading 2")
+    add_copy_box(doc, "路线问题", "请先在 WanderMind 选择公开路线或体验套餐，再把日期、人数、酒店和想去地点一起提交。这样我可以更准确地检查路况与每天能否完成。")
+    add_copy_box(doc, "价格问题", "网站显示的是初始价格。收到请求后，我会根据用车天数、路线、接送区域和工作时长确认最终报价。")
+    add_copy_box(doc, "是否已经预订", "提交表单只是询价与可用性确认；在日期、车辆、路线和最终价格都确认前，还不算完成预订。")
 
 
 def add_quick_start(doc: Document, d: dict) -> None:
     doc.add_page_break()
     doc.add_paragraph("从这里开始", style="Heading 1")
-    doc.add_paragraph("5 分钟完成一次推广", style="Heading 2")
+    doc.add_paragraph("每 3–5 天发布一次即可", style="Heading 2")
     doc.add_paragraph("不用自己重新写文案。按下面顺序操作，再复制后续页面中标有“可复制”的内容。")
     steps = [
         ("保存 7 张图片", "只使用本手册同目录内编号 01–07 的图片；同样的图片也嵌入在本文件里。"),
         ("把专属链接放到个人主页", "Instagram：编辑个人资料 → 链接 → 添加外部链接，然后粘贴下方链接。"),
-        ("发布第一条图文", "依次选择照片 01、02、03，个人照片必须作为第一张；复制印尼语原版文案，不要自行改链接。"),
+        ("发布第一条图文", "可用个人旅行帅照、服务照片或风景照做首图；复制现成文案，不要改错专属链接。"),
         ("补充 Story 或 WhatsApp Status", "使用已经准备好的短句；如果平台支持，在第三屏加入 Link sticker。"),
         ("把咨询统一引导到表单", "不要在评论或私信里索取酒店、航班、预算或其他个人信息。"),
     ]
@@ -292,7 +310,7 @@ def add_quick_start(doc: Document, d: dict) -> None:
 def add_primary_photos(doc: Document, d: dict) -> None:
     doc.add_page_break()
     doc.add_paragraph("第一组图片", style="Heading 1")
-    doc.add_paragraph("3 张服务照片：先介绍人，再说明真实服务与车辆", style="Heading 2")
+    doc.add_paragraph("3 张服务照片：可选个人、服务时刻与车辆", style="Heading 2")
     table = doc.add_table(rows=2, cols=2)
     table.alignment = WD_TABLE_ALIGNMENT.CENTER
     table.autofit = False
@@ -310,7 +328,7 @@ def add_primary_photos(doc: Document, d: dict) -> None:
     r.bold = True
     r.font.size = Pt(14)
     r.font.color.rgb = RGBColor.from_string(TEAL)
-    p.add_run("\n\n01 → 02 → 03\n\n不要交换首图。人像能最快说明由谁接收客人的请求。")
+    p.add_run("\n\n01 → 02 → 03\n\n这个顺序只是推荐，不是强制。也可以先放自己的旅行帅照或本资料包中的巴厘岛风景。")
     p = table.cell(1, 1).add_paragraph("车辆照片只是参考；没有核实前，不承诺具体车型、座位数、行李容量、价格、时段或一定可用。")
     p.runs[0].font.size = Pt(8.5)
     p.runs[0].font.color.rgb = RGBColor.from_string(MUTED)
@@ -325,7 +343,7 @@ def add_feed_copy(doc: Document, d: dict) -> None:
         f"我是 {d['name']}，巴厘岛本地司机和向导。我主要帮助客人{d['service']}"
         "通过 WanderMind，旅行者可以在一个表单中提交日期、人数、想去的区域和车辆需求。\n\n"
         f"先查看巴厘岛公开路线，选择 {d['name']}，再通过个人主页链接提交请求：\n{d['link']}\n\n"
-        "网站显示的费用只作参考。我会在阅读请求后确认可用时间、行程时长、路线和最终报价。为了保护隐私，请不要在评论中发布酒店、航班或个人资料。\n\n"
+        "网站显示初始价格。我会在阅读请求后，根据用车天数、路线、接送区域和工作时长确认最终报价。为了保护隐私，请不要在评论中发布酒店、航班或个人资料。\n\n"
         "你最想先安排巴厘岛的哪一天：南部海岸、乌布、日出，还是 Nusa Penida？\n\n"
         "#BaliDriver #BaliItinerary #VisitBali #BaliTravel #WanderMind"
     )
@@ -334,7 +352,7 @@ def add_feed_copy(doc: Document, d: dict) -> None:
         "巴厘岛在地图上看起来不大，但舒适的一天仍需要合理的路线。\n\n"
         f"我是 {d['name']}，巴厘岛本地司机和向导。旅行者可以通过 WanderMind，一次提交日期、同行人数、偏好区域和车辆需求。\n\n"
         f"查看巴厘岛公开路线，选择 {d['name']}，再通过个人主页链接提交请求：\n{d['link']}\n\n"
-        "网站估价仅供参考。可用时间、时长、路线和最终报价都会在审核后确认。请不要在评论中发布酒店、航班或个人资料。\n\n"
+        "网站显示初始价格。可用时间、时长、路线和最终报价都会在审核后确认。请不要在评论中发布酒店、航班或个人资料。\n\n"
         "你会先规划巴厘岛的哪一天：南部海岸、乌布、日出，还是 Nusa Penida？\n\n"
         "#BaliDriver #BaliItinerary #VisitBali #BaliTravel #WanderMind"
     )
@@ -356,7 +374,7 @@ def add_channels(doc: Document, d: dict) -> None:
 
     facebook = (
         f"正在准备巴厘岛旅行吗？我是 {d['name']}，巴厘岛本地司机。WanderMind 可以帮助你先选择旅行方向，再通过一个表单提交日期、人数和车辆需求。"
-        "网站估价只作参考；我会在阅读请求后确认可用时间、路线、时长和最终报价。\n\n"
+        "网站显示初始价格；我会在阅读请求后根据天数、路线、接送和时长确认最终报价。\n\n"
         f"提交给 {d['name']}：\n{d['link']}\n\n请不要在评论中写酒店、航班或个人信息。"
     )
     add_copy_box(doc, "可复制 · Facebook", facebook)
@@ -416,7 +434,7 @@ def add_reels_and_replies(doc: Document, d: dict) -> None:
 
     doc.add_paragraph("有人询问时", style="Heading 2")
     replies = [
-        ("询问价格", f"谢谢。网站估价只作参考；最终价格需要根据日期、人数、时长和路线核对。请在这里向 {d['name']} 提交请求：\n{d['link']}"),
+        ("询问价格", f"谢谢。网站显示初始价格；最终价格需要根据日期、人数、用车天数、接送和路线核对。请在这里向 {d['name']} 提交请求：\n{d['link']}"),
         ("想在私信发送详情", f"为了避免日期和路线遗漏，请不要在私信中发送旅行资料。请使用 WanderMind 表单并选择 {d['name']}：\n{d['link']}"),
         ("已经提交表单", "谢谢。我会先查看日期、路线和车辆需求，然后确认可用时间与最终报价。"),
         ("要求直接预订", "在可用时间、车辆、时长、路线和最终价格确认前，这份请求还不等于完成预订。"),
@@ -563,8 +581,8 @@ def build_rate_form(d: dict) -> Path:
     add_field_line(doc, "姓名", d["name"])
     add_field_line(doc, "确认日期")
 
-    doc.add_paragraph("当前网站参考值（不是司机已确认价格）", style="Heading 1")
-    add_callout(doc, "仅供核对", "目前网站参考：全天 Rp700,000（最多 10 小时）、半天 Rp500,000（最多 6 小时）、每位客人每天附加 Rp50,000、全天超时 Rp75,000/小时。司机签字确认前，这些数字不得作为该司机的最终报价。", PAPER)
+    doc.add_paragraph("Dicky 已提供的初始价格", style="Heading 1")
+    add_callout(doc, "价格说明", "全天 Rp700,000（最多 10 小时）、半天 Rp500,000（最多 6 小时）、每位客人每天附加 Rp50,000、全天超时 Rp75,000/小时。Dicky 可在查看用车天数和路线后调整；最终金额以司机回复为准。", PAPER)
     doc.add_paragraph("给用户的审阅问题", style="Heading 2")
     for item in (
         "这些字段是否覆盖你和司机谈过的全部收费情况？",
@@ -579,11 +597,79 @@ def build_rate_form(d: dict) -> Path:
     return out
 
 
+def add_mobile_image_saving(doc: Document, d: dict) -> None:
+    doc.add_page_break()
+    doc.add_paragraph("手机保存图片", style="Heading 1")
+    add_callout(doc, "最简单的方法", "WanderMind 会同时提供本 Word 文件和一个 ZIP 图片包。Word 里可以直接看图；真正发布时，优先从 ZIP 解压后的 01–07 JPG 原图选择，清晰度更高。", PALE_TEAL)
+    doc.add_paragraph("iPhone", style="Heading 2")
+    for item in ("在“文件”App 中点开 ZIP，系统会自动生成同名文件夹。", "打开文件夹，点开需要的 JPG。", "点左下角分享按钮 → 选择“存储图像”；随后可在“照片”App 选择发布。"):
+        doc.add_paragraph(item, style="List Number")
+    doc.add_paragraph("Android", style="Heading 2")
+    for item in ("在 Files / My Files / 下载 中点开 ZIP，选择“解压”。", "打开解压后的 images 文件夹，再打开需要的 JPG。", "选择“分享”直接发布，或移动/保存到 Pictures 后再从相册选择。"):
+        doc.add_paragraph(item, style="List Number")
+    add_callout(doc, "发布节奏", "每 3–5 天发布一次即可。现在先使用本文件中的两组完整素材；以后站长会定期发送新的图片与文案包，继续按同样方式复制发布。")
+
+
+def add_rate_authorization_to_doc(doc: Document, d: dict) -> None:
+    doc.add_page_break()
+    doc.add_paragraph("司机报价授权表", style="Title")
+    doc.add_paragraph(f"{d['name']} · 与推广指南合并审阅", style="Subtitle")
+    if d["name"] == "Dicky":
+        price_note = "网站展示的是 Dicky 已口头提供的初始价格。游客提交请求后，Dicky 可根据用车天数、路线、接送区域和工作时长调整；最终金额以司机邮件回复为准。"
+    else:
+        price_note = "Dicky 提供的初始价格不会自动套用到 Gede Nico。请 Gede Nico 在本表填写自己的初始价格与适用条件；最终金额仍以收到游客请求后的邮件回复为准。"
+    add_callout(doc, "价格说明", price_note, PALE_TEAL)
+    add_callout(doc, "填写要求", "请填写金额或写“不适用”。不要提供银行账户、密码、身份证件或其他个人敏感资料。未填字段继续保持未授权状态。")
+    add_field_line(doc, "费率生效日期")
+    add_field_line(doc, "币种", "IDR（如不是 IDR，请注明）")
+    add_form_section(doc, 1, "全天包车", ["最多包含小时数", "车辆 + 司机初始价（Rp）", "每位客人每天附加费（Rp）", "是否含燃油（是/否）", "是否含停车（是/否）", "是否含过路费（是/否）", "是否含司机餐费（是/否）"])
+    add_form_section(doc, 2, "半天包车", ["最多包含小时数", "车辆 + 司机初始价（Rp）", "每位客人每天附加费（Rp）"])
+    add_form_section(doc, 3, "超时", ["全天包车超时价（Rp/小时）", "半天包车超时价（Rp/小时）", "计时取整规则"])
+    doc.add_page_break()
+    doc.add_paragraph("接送与跨区域规则", style="Heading 1")
+    add_form_section(doc, 4, "机场接送", ["机场 → Kuta / Seminyak / Canggu（Rp）", "机场 → Sanur（Rp）", "机场 → Ubud（Rp）", "机场 → 其他区域（区域 + 价格）", "航班延误免费等待时长"])
+    add_form_section(doc, 5, "换酒店与行李", ["包含在当天游览时的规则", "仅更换酒店时的价格", "行李数量/尺寸限制"])
+    add_form_section(doc, 6, "Nusa Penida", [f"{d['name']} 仅送到码头，还是可安排船票 + 岛上用车", "出发码头", "往返快船每人价格（Rp）", "岛上车辆 + 司机每日价格（Rp）", "West / East / Combination 是否不同价", "门票、停车、餐食、酒店接送包含范围"])
+    doc.add_page_break()
+    doc.add_paragraph("区域附加费与其他规则", style="Heading 1")
+    add_form_section(doc, 7, "区域附加费", ["Uluwatu / South Bali（Rp）", "Ubud / Central Bali（Rp）", "Kintamani / Batur（Rp）", "Karangasem / Amed / East Bali（Rp）", "Munduk / Lovina / North Bali（Rp）", "司机异地过夜每晚费用（Rp）"])
+    add_form_section(doc, 8, "其他规则", ["舒适乘坐人数 + 行李容量", "儿童座椅与价格", "取消 / 天气 / no-show 规则", "报价有效天数", "税费或其他费用"])
+    add_callout(doc, "授权声明", f"我允许 WanderMind 按本表规则，以 {d['name']} 的名义展示初始估价。每次旅行的最终价格仍由我在收到邮件请求后确认。")
+    add_field_line(doc, "同意上述授权（是/否）")
+    add_field_line(doc, "姓名", d["name"])
+    add_field_line(doc, "确认日期")
+    if d["name"] == "Dicky":
+        doc.add_paragraph("已知初始价格（请 Dicky 书面确认适用条件）", style="Heading 1")
+        add_callout(doc, "初始价格", "全天 Rp700,000（最多 10 小时）、半天 Rp500,000（最多 6 小时）、每位客人每天附加 Rp50,000、全天超时 Rp75,000/小时。Dicky 可在回复邮件时根据天数和路线调整，最终金额以司机回复为准。", PAPER)
+    else:
+        doc.add_paragraph("Gede Nico 初始价格待书面填写", style="Heading 1")
+        add_callout(doc, "不要套用", "Dicky 的初始价格仅属于 Dicky，不能自动写成 Gede Nico 的报价。请 Gede Nico 完成本表后，再把其规则接入网站。", PAPER)
+
+
+def build_complete_guide(key: str, d: dict) -> Path:
+    doc = Document()
+    set_doc_defaults(doc)
+    add_cover(doc, d)
+    add_site_orientation(doc, d)
+    add_quick_start(doc, d)
+    add_primary_photos(doc, d)
+    add_feed_copy(doc, d)
+    add_channels(doc, d)
+    add_reels_and_replies(doc, d)
+    add_rules(doc, d)
+    add_scenic_copy_and_credits(doc, d)
+    add_mobile_image_saving(doc, d)
+    add_rate_authorization_to_doc(doc, d)
+    safe_name = d["name"].replace(" ", "_")
+    out = d["pack"] / f"WanderMind_{safe_name}_Complete_Guide_Chinese_Review.docx"
+    doc.save(out)
+    return out
+
+
 def main() -> None:
     outputs = []
     for key, driver in DRIVERS.items():
-        outputs.append(build_promotion_manual(key, driver))
-        outputs.append(build_rate_form(driver))
+        outputs.append(build_complete_guide(key, driver))
     for output in outputs:
         print(output)
 

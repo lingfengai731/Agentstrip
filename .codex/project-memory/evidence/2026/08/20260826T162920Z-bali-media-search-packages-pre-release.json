@@ -1,0 +1,84 @@
+{
+  "schema_version": 1,
+  "evidence_id": "ev-20260826T162920Z-bali-media-search-packages-pre-release",
+  "task_ref": "bali-media-search-packages-driver-docs-20260826",
+  "owner": "codex-sol",
+  "captured_at": "2026-08-26T16:29:20Z",
+  "captured_by": "codex-sol",
+  "task": "bali-media-search-packages-driver-docs-20260826",
+  "claim": "Bali route-picker media coverage, global search, editable experience packages, driver price wording and merged Chinese driver review guides are locally implemented and verified without production side effects.",
+  "repository": "https://github.com/lingfengai731/Agentstrip.git",
+  "worktree": "E:/Agentstrip-wt-bali-packages-search-20260826",
+  "branch": "codex/bali-packages-search-driver-docs-20260826",
+  "head": "c267be0df8a9aaa0d25a214b474c548804691009",
+  "base": "2e563d524e5d3276b8ec15d828e5549847a8e9e0",
+  "status": "verified",
+  "source": {
+    "kind": "git",
+    "repository": "https://github.com/lingfengai731/Agentstrip.git",
+    "commit": "c267be0df8a9aaa0d25a214b474c548804691009",
+    "branch": "codex/bali-packages-search-driver-docs-20260826",
+    "worktree": "E:\\Agentstrip-wt-bali-packages-search-20260826",
+    "dirty": true
+  },
+  "results": {
+    "poi_media": "62 of 62 active POIs covered; 54 exact-place visuals total and 8 explicitly labelled context visuals; legacy missing-photo copy absent",
+    "search": "seven public pages link to a five-language GET search covering pages, R1-R6 and 62 POIs",
+    "packages": "eight editable one-to-two-day packages hand off package_id to the private driver-request flow",
+    "driver_price_copy": "Dicky initial-price attribution is explicit; final amount comes from his reply; Gede Nico quotes separately",
+    "driver_docs": "two 13-page Chinese merged review guides and two mobile ZIP packs; old Chinese split documents removed after LibreOffice render review",
+    "supplier": "Parallel Universe and Bali Fire public facts reviewed; operator identity, safety, insurance, availability and final price remain gated; one Indonesian Dicky message prepared",
+    "payment": "merchant-acquiring decision document prepared; possession of a Mastercard is not merchant onboarding"
+  },
+  "verification": {
+    "command": "python -m unittest discover -s wandermind/backend/tests -p test*.py; python tools/test_bali_media_packages.py; node tools/test_site_search.mjs; node tools/test_bali_browser.cjs; git diff --check",
+    "result": "PASS: 90 tests with 13 environment skips; 62/62 POI media; 8 packages; search contract; Chromium 320/390/768/1440; diff check"
+  },
+  "verification_details": [
+    {
+      "command": "python -m unittest discover -s wandermind/backend/tests -p test*.py",
+      "result": "pass: 90 run, 13 PostgreSQL environment tests skipped by design"
+    },
+    {
+      "command": "python tools/test_bali_media_packages.py",
+      "result": "pass: 62/62 POIs, 29 new exact photos, 8 labelled context visuals, 8 packages"
+    },
+    {
+      "command": "node tools/test_site_search.mjs",
+      "result": "pass"
+    },
+    {
+      "command": "node tools/test_bali_browser.cjs",
+      "result": "pass: Chromium 320/390/768/1440, hover/tap media, packages, search and driver handoff"
+    },
+    {
+      "command": "git diff --check",
+      "result": "pass"
+    }
+  ],
+  "agents": [
+    {
+      "name": "bali_image_coverage_audit",
+      "model": "gpt-5.6-luna",
+      "reasoning_effort": "max",
+      "final_status": "blocked_after_read_only_audit_due_to_its_project_memory_validation_observation",
+      "accepted_output": "coverage inventory only; Sol independently implemented and validated"
+    },
+    {
+      "name": "poi_supplier_source_audit",
+      "model": "gpt-5.6-luna",
+      "reasoning_effort": "max",
+      "final_status": "completed",
+      "accepted_output": "public-source supplier and payment boundary audit; zero file changes"
+    },
+    {
+      "name": "global_search_ui_audit",
+      "model": "gpt-5.6-luna",
+      "reasoning_effort": "max",
+      "final_status": "completed",
+      "accepted_output": "commit 24638dbc5d812f0769729728cb1e619bbe6779f cherry-picked and independently retested by Sol"
+    }
+  ],
+  "external_side_effects": "none: no email, booking, payment, entitlement, points, admin mutation, public post, advertisement or production change",
+  "release_boundary": "This evidence is pre-release. Do not describe the branch as pushed, merged or deployed until later immutable evidence proves each step."
+}

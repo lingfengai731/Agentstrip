@@ -1,0 +1,105 @@
+{
+  "schema_version": "1.0.0",
+  "updated_at": "2026-08-26",
+  "policy": "Packages are editable planning products, not instant bookings. Supplier-gated modules require live confirmation before payment or execution.",
+  "packages": [
+    {
+      "id": "batur-dawn-choice",
+      "route_id": "R5",
+      "duration_days": 1,
+      "energy": "active",
+      "status": "needs_supplier_confirmation",
+      "title": {"zh":"巴图尔日出二选一","en":"Batur Dawn Choice","ja":"バトゥール夜明けの選択","ko":"바투르 일출 선택","id":"Pilihan Fajar Batur"},
+      "summary": {"zh":"徒步看日出或吉普火山地貌二选一，再按体力加入温泉或高地咖啡。","en":"Choose a sunrise hike or a volcano Jeep route, then add a hot spring or highland coffee stop to match your energy.","ja":"日の出登山または火山ジープを選び、体力に合わせて温泉か高原コーヒーを追加。","ko":"일출 하이킹 또는 화산 지프 중 하나를 고르고 온천이나 고지대 커피를 더하세요.","id":"Pilih pendakian matahari terbit atau Jeep vulkanik, lalu tambah pemandian air panas atau kopi dataran tinggi."},
+      "core": ["mount_batur_trailhead", "mount_batur_jeep"],
+      "choice_mode": "one_of",
+      "add_ons": ["batur_hot_springs"],
+      "live_checks": ["trailhead_or_operator", "guide_or_driver", "weather_and_volcano", "insurance", "final_price"]
+    },
+    {
+      "id": "ubud-active-green",
+      "route_id": "R2",
+      "duration_days": 1,
+      "energy": "active",
+      "status": "needs_supplier_confirmation",
+      "title": {"zh":"乌布丛林动感日","en":"Ubud Active Green Day","ja":"ウブド・アクティブグリーン","ko":"우붓 액티브 그린 데이","id":"Hari Aktif Hijau Ubud"},
+      "summary": {"zh":"把丛林车/ATV作为可选主体验，搭配梯田与一处瀑布；雨天可切换为文化和咖啡模块。","en":"Make ATV the optional anchor, pair it with rice terraces and one waterfall, and swap to culture and coffee in heavy rain.","ja":"ATVを任意の主体験とし、棚田と滝を組み合わせ、強い雨なら文化とコーヒーへ切替。","ko":"ATV를 선택형 핵심으로 두고 계단식 논과 폭포 한 곳을 연결하며 폭우에는 문화·커피로 바꿉니다.","id":"Jadikan ATV opsi utama, padukan dengan sawah terasering dan satu air terjun, lalu ganti ke budaya dan kopi saat hujan lebat."},
+      "core": ["tegalalang_rice_terrace", "tegenungan_waterfall"],
+      "add_ons": ["kanto_lampo_waterfall"],
+      "live_checks": ["atv_operator", "insurance", "protective_equipment", "weather", "final_price"]
+    },
+    {
+      "id": "ubud-craft-context",
+      "route_id": "R4",
+      "duration_days": 1,
+      "energy": "easy",
+      "status": "needs_supplier_confirmation",
+      "title": {"zh":"乌布文化与银饰制作","en":"Ubud Culture & Silver Making","ja":"ウブド文化と銀細工","ko":"우붓 문화와 은세공","id":"Budaya Ubud & Kerajinan Perak"},
+      "summary": {"zh":"寺庙或皇宫只选一处，留出充足时间完成银饰课程；默认推荐 Parallel Universe，也可让司机替换为你更喜欢的工作室。","en":"Choose one cultural anchor and leave real time for a silver class. Parallel Universe is the default candidate, but your driver can confirm another workshop you prefer.","ja":"文化スポットは一つに絞り、銀細工教室の時間を確保。Parallel Universeを候補とし、希望の工房へ変更可能。","ko":"문화 거점은 한 곳만 고르고 은공예 수업 시간을 확보합니다. 기본 후보는 Parallel Universe이며 원하는 공방으로 변경할 수 있습니다.","id":"Pilih satu titik budaya dan sisakan waktu nyata untuk kelas perak. Kandidat awal Parallel Universe dapat diganti sesuai pilihan Anda."},
+      "core": ["ubud_palace", "celuk_silver_class"],
+      "add_ons": ["tirta_empul"],
+      "supplier_url": "https://paralleluniversejewelry.com/",
+      "live_checks": ["supplier_identity", "class_slot", "materials_and_extra_fee", "safety", "final_price"]
+    },
+    {
+      "id": "penida-west-one-day",
+      "route_id": "R1",
+      "duration_days": 1,
+      "energy": "moderate",
+      "status": "live_check",
+      "title": {"zh":"佩妮达西线一日","en":"Nusa Penida West in One Day","ja":"ヌサ・ペニダ西部1日","ko":"누사 페니다 서부 1일","id":"Nusa Penida Barat Sehari"},
+      "summary": {"zh":"以 Kelingking、Broken Beach、Angel's Billabong、Crystal Bay 为候选，按船班和路况删减，不承诺四处全部完成。","en":"Start from Kelingking, Broken Beach, Angel's Billabong and Crystal Bay, then trim the list around boats, roads and daylight.","ja":"4候補から船便・道路・日照に合わせて絞り込み、全て回れるとは約束しません。","ko":"네 후보에서 배편·도로·일광에 맞춰 줄이며 모두 방문을 약속하지 않습니다.","id":"Mulai dari empat kandidat, lalu kurangi sesuai kapal, jalan dan waktu siang; tidak menjanjikan semuanya selesai."},
+      "core": ["kelingking_beach", "broken_beach", "angels_billabong", "crystal_bay"],
+      "add_ons": [],
+      "live_checks": ["fast_boat", "island_driver", "road_and_weather", "entry_fees", "final_price"]
+    },
+    {
+      "id": "penida-east-one-day",
+      "route_id": "R3",
+      "duration_days": 1,
+      "energy": "moderate",
+      "status": "live_check",
+      "title": {"zh":"佩妮达东线一日","en":"Nusa Penida East in One Day","ja":"ヌサ・ペニダ東部1日","ko":"누사 페니다 동부 1일","id":"Nusa Penida Timur Sehari"},
+      "summary": {"zh":"围绕 Diamond、Atuh 与 Rumah Pohon 安排；“Thousand Islands”名称和入口仍需司机现场确认。","en":"Build around Diamond, Atuh and Rumah Pohon; the Thousand Islands name and access point still need a live driver check.","ja":"Diamond、Atuh、Rumah Pohonを軸にし、Thousand Islandsの名称と入口は現地確認。","ko":"Diamond, Atuh, Rumah Pohon을 중심으로 하며 Thousand Islands 명칭과 진입은 현장 확인이 필요합니다.","id":"Susun Diamond, Atuh dan Rumah Pohon; nama serta akses Thousand Islands tetap perlu konfirmasi langsung."},
+      "core": ["diamond_beach", "atuh_beach", "rumah_pohon_molenteng"],
+      "add_ons": ["thousand_islands_viewpoint"],
+      "live_checks": ["fast_boat", "island_driver", "named_access_point", "road_and_weather", "final_price"]
+    },
+    {
+      "id": "penida-sea-land-two-day",
+      "route_id": "R3",
+      "duration_days": 2,
+      "energy": "active",
+      "status": "needs_supplier_confirmation",
+      "title": {"zh":"佩妮达海陆两日","en":"Nusa Penida Sea + Land, 2 Days","ja":"ヌサ・ペニダ海陸2日","ko":"누사 페니다 바다+육지 2일","id":"Nusa Penida Laut + Darat, 2 Hari"},
+      "summary": {"zh":"第一天集中东/西线陆地，第二天按资质和海况选择浮潜或潜水；潜水不会被当成普通加购。","en":"Use one day for an east or west land route, then choose snorkeling or qualified diving only after operator, health and sea-condition checks.","ja":"陸路1日＋海上1日。ダイビングは事業者・健康・海況確認後のみ。","ko":"육상 하루와 해상 하루로 구성하며 다이빙은 업체·건강·해상 상태 확인 후에만 진행합니다.","id":"Satu hari darat dan satu hari laut; diving hanya setelah operator, kesehatan dan kondisi laut terverifikasi."},
+      "core": ["diamond_beach", "kelingking_beach"],
+      "add_ons": ["tulamben"],
+      "live_checks": ["marine_operator", "certification_or_discover_dive", "equipment", "insurance", "sea_conditions", "final_price"]
+    },
+    {
+      "id": "south-cliff-sunset",
+      "route_id": "R3",
+      "duration_days": 1,
+      "energy": "easy",
+      "status": "live_check",
+      "title": {"zh":"南部悬崖与日落","en":"South Cliffs & Sunset","ja":"南部の断崖と夕日","ko":"남부 절벽과 일몰","id":"Tebing Selatan & Matahari Terbenam"},
+      "summary": {"zh":"白天只选两处海岸，把交通缓冲留给 Uluwatu 和 Jimbaran 日落；避免一日塞满南部所有海滩。","en":"Choose only two daytime coast stops, then protect enough buffer for Uluwatu and a Jimbaran sunset.","ja":"昼の海岸は2か所に絞り、UluwatuとJimbaranの夕日に余裕を残します。","ko":"낮 해안은 두 곳만 선택하고 Uluwatu와 Jimbaran 일몰을 위한 여유를 둡니다.","id":"Pilih hanya dua titik pantai siang hari dan sisakan waktu untuk Uluwatu serta matahari terbenam Jimbaran."},
+      "core": ["melasti_beach", "uluwatu_temple", "jimbaran_bay"],
+      "add_ons": ["padang_padang_beach", "gwk"],
+      "live_checks": ["traffic", "tide_and_weather", "temple_access", "sunset_time", "final_price"]
+    },
+    {
+      "id": "east-bali-water-coast",
+      "route_id": "R5",
+      "duration_days": 2,
+      "energy": "moderate",
+      "status": "live_check",
+      "title": {"zh":"东部水宫与海岸两日","en":"East Bali Water Palaces + Coast","ja":"東部の水宮と海岸2日","ko":"동부 수궁과 해안 2일","id":"Istana Air + Pesisir Bali Timur"},
+      "summary": {"zh":"第一天水宫与乡村，第二天 Amed/Tulamben 海岸；任何水下活动都单独通过供应商和海况门禁。","en":"Pair water palaces and villages on Day 1 with Amed or Tulamben on Day 2. Every underwater activity keeps a separate supplier and sea-condition gate.","ja":"1日目は水宮と村、2日目はAmed/Tulamben。水中体験は別途確認。","ko":"첫날은 수궁과 마을, 둘째 날은 Amed/Tulamben이며 수중 활동은 별도 확인합니다.","id":"Hari 1 istana air dan desa; Hari 2 Amed/Tulamben. Aktivitas bawah air wajib melalui verifikasi terpisah."},
+      "core": ["taman_ujung", "tirta_gangga", "amed_beach"],
+      "add_ons": ["tulamben", "virgin_beach"],
+      "live_checks": ["route_time", "marine_operator", "equipment", "sea_conditions", "final_price"]
+    }
+  ]
+}

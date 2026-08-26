@@ -1471,6 +1471,7 @@ class ProductAccessTests(unittest.TestCase):
             {
                 "driver_id": "gede",
                 "route_id": "R5",
+                "package_id": "batur-dawn-choice",
                 "first_name": "Test",
                 "last_name": "Traveller",
                 "contact_email": "traveller@example.test",
@@ -1482,6 +1483,8 @@ class ProductAccessTests(unittest.TestCase):
         self.assertIn("Gede", text)
         self.assertIn("R5", html)
         self.assertIn("R5", text)
+        self.assertIn("batur-dawn-choice", html)
+        self.assertIn("batur-dawn-choice", text)
         self.assertNotIn("550", html)
         self.assertNotIn("550", text)
 
@@ -1590,6 +1593,7 @@ class ProductAccessTests(unittest.TestCase):
                         "driver_id": "dicky",
                         "request_id": "61e9e884-359b-45bb-bc49-3f3b53c04c42",
                         "route_id": "r5",
+                        "package_id": "batur-dawn-choice",
                         "first_name": "Test",
                         "contact_email": "traveller@example.test",
                         "num_people": 3,
@@ -1607,6 +1611,7 @@ class ProductAccessTests(unittest.TestCase):
         self.assertEqual(payload["driver_id"], "dicky")
         self.assertEqual(payload["request_id"], "61e9e884-359b-45bb-bc49-3f3b53c04c42")
         self.assertEqual(payload["route_id"], "R5")
+        self.assertEqual(payload["package_id"], "batur-dawn-choice")
         self.assertEqual(payload["num_people"], 3)
         self.assertEqual(payload["start_date"], "2026-10-01")
         self.assertEqual(payload["end_date"], "2026-10-08")
@@ -2401,7 +2406,7 @@ class ProductAccessTests(unittest.TestCase):
         ):
             with self.subTest(page=page_name):
                 html = (frontend / page_name).read_text(encoding="utf-8")
-                self.assertIn("assets/css/style-starter.css?v=p63", html)
+                self.assertIn("assets/css/style-starter.css?v=search1", html)
 
     def test_find_driver_light_dark_focus_and_mobile_styles_are_explicit(self):
         frontend = BACKEND_DIR.parents[1] / "wandermind-studio" / "frontend"
@@ -2437,7 +2442,7 @@ class ProductAccessTests(unittest.TestCase):
         )
 
         self.assertIn('aria-controls="navbarTogglerDemo02"', driver_html)
-        self.assertIn('aria-label="Search"', driver_html)
+        self.assertIn('aria-label="Search WanderMind"', driver_html)
         self.assertIn('aria-label="Toggle color theme"', driver_html)
         self.assertIn(".theme-selector input { display: block !important;", driver_html)
         self.assertIn(".theme-selector:focus-within", driver_html)
@@ -3882,7 +3887,7 @@ class ProductAccessTests(unittest.TestCase):
         self.assertIn("profile.moments.map", driver_html)
         self.assertIn("DRIVER_PROFILES[choice.querySelector('input').value]", driver_html)
         self.assertIn("document.addEventListener('wm:language-change'", driver_html)
-        self.assertIn('assets/js/i18n.js?v=p65', driver_html)
+        self.assertIn('assets/js/i18n.js?v=search1', driver_html)
         self.assertIn('assets/js/driver-estimate.js?v=p1', driver_html)
         self.assertIn('id="fd-full-days"', driver_html)
         self.assertIn('id="fd-half-days"', driver_html)

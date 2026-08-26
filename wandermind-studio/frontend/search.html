@@ -1,0 +1,147 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title data-i18n="searchPageTitle">Search | WanderMind Studio</title>
+    <meta name="description" content="Search WanderMind public pages, Bali routes and curated places.">
+    <link rel="canonical" href="https://wandermind.cc/search">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="WanderMind Studio">
+    <meta property="og:title" content="Search · WanderMind Studio">
+    <meta property="og:description" content="Search public pages, Bali routes and curated places.">
+    <meta property="og:url" content="https://wandermind.cc/search">
+    <meta property="og:image" content="https://wandermind.cc/assets/images/logo-mark.png">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Search · WanderMind Studio">
+    <meta name="twitter:description" content="Search public pages, Bali routes and curated places.">
+    <meta name="twitter:image" content="https://wandermind.cc/assets/images/logo-mark.png">
+    <link rel="icon" type="image/png" href="assets/images/logo-mark-256.png">
+    <link rel="apple-touch-icon" href="assets/images/logo-mark-256.png">
+    <link rel="stylesheet" href="assets/css/style-starter.css?v=search1">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=optional" rel="stylesheet">
+    <style>
+      .wm-search-page .navbar-brand { font-weight: 700; letter-spacing: .02em; white-space: nowrap; display: inline-flex !important; align-items: center; gap: 8px; }
+      .wm-search-page .navbar-brand small { font-size: 11px; opacity: .55; font-weight: 400; letter-spacing: .15em; text-transform: uppercase; }
+      .wm-search-page .wm-logo-img { height: 40px; width: 40px; display: inline-block; vertical-align: middle; object-fit: contain; flex-shrink: 0; }
+      .wm-search-page .w3l-header-4 header { background: #17373a; }
+      @media (max-width: 1199px) { .wm-search-page .wm-logo-img { height: 34px; width: 34px; } }
+      @media (min-width: 992px) {
+        .wm-search-page .navbar .navbar-nav { display: flex !important; align-items: center !important; }
+        .wm-search-page .navbar .navbar-nav .nav-item { display: flex !important; align-items: center !important; }
+        .wm-search-page .navbar .navbar-nav .nav-link { white-space: nowrap; padding: 8px 9px !important; line-height: 1.2 !important; }
+        .wm-search-page .navbar .nav-link.phone { white-space: nowrap; display: inline-flex; align-items: center; gap: 5px; text-transform: none !important; }
+        .wm-search-page .navbar .nav-link.phone .fa { font-size: 14px; }
+        .wm-search-page .navbar .ml-3, .wm-search-page .navbar .ml-4 { margin-left: .35rem !important; }
+        .wm-search-page .navbar .mobile-position { position: static !important; top: auto !important; right: auto !important; margin-left: .35rem !important; display: inline-flex !important; align-items: center; flex-shrink: 0; }
+      }
+      .wm-search-page .lang-picker { display: inline-flex; align-items: center; gap: 6px; padding: 0 10px; height: 36px; border-radius: 18px; background: rgba(255,255,255,.08); border: 1px solid rgba(255,255,255,.15); cursor: pointer; box-sizing: border-box; line-height: 1; color: #fff; }
+      .wm-search-page .lang-picker .fa { font-size: 12px; opacity: .85; }
+      .wm-search-page .lang-picker select { background: transparent; border: none; color: #fff; font-size: 13px; outline: none; cursor: pointer; padding: 0 4px; line-height: 1; height: 34px; appearance: none; -webkit-appearance: none; }
+      .wm-search-page .lang-picker select option { color: #333; background: #fff; }
+      .wm-search-page .theme-selector { min-width: 44px; min-height: 44px; display: inline-flex; align-items: center; justify-content: center; margin: 0; }
+      .wm-search-page .theme-selector input { position: absolute; width: 1px; height: 1px; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); clip-path: inset(50%); white-space: nowrap; }
+      .wm-search-page .theme-selector:focus-within { outline: 3px solid rgba(252,191,30,.72); outline-offset: 2px; border-radius: 50%; }
+      @media (max-width: 991px) {
+        .wm-search-page .navbar-collapse.show, .wm-search-page .navbar-collapse.collapsing { background: #fffaf0 !important; border: 1px solid rgba(23,55,58,.12); border-radius: 0 0 16px 16px; padding: 12px 8px 20px !important; margin-top: 8px; box-shadow: 0 18px 42px rgba(23,55,58,.18); }
+        .wm-search-page .navbar-collapse.show .nav-link, .wm-search-page .navbar-collapse.collapsing .nav-link, .wm-search-page .navbar-collapse.show .nav-link .fa, .wm-search-page .navbar-collapse.collapsing .nav-link .fa, .wm-search-page .navbar-collapse.show .lang-picker, .wm-search-page .navbar-collapse.collapsing .lang-picker, .wm-search-page .navbar-collapse.show .lang-picker .fa, .wm-search-page .navbar-collapse.collapsing .lang-picker .fa, .wm-search-page .navbar-collapse.show .lang-picker select, .wm-search-page .navbar-collapse.collapsing .lang-picker select { color: #17373a !important; opacity: 1; }
+        .wm-search-page .navbar-nav .nav-item { margin: 4px 0 !important; }
+        .wm-search-page .navbar-nav .nav-item .lang-picker { width: 100%; justify-content: center; height: 38px; background: rgba(23,55,58,.06); border-color: rgba(23,55,58,.16); }
+      }
+      @media (max-width: 767px) {
+        .wm-search-page .navbar-brand small { display: none !important; }
+        .wm-search-page .navbar-brand { gap: 4px !important; }
+        .wm-search-page .wm-logo-img { height: 30px !important; width: 30px !important; }
+      }
+      body.wm-search-page.dark .lang-picker, body.wm-search-page.dark .lang-picker select { color: #fff !important; }
+    </style>
+  </head>
+  <body class="wm-search-page">
+    <section class="w3l-header-4 header-sticky">
+      <header id="site-header" class="fixed-top">
+        <div class="container">
+          <nav class="navbar navbar-expand-lg navbar-dark stroke">
+            <h1><a class="navbar-brand" href="index.html"><img src="assets/images/logo-mark-256.png" alt="WanderMind" class="wm-logo-img" width="44" height="44"> WanderMind <small>STUDIO</small></a></h1>
+            <button class="navbar-toggler collapsed bg-gradient" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo02" aria-controls="navbarTogglerDemo02" aria-expanded="false" aria-label="Toggle navigation">
+              <span class="navbar-toggler-icon fa icon-expand fa-bars" aria-hidden="true"></span>
+              <span class="navbar-toggler-icon fa icon-close fa-times" aria-hidden="true"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarTogglerDemo02">
+              <ul class="navbar-nav ml-lg-1">
+                <li class="nav-item"><a class="nav-link" href="index.html" data-i18n="navHome">Home</a></li>
+                <li class="nav-item"><a class="nav-link" href="about.html" data-i18n="navAbout">About</a></li>
+                <li class="nav-item"><a class="nav-link" href="services.html" data-i18n="navExplore">Explore</a></li>
+                <li class="nav-item"><a class="nav-link" href="bali.html" data-i18n="navBali">Bali</a></li>
+                <li class="nav-item"><a class="nav-link ai-tool-link" href="ai-tool.html" data-i18n="navAITool">AI Tool</a></li>
+                <li class="nav-item"><a class="nav-link" href="contact.html" data-i18n="navContact">Contact</a></li>
+              </ul>
+              <ul class="navbar-nav ml-auto">
+                <li class="nav-item ml-3"><a class="nav-link phone" href="mailto:lfwu22@126.com"><span class="fa fa-envelope" aria-hidden="true"></span> lfwu22@126.com</a></li>
+                <li class="nav-item ml-3">
+                  <div class="lang-picker">
+                    <span class="fa fa-globe" aria-hidden="true"></span>
+                    <select id="langPicker" aria-label="Language">
+                      <option value="en">English</option>
+                      <option value="zh">中文</option>
+                      <option value="ja">日本語</option>
+                      <option value="ko">한국어</option>
+                      <option value="id">Indonesia</option>
+                    </select>
+                  </div>
+                </li>
+                <li class="nav-item ml-3"><a href="search.html" class="search-search nav-link" aria-label="Search WanderMind" data-i18n="searchAriaLabel" data-i18n-attr="aria-label"><span class="fa fa-search" aria-hidden="true"></span></a></li>
+              </ul>
+            </div>
+            <div class="mobile-position"><label class="theme-selector"><input type="checkbox" id="themeToggle" data-i18n="themeToggleLabel" data-i18n-attr="aria-label"><i class="gg-sun" aria-hidden="true"></i><i class="gg-moon" aria-hidden="true"></i></label></div>
+          </nav>
+        </div>
+      </header>
+    </section>
+
+    <main class="wm-search-main">
+      <div class="container">
+        <section class="wm-search-hero" aria-labelledby="search-title">
+          <p class="wm-search-eyebrow" data-i18n="searchEyebrow">WANDERMIND INDEX</p>
+          <h1 id="search-title" data-i18n="searchTitle">Search WanderMind</h1>
+          <p class="wm-search-intro" data-i18n="searchIntro">Search public pages, Bali routes R1–R6 and curated places.</p>
+          <form id="site-search-form" class="wm-search-form" role="search" action="search.html" method="get">
+            <label for="site-search-input" data-i18n="searchInputLabel">Search pages, routes or places</label>
+            <div class="wm-search-controls">
+              <input id="site-search-input" type="search" name="q" autocomplete="off" data-i18n="searchInputPlaceholder" data-i18n-attr="placeholder" autofocus>
+              <button type="submit" data-i18n="searchSubmit">Search</button>
+            </div>
+          </form>
+        </section>
+
+        <section class="wm-search-results" aria-labelledby="search-results-title">
+          <h2 id="search-results-title" data-i18n="searchResultsHeading">Results</h2>
+          <p id="site-search-status" class="wm-search-status" role="status" aria-live="polite"></p>
+          <ol id="site-search-results" class="wm-search-list"></ol>
+        </section>
+      </div>
+    </main>
+
+    <footer class="wm-search-footer">
+      © 2026 <strong>WanderMind Studio</strong> · <a href="privacy.html" data-i18n="footPrivacy">Privacy</a>
+    </footer>
+
+    <script src="assets/js/jquery-3.3.1.min.js"></script>
+    <script src="assets/js/bootstrap.min.js"></script>
+    <script src="assets/js/script.js?v=p1"></script>
+    <script>
+      (function () {
+        var body = document.body;
+        var toggle = document.getElementById('themeToggle');
+        var media = window.matchMedia('(prefers-color-scheme: dark)');
+        var saved = localStorage.getItem('theme') || (media.matches ? 'dark' : '');
+        if (saved === 'dark') { body.classList.add('dark'); toggle.checked = true; }
+        toggle.addEventListener('change', function (event) {
+          body.classList.toggle('dark', event.target.checked);
+          localStorage.setItem('theme', event.target.checked ? 'dark' : '');
+        });
+      })();
+    </script>
+    <script src="assets/js/i18n.js?v=search1"></script>
+    <script src="assets/js/site-search.js?v=search1"></script>
+  </body>
+</html>
