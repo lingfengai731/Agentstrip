@@ -44,6 +44,8 @@
       .lang-picker select option { color: #333; background: #fff; }
       body.dark .lang-picker select option { color: #f0f0f0; background: #222; }
       .theme-selector { min-width: 44px; min-height: 44px; display: inline-flex; align-items: center; justify-content: center; }
+      .theme-selector input { display: block !important; position: absolute !important; width: 1px !important; height: 1px !important; margin: -1px !important; overflow: hidden !important; clip: rect(0,0,0,0) !important; clip-path: inset(50%) !important; white-space: nowrap !important; }
+      .theme-selector:focus-within { outline: 3px solid rgba(252,191,30,.55); outline-offset: 2px; border-radius: 50%; }
       body:not(.dark) .nav-fixed .lang-picker, body:not(.dark) .nav-fixed .lang-picker .fa, body:not(.dark) .nav-fixed .lang-picker select,
       body:not(.dark) .nav-fixed .navbar-brand, body:not(.dark) .nav-fixed .navbar-brand small, body:not(.dark) .nav-fixed .navbar-nav .nav-link,
       body:not(.dark) .nav-fixed .navbar .nav-link.phone, body:not(.dark) .nav-fixed .navbar .nav-link.phone .fa,
@@ -75,7 +77,7 @@
       .fd-label { display: block; font-size: 12.5px; font-weight: 600; color: var(--fd-ink); margin-bottom: 6px; }
       body.dark .fd-label { color: #d8d8d2; }
       .fd-req { color: #dc2626; }
-      .fd-input, .fd-textarea, .fd-num { width: 100%; padding: 11px 13px; background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 10px; font-size: 14px; color: var(--fd-ink); font-family: inherit; outline: none; box-sizing: border-box; transition: border-color .2s; }
+      .fd-input, .fd-textarea, .fd-num { width: 100%; min-height: 44px; padding: 11px 13px; background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 10px; font-size: 14px; color: var(--fd-ink); font-family: inherit; outline: none; box-sizing: border-box; transition: border-color .2s; }
       body.dark .fd-input, body.dark .fd-textarea, body.dark .fd-num { background: #2a2a25; border-color: #3a3a32; color: #f0f0ec; }
       .fd-input:focus, .fd-textarea:focus, .fd-num:focus { border-color: var(--fd-teal-lt); }
       .fd-input:focus-visible, .fd-textarea:focus-visible, .fd-num:focus-visible { outline: 3px solid rgba(20,184,166,.22); outline-offset: 2px; }
@@ -206,7 +208,6 @@
         .fd-wrap { padding-inline: 12px; padding-bottom: 56px; }
         .fd-card { padding: 24px 18px 28px; }
         .fd-driver { padding: 24px 18px; }
-        .fd-input, .fd-num { min-height: 44px; }
       }
 
       .footer-contact-line { display: flex; align-items: center; gap: 8px; padding: 4px 0; flex-wrap: wrap; }
@@ -296,11 +297,11 @@
 
       <div class="fd-row">
         <div class="fd-field">
-          <label class="fd-label" data-i18n="fdFirstLabel">First name <span class="fd-req">*</span></label>
+          <label class="fd-label" for="fd-first" data-i18n="fdFirstLabel">First name <span class="fd-req">*</span></label>
           <input type="text" class="fd-input" id="fd-first" data-i18n="fdFirstPh" data-i18n-attr="placeholder" placeholder="First name">
         </div>
         <div class="fd-field">
-          <label class="fd-label" data-i18n="fdLastLabel">Last name <span class="fd-req">*</span></label>
+          <label class="fd-label" for="fd-last" data-i18n="fdLastLabel">Last name <span class="fd-req">*</span></label>
           <input type="text" class="fd-input" id="fd-last" data-i18n="fdLastPh" data-i18n-attr="placeholder" placeholder="Last name">
         </div>
       </div>
@@ -408,8 +409,8 @@
       <div class="fd-field">
         <label class="fd-label" data-i18n="fdPlaces">Places you'd like to visit</label>
         <div class="fd-source-toggle">
-          <button type="button" class="fd-source-btn active" id="fd-src-manual" data-i18n="fdSrcManual">Write manually</button>
-          <button type="button" class="fd-source-btn" id="fd-src-import" data-i18n="fdSrcImport">Import from my AI plan</button>
+          <button type="button" class="fd-source-btn active" id="fd-src-manual" aria-pressed="true" data-i18n="fdSrcManual">Write manually</button>
+          <button type="button" class="fd-source-btn" id="fd-src-import" aria-pressed="false" data-i18n="fdSrcImport">Import from my AI plan</button>
         </div>
         <textarea class="fd-textarea" id="fd-places" data-i18n="fdPlacesPh" data-i18n-attr="placeholder" placeholder="e.g. Nusa Penida, Ubud rice terraces, Uluwatu temple…"></textarea>
         <div class="fd-hint" id="fd-import-hint" style="display:none"></div>
@@ -616,10 +617,12 @@
     })();
     manualBtn.onclick = function () {
       manualBtn.classList.add('active'); importBtn.classList.remove('active');
+      manualBtn.setAttribute('aria-pressed', 'true'); importBtn.setAttribute('aria-pressed', 'false');
       hint.style.display = 'none';
     };
     importBtn.onclick = function () {
       importBtn.classList.add('active'); manualBtn.classList.remove('active');
+      importBtn.setAttribute('aria-pressed', 'true'); manualBtn.setAttribute('aria-pressed', 'false');
       var d = readPlan();
       var L = (window.FD_T || {});
       if (d.plan && d.plan.text && (!requestedRoute || d.plan.route_id === requestedRoute)) {
@@ -636,6 +639,7 @@
         hint.textContent = L.fdImportNone || 'No AI plan found yet. Try planning a trip in the AI Tool first, or write manually.';
         hint.style.display = 'block';
         manualBtn.classList.add('active'); importBtn.classList.remove('active');
+        manualBtn.setAttribute('aria-pressed', 'true'); importBtn.setAttribute('aria-pressed', 'false');
       }
     };
 
@@ -662,9 +666,11 @@
       msg.className = 'fd-msg'; msg.textContent = '';
       var first = document.getElementById('fd-first').value.trim();
       var last = document.getElementById('fd-last').value.trim();
-      var email = document.getElementById('fd-email').value.trim();
+      var emailEl = document.getElementById('fd-email');
+      var email = emailEl.value.trim();
       if (!first && !last) { msg.className = 'fd-msg err'; msg.textContent = L.fdErrName || 'Please enter your name'; return; }
       if (!email) { msg.className = 'fd-msg err'; msg.textContent = L.fdErrContact || 'Please provide an email address'; return; }
+      if (!emailEl.checkValidity()) { msg.className = 'fd-msg err'; msg.textContent = emailEl.validationMessage || 'Please enter a valid email address'; return; }
       if (!startEl.value || !endEl.value || endEl.value < startEl.value) { msg.className = 'fd-msg err'; msg.textContent = L.fdErrDates || 'Please enter valid travel dates'; return; }
       if (!document.getElementById('fd-consent').checked) { msg.className = 'fd-msg err'; msg.textContent = L.fdErrConsent || 'Please confirm that we may forward this request to your selected driver'; return; }
 
