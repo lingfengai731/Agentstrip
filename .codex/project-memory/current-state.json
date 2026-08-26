@@ -13,25 +13,27 @@
   },
   "snapshot": {
     "status": "verified",
-    "captured_at": "2026-08-26T04:11:00Z",
+    "captured_at": "2026-08-26T12:41:40Z",
     "captured_by": "codex-sol",
-    "source_commit": "e4173f6b8356d1a410fa48eab49eeac4c1fb2441",
-    "source_branch": "codex/priority-closure-20260826",
-    "working_tree_at_capture": "clean isolated worktree at checkpoint; source branch is locally verified but not deployed, while production retains its separately dated evidence",
+    "source_commit": "d71277f25ad08091c3b858fa973e014fcb0c9ca0",
+    "source_branch": "main",
+    "working_tree_at_capture": "clean isolated worktree at the production checkpoint; PR #20 was merged and its Render auto-deploy was verified before this evidence-only snapshot",
     "active_change": {
-      "status": "pushed_not_merged_not_deployed",
-      "branch": "codex/priority-closure-20260826",
-      "source_commit": "e4173f6b8356d1a410fa48eab49eeac4c1fb2441",
-      "product_tests": "89 total passed with 13 environment-dependent PostgreSQL tests skipped by design",
+      "status": "merged_deployed_verified",
+      "branch": "main",
+      "source_commit": "d71277f25ad08091c3b858fa973e014fcb0c9ca0",
+      "product_tests": "90 total passed with 13 environment-dependent PostgreSQL tests skipped locally by design; PR PostgreSQL integration CI succeeded",
       "changes": [
         "structured public evidence for two pending POIs and three supplier-gated experiences without promoting their status",
         "stable client request UUID and Resend idempotency key for driver-request retries without new traveller PII storage",
         "separate Indonesian Dicky and Gede route-rate authorization forms plus supplier verification and production-gate registers",
-        "integration of the previously unmerged seven-image driver promotion packs and mobile, theme, focus and reduced-motion driver-page polish"
+        "integration of the seven-image driver promotion packs and mobile, theme, focus and reduced-motion driver-page polish",
+        "separate Chinese owner-review promotion manuals and rate-authorization review forms for Dicky and Gede Nico",
+        "find-driver semantic form, keyboard, touch-target, email-format and responsive accessibility closure"
       ],
-      "external_side_effects": "none: no deployment, production mutation, real email, payment, public post, advertisement or spend",
-      "remote_sync": "origin/codex/priority-closure-20260826 at 84bfe1e with 0/0 divergence; GitHub CLI was not authenticated, so no PR exists from this task",
-      "evidence_id": "ev-20260826T041322Z-priority-closure-push-20260826"
+      "external_side_effects": "Render code auto-deploy only; no real email, payment, order, points, entitlement, admin record, public post, advertisement or spend",
+      "remote_sync": "PR #20 merged fixed head 24dbb73 as d71277f after Project memory validation run 32969301870 and PostgreSQL integration run 32969301855 succeeded",
+      "evidence_id": "ev-20260826T124140Z-priority-closure-production-20260826"
     },
     "wandermind_bali": {
       "status": "verified",
@@ -78,7 +80,7 @@
       },
       "remaining_gates": []
       ,
-      "email_retry_idempotency": "locally verified on codex/priority-closure-20260826; not deployed"
+      "email_retry_idempotency": "deployed and verified by source marker and CI; no real delivery was repeated"
     },
     "professional_route_entitlements": {
       "status": "deployed_verified_ci",
@@ -136,10 +138,10 @@
     },
     "production": {
       "status": "deployed_verified",
-      "verified_at": "2026-08-25T03:45:21Z",
-      "frontend_matches_commit": "43ee10f2eb9ddf10dd6be48cbddeb5e251dbb90b",
+      "verified_at": "2026-08-26T12:41:40Z",
+      "frontend_matches_commit": "d71277f25ad08091c3b858fa973e014fcb0c9ca0",
       "backend_commit": "unknown",
-      "latest_branch_commit": "43ee10f2eb9ddf10dd6be48cbddeb5e251dbb90b",
+      "latest_branch_commit": "d71277f25ad08091c3b858fa973e014fcb0c9ca0",
       "latest_branch_deployed": true,
       "health": "200 ok",
       "bali_routes": 6,
@@ -155,7 +157,8 @@
         "ev-20260823T013842Z-task-20260823-prelaunch-ui-production-release",
         "ev-20260824T172507Z-poi-images-mobile-20260825",
         "ev-20260825T030815Z-poi-images-batch2-20260825-production",
-        "ev-20260825T034717Z-d8-metadata-final-20260825-production"
+        "ev-20260825T034717Z-d8-metadata-final-20260825-production",
+        "ev-20260826T124140Z-priority-closure-production-20260826"
       ]
     }
   },
@@ -164,16 +167,16 @@
     "code_isolation": "one account, one worktree, one task branch",
     "integration_gate": "reviewed pull request",
     "integration_pull_request": {
-      "number": 15,
-      "url": "https://github.com/lingfengai731/Agentstrip/pull/15",
+      "number": 20,
+      "url": "https://github.com/lingfengai731/Agentstrip/pull/20",
       "status": "merged",
       "mergeable": true,
-      "head_commit": "ba0fd093ea6bf0da4ac54f3811dec3bbf5b8be29",
-      "merge_commit": "43ee10f2eb9ddf10dd6be48cbddeb5e251dbb90b",
-      "project_memory_ci": "local project-memory validation passed after production verification",
-      "postgres_integration_ci": "success; run 32805986033",
-      "evidence_id": "ev-20260825T034717Z-d8-metadata-final-20260825-production",
-      "release_gate": "PR #15 aligned the remaining existing Bali D8 records and isolated nine non-Bali or unresolved records; public production p3 is verified, while paid/admin/real-email mutation flows remain intentionally unexercised"
+      "head_commit": "24dbb73f484e6b8dc0cb2d20741069d511b1b7f0",
+      "merge_commit": "d71277f25ad08091c3b858fa973e014fcb0c9ca0",
+      "project_memory_ci": "success; run 32969301870",
+      "postgres_integration_ci": "success; run 32969301855",
+      "evidence_id": "ev-20260826T124140Z-priority-closure-production-20260826",
+      "release_gate": "PR #20 deployed the priority closure, separate Chinese review documents and find-driver accessibility closure; production health, source marker and 1440/768/390/320 rendering were verified, while paid/admin/real-email/public-post/ad-spend mutations remain intentionally unexercised"
     },
     "render_operations_thread": {
       "work_thread_id": "6a81da9a-1998-83e8-b2ca-34e1f6eb526d",
