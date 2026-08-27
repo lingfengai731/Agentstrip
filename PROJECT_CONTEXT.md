@@ -83,11 +83,16 @@ AI workspace suite at 320/390/768/1440; `/healthz`, `/`, `/bali`, `/ai-tool`, `/
 password-reset pages returned their intended noindex signals.
 
 The project owner reports that the PayPal China merchant account is approved for cross-border
-receipts and a mainland China bank card is bound. This is user-reported onboarding evidence, not
-an agent-verified payment or settlement test. No live PayPal button, Sandbox app/secret, Render
-payment secret, payment, refund, webhook, entitlement, points or admin production mutation has
-been completed. Pak Nanok and SUNSRI remain unpublished candidates pending legal-entity,
-insurance, safety, capacity, cancellation and final-price confirmation.
+receipts and a mainland China bank card is bound. Local code now implements PayPal Orders v2,
+server-side amount verification, signed/idempotent webhooks, refund review and responsive checkout
+at a USD 1.49 Sandbox price while retaining CNY 9.90 manual QR fallback. Eighty-two product-access
+tests pass, but no Render PayPal credential, real Sandbox buyer payment, webhook delivery, refund,
+settlement or production entitlement mutation has been verified. The feature stays disabled when
+credentials are absent. The owner separately confirmed that `/ai-tool` is indexed; Search Console
+still reported `sitemap.xml` as unreadable with zero discovered URLs on 2026-08-27 even though the
+public endpoint returned HTTP 200, `application/xml` and eight URLs. Re-submit and await a fresh
+Google fetch before closing that external-state gate. Pak Nanok and SUNSRI remain unpublished
+candidates pending legal-entity, insurance, safety, capacity, cancellation and final-price confirmation.
 
 The existing root `AGENTS.md` is intentionally unchanged. Therefore Codex cannot be guaranteed
 to auto-load this file solely because it exists. Until the project owner permits a small entry-rule

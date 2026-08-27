@@ -983,7 +983,7 @@ class ProductAccessTests(unittest.TestCase):
         self.assertIn("bali.html#professional-planner", index_html)
         self.assertIn("ai-tool.html?mode=diy", index_html)
         self.assertIn('id="professional-planner"', bali_html)
-        self.assertIn("assets/js/bali-professional.js?v=p55", bali_html)
+        self.assertIn("assets/js/bali-professional.js?v=p56", bali_html)
         self.assertNotIn("ai-tool.html?professional=1", bali_html)
         self.assertNotIn("professional_requested", ai_js)
         self.assertIn("history.replaceState({}, document.title, window.location.pathname);", ai_js)
@@ -1180,6 +1180,308 @@ class ProductAccessTests(unittest.TestCase):
             )
         )
         self.assertEqual(exhausted.status_code, 402)
+
+    def test_paypal_config_is_fail_closed_without_server_credentials(self):
+        with patch.dict(
+            os.environ,
+            {
+                "PAYPAL_CLIENT_ID": "",
+                "PAYPAL_CLIENT_SECRET": "",
+                "PAYPAL_WEBHOOK_ID": "",
+                "PAYPAL_ROUTE_PRICE": "1.49",
+            },
+            clear=False,
+        ):
+            response = self._run(self._request("GET", "/api/paypal/config"))
+        self.assertEqual(response.status_code, 200, response.text)
+        self.assertEqual(response.json()["enabled"], False)
+        self.assertNotIn("client_secret", response.json())
+
+    def test_paypal_capture_revalidates_amount_and_unlocks_once(self):
+        trip_id = self._new_trip(token=self.user_token)
+        config = {
+            "enabled": True,
+            "environment": "sandbox",
+            "client_id": "public-sandbox-client",
+            "client_secret": "server-only-secret",
+            "webhook_id": "webhook-test",
+            "currency": "USD",
+            "amount_text": "1.49",
+            "amount_cents": 149,
+        }
+        provider_order_id = "PAYPALTESTORDER123"
+
+        async def create_order(_config, local_order_id):
+            self.assertEqual(_config["amount_text"], "1.49")
+            self.assertTrue(local_order_id)
+            return {"id": provider_order_id, "status": "CREATED"}
+
+        with (
+            patch.object(main.paypal_service, "settings", return_value=config),
+            patch.object(main.paypal_service, "create_order", side_effect=create_order),
+        ):
+            created = self._run(
+                self._request(
+                    "POST",
+                    "/api/paypal/orders",
+                    token=self.user_token,
+                    json={"trip_id": trip_id},
+                )
+            )
+        self.assertEqual(created.status_code, 200, created.text)
+        self.assertEqual(created.json()["provider_order_id"], provider_order_id)
+
+        conn = get_db()
+        try:
+            order = dict(
+                conn.execute(
+                    "SELECT * FROM professional_route_orders WHERE provider_order_id=?",
+                    (provider_order_id,),
+                ).fetchone()
+            )
+        finally:
+            conn.close()
+
+        capture_payload = {
+            "id": provider_order_id,
+            "status": "COMPLETED",
+            "purchase_units": [
+                {
+                    "custom_id": order["id"],
+                    "payments": {
+                        "captures": [
+                            {
+                                "id": "CAPTURETEST123",
+                                "status": "COMPLETED",
+                                "amount": {"currency_code": "USD", "value": "1.49"},
+                            }
+                        ]
+                    },
+                }
+            ],
+        }
+        with (
+            patch.object(main.paypal_service, "settings", return_value=config),
+            patch.object(
+                main.paypal_service,
+                "capture_order",
+                new=AsyncMock(return_value=capture_payload),
+            ),
+        ):
+            first = self._run(
+                self._request(
+                    "POST",
+                    f"/api/paypal/orders/{provider_order_id}/capture",
+                    token=self.user_token,
+                )
+            )
+            second = self._run(
+                self._request(
+                    "POST",
+                    f"/api/paypal/orders/{provider_order_id}/capture",
+                    token=self.user_token,
+                )
+            )
+        self.assertEqual(first.status_code, 200, first.text)
+        self.assertTrue(first.json()["professional_route_unlocked"])
+        self.assertEqual(second.status_code, 200, second.text)
+        self.assertTrue(second.json()["already_captured"])
+
+    def test_paypal_amount_mismatch_does_not_unlock_or_allow_admin_bypass(self):
+        trip_id = self._new_trip(token=self.user_token)
+        config = {
+            "enabled": True,
+            "environment": "sandbox",
+            "client_id": "public-sandbox-client",
+            "client_secret": "server-only-secret",
+            "webhook_id": "webhook-test",
+            "currency": "USD",
+            "amount_text": "1.49",
+            "amount_cents": 149,
+        }
+        provider_order_id = "PAYPALMISMATCH123"
+        with (
+            patch.object(main.paypal_service, "settings", return_value=config),
+            patch.object(
+                main.paypal_service,
+                "create_order",
+                new=AsyncMock(return_value={"id": provider_order_id, "status": "CREATED"}),
+            ),
+        ):
+            created = self._run(
+                self._request(
+                    "POST", "/api/paypal/orders", token=self.user_token,
+                    json={"trip_id": trip_id},
+                )
+            )
+        self.assertEqual(created.status_code, 200, created.text)
+        conn = get_db()
+        try:
+            order = dict(
+                conn.execute(
+                    "SELECT * FROM professional_route_orders WHERE provider_order_id=?",
+                    (provider_order_id,),
+                ).fetchone()
+            )
+        finally:
+            conn.close()
+        capture_payload = {
+            "id": provider_order_id,
+            "status": "COMPLETED",
+            "purchase_units": [{
+                "custom_id": order["id"],
+                "payments": {"captures": [{
+                    "id": "CAPTUREMISMATCH123", "status": "COMPLETED",
+                    "amount": {"currency_code": "USD", "value": "1.48"},
+                }]},
+            }],
+        }
+        with (
+            patch.object(main.paypal_service, "settings", return_value=config),
+            patch.object(
+                main.paypal_service, "capture_order",
+                new=AsyncMock(return_value=capture_payload),
+            ),
+        ):
+            captured = self._run(
+                self._request(
+                    "POST", f"/api/paypal/orders/{provider_order_id}/capture",
+                    token=self.user_token,
+                )
+            )
+        self.assertEqual(captured.status_code, 409, captured.text)
+        bypass = self._run(
+            self._request(
+                "POST", f"/api/admin/professional-route/orders/{order['id']}/confirm",
+                token=self.admin_token, json={"payment_reference": "must-not-bypass"},
+            )
+        )
+        self.assertEqual(bypass.status_code, 409, bypass.text)
+        allowance = self._run(
+            self._request(
+                "GET", f"/api/product-trips/{trip_id}/allowance",
+                token=self.user_token,
+            )
+        )
+        self.assertFalse(allowance.json()["professional_route_unlocked"])
+
+    def test_verified_paypal_webhook_is_idempotent_and_refund_requires_review(self):
+        trip_id = self._new_trip(token=self.user_token)
+        local_order_id = str(uuid.uuid4())
+        provider_order_id = "PAYPALWEBHOOK123"
+        now = int(time.time())
+        conn = get_db()
+        try:
+            conn.execute(
+                """INSERT INTO professional_route_orders
+                   (id,trip_id,user_id,amount_cents,currency,status,payment_method,
+                    provider_order_id,provider_status,created_at,updated_at)
+                   VALUES (?,?,?,?,?,?,?,?,?,?,?)""",
+                (
+                    local_order_id, trip_id, self.user_id, 149, "USD", "pending",
+                    "paypal", provider_order_id, "APPROVED", now, now,
+                ),
+            )
+            conn.commit()
+        finally:
+            conn.close()
+        config = {
+            "enabled": True, "environment": "sandbox",
+            "client_id": "public-sandbox-client", "client_secret": "server-secret",
+            "webhook_id": "webhook-test", "currency": "USD",
+            "amount_text": "1.49", "amount_cents": 149,
+        }
+        completed_event = {
+            "id": "WH-COMPLETED-123",
+            "event_type": "PAYMENT.CAPTURE.COMPLETED",
+            "resource": {
+                "id": "CAPTUREWEBHOOK123", "status": "COMPLETED",
+                "custom_id": local_order_id,
+                "amount": {"currency_code": "USD", "value": "1.49"},
+                "supplementary_data": {"related_ids": {"order_id": provider_order_id}},
+            },
+        }
+        invalid_event = dict(completed_event)
+        invalid_event["id"] = "WH-INVALID-123"
+        with (
+            patch.object(main.paypal_service, "settings", return_value=config),
+            patch.object(
+                main.paypal_service, "verify_webhook", new=AsyncMock(return_value=False)
+            ),
+        ):
+            invalid = self._run(
+                self._request("POST", "/api/paypal/webhook", json=invalid_event)
+            )
+        self.assertEqual(invalid.status_code, 400, invalid.text)
+        with (
+            patch.object(main.paypal_service, "settings", return_value=config),
+            patch.object(
+                main.paypal_service, "verify_webhook", new=AsyncMock(return_value=True)
+            ),
+        ):
+            first = self._run(
+                self._request("POST", "/api/paypal/webhook", json=completed_event)
+            )
+            duplicate = self._run(
+                self._request("POST", "/api/paypal/webhook", json=completed_event)
+            )
+        self.assertEqual(first.status_code, 200, first.text)
+        self.assertEqual(duplicate.status_code, 200, duplicate.text)
+        self.assertTrue(duplicate.json()["duplicate"])
+
+        refund_event = {
+            "id": "WH-REFUND-123",
+            "event_type": "PAYMENT.CAPTURE.REFUNDED",
+            "resource": {
+                "id": "REFUND123",
+                "supplementary_data": {
+                    "related_ids": {"capture_id": "CAPTUREWEBHOOK123"}
+                },
+            },
+        }
+        with (
+            patch.object(main.paypal_service, "settings", return_value=config),
+            patch.object(
+                main.paypal_service, "verify_webhook", new=AsyncMock(return_value=True)
+            ),
+        ):
+            refunded = self._run(
+                self._request("POST", "/api/paypal/webhook", json=refund_event)
+            )
+        self.assertEqual(refunded.status_code, 200, refunded.text)
+        conn = get_db()
+        try:
+            order = dict(
+                conn.execute(
+                    "SELECT * FROM professional_route_orders WHERE id=?",
+                    (local_order_id,),
+                ).fetchone()
+            )
+            trip = dict(
+                conn.execute("SELECT * FROM product_trips WHERE id=?", (trip_id,)).fetchone()
+            )
+        finally:
+            conn.close()
+        self.assertEqual(order["status"], "refund_review")
+        self.assertEqual(trip["professional_route_entitlement"], 1)
+
+    def test_paypal_frontend_uses_server_orders_and_never_embeds_a_secret(self):
+        frontend = BACKEND_DIR.parents[1] / "wandermind-studio" / "frontend"
+        script = (frontend / "assets" / "js" / "bali-professional.js").read_text(
+            encoding="utf-8"
+        )
+        privacy = (frontend / "privacy.html").read_text(encoding="utf-8")
+        html = (frontend / "bali.html").read_text(encoding="utf-8")
+        self.assertIn("/api/paypal/config", script)
+        self.assertIn("/api/paypal/orders", script)
+        self.assertIn("/capture", script)
+        self.assertIn("https://www.paypal.com/sdk/js?client-id=", script)
+        self.assertIn("Sandbox test · no real charge", script)
+        self.assertNotIn("PAYPAL_CLIENT_SECRET", script)
+        self.assertIn("privacyPaymentTitle", privacy)
+        self.assertIn("bali-professional-paypal", html)
+        self.assertIn("portfolioPlaceAlreadyShown", html)
+        self.assertIn("officialBooking", html)
 
     def test_three_mature_invites_unlock_one_route_once(self):
         now = int(time.time())
@@ -2005,7 +2307,10 @@ class ProductAccessTests(unittest.TestCase):
             poi = poi_by_id[poi_id]
             self.assertEqual(poi["verification_status"], expected_status, poi_id)
             verification = poi["verification"]
-            self.assertEqual(verification["reviewed_at"], "2026-08-26", poi_id)
+            expected_reviewed = (
+                "2026-08-27" if poi_id == "bali_fire_shooting_club" else "2026-08-26"
+            )
+            self.assertEqual(verification["reviewed_at"], expected_reviewed, poi_id)
             self.assertTrue(verification["verified_scope"], poi_id)
             self.assertTrue(verification["live_checks"], poi_id)
             self.assertTrue(verification["sources"], poi_id)
@@ -2030,6 +2335,11 @@ class ProductAccessTests(unittest.TestCase):
         self.assertIn("World Heritage", poi_by_id["taman_ayun"]["notes"])
         self.assertIn("public access", poi_by_id["taman_saraswati"]["notes"])
         self.assertIn("tide", poi_by_id["sundays_beach_club"]["verification"]["live_checks"])
+        shooting = poi_by_id["bali_fire_shooting_club"]
+        self.assertEqual(
+            shooting["booking_url"], "https://balifireshootingclub.com/product/"
+        )
+        self.assertIn("historical public figures", shooting["notes"])
         self.assertEqual(
             poi_by_id["thousand_islands_viewpoint"]["verification_status"],
             "pending_review",

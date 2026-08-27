@@ -226,10 +226,16 @@ def init_db():
                 amount_cents       INTEGER NOT NULL DEFAULT 990,
                 currency           TEXT NOT NULL DEFAULT 'CNY',
                 status             TEXT NOT NULL DEFAULT 'pending',
+                payment_method     TEXT NOT NULL DEFAULT 'manual_qr',
                 payment_reference  TEXT,
+                provider_order_id  TEXT,
+                provider_capture_id TEXT,
+                provider_status    TEXT,
                 created_at         {ts_type} NOT NULL,
+                updated_at         {ts_type},
                 confirmed_at       {ts_type},
-                confirmed_by       TEXT
+                confirmed_by       TEXT,
+                refunded_at        {ts_type}
             )
         """)
         conn.execute(
@@ -238,6 +244,16 @@ def init_db():
         conn.execute(
             "CREATE INDEX IF NOT EXISTS idx_pro_orders_trip ON professional_route_orders(trip_id)"
         )
+        conn.execute(f"""
+            CREATE TABLE IF NOT EXISTS payment_webhook_events (
+                event_id       TEXT PRIMARY KEY,
+                event_type     TEXT NOT NULL,
+                provider       TEXT NOT NULL DEFAULT 'paypal',
+                status         TEXT NOT NULL,
+                received_at    {ts_type} NOT NULL,
+                processed_at   {ts_type}
+            )
+        """)
 
         conn.execute(f"""
             CREATE TABLE IF NOT EXISTS referrals (
@@ -412,12 +428,31 @@ def init_db():
             "ALTER TABLE product_trips ADD COLUMN professional_adjustments_used INTEGER DEFAULT 0",
             "ALTER TABLE product_trips ADD COLUMN professional_adjustment_limit INTEGER",
             "ALTER TABLE product_trips ADD COLUMN professional_route_payload TEXT DEFAULT '{}'",
+            "ALTER TABLE professional_route_orders ADD COLUMN payment_method TEXT NOT NULL DEFAULT 'manual_qr'",
+            "ALTER TABLE professional_route_orders ADD COLUMN provider_order_id TEXT",
+            "ALTER TABLE professional_route_orders ADD COLUMN provider_capture_id TEXT",
+            "ALTER TABLE professional_route_orders ADD COLUMN provider_status TEXT",
+            "ALTER TABLE professional_route_orders ADD COLUMN updated_at " + ts_type,
+            "ALTER TABLE professional_route_orders ADD COLUMN refunded_at " + ts_type,
         ):
             try:
                 conn.execute(col_sql)
                 conn.commit()
             except Exception:
                 # column already exists — rollback so the connection stays usable
+                try:
+                    conn.rollback()
+                except Exception:
+                    pass
+
+        for index_sql in (
+            "CREATE UNIQUE INDEX IF NOT EXISTS idx_pro_orders_provider_order ON professional_route_orders(provider_order_id)",
+            "CREATE UNIQUE INDEX IF NOT EXISTS idx_pro_orders_provider_capture ON professional_route_orders(provider_capture_id)",
+        ):
+            try:
+                conn.execute(index_sql)
+                conn.commit()
+            except Exception:
                 try:
                     conn.rollback()
                 except Exception:
