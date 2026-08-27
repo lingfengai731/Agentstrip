@@ -1,0 +1,22 @@
+{
+  "schema_version": 1,
+  "evidence_id": "ev-20260827T160342Z-seo-paypal-production-20260828",
+  "task_ref": "seo-paypal-production-20260828",
+  "owner": "Codex Sol",
+  "captured_at": "2026-08-27T16:03:42Z",
+  "status": "verified",
+  "claim": "PR #30 merged and Render production serves p56 PayPal integration, Portfolio place dedupe and official supplier booking disclosure while PayPal remains fail-closed without credentials.",
+  "source": {
+    "kind": "git",
+    "repository": "https://github.com/lingfengai731/Agentstrip.git",
+    "commit": "9df096aef25a90da199a7b05c596b2df5a2f8adf",
+    "branch": "codex/seo-paypal-20260827",
+    "worktree": "E:\\Agentstrip-wt-seo-paypal-20260827",
+    "dirty": true
+  },
+  "verification": {
+    "command": "GitHub PR/check-runs API; production HTTP probes; Playwright Chromium 390; /api/paypal/config; /sitemap.xml",
+    "result": "PR #30 merged as 3cb398b after two successful checks; target endpoints 200; p56/dedupe/booking present; 390px zero overflow and zero console errors/warnings; PayPal enabled=false USD 1.49; sitemap 200 application/xml with 8 URLs."
+  },
+  "notes": "No real PayPal payment, webhook, refund, entitlement mutation, Search Console submission, supplier booking or driver email was executed."
+}

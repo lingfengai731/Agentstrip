@@ -82,6 +82,13 @@ AI workspace suite at 320/390/768/1440; `/healthz`, `/`, `/bali`, `/ai-tool`, `/
 `/reset-password`, `/robots.txt` and `/sitemap.xml` returned HTTP 200. Search, shared-trip and
 password-reset pages returned their intended noindex signals.
 
+PR #30 merged at `3cb398b5d39e1d14533a4842946758a8ae5655ff`. Fresh production checks on
+2026-08-28 CST found `/`, `/bali`, `/assets/js/bali-professional.js`, `/api/paypal/config` and
+`/sitemap.xml` at HTTP 200. The Bali page loaded p56 with Portfolio place deduplication and official
+supplier booking disclosure; Chromium at 390 px had zero horizontal overflow and zero console
+errors or warnings. The public PayPal config returned `enabled:false`, USD and 1.49, which is the
+intended fail-closed state until Sandbox credentials are configured.
+
 The project owner reports that the PayPal China merchant account is approved for cross-border
 receipts and a mainland China bank card is bound. Local code now implements PayPal Orders v2,
 server-side amount verification, signed/idempotent webhooks, refund review and responsive checkout
