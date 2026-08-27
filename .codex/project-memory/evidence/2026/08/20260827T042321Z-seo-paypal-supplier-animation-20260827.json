@@ -1,0 +1,22 @@
+{
+  "schema_version": 1,
+  "evidence_id": "ev-20260827T042321Z-seo-paypal-supplier-animation-20260827",
+  "task_ref": "seo-paypal-supplier-animation-20260827",
+  "owner": "Codex Sol",
+  "captured_at": "2026-08-27T04:23:21Z",
+  "status": "verified",
+  "claim": "Local code commit 9ab11e8 strengthens visible homepage and Bali ambient light motion, protects utility/private pages with noindex, adds crawlable AI product context, records user-reported PayPal China onboarding status and Sandbox next steps, and updates Pak Nanok and SUNSRI supplier gates.",
+  "source": {
+    "kind": "git",
+    "repository": "https://github.com/lingfengai731/Agentstrip.git",
+    "commit": "9ab11e81ba949a07d6a8f73132b89060eff054ad",
+    "branch": "codex/seo-paypal-20260827",
+    "worktree": "E:\\Agentstrip-wt-seo-paypal-20260827",
+    "dirty": false
+  },
+  "verification": {
+    "command": "ambient and AI Playwright at 320/390/768/1440; node SEO/search tests; python unittest discover; project-memory validate; git diff --check",
+    "result": "Ambient and AI responsive checks passed; SEO/search passed; 90 backend tests passed with 13 conditional skips; project-memory passed with one known stale-snapshot warning; diff check passed."
+  },
+  "notes": "No PayPal live button, payment, Search Console mutation, supplier contact, recommendation, price promise, merge, deploy or production claim was made. User must create a PayPal Sandbox Merchant app without sharing the secret and provide exact Search Console crawled-not-indexed URLs."
+}
