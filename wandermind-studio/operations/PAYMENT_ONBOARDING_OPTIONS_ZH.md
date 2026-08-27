@@ -102,15 +102,13 @@ PayPal 中国公开费率显示，国际商业收款通常包含百分比费率�
 
 ## 下一次协作检查点
 
-用户已报告阶段 1 完成。现在进入阶段 2，只需完成以下无真实扣款步骤：
+Sandbox 账户与应用已经可见，PayPal Orders v2、捕获、webhook 与退款门禁代码也已部署；当前生产配置仍是 `enabled:false`。下一步只完成测试环境闭环：
 
-1. 打开 PayPal Developer Dashboard 的 `Apps & Credentials`；
-2. 切换到 `Sandbox`；
-3. 确认能看到一个 Sandbox Business 账户和一个 Sandbox Personal 账户；
-4. 创建 Merchant 类型应用，名称 `WanderMind Route Unlock Sandbox`；
-5. 只告诉 Codex“应用已创建、两个测试账户可见、可查看 Client ID/Secret”这三项状态。不要发送 Client Secret、身份证件、银行卡信息或账户链接。
-
-完成后再由 Codex 开发 Sandbox 创建订单、捕获、webhook 与退款门禁，并指导将秘密值仅写入 Render 环境变量。在 Sandbox E2E 通过之前不创建生产按钮、不进行真实付款。
+1. 在 PayPal Developer Dashboard 为 Sandbox 应用创建 webhook，地址填 `https://wandermind.cc/api/paypal/webhook`；至少订阅 `PAYMENT.CAPTURE.COMPLETED`、`PAYMENT.CAPTURE.DENIED`、`PAYMENT.CAPTURE.REFUNDED`、`PAYMENT.CAPTURE.REVERSED` 和 `CHECKOUT.PAYMENT-APPROVAL.REVERSED`；
+2. 把本节列出的六项值写入 Render 环境变量，Client Secret 和 Webhook ID 只在 PayPal 与 Render 后台之间复制，不发送到聊天或 Git；
+3. 等新部署 Live 后，先访问 `/api/paypal/config`，确认仅公开 `enabled:true`、`environment:sandbox`、`currency:USD`、`amount:1.49` 和 Client ID，不出现 Client Secret；
+4. 使用 Sandbox Personal 测试账户在网站完成一次 USD 1.49 付款，再核对路线只解锁一次；
+5. 继续验证取消、拒付、重复 webhook 和退款人工复核。全部通过前保持 `PAYPAL_ENV=sandbox`，不要改为 `live`，也不要进行真实付款。
 
 ## 本轮官方核对入口
 
