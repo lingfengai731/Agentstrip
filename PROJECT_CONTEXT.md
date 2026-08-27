@@ -74,17 +74,20 @@ Create a handoff before changing accounts or ending incomplete work:
 
 ## Current integration boundary
 
-The 2026-08-27 final Indonesian driver guides, mobile packs, restrained responsive hero motion,
-PayPal China individual-seller sandbox guidance, and Pak Nanok supplier gate are merged through
-PR #25 at main commit `5f83ad8afa42869016686eccee6ebe631c439147`. GitHub project-memory
-workflow run 77 passed. Render production served the new ambient stylesheet on both `/` and
-`/bali.html`, and `/healthz` plus the stylesheet returned HTTP 200 at 2026-08-27T02:22Z.
-Production Playwright did not yield usable output on this host, so only the recorded local
-320/390/768/1440 browser suite and fresh production HTTP/resource checks are claimed.
+PR #28 merged at main commit `aa670459629b4c628867a63df18d21df84ade299`; GitHub project-memory
+workflow run 83 passed. Render production served the stronger 12-second teal/gold ambient layer,
+AI workspace product context and utility-page index controls on 2026-08-27. Fresh production
+Playwright passed the homepage/Bali ambient suite at 320/390/768/1440 plus reduced motion and the
+AI workspace suite at 320/390/768/1440; `/healthz`, `/`, `/bali`, `/ai-tool`, `/search`, `/shared`,
+`/reset-password`, `/robots.txt` and `/sitemap.xml` returned HTTP 200. Search, shared-trip and
+password-reset pages returned their intended noindex signals.
 
-PayPal remains onboarding and Sandbox guidance only; no merchant account, Render payment secret,
-payment, order, refund, entitlement, points, or admin production mutation has been completed.
-Pak Nanok Jeep Bali Tour remains an unpublished internal candidate pending supplier verification.
+The project owner reports that the PayPal China merchant account is approved for cross-border
+receipts and a mainland China bank card is bound. This is user-reported onboarding evidence, not
+an agent-verified payment or settlement test. No live PayPal button, Sandbox app/secret, Render
+payment secret, payment, refund, webhook, entitlement, points or admin production mutation has
+been completed. Pak Nanok and SUNSRI remain unpublished candidates pending legal-entity,
+insurance, safety, capacity, cancellation and final-price confirmation.
 
 The existing root `AGENTS.md` is intentionally unchanged. Therefore Codex cannot be guaranteed
 to auto-load this file solely because it exists. Until the project owner permits a small entry-rule
