@@ -670,7 +670,7 @@ def build_complete_guide(key: str, d: dict) -> Path:
 INDONESIAN_CONTENT = {
     "dicky": {
         "service": "antar-jemput bandara, perjalanan privat satu hari, dan rute yang disusun sesuai arah perjalanan tamu.",
-        "service_en": "provide airport transfers, private day trips, and routes arranged around each guest's travel direction.",
+        "service_en": "plan airport transfers, private day trips, and routes around each guest's travel direction.",
         "photos": [
             ("01-Dicky-profile.jpg", "01 · Foto pribadi", "Opsional. Jika tidak ingin memakai foto pribadi, mulai dengan foto layanan atau pemandangan."),
             ("02-Dicky-guest-moment.jpg", "02 · Momen bersama tamu", "Tampilkan pengalaman layanan yang nyata; jangan menulis identitas tamu."),
