@@ -1,0 +1,22 @@
+{
+  "schema_version": 1,
+  "evidence_id": "ev-20260827T023102Z-paypal-china-currency-correction-20260827",
+  "task_ref": "PAYPAL-CHINA-CURRENCY-CORRECTION-20260827",
+  "owner": "codex-sol",
+  "captured_at": "2026-08-27T02:31:02Z",
+  "status": "claimed",
+  "claim": "Corrected PayPal China sandbox currency guidance after checking official account-selection, currency-code, and mainland merchant-fee pages",
+  "source": {
+    "kind": "git",
+    "repository": "https://github.com/lingfengai731/Agentstrip.git",
+    "commit": "76f1a4bd24154f4b95cfc9384ed69f615cf41e48",
+    "branch": "codex/paypal-china-currency-correction-20260827",
+    "worktree": "E:\\Agentstrip-wt-driver-id-paypal-ui-20260827",
+    "dirty": true
+  },
+  "verification": {
+    "command": "official PayPal China account selection + developer currency codes + China merchant fees; rg payment guide; git diff --check",
+    "result": "pass: product display remains ¥9.9; sandbox defaults to USD 1.39; CNY is not claimed as verified cross-border production currency"
+  },
+  "notes": ""
+}

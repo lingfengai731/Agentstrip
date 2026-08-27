@@ -7,7 +7,7 @@
 - 收款主体国家/地区：中国大陆；
 - 账户路线：PayPal Business 的个人卖家；
 - 结算银行账户国家：中国大陆；
-- 首个沙盒商品：`专业路线解锁`，展示价 `CNY 9.90`；
+- 首个沙盒商品：`专业路线解锁`，网站产品展示价保持 `¥9.9`；PayPal 沙盒订单先使用后台明确支持的跨境币种，默认测试值为 `USD 1.39`；
 - 当前阶段：只开户、完成身份审核并建立 Sandbox，不进行真实扣款。
 
 ## 先说结论
@@ -28,7 +28,7 @@ WanderMind 目前不应自己保存卡号，也不应在主体和结算国家未
 
 - 用真实个人卖家或企业资料注册/升级 PayPal 商家账户。
 - 绑定与主体一致的结算账户并完成审核。
-- 先在 Sandbox 创建一个 CNY 9.90 的专业路线订单，不使用真实银行卡扣款。
+- 先在 Sandbox 创建一个 `USD 1.39` 的专业路线测试订单，不使用真实银行卡扣款。`USD 1.39` 只用于打通流程，不代表已经确定生产汇率或最终实收币种。
 - 只有实际到账、退款、争议和 webhook 都验证后，才接入自动解锁。
 
 PayPal 中国的账户选择页把 Business Account 分为“个人卖家”和“企业”。个人卖家仍需要填写真实的个体经营者信息与身份证件；如果注册页面要求某项经营登记资料而你无法如实提供，应停止该步骤，不要编造资料或误选企业账户。
@@ -59,9 +59,11 @@ PAYPAL_ENV=sandbox
 PAYPAL_CLIENT_ID=<Sandbox Client ID>
 PAYPAL_CLIENT_SECRET=<Sandbox Client Secret>
 PAYPAL_WEBHOOK_ID=<创建 webhook 后得到>
-PAYPAL_CURRENCY=CNY
-PAYPAL_ROUTE_PRICE=9.90
+PAYPAL_CURRENCY=USD
+PAYPAL_ROUTE_PRICE=1.39
 ```
+
+PayPal 官方币种表把 CNY 限定为境内 PayPal 账户的付款或持有币种；中国大陆商家的公开跨境收款固定费用表也没有列出 CNY。因此本阶段不能把 `PAYPAL_CURRENCY=CNY` 当作已验证生产配置。网站仍可展示人民币首发价，但结账页必须在付款前明确显示实际扣款币种和金额。账户审核完成后，再以 PayPal 后台实际开放的币种为准决定生产配置。
 
 ### 阶段 3：上线前测试门禁
 
@@ -71,7 +73,7 @@ PAYPAL_ROUTE_PRICE=9.90
 
 PayPal 中国公开费率显示，国际商业收款通常包含百分比费率和固定费用；低价商品的固定费用占比会很高。低于 5 美元的 Micropayments 费率需要另行申请和 PayPal 预批准，中国大陆银行提现还可能产生单次费用。因此：
 
-- `CNY 9.90` 适合作为 Sandbox 和首轮流程验证价格；
+- `USD 1.39` 仅适合作为 Sandbox 流程测试值；网站的 `¥9.9` 是产品首发价，不等于 PayPal 已确认可直接用 CNY 跨境结算；
 - 在真实上线前必须先看账户后台给出的实际费率和提现方式；
 - 若手续费占比过高，应把 PayPal 商品改为更高价值的专业路线套餐，或把多个路线权益合并结算，而不是悄悄加价。
 
@@ -105,3 +107,9 @@ PayPal 中国公开费率显示，国际商业收款通常包含百分比费率�
 - Developer Dashboard 的 Sandbox 页面是否可进入。
 
 之后再由 Codex 逐步指导创建 Sandbox 应用、webhook 和 Render 环境变量；在此之前不开发生产自动扣款，也不进行真实付款。
+
+## 本轮官方核对入口
+
+- PayPal 中国账户选择页：https://www.paypal.com/c2/webapps/mpp/account-selection?locale.x=zh_c2
+- PayPal Developer 币种表：https://developer.paypal.com/reference/currency-codes/
+- PayPal 中国大陆商家费率：https://www.paypal.com/c2/business/paypal-business-fees?locale.x=zh_C2
