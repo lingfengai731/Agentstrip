@@ -12,9 +12,10 @@ Reviewed: 2026-08-27. Public webpages establish only the scope stated below. The
 
 | Candidate | Referral evidence | Missing before any public recommendation | Gate |
 |---|---|---|---|
-| Pak Nanok Jeep Bali Tour | Dicky named this operator in a private message on 2026-08-27. This is a useful local referral, not independent verification. | Official WhatsApp, Instagram or Google Maps listing; legal/payment entity; exact pickup and route; driver/guide qualification; vehicle condition; insurance; permit context; safety and weather policy; inclusions; cancellation; current final price. | `needs_supplier_confirmation` |
+| Pak Nanok / Mount Batur Jeep Tour | Dicky named Pak Nanok and described the operator as `CV Bali Jeep Batur`. The linked supplier site publishes Kintamani Jeep, sunrise, hiking and hot-spring packages; its linked social profiles align with the Kintamani Jeep identity. Package, price, driver and insurance statements remain supplier self-report. | Confirm whether `mountbaturjeeptour.com`, `baturjeep.com` and `kintamanijeep.id` belong to the same legal/payment entity; registered address; permit; vehicle and driver records; insurance policy and coverage; exact route/pickup; weather/volcano fallback; inclusions; cancellation; current final total. | `needs_supplier_confirmation` |
+| SUNSRI House of Jewelry | Dicky recommends this workshop because it is more comfortable and has more slots. The official site identifies a Celuk venue and publishes 1/2/3/6-hour jewelry classes, indicative prices, advertised time windows and pickup availability. Comfort, capacity, price, safety and insurance remain supplier self-report or unconfirmed. | Confirm Dicky means the official Celuk venue; legal/payment entity; date-specific slot and capacity; final price, silver weight and extras; instructor and workshop safety; PPE; participant insurance; age/accessibility; pickup operator; class cancellation/refund. | `needs_supplier_confirmation` |
 
-The candidate name is kept in the internal register only. It must not be shown as an official WanderMind recommendation until the missing evidence is checked.
+Candidate names are kept in the internal register only. They must not be shown as execution-ready WanderMind recommendations until the missing evidence is checked. SUNSRI is a separate candidate and does not replace the existing Parallel Universe record.
 
 ## Copy-and-send supplier questions
 
@@ -49,3 +50,6 @@ Please confirm the date of this information. WanderMind will not call the experi
 - Parallel Universe: [class page](https://paralleluniversejewelry.com/silver-jewelry-class-bali/), [private class](https://paralleluniversejewelry.com/private-silver-making-class-bali/) and [terms](https://paralleluniversejewelry.com/terms-and-conditions/)
 - Bali Fire Shooting Club: [venue site](https://balifireshootingclub.com/), [product page](https://balifireshootingclub.com/product/) and [published rules](https://balifireshootingclub.com/wp-content/uploads/2023/11/Rules-Regulations_BFS.pdf)
 - PERBAKIN: [association article mentioning the range](https://perbakin.or.id/ingin-latihan-bersama-klub-menembak-ini-rekomendasi-tempatnya/)
+- Mount Batur Jeep Tour: [supplier site](https://mountbaturjeeptour.com/), [short sunrise](https://mountbaturjeeptour.com/produk/short-trip-sunrise/), [middle sunrise](https://mountbaturjeeptour.com/produk/middle-trip-sunrise/) and [hiking itinerary](https://mountbaturjeeptour.com/produk/itinerary-hiking-mount-batur/)
+- Related CV Bali Jeep Batur sites: [baturjeep.com](https://www.baturjeep.com/) and [kintamanijeep.id](https://kintamanijeep.id/)
+- SUNSRI House of Jewelry: [official site](https://sunsrijewelry.com/), [class menu](https://sunsrijewelry.com/jewelry-classes-in-bali/), [visit information](https://sunsrijewelry.com/plan-your-visit/) and [terms](https://sunsrijewelry.com/terms-conditions/)

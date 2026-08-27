@@ -37,7 +37,10 @@ function check(condition, message) {
             overflow: document.documentElement.scrollWidth - document.documentElement.clientWidth,
             content: ambient.content,
             animationName: ambient.animationName,
+            animationDuration: ambient.animationDuration,
+            backgroundImage: ambient.backgroundImage,
             pointerEvents: ambient.pointerEvents,
+            transform: ambient.transform,
           };
         }, target.selector);
 
@@ -48,6 +51,11 @@ function check(condition, message) {
           check(result.animationName === 'none', `${target.path} mobile ambient motion should be static`);
         } else {
           check(result.animationName === 'wm-ambient-drift', `${target.path} desktop ambient motion missing`);
+          check(result.animationDuration === '12s', `${target.path} ambient motion duration drifted`);
+          check(result.backgroundImage.includes('linear-gradient'), `${target.path} visible light sweep missing`);
+          await page.waitForTimeout(700);
+          const movedTransform = await page.locator(target.selector).first().evaluate(hero => getComputedStyle(hero, '::after').transform);
+          check(movedTransform !== result.transform, `${target.path} ambient motion is not visibly advancing`);
         }
         check(errors.length === 0, `${target.path} page errors: ${errors.join('; ')}`);
         if (captureDir) {

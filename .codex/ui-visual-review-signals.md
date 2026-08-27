@@ -129,3 +129,16 @@ rejected aspects: 不接受来源不清的图片；不接受手机端照搬桌�
 reason in reviewer words: 上述 5 个地点的新照片由你来允许这一轮从明确可商用来源进行采购或下载并直接使用；特别是手机端的要设计好
 scope: this surface
 recorded at: 2026-08-25
+
+workflow: ui-implementation-workflow-v2
+status: raw
+task: 首页与 Bali 首屏晨光动效可见性
+page/surface: WanderMind 首页与巴厘岛页首屏
+screenshot or artifact: 生产版本与 output/playwright/ambient-before 的 1440/768/390/320 截图
+reviewer: 用户
+decision: rejected
+accepted aspects: 继续沿用 WanderMind teal + gold、现有首图和整体网站风格；允许加强首屏动态质感
+rejected aspects: 不接受代码存在但正常观看时几乎无法察觉的晨光动效
+reason in reviewer words: 首页/Bali 视觉升级，我好像没有看到晨光动效
+scope: this surface
+recorded at: 2026-08-27
