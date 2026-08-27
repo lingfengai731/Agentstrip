@@ -1,0 +1,22 @@
+{
+  "schema_version": 1,
+  "evidence_id": "ev-20260827T043048Z-seo-paypal-production-20260827",
+  "task_ref": "seo-paypal-production-20260827",
+  "owner": "Codex Sol",
+  "captured_at": "2026-08-27T04:30:48Z",
+  "status": "verified",
+  "claim": "PR #28 merged at aa670459629b4c628867a63df18d21df84ade299 and Render production served the stronger responsive hero motion, AI static product context and intended noindex controls.",
+  "source": {
+    "kind": "git",
+    "repository": "https://github.com/lingfengai731/Agentstrip.git",
+    "commit": "df2b6703f05a145ab11a1ab5d4df0bcdfbed8c44",
+    "branch": "codex/seo-paypal-20260827",
+    "worktree": "E:\\Agentstrip-wt-seo-paypal-20260827",
+    "dirty": false
+  },
+  "verification": {
+    "command": "GitHub PR #28 and workflow run 83; production curl/HTTP matrix; production Playwright ambient and AI suites",
+    "result": "PR merged; workflow success; healthz and target pages HTTP 200; ambient passed at 320/390/768/1440 plus reduced motion; AI product context passed at 320/390/768/1440; search/shared/reset returned intended noindex."
+  },
+  "notes": "PayPal approval and bank binding remain user-reported. No live PayPal button, Sandbox secret, payment, refund, webhook or automatic entitlement was executed. Exact Search Console crawled-not-indexed URLs remain unknown. Supplier legal and operational gates remain open."
+}
