@@ -233,8 +233,8 @@ pwsh -NoProfile -File .\tools\test-image-intake.ps1
 ## 📣 推广材料
 
 - [`MARKETING_LAUNCH_PLAYBOOK.md`](MARKETING_LAUNCH_PLAYBOOK.md)：站主首发方案，现含小红书、Instagram Feed / Story / Reels、链接和 14 天复盘路径。
-- [`promotion-packs/Dicky/WanderMind_Dicky_Promosi_Siap_Pakai.docx`](promotion-packs/Dicky/WanderMind_Dicky_Promosi_Siap_Pakai.docx)：Dicky 的印尼语懒人推广手册及 7 张独立上传图片（司机/服务 3 张、带署名的巴厘岛风景 4 张）。
-- [`promotion-packs/Gede-Nico/WanderMind_Gede_Nico_Promosi_Siap_Pakai.docx`](promotion-packs/Gede-Nico/WanderMind_Gede_Nico_Promosi_Siap_Pakai.docx)：Gede Nico 的印尼语懒人推广手册及 7 张独立上传图片（司机/服务 3 张、带署名的巴厘岛风景 4 张）。
+- [`promotion-packs/Dicky/WanderMind_Dicky_Panduan_Lengkap_ID.docx`](promotion-packs/Dicky/WanderMind_Dicky_Panduan_Lengkap_ID.docx)：Dicky 最终印尼语合并手册；配套 Mobile Pack 含手册、7 张独立 JPG 和手机保存说明。
+- [`promotion-packs/Gede-Nico/WanderMind_Gede_Nico_Panduan_Lengkap_ID.docx`](promotion-packs/Gede-Nico/WanderMind_Gede_Nico_Panduan_Lengkap_ID.docx)：Gede Nico 最终印尼语合并手册；配套 Mobile Pack 含手册、7 张独立 JPG 和手机保存说明。
 
 两位司机使用不同的 `driver_id` 专属链接，打开后会自动选择对应司机。推广包不包含私人联系方式；预算器采用 Dicky 给出的初始价格，Dicky 可按天数和路线调整并以邮件回复为最终金额，Gede Nico 单独报价。
 
@@ -243,7 +243,7 @@ pwsh -NoProfile -File .\tools\test-image-intake.ps1
 - [`promotion-packs/Dicky/WanderMind_Dicky_Complete_Guide_Chinese_Review.docx`](promotion-packs/Dicky/WanderMind_Dicky_Complete_Guide_Chinese_Review.docx) 与配套手机 ZIP。
 - [`promotion-packs/Gede-Nico/WanderMind_Gede_Nico_Complete_Guide_Chinese_Review.docx`](promotion-packs/Gede-Nico/WanderMind_Gede_Nico_Complete_Guide_Chinese_Review.docx) 与配套手机 ZIP。
 
-合并手册包含网站介绍、游客使用方法、两组完整推广素材、3–5 天发布节奏、手机保存图片和独立报价授权；旧中文拆分版已删除。印尼语正式版必须在生成、逐页渲染和独立复核完成后才能写为已交付。
+合并手册包含网站介绍、游客使用方法、两组完整推广素材、3–5 天发布节奏、手机保存图片和独立报价授权；旧中文拆分版和旧印尼语拆分版已删除。两份最终印尼语手册共 26 页，已完成 LibreOffice 渲染和主控逐页复核；Dicky 的初始价格只出现在其本人手册，Gede Nico 版保持待本人书面确认。
 
 运营与门禁资料：
 
