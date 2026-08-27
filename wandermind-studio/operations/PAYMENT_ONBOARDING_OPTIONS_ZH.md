@@ -8,7 +8,7 @@
 - 账户路线：PayPal Business 的个人卖家；
 - 结算银行账户国家：中国大陆；
 - 首个沙盒商品：`专业路线解锁`，网站产品展示价保持 `¥9.9`；PayPal 沙盒订单先使用后台明确支持的跨境币种，默认测试值为 `USD 1.39`；
-- 当前阶段：只开户、完成身份审核并建立 Sandbox，不进行真实扣款。
+- 当前阶段：用户于 2026-08-27 报告 PayPal 中国账户已通过审核、可以跨境收付款，且中国大陆银行卡已绑定；跨境人民币结算产品是否完成单独审核仍以 PayPal 后台为准。下一步只建立 Sandbox，不进行真实扣款。
 
 ## 先说结论
 
@@ -51,6 +51,8 @@ PayPal 中国的账户选择页把 Business Account 分为“个人卖家”和�
 3. 创建应用，建议名称：`WanderMind Route Unlock Sandbox`。
 4. 保存 Sandbox Client ID；Client Secret 只放入 Render 的秘密环境变量，不发送到聊天、不提交 Git。
 5. 后续由网站后端创建订单和捕获付款；浏览器不能保存 Client Secret，也不能自行决定订单金额。
+
+当前不要在 `paypal.com/buttons` 创建生产付款链接或按钮。无代码按钮适合人工核对的早期试卖，但不能可靠地把付款绑定到 WanderMind 的 `trip_id`，也不能单独证明 webhook、重复通知、退款和权益回收已经安全。自动解锁采用 PayPal Orders API：后端创建订单，后端捕获付款，并以已验证且幂等的 webhook 更新路线权益。
 
 计划使用的环境变量名称：
 
@@ -100,13 +102,15 @@ PayPal 中国公开费率显示，国际商业收款通常包含百分比费率�
 
 ## 下一次协作检查点
 
-以上主体、账户国家、平台和商品信息已经确认。你现在只需完成“阶段 1：创建并验证收款账户”。当 PayPal 页面明确显示账户可以接收付款后，告诉 Codex：
+用户已报告阶段 1 完成。现在进入阶段 2，只需完成以下无真实扣款步骤：
 
-- 商家账户已通过或仍要求补充哪一类材料（不要发送证件内容）；
-- 中国大陆银行账户是否已成功绑定；
-- Developer Dashboard 的 Sandbox 页面是否可进入。
+1. 打开 PayPal Developer Dashboard 的 `Apps & Credentials`；
+2. 切换到 `Sandbox`；
+3. 确认能看到一个 Sandbox Business 账户和一个 Sandbox Personal 账户；
+4. 创建 Merchant 类型应用，名称 `WanderMind Route Unlock Sandbox`；
+5. 只告诉 Codex“应用已创建、两个测试账户可见、可查看 Client ID/Secret”这三项状态。不要发送 Client Secret、身份证件、银行卡信息或账户链接。
 
-之后再由 Codex 逐步指导创建 Sandbox 应用、webhook 和 Render 环境变量；在此之前不开发生产自动扣款，也不进行真实付款。
+完成后再由 Codex 开发 Sandbox 创建订单、捕获、webhook 与退款门禁，并指导将秘密值仅写入 Render 环境变量。在 Sandbox E2E 通过之前不创建生产按钮、不进行真实付款。
 
 ## 本轮官方核对入口
 
