@@ -74,11 +74,17 @@ Create a handoff before changing accounts or ending incomplete work:
 
 ## Current integration boundary
 
-The 2026-08-27 Bali media/search/packages implementation is deployed from PR #22 at main commit
-`33e7a0ff86797a5a2276c83172f74ff96ad444f7`. Production evidence is
-`.codex/project-memory/evidence/2026/08/20260826T164558Z-bali-media-search-packages-production.json`.
-GitHub did not emit a PR workflow run, so CI success must not be claimed; use the recorded local
-release suite and production browser evidence as the verified boundary.
+The 2026-08-27 final Indonesian driver guides, mobile packs, restrained responsive hero motion,
+PayPal China individual-seller sandbox guidance, and Pak Nanok supplier gate are merged through
+PR #25 at main commit `5f83ad8afa42869016686eccee6ebe631c439147`. GitHub project-memory
+workflow run 77 passed. Render production served the new ambient stylesheet on both `/` and
+`/bali.html`, and `/healthz` plus the stylesheet returned HTTP 200 at 2026-08-27T02:22Z.
+Production Playwright did not yield usable output on this host, so only the recorded local
+320/390/768/1440 browser suite and fresh production HTTP/resource checks are claimed.
+
+PayPal remains onboarding and Sandbox guidance only; no merchant account, Render payment secret,
+payment, order, refund, entitlement, points, or admin production mutation has been completed.
+Pak Nanok Jeep Bali Tour remains an unpublished internal candidate pending supplier verification.
 
 The existing root `AGENTS.md` is intentionally unchanged. Therefore Codex cannot be guaranteed
 to auto-load this file solely because it exists. Until the project owner permits a small entry-rule

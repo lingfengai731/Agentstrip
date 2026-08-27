@@ -1,0 +1,22 @@
+{
+  "schema_version": 1,
+  "evidence_id": "ev-20260827T022712Z-driver-id-paypal-ui-production-20260827",
+  "task_ref": "DRIVER-ID-PAYPAL-UI-PRODUCTION-20260827",
+  "owner": "codex-sol",
+  "captured_at": "2026-08-27T02:27:12Z",
+  "status": "claimed",
+  "claim": "PR #25 merged at 5f83ad8; GitHub project-memory workflow run 77 passed; Render production serves wm-ambient-hero.css from homepage and Bali page, stylesheet and healthz return HTTP 200",
+  "source": {
+    "kind": "git",
+    "repository": "https://github.com/lingfengai731/Agentstrip.git",
+    "commit": "5f83ad8afa42869016686eccee6ebe631c439147",
+    "branch": "codex/driver-id-paypal-ui-production-20260827",
+    "worktree": "E:\\Agentstrip-wt-driver-id-paypal-ui-20260827",
+    "dirty": true
+  },
+  "verification": {
+    "command": "Invoke-WebRequest https://wandermind.cc/; Invoke-WebRequest https://wandermind.cc/bali.html; Invoke-WebRequest https://wandermind.cc/assets/css/wm-ambient-hero.css; Invoke-WebRequest https://wandermind.cc/healthz",
+    "result": "pass at 2026-08-27T02:22Z: new stylesheet markers on both pages; CSS 200 with prefers-reduced-motion; healthz 200. Production Playwright produced no usable output and is not claimed."
+  },
+  "notes": ""
+}
