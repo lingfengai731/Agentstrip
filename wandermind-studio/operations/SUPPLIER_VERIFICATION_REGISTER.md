@@ -1,12 +1,20 @@
 # Bali supplier verification register
 
-Reviewed: 2026-08-26. Public webpages establish only the scope stated below. They do not replace a direct dated supplier confirmation.
+Reviewed: 2026-08-27. Public webpages establish only the scope stated below. They do not replace a direct dated supplier confirmation.
 
 | Experience | Public evidence now recorded | Direct confirmation still required | Gate |
 |---|---|---|---|
 | Mount Batur Jeep | Bali government directories and supplier sites show multiple operators, start points and differing packages. | One legal operator; exact route/pickup; driver/guide qualification; vehicle condition; insurance; weather/volcano policy; inclusions; cancellation; final price. | `needs_supplier_confirmation` |
 | Parallel Universe Silver Jewelry Class | The official site publishes an Ubud class, duration, starting prices and terms. The legal/payment identity shown across the official site and a marketplace listing is not fully consistent. | Legal/payment entity; current slot and package; silver/material extras; instructor; safety; children/accessibility; insurance; transport; cancellation; final total. | `needs_supplier_confirmation` |
 | Bali Fire Shooting Club | The venue site publishes its identity, address, bullet-count packages and safety rules; PERBAKIN provides association-level context. | Current licence and validity; trainer credential; PPE; insurance; age/health limits; availability; current price; transport; cancellation. | `needs_supplier_confirmation` |
+
+## Driver-referred candidates
+
+| Candidate | Referral evidence | Missing before any public recommendation | Gate |
+|---|---|---|---|
+| Pak Nanok Jeep Bali Tour | Dicky named this operator in a private message on 2026-08-27. This is a useful local referral, not independent verification. | Official WhatsApp, Instagram or Google Maps listing; legal/payment entity; exact pickup and route; driver/guide qualification; vehicle condition; insurance; permit context; safety and weather policy; inclusions; cancellation; current final price. | `needs_supplier_confirmation` |
+
+The candidate name is kept in the internal register only. It must not be shown as an official WanderMind recommendation until the missing evidence is checked.
 
 ## Copy-and-send supplier questions
 
