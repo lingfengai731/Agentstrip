@@ -2,11 +2,12 @@
 
 这里保存两套彼此独立、可直接转发给司机的推广材料。内容使用印尼语说明，并把图片、链接和可复制文案放在同一份手册中；不需要司机重新写文案。
 
-站长审阅阶段另为每位司机提供一份中文合并手册和一个手机 ZIP 包。合并手册包含网站初衷、游客使用方法、两组完整发布素材、3–5 天发布节奏、图片保存说明与该司机自己的报价授权表。旧中文推广/授权拆分版已在合并版通过渲染后删除；印尼语正式版仍保留，待中文审阅通过后统一更新。
+站长审阅阶段另为每位司机提供一份中文合并手册和一个手机 ZIP 包。合并手册包含网站初衷、游客使用方法、两组完整发布素材、3–5 天发布节奏、图片保存说明与该司机自己的报价授权表。中文合并审阅版保留；旧中文推广/授权拆分版已在合并版通过渲染后删除。印尼语正式版与手机 ZIP 已完成替换并通过逐页渲染检查。
 
 ## 发给 Dicky
 
-- `Dicky/WanderMind_Dicky_Promosi_Siap_Pakai.docx`
+- `Dicky/WanderMind_Dicky_Panduan_Lengkap_ID.docx`
+- `Dicky/WanderMind_Dicky_Panduan_Lengkap_ID_Mobile_Pack.zip`（含手册、7 张 JPG 与印尼语手机保存说明）
 - `Dicky/WanderMind_Dicky_Complete_Guide_Chinese_Review.docx`
 - `Dicky/WanderMind_Dicky_Chinese_Review_Mobile_Pack.zip`
 - `Dicky/01-Dicky-profile.jpg`
@@ -21,7 +22,8 @@
 
 ## 发给 Gede Nico
 
-- `Gede-Nico/WanderMind_Gede_Nico_Promosi_Siap_Pakai.docx`
+- `Gede-Nico/WanderMind_Gede_Nico_Panduan_Lengkap_ID.docx`
+- `Gede-Nico/WanderMind_Gede_Nico_Panduan_Lengkap_ID_Mobile_Pack.zip`（含手册、7 张 JPG 与印尼语手机保存说明）
 - `Gede-Nico/WanderMind_Gede_Nico_Complete_Guide_Chinese_Review.docx`
 - `Gede-Nico/WanderMind_Gede_Nico_Chinese_Review_Mobile_Pack.zip`
 - `Gede-Nico/01-Gede-profile.jpg`

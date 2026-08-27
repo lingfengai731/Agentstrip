@@ -2,6 +2,7 @@ from __future__ import annotations
 
 from io import BytesIO
 from pathlib import Path
+from zipfile import ZIP_DEFLATED, ZipFile
 
 from docx import Document
 from docx.enum.section import WD_SECTION
@@ -666,10 +667,481 @@ def build_complete_guide(key: str, d: dict) -> Path:
     return out
 
 
+INDONESIAN_CONTENT = {
+    "dicky": {
+        "service": "antar-jemput bandara, perjalanan privat satu hari, dan rute yang disusun sesuai arah perjalanan tamu.",
+        "service_en": "provide airport transfers, private day trips, and routes arranged around each guest's travel direction.",
+        "photos": [
+            ("01-Dicky-profile.jpg", "01 · Foto pribadi", "Opsional. Jika tidak ingin memakai foto pribadi, mulai dengan foto layanan atau pemandangan."),
+            ("02-Dicky-guest-moment.jpg", "02 · Momen bersama tamu", "Tampilkan pengalaman layanan yang nyata; jangan menulis identitas tamu."),
+            ("03-Dicky-vehicle.jpg", "03 · Referensi kendaraan", "Hanya referensi visual. Kendaraan, kursi, dan kapasitas bagasi harus dikonfirmasi per permintaan."),
+            ("04-Dicky-Melasti-Beach.jpg", "04 · Pantai Melasti", "Dare2Leap · CC BY-SA 4.0"),
+            ("05-Dicky-Jimbaran-Sunset.jpg", "05 · Teluk Jimbaran", "Simon Sees · CC BY 2.0"),
+            ("06-Dicky-Broken-Beach.jpg", "06 · Broken Beach", "Aaron Rentfrew · CC BY-SA 4.0"),
+            ("07-Dicky-Tegallalang.jpg", "07 · Tegallalang", "Philip Nalangan · CC BY 4.0"),
+        ],
+        "scenic_caption": "Empat suasana Bali dalam satu perjalanan: pesisir selatan Melasti, matahari terbenam di Jimbaran, lengkungan alami Broken Beach, dan sawah bertingkat Tegallalang. Simpan inspirasinya, lalu buka tautan WanderMind saya untuk mengirim rencana perjalanan. Rute, tanggal, kendaraan, durasi, dan harga final akan dikonfirmasi setelah permintaan diterima.",
+        "scenic_caption_en": "Four Bali moods in one journey: the southern coast at Melasti, sunset in Jimbaran, the natural arch at Broken Beach, and the layered rice fields of Tegallalang. Save the inspiration, then open my WanderMind link to send your travel plan. Route, dates, vehicle, duration and final price will be confirmed after the request is received.",
+    },
+    "gede": {
+        "service": "menghubungkan budaya, makanan, aktivitas, dan pengalaman lokal Bali dalam hari yang lebih rapi dan mudah dijalankan.",
+        "service_en": "connect Bali's culture, food, activities and local experiences into a smoother day that is easier to follow.",
+        "photos": [
+            ("01-Gede-profile.jpg", "01 · Foto pribadi", "Opsional. Jika tidak ingin memakai foto pribadi, mulai dengan foto layanan atau pemandangan."),
+            ("02-Gede-guest-moment.jpg", "02 · Momen bersama tamu", "Tampilkan pengalaman layanan yang nyata; jangan menulis identitas tamu."),
+            ("03-Gede-vehicle.jpg", "03 · Referensi kendaraan", "Hanya referensi visual. Kendaraan, kursi, dan kapasitas bagasi harus dikonfirmasi per permintaan."),
+            ("04-Gede-Campuhan-Ridge.jpg", "04 · Campuhan Ridge Walk", "Artem Beliaikin · CC0 1.0"),
+            ("05-Gede-Jatiluwih.jpg", "05 · Jatiluwih", "Jorge Franganillo · CC BY 2.0"),
+            ("06-Gede-Tirta-Gangga.jpg", "06 · Tirta Gangga", "Bair175 · CC BY-SA 3.0"),
+            ("07-Gede-Seminyak-Sunset.jpg", "07 · Pantai Seminyak", "Christophe95 · CC BY-SA 4.0"),
+        ],
+        "scenic_caption": "Empat suasana Bali dalam satu perjalanan: pagi hijau di Campuhan, sawah bertingkat Jatiluwih, taman air Tirta Gangga, dan matahari terbenam di Seminyak. Simpan inspirasinya, lalu buka tautan WanderMind saya untuk mengirim rencana perjalanan. Rute, tanggal, kendaraan, durasi, dan harga final akan dikonfirmasi setelah permintaan diterima.",
+        "scenic_caption_en": "Four Bali moods in one journey: a green morning at Campuhan, the layered rice fields of Jatiluwih, the water gardens of Tirta Gangga, and sunset in Seminyak. Save the inspiration, then open my WanderMind link to send your travel plan. Route, dates, vehicle, duration and final price will be confirmed after the request is received.",
+    },
+}
+
+
+def set_doc_defaults_id(doc: Document) -> None:
+    """Keep the approved WanderMind teal/gold system, with Indonesian running labels."""
+    set_doc_defaults(doc)
+    section = doc.sections[0]
+    header = section.header.paragraphs[0]
+    header.text = "WanderMind Studio · Panduan kerja sama"
+    header.alignment = WD_ALIGN_PARAGRAPH.RIGHT
+    for run in header.runs:
+        run.font.name = "Arial"
+        run._element.rPr.rFonts.set(qn("w:ascii"), "Arial")
+        run._element.rPr.rFonts.set(qn("w:hAnsi"), "Arial")
+        run.font.size = Pt(8)
+        run.font.color.rgb = RGBColor.from_string(TEAL)
+    footer = section.footer.paragraphs[0]
+    footer.text = "Panduan kerja sama · Periksa tautan sebelum menerbitkan"
+    footer.alignment = WD_ALIGN_PARAGRAPH.CENTER
+    for run in footer.runs:
+        run.font.name = "Arial"
+        run._element.rPr.rFonts.set(qn("w:ascii"), "Arial")
+        run._element.rPr.rFonts.set(qn("w:hAnsi"), "Arial")
+        run.font.size = Pt(8)
+        run.font.color.rgb = RGBColor.from_string(MUTED)
+
+
+def add_id_cover(doc: Document, d: dict, c: dict) -> None:
+    add_brand_rule(doc)
+    p = doc.add_paragraph("WanderMind Studio", style="Subtitle")
+    p.paragraph_format.space_before = Pt(18)
+    doc.add_paragraph("Panduan Lengkap Kerja Sama & Promosi", style="Title")
+    p = doc.add_paragraph(d["name"], style="Title")
+    p.runs[0].font.color.rgb = RGBColor.from_string(GOLD)
+    doc.add_paragraph("Pengenalan situs · Panduan ponsel · Materi publikasi · Otorisasi tarif", style="Subtitle")
+
+    hero = d["pack"] / c["photos"][0][0]
+    p = doc.add_paragraph()
+    p.alignment = WD_ALIGN_PARAGRAPH.CENTER
+    p.add_run().add_picture(image_stream(hero), width=Inches(4.35))
+    add_callout(doc, "Cara memakai panduan ini", "Gunakan tautan, foto, dan teks yang berada di bagian pengemudi Anda sendiri. Jangan menukar tautan atau materi dengan paket pengemudi lain.", PALE_TEAL)
+    doc.add_paragraph("7 gambar siap pakai · 2 materi publikasi · 1 tautan khusus", style="Subtitle")
+
+
+def add_id_site_orientation(doc: Document, d: dict) -> None:
+    doc.add_page_break()
+    doc.add_paragraph("Kenali WanderMind", style="Heading 1")
+    add_callout(doc, "Tujuan kami", "WanderMind membantu wisatawan memahami tempat yang nyata, kekuatan rute, dan waktu perjalanan sebelum mereka meminta konfirmasi kepada pengemudi lokal. Foto inspirasi tidak dianggap sebagai jaminan kondisi di lapangan, dan tarif yang belum dikonfirmasi tidak ditulis sebagai harga final.", PALE_TEAL)
+    doc.add_paragraph("Apa yang dapat dilakukan wisatawan di situs", style="Heading 2")
+    for item in (
+        "Melihat rute Bali, foto tempat, dan paket pengalaman satu atau dua hari yang dapat disesuaikan.",
+        "Mengisi tanggal, jumlah tamu, anggaran, area hotel, dan tempat yang ingin dikunjungi.",
+        f"Memilih {d['name']} di halaman permintaan pengemudi, lalu mengirim detail melalui formulir untuk diperiksa.",
+        "Melihat tarif awal bila tersedia, lalu menunggu balasan pengemudi untuk waktu, rute, kendaraan, dan harga final.",
+    ):
+        doc.add_paragraph(item, style="List Bullet")
+    doc.add_paragraph("Jawaban singkat untuk wisatawan", style="Heading 2")
+    add_copy_box(doc, "Pertanyaan tentang rute", "Silakan pilih rute atau paket pengalaman di WanderMind, lalu kirim tanggal, jumlah tamu, hotel, dan tempat yang ingin dikunjungi. Dengan begitu saya dapat memeriksa apakah rute tersebut nyaman dijalankan.")
+    add_copy_box(doc, "Pertanyaan tentang harga", "Harga di situs adalah tarif awal. Setelah menerima permintaan, saya akan memeriksa jumlah hari, rute, area penjemputan, dan durasi sebelum mengonfirmasi harga final.")
+    add_copy_box(doc, "Apakah sudah dipesan?", "Pengiriman formulir berarti permintaan harga dan ketersediaan. Ini belum menjadi pemesanan sampai tanggal, kendaraan, rute, durasi, dan harga final dikonfirmasi.")
+
+
+def add_id_quick_start(doc: Document, d: dict) -> None:
+    doc.add_page_break()
+    doc.add_paragraph("Mulai di sini", style="Heading 1")
+    doc.add_paragraph("Publikasikan setiap 3–5 hari", style="Heading 2")
+    doc.add_paragraph("Tidak perlu menulis ulang. Ikuti langkah singkat ini, lalu salin materi pada halaman berikutnya.")
+    steps = [
+        ("Simpan 7 gambar", "Gunakan gambar bernomor 01–07 dalam folder ini. Gambar yang sama juga sudah dimasukkan ke dalam dokumen."),
+        ("Pasang tautan khusus di bio", "Instagram: Edit profile → Links → Add external link, lalu tempel tautan khusus di bawah."),
+        ("Terbitkan materi pertama", "Foto pribadi tidak wajib. Gunakan foto perjalanan yang Anda sukai, foto layanan, atau pemandangan dari paket ini."),
+        ("Tambahkan Story atau WhatsApp Status", "Gunakan kalimat yang sudah disiapkan. Jika tersedia, letakkan Link sticker pada layar terakhir."),
+        ("Arahkan pertanyaan ke formulir", "Jangan meminta hotel, penerbangan, anggaran, atau data pribadi di kolom komentar atau pesan publik."),
+    ]
+    for idx, (title, body) in enumerate(steps, 1):
+        table = doc.add_table(rows=1, cols=2)
+        table.alignment = WD_TABLE_ALIGNMENT.LEFT
+        table.autofit = False
+        set_cell_width(table.cell(0, 0), 720)
+        set_cell_width(table.cell(0, 1), 8640)
+        shade(table.cell(0, 0), GOLD)
+        shade(table.cell(0, 1), PAPER)
+        for cell in table.rows[0].cells:
+            cell_margins(cell, 110, 120, 110, 120)
+        p = table.cell(0, 0).paragraphs[0]
+        p.alignment = WD_ALIGN_PARAGRAPH.CENTER
+        r = p.add_run(str(idx))
+        r.bold = True
+        r.font.size = Pt(16)
+        r.font.color.rgb = RGBColor(255, 255, 255)
+        p = table.cell(0, 1).paragraphs[0]
+        r = p.add_run(title)
+        r.bold = True
+        r.font.color.rgb = RGBColor.from_string(TEAL)
+        p.add_run(f"\n{body}")
+        doc.add_paragraph().paragraph_format.space_after = Pt(0)
+    add_copy_box(doc, f"Tautan khusus {d['name']}", d["link"])
+    doc.add_paragraph(f"Buka tautan sekali sebelum menerbitkan dan pastikan halaman otomatis memilih {d['name']}. Jangan mengganti tautan dengan versi pengemudi lain.")
+
+
+def add_id_primary_photos(doc: Document, d: dict, c: dict) -> None:
+    doc.add_page_break()
+    doc.add_paragraph("Materi gambar pertama", style="Heading 1")
+    doc.add_paragraph("3 foto layanan: pribadi, momen layanan, dan kendaraan", style="Heading 2")
+    table = doc.add_table(rows=2, cols=2)
+    table.alignment = WD_TABLE_ALIGNMENT.CENTER
+    table.autofit = False
+    for row in table.rows:
+        for cell in row.cells:
+            set_cell_width(cell, 4680)
+    photos = c["photos"][:3]
+    add_photo_card(table.cell(0, 0), d["pack"] / photos[0][0], photos[0][1], photos[0][2], Inches(2.45))
+    add_photo_card(table.cell(0, 1), d["pack"] / photos[1][0], photos[1][1], photos[1][2], Inches(2.45))
+    add_photo_card(table.cell(1, 0), d["pack"] / photos[2][0], photos[2][1], photos[2][2], Inches(2.45))
+    shade(table.cell(1, 1), PALE_TEAL)
+    cell_margins(table.cell(1, 1), 180, 180, 180, 180)
+    p = table.cell(1, 1).paragraphs[0]
+    r = p.add_run("Urutan yang disarankan")
+    r.bold = True
+    r.font.size = Pt(14)
+    r.font.color.rgb = RGBColor.from_string(TEAL)
+    p.add_run("\n\n01 → 02 → 03\n\nUrutan ini hanya saran, bukan kewajiban. Anda boleh memakai foto perjalanan yang bagus atau foto pemandangan dari paket ini sebagai gambar pertama.")
+    p = table.cell(1, 1).add_paragraph("Foto kendaraan hanya sebagai referensi. Sebelum diperiksa, jangan menjanjikan model kendaraan, jumlah kursi, kapasitas bagasi, durasi, harga, atau ketersediaan tertentu.")
+    p.runs[0].font.size = Pt(8.5)
+    p.runs[0].font.color.rgb = RGBColor.from_string(MUTED)
+
+
+def add_id_feed_copy(doc: Document, d: dict, c: dict) -> None:
+    doc.add_page_break()
+    doc.add_paragraph("Instagram · Feed", style="Heading 1")
+    doc.add_paragraph("Publikasi pertama: foto 01 → 02 → 03", style="Heading 2")
+    caption = (
+        "Bali mungkin terlihat dekat di peta, tetapi hari yang nyaman tetap membutuhkan rute yang masuk akal.\n\n"
+        f"Saya {d['name']}, pengemudi lokal di Bali. Saya membantu tamu {c['service']}\n\n"
+        "Dengan WanderMind, wisatawan dapat mengirim tanggal, jumlah tamu, area yang ingin dikunjungi, dan kebutuhan kendaraan dalam satu formulir.\n\n"
+        f"Lihat rute Bali di situs, pilih {d['name']}, lalu kirim permintaan melalui tautan di bio:\n{d['link']}\n\n"
+        "Situs menampilkan tarif awal. Setelah membaca permintaan, saya akan memeriksa tanggal, jumlah hari, rute, area penjemputan, dan durasi sebelum memberi harga final. Demi privasi, jangan tulis hotel, penerbangan, atau data pribadi di komentar.\n\n"
+        "Kamu ingin mulai dari pantai selatan, Ubud, matahari terbit, atau Nusa Penida?\n\n"
+        "#BaliDriver #BaliItinerary #VisitBali #BaliTravel #WanderMind"
+    )
+    add_copy_box(doc, "SALIN · Caption Bahasa Indonesia", caption)
+    caption_en = (
+        "Bali may look close on a map, but a comfortable day still needs a sensible route.\n\n"
+        f"I'm {d['name']}, a local driver in Bali. I help guests {c['service_en']}\n\n"
+        "With WanderMind, travellers can send dates, group size, preferred areas and vehicle needs in one request. Explore the Bali routes, choose my name, and use the link in my bio:\n"
+        f"{d['link']}\n\n"
+        "The site shows an initial rate. I confirm availability and the final price after reviewing the request. Please keep hotel, flight and personal details out of public comments.\n\n"
+        "#BaliDriver #BaliItinerary #VisitBali #BaliTravel #WanderMind"
+    )
+    add_copy_box(doc, "SALIN · English caption (opsional)", caption_en)
+
+
+def add_id_channels(doc: Document, d: dict) -> None:
+    doc.add_page_break()
+    doc.add_paragraph("Story · Facebook · WhatsApp · Reels", style="Heading 1")
+    doc.add_paragraph("Instagram Story: 3 layar", style="Heading 2")
+    story = [
+        "Layar 1: Jangan mulai merencanakan Bali dari daftar tempat yang panjang.",
+        "Layar 2: Pilih dulu arah rute, tanggal, dan jumlah tamu di WanderMind.",
+        f"Layar 3: Pilih {d['name']}, lalu kirim satu permintaan lengkap.\n{d['link']}",
+    ]
+    for line in story:
+        add_copy_box(doc, "SALIN", line)
+    doc.add_paragraph("Cara posting: Instagram → Your story → pilih foto 01/02/03 secara berurutan → tempel satu kalimat di setiap layar → tambahkan Link sticker pada layar 3 → Share.")
+
+    facebook = (
+        f"Sedang menyiapkan perjalanan ke Bali? Saya {d['name']}, pengemudi lokal di Bali. WanderMind membantu wisatawan memilih arah perjalanan terlebih dahulu, lalu mengirim tanggal, jumlah tamu, dan kebutuhan kendaraan melalui satu formulir. "
+        "Situs menampilkan tarif awal; saya akan memeriksa jumlah hari, rute, area penjemputan, dan durasi sebelum mengonfirmasi harga final.\n\n"
+        f"Kirim permintaan kepada {d['name']}:\n{d['link']}\n\nJangan tulis hotel, penerbangan, atau data pribadi di komentar."
+    )
+    add_copy_box(doc, "SALIN · Facebook", facebook)
+    doc.add_paragraph("WhatsApp Status", style="Heading 2")
+    status_table = doc.add_table(rows=3, cols=2)
+    status_table.alignment = WD_TABLE_ALIGNMENT.CENTER
+    status_table.autofit = False
+    status_rows = [
+        ("Status 1", "Merencanakan Bali? Mulai dari rute yang masuk akal, bukan daftar tempat yang panjang."),
+        ("Status 2", f"Kirim tanggal, jumlah tamu, dan rute melalui WanderMind kepada {d['name']}."),
+        ("Status 3", d["link"]),
+    ]
+    for ri, row in enumerate(status_rows):
+        set_cell_width(status_table.cell(ri, 0), 1550)
+        set_cell_width(status_table.cell(ri, 1), 7810)
+        for cell in status_table.rows[ri].cells:
+            cell_margins(cell, 65, 100, 65, 100)
+            if ri % 2 == 0:
+                shade(cell, PAPER)
+        status_table.cell(ri, 0).text = row[0]
+        status_table.cell(ri, 1).text = row[1]
+        status_table.cell(ri, 0).paragraphs[0].runs[0].bold = True
+        status_table.cell(ri, 0).paragraphs[0].runs[0].font.color.rgb = RGBColor.from_string(TEAL)
+
+
+def add_id_reels_and_replies(doc: Document, d: dict) -> None:
+    doc.add_page_break()
+    doc.add_paragraph("Reels 20 detik dan balasan siap pakai", style="Heading 1")
+    table = doc.add_table(rows=6, cols=3)
+    table.alignment = WD_TABLE_ALIGNMENT.CENTER
+    table.autofit = False
+    widths = [1250, 2900, 5210]
+    for row in table.rows:
+        for i, cell in enumerate(row.cells):
+            set_cell_width(cell, widths[i])
+            cell_margins(cell, 85, 100, 85, 100)
+    headers = ["Waktu", "Visual", "Teks layar"]
+    for i, value in enumerate(headers):
+        table.cell(0, i).text = value
+        shade(table.cell(0, i), TEAL)
+        for run in table.cell(0, i).paragraphs[0].runs:
+            run.bold = True
+            run.font.color.rgb = RGBColor(255, 255, 255)
+    rows = [
+        ("0–3 detik", "Foto/video Bali", "Bali terlihat dekat, tetapi rute tetap penting."),
+        ("3–8 detik", "Rute WanderMind", "Pilih arah dulu, lalu tambahkan tempat yang sesuai."),
+        ("8–13 detik", f"{d['name']} bersama tamu", f"Kirim satu permintaan lengkap kepada {d['name']}."),
+        ("13–17 detik", "Kendaraan", "Lihat perkiraan, lalu tunggu konfirmasi harga final."),
+        ("17–20 detik", "WanderMind + tautan", "Rencanakan rute, lalu wujudkan di lapangan."),
+    ]
+    for ri, row in enumerate(rows, 1):
+        for ci, value in enumerate(row):
+            table.cell(ri, ci).text = value
+            if ri % 2 == 0:
+                shade(table.cell(ri, ci), PAPER)
+    add_copy_box(doc, "SALIN · Caption Reels", f"Rute Bali yang tersusun rapi lebih mudah dijalankan. Pilih rute, lalu kirim permintaan lengkap kepada {d['name']} melalui tautan di bio. #BaliDriver #BaliRoute #WanderMind")
+
+    doc.add_paragraph("Jika ada yang bertanya", style="Heading 2")
+    replies = [
+        ("Tanya harga", f"Terima kasih. Situs menampilkan tarif awal; harga final perlu disesuaikan dengan tanggal, jumlah tamu, hari penggunaan kendaraan, penjemputan, dan rute. Kirim permintaan kepada {d['name']} di sini:\n{d['link']}"),
+        ("Ingin mengirim detail lewat pesan pribadi", f"Agar tanggal dan rute tidak tertinggal, silakan gunakan formulir WanderMind dan pilih {d['name']}. Jangan kirim data perjalanan di ruang publik:\n{d['link']}"),
+        ("Sudah mengirim formulir", "Terima kasih. Saya akan memeriksa tanggal, rute, dan kebutuhan kendaraan, lalu membalas ketersediaan dan harga final."),
+        ("Ingin langsung booking", "Permintaan belum menjadi booking sampai waktu, kendaraan, durasi, rute, dan harga final dikonfirmasi."),
+    ]
+    for label, text in replies:
+        add_copy_box(doc, f"SALIN · {label}", text)
+
+
+def add_id_rules_and_scenic_photos(doc: Document, d: dict, c: dict) -> None:
+    doc.add_page_break()
+    doc.add_paragraph("Aturan publikasi", style="Heading 1")
+    rules = [
+        "Jangan menulis email pribadi, nomor WhatsApp, atau data tamu di posting dan komentar.",
+        "Sebelum memeriksa permintaan, jangan menjanjikan kendaraan, kapasitas, waktu, harga final, atau ketersediaan.",
+        "Jangan memakai klaim “harga termurah”, “pasti tersedia”, “booking instan”, atau jaminan keselamatan yang belum diverifikasi.",
+        "Gunakan gambar dalam paket ini dan jangan mengambil gambar acak dari internet untuk menggantinya.",
+    ]
+    for item in rules:
+        doc.add_paragraph(item, style="List Bullet")
+    add_callout(doc, "Periksa sebelum posting", f"Tautan bisa dibuka · {d['name']} otomatis terpilih · nomor gambar benar · tidak ada data pribadi", PALE_TEAL)
+    doc.add_paragraph("Catatan sumber gambar", style="Heading 2")
+    doc.add_paragraph("Foto 01–03 dicatat sebagai user_provided_with_consent. Foto 04–07 memakai gambar berlisensi dengan kredit yang tercantum di bagian akhir. Gambar berlisensi tidak boleh ditulis sebagai hasil foto pribadi dan kreditnya tidak boleh dihapus.")
+
+    doc.add_paragraph("Materi publikasi kedua: 4 pemandangan Bali · 04 → 05 → 06 → 07", style="Heading 1")
+    table = doc.add_table(rows=2, cols=2)
+    table.alignment = WD_TABLE_ALIGNMENT.CENTER
+    table.autofit = False
+    for row in table.rows:
+        for cell in row.cells:
+            set_cell_width(cell, 4680)
+    scenic_width = Inches(1.8 if d["name"] == "Gede Nico" else 2.08)
+    for idx, photo in enumerate(c["photos"][3:]):
+        cell = table.cell(idx // 2, idx % 2)
+        add_photo_card(cell, d["pack"] / photo[0], photo[1], photo[2], scenic_width)
+
+
+def add_id_scenic_copy_and_credits(doc: Document, d: dict, c: dict) -> None:
+    doc.add_page_break()
+    doc.add_paragraph("Caption publikasi pemandangan", style="Heading 1")
+    add_copy_box(doc, "SALIN · Caption Bahasa Indonesia", f"{c['scenic_caption']}\n\n{d['utm']}")
+    add_copy_box(doc, "SALIN · English caption (opsional)", f"{c['scenic_caption_en']}\n\n{d['utm']}")
+    doc.add_paragraph("Kredit gambar · jangan dihapus", style="Heading 2")
+    credits = doc.add_table(rows=5, cols=3)
+    credits.alignment = WD_TABLE_ALIGNMENT.CENTER
+    credits.autofit = False
+    widths = [900, 3900, 4560]
+    for row in credits.rows:
+        for i, cell in enumerate(row.cells):
+            set_cell_width(cell, widths[i])
+            cell_margins(cell, 90, 110, 90, 110)
+    for i, value in enumerate(("No.", "Tempat", "Fotografer dan lisensi")):
+        credits.cell(0, i).text = value
+        shade(credits.cell(0, i), TEAL)
+        for run in credits.cell(0, i).paragraphs[0].runs:
+            run.bold = True
+            run.font.color.rgb = RGBColor(255, 255, 255)
+    for ri, photo in enumerate(c["photos"][3:], 1):
+        credits.cell(ri, 0).text = photo[1].split("·", 1)[0].strip()
+        credits.cell(ri, 1).text = photo[1].split("·", 1)[1].strip()
+        credits.cell(ri, 2).text = photo[2]
+        if ri % 2 == 0:
+            for cell in credits.rows[ri].cells:
+                shade(cell, PAPER)
+    add_callout(doc, "Pengingat lisensi", "Gambar ini tidak boleh ditulis sebagai foto pribadi pengemudi. WanderMind menyimpan salinan hanya untuk paket promosi ini; kredit dan ketentuan ShareAlike tetap berlaku.")
+
+
+def add_id_mobile_saving(doc: Document) -> None:
+    doc.add_page_break()
+    doc.add_paragraph("Cara menyimpan gambar dari ponsel", style="Heading 1")
+    add_callout(doc, "Cara paling mudah", "Word dipakai untuk membaca panduan, sedangkan ZIP berisi file JPG yang lebih mudah dipilih ketika akan posting. Unduh ZIP, ekstrak, lalu simpan JPG yang diperlukan ke galeri.", PALE_TEAL)
+    doc.add_paragraph("iPhone", style="Heading 2")
+    for item in (
+        "Buka aplikasi Files, lalu ketuk file ZIP. iPhone akan membuat folder dengan nama yang sama.",
+        "Buka folder tersebut dan ketuk JPG yang ingin dipakai.",
+        "Ketuk tombol Share di kiri bawah → Save Image. Gambar akan muncul di aplikasi Photos dan dapat dipilih saat posting.",
+    ):
+        doc.add_paragraph(item, style="List Number")
+    doc.add_paragraph("Android", style="Heading 2")
+    for item in (
+        "Buka Files / My Files / Downloads, ketuk file ZIP, lalu pilih Extract atau Unzip.",
+        "Buka folder images hasil ekstraksi, lalu ketuk JPG yang ingin dipakai.",
+        "Pilih Share untuk langsung mengirimnya, atau pindahkan ke folder Pictures agar muncul di galeri.",
+    ):
+        doc.add_paragraph(item, style="List Number")
+    add_callout(doc, "Ritme publikasi", "Publikasikan setiap 3–5 hari. Gunakan dua materi lengkap dalam paket ini terlebih dahulu; pemilik situs akan mengirim gambar dan teks baru secara berkala dengan cara yang sama.")
+
+
+def add_id_field_line(doc: Document, label: str, value: str = "____________________________") -> None:
+    p = doc.add_paragraph()
+    p.paragraph_format.space_after = Pt(4)
+    r = p.add_run(label)
+    r.bold = True
+    r.font.color.rgb = RGBColor.from_string(TEAL)
+    p.add_run(value)
+
+
+def add_id_form_section(doc: Document, number: int, title: str, fields: list[str]) -> None:
+    doc.add_paragraph(f"{number}. {title}", style="Heading 2")
+    for field in fields:
+        add_id_field_line(doc, f"{field}: ")
+
+
+def add_id_rate_authorization(doc: Document, d: dict) -> None:
+    doc.add_page_break()
+    doc.add_paragraph("Otorisasi tarif pengemudi", style="Title")
+    doc.add_paragraph(f"{d['name']} · Formulir konfirmasi", style="Subtitle")
+    if d["name"] == "Dicky":
+        price_note = "Harga di bawah adalah tarif awal yang disampaikan langsung oleh Dicky, bukan harga final. Setelah menerima permintaan, Dicky dapat menyesuaikannya berdasarkan jumlah hari, rute, area penjemputan, dan durasi; harga final mengikuti balasan email pengemudi."
+    else:
+        price_note = "Tarif awal Gede Nico harus diisi dan dikonfirmasi sendiri. Jangan memakai tarif pengemudi lain. Setelah menerima permintaan, harga final mengikuti balasan email pengemudi."
+    add_callout(doc, "Keterangan harga", price_note, PALE_TEAL)
+    add_callout(doc, "Cara mengisi", "Isi nominal atau tulis “tidak berlaku”. Jangan menulis rekening bank, kata sandi, nomor identitas, atau data pribadi sensitif. Kolom kosong berarti belum diberi otorisasi.")
+    add_id_field_line(doc, "Tanggal mulai tarif: ")
+    add_id_field_line(doc, "Mata uang: ", "IDR (jika berbeda, tulis di sini)")
+
+    add_id_form_section(doc, 1, "Perjalanan satu hari", [
+        "Maksimal jam layanan", "Tarif awal kendaraan + pengemudi (Rp)", "Tambahan per tamu untuk setiap hari (Rp)",
+        "Termasuk bahan bakar (ya/tidak)", "Termasuk parkir (ya/tidak)", "Termasuk tol (ya/tidak)", "Termasuk makan pengemudi (ya/tidak)",
+    ])
+    add_id_form_section(doc, 2, "Perjalanan setengah hari", ["Maksimal jam layanan", "Tarif awal kendaraan + pengemudi (Rp)", "Tambahan per tamu untuk setiap hari (Rp)"])
+    add_id_form_section(doc, 3, "Lembur", ["Tarif lembur perjalanan satu hari (Rp/jam)", "Tarif lembur setengah hari (Rp/jam)", "Aturan pembulatan waktu"])
+
+    doc.add_page_break()
+    doc.add_paragraph("Penjemputan dan aturan lintas wilayah", style="Heading 1")
+    add_id_form_section(doc, 4, "Antar-jemput bandara", [
+        "Bandara → Kuta / Seminyak / Canggu (Rp)", "Bandara → Sanur (Rp)", "Bandara → Ubud (Rp)",
+        "Bandara → wilayah lain (wilayah + harga)", "Waktu tunggu gratis jika penerbangan terlambat",
+    ])
+    add_id_form_section(doc, 5, "Pindah hotel dan bagasi", [
+        "Jika dilakukan saat tur: gratis atau tambahan", "Jika hanya pindah hotel: cara menghitung", "Batas jumlah / ukuran bagasi",
+    ])
+    add_id_form_section(doc, 6, "Nusa Penida", [
+        f"{d['name']} hanya mengantar ke pelabuhan, atau dapat mengatur tiket kapal + kendaraan di pulau",
+        "Pelabuhan keberangkatan", "Harga kapal pulang-pergi per orang (Rp)", "Harga kendaraan + pengemudi per hari di pulau (Rp)",
+        "Apakah West / East / Combination berbeda harga", "Yang termasuk / tidak termasuk: tiket masuk, parkir, makan, antar-jemput hotel",
+    ])
+
+    doc.add_page_break()
+    doc.add_paragraph("Tambahan wilayah dan aturan lain", style="Heading 1")
+    add_id_form_section(doc, 7, "Tambahan wilayah", [
+        "Uluwatu / South Bali (Rp)", "Ubud / Central Bali (Rp)", "Kintamani / Batur (Rp)",
+        "Karangasem / Amed / East Bali (Rp)", "Munduk / Lovina / North Bali (Rp)", "Biaya menginap pengemudi di luar area per malam (Rp)",
+    ])
+    add_id_form_section(doc, 8, "Aturan lain", [
+        "Jumlah penumpang nyaman + kapasitas bagasi", "Kursi anak dan harga", "Aturan pembatalan / cuaca / no-show",
+        "Masa berlaku penawaran", "Pajak atau biaya lain",
+    ])
+    add_callout(doc, "Pernyataan otorisasi", f"Saya mengizinkan WanderMind menampilkan perkiraan awal atas nama {d['name']} berdasarkan aturan dalam formulir ini. Harga final setiap perjalanan tetap harus saya konfirmasi setelah menerima permintaan melalui email.")
+    add_id_field_line(doc, "Menyetujui otorisasi ini (ya/tidak): ")
+    add_id_field_line(doc, "Nama: ", d["name"])
+    add_id_field_line(doc, "Tanggal konfirmasi: ")
+
+    if d["name"] == "Dicky":
+        doc.add_paragraph("Tarif awal yang telah disampaikan Dicky", style="Heading 1")
+        add_callout(doc, "Tarif awal, bukan harga final", "Full day: Rp700.000, maksimal 10 jam. Half day: Rp500.000, maksimal 6 jam. Tambahan: Rp50.000 per tamu untuk setiap hari yang dipilih. Lembur full day: Rp75.000 per jam. Tarif dapat disesuaikan setelah Dicky melihat jumlah hari dan rute; harga final mengikuti balasan email Dicky.", PAPER)
+    else:
+        doc.add_paragraph("Tarif awal Gede Nico menunggu konfirmasi tertulis", style="Heading 1")
+        add_callout(doc, "Belum diisi", "Silakan lengkapi nominal dan syarat penggunaan pada formulir ini. Tarif yang belum ditulis tidak boleh ditampilkan sebagai harga situs atau digunakan untuk menghitung penawaran.", PAPER)
+
+
+def build_indonesian_guide(key: str, d: dict) -> Path:
+    c = INDONESIAN_CONTENT[key]
+    doc = Document()
+    set_doc_defaults_id(doc)
+    add_id_cover(doc, d, c)
+    add_id_site_orientation(doc, d)
+    add_id_quick_start(doc, d)
+    add_id_primary_photos(doc, d, c)
+    add_id_feed_copy(doc, d, c)
+    add_id_channels(doc, d)
+    add_id_reels_and_replies(doc, d)
+    add_id_rules_and_scenic_photos(doc, d, c)
+    add_id_scenic_copy_and_credits(doc, d, c)
+    add_id_mobile_saving(doc)
+    add_id_rate_authorization(doc, d)
+    safe_name = d["name"].replace(" ", "_")
+    out = d["pack"] / f"WanderMind_{safe_name}_Panduan_Lengkap_ID.docx"
+    doc.save(out)
+    return out
+
+
+def build_indonesian_mobile_pack(key: str, d: dict, guide: Path) -> Path:
+    c = INDONESIAN_CONTENT[key]
+    safe_name = d["name"].replace(" ", "_")
+    out = d["pack"] / f"WanderMind_{safe_name}_Panduan_Lengkap_ID_Mobile_Pack.zip"
+    saving_guide = (
+        "PANDUAN MENYIMPAN GAMBAR DARI PONSEL\n\n"
+        "iPhone\n"
+        "1. Buka aplikasi Files dan ketuk file ZIP. iPhone akan membuat folder dengan nama yang sama.\n"
+        "2. Buka folder tersebut dan ketuk JPG yang ingin dipakai.\n"
+        "3. Ketuk Share → Save Image. Gambar akan muncul di Photos.\n\n"
+        "Android\n"
+        "1. Buka Files / My Files / Downloads, ketuk ZIP, lalu pilih Extract atau Unzip.\n"
+        "2. Buka folder images hasil ekstraksi dan pilih JPG.\n"
+        "3. Pilih Share untuk langsung memakainya, atau pindahkan ke Pictures agar muncul di galeri.\n\n"
+        "Publikasikan setiap 3–5 hari. Gunakan teks dan tautan khusus milik pengemudi ini."
+    )
+    with ZipFile(out, "w", ZIP_DEFLATED) as archive:
+        archive.write(guide, arcname=guide.name)
+        for filename, _, _ in c["photos"]:
+            image = d["pack"] / filename
+            if not image.exists():
+                raise FileNotFoundError(image)
+            archive.write(image, arcname=f"images/{filename}")
+        archive.writestr("Panduan_Simpan_Gambar_ID.txt", saving_guide)
+        archive.writestr("README_ID.txt", f"Paket resmi WanderMind untuk {d['name']}. Gunakan hanya tautan dan gambar yang ada di paket ini.\n{d['link']}\n")
+    return out
+
+
 def main() -> None:
     outputs = []
     for key, driver in DRIVERS.items():
         outputs.append(build_complete_guide(key, driver))
+        guide = build_indonesian_guide(key, driver)
+        pack = build_indonesian_mobile_pack(key, driver, guide)
+        outputs.extend((guide, pack))
     for output in outputs:
         print(output)
 
