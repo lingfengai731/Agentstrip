@@ -11,6 +11,7 @@ import time
 import uuid
 from copy import deepcopy
 from datetime import datetime, timezone
+from decimal import Decimal, InvalidOperation
 from pathlib import Path
 from typing import List, Optional
 from urllib.parse import quote
@@ -25,6 +26,7 @@ from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel, Field
 
 from db import get_db, init_db, IntegrityError, backend_name
+import paypal_service
 from email_service import (
     send_driver_request,
     send_password_reset,
@@ -609,6 +611,10 @@ class ProRouteOrderReq(BaseModel):
 
 class ProRouteConfirmReq(BaseModel):
     payment_reference: str = ""
+
+
+class PayPalOrderReq(BaseModel):
+    trip_id: str
 
 
 class ReferralRedeemReq(BaseModel):
@@ -2366,6 +2372,380 @@ async def consume_product_trip_allowance(
         conn.close()
 
 
+def _paypal_error(error: Exception) -> HTTPException:
+    if isinstance(error, paypal_service.PayPalError):
+        return HTTPException(error.status_code, detail={"error": error.code})
+    return HTTPException(502, detail={"error": "paypal_unavailable"})
+
+
+def _paypal_capture_details(payload: dict) -> dict:
+    captures = []
+    for unit in payload.get("purchase_units") or []:
+        custom_id = str(unit.get("custom_id") or "")
+        for capture in ((unit.get("payments") or {}).get("captures") or []):
+            if capture.get("status") == "COMPLETED":
+                amount = capture.get("amount") or {}
+                captures.append({
+                    "capture_id": str(capture.get("id") or ""),
+                    "currency": str(amount.get("currency_code") or "").upper(),
+                    "value": str(amount.get("value") or ""),
+                    "custom_id": custom_id,
+                })
+    if len(captures) != 1 or not captures[0]["capture_id"]:
+        raise HTTPException(409, detail={"error": "paypal_capture_incomplete"})
+    return captures[0]
+
+
+def _paypal_capture_matches(order: dict, capture: dict) -> bool:
+    try:
+        amount_cents = int(
+            Decimal(str(capture["value"])).quantize(Decimal("0.01")) * 100
+        )
+    except (InvalidOperation, TypeError, ValueError):
+        return False
+    return (
+        amount_cents == int(order["amount_cents"])
+        and capture["currency"] == str(order["currency"]).upper()
+        and (not capture["custom_id"] or capture["custom_id"] == order["id"])
+    )
+
+
+def _confirm_paypal_order(
+    conn, order: dict, capture_id: str, provider_status: str, *, lock_transaction: bool = True
+) -> dict:
+    if lock_transaction:
+        _lock_professional_route_transaction(conn, order["trip_id"], order["user_id"])
+    current_row = conn.execute(
+        "SELECT * FROM professional_route_orders WHERE id=?", (order["id"],)
+    ).fetchone()
+    if not current_row:
+        raise HTTPException(404, "Order not found")
+    current = dict(current_row)
+    if current["status"] == "confirmed":
+        if current.get("provider_capture_id") not in {None, "", capture_id}:
+            raise HTTPException(409, detail={"error": "paypal_capture_conflict"})
+        return current
+    if current["status"] != "pending" or current.get("payment_method") != "paypal":
+        raise HTTPException(409, detail={"error": "paypal_order_not_payable"})
+    now = int(time.time())
+    conn.execute(
+        """UPDATE professional_route_orders
+           SET status='confirmed',payment_reference=?,provider_capture_id=?,
+               provider_status=?,updated_at=?,confirmed_at=?,confirmed_by='paypal'
+           WHERE id=? AND status='pending' AND payment_method='paypal'""",
+        (
+            "paypal:" + capture_id,
+            capture_id,
+            provider_status[:40],
+            now,
+            now,
+            current["id"],
+        ),
+    )
+    conn.execute(
+        """UPDATE product_trips
+           SET professional_route_entitlement=1,professional_adjustment_limit=?,updated_at=?
+           WHERE id=?""",
+        (PROFESSIONAL_ROUTE_ADJUSTMENT_LIMIT, now, current["trip_id"]),
+    )
+    conn.execute(
+        """UPDATE professional_route_orders
+           SET status='cancelled',provider_status='SUPERSEDED',updated_at=?
+           WHERE trip_id=? AND id<>? AND status='pending'""",
+        (now, current["trip_id"], current["id"]),
+    )
+    return dict(
+        conn.execute(
+            "SELECT * FROM professional_route_orders WHERE id=?", (current["id"],)
+        ).fetchone()
+    )
+
+
+@app.get("/api/paypal/config")
+async def paypal_public_config():
+    try:
+        config = paypal_service.settings()
+    except paypal_service.PayPalError:
+        return {"enabled": False}
+    return {
+        "enabled": config["enabled"],
+        "environment": config["environment"] if config["enabled"] else "",
+        "client_id": config["client_id"] if config["enabled"] else "",
+        "currency": config["currency"],
+        "amount": config["amount_text"],
+    }
+
+
+@app.post("/api/paypal/orders")
+async def create_paypal_order(
+    data: PayPalOrderReq,
+    user=Depends(current_user),
+    anon_id=Depends(anon_id_header),
+):
+    try:
+        config = paypal_service.settings(require_enabled=True)
+    except Exception as error:
+        raise _paypal_error(error)
+    conn = get_db()
+    try:
+        trip = _trip_owner(conn, data.trip_id, user, anon_id)
+        _lock_professional_route_transaction(conn, data.trip_id, user["sub"])
+        trip = _trip_owner(conn, data.trip_id, user, anon_id)
+        allowance = _trip_allowance(conn, trip, user)
+        if allowance["professional_route_unlocked"]:
+            return {"ok": True, "already_unlocked": True, **allowance}
+        existing_row = conn.execute(
+            """SELECT * FROM professional_route_orders
+               WHERE trip_id=? AND user_id=? AND payment_method='paypal'
+                 AND status='pending'
+               ORDER BY created_at DESC LIMIT 1""",
+            (data.trip_id, user["sub"]),
+        ).fetchone()
+        now = int(time.time())
+        if existing_row:
+            order = dict(existing_row)
+            if (
+                int(order["amount_cents"]) != config["amount_cents"]
+                or str(order["currency"]).upper() != config["currency"]
+            ):
+                conn.execute(
+                    "UPDATE professional_route_orders SET status='cancelled',updated_at=? WHERE id=?",
+                    (now, order["id"]),
+                )
+                existing_row = None
+        if not existing_row:
+            order = {
+                "id": str(uuid.uuid4()),
+                "trip_id": data.trip_id,
+                "user_id": user["sub"],
+                "amount_cents": config["amount_cents"],
+                "currency": config["currency"],
+                "status": "pending",
+                "payment_method": "paypal",
+                "provider_order_id": "",
+                "created_at": now,
+            }
+            conn.execute(
+                """INSERT INTO professional_route_orders
+                   (id,trip_id,user_id,amount_cents,currency,status,payment_method,
+                    provider_status,created_at,updated_at)
+                   VALUES (?,?,?,?,?,?,?,?,?,?)""",
+                (
+                    order["id"], order["trip_id"], order["user_id"],
+                    order["amount_cents"], order["currency"], order["status"],
+                    order["payment_method"], "CREATING", now, now,
+                ),
+            )
+        conn.commit()
+        if order.get("provider_order_id"):
+            return {
+                "ok": True,
+                "provider_order_id": order["provider_order_id"],
+                "amount": config["amount_text"],
+                "currency": config["currency"],
+                "environment": config["environment"],
+            }
+        provider = await paypal_service.create_order(config, order["id"])
+        provider_id = str(provider.get("id") or "")
+        provider_status = str(provider.get("status") or "")
+        if not provider_id or provider_status not in {"CREATED", "APPROVED"}:
+            raise HTTPException(502, detail={"error": "paypal_response_invalid"})
+        conn.execute(
+            """UPDATE professional_route_orders
+               SET provider_order_id=?,provider_status=?,updated_at=?
+               WHERE id=? AND status='pending'""",
+            (provider_id, provider_status, int(time.time()), order["id"]),
+        )
+        conn.commit()
+        return {
+            "ok": True,
+            "provider_order_id": provider_id,
+            "amount": config["amount_text"],
+            "currency": config["currency"],
+            "environment": config["environment"],
+        }
+    except HTTPException:
+        conn.rollback()
+        raise
+    except Exception as error:
+        conn.rollback()
+        raise _paypal_error(error)
+    finally:
+        conn.close()
+
+
+@app.post("/api/paypal/orders/{provider_order_id}/capture")
+async def capture_paypal_order(
+    provider_order_id: str,
+    user=Depends(current_user),
+):
+    if not re.fullmatch(r"[A-Za-z0-9_-]{8,64}", provider_order_id):
+        raise HTTPException(400, detail={"error": "paypal_order_id_invalid"})
+    try:
+        config = paypal_service.settings(require_enabled=True)
+    except Exception as error:
+        raise _paypal_error(error)
+    conn = get_db()
+    try:
+        row = conn.execute(
+            """SELECT * FROM professional_route_orders
+               WHERE provider_order_id=? AND user_id=? AND payment_method='paypal'""",
+            (provider_order_id, user["sub"]),
+        ).fetchone()
+        if not row:
+            raise HTTPException(404, "Order not found")
+        order = dict(row)
+        if order["status"] == "confirmed":
+            trip = _trip_owner(conn, order["trip_id"], user, None)
+            return {"ok": True, "already_captured": True, **_trip_allowance(conn, trip, user)}
+        if order["status"] != "pending":
+            raise HTTPException(409, detail={"error": "paypal_order_not_payable"})
+        trip = _trip_owner(conn, order["trip_id"], user, None)
+        if _trip_allowance(conn, trip, user)["professional_route_unlocked"]:
+            conn.execute(
+                "UPDATE professional_route_orders SET status='cancelled',provider_status='SUPERSEDED',updated_at=? WHERE id=?",
+                (int(time.time()), order["id"]),
+            )
+            conn.commit()
+            raise HTTPException(409, detail={"error": "professional_route_already_unlocked"})
+        payload = await paypal_service.capture_order(config, provider_order_id, order["id"])
+        if str(payload.get("id") or "") != provider_order_id or payload.get("status") != "COMPLETED":
+            raise HTTPException(409, detail={"error": "paypal_capture_incomplete"})
+        capture = _paypal_capture_details(payload)
+        if not _paypal_capture_matches(order, capture):
+            raise HTTPException(409, detail={"error": "paypal_capture_mismatch"})
+        _confirm_paypal_order(conn, order, capture["capture_id"], "COMPLETED")
+        conn.commit()
+        trip = _trip_owner(conn, order["trip_id"], user, None)
+        return {"ok": True, "capture_id": capture["capture_id"], **_trip_allowance(conn, trip, user)}
+    except HTTPException:
+        conn.rollback()
+        raise
+    except Exception as error:
+        conn.rollback()
+        raise _paypal_error(error)
+    finally:
+        conn.close()
+
+
+@app.post("/api/paypal/webhook")
+async def paypal_webhook(request: Request):
+    if int(request.headers.get("content-length") or 0) > 262144:
+        raise HTTPException(413, "Webhook payload too large")
+    try:
+        event = await request.json()
+    except Exception:
+        raise HTTPException(400, "Invalid webhook payload")
+    if not isinstance(event, dict):
+        raise HTTPException(400, "Invalid webhook payload")
+    try:
+        config = paypal_service.settings(require_enabled=True)
+        verified = await paypal_service.verify_webhook(
+            config, {key.lower(): value for key, value in request.headers.items()}, event
+        )
+    except Exception as error:
+        raise _paypal_error(error)
+    if not verified:
+        raise HTTPException(400, detail={"error": "paypal_webhook_invalid"})
+    event_id = str(event.get("id") or "")[:120]
+    event_type = str(event.get("event_type") or "")[:120]
+    if not event_id or not event_type:
+        raise HTTPException(400, "Invalid webhook event")
+    now = int(time.time())
+    conn = get_db()
+    try:
+        existing = conn.execute(
+            "SELECT status FROM payment_webhook_events WHERE event_id=?", (event_id,)
+        ).fetchone()
+        if existing:
+            return {"ok": True, "duplicate": True}
+        resource = event.get("resource") or {}
+        related = (resource.get("supplementary_data") or {}).get("related_ids") or {}
+        provider_order_id = str(related.get("order_id") or "")
+        order_row = None
+        if provider_order_id:
+            order_row = conn.execute(
+                "SELECT * FROM professional_route_orders WHERE provider_order_id=?",
+                (provider_order_id,),
+            ).fetchone()
+        if event_type == "PAYMENT.CAPTURE.COMPLETED" and order_row:
+            order_for_lock = dict(order_row)
+            _lock_professional_route_transaction(
+                conn, order_for_lock["trip_id"], order_for_lock["user_id"]
+            )
+            order_row = conn.execute(
+                "SELECT * FROM professional_route_orders WHERE provider_order_id=?",
+                (provider_order_id,),
+            ).fetchone()
+        conn.execute(
+            """INSERT INTO payment_webhook_events
+               (event_id,event_type,provider,status,received_at)
+               VALUES (?,?,?,'received',?)""",
+            (event_id, event_type, "paypal", now),
+        )
+        if event_type == "PAYMENT.CAPTURE.COMPLETED" and order_row:
+            order = dict(order_row)
+            amount = resource.get("amount") or {}
+            capture = {
+                "capture_id": str(resource.get("id") or ""),
+                "currency": str(amount.get("currency_code") or "").upper(),
+                "value": str(amount.get("value") or ""),
+                "custom_id": str(resource.get("custom_id") or ""),
+            }
+            if resource.get("status") != "COMPLETED" or not _paypal_capture_matches(order, capture):
+                raise HTTPException(409, detail={"error": "paypal_capture_mismatch"})
+            if order["status"] == "cancelled":
+                conn.execute(
+                    """UPDATE professional_route_orders
+                       SET status='refund_review',provider_capture_id=?,provider_status='COMPLETED',
+                           payment_reference=?,updated_at=? WHERE id=?""",
+                    (
+                        capture["capture_id"], "paypal:" + capture["capture_id"],
+                        now, order["id"],
+                    ),
+                )
+            else:
+                _confirm_paypal_order(
+                    conn, order, capture["capture_id"], "COMPLETED",
+                    lock_transaction=False,
+                )
+        elif event_type in {"PAYMENT.CAPTURE.DENIED", "CHECKOUT.PAYMENT-APPROVAL.REVERSED"} and order_row:
+            order = dict(order_row)
+            if order["status"] == "pending":
+                conn.execute(
+                    "UPDATE professional_route_orders SET status='failed',provider_status=?,updated_at=? WHERE id=?",
+                    (event_type[:40], now, order["id"]),
+                )
+        elif event_type in {"PAYMENT.CAPTURE.REFUNDED", "PAYMENT.CAPTURE.REVERSED"}:
+            capture_id = str(related.get("capture_id") or resource.get("invoice_id") or "")
+            if capture_id:
+                refund_row = conn.execute(
+                    "SELECT * FROM professional_route_orders WHERE provider_capture_id=?",
+                    (capture_id,),
+                ).fetchone()
+                if refund_row:
+                    conn.execute(
+                        """UPDATE professional_route_orders
+                           SET status='refund_review',provider_status=?,updated_at=?,refunded_at=?
+                           WHERE id=?""",
+                        (event_type[:40], now, now, dict(refund_row)["id"]),
+                    )
+        conn.execute(
+            "UPDATE payment_webhook_events SET status='processed',processed_at=? WHERE event_id=?",
+            (int(time.time()), event_id),
+        )
+        conn.commit()
+        return {"ok": True}
+    except HTTPException:
+        conn.rollback()
+        raise
+    except IntegrityError:
+        conn.rollback()
+        return {"ok": True, "duplicate": True}
+    finally:
+        conn.close()
+
+
 @app.post("/api/professional-route/orders")
 async def create_professional_route_order(
     data: ProRouteOrderReq,
@@ -2383,6 +2763,7 @@ async def create_professional_route_order(
         existing = conn.execute(
             """SELECT * FROM professional_route_orders
                WHERE trip_id=? AND user_id=? AND status='pending'
+                 AND payment_method='manual_qr'
                ORDER BY created_at DESC LIMIT 1""",
             (data.trip_id, user["sub"]),
         ).fetchone()
@@ -2396,16 +2777,18 @@ async def create_professional_route_order(
                 "amount_cents": 990,
                 "currency": "CNY",
                 "status": "pending",
+                "payment_method": "manual_qr",
                 "created_at": int(time.time()),
             }
             conn.execute(
                 """INSERT INTO professional_route_orders
-                   (id,trip_id,user_id,amount_cents,currency,status,created_at)
-                   VALUES (?,?,?,?,?,?,?)""",
+                   (id,trip_id,user_id,amount_cents,currency,status,payment_method,
+                    created_at,updated_at)
+                   VALUES (?,?,?,?,?,?,?,?,?)""",
                 (
                     order["id"], order["trip_id"], order["user_id"],
                     order["amount_cents"], order["currency"], order["status"],
-                    order["created_at"],
+                    order["payment_method"], order["created_at"], order["created_at"],
                 ),
             )
             conn.commit()
@@ -2436,7 +2819,8 @@ async def list_professional_route_orders(
     try:
         rows = conn.execute(
             """SELECT o.id,o.trip_id,o.amount_cents,o.currency,o.status,
-                      o.payment_reference,o.created_at,o.confirmed_at,
+                      o.payment_method,o.provider_status,o.payment_reference,
+                      o.created_at,o.confirmed_at,
                       u.email,u.name,t.destination,t.brief
                FROM professional_route_orders o
                JOIN users u ON u.id=o.user_id
@@ -2484,14 +2868,16 @@ async def confirm_professional_route_order(
             return {"ok": True, "already_confirmed": True, "order_id": order_id}
         if order["status"] != "pending":
             raise HTTPException(409, "Only pending orders can be confirmed")
+        if order.get("payment_method") != "manual_qr":
+            raise HTTPException(409, "Only manual QR orders can be confirmed by an admin")
         now = int(time.time())
         conn.execute(
             """UPDATE professional_route_orders
-               SET status='confirmed',payment_reference=?,confirmed_at=?,confirmed_by=?
+               SET status='confirmed',payment_reference=?,updated_at=?,confirmed_at=?,confirmed_by=?
                WHERE id=? AND status='pending'""",
             (
                 (data.payment_reference or "").strip()[:120],
-                now, admin["id"], order_id,
+                now, now, admin["id"], order_id,
             ),
         )
         conn.execute(
@@ -2499,6 +2885,12 @@ async def confirm_professional_route_order(
                SET professional_route_entitlement=1,professional_adjustment_limit=?,updated_at=?
                WHERE id=?""",
             (PROFESSIONAL_ROUTE_ADJUSTMENT_LIMIT, now, order["trip_id"]),
+        )
+        conn.execute(
+            """UPDATE professional_route_orders
+               SET status='cancelled',provider_status='SUPERSEDED',updated_at=?
+               WHERE trip_id=? AND id<>? AND status='pending'""",
+            (now, order["trip_id"], order_id),
         )
         conn.commit()
         return {"ok": True, "order_id": order_id, "status": "confirmed"}
@@ -2563,6 +2955,7 @@ async def redeem_referral_points(
         pending = conn.execute(
             """SELECT * FROM professional_route_orders
                WHERE trip_id=? AND user_id=? AND status='pending'
+                 AND payment_method='manual_qr'
                ORDER BY created_at ASC LIMIT 1""",
             (data.trip_id, user["sub"]),
         ).fetchone()
@@ -2577,19 +2970,20 @@ async def redeem_referral_points(
             conn.execute(
                 """UPDATE professional_route_orders
                    SET amount_cents=0,currency='POINTS',status='confirmed',
-                       payment_reference='route_points:30',confirmed_at=?,confirmed_by=?
+                       payment_method='points',payment_reference='route_points:30',
+                       updated_at=?,confirmed_at=?,confirmed_by=?
                    WHERE id=? AND status='pending'""",
-                (now, user["sub"], redemption_id),
+                (now, now, user["sub"], redemption_id),
             )
         else:
             conn.execute(
                 """INSERT INTO professional_route_orders
-                   (id,trip_id,user_id,amount_cents,currency,status,payment_reference,
-                    created_at,confirmed_at,confirmed_by)
-                   VALUES (?,?,?,?,?,?,?,?,?,?)""",
+                   (id,trip_id,user_id,amount_cents,currency,status,payment_method,
+                    payment_reference,created_at,updated_at,confirmed_at,confirmed_by)
+                   VALUES (?,?,?,?,?,?,?,?,?,?,?,?)""",
                 (
                     redemption_id, data.trip_id, user["sub"], 0, "POINTS", "confirmed",
-                    "route_points:30", now, now, user["sub"],
+                    "points", "route_points:30", now, now, now, user["sub"],
                 ),
             )
         conn.execute(
@@ -2597,6 +2991,12 @@ async def redeem_referral_points(
                SET professional_route_entitlement=1,professional_adjustment_limit=?,updated_at=?
                WHERE id=?""",
             (PROFESSIONAL_ROUTE_ADJUSTMENT_LIMIT, now, data.trip_id),
+        )
+        conn.execute(
+            """UPDATE professional_route_orders
+               SET status='cancelled',provider_status='SUPERSEDED',updated_at=?
+               WHERE trip_id=? AND id<>? AND status='pending'""",
+            (now, data.trip_id, redemption_id),
         )
         trip["professional_adjustment_limit"] = PROFESSIONAL_ROUTE_ADJUSTMENT_LIMIT
         conn.commit()

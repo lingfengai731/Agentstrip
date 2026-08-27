@@ -13,9 +13,18 @@
     response: null,
     editing: false,
     paymentOpen: false,
+    paypal: null,
     loading: false,
     pendingRouteId: '',
     queuedRouteId: ''
+  };
+
+  var PAYPAL_COPY = {
+    en: { option:'Pay online with PayPal or card', sandbox:'Sandbox test · no real charge', local:'Or use a local QR payment', processing:'Verifying the payment securely…', done:'Payment verified. Your full route is now open.', failed:'PayPal could not verify this payment. No route access was granted.' },
+    zh: { option:'使用 PayPal 或银行卡在线支付', sandbox:'沙盒测试 · 不会真实扣款', local:'或使用本地二维码付款', processing:'正在由服务器安全核验付款…', done:'付款已核验，完整路线已经开放。', failed:'PayPal 未能核验这笔付款，路线尚未解锁。' },
+    ja: { option:'PayPal またはカードでオンライン決済', sandbox:'Sandbox テスト・実際の請求なし', local:'またはローカルQR決済', processing:'サーバーで決済を確認しています…', done:'決済を確認し、完全版ルートを開放しました。', failed:'PayPalで決済を確認できなかったため、ルートは開放されていません。' },
+    ko: { option:'PayPal 또는 카드로 온라인 결제', sandbox:'Sandbox 테스트 · 실제 청구 없음', local:'또는 현지 QR 결제', processing:'서버에서 결제를 안전하게 확인 중입니다…', done:'결제가 확인되어 전체 경로가 열렸습니다.', failed:'PayPal 결제를 확인하지 못해 경로가 잠금 해제되지 않았습니다.' },
+    id: { option:'Bayar online dengan PayPal atau kartu', sandbox:'Uji Sandbox · tidak ada tagihan nyata', local:'Atau gunakan pembayaran QR lokal', processing:'Memverifikasi pembayaran dengan aman…', done:'Pembayaran terverifikasi. Rute lengkap sudah terbuka.', failed:'PayPal tidak dapat memverifikasi pembayaran ini. Rute belum dibuka.' }
   };
 
   var COPY = {
@@ -42,6 +51,7 @@
     return ((document.getElementById('langPicker') || {}).value || localStorage.getItem('wm_studio_lang') || 'en').toLowerCase();
   }
   function T() { return COPY[currentLang()] || COPY.en; }
+  function paypalT() { return PAYPAL_COPY[currentLang()] || PAYPAL_COPY.en; }
   function text(value) { return String(value == null ? '' : value); }
   function esc(value) { return text(value).replace(/[&<>"']/g, function (c) { return ({ '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#39;' })[c]; }); }
   function fill(value, vars) { return text(value).replace(/\{(\w+)\}/g, function (_, key) { return esc(vars[key] == null ? '' : vars[key]); }); }
@@ -158,9 +168,76 @@
     var params = new URLSearchParams({ driver_id:driverId, route:route.route_id, start:p.departure_date || '', end:p.return_date || '', people:String(p.travellers || ''), budget:String(p.budget_range || ''), currency:String(p.currency || '') });
     window.location.assign('find-driver.html?' + params.toString());
   }
+  async function loadPayPalConfig() {
+    try {
+      var response = await fetch(API_BASE + '/api/paypal/config');
+      var body = await response.json().catch(function () { return {}; });
+      state.paypal = response.ok && body.enabled ? body : { enabled:false };
+    } catch (_) {
+      state.paypal = { enabled:false };
+    }
+    return state.paypal;
+  }
+  function loadPayPalSdk(config) {
+    if (window.paypal && window.paypal.Buttons) return Promise.resolve(window.paypal);
+    return new Promise(function (resolve, reject) {
+      var existing = document.getElementById('wandermind-paypal-sdk');
+      if (existing) {
+        existing.addEventListener('load', function () { resolve(window.paypal); }, { once:true });
+        existing.addEventListener('error', reject, { once:true });
+        return;
+      }
+      var script = document.createElement('script');
+      script.id = 'wandermind-paypal-sdk';
+      script.src = 'https://www.paypal.com/sdk/js?client-id=' + encodeURIComponent(config.client_id) + '&currency=' + encodeURIComponent(config.currency) + '&intent=capture&components=buttons';
+      script.async = true;
+      script.onload = function () { resolve(window.paypal); };
+      script.onerror = reject;
+      document.head.appendChild(script);
+    });
+  }
+  async function renderPayPalButtons() {
+    var container = document.getElementById('bali-professional-paypal-buttons');
+    var config = state.paypal;
+    if (!container || !config || !config.enabled || container.dataset.rendered) return;
+    container.dataset.rendered = 'true';
+    var pc = paypalT();
+    try {
+      var paypalApi = await loadPayPalSdk(config);
+      if (!paypalApi || !paypalApi.Buttons) throw new Error('PayPal SDK unavailable');
+      await paypalApi.Buttons({
+        style: { layout:'vertical', color:'gold', shape:'rect', label:'paypal', height:44 },
+        createOrder: async function () {
+          var response = await fetch(API_BASE + '/api/paypal/orders', {
+            method:'POST',
+            headers:Object.assign({ 'Content-Type':'application/json', 'X-Anon-Id':sessionId() }, authHeaders()),
+            body:JSON.stringify({ trip_id:state.tripId })
+          });
+          var body = await response.json().catch(function () { return {}; });
+          if (!response.ok || !body.provider_order_id) throw new Error(apiError(body, pc.failed));
+          return body.provider_order_id;
+        },
+        onApprove: async function (data) {
+          setStatus(pc.processing, false, 'bali-professional-payment-status');
+          var response = await fetch(API_BASE + '/api/paypal/orders/' + encodeURIComponent(data.orderID) + '/capture', {
+            method:'POST', headers:Object.assign({ 'Content-Type':'application/json' }, authHeaders())
+          });
+          var body = await response.json().catch(function () { return {}; });
+          if (!response.ok || !body.professional_route_unlocked) throw new Error(apiError(body, pc.failed));
+          setStatus(pc.done, false, 'bali-professional-payment-status');
+          await loadRoute(state.profile, state.routeId);
+        },
+        onCancel: function () { setStatus('', false, 'bali-professional-payment-status'); },
+        onError: function () { setStatus(pc.failed, true, 'bali-professional-payment-status'); }
+      }).render('#bali-professional-paypal-buttons');
+    } catch (_) {
+      setStatus(pc.failed, true, 'bali-professional-payment-status');
+    }
+  }
   function paymentPanel() {
-    var l = T();
-    return '<div class="bali-professional-card" id="bali-professional-payment"><h3>' + esc(l.payTitle) + '</h3><p>' + esc(l.payText) + '</p><div style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px"><figure style="margin:0;text-align:center"><img src="assets/images/pay-wechat.jpg" alt="WeChat Pay" style="width:100%;max-width:180px;border-radius:12px"><figcaption style="font-size:11px;margin-top:4px">WeChat Pay</figcaption></figure><figure style="margin:0;text-align:center"><img src="assets/images/pay-alipay.jpg" alt="Alipay" style="width:100%;max-width:180px;border-radius:12px"><figcaption style="font-size:11px;margin-top:4px">Alipay</figcaption></figure></div><div class="bali-professional-actions"><button class="bali-btn bali-btn-primary" id="bali-professional-paid" type="button">' + esc(l.paid) + '</button><button class="bali-btn bali-route-secondary" id="bali-professional-payment-close" type="button">' + esc(l.cancel) + '</button></div><div id="bali-professional-payment-status" class="bali-professional-status"></div></div>';
+    var l = T(); var pc = paypalT(); var config = state.paypal || {};
+    var paypalOption = config.enabled ? '<section class="bali-professional-paypal"><div class="bali-professional-payment-label"><strong>' + esc(pc.option) + '</strong><span>' + esc(config.environment === 'sandbox' ? pc.sandbox : (config.currency + ' ' + config.amount)) + '</span></div><div id="bali-professional-paypal-buttons"></div></section><div class="bali-professional-payment-divider"><span>' + esc(pc.local) + '</span></div>' : '';
+    return '<div class="bali-professional-card" id="bali-professional-payment"><h3>' + esc(l.payTitle) + '</h3><p>' + esc(l.payText) + '</p>' + paypalOption + '<div class="bali-professional-qr-grid"><figure><img src="assets/images/pay-wechat.jpg" alt="WeChat Pay"><figcaption>WeChat Pay · CNY 9.90</figcaption></figure><figure><img src="assets/images/pay-alipay.jpg" alt="Alipay"><figcaption>Alipay · CNY 9.90</figcaption></figure></div><div class="bali-professional-actions"><button class="bali-btn bali-btn-primary" id="bali-professional-paid" type="button">' + esc(l.paid) + '</button><button class="bali-btn bali-route-secondary" id="bali-professional-payment-close" type="button">' + esc(l.cancel) + '</button></div><div id="bali-professional-payment-status" class="bali-professional-status" role="status" aria-live="polite"></div></div>';
   }
   function renderResult() {
     var l = T(); var data = state.response || {}; var route = data.route || {};
@@ -182,11 +259,12 @@
     var editor = state.editing ? '<div class="bali-professional-card" style="margin-top:20px"><h3>' + esc(l.formTitle) + '</h3>' + formMarkup(p) + '</div>' : '';
     app.innerHTML = '<div class="bali-professional-layout"><div class="bali-professional-card"><div class="bali-professional-route-label"><strong>' + esc(l.route) + '</strong><span class="bali-professional-badge">' + esc(unlocked ? l.unlocked : l.preview) + '</span></div><h3>' + esc(route.route_id || '') + ' · ' + esc(route.route_name || '') + '</h3><p>' + esc(route.route_promise || '') + '</p><div class="bali-profile-summary">' + summary.map(function (item) { return '<span class="bali-profile-chip">' + esc(item) + '</span>'; }).join('') + (goals ? '<span class="bali-profile-chip">' + esc(goals) + '</span>' : '') + '</div><div class="bali-professional-reason"><strong>' + esc(l.reason) + '</strong><br>' + esc(route.recommendation_reason || '') + '</div><div id="bali-professional-status" class="bali-professional-status" role="status" aria-live="polite"></div><div class="bali-professional-actions">' + actionHtml + '</div>' + adjustmentNote + driverHtml + '</div><div class="bali-professional-card"><div class="bali-professional-route-label"><strong>' + esc(fill(l.openDays, { n:route.preview_days || 0 })) + '</strong><span class="bali-professional-badge">' + esc(fill(l.lockedDays, { n:route.locked_days || 0 })) + '</span></div><div class="bali-professional-days">' + dayHtml + '</div></div></div>' + editor + (state.paymentOpen ? paymentPanel() : '');
     bindResultActions();
+    if (state.paymentOpen) renderPayPalButtons();
     if (state.pendingRouteId) setStatus(fill(l.routeSwitchPending, { route:state.pendingRouteId }), false);
   }
   function bindResultActions() {
     var l = T(); var unlock = document.getElementById('bali-professional-unlock');
-    if (unlock) unlock.onclick = function () { if (!isLoggedIn()) { redirectToLogin(); return; } state.paymentOpen = true; renderResult(); };
+    if (unlock) unlock.onclick = async function () { if (!isLoggedIn()) { redirectToLogin(); return; } if (!state.paypal) await loadPayPalConfig(); state.paymentOpen = true; renderResult(); };
     var points = document.getElementById('bali-professional-points');
     if (points) points.onclick = async function () {
       if (!isLoggedIn()) { redirectToLogin(); return; }
@@ -272,6 +350,7 @@
     } catch (error) { state.loading = false; app.innerHTML = '<div class="bali-professional-error">' + esc(error.message || T().error) + '</div>'; }
   }
   function start() {
+    loadPayPalConfig();
     state.profile = readProfile();
     if (state.profile) loadRoute(state.profile, state.routeId); else renderEmpty();
     window.addEventListener('wm:bali-route-selected', function (event) {

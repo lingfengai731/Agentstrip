@@ -41,10 +41,11 @@
 | 司机初始价格口径 | ✅ 已纠正 | 预算器明确为 Dicky 亲自提供的初始价格；司机可按天数与路线调整，最终金额以邮件回复为准；Gede Nico 单独报价 |
 | 司机合并手册 | ✅ 已完成 | 站长于 2026-08-27 通过两份中文合并版；Dicky 与 Gede Nico 的最终印尼语 DOCX 和独立手机 ZIP 已生成，Dicky/Gede 价格严格隔离，26 页完成主控逐页复核 |
 | 首屏氛围动效 | ✅ 本地完成 | 首页与巴厘岛首屏增加一层 teal + gold 晨光漂移；仅桌面/平板缓慢运行，手机和减少动态效果模式保持静态；未向登录、支付和后台扩散 |
-| PayPal 沙盒准备 | 🟡 开户完成、待建 Sandbox | 用户报告 PayPal 中国账户审核通过且中国大陆银行卡已绑定；单独的跨境人民币结算产品状态仍以后台为准。下一步创建 Sandbox Merchant 应用并完成 Orders API、webhook、退款和幂等测试；产品展示价保持 ¥9.9，自动支付仍保持独立门禁 |
+| PayPal 自动支付 | 🟡 本地集成完成、待 Sandbox 生产门禁 | Orders v2 创建/捕获、服务器金额复核、webhook 签名与幂等、退款转人工复核、权益写入及五语言响应式按钮已实现；本地 82 项权限测试通过。产品展示价保持 ¥9.9，PayPal 测试价为 USD 1.49。Render 凭据、真实 Sandbox 买家支付、webhook 回调和生产验收尚未完成，未配置时自动支付保持关闭 |
+| Search Console / Sitemap | 🟡 页面已收录、站点地图待重验 | 用户已确认 `/ai-tool` 在 2026-08-27 的网址检查中被 Google 收录；同日 Search Console 仍把 `sitemap.xml` 标为“无法读取 / 0 个网页”。公开端点实时返回 HTTP 200、`application/xml` 和 8 个 URL，因此先重新提交并等待 Google 重抓，不把控制台历史状态写成已修复 |
 | Batur Jeep / SUNSRI 候选 | ⏳ 待供应商书面核验 | Pak Nanok 的公开网站、套餐和社媒关联以及 SUNSRI Celuk 课程已登记为供应商自述；在法定主体、保险、车辆/讲师、安全、实时名额、取消规则与最终价闭环前不公开为执行就绪推荐 |
 
-> 当前支付仍是微信/支付宝二维码 + 管理员人工确认。正式上线前必须在 Render 设置强管理员密码；生产环境不会接受默认 `123456`。
+> 当前生产支付仍是微信/支付宝二维码 + 管理员人工确认。PayPal 代码只有在 Render 配齐 Sandbox 凭据后才会显示；正式上线前必须保留强管理员密码，生产环境不会接受默认 `123456`。
 > Portfolio 生产环境已配置 `CLOUDINARY_CLOUD_NAME`、`CLOUDINARY_API_KEY`、`CLOUDINARY_API_SECRET` 与强管理员账号；管理入口仅对登录管理员显示。真实首图已完成上传、草稿、预览、发布、公开读取与隐藏回滚。新上传若在 Cloudinary 成功后数据库明确拒绝保存，系统会核验短期清理凭证和数据库状态：已登记资产不删除，未关联对象才清理；网络中断等结果不确定场景会保留云端文件并安全重试保存，避免误删。
 
 详细执行台账见 [`.codex/plans/wandermind-master-roadmap-2026-08-02.md`](.codex/plans/wandermind-master-roadmap-2026-08-02.md)。
@@ -105,7 +106,7 @@ Agentstrip/
 | 🫘 限流 + 旅行豆 | 5 次免费 → 旅行豆；微信/支付宝收款码（半自动）+ 管理员加豆接口 | ✅ |
 | ✉️ 邮件 | Resend 全球可达（欢迎信 / 密码重置 / 找司机），发件域名 wandermind.cc | ✅ |
 | 🌐 域名 + 部署 | wandermind.cc（HTTPS）、Cloudflare DNS、UptimeRobot 保活防冷启动 | ✅ |
-| 🔍 SEO | robots.txt / sitemap.xml / OG 卡片 / Google Search Console 已验证 | ✅ |
+| 🔍 SEO | robots.txt、公开 sitemap.xml、OG 卡片与 `/ai-tool` 收录已验证；Search Console 的 sitemap 报表仍待重抓 | 🟡 |
 | 📈 首发统计 | UTM 会话归因 + 7 个匿名事件 + 管理员 14 日聚合；不保存 Cookie ID、原始 IP、联系方式或浏览器指纹 | ✅ 第一阶段 |
 
 ### 🚧 待完成 / 规划中
@@ -120,7 +121,7 @@ Agentstrip/
 | 3 · P0 | **Dicky / Gede 路线级报价** | 已实现五语参考预算器并分别准备印尼语授权表 `operations/DICKY_RATE_AUTHORIZATION_ID.md`、`operations/GEDE_RATE_AUTHORIZATION_ID.md`。机场、换酒店、超时、佩妮达船车、区域和活动附加费须两位司机分别书面确认后，才开发按司机/日期/路线版本化的最终估价；司机确认前不声称成交价 |
 | 4 · P0 | **生产写入型 E2E** | 付费解锁、旅行豆扣减、调整扣次、管理员人工确认与无限权限已通过本地/CI 逻辑测试，但不能写成生产已验。必须先准备非真实专用账号、可回滚数据方案、强管理员凭据检查和明确生产写入授权，再执行一次受控矩阵 |
 | 4 · P1 | **批量 Portfolio 治理** | 首图生产生命周期已闭环；当前 53 张 D8 图片已补齐中/英/日/韩/印五语言标题、说明和替代文本，其中 14 张既有 Bali 路线卡已与发布清单同步，旧 `rock-ocean-landscape.jpg` 也已按实景交叉核对为 Broken Beach。另有 10 张精确地点图使用独立缩略图和可见版权署名；`bali-12.jpg` 已关联乌布圣猴森林，`bali-3.jpg` 已关联 Kelingking Beach Viewpoint；`Nyepi.jpg` 已纠正为塞米亚克村社神庙的社区文化聚会；`bali-1.jpg`、`bali-2.jpg` 与 `bali-4.jpg` 因缺少唯一地点证据保持未知地点且不开放 AI/司机交接。剩余 9 张已从 Bali 路由池隔离：5 张文件名明确指向其他目的地、1 张文件名与画面冲突、2 张为地点未知的通用海岸图、1 张仅能核验到印度尼西亚国家层级；它们不是 Bali POI 待办。未确认素材不可发布，公开 API 与 UI 数量口径必须一致 |
-| 5 · P1 | **在线自动支付**（Stripe / 微信商户） | 目前是收款码 + 管理员人工确认。验收：收款主体确定，支付回调、签名、幂等、对账、退款/失败与人工兜底通过测试后再上线 |
+| 5 · P1 | **PayPal 自动支付生产闭环** | Orders v2、服务器金额复核、webhook 签名/幂等、退款人工复核和响应式按钮已在本地完成；未配置时 fail-closed。验收：站长只在 Render 配置 Sandbox Client ID、Client Secret、Webhook ID、环境、币种和 USD 1.49 测试价，随后使用 Sandbox Personal 买家完成一次支付、重复回调、取消与退款测试；通过后再单独决定切换 Live，不把银行卡绑定等同于支付验收 |
 | 6 · P1 | **持久化反滥用与邮件重试** | ✅ HMAC 伪匿名数据库计数、PostgreSQL 并发和 Render 代理路径已有测试/既有生产证据；2026-08-26 又为司机表单增加稳定请求 UUID 与 Resend 幂等键，网络重试不再重复投递同一请求，且不新增个人信息存储。真实送达只随下一次获授权或真实请求验收，不重复发送测试邮件 |
 | 7 · P1 | **任意目的地 AI 事实增强** | 四个预设目的地已静态直出；任意城市仍是依赖主模型额度的待核验草稿。验收：结构化 POI、来源、核验状态、模型/天气失败态与监控齐全 |
 | 8 · P2 | **真实道路矩阵与拖拽路线编辑** | 当前使用 OSM/Leaflet 地理锚点、按天上下移动和本地草稿；尚无生产级车程矩阵与拖拽排序。验收：先离线评估 MapLibre、TRIP、VROOM/OR-Tools，禁止依赖公共 OSRM demo 直接上线 |

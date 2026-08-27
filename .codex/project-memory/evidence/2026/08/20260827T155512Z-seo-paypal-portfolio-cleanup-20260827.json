@@ -1,0 +1,22 @@
+{
+  "schema_version": 1,
+  "evidence_id": "ev-20260827T155512Z-seo-paypal-portfolio-cleanup-20260827",
+  "task_ref": "seo-paypal-portfolio-cleanup-20260827",
+  "owner": "Codex Sol",
+  "captured_at": "2026-08-27T15:55:12Z",
+  "status": "verified",
+  "claim": "Implemented fail-closed PayPal Sandbox Orders v2 at USD 1.49, official supplier booking disclosure, Portfolio place dedupe, Search Console evidence boundary, and removed 18 clean merged worktrees.",
+  "source": {
+    "kind": "git",
+    "repository": "https://github.com/lingfengai731/Agentstrip.git",
+    "commit": "061306b632aedcc1077445507b2a2751a9ee53f1",
+    "branch": "codex/seo-paypal-20260827",
+    "worktree": "E:\\Agentstrip-wt-seo-paypal-20260827",
+    "dirty": true
+  },
+  "verification": {
+    "command": "python -m unittest wandermind.backend.tests.test_product_access; tools/test-image-intake.ps1; tools/test_bali_media_packages.py; py_compile; node --check; git diff --check; Playwright 1440/768/390",
+    "result": "82/82 tests pass; image intake pass; 62/62 POIs covered; syntax and diff checks pass; PayPal panel has zero horizontal overflow at all three viewports; public sitemap returned 200 application/xml with 8 URLs."
+  },
+  "notes": "No PayPal credential, real payment, refund, Render environment change, Google Search Console mutation, supplier booking, driver email or production entitlement write was performed."
+}
