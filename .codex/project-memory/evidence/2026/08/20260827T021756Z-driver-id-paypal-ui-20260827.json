@@ -1,0 +1,22 @@
+{
+  "schema_version": 1,
+  "evidence_id": "ev-20260827T021756Z-driver-id-paypal-ui-20260827",
+  "task_ref": "DRIVER-ID-PAYPAL-UI-20260827",
+  "owner": "codex-sol",
+  "captured_at": "2026-08-27T02:17:56Z",
+  "status": "claimed",
+  "claim": "Final Indonesian driver guides, mobile packs, restrained hero motion, PayPal China individual-seller sandbox guidance, and Pak Nanok supplier gate verified locally",
+  "source": {
+    "kind": "git",
+    "repository": "https://github.com/lingfengai731/Agentstrip.git",
+    "commit": "997960b51309d6984bf3d245bd64bdb59ffb6b60",
+    "branch": "codex/driver-id-paypal-ui-20260827",
+    "worktree": "E:\\Agentstrip-wt-driver-id-paypal-ui-20260827",
+    "dirty": true
+  },
+  "verification": {
+    "command": "node tools/test_ambient_hero.cjs; node tools/test_bali_browser.cjs; node tools/test_site_search.mjs; python tools/test_bali_media_packages.py; python -B -m unittest discover -s wandermind/backend/tests -p test*.py; git diff --check",
+    "result": "pass: ambient 8 viewports/reduced-motion; Bali 4 viewports; search; 62 POIs/8 packages; backend 90 tests with 13 expected PostgreSQL skips; diff check"
+  },
+  "notes": ""
+}

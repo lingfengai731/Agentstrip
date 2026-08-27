@@ -233,23 +233,25 @@ pwsh -NoProfile -File .\tools\test-image-intake.ps1
 ## 📣 推广材料
 
 - [`MARKETING_LAUNCH_PLAYBOOK.md`](MARKETING_LAUNCH_PLAYBOOK.md)：站主首发方案，现含小红书、Instagram Feed / Story / Reels、链接和 14 天复盘路径。
-- [`promotion-packs/Dicky/WanderMind_Dicky_Promosi_Siap_Pakai.docx`](promotion-packs/Dicky/WanderMind_Dicky_Promosi_Siap_Pakai.docx)：Dicky 的印尼语懒人推广手册及 7 张独立上传图片（司机/服务 3 张、带署名的巴厘岛风景 4 张）。
-- [`promotion-packs/Gede-Nico/WanderMind_Gede_Nico_Promosi_Siap_Pakai.docx`](promotion-packs/Gede-Nico/WanderMind_Gede_Nico_Promosi_Siap_Pakai.docx)：Gede Nico 的印尼语懒人推广手册及 7 张独立上传图片（司机/服务 3 张、带署名的巴厘岛风景 4 张）。
+- [`promotion-packs/Dicky/WanderMind_Dicky_Panduan_Lengkap_ID.docx`](promotion-packs/Dicky/WanderMind_Dicky_Panduan_Lengkap_ID.docx)：Dicky 最终印尼语合并手册；配套 Mobile Pack 含手册、7 张独立 JPG 和手机保存说明。
+- [`promotion-packs/Gede-Nico/WanderMind_Gede_Nico_Panduan_Lengkap_ID.docx`](promotion-packs/Gede-Nico/WanderMind_Gede_Nico_Panduan_Lengkap_ID.docx)：Gede Nico 最终印尼语合并手册；配套 Mobile Pack 含手册、7 张独立 JPG 和手机保存说明。
 
 两位司机使用不同的 `driver_id` 专属链接，打开后会自动选择对应司机。推广包不包含私人联系方式；预算器采用 Dicky 给出的初始价格，Dicky 可按天数和路线调整并以邮件回复为最终金额，Gede Nico 单独报价。
 
-站长中文审阅已改为每位司机一份合并手册：
+站长中文审阅已改为每位司机一份合并手册，并于 2026-08-27 通过内容审阅：
 
 - [`promotion-packs/Dicky/WanderMind_Dicky_Complete_Guide_Chinese_Review.docx`](promotion-packs/Dicky/WanderMind_Dicky_Complete_Guide_Chinese_Review.docx) 与配套手机 ZIP。
 - [`promotion-packs/Gede-Nico/WanderMind_Gede_Nico_Complete_Guide_Chinese_Review.docx`](promotion-packs/Gede-Nico/WanderMind_Gede_Nico_Complete_Guide_Chinese_Review.docx) 与配套手机 ZIP。
 
-合并手册包含网站介绍、游客使用方法、两组完整推广素材、3–5 天发布节奏、手机保存图片和独立报价授权；旧中文拆分版已删除，印尼语正式版待中文审阅后更新。
+合并手册包含网站介绍、游客使用方法、两组完整推广素材、3–5 天发布节奏、手机保存图片和独立报价授权；旧中文拆分版和旧印尼语拆分版已删除。两份最终印尼语手册共 26 页，已完成 LibreOffice 渲染和主控逐页复核；Dicky 的初始价格只出现在其本人手册，Gede Nico 版保持待本人书面确认。
 
 运营与门禁资料：
 
 - [`operations/MASTER_BACKLOG_2026-08-26.md`](operations/MASTER_BACKLOG_2026-08-26.md)：两个账号统一后的完整未闭环台账与顺序。
 - [`operations/DICKY_RATE_AUTHORIZATION_ID.md`](operations/DICKY_RATE_AUTHORIZATION_ID.md) 与 [`operations/GEDE_RATE_AUTHORIZATION_ID.md`](operations/GEDE_RATE_AUTHORIZATION_ID.md)：两位司机各自独立的印尼语报价授权表。
 - [`operations/SUPPLIER_VERIFICATION_REGISTER.md`](operations/SUPPLIER_VERIFICATION_REGISTER.md)：三个供应商体验的公开证据边界和直接核验问题。
+- `operations/SUPPLIER_VERIFICATION_REGISTER.md` 同时记录 Dicky 于 2026-08-27 推荐的 Pak Nanok Jeep Bali Tour；它目前只是内部候选，不是已核验公开推荐。
+- [`operations/PAYMENT_ONBOARDING_OPTIONS_ZH.md`](operations/PAYMENT_ONBOARDING_OPTIONS_ZH.md)：中国大陆个人卖家先行测试 PayPal Sandbox 的开户、凭据、webhook 和生产门禁步骤。
 - [`operations/PRODUCTION_GATES.md`](operations/PRODUCTION_GATES.md)：付费/积分/管理员 E2E、真实邮件、自动支付、公开发帖与广告门禁。
 
 ---
