@@ -1088,11 +1088,12 @@ class ProductAccessTests(unittest.TestCase):
             encoding="utf-8"
         )
 
-        self.assertIn("assets/js/ai-tool.js?v=p57", ai_html)
+        self.assertIn("assets/js/ai-tool.js?v=p58", ai_html)
         self.assertIn("initialDestQuery", ai_js)
         self.assertIn("function openHashTarget()", ai_js)
         self.assertIn("switchCompareSub(target)", ai_js)
         self.assertIn("window.addEventListener('hashchange', openHashTarget)", ai_js)
+        self.assertIn("if (window.location.hash) setTimeout(openHashTarget, 0);", ai_js)
         self.assertIn("const hasPlannerEntry", ai_js)
         self.assertIn("if (!hasPlannerEntry) return;", ai_js)
         self.assertNotIn("&& !savedBrief && !savedProfile", ai_js)
