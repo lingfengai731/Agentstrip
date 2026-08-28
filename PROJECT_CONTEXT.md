@@ -135,6 +135,21 @@ Search/account entry, package-to-driver handoff, `?dest=`, `#itinerary` and `#ho
 signed-in refresh using the same already-paid Sandbox account; public simulation cannot prove that
 account's stored entitlement.
 
+On 2026-08-28 the owner completed that acceptance with the same already-paid Sandbox buyer account:
+the full route stayed unlocked after re-entry, the adjustment flow opened without another payment,
+and the direct account entry worked. This closes the successful paid-route restoration stage. It
+does not prove a refund, declined funding source, external webhook redelivery, settlement or Live
+money.
+
+The next isolated engineering stage adds a local buyer-cancel boundary: PayPal JavaScript `onCancel`
+marks only WanderMind's pending checkout as `BUYER_CANCELLED`, so a retry creates a fresh provider
+order. It does not claim to void a PayPal order remotely. A late completed-capture webhook for an
+abandoned order moves it to `refund_review` without granting route access. Refund-review, failed and
+cancelled orders are now visible to administrators with provider order, capture and refund reference
+fields. The product-access suite passes 87 tests, and deterministic Chromium checks cover the cancel
+feedback at 390, 768 and 1440 px. These are local engineering checks until the branch is reviewed,
+merged, deployed and separately verified.
+
 Four generated photorealistic activity images remain excluded from the Portfolio because Portfolio is
 presented as real island moments. They may be used later only as explicitly labelled AI illustrations;
 they must not be represented as traveller or supplier evidence.

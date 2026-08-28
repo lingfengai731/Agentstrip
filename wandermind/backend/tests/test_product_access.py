@@ -1031,7 +1031,7 @@ class ProductAccessTests(unittest.TestCase):
         self.assertIn("bali.html#professional-planner", index_html)
         self.assertIn("ai-tool.html?mode=diy", index_html)
         self.assertIn('id="professional-planner"', bali_html)
-        self.assertIn("assets/js/bali-professional.js?v=p57", bali_html)
+        self.assertIn("assets/js/bali-professional.js?v=p58", bali_html)
         self.assertNotIn("ai-tool.html?professional=1", bali_html)
         self.assertNotIn("professional_requested", ai_js)
         self.assertIn("history.replaceState({}, document.title, window.location.pathname);", ai_js)
@@ -1379,6 +1379,102 @@ class ProductAccessTests(unittest.TestCase):
         self.assertEqual(second.status_code, 200, second.text)
         self.assertTrue(second.json()["already_captured"])
 
+    def test_paypal_buyer_cancel_abandons_local_order_and_retry_is_fresh(self):
+        trip_id = self._new_trip(token=self.user_token)
+        config = {
+            "enabled": True,
+            "environment": "sandbox",
+            "client_id": "public-sandbox-client",
+            "client_secret": "server-only-secret",
+            "webhook_id": "webhook-test",
+            "currency": "USD",
+            "amount_text": "1.49",
+            "amount_cents": 149,
+        }
+        provider_ids = iter(("PAYPALCANCEL123", "PAYPALRETRY123"))
+
+        async def create_order(_config, _local_order_id):
+            return {"id": next(provider_ids), "status": "CREATED"}
+
+        with (
+            patch.object(main.paypal_service, "settings", return_value=config),
+            patch.object(main.paypal_service, "create_order", side_effect=create_order),
+        ):
+            first = self._run(self._request(
+                "POST", "/api/paypal/orders", token=self.user_token,
+                json={"trip_id": trip_id},
+            ))
+            abandoned = self._run(self._request(
+                "POST", "/api/paypal/orders/PAYPALCANCEL123/abandon",
+                token=self.user_token,
+            ))
+            duplicate = self._run(self._request(
+                "POST", "/api/paypal/orders/PAYPALCANCEL123/abandon",
+                token=self.user_token,
+            ))
+            retried = self._run(self._request(
+                "POST", "/api/paypal/orders", token=self.user_token,
+                json={"trip_id": trip_id},
+            ))
+
+        self.assertEqual(first.status_code, 200, first.text)
+        self.assertEqual(abandoned.status_code, 200, abandoned.text)
+        self.assertTrue(abandoned.json()["abandoned"])
+        self.assertTrue(duplicate.json()["already_abandoned"])
+        self.assertEqual(retried.status_code, 200, retried.text)
+        self.assertEqual(retried.json()["provider_order_id"], "PAYPALRETRY123")
+
+        conn = get_db()
+        try:
+            abandoned_order = dict(conn.execute(
+                "SELECT * FROM professional_route_orders WHERE provider_order_id=?",
+                ("PAYPALCANCEL123",),
+            ).fetchone())
+        finally:
+            conn.close()
+        self.assertEqual(abandoned_order["status"], "cancelled")
+        self.assertEqual(abandoned_order["provider_status"], "BUYER_CANCELLED")
+
+        late_capture = {
+            "id": "WH-CANCEL-LATE-CAPTURE-123",
+            "event_type": "PAYMENT.CAPTURE.COMPLETED",
+            "resource": {
+                "id": "CAPTURECANCELLATE123",
+                "status": "COMPLETED",
+                "custom_id": abandoned_order["id"],
+                "amount": {"currency_code": "USD", "value": "1.49"},
+                "supplementary_data": {
+                    "related_ids": {"order_id": "PAYPALCANCEL123"}
+                },
+            },
+        }
+        with (
+            patch.object(main.paypal_service, "settings", return_value=config),
+            patch.object(
+                main.paypal_service,
+                "verify_webhook",
+                new=AsyncMock(return_value=True),
+            ),
+        ):
+            late = self._run(self._request(
+                "POST", "/api/paypal/webhook", json=late_capture,
+            ))
+        self.assertEqual(late.status_code, 200, late.text)
+
+        conn = get_db()
+        try:
+            abandoned_order = dict(conn.execute(
+                "SELECT * FROM professional_route_orders WHERE provider_order_id=?",
+                ("PAYPALCANCEL123",),
+            ).fetchone())
+            trip = dict(conn.execute(
+                "SELECT * FROM product_trips WHERE id=?", (trip_id,)
+            ).fetchone())
+        finally:
+            conn.close()
+        self.assertEqual(abandoned_order["status"], "refund_review")
+        self.assertEqual(trip["professional_route_entitlement"], 0)
+
     def test_paypal_amount_mismatch_does_not_unlock_or_allow_admin_bypass(self):
         trip_id = self._new_trip(token=self.user_token)
         config = {
@@ -1557,6 +1653,20 @@ class ProductAccessTests(unittest.TestCase):
         self.assertEqual(order["status"], "refund_review")
         self.assertEqual(trip["professional_route_entitlement"], 1)
 
+        review = self._run(self._request(
+            "GET", "/api/admin/professional-route/orders?status=refund_review",
+            token=self.admin_token,
+        ))
+        self.assertEqual(review.status_code, 200, review.text)
+        review_order = next(
+            item for item in review.json()["orders"] if item["id"] == local_order_id
+        )
+        self.assertEqual(
+            review_order["provider_capture_id"],
+            "CAPTUREWEBHOOK123",
+        )
+        self.assertIsNotNone(review_order["refunded_at"])
+
     def test_paypal_frontend_uses_server_orders_and_never_embeds_a_secret(self):
         frontend = BACKEND_DIR.parents[1] / "wandermind-studio" / "frontend"
         script = (frontend / "assets" / "js" / "bali-professional.js").read_text(
@@ -1567,6 +1677,8 @@ class ProductAccessTests(unittest.TestCase):
         self.assertIn("/api/paypal/config", script)
         self.assertIn("/api/paypal/orders", script)
         self.assertIn("/capture", script)
+        self.assertIn("/abandon", script)
+        self.assertIn("pc.cancelled", script)
         self.assertIn("https://www.paypal.com/sdk/js?client-id=", script)
         self.assertIn("Sandbox test · no real charge", script)
         self.assertNotIn("PAYPAL_CLIENT_SECRET", script)

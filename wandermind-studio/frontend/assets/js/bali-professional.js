@@ -20,11 +20,11 @@
   };
 
   var PAYPAL_COPY = {
-    en: { option:'Pay online with PayPal or card', sandbox:'Sandbox test · no real charge', local:'Or use a local QR payment', processing:'Verifying the payment securely…', done:'Payment verified. Your full route is now open.', failed:'PayPal could not verify this payment. No route access was granted.' },
-    zh: { option:'使用 PayPal 或银行卡在线支付', sandbox:'沙盒测试 · 不会真实扣款', local:'或使用本地二维码付款', processing:'正在由服务器安全核验付款…', done:'付款已核验，完整路线已经开放。', failed:'PayPal 未能核验这笔付款，路线尚未解锁。' },
-    ja: { option:'PayPal またはカードでオンライン決済', sandbox:'Sandbox テスト・実際の請求なし', local:'またはローカルQR決済', processing:'サーバーで決済を確認しています…', done:'決済を確認し、完全版ルートを開放しました。', failed:'PayPalで決済を確認できなかったため、ルートは開放されていません。' },
-    ko: { option:'PayPal 또는 카드로 온라인 결제', sandbox:'Sandbox 테스트 · 실제 청구 없음', local:'또는 현지 QR 결제', processing:'서버에서 결제를 안전하게 확인 중입니다…', done:'결제가 확인되어 전체 경로가 열렸습니다.', failed:'PayPal 결제를 확인하지 못해 경로가 잠금 해제되지 않았습니다.' },
-    id: { option:'Bayar online dengan PayPal atau kartu', sandbox:'Uji Sandbox · tidak ada tagihan nyata', local:'Atau gunakan pembayaran QR lokal', processing:'Memverifikasi pembayaran dengan aman…', done:'Pembayaran terverifikasi. Rute lengkap sudah terbuka.', failed:'PayPal tidak dapat memverifikasi pembayaran ini. Rute belum dibuka.' }
+    en: { option:'Pay online with PayPal or card', sandbox:'Sandbox test · no real charge', local:'Or use a local QR payment', processing:'Verifying the payment securely…', done:'Payment verified. Your full route is now open.', cancelled:'Checkout closed. No route access was granted; you can try again.', failed:'PayPal could not verify this payment. No route access was granted.' },
+    zh: { option:'使用 PayPal 或银行卡在线支付', sandbox:'沙盒测试 · 不会真实扣款', local:'或使用本地二维码付款', processing:'正在由服务器安全核验付款…', done:'付款已核验，完整路线已经开放。', cancelled:'已关闭付款，没有授予路线权益；你可以重新尝试。', failed:'PayPal 未能核验这笔付款，路线尚未解锁。' },
+    ja: { option:'PayPal またはカードでオンライン決済', sandbox:'Sandbox テスト・実際の請求なし', local:'またはローカルQR決済', processing:'サーバーで決済を確認しています…', done:'決済を確認し、完全版ルートを開放しました。', cancelled:'決済を閉じました。ルートは開放されていません。もう一度お試しいただけます。', failed:'PayPalで決済を確認できなかったため、ルートは開放されていません。' },
+    ko: { option:'PayPal 또는 카드로 온라인 결제', sandbox:'Sandbox 테스트 · 실제 청구 없음', local:'또는 현지 QR 결제', processing:'서버에서 결제를 안전하게 확인 중입니다…', done:'결제가 확인되어 전체 경로가 열렸습니다.', cancelled:'결제를 닫았습니다. 경로 권한은 부여되지 않았으며 다시 시도할 수 있습니다.', failed:'PayPal 결제를 확인하지 못해 경로가 잠금 해제되지 않았습니다.' },
+    id: { option:'Bayar online dengan PayPal atau kartu', sandbox:'Uji Sandbox · tidak ada tagihan nyata', local:'Atau gunakan pembayaran QR lokal', processing:'Memverifikasi pembayaran dengan aman…', done:'Pembayaran terverifikasi. Rute lengkap sudah terbuka.', cancelled:'Checkout ditutup. Akses rute belum diberikan; Anda dapat mencoba lagi.', failed:'PayPal tidak dapat memverifikasi pembayaran ini. Rute belum dibuka.' }
   };
 
   var COPY = {
@@ -227,7 +227,14 @@
           setStatus(pc.done, false, 'bali-professional-payment-status');
           await loadRoute(state.profile, state.routeId);
         },
-        onCancel: function () { setStatus('', false, 'bali-professional-payment-status'); },
+        onCancel: async function (data) {
+          if (data && data.orderID) {
+            await fetch(API_BASE + '/api/paypal/orders/' + encodeURIComponent(data.orderID) + '/abandon', {
+              method:'POST', headers:Object.assign({ 'Content-Type':'application/json' }, authHeaders())
+            }).catch(function () { return null; });
+          }
+          setStatus(pc.cancelled, false, 'bali-professional-payment-status');
+        },
         onError: function () { setStatus(pc.failed, true, 'bali-professional-payment-status'); }
       }).render('#bali-professional-paypal-buttons');
     } catch (_) {
