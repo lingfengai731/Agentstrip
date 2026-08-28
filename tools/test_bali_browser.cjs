@@ -84,6 +84,10 @@ function check(condition, message) {
       localStorage.setItem('wm_studio_trip_profile', JSON.stringify({ audience:'first', goals:['photo'], travel_style:'comfort', travellers:2, departure_date:'2026-10-01', return_date:'2026-10-08', days:7, currency:'CNY', budget_range:15000, pace:'balanced' }));
     });
     await unlocked.route('**/api/paypal/config', route => route.fulfill({ json:{ enabled:false } }));
+    await unlocked.route('**/api/auth/me', async route => {
+      await new Promise(resolve => setTimeout(resolve, 1500));
+      await route.fulfill({ status:401, json:{ detail:'test token' } });
+    });
     const unlockedPayload = {
       ok:true, trip_id:'browser-trip', professional_route_entitlement:true,
       professional_adjustments_remaining:3,
