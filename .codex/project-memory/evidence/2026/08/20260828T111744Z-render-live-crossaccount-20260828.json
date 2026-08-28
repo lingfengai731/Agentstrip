@@ -1,0 +1,31 @@
+{
+  "schema_version": 1,
+  "evidence_id": "ev-20260828T111744Z-render-live-crossaccount-20260828",
+  "task_ref": "RENDER-LIVE-CROSSACCOUNT-20260828",
+  "owner": "Codex Sol",
+  "captured_at": "2026-08-28T11:17:44Z",
+  "status": "verified",
+  "claim": "Render CLI was reauthorized and service srv-d8dfs36k1jcs738v9cfg manually deployed merged main commit 9640ec7; the deploy is Live and fresh public probes preserve the p58 PayPal Sandbox buyer-cancel boundary.",
+  "source": {
+    "kind": "render_and_public_production",
+    "repository": "https://github.com/lingfengai731/Agentstrip.git",
+    "commit": "9640ec7bc2b195b345d791224b8d3642565ab8d6",
+    "branch": "main",
+    "service_id": "srv-d8dfs36k1jcs738v9cfg",
+    "deploy_id": "dep-da8mldjbc2fs73anos0g",
+    "deploy_trigger": "api",
+    "deploy_status": "live",
+    "deploy_started_at": "2026-08-28T11:02:14.858709Z",
+    "deploy_finished_at": "2026-08-28T11:03:36.540303Z"
+  },
+  "verification": {
+    "command": "Render CLI deploy list plus public GET /healthz, /bali.html, /openapi.json and /api/paypal/config",
+    "result": "pass: health 200; Bali 200 and p58; abandon endpoint present; PayPal enabled in sandbox at USD 1.49 with a public Client ID and no Client Secret field"
+  },
+  "external_side_effects": "One authorized manual Render code deployment of already-merged main. No payment, refund, entitlement, points, email, social post, advertisement, spend, supplier contact or environment-variable mutation.",
+  "remaining_gates": [
+    "Backlog ranks 3 through 10 retain the partial/open status recorded in ev-20260828T103826Z-paid-route-final-acceptance-and-backlog-handoff-20260828.",
+    "Use disposable Sandbox data for external cancel, decline and webhook-redelivery tests; do not alter the accepted order.",
+    "Refund behavior, automatic entitlement revocation, Live credentials, Live webhook and real money require separate explicit authorization."
+  ]
+}
