@@ -1066,6 +1066,7 @@ function init() {
   if (mRightBtn) mRightBtn.onclick = () => document.querySelector('.ws-rightpanel').classList.toggle('mobile-open');
 
   attachLangWatcher();
+  setTimeout(openHashTarget, 0);
   setTimeout(hydratePlannerFromQuery, 0);
 }
 
