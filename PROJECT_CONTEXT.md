@@ -124,6 +124,17 @@ unrequested modal before My Account, and adds the global account entry to Search
 86/86 tests plus Chromium 320/390/768/1440; this remains a release candidate until PR/CI/Render and a
 signed-in production restoration smoke complete.
 
+PR #34 merged as `f156cadc125c7b4f5bb07c8f33832d1119125f71`; its Project memory and
+PostgreSQL integration checks passed. Production smoke then exposed two deep-link timing races which
+were not visible in local fast-network tests. PR #36 merged as `fcec737d48030b5abd0cc78c223e5c35626dd9e0`
+and PR #37 merged as `17cb54b03dadfee2f402c08ca0f4346fd4e9d77f`; their PostgreSQL checks passed.
+Render now serves `ai-tool.js?v=p59`. A fresh production Chromium matrix at 320/390/768/1440 passed
+Bali layout, objective package filters, unlocked-route recovery simulation, adjustment feedback,
+Search/account entry, package-to-driver handoff, `?dest=`, `#itinerary` and `#hotels`, including a
+1.5-second delayed `/api/auth/me` response. The only remaining release acceptance is an owner-run
+signed-in refresh using the same already-paid Sandbox account; public simulation cannot prove that
+account's stored entitlement.
+
 Four generated photorealistic activity images remain excluded from the Portfolio because Portfolio is
 presented as real island moments. They may be used later only as explicitly labelled AI illustrations;
 they must not be represented as traveller or supplier evidence.
