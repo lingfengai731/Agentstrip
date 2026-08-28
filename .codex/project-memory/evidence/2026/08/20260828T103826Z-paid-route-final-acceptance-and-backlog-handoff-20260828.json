@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "evidence_id": "ev-20260828T103826Z-paid-route-final-acceptance-and-backlog-handoff-20260828",
+  "task_ref": "PAID-ROUTE-FINAL-ACCEPTANCE-AND-BACKLOG-HANDOFF-20260828",
+  "owner": "Codex Sol",
+  "captured_at": "2026-08-28T10:38:26Z",
+  "status": "verified",
+  "claim": "The owner completed the same-paid-Sandbox-account final acceptance for persistent full-route access, adjustment entry and direct account entry; repository and production evidence for the p58 buyer-cancel gate are merged, while backlog ranks 3 through 10 remain partially complete or externally gated rather than closed.",
+  "source": {
+    "kind": "git_and_owner_acceptance",
+    "repository": "https://github.com/lingfengai731/Agentstrip.git",
+    "commit": "de7a6c003133324bd2020861dff4fd390c35c288",
+    "branch": "codex/handoff-paypal-next-stage-20260828",
+    "worktree": "E:\\Agentstrip-wt-paypal-failure-gates-20260828",
+    "dirty_before_record": false
+  },
+  "verification": {
+    "command": "project-memory inspect, brief and validate; GitHub PR 39/40 merged evidence; owner acceptance report; public production p58 and abandon endpoint evidence from ev-20260828T075330Z-paypal-failure-gates-production-20260828",
+    "result": "pass; project-memory validation passed with one expected stale snapshot warning"
+  },
+  "closed_scope": [
+    "same paid Sandbox account restores the complete professional route after re-entry",
+    "adjustment flow opens without another payment",
+    "direct account entry works",
+    "deployed buyer-cancel local order closure, fresh retry path and late-capture refund-review gate",
+    "responsive production cancel-state checks at 390, 768 and 1440"
+  ],
+  "remaining_ranks_3_to_10": {
+    "3": "Driver-specific final pricing remains gated on dated, separate Dicky and Gede confirmations for airport, hotel change, overtime, Penida, regional and activity rules.",
+    "4": "Successful PayPal purchase and entitlement restoration are closed; disposable-data points deduction, adjustment decrement, admin confirmation/unlimited and external cancel/decline/duplicate-webhook/refund E2E remain open.",
+    "5": "Real driver-email evidence waits for the next genuine traveller request or one explicitly approved dedicated recipient; no duplicate synthetic email should be sent.",
+    "6": "Organic public launch assets exist, but no public post is authorized or claimed in this handoff.",
+    "7": "First-party funnel collection exists, but real traffic and valid conversion samples do not yet exist.",
+    "8": "PayPal Sandbox success and local abnormal-flow guards exist; external abnormal-flow, refund resolution, settlement, Live credentials/webhook and a minimal real transaction remain separate gates.",
+    "9": "Paid-search structure can be prepared, but account, budget, payment method and spend remain explicitly unauthorized.",
+    "10": "Dynamic pre-departure POI rechecks remain an operations workflow to run against each dated confirmed itinerary."
+  },
+  "external_side_effects": "None in this handoff: no payment, refund, entitlement, points, admin, email, social post, advertisement, spend, supplier contact, Render setting or production mutation.",
+  "notes": "Do not reuse or refund the already accepted Sandbox order. Do not interpret partial implementation or prepared documents as rank 3-10 closure."
+}
