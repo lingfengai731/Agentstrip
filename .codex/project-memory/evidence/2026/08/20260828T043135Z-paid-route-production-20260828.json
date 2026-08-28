@@ -1,0 +1,22 @@
+{
+  "schema_version": 1,
+  "evidence_id": "ev-20260828T043135Z-paid-route-production-20260828",
+  "task_ref": "paid-route-production-20260828",
+  "owner": "Codex Sol",
+  "captured_at": "2026-08-28T04:31:35Z",
+  "status": "verified",
+  "claim": "PRs 34, 36 and 37 merged; Render serves p59; public production responsive and deep-link matrix passed.",
+  "source": {
+    "kind": "git",
+    "repository": "https://github.com/lingfengai731/Agentstrip.git",
+    "commit": "d939f9a709b0ef742c89384062285c83b10d1dbe",
+    "branch": "codex/paid-route-production-evidence-20260828",
+    "worktree": "E:\\Agentstrip-wt-paid-route-ui-audit-20260828",
+    "dirty": false
+  },
+  "verification": {
+    "command": "GitHub fixed-head CI; public release markers; Chromium production 320/390/768/1440 with delayed auth/me",
+    "result": "pass"
+  },
+  "notes": "No second payment or real account mutation. Owner signed-in restoration with the already-paid Sandbox account remains pending."
+}
