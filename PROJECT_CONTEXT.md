@@ -108,3 +108,22 @@ The existing root `AGENTS.md` is intentionally unchanged. Therefore Codex cannot
 to auto-load this file solely because it exists. Until the project owner permits a small entry-rule
 addition to `AGENTS.md`, each account must open this file or run `project-memory.ps1 brief` at the
 start of a task.
+
+## 2026-08-28 paid-route UI release candidate
+
+The owner completed one USD 1.49 PayPal Sandbox buyer checkout and observed the professional route
+unlock. That fresh report supersedes the earlier handoff which said no buyer transaction had been
+performed, but it does not prove cancellation, duplicate webhook, refund, settlement or Live money.
+The same field test exposed route re-entry and copy inconsistencies. The isolated branch
+`codex/paid-route-ui-audit-20260828` now restores the purchasing account's latest unlocked Bali trip,
+normalises all unlocked days as open, removes unlocked preview/locked copy, gives the adjustment
+button visible focus feedback and preserves route selection through login. It also removes subjective
+package intensity and public-route pace/fitness labels, removes the duplicated legacy itinerary,
+repairs AI workspace feature/deep-destination links, prevents saved trip data from opening an
+unrequested modal before My Account, and adds the global account entry to Search. Local evidence is
+86/86 tests plus Chromium 320/390/768/1440; this remains a release candidate until PR/CI/Render and a
+signed-in production restoration smoke complete.
+
+Four generated photorealistic activity images remain excluded from the Portfolio because Portfolio is
+presented as real island moments. They may be used later only as explicitly labelled AI illustrations;
+they must not be represented as traveller or supplier evidence.

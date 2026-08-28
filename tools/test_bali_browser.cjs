@@ -65,6 +65,7 @@ function check(condition, message) {
     await search.goto(base + '/search.html?q=Tirta%20Empul', { waitUntil: 'domcontentloaded' });
     await search.locator('#site-search-results li').first().waitFor();
     check(await search.locator('#site-search-results li').count() > 0, 'Search returned no results');
+    check(await search.locator('.wm-global-auth-link').count() === 1, 'Search page has no global account entry');
     check(await search.evaluate(() => document.documentElement.scrollWidth <= document.documentElement.clientWidth + 1), 'Search mobile overflow');
 
     await search.goto(base + '/find-driver.html?package=batur-dawn-choice', { waitUntil: 'domcontentloaded' });
@@ -72,7 +73,10 @@ function check(condition, message) {
     check((await search.locator('#fd-places').inputValue()).includes('batur-dawn-choice'), 'Package was not handed to driver form');
     await search.close();
 
-    const unlocked = await browser.newPage({ viewport: { width: 390, height: 844 } });
+    const unlockedContext = await browser.newContext({ viewport: { width: 390, height: 844 }, serviceWorkers:'block' });
+    const unlocked = await unlockedContext.newPage();
+    const unlockedErrors = [];
+    unlocked.on('pageerror', error => unlockedErrors.push(error.message));
     await unlocked.addInitScript(() => {
       localStorage.setItem('wm_studio_token', 'browser-test-token');
       localStorage.setItem('wm_studio_user', JSON.stringify({ id:'browser-user', email:'browser@example.test', name:'Browser test' }));
@@ -80,14 +84,18 @@ function check(condition, message) {
       localStorage.setItem('wm_studio_trip_profile', JSON.stringify({ audience:'first', goals:['photo'], travel_style:'comfort', travellers:2, departure_date:'2026-10-01', return_date:'2026-10-08', days:7, currency:'CNY', budget_range:15000, pace:'balanced' }));
     });
     await unlocked.route('**/api/paypal/config', route => route.fulfill({ json:{ enabled:false } }));
-    await unlocked.route('**/api/bali/professional-route**', route => route.fulfill({ json:{
+    const unlockedPayload = {
       ok:true, trip_id:'browser-trip', professional_route_entitlement:true,
       professional_adjustments_remaining:3,
       profile:{ audience:'first', goals:['photo'], travel_style:'comfort', travellers:2, departure_date:'2026-10-01', return_date:'2026-10-08', days:7, currency:'CNY', budget_range:15000, pace:'balanced' },
       route:{ route_id:'R1', route_name:'First Bali', route_promise:'A clear first trip', recommendation_reason:'Matched to the trip.', days:7, preview_days:7, locked_days:0, unlocked:true,
         days_plan:Array.from({ length:7 }, (_, index) => ({ day:index+1, region_name:'Bali', theme:`Theme ${index+1}`, locked:false, places:[{ name:`Place ${index+1}` }] })) }
-    } }));
-    await unlocked.goto(base + '/bali.html?route=R1#professional-planner', { waitUntil:'domcontentloaded' });
+    };
+    await unlocked.route('**/api/bali/professional-route**', route => {
+      if (route.request().url().includes('/recent-unlocked')) return route.fulfill({ json:unlockedPayload });
+      return route.fulfill({ status:409, json:{ detail:{ error:'professional_route_adjustment_required' } } });
+    });
+    await unlocked.goto(base + '/bali.html?route=R2#professional-planner', { waitUntil:'domcontentloaded' });
     await unlocked.locator('#bali-professional-edit').waitFor();
     const unlockedCopy = await unlocked.locator('#bali-professional-app').innerText();
     check(!/Free preview|days locked/.test(unlockedCopy), 'Unlocked route still exposes preview or lock labels');
@@ -99,8 +107,17 @@ function check(condition, message) {
     await unlocked.goto(base + '/index.html', { waitUntil:'domcontentloaded' });
     await unlocked.locator('.wm-global-auth-link').waitFor({ state:'attached' });
     check((await unlocked.locator('.wm-global-auth-link').getAttribute('href')).includes('account=open'), 'Account link does not open account view directly');
-    await unlocked.close();
-    console.log('Browser checks passed: responsive Bali, objective package filters, route editor feedback, unlocked copy, account direct link, search and driver handoff');
+    await unlocked.goto(base + '/ai-tool.html?dest=paris#itinerary', { waitUntil:'domcontentloaded' });
+    await unlocked.waitForTimeout(700);
+    const itineraryState = await unlocked.evaluate(() => ({ hash:location.hash, active:Array.from(document.querySelectorAll('.ws-panel-content.active')).map(node => node.dataset.panel) }));
+    check(itineraryState.active.includes('itinerary'), `Itinerary deep link did not activate: ${JSON.stringify(itineraryState)} errors=${unlockedErrors.join('|')}`);
+    check(await unlocked.evaluate(() => localStorage.getItem('wm_studio_dest')) === 'paris', 'Destination query was applied after initial render');
+    await unlocked.goto(base + '/ai-tool.html#hotels', { waitUntil:'domcontentloaded' });
+    await unlocked.waitForTimeout(700);
+    const hotelState = await unlocked.evaluate(() => ({ active:Array.from(document.querySelectorAll('.ws-panel-content.active')).map(node => node.dataset.panel), hotel:!!document.querySelector('.ws-subtab[data-sub="hotels"].active') }));
+    check(hotelState.active.includes('compare') && hotelState.hotel, `Hotel deep link did not activate: ${JSON.stringify(hotelState)} errors=${unlockedErrors.join('|')}`);
+    await unlockedContext.close();
+    console.log('Browser checks passed: responsive Bali, objective package filters, paid-route recovery, route editor feedback, account/search links, AI deep links and driver handoff');
   } finally {
     await browser.close();
   }

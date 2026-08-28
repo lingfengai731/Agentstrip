@@ -68,7 +68,7 @@
   function redirectToLogin() {
     var profile = state.profile;
     if (profile) localStorage.setItem('wm_studio_trip_profile', JSON.stringify(profile));
-    var returnPath = '/bali.html#professional-planner';
+    var returnPath = window.location.pathname + window.location.search + '#professional-planner';
     window.location.assign('ai-tool.html?auth=login&return=' + encodeURIComponent(returnPath));
   }
   function readProfile() {
@@ -358,9 +358,9 @@
       var requestBody = { trip_id:state.tripId, trip_profile:profile, route_id:routeId || '', lang:currentLang() };
       var response = await fetch(API_BASE + '/api/bali/professional-route', { method:'POST', headers:Object.assign({ 'Content-Type':'application/json', 'X-Anon-Id':sessionId() }, authHeaders()), body:JSON.stringify(requestBody) });
       var body = await response.json().catch(function () { return {}; });
-      if (response.status === 403 && hadTripId) {
+      if ((response.status === 403 || response.status === 409) && hadTripId) {
         if (await restoreUnlockedRoute(routeId || '')) return;
-        throw new Error(T().tripUnavailable);
+        if (response.status === 403) throw new Error(T().tripUnavailable);
       }
       if (response.status === 401) { redirectToLogin(); return; }
       if (!response.ok) throw new Error(apiError(body, T().error));

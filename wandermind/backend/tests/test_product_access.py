@@ -1048,6 +1048,8 @@ class ProductAccessTests(unittest.TestCase):
         self.assertEqual(professional_js.count("tripUnavailable:"), 5)
         self.assertIn("/api/bali/professional-route/recent-unlocked", professional_js)
         self.assertNotIn("localStorage.removeItem('wm_studio_professional_trip_id')", professional_js)
+        self.assertIn("response.status === 403 || response.status === 409", professional_js)
+        self.assertIn("window.location.pathname + window.location.search + '#professional-planner'", professional_js)
         self.assertIn("editor.scrollIntoView", professional_js)
         self.assertIn('data-i18n="baliRouteSectionSub"', bali_html)
 
@@ -1069,6 +1071,7 @@ class ProductAccessTests(unittest.TestCase):
         global_auth = (
             frontend_dir / "assets" / "js" / "global-auth.js"
         ).read_text(encoding="utf-8")
+        search_html = (frontend_dir / "search.html").read_text(encoding="utf-8")
         ai_tool = (frontend_dir / "assets" / "js" / "ai-tool.js").read_text(
             encoding="utf-8"
         )
@@ -1076,6 +1079,7 @@ class ProductAccessTests(unittest.TestCase):
         self.assertIn("ai-tool.html?account=open", global_auth)
         self.assertIn("authQuery.get('account') === 'open'", ai_tool)
         self.assertIn("setTimeout(openAccountModal, 80)", ai_tool)
+        self.assertIn("assets/js/global-auth.js?v=p53", search_html)
 
     def test_public_login_uses_email_without_exposing_admin_username(self):
         frontend = BACKEND_DIR.parents[1] / "wandermind-studio" / "frontend"
@@ -1084,7 +1088,15 @@ class ProductAccessTests(unittest.TestCase):
             encoding="utf-8"
         )
 
-        self.assertIn("assets/js/ai-tool.js?v=p56", ai_html)
+        self.assertIn("assets/js/ai-tool.js?v=p57", ai_html)
+        self.assertIn("initialDestQuery", ai_js)
+        self.assertIn("function openHashTarget()", ai_js)
+        self.assertIn("switchCompareSub(target)", ai_js)
+        self.assertIn("window.addEventListener('hashchange', openHashTarget)", ai_js)
+        self.assertIn("const hasPlannerEntry", ai_js)
+        self.assertIn("if (!hasPlannerEntry) return;", ai_js)
+        self.assertNotIn("&& !savedBrief && !savedProfile", ai_js)
+        self.assertNotIn("Auto-pick destination from ?dest=", ai_html)
         self.assertIn(
             'type="email" class="ws-form-input ws-auth-input" id="ws-li-email"',
             ai_js,

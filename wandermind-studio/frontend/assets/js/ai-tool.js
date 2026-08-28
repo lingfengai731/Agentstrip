@@ -428,7 +428,11 @@ const TOOL_I18N = {
 
 /* ─────────────────── STATE ─────────────────── */
 let currentLang = localStorage.getItem('wm_studio_lang') || 'en';
-let currentDest = localStorage.getItem('wm_studio_dest') || 'bali';
+const initialDestQuery = new URLSearchParams(window.location.search).get('dest');
+let currentDest = ['bali','kyoto','paris','santorini','any'].includes(initialDestQuery)
+  ? initialDestQuery
+  : (localStorage.getItem('wm_studio_dest') || 'bali');
+if (initialDestQuery === currentDest) localStorage.setItem('wm_studio_dest', currentDest);
 let _customDest = localStorage.getItem('wm_studio_customdest') || '';  // user-typed city when dest = 'any'
 let currentAgent = 'planner';
 let currentMode = localStorage.getItem('wm_studio_mode') || 'precise';
@@ -691,6 +695,18 @@ function renderPanelTabs() {
 function switchPanelTab(id) {
   $$('#ws-panel-tabs .ws-panel-tab').forEach(t => t.classList.toggle('active', t.dataset.paneltab === id));
   $$('.ws-panel-content').forEach(c => c.classList.toggle('active', c.dataset.panel === id));
+}
+
+function openHashTarget() {
+  const target = window.location.hash.replace(/^#/, '').toLowerCase();
+  if (target === 'hotels' || target === 'flights') {
+    switchPanelTab('compare');
+    setTimeout(() => switchCompareSub(target), 80);
+  } else if (target === 'itinerary') {
+    switchPanelTab('itinerary');
+  } else if (target === 'prefs') {
+    openPrefsModal();
+  }
 }
 
 function renderPanelDest() {
@@ -3228,7 +3244,12 @@ function hydratePlannerFromQuery() {
     history.replaceState({}, document.title, window.location.pathname);
     return;
   }
-  if (!q.get('start') && !q.get('budget') && !q.get('audience') && !q.get('route') && q.get('mode') !== 'diy' && !savedBrief && !savedProfile) return;
+  const hasPlannerEntry = !!(
+    q.get('start') || q.get('end') || q.get('budget') || q.get('audience') ||
+    q.get('route') || q.get('people') || q.get('currency') || q.get('style') ||
+    q.getAll('goal').length || q.get('mode') === 'diy'
+  );
+  if (!hasPlannerEntry) return;
   _entryContext = {
     audience: q.get('audience') || savedBrief?.audience || savedProfile?.audience || '',
     goals: q.getAll('goal').length ? q.getAll('goal') : (savedBrief?.goals || savedProfile?.goals || []),
@@ -3633,6 +3654,7 @@ onLangChange = function(newLang) {
     if (typeof currentDest === 'string') fetchDestInfo(currentDest);
     if (isLoggedIn()) loadPrefs();
     injectPrefsButton();
+    setTimeout(openHashTarget, 160);
     if (authQuery.get('auth') === 'login' && !isLoggedIn()) {
       setTimeout(() => showAuthModal('login'), 80);
     }
@@ -3642,6 +3664,7 @@ onLangChange = function(newLang) {
   }
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', go);
   else setTimeout(go, 50);
+  window.addEventListener('hashchange', openHashTarget);
 })();
 
 /* ═══════════════════════════════════════════════════════════════════════
