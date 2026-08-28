@@ -86,16 +86,19 @@ PR #30 merged at `3cb398b5d39e1d14533a4842946758a8ae5655ff`. Fresh production ch
 2026-08-28 CST found `/`, `/bali`, `/assets/js/bali-professional.js`, `/api/paypal/config` and
 `/sitemap.xml` at HTTP 200. The Bali page loaded p56 with Portfolio place deduplication and official
 supplier booking disclosure; Chromium at 390 px had zero horizontal overflow and zero console
-errors or warnings. The public PayPal config returned `enabled:false`, USD and 1.49, which is the
-intended fail-closed state until Sandbox credentials are configured.
+errors or warnings. The project owner has since configured all six Render Sandbox values and the
+registered webhook. A fresh public config check returned `enabled:true`, `environment:sandbox`, USD
+and 1.49 with a public Client ID present and no Client Secret field. No test transaction had been
+performed at that checkpoint.
 
 The project owner reports that the PayPal China merchant account is approved for cross-border
 receipts and a mainland China bank card is bound. Local code now implements PayPal Orders v2,
 server-side amount verification, signed/idempotent webhooks, refund review and responsive checkout
 at a USD 1.49 Sandbox price while retaining CNY 9.90 manual QR fallback. Eighty-two product-access
-tests pass, but no Render PayPal credential, real Sandbox buyer payment, webhook delivery, refund,
-settlement or production entitlement mutation has been verified. The feature stays disabled when
-credentials are absent. The owner separately confirmed that `/ai-tool` is indexed; Search Console
+tests passed before the compatibility update; the current suite passes 83 tests after adding current
+Payments v2 `DECLINED/PENDING` and available Checkout order status handling. No Sandbox buyer
+payment, webhook delivery, refund, settlement or production entitlement mutation has been verified.
+The feature still fails closed whenever credentials are absent. The owner separately confirmed that `/ai-tool` is indexed; Search Console
 still reported `sitemap.xml` as unreadable with zero discovered URLs on 2026-08-27 even though the
 public endpoint returned HTTP 200, `application/xml` and eight URLs. Re-submit and await a fresh
 Google fetch before closing that external-state gate. Pak Nanok and SUNSRI remain unpublished
