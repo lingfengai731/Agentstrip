@@ -1,0 +1,22 @@
+{
+  "schema_version": 1,
+  "evidence_id": "ev-20260828T040136Z-paid-route-ui-audit-20260828",
+  "task_ref": "paid-route-ui-audit-20260828",
+  "owner": "Codex Sol",
+  "captured_at": "2026-08-28T04:01:36Z",
+  "status": "verified",
+  "claim": "Paid-route restoration, adjustment feedback, Bali simplification, account boot, AI deep links and search account entry verified locally at 4312e7d.",
+  "source": {
+    "kind": "git",
+    "repository": "https://github.com/lingfengai731/Agentstrip.git",
+    "commit": "4312e7d9f6d56b3b34f1d214716ade4f5c11e566",
+    "branch": "codex/paid-route-ui-audit-20260828",
+    "worktree": "E:\\Agentstrip-wt-paid-route-ui-audit-20260828",
+    "dirty": false
+  },
+  "verification": {
+    "command": "86 product-access tests; all frontend JS node --check; Playwright 320/390/768/1440 paid-route/account/search/package/deep-link matrix; git diff --check",
+    "result": "pass"
+  },
+  "notes": "Production is not changed. Owner reported one successful USD 1.49 Sandbox checkout before this fix; abnormal PayPal flows and signed-in post-deploy restoration remain pending."
+}
