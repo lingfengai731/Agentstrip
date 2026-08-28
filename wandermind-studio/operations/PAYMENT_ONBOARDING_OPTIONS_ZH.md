@@ -8,7 +8,7 @@
 - 账户路线：PayPal Business 的个人卖家；
 - 结算银行账户国家：中国大陆；
 - 首个沙盒商品：`专业路线解锁`，网站产品展示价保持 `¥9.9`；PayPal 沙盒订单先使用后台明确支持的跨境币种，默认测试值为 `USD 1.49`；
-- 当前阶段：用户于 2026-08-27 报告 PayPal 中国账户已通过审核、可以跨境收付款，且中国大陆银行卡已绑定；跨境人民币结算产品是否完成单独审核仍以 PayPal 后台为准。下一步只建立 Sandbox，不进行真实扣款。
+- 当前阶段：PayPal 中国账户审核与银行卡绑定由站长报告完成；Sandbox 应用、webhook 和六项 Render 变量已经配置，公开配置接口验证为启用且未泄露 Secret。下一步只使用 Sandbox Personal 测试账户完成测试交易闭环，不进行真实扣款。
 
 ## 先说结论
 
@@ -102,13 +102,11 @@ PayPal 中国公开费率显示，国际商业收款通常包含百分比费率�
 
 ## 下一次协作检查点
 
-Sandbox 账户与应用已经可见，PayPal Orders v2、捕获、webhook 与退款门禁代码也已部署；当前生产配置仍是 `enabled:false`。下一步只完成测试环境闭环：
+Sandbox 账户与应用已经可见，PayPal Orders v2、捕获、webhook 与退款门禁代码也已部署；六项 Render Sandbox 变量已由站长配置，公开配置接口已验证为 `enabled:true`、`environment:sandbox`、`currency:USD`、`amount:1.49`，且不暴露 Client Secret。下一步只完成测试交易闭环：
 
-1. 在 PayPal Developer Dashboard 为 Sandbox 应用创建 webhook，地址填 `https://wandermind.cc/api/paypal/webhook`；至少订阅 `PAYMENT.CAPTURE.COMPLETED`、`PAYMENT.CAPTURE.DENIED`、`PAYMENT.CAPTURE.REFUNDED`、`PAYMENT.CAPTURE.REVERSED` 和 `CHECKOUT.PAYMENT-APPROVAL.REVERSED`；
-2. 把本节列出的六项值写入 Render 环境变量，Client Secret 和 Webhook ID 只在 PayPal 与 Render 后台之间复制，不发送到聊天或 Git；
-3. 等新部署 Live 后，先访问 `/api/paypal/config`，确认仅公开 `enabled:true`、`environment:sandbox`、`currency:USD`、`amount:1.49` 和 Client ID，不出现 Client Secret；
-4. 使用 Sandbox Personal 测试账户在网站完成一次 USD 1.49 付款，再核对路线只解锁一次；
-5. 继续验证取消、拒付、重复 webhook 和退款人工复核。全部通过前保持 `PAYPAL_ENV=sandbox`，不要改为 `live`，也不要进行真实付款。
+1. 已创建 `https://wandermind.cc/api/paypal/webhook` 并订阅后台实际提供的 `PAYMENT.CAPTURE.COMPLETED`、`PAYMENT.CAPTURE.DECLINED`、`PAYMENT.CAPTURE.PENDING`、`PAYMENT.CAPTURE.REFUNDED`、`PAYMENT.CAPTURE.REVERSED`；可额外订阅 `CHECKOUT.ORDER.APPROVED`、`CHECKOUT.ORDER.DECLINED`、`CHECKOUT.ORDER.VOIDED`。后台未提供的 `CHECKOUT.PAYMENT-APPROVAL.REVERSED` 不作强制要求；
+2. 使用 Sandbox Personal 测试账户在网站完成一次 USD 1.49 付款，再核对路线只解锁一次；
+3. 继续验证取消、拒付、重复 webhook 和退款人工复核。全部通过前保持 `PAYPAL_ENV=sandbox`，不要改为 `live`，也不要进行真实付款。
 
 ## 本轮官方核对入口
 

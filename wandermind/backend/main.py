@@ -2662,6 +2662,8 @@ async def paypal_webhook(request: Request):
         resource = event.get("resource") or {}
         related = (resource.get("supplementary_data") or {}).get("related_ids") or {}
         provider_order_id = str(related.get("order_id") or "")
+        if not provider_order_id and event_type.startswith("CHECKOUT.ORDER."):
+            provider_order_id = str(resource.get("id") or "")
         order_row = None
         if provider_order_id:
             order_row = conn.execute(
@@ -2709,7 +2711,20 @@ async def paypal_webhook(request: Request):
                     conn, order, capture["capture_id"], "COMPLETED",
                     lock_transaction=False,
                 )
-        elif event_type in {"PAYMENT.CAPTURE.DENIED", "CHECKOUT.PAYMENT-APPROVAL.REVERSED"} and order_row:
+        elif event_type in {"PAYMENT.CAPTURE.PENDING", "CHECKOUT.ORDER.APPROVED"} and order_row:
+            order = dict(order_row)
+            if order["status"] == "pending":
+                conn.execute(
+                    "UPDATE professional_route_orders SET provider_status=?,updated_at=? WHERE id=?",
+                    (event_type[:40], now, order["id"]),
+                )
+        elif event_type in {
+            "PAYMENT.CAPTURE.DECLINED",
+            "PAYMENT.CAPTURE.DENIED",
+            "CHECKOUT.PAYMENT-APPROVAL.REVERSED",
+            "CHECKOUT.ORDER.DECLINED",
+            "CHECKOUT.ORDER.VOIDED",
+        } and order_row:
             order = dict(order_row)
             if order["status"] == "pending":
                 conn.execute(

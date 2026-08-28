@@ -1483,6 +1483,118 @@ class ProductAccessTests(unittest.TestCase):
         self.assertIn("portfolioPlaceAlreadyShown", html)
         self.assertIn("officialBooking", html)
 
+    def test_paypal_webhook_handles_current_v2_and_checkout_status_events(self):
+        config = {
+            "enabled": True, "environment": "sandbox",
+            "client_id": "public-sandbox-client", "client_secret": "server-secret",
+            "webhook_id": "webhook-test", "currency": "USD",
+            "amount_text": "1.49", "amount_cents": 149,
+        }
+
+        def new_paypal_order(provider_order_id):
+            trip_id = self._new_trip(token=self.user_token)
+            local_order_id = str(uuid.uuid4())
+            now = int(time.time())
+            conn = get_db()
+            try:
+                conn.execute(
+                    """INSERT INTO professional_route_orders
+                       (id,trip_id,user_id,amount_cents,currency,status,payment_method,
+                        provider_order_id,provider_status,created_at,updated_at)
+                       VALUES (?,?,?,?,?,?,?,?,?,?,?)""",
+                    (
+                        local_order_id, trip_id, self.user_id, 149, "USD", "pending",
+                        "paypal", provider_order_id, "CREATED", now, now,
+                    ),
+                )
+                conn.commit()
+            finally:
+                conn.close()
+            return local_order_id
+
+        def send(event):
+            with (
+                patch.object(main.paypal_service, "settings", return_value=config),
+                patch.object(
+                    main.paypal_service, "verify_webhook",
+                    new=AsyncMock(return_value=True),
+                ),
+            ):
+                return self._run(
+                    self._request("POST", "/api/paypal/webhook", json=event)
+                )
+
+        provider_order_id = "PAYPALV2STATUS123"
+        local_order_id = new_paypal_order(provider_order_id)
+        pending = send({
+            "id": "WH-PENDING-V2-123",
+            "event_type": "PAYMENT.CAPTURE.PENDING",
+            "resource": {
+                "id": "CAPTUREPENDING123",
+                "supplementary_data": {
+                    "related_ids": {"order_id": provider_order_id}
+                },
+            },
+        })
+        self.assertEqual(pending.status_code, 200, pending.text)
+        conn = get_db()
+        try:
+            pending_order = dict(conn.execute(
+                "SELECT * FROM professional_route_orders WHERE id=?",
+                (local_order_id,),
+            ).fetchone())
+        finally:
+            conn.close()
+        self.assertEqual(pending_order["status"], "pending")
+        self.assertEqual(pending_order["provider_status"], "PAYMENT.CAPTURE.PENDING")
+
+        declined = send({
+            "id": "WH-DECLINED-V2-123",
+            "event_type": "PAYMENT.CAPTURE.DECLINED",
+            "resource": {
+                "id": "CAPTUREDECLINED123",
+                "supplementary_data": {
+                    "related_ids": {"order_id": provider_order_id}
+                },
+            },
+        })
+        self.assertEqual(declined.status_code, 200, declined.text)
+        conn = get_db()
+        try:
+            declined_order = dict(conn.execute(
+                "SELECT * FROM professional_route_orders WHERE id=?",
+                (local_order_id,),
+            ).fetchone())
+        finally:
+            conn.close()
+        self.assertEqual(declined_order["status"], "failed")
+        self.assertEqual(declined_order["provider_status"], "PAYMENT.CAPTURE.DECLINED")
+
+        checkout_order_id = "PAYPALCHECKOUTSTATUS123"
+        checkout_local_id = new_paypal_order(checkout_order_id)
+        approved = send({
+            "id": "WH-CHECKOUT-APPROVED-123",
+            "event_type": "CHECKOUT.ORDER.APPROVED",
+            "resource": {"id": checkout_order_id, "status": "APPROVED"},
+        })
+        self.assertEqual(approved.status_code, 200, approved.text)
+        voided = send({
+            "id": "WH-CHECKOUT-VOIDED-123",
+            "event_type": "CHECKOUT.ORDER.VOIDED",
+            "resource": {"id": checkout_order_id, "status": "VOIDED"},
+        })
+        self.assertEqual(voided.status_code, 200, voided.text)
+        conn = get_db()
+        try:
+            checkout_order = dict(conn.execute(
+                "SELECT * FROM professional_route_orders WHERE id=?",
+                (checkout_local_id,),
+            ).fetchone())
+        finally:
+            conn.close()
+        self.assertEqual(checkout_order["status"], "failed")
+        self.assertEqual(checkout_order["provider_status"], "CHECKOUT.ORDER.VOIDED")
+
     def test_three_mature_invites_unlock_one_route_once(self):
         now = int(time.time())
         for index in range(3):

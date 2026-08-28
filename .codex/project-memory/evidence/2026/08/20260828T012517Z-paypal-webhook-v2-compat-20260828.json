@@ -1,0 +1,22 @@
+{
+  "schema_version": 1,
+  "evidence_id": "ev-20260828T012517Z-paypal-webhook-v2-compat-20260828",
+  "task_ref": "paypal-webhook-v2-compat-20260828",
+  "owner": "Codex Sol",
+  "captured_at": "2026-08-28T01:25:17Z",
+  "status": "verified",
+  "claim": "Verified the user-configured Sandbox public settings and added current PayPal Payments v2 and Dashboard checkout status webhook compatibility without broadening entitlement authority.",
+  "source": {
+    "kind": "git",
+    "repository": "https://github.com/lingfengai731/Agentstrip.git",
+    "commit": "6c9d75e4389685861b7d5ec0c78943f194a2e91e",
+    "branch": "codex/paypal-webhook-compat-20260828",
+    "worktree": "E:\\Agentstrip-wt-paypal-webhook-compat-20260828",
+    "dirty": true
+  },
+  "verification": {
+    "command": "public /api/paypal/config field-only check; targeted webhook test; python -m unittest wandermind.backend.tests.test_product_access; py_compile; git diff --check",
+    "result": "Public config enabled=true sandbox USD 1.49 with Client ID present and no secret field; targeted test passed; full suite 83/83 passed; syntax and diff checks passed."
+  },
+  "notes": "No Sandbox payment, webhook delivery, refund, settlement, entitlement write, Render mutation or secret read was performed. Only PAYMENT.CAPTURE.COMPLETED can unlock."
+}
