@@ -2,6 +2,8 @@
 
 > 本文件是角色路由 source of truth。状态未知写“待确认”，不要编造 thread id。
 
+- 2026-08-28 专业路线生产发布回调：PR #34 的 Project memory 与 PostgreSQL CI 通过并合并为 `f156cad`；首次生产矩阵发现语言初始化竞态，PR #36 的 PostgreSQL CI 通过并合并为 `fcec737`；第二次生产矩阵证明 hash 仍等待慢速 `/api/auth/me`，PR #37 增加 1.5 秒延迟认证回归、CI 通过并合并为 `17cb54b`。Render 已提供 `ai-tool.js?v=p59`，生产 320/390/768/1440 的 Bali、套餐、专业路线恢复模拟、调整焦点、Search/账号、AI `?dest=`/`#itinerary`/`#hotels` 与司机交接全部通过。没有再次付款、退款、写旅行豆或管理员数据；唯一剩余发布验收是站长使用原已购 Sandbox 账号刷新并确认不重复收费。
+
 - 2026-08-28 专业路线支付与全站按钮回调：路由 `large / L3`，总控→架构→开发/UI→测试→QA→总控。Sol 在隔离工作树 `E:\Agentstrip-wt-paid-route-ui-audit-20260828` 保留权益模型、Bali 信息架构、跨模块集成、发布与生产验收；原始脏工作树未修改。正式 `luna_worker` `/root/paid_route_and_button_audit` 对固定提交 `d0f0537` 只读审计，86 项测试和 18 个 JS 语法检查通过，并找出 route mismatch、登录回跳、AI hash、首次目的地及 Search 账号入口五项 P1；因 Sol 按计划补缓存版本导致最终工作树漂移，按 STOP 条件返回 blocked、零文件修改，不写成 Luna GO。Sol 接管并修复五项，同时定位保存行程误触发新行程弹窗是“我的账户需先关闭界面”的根因；320/390/768/1440 浏览器矩阵覆盖付费恢复、调整焦点、搜索、套餐交接与 AI 深链。生产仍待 PR/CI/Render 和已购 Sandbox 账号复核。
 - 2026-08-28 冻结复审回调：同一正式 `luna_worker` 对固定提交 `4312e7d` 做 targeted review，代码结论 P0=0/P1=0，86 项测试、18 个 JS 语法和 diff check 通过；它确认五项 P1 与 saved-profile 弹窗根因均已关闭。复审期间 Sol 按跨账号协议生成两份未跟踪 evidence/handoff，触发其起止 clean STOP，因此工具最终状态仍为 blocked、零文件修改，不能写成 Luna completed/GO；Sol 已独立运行包含 account/saved-profile 的真实浏览器矩阵并负责最终发布判断。
 
