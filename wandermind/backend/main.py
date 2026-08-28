@@ -2672,6 +2672,53 @@ async def capture_paypal_order(
         conn.close()
 
 
+@app.post("/api/paypal/orders/{provider_order_id}/abandon")
+async def abandon_paypal_order(
+    provider_order_id: str,
+    user=Depends(current_user),
+):
+    """Close only WanderMind's pending checkout after the buyer cancels.
+
+    PayPal does not treat the JavaScript SDK ``onCancel`` callback as a remote
+    order-void API.  Keeping this local state explicit prevents a later retry
+    from reusing an abandoned provider order.  A late completed-capture webhook
+    still moves the order to ``refund_review`` instead of granting access.
+    """
+    if not re.fullmatch(r"[A-Za-z0-9_-]{8,64}", provider_order_id):
+        raise HTTPException(400, detail={"error": "paypal_order_id_invalid"})
+    conn = get_db()
+    try:
+        row = conn.execute(
+            """SELECT * FROM professional_route_orders
+               WHERE provider_order_id=? AND user_id=? AND payment_method='paypal'""",
+            (provider_order_id, user["sub"]),
+        ).fetchone()
+        if not row:
+            raise HTTPException(404, "Order not found")
+        order = dict(row)
+        _lock_professional_route_transaction(conn, order["trip_id"], order["user_id"])
+        order = dict(conn.execute(
+            "SELECT * FROM professional_route_orders WHERE id=?", (order["id"],)
+        ).fetchone())
+        if (
+            order["status"] == "cancelled"
+            and order.get("provider_status") == "BUYER_CANCELLED"
+        ):
+            return {"ok": True, "already_abandoned": True}
+        if order["status"] != "pending":
+            raise HTTPException(409, detail={"error": "paypal_order_not_payable"})
+        conn.execute(
+            """UPDATE professional_route_orders
+               SET status='cancelled',provider_status='BUYER_CANCELLED',updated_at=?
+               WHERE id=? AND status='pending'""",
+            (int(time.time()), order["id"]),
+        )
+        conn.commit()
+        return {"ok": True, "abandoned": True}
+    finally:
+        conn.close()
+
+
 @app.post("/api/paypal/webhook")
 async def paypal_webhook(request: Request):
     if int(request.headers.get("content-length") or 0) > 262144:
@@ -2872,13 +2919,19 @@ async def list_professional_route_orders(
     admin=Depends(current_admin),
 ):
     normalized_status = (status or "pending").strip().lower()
-    if normalized_status not in {"pending", "confirmed"}:
-        raise HTTPException(400, "status must be pending or confirmed")
+    if normalized_status not in {
+        "pending", "confirmed", "refund_review", "failed", "cancelled"
+    }:
+        raise HTTPException(
+            400,
+            "status must be pending, confirmed, refund_review, failed, or cancelled",
+        )
     conn = get_db()
     try:
         rows = conn.execute(
             """SELECT o.id,o.trip_id,o.amount_cents,o.currency,o.status,
-                      o.payment_method,o.provider_status,o.payment_reference,
+                      o.payment_method,o.provider_order_id,o.provider_capture_id,
+                      o.provider_status,o.payment_reference,o.refunded_at,
                       o.created_at,o.confirmed_at,
                       u.email,u.name,t.destination,t.brief
                FROM professional_route_orders o

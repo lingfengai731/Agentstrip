@@ -17,7 +17,9 @@ function check(condition, message) {
 }
 
 (async () => {
-  const browser = await chromium.launch({ headless: true });
+  const launchOptions = { headless:true };
+  if (process.env.WM_CHROMIUM_EXECUTABLE) launchOptions.executablePath = process.env.WM_CHROMIUM_EXECUTABLE;
+  const browser = await chromium.launch(launchOptions);
   try {
     for (const viewport of viewports) {
       const page = await browser.newPage({ viewport });
@@ -59,6 +61,58 @@ function check(condition, message) {
       check(handoff.includes(`package=${packageId}`), `Package handoff missing at ${viewport.width}px`);
       await page.screenshot({ path:path.join(artifactRoot, `bali-${viewport.width}.png`), fullPage:true });
       await page.close();
+    }
+
+    for (const viewport of [
+      { width:390, height:844 },
+      { width:768, height:900 },
+      { width:1440, height:1000 },
+    ]) {
+      const cancelContext = await browser.newContext({ viewport, serviceWorkers:'block' });
+      const cancelPage = await cancelContext.newPage();
+      let abandonCalled = false;
+      await cancelPage.addInitScript(() => {
+        const profile = { audience:'first', goals:['photo'], travel_style:'comfort', travellers:2, departure_date:'2026-10-01', return_date:'2026-10-06', days:5, currency:'CNY', budget_range:10000, pace:'balanced' };
+        localStorage.setItem('wm_studio_lang', 'en');
+        localStorage.setItem('wm_studio_token', 'cancel-test-token');
+        localStorage.setItem('wm_studio_user', JSON.stringify({ id:'cancel-user', email:'cancel@example.test', name:'Cancel test' }));
+        localStorage.setItem('wm_studio_trip_profile', JSON.stringify(profile));
+        window.paypal = {
+          Buttons(options) {
+            window.__wmPaypalOptions = options;
+            return {
+              async render(selector) {
+                const target = document.querySelector(selector);
+                if (target) target.innerHTML = '<button type="button" data-mock-paypal>Mock PayPal checkout</button>';
+              }
+            };
+          }
+        };
+      });
+      await cancelPage.route('**/api/auth/me', route => route.fulfill({ json:{ id:'cancel-user', email:'cancel@example.test', name:'Cancel test' } }));
+      await cancelPage.route('**/api/paypal/config', route => route.fulfill({ json:{ enabled:true, environment:'sandbox', client_id:'public-test-client', currency:'USD', amount:'1.49' } }));
+      await cancelPage.route('**/api/bali/professional-route/recent-unlocked**', route => route.fulfill({ status:404, json:{ detail:'not found' } }));
+      await cancelPage.route('**/api/bali/professional-route', route => route.fulfill({ json:{
+        ok:true, trip_id:'cancel-trip', professional_route_entitlement:false,
+        professional_adjustments_remaining:0,
+        profile:{ audience:'first', goals:['photo'], travel_style:'comfort', travellers:2, departure_date:'2026-10-01', return_date:'2026-10-06', days:5, currency:'CNY', budget_range:10000, pace:'balanced' },
+        route:{ route_id:'R1', route_name:'First Bali', route_promise:'A clear first trip', recommendation_reason:'Matched to the trip.', days:5, preview_days:3, locked_days:2, unlocked:false,
+          days_plan:Array.from({ length:5 }, (_, index) => ({ day:index+1, region_name:'Bali', theme:`Theme ${index+1}`, locked:index >= 3, places:index >= 3 ? [] : [{ name:`Place ${index+1}` }] })) }
+      } }));
+      await cancelPage.route('**/api/paypal/orders/PAYPALCANCELUI123/abandon', route => {
+        abandonCalled = true;
+        return route.fulfill({ json:{ ok:true, abandoned:true } });
+      });
+      await cancelPage.goto(base + '/bali.html#professional-planner', { waitUntil:'domcontentloaded' });
+      await cancelPage.locator('#bali-professional-unlock').waitFor();
+      await cancelPage.locator('#bali-professional-unlock').click();
+      await cancelPage.locator('[data-mock-paypal]').waitFor();
+      await cancelPage.evaluate(async () => window.__wmPaypalOptions.onCancel({ orderID:'PAYPALCANCELUI123' }));
+      await cancelPage.locator('#bali-professional-payment-status').getByText('Checkout closed', { exact:false }).waitFor();
+      check(abandonCalled, `PayPal abandon endpoint not called at ${viewport.width}px`);
+      check(await cancelPage.evaluate(() => document.documentElement.scrollWidth <= document.documentElement.clientWidth + 1), `PayPal cancel overflow at ${viewport.width}px`);
+      await cancelPage.screenshot({ path:path.join(artifactRoot, `paypal-cancel-${viewport.width}.png`), fullPage:true });
+      await cancelContext.close();
     }
 
     const search = await browser.newPage({ viewport: { width: 390, height: 844 } });

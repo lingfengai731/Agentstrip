@@ -1,0 +1,22 @@
+{
+  "schema_version": 1,
+  "evidence_id": "ev-20260828T074538Z-paypal-failure-gates-20260828",
+  "task_ref": "PAYPAL-FAILURE-GATES-20260828",
+  "owner": "Codex Sol",
+  "captured_at": "2026-08-28T07:45:38Z",
+  "status": "claimed",
+  "claim": "Owner confirmed same-account paid-route restoration; local buyer-cancel, fresh retry, late-capture refund review and admin visibility are verified without external payment writes",
+  "source": {
+    "kind": "git",
+    "repository": "https://github.com/lingfengai731/Agentstrip.git",
+    "commit": "a96a8fd7ecad235a6e73d85ccd25b70a84202fc4",
+    "branch": "codex/paypal-failure-gates-20260828",
+    "worktree": "E:\\Agentstrip-wt-paypal-failure-gates-20260828",
+    "dirty": true
+  },
+  "verification": {
+    "command": "87 product-access tests; Python/Node syntax; Chromium 390/768/1440 PayPal cancel plus existing Bali matrix; project-memory validate; git diff --check",
+    "result": "pass"
+  },
+  "notes": ""
+}
