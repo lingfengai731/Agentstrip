@@ -1,0 +1,22 @@
+{
+  "schema_version": 1,
+  "evidence_id": "ev-20260828T075330Z-paypal-failure-gates-production-20260828",
+  "task_ref": "PAYPAL-FAILURE-GATES-PRODUCTION-20260828",
+  "owner": "Codex Sol",
+  "captured_at": "2026-08-28T07:53:30Z",
+  "status": "claimed",
+  "claim": "PR 39 merged and Render production serves p58 buyer-cancel state; public Sandbox config and responsive browser matrix verified without external payment writes",
+  "source": {
+    "kind": "git",
+    "repository": "https://github.com/lingfengai731/Agentstrip.git",
+    "commit": "868f2c5ca79e4dd21c7b4a245c8863f984be1fe6",
+    "branch": "codex/paypal-failure-production-evidence-20260828",
+    "worktree": "E:\\Agentstrip-wt-paypal-failure-gates-20260828",
+    "dirty": true
+  },
+  "verification": {
+    "command": "GitHub PR 39 checks and merge; public health/Bali/p58/OpenAPI/config probes; production Chromium Bali plus PayPal cancel matrix at 390/768/1440",
+    "result": "pass"
+  },
+  "notes": ""
+}
