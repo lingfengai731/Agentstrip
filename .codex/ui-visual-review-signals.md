@@ -142,3 +142,16 @@ rejected aspects: 不接受代码存在但正常观看时几乎无法察觉的�
 reason in reviewer words: 首页/Bali 视觉升级，我好像没有看到晨光动效
 scope: this surface
 recorded at: 2026-08-27
+
+workflow: ui-implementation-workflow-v2
+status: raw
+task: Bali 已购路线状态一致性与页面减负
+page/surface: WanderMind 巴厘岛页、全站账户入口
+screenshot or artifact: 生产 Sandbox 付款后的专业路线状态与本轮修复版本
+reviewer: 用户
+decision: rejected
+accepted aspects: 完整路线解锁状态本身已经能够出现；继续保留 R1-R6、套餐、作品集与司机承接
+rejected aspects: 不接受已购路线继续显示免费预览、锁定天数或再次收费；不接受调整按钮无可见反应；不接受套餐和公共路线用轻松、适中、动感、节奏、体力等主观标签；不接受 Bali 页面堆叠重复路线内容；不接受我的账户必须先经过 AI 工作台再手动打开
+reason in reviewer words: 现在这个购买的逻辑有点混乱；巴厘岛界面有点臃肿；旅游强度是由游客主导；点击调整本次行程页面无任何反应
+scope: this project
+recorded at: 2026-08-28

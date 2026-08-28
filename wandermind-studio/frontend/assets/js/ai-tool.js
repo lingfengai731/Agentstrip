@@ -3636,6 +3636,9 @@ onLangChange = function(newLang) {
     if (authQuery.get('auth') === 'login' && !isLoggedIn()) {
       setTimeout(() => showAuthModal('login'), 80);
     }
+    if (authQuery.get('account') === 'open' && isLoggedIn()) {
+      setTimeout(openAccountModal, 80);
+    }
   }
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', go);
   else setTimeout(go, 50);

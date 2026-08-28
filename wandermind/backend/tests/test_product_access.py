@@ -515,6 +515,54 @@ class ProductAccessTests(unittest.TestCase):
                     expected[1],
                 )
 
+    def test_unlocked_route_reports_every_day_open_and_restores_by_account(self):
+        email = f"route-restore-{uuid.uuid4().hex}@example.test"
+        user_id = self._create_user(email, "route restore")
+        token = main.make_token(user_id, email)
+        profile = {
+            "audience": "first",
+            "goals": ["photo"],
+            "travel_style": "comfort",
+            "travellers": 2,
+            "days": 7,
+            "pace": "balanced",
+        }
+        created = self._run(
+            self._request(
+                "POST",
+                "/api/bali/professional-route",
+                token=token,
+                json={"trip_profile": profile, "route_id": "R1", "lang": "zh"},
+            )
+        )
+        self.assertEqual(created.status_code, 200, created.text)
+        trip_id = created.json()["trip_id"]
+        conn = get_db()
+        try:
+            conn.execute(
+                "UPDATE product_trips SET professional_route_entitlement=1 WHERE id=?",
+                (trip_id,),
+            )
+            conn.commit()
+        finally:
+            conn.close()
+
+        restored = self._run(
+            self._request(
+                "GET",
+                "/api/bali/professional-route/recent-unlocked?lang=zh",
+                token=token,
+            )
+        )
+        self.assertEqual(restored.status_code, 200, restored.text)
+        payload = restored.json()
+        self.assertEqual(payload["trip_id"], trip_id)
+        self.assertTrue(payload["professional_route_entitlement"])
+        self.assertTrue(payload["route"]["unlocked"])
+        self.assertEqual(payload["route"]["preview_days"], 7)
+        self.assertEqual(payload["route"]["locked_days"], 0)
+        self.assertFalse(any(day["locked"] for day in payload["route"]["days_plan"]))
+
     def test_professional_route_places_are_verified_execution_facts(self):
         excluded = {
             "thousand_islands_viewpoint",
@@ -983,7 +1031,7 @@ class ProductAccessTests(unittest.TestCase):
         self.assertIn("bali.html#professional-planner", index_html)
         self.assertIn("ai-tool.html?mode=diy", index_html)
         self.assertIn('id="professional-planner"', bali_html)
-        self.assertIn("assets/js/bali-professional.js?v=p56", bali_html)
+        self.assertIn("assets/js/bali-professional.js?v=p57", bali_html)
         self.assertNotIn("ai-tool.html?professional=1", bali_html)
         self.assertNotIn("professional_requested", ai_js)
         self.assertIn("history.replaceState({}, document.title, window.location.pathname);", ai_js)
@@ -997,7 +1045,37 @@ class ProductAccessTests(unittest.TestCase):
         self.assertIn("bali-professional-adjustments-badge", bali_html)
         self.assertEqual(professional_js.count("adjustScope:"), 5)
         self.assertEqual(professional_js.count("routeSwitchPending:"), 5)
+        self.assertEqual(professional_js.count("tripUnavailable:"), 5)
+        self.assertIn("/api/bali/professional-route/recent-unlocked", professional_js)
+        self.assertNotIn("localStorage.removeItem('wm_studio_professional_trip_id')", professional_js)
+        self.assertIn("editor.scrollIntoView", professional_js)
         self.assertIn('data-i18n="baliRouteSectionSub"', bali_html)
+
+    def test_bali_cards_and_packages_avoid_subjective_intensity_labels(self):
+        frontend_dir = BACKEND_DIR.parents[1] / "wandermind-studio" / "frontend"
+        bali_html = (frontend_dir / "bali.html").read_text(encoding="utf-8")
+        packages_js = (
+            frontend_dir / "assets" / "js" / "bali-packages.js"
+        ).read_text(encoding="utf-8")
+
+        self.assertNotIn("data-package-energy", packages_js)
+        self.assertNotIn("filters.energy", packages_js)
+        self.assertNotIn("labels.pace", bali_html)
+        self.assertNotIn("labels.activity", bali_html)
+        self.assertNotIn('id="itinerary"', bali_html)
+
+    def test_global_account_link_opens_account_modal_directly(self):
+        frontend_dir = BACKEND_DIR.parents[1] / "wandermind-studio" / "frontend"
+        global_auth = (
+            frontend_dir / "assets" / "js" / "global-auth.js"
+        ).read_text(encoding="utf-8")
+        ai_tool = (frontend_dir / "assets" / "js" / "ai-tool.js").read_text(
+            encoding="utf-8"
+        )
+
+        self.assertIn("ai-tool.html?account=open", global_auth)
+        self.assertIn("authQuery.get('account') === 'open'", ai_tool)
+        self.assertIn("setTimeout(openAccountModal, 80)", ai_tool)
 
     def test_public_login_uses_email_without_exposing_admin_username(self):
         frontend = BACKEND_DIR.parents[1] / "wandermind-studio" / "frontend"
@@ -2788,8 +2866,8 @@ class ProductAccessTests(unittest.TestCase):
             / "frontend"
             / "bali.html"
         ).read_text(encoding="utf-8")
-        self.assertEqual(html.count('data-mobile-section="'), 4)
-        self.assertEqual(html.count('data-mobile-nav="'), 4)
+        self.assertEqual(html.count('data-mobile-section="'), 3)
+        self.assertEqual(html.count('data-mobile-nav="'), 3)
         self.assertIn("function openExclusive(section)", html)
         self.assertIn("setActiveMobileNav(section.dataset.mobileSection)", html)
         self.assertIn("setActiveMobileNav(null)", html)

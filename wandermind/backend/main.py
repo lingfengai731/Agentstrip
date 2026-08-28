@@ -1965,6 +1965,9 @@ def _professional_route_document(profile: dict, route_id: str = "", lang: str = 
 
 def _public_professional_route(document: dict, unlocked: bool, lang: str) -> dict:
     result = {key: value for key, value in document.items() if key not in {"full_days", "profile"}}
+    if unlocked:
+        result["preview_days"] = int(document.get("days") or len(document.get("full_days") or []))
+        result["locked_days"] = 0
     visible_days = []
     for index, day in enumerate(document.get("full_days") or []):
         if unlocked or index < int(document.get("preview_days") or 0):
@@ -2180,6 +2183,25 @@ def _stored_trip_route_id(trip: dict) -> str:
     return str(brief.get("route_id") or "").strip().upper()
 
 
+def _latest_unlocked_bali_trip(conn, user_id: str) -> dict | None:
+    row = conn.execute(
+        """SELECT trip.*
+           FROM product_trips AS trip
+           WHERE trip.user_id=? AND trip.destination='bali'
+             AND (
+               COALESCE(trip.professional_route_entitlement,0)=1
+               OR EXISTS (
+                 SELECT 1 FROM professional_route_orders AS route_order
+                 WHERE route_order.trip_id=trip.id AND route_order.status='confirmed'
+               )
+             )
+           ORDER BY trip.updated_at DESC, trip.created_at DESC
+           LIMIT 1""",
+        (user_id,),
+    ).fetchone()
+    return dict(row) if row else None
+
+
 def _professional_route_response(conn, trip: dict, user, document: dict, lang: str) -> dict:
     allowance = _trip_allowance(conn, trip, user)
     return {
@@ -2192,6 +2214,28 @@ def _professional_route_response(conn, trip: dict, user, document: dict, lang: s
         "profile": document.get("profile") or {},
         **allowance,
     }
+
+
+@app.get("/api/bali/professional-route/recent-unlocked")
+async def recent_unlocked_bali_professional_route(
+    lang: str = "en",
+    user=Depends(current_user),
+):
+    normalized_lang = (lang or "en").strip().lower()
+    conn = get_db()
+    try:
+        trip = _latest_unlocked_bali_trip(conn, user["sub"])
+        if not trip:
+            raise HTTPException(
+                404,
+                detail={"error": "professional_route_not_found"},
+            )
+        profile = _stored_trip_profile(trip)
+        route_id = _stored_trip_route_id(trip)
+        document = _professional_route_document(profile, route_id, normalized_lang)
+        return _professional_route_response(conn, trip, user, document, normalized_lang)
+    finally:
+        conn.close()
 
 
 @app.post("/api/bali/professional-route")
