@@ -150,6 +150,16 @@ fields. The product-access suite passes 87 tests, and deterministic Chromium che
 feedback at 390, 768 and 1440 px. These are local engineering checks until the branch is reviewed,
 merged, deployed and separately verified.
 
+PR #39 passed Project memory validation and PostgreSQL integration, then squash merged as
+`868f2c5ca79e4dd21c7b4a245c8863f984be1fe6`. Render production served
+`bali-professional.js?v=p58` on 2026-08-28. Fresh public checks found `/healthz`, `/bali.html`, the
+p58 asset and `/openapi.json` reachable; the asset contains the abandon call and five-language
+cancel feedback, and OpenAPI exposes the authenticated abandon route. The public PayPal config
+remained enabled in Sandbox at USD 1.49 with a public Client ID and no Client Secret field.
+Production Chromium passed the existing Bali/account/search/AI/driver matrix plus the 390, 768 and
+1440 cancel-state checks. No external order, refund, entitlement mutation, Render configuration or
+Live-money action was performed during this release verification.
+
 Four generated photorealistic activity images remain excluded from the Portfolio because Portfolio is
 presented as real island moments. They may be used later only as explicitly labelled AI illustrations;
 they must not be represented as traveller or supplier evidence.
