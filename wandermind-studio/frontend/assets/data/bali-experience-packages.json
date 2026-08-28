@@ -22,7 +22,7 @@
       "duration_days": 1,
       "energy": "active",
       "status": "needs_supplier_confirmation",
-      "title": {"zh":"乌布丛林动感日","en":"Ubud Active Green Day","ja":"ウブド・アクティブグリーン","ko":"우붓 액티브 그린 데이","id":"Hari Aktif Hijau Ubud"},
+      "title": {"zh":"乌布梯田、瀑布与丛林体验","en":"Ubud Rice Terraces, Waterfall & Jungle","ja":"ウブドの棚田・滝・ジャングル体験","ko":"우붓 계단식 논·폭포·정글 체험","id":"Sawah Terasering, Air Terjun & Hutan Ubud"},
       "summary": {"zh":"把丛林车/ATV作为可选主体验，搭配梯田与一处瀑布；雨天可切换为文化和咖啡模块。","en":"Make ATV the optional anchor, pair it with rice terraces and one waterfall, and swap to culture and coffee in heavy rain.","ja":"ATVを任意の主体験とし、棚田と滝を組み合わせ、強い雨なら文化とコーヒーへ切替。","ko":"ATV를 선택형 핵심으로 두고 계단식 논과 폭포 한 곳을 연결하며 폭우에는 문화·커피로 바꿉니다.","id":"Jadikan ATV opsi utama, padukan dengan sawah terasering dan satu air terjun, lalu ganti ke budaya dan kopi saat hujan lebat."},
       "core": ["tegalalang_rice_terrace", "tegenungan_waterfall"],
       "add_ons": ["kanto_lampo_waterfall"],

@@ -59,7 +59,7 @@
     var text = labels[lang] || labels.en;
     var user = readUser();
     var returnPath = window.location.pathname + window.location.search + window.location.hash;
-    var href = 'ai-tool.html';
+    var href = user ? 'ai-tool.html?account=open' : 'ai-tool.html';
     if (!user) {
       href += '?auth=login&return=' + encodeURIComponent(returnPath);
       var savedRef = localStorage.getItem('wm_studio_referral_code');
