@@ -1001,6 +1001,7 @@ function onLangChange(newLang) {
   renderPanelLog();
   renderMessages();
   if (_destStatusMode) _setDestStatus(_destStatusMode, _destStatusKey);
+  if (window.location.hash) setTimeout(openHashTarget, 0);
 }
 
 /* Watch the lang picker (i18n.js writes localStorage on change) */
