@@ -1,0 +1,22 @@
+{
+  "schema_version": 1,
+  "evidence_id": "ev-20260829T145129Z-services-product-paths-preview-20260829",
+  "task_ref": "services-product-paths-preview-20260829",
+  "owner": "codex-sol",
+  "captured_at": "2026-08-29T14:51:29Z",
+  "status": "claimed",
+  "claim": "Services now presents Bali professional route, AI self-planning, and private local-driver handoff as three truthful product paths; five-language copy, destination hierarchy, responsive layout, footer links, and CTA routing were locally verified.",
+  "source": {
+    "kind": "git",
+    "repository": "https://github.com/lingfengai731/Agentstrip.git",
+    "commit": "f1845445ad31ab9584ce935b42a9b8def3caa3da",
+    "branch": "codex/fullsite-design-audit-20260828",
+    "worktree": "E:\\Agentstrip-wt-fullsite-design-20260828",
+    "dirty": true
+  },
+  "verification": {
+    "command": "py -3 -m unittest wandermind.backend.tests.test_product_access; node --check wandermind-studio/frontend/assets/js/i18n.js; git diff --check; Playwright CLI 390/768/1440 plus zh/en/ja/ko/id and three CTA clicks",
+    "result": "pass: 89/89 tests; no document overflow; Services console 0; CTA destinations verified; Impeccable introduced findings closed and 7 inherited template warnings remain"
+  },
+  "notes": ""
+}
