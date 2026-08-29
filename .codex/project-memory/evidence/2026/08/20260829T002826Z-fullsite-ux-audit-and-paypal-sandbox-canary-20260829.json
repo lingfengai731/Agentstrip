@@ -1,0 +1,22 @@
+{
+  "schema_version": 1,
+  "evidence_id": "ev-20260829T002826Z-fullsite-ux-audit-and-paypal-sandbox-canary-20260829",
+  "task_ref": "fullsite-ux-audit-and-paypal-sandbox-canary-20260829",
+  "owner": "Codex Sol",
+  "captured_at": "2026-08-29T00:28:26Z",
+  "status": "verified",
+  "claim": "Recovered origin/main cf8f890 in an isolated worktree, critically audited the pasted full-site design critique against current code and production, prepared a unified conversion-priority table, and specified a non-destructive PayPal Sandbox abnormal-flow canary. No production write, refund, Live credential, real email or public post was executed.",
+  "source": {
+    "kind": "git",
+    "repository": "https://github.com/lingfengai731/Agentstrip.git",
+    "commit": "e7dbfc0d319f2d0c31b2f5ed5765af8e57ebc31a",
+    "branch": "codex/fullsite-design-audit-20260828",
+    "worktree": "E:\\Agentstrip-wt-fullsite-design-20260828",
+    "dirty": false
+  },
+  "verification": {
+    "command": "git diff --check; python -m unittest <4 targeted PayPal tests>; .\\tools\\project-memory.ps1 validate; production HTTP 10-page probe",
+    "result": "PASS: four PayPal tests; project-memory 82 records with one expected stale-snapshot warning; ten production endpoints HTTP 200; isolated branch e7dbfc0; native Luna reviews returned usage-limit errors and were not counted."
+  },
+  "notes": "External execution remains gated on one dedicated WanderMind test alias, one disposable PayPal Sandbox Personal payer, and explicit labelled production-test-data authorization. The accepted owner order is do-not-touch."
+}
