@@ -4,17 +4,17 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title data-i18n="servicesPageTitle">Explore | WanderMind Studio</title>
-    <meta name="description" content="Explore WanderMind Studio's six AI agents and curated destinations.">
+    <meta name="description" content="Choose a Bali professional route, plan independently with AI, or hand a ready route to a trusted local driver.">
     <link rel="canonical" href="https://wandermind.cc/services">
     <meta property="og:type" content="website">
     <meta property="og:site_name" content="WanderMind Studio">
     <meta property="og:title" content="Explore · WanderMind Studio">
-    <meta property="og:description" content="Curated destinations and six AI travel agents.">
+    <meta property="og:description" content="Three clear ways to plan: Bali professional routes, AI self-planning, and a private local-driver handoff.">
     <meta property="og:url" content="https://wandermind.cc/services">
     <meta property="og:image" content="https://wandermind.cc/assets/images/logo-mark.png">
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="Explore · WanderMind Studio">
-    <meta name="twitter:description" content="Curated destinations and six AI travel agents.">
+    <meta name="twitter:description" content="Three clear ways to plan: Bali professional routes, AI self-planning, and a private local-driver handoff.">
     <meta name="twitter:image" content="https://wandermind.cc/assets/images/logo-mark.png">
   <link rel="icon" type="image/png" href="assets/images/logo-mark-256.png">
   <link rel="apple-touch-icon" href="assets/images/logo-mark-256.png">
@@ -123,8 +123,69 @@
         transition: transform .5s;
       }
       .w3l-services-two .img-box { margin-bottom: 30px; overflow: hidden; }
-      .w3l-services-two .img-box:hover img { transform: scale(1.05); }
       .w3l-services-two .img-box h5 { margin-top: 12px !important; }
+      .wm-service-paths { margin-top: 34px; }
+      .wm-service-path {
+        height: 100%; padding: 28px; border: 1px solid #e5e2da; border-radius: 16px;
+        background: #fff; box-shadow: 0 6px 24px rgba(0,0,0,.045);
+        display: flex; flex-direction: column; align-items: flex-start;
+      }
+      .wm-service-path.primary { background: #f6fbf9; border-color: rgba(14,124,107,.28); }
+      .wm-service-path .icon-back { margin-bottom: 20px; }
+      .wm-service-path h3 { font-size: 22px; line-height: 1.3; margin: 0 0 12px; color: #1a1a1a; }
+      .wm-service-path p { color: #4a4a4a; line-height: 1.7; margin-bottom: 18px; }
+      .wm-service-meta { font-size: 13px; line-height: 1.55; color: #0e675b; font-weight: 700; margin-bottom: 22px; }
+      .wm-service-action {
+        margin-top: auto; min-height: 46px; display: inline-flex; align-items: center; justify-content: center;
+        gap: 9px; border-radius: 10px; padding: 11px 18px; background: #0e7c6b; color: #fff !important;
+        font-weight: 700; text-decoration: none !important; transition: background .18s ease, transform .18s ease;
+      }
+      .wm-service-action:hover, .wm-service-action:focus-visible { background: #096456; transform: translateY(-1px); }
+      .wm-service-action:focus-visible { outline: 3px solid rgba(20,184,166,.22); outline-offset: 3px; }
+      .wm-destination-layout { margin-top: 34px; align-items: stretch; }
+      .wm-destination-feature { position: relative; min-height: 520px; border-radius: 16px; overflow: hidden; background: #1a1a1a; }
+      .wm-destination-feature img { width: 100%; height: 100% !important; min-height: 520px; object-fit: cover; border-radius: 0 !important; }
+      .wm-destination-feature-copy {
+        position: absolute; left: 0; right: 0; bottom: 0; padding: 72px 28px 28px;
+        color: #fff; background: linear-gradient(180deg, transparent, rgba(8,18,20,.88));
+      }
+      .wm-destination-feature-copy h3, .wm-destination-feature-copy p { color: #fff; }
+      .wm-destination-feature-copy h3 { font-size: 28px; margin-bottom: 8px; }
+      .wm-destination-feature-copy p { margin-bottom: 18px; line-height: 1.55; }
+      .wm-destination-feature-copy .wm-service-action { background: #fcbf1e; color: #1a1a1a !important; }
+      .wm-destination-quick-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; height: 100%; }
+      .wm-destination-quick {
+        display: block; border: 1px solid #e5e2da; border-radius: 14px; overflow: hidden;
+        background: #fff; color: inherit !important; text-decoration: none !important;
+      }
+      .wm-destination-quick img { width: 100%; height: 150px !important; object-fit: cover; border-radius: 0 !important; }
+      .wm-destination-quick:hover, .wm-destination-quick:focus-visible { border-color: rgba(14,124,107,.55); }
+      .wm-destination-quick:focus-visible { outline: 3px solid rgba(20,184,166,.22); outline-offset: 3px; }
+      .wm-destination-quick-copy { padding: 15px 16px 17px; }
+      .wm-destination-quick h3 { margin: 0 0 6px !important; color: #1a1a1a; font-size: 18px; }
+      .wm-destination-quick p { margin: 0; color: #666; font-size: 13px; line-height: 1.5; }
+      .wm-destination-note { margin: 24px auto 0; max-width: 720px; text-align: center; color: #666; }
+      .footer-list-29 h3.footer-title-29 { color: #fff; }
+      body.dark .wm-service-path, body.dark .wm-destination-quick { background: #1f2226; border-color: #2d3036; }
+      body.dark .wm-service-path.primary { background: #172925; border-color: rgba(20,184,166,.38); }
+      body.dark .wm-service-path h3, body.dark .wm-destination-quick h3 { color: #f3f1ea; }
+      body.dark .wm-service-path p, body.dark .wm-destination-quick p, body.dark .wm-destination-note { color: #c9c6bd; }
+      @media (max-width: 767px) {
+        .wm-service-path { padding: 22px 20px; }
+        .wm-service-path h3 { font-size: 20px; }
+        .wm-service-action { width: 100%; min-height: 48px; }
+        .wm-destination-feature, .wm-destination-feature img { min-height: 390px; }
+        .wm-destination-feature-copy { padding: 56px 20px 20px; }
+        .wm-destination-feature-copy h3 { font-size: 24px; }
+        .wm-destination-quick-grid { gap: 12px; margin-top: 18px; }
+        .wm-destination-quick img { height: 105px !important; }
+        .wm-destination-quick-copy { padding: 12px; }
+        .wm-destination-quick h3 { font-size: 15px; }
+        .wm-destination-quick p { font-size: 12px; }
+      }
+      @media (prefers-reduced-motion: reduce) {
+        .wm-service-action { transition: none !important; transform: none !important; }
+      }
       /* Footer gallery (same as index.html) */
       .footer-29 .footer-3 .properties .images-col {
         display: grid !important;
@@ -214,51 +275,36 @@
 	<div class="recent-work">
 		<div class="container">
 			<div class="main-titles-head">
-				<h3 class="header-name" data-i18n="srvHeaderTitle">What we do for you</h3>
-				<p class="tiltle-para" data-i18n="srvHeaderSub">Six AI-powered services, all in one conversation. From the moment you say "I want to go" to the moment you land back home.</p>
+				<h2 class="header-name" data-i18n="srvHeaderTitle">Choose how you want to plan</h2>
+				<p class="tiltle-para" data-i18n="srvHeaderSub">Start with a checked Bali route, build your own with AI, or bring a ready plan to a local driver.</p>
 			</div>
-			<div class="row service-service mt-4">
-				<div class="col-lg-4 col-md-6 propClone about-line-top">
-					<div class="color-white">
+			<div class="row wm-service-paths">
+				<div class="col-lg-4 mb-4">
+					<article class="wm-service-path primary">
 						<div class="icon-back"><span class="fa fa-cogs"></span></div>
-						<h5><a href="ai-tool.html" data-i18n="srv1Title">AI Trip Planning</a></h5>
-						<p class="para" data-i18n="srv1Desc">A single conversation builds your complete itinerary — day-by-day routing, pacing, and timing tuned to your style.</p>
-					</div>
+						<h3 data-i18n="srv1Title">Bali professional route</h3>
+						<p data-i18n="srv1Desc">Match a practical Bali route to your dates, pace and budget. Preview about 70%, then unlock the complete route when it fits.</p>
+						<div class="wm-service-meta" data-i18n="srv1Meta">70% preview · ¥9.9 or 30 points · 3 adjustments</div>
+						<a class="wm-service-action" href="bali.html#professional-planner"><span data-i18n="srv1Btn">See professional routes</span><span class="fa fa-arrow-right" aria-hidden="true"></span></a>
+					</article>
 				</div>
-				<div class="col-lg-4 col-md-6 propClone about-line-top">
-					<div class="color-white">
-						<div class="icon-back"><span class="fa fa-building"></span></div>
-						<h5><a href="ai-tool.html#hotels" data-i18n="srv2Title">Hotel Comparison</a></h5>
-						<p class="para" data-i18n="srv2Desc">Real-time pricing across Booking, Expedia, and direct rates — filtered by neighbourhood character, not just star rating.</p>
-					</div>
+				<div class="col-lg-4 mb-4">
+					<article class="wm-service-path">
+						<div class="icon-back"><span class="fa fa-compass"></span></div>
+						<h3 data-i18n="srv2Title">AI self-planning</h3>
+						<p data-i18n="srv2Desc">Build and edit the trip yourself with the AI workspace. Your AI allowance is separate from professional-route access.</p>
+						<div class="wm-service-meta" data-i18n="srv2Meta">Free allowance · Any destination · You stay in control</div>
+						<a class="wm-service-action" href="ai-tool.html?mode=diy"><span data-i18n="srv2Btn">Open AI planner</span><span class="fa fa-arrow-right" aria-hidden="true"></span></a>
+					</article>
 				</div>
-				<div class="col-lg-4 col-md-6 propClone about-line-top">
-					<div class="color-white">
-						<div class="icon-back"><span class="fa fa-plane"></span></div>
-						<h5><a href="ai-tool.html#flights" data-i18n="srv3Title">Flight Comparison</a></h5>
-						<p class="para" data-i18n="srv3Desc">Live fares with stop counts, total duration, and carbon estimates. Optimal departure dates surfaced automatically.</p>
-					</div>
-				</div>
-				<div class="col-lg-4 col-md-6 propClone about-line-top">
-					<div class="color-white">
-						<div class="icon-back"><span class="fa fa-globe"></span></div>
-						<h5><a href="ai-tool.html" data-i18n="srv4Title">Live Web Search</a></h5>
-						<p class="para" data-i18n="srv4Desc">Visa rules, weather, currency, local events — pulled in real time so every answer reflects today's reality.</p>
-					</div>
-				</div>
-				<div class="col-lg-4 col-md-6 propClone about-line-top">
-					<div class="color-white">
-						<div class="icon-back"><span class="fa fa-list-alt"></span></div>
-						<h5><a href="ai-tool.html#itinerary" data-i18n="srv5Title">Itinerary Builder</a></h5>
-						<p class="para" data-i18n="srv5Desc">A clean, day-by-day timeline you can share with travel companions, edit on the fly, and export as a PDF.</p>
-					</div>
-				</div>
-				<div class="col-lg-4 col-md-6 propClone about-line-top">
-					<div class="color-white">
-						<div class="icon-back"><span class="fa fa-heart-o"></span></div>
-						<h5><a href="ai-tool.html#prefs" data-i18n="srv6Title">Travel Preferences</a></h5>
-						<p class="para" data-i18n="srv6Desc">Tell us once: budget, pace, dietary needs, family vs solo. Every future trip is built around what matters to you.</p>
-					</div>
+				<div class="col-lg-4 mb-4">
+					<article class="wm-service-path">
+						<div class="icon-back"><span class="fa fa-car"></span></div>
+						<h3 data-i18n="srv3Title">Local driver handoff</h3>
+						<p data-i18n="srv3Desc">When the route is ready, send dates, group size and budget through WanderMind. The selected driver replies with availability and the final quote.</p>
+						<div class="wm-service-meta" data-i18n="srv3Meta">Private email handoff · No direct contact details · Not instant booking</div>
+						<a class="wm-service-action" href="find-driver.html"><span data-i18n="srv3Btn">Contact a Bali driver</span><span class="fa fa-arrow-right" aria-hidden="true"></span></a>
+					</article>
 				</div>
 			</div>
 		</div>
@@ -270,41 +316,30 @@
 	<div class="service-single-page">
 		<div class="container">
 			<div class="main-titles-head">
-				<h3 class="header-name" data-i18n="srvDestTitle">Destinations our agents know deeply</h3>
-				<p class="tiltle-para" data-i18n="srvDestSub">Our AI has hand-curated intelligence for these four destinations — and can build a complete guide for any city you name.</p>
+				<h2 class="header-name" data-i18n="srvDestTitle">Start with Bali. Use AI for other cities.</h2>
+				<p class="tiltle-para" data-i18n="srvDestSub">Bali has free public routes, professional-route previews and a local-driver handoff. Other cities open as editable AI starting points.</p>
 			</div>
-			<div class="gallery-image row mt-4">
-				<div class="img-box col-lg-4 col-md-6">
-					<a href="ai-tool.html?dest=bali"><img src="assets/images/bali-2.jpg" alt="Bali" class="img-responsive"></a>
-					<h5 class="mt-2"><a href="ai-tool.html?dest=bali" data-i18n="srvDestBali">Bali · Indonesia</a></h5>
-					<p class="para" data-i18n="srvDestBaliDesc">9 stay areas · 7 day itineraries · Local driver concierge</p>
+			<div class="row wm-destination-layout">
+				<div class="col-lg-6 mb-4 mb-lg-0">
+					<article class="wm-destination-feature">
+						<img src="assets/images/bali-2.jpg" alt="Bali coast and temple landscape">
+						<div class="wm-destination-feature-copy">
+							<h3 data-i18n="srvDestBali">Bali · Indonesia</h3>
+							<p data-i18n="srvDestBaliDesc">6 free route families · Professional preview · Local driver handoff</p>
+							<a class="wm-service-action" href="bali.html"><span data-i18n="srvDestBaliBtn">Explore Bali</span><span class="fa fa-arrow-right" aria-hidden="true"></span></a>
+						</div>
+					</article>
 				</div>
-				<div class="img-box col-lg-4 col-md-6">
-					<a href="ai-tool.html?dest=kyoto"><img src="assets/images/kyoto-1.jpg" alt="Kyoto" class="img-responsive"></a>
-					<h5 class="mt-2"><a href="ai-tool.html?dest=kyoto" data-i18n="srvDestKyoto">Kyoto · Japan</a></h5>
-					<p class="para" data-i18n="srvDestKyotoDesc">5 stay areas · Cherry-blossom routing · Tea ceremony pickups</p>
-				</div>
-				<div class="img-box col-lg-4 col-md-6">
-					<a href="ai-tool.html?dest=paris"><img src="assets/images/paris-1.jpg" alt="Paris" class="img-responsive"></a>
-					<h5 class="mt-2"><a href="ai-tool.html?dest=paris" data-i18n="srvDestParis">Paris · France</a></h5>
-					<p class="para" data-i18n="srvDestParisDesc">6 stay areas · Patisserie crawls · Museum-pass optimisation</p>
-				</div>
-				<div class="img-box col-lg-4 col-md-6">
-					<a href="ai-tool.html?dest=santorini"><img src="assets/images/santorini-1.jpg" alt="Santorini" class="img-responsive"></a>
-					<h5 class="mt-2"><a href="ai-tool.html?dest=santorini" data-i18n="srvDestSant">Santorini · Greece</a></h5>
-					<p class="para" data-i18n="srvDestSantDesc">5 stay areas · Sunset spot timing · Caldera vineyard tours</p>
-				</div>
-				<div class="img-box col-lg-4 col-md-6">
-					<a href="ai-tool.html"><img src="assets/images/world-1.jpg" alt="Any City" class="img-responsive"></a>
-					<h5 class="mt-2"><a href="ai-tool.html" data-i18n="srvDestAny">Any City Worldwide</a></h5>
-					<p class="para" data-i18n="srvDestAnyDesc">Type Tokyo, Marrakech, Reykjavik — AI builds your full guide instantly</p>
-				</div>
-				<div class="img-box col-lg-4 col-md-6">
-					<a href="ai-tool.html"><img src="assets/images/santorini-2.jpg" alt="More" class="img-responsive"></a>
-					<h5 class="mt-2"><a href="ai-tool.html" data-i18n="srvDestMore">More coming soon</a></h5>
-					<p class="para" data-i18n="srvDestMoreDesc">Iceland, Morocco, Vietnam, Mexico — deep curation rolling out monthly</p>
+				<div class="col-lg-6">
+					<div class="wm-destination-quick-grid">
+						<a class="wm-destination-quick" href="ai-tool.html?dest=kyoto"><img src="assets/images/kyoto-1.jpg" alt="Kyoto"><div class="wm-destination-quick-copy"><h3 data-i18n="srvDestKyoto">Kyoto · Japan</h3><p data-i18n="srvDestKyotoDesc">Open an editable AI starting point</p></div></a>
+						<a class="wm-destination-quick" href="ai-tool.html?dest=paris"><img src="assets/images/paris-1.jpg" alt="Paris"><div class="wm-destination-quick-copy"><h3 data-i18n="srvDestParis">Paris · France</h3><p data-i18n="srvDestParisDesc">Open an editable AI starting point</p></div></a>
+						<a class="wm-destination-quick" href="ai-tool.html?dest=santorini"><img src="assets/images/santorini-1.jpg" alt="Santorini"><div class="wm-destination-quick-copy"><h3 data-i18n="srvDestSant">Santorini · Greece</h3><p data-i18n="srvDestSantDesc">Open an editable AI starting point</p></div></a>
+						<a class="wm-destination-quick" href="ai-tool.html?mode=diy"><img src="assets/images/world-1.jpg" alt="World map and destinations"><div class="wm-destination-quick-copy"><h3 data-i18n="srvDestAny">Any city</h3><p data-i18n="srvDestAnyDesc">Start with AI, then verify live details</p></div></a>
+					</div>
 				</div>
 			</div>
+			<p class="wm-destination-note" data-i18n="srvDestMoreDesc">More destination research will be added only after verification.</p>
 		</div>
 	</div>
 </section>
@@ -325,17 +360,16 @@
 				</div>
 				<div class="footer-list-29 footer-2">
 					<ul>
-						<h6 class="footer-title-29" data-i18n="footFeaturesTitle">Features</h6>
-						<li><a href="ai-tool.html" data-i18n="footFeat1">AI Planning</a></li>
-						<li><a href="ai-tool.html#hotels" data-i18n="footFeat2">Hotels Compare</a></li>
-						<li><a href="ai-tool.html#flights" data-i18n="footFeat3">Flights Compare</a></li>
-						<li><a href="ai-tool.html#itinerary" data-i18n="footFeat4">Itinerary Builder</a></li>
-						<li><a href="ai-tool.html#prefs" data-i18n="footFeat5">Travel Preferences</a></li>
+						<h3 class="footer-title-29" data-i18n="footFeaturesTitle">Features</h3>
+						<li><a href="bali.html#professional-planner" data-i18n="srv1Title">Bali professional route</a></li>
+						<li><a href="ai-tool.html?mode=diy" data-i18n="srv2Title">AI self-planning</a></li>
+						<li><a href="find-driver.html" data-i18n="srv3Title">Local driver handoff</a></li>
+						<li><a href="bali.html#route-system" data-i18n="baliRouteSectionTitle">Free public Bali routes</a></li>
 					</ul>
 				</div>
 				<div class="footer-list-29 footer-3">
 					<div class="properties">
-						<h6 class="footer-title-29" data-i18n="footGalleryTitle">Gallery</h6>
+						<h3 class="footer-title-29" data-i18n="footGalleryTitle">Gallery</h3>
 						<div class="images-col">
 							<a href="services.html"><img src="assets/images/gallery-1.jpg" class="img-responsive" alt=""></a>
 							<a href="services.html"><img src="assets/images/gallery-2.jpg" class="img-responsive" alt=""></a>
@@ -348,12 +382,12 @@
 				</div>
 				<div class="footer-list-29 footer-4">
 					<ul>
-						<h6 class="footer-title-29" data-i18n="footDestTitle">Top Destinations</h6>
-						<li><a href="ai-tool.html?dest=bali" data-i18n="footDest1">Bali</a></li>
+						<h3 class="footer-title-29" data-i18n="footDestTitle">Top Destinations</h3>
+						<li><a href="bali.html" data-i18n="footDest1">Bali</a></li>
 						<li><a href="ai-tool.html?dest=kyoto" data-i18n="footDest2">Kyoto</a></li>
 						<li><a href="ai-tool.html?dest=paris" data-i18n="footDest3">Paris</a></li>
 						<li><a href="ai-tool.html?dest=santorini" data-i18n="footDest4">Santorini</a></li>
-						<li><a href="ai-tool.html" data-i18n="footDest5">Any City</a></li>
+						<li><a href="ai-tool.html?mode=diy" data-i18n="footDest5">Any City</a></li>
 					</ul>
 				</div>
 			</div>
@@ -369,7 +403,7 @@
 	window.onscroll = function () { if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) { document.getElementById("movetop").style.display = "block"; } else { document.getElementById("movetop").style.display = "none"; } };
 	function topFunction() { document.body.scrollTop = 0; document.documentElement.scrollTop = 0; }
 </script>
-    <script src="assets/js/i18n.js?v=search1"></script>
+    <script src="assets/js/i18n.js?v=services2"></script>
 <script src="assets/js/marketing-events.js?v=p2"></script>
 <script src="assets/js/global-auth.js?v=p53"></script>
 </body>

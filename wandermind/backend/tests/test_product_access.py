@@ -1022,6 +1022,10 @@ class ProductAccessTests(unittest.TestCase):
         frontend_dir = BACKEND_DIR.parents[1] / "wandermind-studio" / "frontend"
         index_html = (frontend_dir / "index.html").read_text(encoding="utf-8")
         bali_html = (frontend_dir / "bali.html").read_text(encoding="utf-8")
+        services_html = (frontend_dir / "services.html").read_text(encoding="utf-8")
+        i18n = (frontend_dir / "assets" / "js" / "i18n.js").read_text(
+            encoding="utf-8"
+        )
         ai_js = (frontend_dir / "assets" / "js" / "ai-tool.js").read_text(
             encoding="utf-8"
         )
@@ -1030,6 +1034,17 @@ class ProductAccessTests(unittest.TestCase):
         ).read_text(encoding="utf-8")
         self.assertIn("bali.html#professional-planner", index_html)
         self.assertIn("ai-tool.html?mode=diy", index_html)
+        self.assertIn('href="bali.html#professional-planner"', services_html)
+        self.assertIn('href="ai-tool.html?mode=diy"', services_html)
+        self.assertIn('href="find-driver.html"', services_html)
+        self.assertNotIn('href="ai-tool.html#hotels"', services_html)
+        self.assertNotIn('href="ai-tool.html#flights"', services_html)
+        self.assertNotIn('href="ai-tool.html#itinerary"', services_html)
+        self.assertIn("assets/js/i18n.js?v=services2", services_html)
+        self.assertEqual(i18n.count("srv1Meta:"), 5)
+        self.assertEqual(i18n.count("srvDestBaliBtn:"), 5)
+        self.assertNotIn("Real-time pricing across Booking", i18n)
+        self.assertNotIn("六项 AI 驱动的服务", i18n)
         self.assertIn('id="professional-planner"', bali_html)
         self.assertIn("assets/js/bali-professional.js?v=p58", bali_html)
         self.assertNotIn("ai-tool.html?professional=1", bali_html)
