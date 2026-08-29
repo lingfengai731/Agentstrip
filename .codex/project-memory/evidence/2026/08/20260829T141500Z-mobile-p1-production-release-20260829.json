@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "evidence_id": "ev-20260829T141500Z-mobile-p1-production-release-20260829",
+  "task_ref": "mobile-p1-production-release-20260829",
+  "owner": "Sol main thread",
+  "captured_at": "2026-08-29T14:15:00Z",
+  "status": "verified",
+  "claim": "The approved AI planner and Find Driver mobile P1 release is on origin/main, live on Render, and production-browser verified without creating driver requests, PayPal orders, entitlements or other user records.",
+  "source": {
+    "repository": "https://github.com/lingfengai731/Agentstrip.git",
+    "commit": "3f743e3ce2562e9985f106517c4f82f8a89f7506",
+    "branch": "main",
+    "render_deploy": "dep-da9922f10e5c73at8bc0",
+    "render_status": "live",
+    "rollback_commit": "cf8f89042c0d4924cc956a3858b21ebc07ec4037"
+  },
+  "verification": {
+    "release_gate": "89 product tests passed; ai-tool.js and i18n.js syntax passed; git diff --check passed",
+    "public_endpoints": "healthz 200 ok; ai-tool.html serves ai-tool.css?v=p60 and ai-tool.js?v=p60; find-driver.html serves i18n.js?v=search2 and the mobile-step markup",
+    "ai_mobile_390": "scrollWidth 390 equals clientWidth 390; height 1689; left and right panels hidden inline; three quick actions; right drawer opens with body lock and closes with Escape",
+    "ai_desktop_1440": "scrollWidth 1440 equals clientWidth 1440; left sidebar block; right panel flex; grid 280px 800px 360px; six quick actions",
+    "driver_mobile_390": "scrollWidth 390 equals clientWidth 390; initial height 2344; exactly one active step; first-name draft survives step 1 to 2; step 3 exposes email field; profile expands on demand",
+    "driver_privacy": "expanded driver profile contains zero mailto links and zero wa.me links",
+    "driver_desktop_1440": "scrollWidth 1440 equals clientWidth 1440; all three form sections render as contents; mobile progress hidden; profile visible",
+    "languages": "The real language picker switched zh, en, ja, ko and id labels correctly on both AI and Find Driver pages",
+    "browser_errors": "zero console errors and zero page errors"
+  },
+  "paypal_sandbox_boundary": {
+    "personal_payer": "dedicated Sandbox Personal payer confirmed by owner; address and credentials are not persisted",
+    "executed_cases": [],
+    "status": "not_started",
+    "reason": "Checks 4-7 still require a dedicated WanderMind test account and trip, admin before-state, do-not-touch comparison IDs and owner-entered PayPal Sandbox password. No order was created without that complete baseline."
+  },
+  "external_effects": "Fast-forwarded origin/main and allowed its normal Render auto-deploy. No environment variable, database row, driver email, PayPal order, capture, refund, point balance, entitlement, admin content or real-user record was changed."
+}
