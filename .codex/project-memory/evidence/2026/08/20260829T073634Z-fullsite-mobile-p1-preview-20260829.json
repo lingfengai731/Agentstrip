@@ -1,0 +1,22 @@
+{
+  "schema_version": 1,
+  "evidence_id": "ev-20260829T073634Z-fullsite-mobile-p1-preview-20260829",
+  "task_ref": "fullsite-mobile-p1-preview-20260829",
+  "owner": "Sol main thread",
+  "captured_at": "2026-08-29T07:36:34Z",
+  "status": "verified",
+  "claim": "AI planner mobile hierarchy p60 and Find Driver phone progression were implemented on the isolated preview branch, committed, pushed, and locally verified; neither is merged or deployed.",
+  "source": {
+    "kind": "git",
+    "repository": "https://github.com/lingfengai731/Agentstrip.git",
+    "commit": "643c47e5efbf3320a1a421b62867809b2a34ade6",
+    "branch": "codex/fullsite-design-audit-20260828",
+    "worktree": "E:\\Agentstrip-wt-fullsite-design-20260828",
+    "dirty": true
+  },
+  "verification": {
+    "command": "py -3 -m unittest wandermind.backend.tests.test_product_access; Playwright 320/390/768/1440 AI matrix and 390/1440 Find Driver callbacks",
+    "result": "89 tests passed; no horizontal overflow or page errors; AI 390px 2719 to 1689px; Find Driver 390px initial 4992 to 2344px; five-language and drawer/step interactions passed."
+  },
+  "notes": "Visual acceptance remains required before merge. Local static-server marketing POST errors are expected and are not production evidence. Sandbox preflight checks 1-3 passed; checks 4-7 need a dedicated test identity/trip."
+}
