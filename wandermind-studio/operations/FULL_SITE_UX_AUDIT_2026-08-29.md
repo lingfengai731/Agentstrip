@@ -1,0 +1,65 @@
+# WanderMind full-site UX audit — 2026-08-29
+
+This review is an evidence-bounded conversion audit, not a request to replace the existing visual identity. Current code and fresh production evidence outrank the pasted external critique. The established WanderMind system remains the design authority: real travel photography, warm paper neutrals, amber brand emphasis, teal task states, restrained motion and five-language parity.
+
+## Evidence baseline
+
+- Git baseline: `origin/main` and the isolated audit worktree both resolve to `cf8f89042c0d4924cc956a3858b21ebc07ec4037`.
+- Production deployment evidence: Render was verified Live on `9640ec7bc2b195b345d791224b8d3642565ab8d6`; later `main` commits are documentation-only.
+- Fresh HTTP check at `2026-08-29 08:25 +08:00`: `/healthz`, Home, Services, About, Contact, Bali, AI Tool, Find Driver, Privacy and `/app` all returned HTTP 200.
+- Deterministic browser matrix captured at `2026-08-28 21:37 +08:00`: Home, Services, Bali, AI Tool and Find Driver at 1440x900 and 390x844; no page-level horizontal overflow, console errors or page errors were observed.
+- Driver image follow-up at 390x844: after scrolling, all ten profile/vehicle/moment images in the active profile decoded successfully (`naturalWidth > 0`). The earlier grey blocks were screenshot-time lazy-loading, not missing production assets.
+- UI UX Pro Max review reinforced mobile-first layouts, explicit form labels, appropriate mobile keyboards and visible loading/success/error feedback. These are acceptance constraints, not a reason to add a new component framework.
+- The two independent Luna Max reviews were started read-only but both ended with an account usage-limit error and returned no findings. Their work is not counted as completed evidence; Sol performed the final synthesis.
+
+## External critique: accepted, narrowed or rejected
+
+| External claim | Current evidence | Verdict | Priority / action |
+|---|---|---|---|
+| The site is four unrelated products stitched together. | Home, Services, Bali, AI and Driver already share the public shell, language system and visual tokens. `/app` is a hidden robots-blocked compatibility route. AI workspace density and Services positioning are the real discontinuities. | **Partly accept.** The diagnosis is too broad, but the transition into the AI workspace needs simplification. | P1: simplify AI mobile hierarchy; do not rewrite the whole site. |
+| Use Explore → Plan → Refine → Make it real as the mental model. | These phases already describe the actual route-to-driver journey. | **Accept as content architecture**, not as four new top-level screens. | P1: use it to audit CTA labels and page transitions. |
+| Replace the global navigation with Explore / Plan / Trips and move About/Contact to the footer. | The current site is still small and trust-sensitive; About and Contact are useful before purchase. Account injection already exists. | **Reject wholesale.** | P2: rename ambiguous “AI Tool” to a user outcome only after a five-language/link matrix; keep trust links accessible. |
+| Home puts a large form in the first viewport. | Production Home first shows a photography-led hero and one “Start with my trip” CTA; the detailed form is lower on the page. | **Reject factual premise.** | No P0 redesign. P2: consider mobile progressive disclosure for the lower form only. |
+| Services should be destination-first and honest about depth. | Six generic AI capability cards currently precede destinations. Every destination card links to AI; Bali is not clearly distinguished from shallower destinations. | **Accept.** | P1: lead with destination/product choices; label Bali as deep, verified route content and other destinations as AI planning. |
+| About should be trust-first and protect driver privacy. | About already uses a private driver-request channel and exposes no personal driver account details. | **Mostly already met.** | P2 copy polish only; do not reintroduce private contact details. |
+| Contact lacks a message field. | `contact.html` contains Name, Email, Subject and a Message textarea. | **Reject factual premise.** | No change. |
+| Bali needs sticky mobile section navigation and collapsible route content. | Production already has fixed mobile Routes / Packs / My route / Photos navigation and collapsible route/pro/gallery sections. | **Already implemented.** | Do not duplicate another navigation layer. |
+| Bali route cards need easier comparison. | R1–R6 have route cards and an editor, but cross-route comparison still requires repeated selection. | **Accept narrowly.** | P2: compact compare attributes such as ideal days, areas, pace and intensity without lengthening mobile cards. |
+| Portfolio filters should not consume two mobile rows. | Theme and tag chips occupy two horizontal rows on mobile. | **Accept.** | P1: keep themes visible, move advanced tags/places/mood into one filter sheet with active-count feedback. |
+| Find Driver should become a four-step mobile wizard. | The current 390px page is about 4,986px tall and places a long request form before full driver profiles. Submission states and labels already exist. | **Accept the problem, not a hard four-step prescription.** | P1: mobile progressive sections (Trip → Needs → Driver → Review); preserve the current desktop two-column experience and draft state. |
+| AI has a button wall. | At 390px, 23 visible actions compete across global header, five top tabs, drawer buttons, quick tools and a lower toolbar; desktop still exposes 21. | **Strongly accept.** | P1 highest conversion refinement: one primary planning task, one contextual secondary action, overflow for advanced tools; reuse existing functions. |
+| Add another mobile bottom navigation to AI. | AI already has several navigation/action layers. | **Reject as additive.** | Simplify and merge existing layers; do not stack a new one on top. |
+| Authentication loses user intent. | Recent production acceptance verified signed-in paid-route restoration, direct account entry and adjustment without repurchase. Login recovery is already implemented. | **Reject as an open P0.** | Keep regression coverage; only reopen with a reproducible current failure. |
+| Shared loading/error/empty states are missing. | Loading and error states exist, but “expired”, “deleted”, “still generating” and “not found” are not consistently distinguished. | **Partly accept.** | P2: establish a small shared state vocabulary and recovery CTA matrix. |
+| `/app` must immediately redirect. | `/app` is not in public navigation, is blocked from robots and preserves old bookmarks/state. | **Reject P0 redirect.** | P2: optional migration notice with a deliberate “open current planner” action; do not break legacy state blindly. |
+| Replace the palette with paper/forest/coral/sky and editorial serif. | Current amber/teal/paper system already provides this warmth. Cream + serif + terracotta is also a common template/AI-design pattern. | **Reject wholesale restyling.** | Preserve identity; gain distinctiveness through route-atlas graphics, real photography and information hierarchy. |
+| Add more motion to improve polish. | Current design uses restrained motion and reduced-motion handling. Long mobile flows need clarity more than spectacle. | **Reject motion as a priority.** | P2: only state transitions, section expansion and route feedback; no decorative scroll choreography. |
+
+## Unified unfinished-work priorities
+
+This table merges the shared project backlog, both-account handoffs and the current production UX audit. “Blocked” means an external fact or authorization is required; it does not mean implementation failed.
+
+| Priority | Work item | Current truthful state | Next exact action | Acceptance evidence | Gate |
+|---|---|---|---|---|---|
+| P0-A | Disposable PayPal Sandbox abnormal-flow preparation | Success/restoration is accepted; cancel/decline/genuine webhook redelivery/refund are only locally covered. | Use `PAYPAL_SANDBOX_ABNORMAL_FLOW_RUNBOOK_2026-08-29.md`; prepare isolated buyer/trip identifiers and read-only baselines. | Completed preflight + case ledger; no reuse of accepted order. | Dedicated Sandbox buyer/email and production-test-data authorization. |
+| P0-B | External Bali facts and route pricing | Two POIs, three supplier experiences and both drivers' route-level rates remain deliberately unpromoted. | Obtain dated replies/official facts using the prepared forms; update only confirmed scope. | Dated source/reply, effective date, verification status. | Dicky, Gede Nico, suppliers, owner send authorization. |
+| P0-C | First organic launch | XHS/Instagram/TikTok copy, image packs and UTM log exist; no public post is claimed. | Owner names one account/post; publish once and record URL/UTM/time. | Public URL + first 14-day log. | Explicit public-post authorization. |
+| P1-1 | AI mobile action hierarchy | Functional, responsive and error-free, but 23 competing actions are visible at 390px. | Produce a mobile-only prototype that consolidates existing controls without changing underlying product logic. | 320/390/768/1440 matrix; primary task visible; advanced actions still reachable; five languages; keyboard/screen-reader checks. | Large UI slice requires visual preview before merge. |
+| P1-2 | Find Driver mobile progression | Function, profiles, estimates, consent and photos exist; mobile flow is very long. | Prototype progressive mobile sections with persistent summary/review; retain desktop layout. | Draft survives step changes; Dicky/Gede switch; estimate/consent/submit E2E; images decoded. | Visual preview before merge; real email remains separate gate. |
+| P1-3 | Services destination/product positioning | Page leads with generic AI capabilities and gives all destinations similar depth signals. | Reorder to destination/product choice; route Bali to Bali content and label other destinations honestly. | All CTA destinations, five-language copy and analytics events verified. | None after preview. |
+| P1-4 | Portfolio mobile filter density | D8 Portfolio works; two chip rows consume mobile space. | Keep three primary themes visible and move secondary filters to a single sheet. | Filter combinations, active count, reset, focus trap, 320/390px layout. | None after preview. |
+| P1-5 | CTA and product naming consistency | Core paid/DIY paths work, but “AI Tool” is implementation language rather than a customer outcome. | Inventory labels first, then choose one five-language outcome name and update analytics-safe links. | Link/URL/trip_profile matrix and five-language scan. | Copy decision bundled with prototype. |
+| P2-1 | Shared recovery states | Generic states work; failure reasons are not consistently differentiated. | Define state + recovery CTA matrix, then implement only where APIs expose reliable distinctions. | Expired/deleted/generating/not-found tests. | API truth availability. |
+| P2-2 | Bali route comparison refinement | Route selection works; comparison is serial. | Add compact, localised comparison attributes without larger cards. | R1–R6 parity, mobile scroll/selection feedback, no overflow. | None. |
+| P2-3 | `/app` migration notice | Compatibility page remains hidden and functional. | Add a non-destructive notice only after proving legacy-state preservation. | Old bookmark/state test and current planner handoff. | Legacy-state QA. |
+| P2-4 | Production monitoring and dynamic POI checks | Fallbacks and stable identities exist; provider/live facts drift. | Add dated pre-departure checks and secret-free availability evidence. | Timestamp, HTTP/error class, recovery path. | Operations cadence. |
+| P3 | Additional destinations, native/mini-program, advanced admin roles | Intentionally deferred while Bali route/driver/payment funnel is being validated. | Start only after real organic funnel evidence. | A measured business need, not speculative scope. | Post-launch data. |
+
+## Design acceptance rules for the next UI slice
+
+1. Do not change desktop simply to make mobile easier; use mobile-only structure where appropriate.
+2. Do not add another navigation or action layer. Consolidate existing controls.
+3. Preserve current photographs, route data, five languages, dark mode, reduced motion, analytics and saved trip state.
+4. A design is not complete without 320, 390, 768 and 1440px screenshots plus keyboard/touch checks and zero page-level horizontal overflow.
+5. Large page changes must be shown as a prototype/diff preview before they are merged, in line with the established project preference.
+6. Production payment, public posts, real driver emails and real-user data changes remain separate gates.
