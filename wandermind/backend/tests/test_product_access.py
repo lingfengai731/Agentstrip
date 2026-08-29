@@ -3073,6 +3073,31 @@ class ProductAccessTests(unittest.TestCase):
             driver_html,
         )
 
+    def test_find_driver_phone_flow_progressively_reveals_form_and_profiles(self):
+        frontend = BACKEND_DIR.parents[1] / "wandermind-studio" / "frontend"
+        driver_html = (frontend / "find-driver.html").read_text(encoding="utf-8")
+        i18n_js = (frontend / "assets" / "js" / "i18n.js").read_text(
+            encoding="utf-8"
+        )
+
+        self.assertEqual(
+            driver_html.count('<section class="fd-mobile-step'), 3
+        )
+        self.assertEqual(driver_html.count('data-fd-step-target="'), 3)
+        self.assertIn("function setMobileStep(step, focusHeading)", driver_html)
+        self.assertIn("function setProfileOpen(open, shouldScroll)", driver_html)
+        self.assertIn("showRequestError(L.fdErrDates", driver_html)
+        self.assertIn(".fd-mobile-step.active { display:block; }", driver_html)
+        self.assertIn(".fd-profile-shell.is-open { display:block; }", driver_html)
+        self.assertIn('aria-controls="fd-profile-shell"', driver_html)
+        for key in (
+            "fdStepTrip:",
+            "fdStepNeeds:",
+            "fdStepReview:",
+            "fdViewDriver:",
+        ):
+            self.assertEqual(i18n_js.count(key), 5)
+
     def test_find_driver_reuses_request_id_only_for_unchanged_retry(self):
         frontend = BACKEND_DIR.parents[1] / "wandermind-studio" / "frontend"
         driver_html = (frontend / "find-driver.html").read_text(encoding="utf-8")
@@ -4536,7 +4561,7 @@ class ProductAccessTests(unittest.TestCase):
         self.assertIn("profile.moments.map", driver_html)
         self.assertIn("DRIVER_PROFILES[choice.querySelector('input').value]", driver_html)
         self.assertIn("document.addEventListener('wm:language-change'", driver_html)
-        self.assertIn('assets/js/i18n.js?v=search1', driver_html)
+        self.assertIn('assets/js/i18n.js?v=search2', driver_html)
         self.assertIn('assets/js/driver-estimate.js?v=p1', driver_html)
         self.assertIn('id="fd-full-days"', driver_html)
         self.assertIn('id="fd-half-days"', driver_html)

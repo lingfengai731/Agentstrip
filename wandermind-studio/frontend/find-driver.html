@@ -189,6 +189,33 @@
       body.dark .fd-moment img { background:#171b1f; }
       .fd-quote-boundary { margin-top:18px; font-size:12px; line-height:1.6; }
       @media(max-width:575px){ .fd-driver-picker{grid-template-columns:1fr}.fd-driver-choice{grid-template-columns:56px 1fr}.fd-driver-choice img{width:56px;height:56px} }
+      .fd-mobile-progress, .fd-mobile-step-title, .fd-step-actions, .fd-profile-toggle, .fd-view-profile, .fd-mobile-step-msg { display:none; }
+      .fd-mobile-step { display:contents; }
+      .fd-profile-shell { display:block; }
+      @media (max-width:575px) {
+        .fd-mobile-progress { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:6px; margin:18px 0 16px; }
+        .fd-mobile-progress button { min-height:42px; padding:7px 5px; border:1px solid var(--fd-border); border-radius:10px; background:#f7f5ef; color:var(--fd-muted); font:700 11px/1.2 inherit; cursor:pointer; }
+        .fd-mobile-progress button.active { border-color:var(--fd-teal); background:rgba(14,124,107,.10); color:var(--fd-teal); }
+        body.dark .fd-mobile-progress button { background:#272b30; color:#d8d5cc; border-color:#41464d; }
+        body.dark .fd-mobile-progress button.active { color:#5eead4; border-color:#5eead4; background:rgba(20,184,166,.12); }
+        .fd-mobile-step { display:none; }
+        .fd-mobile-step.active { display:block; }
+        .fd-mobile-step-title { display:block; margin:0 0 14px; color:var(--fd-ink); font-size:17px; }
+        body.dark .fd-mobile-step-title { color:#f3f1ea; }
+        .fd-step-actions { display:flex; align-items:center; gap:8px; margin-top:18px; }
+        .fd-step-actions.end { justify-content:flex-end; }
+        .fd-step-btn { min-height:44px; padding:10px 16px; border:1px solid var(--fd-border); border-radius:11px; background:#fff; color:var(--fd-ink); font:700 13px/1.2 inherit; cursor:pointer; }
+        .fd-step-btn.primary { margin-left:auto; border-color:var(--fd-teal); background:var(--fd-teal); color:#fff; }
+        body.dark .fd-step-btn { background:#272b30; color:#f3f1ea; border-color:#41464d; }
+        body.dark .fd-step-btn.primary { background:#14b8a6; border-color:#14b8a6; color:#102521; }
+        .fd-view-profile { display:inline-flex; width:100%; min-height:42px; align-items:center; justify-content:center; gap:7px; margin:-8px 0 18px; border:1px solid rgba(14,124,107,.32); border-radius:11px; background:rgba(14,124,107,.07); color:var(--fd-teal); font:700 12px/1.3 inherit; cursor:pointer; }
+        .fd-profile-toggle { display:flex; width:100%; min-height:46px; align-items:center; justify-content:space-between; padding:11px 14px; border:1px solid var(--fd-border); border-radius:12px; background:#fff; color:var(--fd-ink); font:700 13px/1.3 inherit; cursor:pointer; }
+        body.dark .fd-profile-toggle { background:#272b30; color:#f3f1ea; border-color:#41464d; }
+        .fd-profile-shell { display:none; padding-top:18px; }
+        .fd-profile-shell.is-open { display:block; }
+        .fd-mobile-step-msg { min-height:18px; margin:0 0 10px; font-size:12px; line-height:1.45; color:#b91c1c; }
+        .fd-mobile-step-msg:empty { min-height:0; margin:0; }
+      }
       .fd-price-box { background: rgba(14,124,107,.08); border:1px solid rgba(14,124,107,.18); border-radius: 12px; padding: 14px 16px; color:#334155; font-size: 13px; line-height: 1.8; }
       .fd-price-box strong { color: #0a695b; }
       body.dark .fd-price-box { background:rgba(20,184,166,.09); border-color:rgba(94,234,212,.18); color:#e2e8f0; }
@@ -281,6 +308,16 @@
       <h2 data-i18n="fdFormTitle">Your trip details</h2>
       <p class="fd-sub" data-i18n="fdFormSub">Choose a driver, then share your route. Availability and price are confirmed after review.</p>
 
+      <nav class="fd-mobile-progress" aria-label="Driver request steps">
+        <button type="button" class="active" data-fd-step-target="1" aria-current="step" data-i18n="fdStepTrip">Trip</button>
+        <button type="button" data-fd-step-target="2" data-i18n="fdStepNeeds">Route & needs</button>
+        <button type="button" data-fd-step-target="3" data-i18n="fdStepReview">Contact & send</button>
+      </nav>
+      <div class="fd-mobile-step-msg" id="fd-mobile-step-msg" role="status" aria-live="polite"></div>
+
+      <section class="fd-mobile-step active" data-fd-step="1" aria-labelledby="fd-step-one-title">
+      <h3 class="fd-mobile-step-title" id="fd-step-one-title" data-i18n="fdStepTripTitle">Start with your trip</h3>
+
       <label class="fd-label" data-i18n="fdChooseDriver">Choose a driver</label>
       <div class="fd-driver-picker" role="radiogroup" aria-label="Choose a driver">
         <label class="fd-driver-choice">
@@ -294,6 +331,7 @@
           <span><strong>Gede Nico</strong><span data-i18n="fdGedeShort">Local Bali driver</span></span>
         </label>
       </div>
+      <button type="button" class="fd-view-profile" id="fd-view-profile"><span class="fa fa-user-circle-o" aria-hidden="true"></span><span data-i18n="fdViewDriver">View selected driver profile</span></button>
 
       <div class="fd-row">
         <div class="fd-field">
@@ -339,6 +377,11 @@
         </div>
       </div>
 
+      <div class="fd-step-actions end"><button type="button" class="fd-step-btn primary" data-fd-go="2"><span data-i18n="fdNext">Next</span> <span class="fa fa-angle-right" aria-hidden="true"></span></button></div>
+      </section>
+
+      <section class="fd-mobile-step" data-fd-step="2" aria-labelledby="fd-step-two-title">
+      <h3 class="fd-mobile-step-title" id="fd-step-two-title" data-i18n="fdStepNeedsTitle">Shape the route and quote</h3>
       <section class="fd-estimator" aria-labelledby="fd-estimator-title">
         <h3 id="fd-estimator-title" data-i18n="fdEstimateTitle">Estimate your driver days</h3>
         <p class="fd-estimator-intro" data-i18n="fdEstimateIntro">This uses Dicky's initial price. He may adjust it after reviewing your days and route; the amount in his reply is final. Gede Nico quotes separately.</p>
@@ -401,12 +444,6 @@
       </div>
 
       <div class="fd-field">
-        <label class="fd-label" for="fd-email" data-i18n="fdContact">Your email <span class="fd-req">*</span></label>
-        <div class="fd-hint" style="margin-top:0;margin-bottom:8px" data-i18n="fdContactHint">Driver requests are handled by email through WanderMind.</div>
-        <input type="email" class="fd-input" id="fd-email" data-i18n="fdEmailPh" data-i18n-attr="placeholder" placeholder="Email address" required>
-      </div>
-
-      <div class="fd-field">
         <label class="fd-label" data-i18n="fdPlaces">Places you'd like to visit</label>
         <div class="fd-source-toggle">
           <button type="button" class="fd-source-btn active" id="fd-src-manual" aria-pressed="true" data-i18n="fdSrcManual">Write manually</button>
@@ -416,6 +453,16 @@
         <div class="fd-hint" id="fd-import-hint" style="display:none"></div>
       </div>
 
+      <div class="fd-step-actions"><button type="button" class="fd-step-btn" data-fd-go="1"><span class="fa fa-angle-left" aria-hidden="true"></span> <span data-i18n="fdBack">Back</span></button><button type="button" class="fd-step-btn primary" data-fd-go="3"><span data-i18n="fdNext">Next</span> <span class="fa fa-angle-right" aria-hidden="true"></span></button></div>
+      </section>
+
+      <section class="fd-mobile-step" data-fd-step="3" aria-labelledby="fd-step-three-title">
+      <h3 class="fd-mobile-step-title" id="fd-step-three-title" data-i18n="fdStepReviewTitle">Confirm where we should reply</h3>
+      <div class="fd-field">
+        <label class="fd-label" for="fd-email" data-i18n="fdContact">Your email <span class="fd-req">*</span></label>
+        <div class="fd-hint" style="margin-top:0;margin-bottom:8px" data-i18n="fdContactHint">Driver requests are handled by email through WanderMind.</div>
+        <input type="email" class="fd-input" id="fd-email" data-i18n="fdEmailPh" data-i18n-attr="placeholder" placeholder="Email address" required>
+      </div>
       <div class="fd-privacy">
         <span class="fa fa-lock"></span>
         <span data-i18n="fdPrivacy">Your privacy is protected. We forward this request once to the driver by email and never store your contact details on our servers.</span>
@@ -425,13 +472,18 @@
 
       <button type="submit" class="fd-submit" id="fd-submit"><span class="fa fa-paper-plane" aria-hidden="true"></span> <span data-i18n="fdSubmit">Send driver request</span></button>
       <div class="fd-msg" id="fd-msg" role="status" aria-live="polite" aria-atomic="true"></div>
+      <div class="fd-step-actions"><button type="button" class="fd-step-btn" data-fd-go="2"><span class="fa fa-angle-left" aria-hidden="true"></span> <span data-i18n="fdBack">Back</span></button></div>
+      </section>
     </form>
 
     <!-- DRIVER CARD -->
     <div class="fd-driver">
+      <button type="button" class="fd-profile-toggle" id="fd-profile-toggle" aria-expanded="false" aria-controls="fd-profile-shell"><span data-i18n="fdMeetDrivers">Meet the local drivers</span><span class="fa fa-angle-down" aria-hidden="true"></span></button>
+      <div class="fd-profile-shell" id="fd-profile-shell">
       <h3 data-i18n="fdMeetDrivers">Meet the local drivers</h3>
       <div class="fd-profile" id="fd-driver-detail" aria-live="polite"></div>
 <div class="fd-price-box fd-quote-boundary" data-i18n="fdQuoteBoundary"><strong>Full day: IDR 700k base + IDR 50k per guest</strong> (up to 10 hours), or <strong>half day: IDR 500k base + IDR 50k per guest</strong> (up to 6 hours). Includes car, fuel, driver-guide, mineral water, parking and tolls. Additional time is IDR 75k per hour after 10 hours. Airport transfers and hotel changes are quoted by distance; the final route-specific quote is confirmed before booking.</div>
+      </div>
     </div>
 
   </div>
@@ -485,6 +537,48 @@
     var budgetEl = document.getElementById('fd-budget');
     var driverChoices = Array.from(document.querySelectorAll('.fd-driver-choice'));
     var driverDetail = document.getElementById('fd-driver-detail');
+    var mobileStepMessage = document.getElementById('fd-mobile-step-msg');
+    var mobileStepButtons = Array.from(document.querySelectorAll('[data-fd-step-target]'));
+    var mobileSteps = Array.from(document.querySelectorAll('[data-fd-step]'));
+    var profileToggle = document.getElementById('fd-profile-toggle');
+    var profileShell = document.getElementById('fd-profile-shell');
+    var viewProfile = document.getElementById('fd-view-profile');
+    var currentMobileStep = 1;
+    function isPhoneLayout() { return window.matchMedia('(max-width:575px)').matches; }
+    function setMobileStep(step, focusHeading) {
+      currentMobileStep = Math.max(1, Math.min(3, parseInt(step, 10) || 1));
+      mobileSteps.forEach(function (section) {
+        section.classList.toggle('active', parseInt(section.dataset.fdStep, 10) === currentMobileStep);
+      });
+      mobileStepButtons.forEach(function (button) {
+        var active = parseInt(button.dataset.fdStepTarget, 10) === currentMobileStep;
+        button.classList.toggle('active', active);
+        if (active) button.setAttribute('aria-current', 'step'); else button.removeAttribute('aria-current');
+      });
+      if (focusHeading && isPhoneLayout()) {
+        var heading = document.querySelector('[data-fd-step="' + currentMobileStep + '"] .fd-mobile-step-title');
+        if (heading) { heading.setAttribute('tabindex', '-1'); heading.focus({ preventScroll: true }); }
+      }
+    }
+    function setProfileOpen(open, shouldScroll) {
+      if (!profileShell || !profileToggle) return;
+      profileShell.classList.toggle('is-open', !!open);
+      profileToggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+      var icon = profileToggle.querySelector('.fa');
+      if (icon) icon.className = 'fa ' + (open ? 'fa-angle-up' : 'fa-angle-down');
+      if (open && shouldScroll && isPhoneLayout()) profileToggle.scrollIntoView({ behavior:'smooth', block:'start' });
+    }
+    mobileStepButtons.forEach(function (button) {
+      button.addEventListener('click', function () { setMobileStep(button.dataset.fdStepTarget, true); });
+    });
+    Array.from(document.querySelectorAll('[data-fd-go]')).forEach(function (button) {
+      button.addEventListener('click', function () { setMobileStep(button.dataset.fdGo, true); });
+    });
+    if (profileToggle) profileToggle.addEventListener('click', function () {
+      setProfileOpen(!profileShell.classList.contains('is-open'), false);
+    });
+    if (viewProfile) viewProfile.addEventListener('click', function () { setProfileOpen(true, true); });
+    setMobileStep(1, false);
     var DRIVER_UI = {
       en: { role:'Local Bali guide & driver', vehicle:'Vehicle', moments:'Driver Moments', vehicleCaption:'Vehicle photo', momentAlt:'Service moment with travellers', vehicleModel:'Daihatsu Xenia — 7 Seater', vehicleCapacity:'Comfortable for up to 6 guests with one driver.', luggageAdvice:'For bulky luggage, 3–4 guests travel more comfortably.', white:'White', black:'Black' },
       zh: { role:'巴厘岛本地导游与司机', vehicle:'车辆展示', moments:'过往服务瞬间', vehicleCaption:'车辆实拍', momentAlt:'与游客的服务瞬间', vehicleModel:'Daihatsu Xenia · 7 座', vehicleCapacity:'可舒适乘坐 6 位游客和 1 位司机。', luggageAdvice:'若携带较多或大型行李，建议 3–4 位游客出行更舒适。', white:'白色', black:'黑色' },
@@ -663,19 +757,26 @@
         return ([4, 6, 8, 10].indexOf(index) >= 0 ? '-' : '') + byte.toString(16).padStart(2, '0');
       }).join('');
     }
+    function showRequestError(text, step, field) {
+      msg.className = 'fd-msg err'; msg.textContent = text;
+      if (mobileStepMessage) mobileStepMessage.textContent = text;
+      if (isPhoneLayout()) setMobileStep(step, false);
+      if (field) setTimeout(function () { field.focus(); }, 0);
+    }
     form.addEventListener('submit', async function (event) {
       event.preventDefault();
       var L = (window.FD_T || {});
       msg.className = 'fd-msg'; msg.textContent = '';
+      if (mobileStepMessage) mobileStepMessage.textContent = '';
       var first = document.getElementById('fd-first').value.trim();
       var last = document.getElementById('fd-last').value.trim();
       var emailEl = document.getElementById('fd-email');
       var email = emailEl.value.trim();
-      if (!first && !last) { msg.className = 'fd-msg err'; msg.textContent = L.fdErrName || 'Please enter your name'; return; }
-      if (!email) { msg.className = 'fd-msg err'; msg.textContent = L.fdErrContact || 'Please provide an email address'; return; }
-      if (!emailEl.checkValidity()) { msg.className = 'fd-msg err'; msg.textContent = emailEl.validationMessage || 'Please enter a valid email address'; return; }
-      if (!startEl.value || !endEl.value || endEl.value < startEl.value) { msg.className = 'fd-msg err'; msg.textContent = L.fdErrDates || 'Please enter valid travel dates'; return; }
-      if (!document.getElementById('fd-consent').checked) { msg.className = 'fd-msg err'; msg.textContent = L.fdErrConsent || 'Please confirm that we may forward this request to your selected driver'; return; }
+      if (!first && !last) { showRequestError(L.fdErrName || 'Please enter your name', 1, document.getElementById('fd-first')); return; }
+      if (!email) { showRequestError(L.fdErrContact || 'Please provide an email address', 3, emailEl); return; }
+      if (!emailEl.checkValidity()) { showRequestError(emailEl.validationMessage || 'Please enter a valid email address', 3, emailEl); return; }
+      if (!startEl.value || !endEl.value || endEl.value < startEl.value) { showRequestError(L.fdErrDates || 'Please enter valid travel dates', 1, startEl); return; }
+      if (!document.getElementById('fd-consent').checked) { showRequestError(L.fdErrConsent || 'Please confirm that we may forward this request to your selected driver', 3, document.getElementById('fd-consent')); return; }
 
       var payload = {
         driver_id: (document.querySelector('input[name="fd-driver"]:checked') || {}).value || 'dicky',
@@ -722,12 +823,13 @@
         window.scrollTo({ top: 0, behavior: 'smooth' });
       } catch (e) {
         msg.className = 'fd-msg err'; msg.textContent = (e && e.message) || (L.fdErrSend || 'Failed to send, please retry');
+        if (mobileStepMessage) mobileStepMessage.textContent = msg.textContent;
         btn.disabled = false; btn.innerHTML = old;
       }
     });
   })();
 </script>
-    <script src="assets/js/i18n.js?v=search1"></script>
+    <script src="assets/js/i18n.js?v=search2"></script>
 <script src="assets/js/driver-estimate.js?v=p1"></script>
 <script>
   // Expose JS-side strings for the dynamic messages (filled after i18n load)
