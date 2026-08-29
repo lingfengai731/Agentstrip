@@ -1088,7 +1088,7 @@ class ProductAccessTests(unittest.TestCase):
             encoding="utf-8"
         )
 
-        self.assertIn("assets/js/ai-tool.js?v=p59", ai_html)
+        self.assertIn("assets/js/ai-tool.js?v=p60", ai_html)
         self.assertIn("initialDestQuery", ai_js)
         self.assertIn("function openHashTarget()", ai_js)
         self.assertIn("switchCompareSub(target)", ai_js)
@@ -1114,6 +1114,29 @@ class ProductAccessTests(unittest.TestCase):
         ):
             self.assertNotIn(public_admin_hint, ai_js)
         self.assertNotIn("email.toLowerCase() !== 'admin'", ai_js)
+
+    def test_ai_tool_mobile_drawers_reduce_duplicate_actions_without_changing_desktop_grid(self):
+        frontend = BACKEND_DIR.parents[1] / "wandermind-studio" / "frontend"
+        ai_html = (frontend / "ai-tool.html").read_text(encoding="utf-8")
+        ai_css = (frontend / "assets" / "css" / "ai-tool.css").read_text(
+            encoding="utf-8"
+        )
+        ai_js = (frontend / "assets" / "js" / "ai-tool.js").read_text(
+            encoding="utf-8"
+        )
+
+        self.assertIn("assets/css/ai-tool.css?v=p60", ai_html)
+        self.assertIn('aria-controls="ws-left-drawer"', ai_html)
+        self.assertIn('aria-controls="ws-right-drawer"', ai_html)
+        self.assertIn(".ws-rightpanel.mobile-open {\n    display: flex;", ai_css)
+        self.assertIn('body.ws-drawer-open', ai_css)
+        self.assertIn('.ws-quick-btn[data-quick="map"]', ai_css)
+        self.assertIn("grid-template-columns: 280px 1fr 360px", ai_css)
+        self.assertIn("function setMobileDrawer(side, forceOpen)", ai_js)
+        self.assertIn("if (event.key === 'Escape') closeMobileDrawers();", ai_js)
+        self.assertEqual(ai_js.count("toolIntroTitle:"), 5)
+        self.assertEqual(ai_js.count("mobileTrips:"), 5)
+        self.assertEqual(ai_js.count("mobileTools:"), 5)
 
     def test_admin_account_exposes_private_portfolio_manager_entry(self):
         frontend = BACKEND_DIR.parents[1] / "wandermind-studio" / "frontend"

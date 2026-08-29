@@ -1,3 +1,13 @@
+---
+target: WanderMind full-site frontend
+total_score: not_scored
+max_score: not_scored
+na_heuristics: dual assessment used for prioritization, not numeric scoring
+p0_count: 0
+p1_count: 5
+timestamp: 2026-08-29T07-13-14Z
+slug: wandermind-studio-frontend
+---
 # WanderMind full-site UX audit — 2026-08-29
 
 This review is an evidence-bounded conversion audit, not a request to replace the existing visual identity. Current code and fresh production evidence outrank the pasted external critique. The established WanderMind system remains the design authority: real travel photography, warm paper neutrals, amber brand emphasis, teal task states, restrained motion and five-language parity.

@@ -19,7 +19,7 @@
   <link rel="icon" type="image/png" href="assets/images/logo-mark-256.png">
   <link rel="apple-touch-icon" href="assets/images/logo-mark-256.png">
     <link rel="stylesheet" href="assets/css/style-starter.css?v=search1">
-    <link rel="stylesheet" href="assets/css/ai-tool.css?v=p50">
+  <link rel="stylesheet" href="assets/css/ai-tool.css?v=p60">
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=optional" rel="stylesheet">
     <style>
       /* Header alignment — same as other Studio pages */
@@ -269,19 +269,19 @@
 
   <section class="ws-tool-intro" aria-labelledby="ws-tool-intro-title">
     <strong id="ws-tool-intro-title">WanderMind AI trip workspace</strong>
-    <span>Six specialist agents help shape routes for Bali, Kyoto, Paris, Santorini and more. Review availability, prices and supplier details before booking.</span>
+    <span id="ws-tool-intro-body">Six specialist agents help shape routes for Bali, Kyoto, Paris, Santorini and more. Review availability, prices and supplier details before booking.</span>
   </section>
 
   <!-- Mobile bar (left/right drawer toggles) -->
   <div class="ws-mobile-bar">
-    <button class="ws-mobile-btn" id="ws-mob-left"><span class="fa fa-bars"></span> <span>Trips & Agents</span></button>
-    <button class="ws-mobile-btn" id="ws-mob-right"><span>Details</span> <span class="fa fa-th-list"></span></button>
+    <button type="button" class="ws-mobile-btn" id="ws-mob-left" aria-expanded="false" aria-controls="ws-left-drawer"><span class="fa fa-bars"></span> <span id="ws-mob-left-label">Trips & Agents</span></button>
+    <button type="button" class="ws-mobile-btn" id="ws-mob-right" aria-expanded="false" aria-controls="ws-right-drawer"><span id="ws-mob-right-label">Details</span> <span class="fa fa-th-list"></span></button>
   </div>
 
   <div class="ws-grid">
 
     <!-- ─────────────── LEFT SIDEBAR ─────────────── -->
-    <aside class="ws-sidebar">
+    <aside class="ws-sidebar" id="ws-left-drawer" aria-label="Trips and agents">
       <div class="ws-sidebar-block">
         <div class="ws-sidebar-title" id="ws-trip-title">My Trips</div>
         <div class="ws-trip-list" id="ws-trip-list"></div>
@@ -339,7 +339,7 @@
     </section>
 
     <!-- ─────────────── RIGHT PANEL ─────────────── -->
-    <aside class="ws-rightpanel">
+    <aside class="ws-rightpanel" id="ws-right-drawer" aria-label="Trip details">
       <div class="ws-panel-tabs" id="ws-panel-tabs"></div>
 
       <!-- Destination intel -->
@@ -454,6 +454,6 @@
 </script>
     <script src="assets/js/i18n.js?v=search1"></script>
 <script src="assets/js/marketing-events.js?v=p2"></script>
-<script src="assets/js/ai-tool.js?v=p59"></script>
+<script src="assets/js/ai-tool.js?v=p60"></script>
 </body>
 </html>

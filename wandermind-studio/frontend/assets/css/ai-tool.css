@@ -134,14 +134,9 @@ body.dark .ws-top-tabs { background: var(--ws-bg-2); border-bottom-color: var(--
   .ws-rightpanel.mobile-open { right: 0; }
 }
 
-@media (max-width: 767px) {
+@media (max-width: 991px) {
   .ws-tool-intro {
-    display: block;
-    padding: 0 16px 10px;
-  }
-  .ws-tool-intro strong,
-  .ws-tool-intro span {
-    display: block;
+    display: none;
   }
 }
 
@@ -1041,6 +1036,93 @@ body.dark .ws-dest-status.error { background: rgba(220,38,38,.14); border-color:
   align-items: center;
   gap: 6px;
   font-family: inherit;
+}
+
+@media (max-width: 991px) {
+  /* The base right-panel rule appears later than the first responsive grid rule.
+     Restate the mobile contract here so the details panel never falls into the
+     document flow and doubles the page length. */
+  .ws-sidebar,
+  .ws-rightpanel {
+    display: none;
+  }
+  .ws-sidebar.mobile-open {
+    display: block;
+  }
+  .ws-rightpanel.mobile-open {
+    display: flex;
+  }
+  .ws-sidebar.mobile-open,
+  .ws-rightpanel.mobile-open {
+    width: 100%;
+    max-width: none;
+    border: 0;
+    box-shadow: none;
+  }
+  body.ws-drawer-open {
+    overflow: hidden;
+  }
+  .ws-mobile-btn[aria-expanded="true"] {
+    color: var(--ws-ink);
+    border-color: var(--ws-teal);
+    background: rgba(14,124,107,.10);
+  }
+  .ws-quick-row {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    overflow: visible;
+  }
+  .ws-quick-btn {
+    justify-content: center;
+    min-width: 0;
+    padding-inline: 8px;
+  }
+  .ws-quick-btn[data-quick="map"],
+  .ws-quick-btn[data-quick="budgetcalc"],
+  .ws-quick-btn[data-quick="itinerary"] {
+    display: none;
+  }
+}
+
+@media (max-width: 575px) {
+  .ws-top-tabs {
+    display: grid;
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    padding: 0;
+    overflow: hidden;
+  }
+  .ws-top-tab {
+    min-width: 0;
+    min-height: 53px;
+    padding: 7px 2px 6px;
+    justify-content: center;
+    flex-direction: column;
+    gap: 2px;
+    font-size: 10px;
+    line-height: 1.15;
+    letter-spacing: 0;
+  }
+  .ws-top-tab .fa {
+    font-size: 13px;
+  }
+  .ws-mobile-bar {
+    padding: 8px 12px;
+  }
+  .ws-mobile-btn {
+    min-height: 36px;
+    padding: 7px 10px;
+    font-size: 11.5px;
+  }
+  .ws-quick-row {
+    padding: 10px 14px;
+    gap: 6px;
+  }
+  .ws-quick-btn {
+    min-height: 38px;
+    font-size: 11px;
+    white-space: normal;
+    line-height: 1.2;
+  }
 }
 
 /* ─────────────────── TOAST ─────────────────── */

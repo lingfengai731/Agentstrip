@@ -241,6 +241,8 @@ const DESTS = {
 const TOOL_I18N = {
   zh: {
     topChat:'AI 对话', topItinerary:'行程规划', topMap:'探索地图', topBudget:'预算管理', topDiary:'游记生成',
+    toolIntroTitle:'WanderMind AI 行程工作台', toolIntroBody:'六位专业助手协同规划路线；预订前请再次核对档期、价格与供应商信息。',
+    mobileTrips:'行程与助手', mobileTools:'行程工具',
     sideMyTrips:'我的行程', sideNewTrip:'＋ 新建行程', sideAgents:'智能体团队',
     tripEmpty:'还没有行程<br>点击下方新建一个',
     askAll:'问全队', modePrecise:'精准', modeFast:'快速',
@@ -278,6 +280,8 @@ const TOOL_I18N = {
   },
   en: {
     topChat:'Chat', topItinerary:'Itinerary', topMap:'Map', topBudget:'Budget', topDiary:'Diary',
+    toolIntroTitle:'WanderMind AI trip workspace', toolIntroBody:'Six specialist agents shape your route. Recheck availability, prices and supplier details before booking.',
+    mobileTrips:'Trips & agents', mobileTools:'Trip tools',
     sideMyTrips:'My Trips', sideNewTrip:'+ New Trip', sideAgents:'Agent Team',
     tripEmpty:'No trips yet<br>Click below to create one',
     askAll:'Ask the Team', modePrecise:'Precise', modeFast:'Fast',
@@ -315,6 +319,8 @@ const TOOL_I18N = {
   },
   ja: {
     topChat:'チャット', topItinerary:'旅程', topMap:'地図', topBudget:'予算', topDiary:'紀行',
+    toolIntroTitle:'WanderMind AI 旅程ワークスペース', toolIntroBody:'6人の専門アシスタントが旅程を作成します。予約前に空き状況・料金・提供元を再確認してください。',
+    mobileTrips:'旅程と担当', mobileTools:'旅程ツール',
     sideMyTrips:'マイトリップ', sideNewTrip:'＋ 新規旅行', sideAgents:'エージェントチーム',
     tripEmpty:'まだ旅行がありません<br>下のボタンで作成',
     askAll:'チームに聞く', modePrecise:'精密', modeFast:'高速',
@@ -352,6 +358,8 @@ const TOOL_I18N = {
   },
   ko: {
     topChat:'챗', topItinerary:'일정', topMap:'지도', topBudget:'예산', topDiary:'기행문',
+    toolIntroTitle:'WanderMind AI 여행 워크스페이스', toolIntroBody:'6명의 전문 도우미가 동선을 설계합니다. 예약 전 일정·가격·업체 정보를 다시 확인하세요.',
+    mobileTrips:'여행과 도우미', mobileTools:'여행 도구',
     sideMyTrips:'내 여행', sideNewTrip:'＋ 새 여행', sideAgents:'에이전트 팀',
     tripEmpty:'아직 여행이 없습니다<br>아래에서 만들기',
     askAll:'팀에 묻기', modePrecise:'정밀', modeFast:'빠름',
@@ -389,6 +397,8 @@ const TOOL_I18N = {
   },
   id: {
     topChat:'Chat', topItinerary:'Rencana', topMap:'Peta', topBudget:'Anggaran', topDiary:'Cerita',
+    toolIntroTitle:'Ruang kerja perjalanan AI WanderMind', toolIntroBody:'Enam asisten spesialis menyusun rute Anda. Periksa kembali ketersediaan, harga, dan pemasok sebelum memesan.',
+    mobileTrips:'Trip & asisten', mobileTools:'Alat perjalanan',
     sideMyTrips:'Perjalanan Saya', sideNewTrip:'＋ Perjalanan Baru', sideAgents:'Tim Agen',
     tripEmpty:'Belum ada perjalanan<br>Klik di bawah untuk membuat',
     askAll:'Tanya Tim', modePrecise:'Presisi', modeFast:'Cepat',
@@ -485,17 +495,74 @@ function renderTopTabs() {
   });
 }
 
+function renderMobileChrome() {
+  const introTitle = $('#ws-tool-intro-title');
+  const introBody = $('#ws-tool-intro-body');
+  const leftLabel = $('#ws-mob-left-label');
+  const rightLabel = $('#ws-mob-right-label');
+  const leftDrawer = $('#ws-left-drawer');
+  const rightDrawer = $('#ws-right-drawer');
+  if (introTitle) introTitle.textContent = t().toolIntroTitle;
+  if (introBody) introBody.textContent = t().toolIntroBody;
+  if (leftLabel) leftLabel.textContent = t().mobileTrips;
+  if (rightLabel) rightLabel.textContent = t().mobileTools;
+  if (leftDrawer) leftDrawer.setAttribute('aria-label', t().mobileTrips);
+  if (rightDrawer) rightDrawer.setAttribute('aria-label', t().mobileTools);
+}
+
+function isMobileWorkspace() {
+  return window.matchMedia('(max-width: 991px)').matches;
+}
+
+function closeMobileDrawers() {
+  const left = $('#ws-left-drawer');
+  const right = $('#ws-right-drawer');
+  const leftBtn = $('#ws-mob-left');
+  const rightBtn = $('#ws-mob-right');
+  if (left) left.classList.remove('mobile-open');
+  if (right) right.classList.remove('mobile-open');
+  if (leftBtn) leftBtn.setAttribute('aria-expanded', 'false');
+  if (rightBtn) rightBtn.setAttribute('aria-expanded', 'false');
+  document.body.classList.remove('ws-drawer-open');
+  if (isMobileWorkspace()) {
+    $$('#ws-top-tabs .ws-top-tab').forEach(tab => tab.classList.toggle('active', tab.dataset.toptab === 'chat'));
+  }
+}
+
+function setMobileDrawer(side, forceOpen) {
+  if (!isMobileWorkspace()) return;
+  const target = side === 'left' ? $('#ws-left-drawer') : $('#ws-right-drawer');
+  const other = side === 'left' ? $('#ws-right-drawer') : $('#ws-left-drawer');
+  const targetBtn = side === 'left' ? $('#ws-mob-left') : $('#ws-mob-right');
+  const otherBtn = side === 'left' ? $('#ws-mob-right') : $('#ws-mob-left');
+  if (!target || !targetBtn) return;
+  const shouldOpen = typeof forceOpen === 'boolean' ? forceOpen : !target.classList.contains('mobile-open');
+  if (!shouldOpen) {
+    closeMobileDrawers();
+    return;
+  }
+  if (other) other.classList.remove('mobile-open');
+  if (otherBtn) otherBtn.setAttribute('aria-expanded', 'false');
+  target.classList.add('mobile-open');
+  targetBtn.setAttribute('aria-expanded', 'true');
+  document.body.classList.add('ws-drawer-open');
+  target.scrollTop = 0;
+}
+
 function handleTopTab(id, btn) {
   $$('#ws-top-tabs .ws-top-tab').forEach(b => b.classList.remove('active'));
   btn.classList.add('active');
   if (id === 'chat') {
     switchPanelTab('dest');
+    closeMobileDrawers();
   } else if (id === 'itinerary') {
     switchPanelTab('itinerary');
+    setMobileDrawer('right', true);
   } else if (id === 'map') {
     openMapModal();
   } else if (id === 'budget') {
     switchPanelTab('budget');
+    setMobileDrawer('right', true);
   } else if (id === 'diary') {
     generateDiary();
   }
@@ -654,6 +721,7 @@ function renderControlsAndQuick() {
 function handleQuick(action) {
   if (action === 'itinerary') {
     switchPanelTab('itinerary');
+    setMobileDrawer('right', true);
     addLog('info', 'fa-calendar-o', t().logJumpItin);
     return;
   }
@@ -662,6 +730,7 @@ function handleQuick(action) {
   if (action === 'multiverse') { openMultiverseModal(); return; }
   if (action === 'hotels') {
     switchPanelTab('compare');
+    setMobileDrawer('right', true);
     setTimeout(() => switchCompareSub('hotels'), 80);
     return;
   }
@@ -990,6 +1059,7 @@ function toggleMode() {
 function onLangChange(newLang) {
   currentLang = newLang;
   renderTopTabs();
+  renderMobileChrome();
   renderSidebar();
   renderChatHeader();
   renderControlsAndQuick();
@@ -1026,6 +1096,7 @@ function attachLangWatcher() {
 /* ─────────────────── INIT ─────────────────── */
 function init() {
   renderTopTabs();
+  renderMobileChrome();
   renderSidebar();
   renderChatHeader();
   renderControlsAndQuick();
@@ -1062,8 +1133,14 @@ function init() {
   // Mobile drawers
   const mLeftBtn = document.getElementById('ws-mob-left');
   const mRightBtn = document.getElementById('ws-mob-right');
-  if (mLeftBtn) mLeftBtn.onclick = () => document.querySelector('.ws-sidebar').classList.toggle('mobile-open');
-  if (mRightBtn) mRightBtn.onclick = () => document.querySelector('.ws-rightpanel').classList.toggle('mobile-open');
+  if (mLeftBtn) mLeftBtn.onclick = () => setMobileDrawer('left');
+  if (mRightBtn) mRightBtn.onclick = () => setMobileDrawer('right');
+  document.addEventListener('keydown', event => {
+    if (event.key === 'Escape') closeMobileDrawers();
+  });
+  window.addEventListener('resize', () => {
+    if (!isMobileWorkspace()) closeMobileDrawers();
+  });
 
   attachLangWatcher();
   setTimeout(openHashTarget, 0);
