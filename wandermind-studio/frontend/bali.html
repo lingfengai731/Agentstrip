@@ -959,7 +959,7 @@
 <script>
   function topFunction() { document.body.scrollTop = 0; document.documentElement.scrollTop = 0; }
 </script>
-<script src="assets/js/i18n.js?v=search1"></script>
+<script src="assets/js/i18n.js?v=cta1"></script>
 <script src="assets/js/bali-packages.js?v=20260828p2"></script>
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
 <script>
@@ -1813,7 +1813,7 @@
       en:{layer:'Experience route',path:'Regional journey',days:'Recommended days',note:'Saved on this device. Recheck live details before travel.',reset:'Reset recommendation',adjust:'Adjust to my preferences',professional:'Get my professional route',driver:'Send route to a driver',publicTitle:'Public route',publicBody:'Full days, regions and map are free.',proTitle:'Personal route',proBody:'Preview your match; unlock all places and notes.',mapDetails:'Open map and route details'},
       zh:{layer:'体验路线',path:'区域行程',days:'推荐日程',note:'已保存在本机；出行前请核验实时信息。',reset:'恢复推荐',adjust:'按我的偏好调整',professional:'获取个性化专业路线',driver:'把路线发给司机询价',publicTitle:'公共路线',publicBody:'日程、区域与地图免费完整浏览。',proTitle:'个性化路线',proBody:'先看匹配预览，解锁全部地点与执行备注。',mapDetails:'展开地图与路线说明'},
       ja:{layer:'体験ルート',path:'地域の旅程',days:'おすすめ日程',note:'この端末に保存済み。出発前に最新情報を確認してください。',reset:'おすすめに戻す',adjust:'好みに合わせて調整',professional:'個別プロルートを見る',driver:'ドライバーに見積もりを依頼',publicTitle:'公開ルート',publicBody:'日程、地域、地図を無料で全て確認。',proTitle:'個別ルート',proBody:'提案を確認し、解除後に全スポットとメモを表示。',mapDetails:'地図とルート詳細を開く'},
-      ko:{layer:'체험 루트',path:'지역 여정',days:'추천 일정',note:'이 기기에 저장됩니다. 출발 전 최신 정보를 확인하세요.',reset:'추천 일정으로 복원',adjust:'내 취향에 맞게 조정',professional:'개인 전문 루트 보기',driver:'기사에게 견적 요청',publicTitle:'공개 경로',publicBody:'일정, 지역, 지도를 모두 무료로 확인.',proTitle:'개인 경로',proBody:'미리 본 뒤 모든 장소와 메모를 잠금 해제.',mapDetails:'지도와 경로 상세 보기'},
+      ko:{layer:'체험 루트',path:'지역 여정',days:'추천 일정',note:'이 기기에 저장됩니다. 출발 전 최신 정보를 확인하세요.',reset:'추천 일정으로 복원',adjust:'내 취향에 맞게 조정',professional:'개인 전문 경로 보기',driver:'기사에게 견적 요청',publicTitle:'공개 경로',publicBody:'일정, 지역, 지도를 모두 무료로 확인.',proTitle:'개인 경로',proBody:'미리 본 뒤 모든 장소와 메모를 잠금 해제.',mapDetails:'지도와 경로 상세 보기'},
       id:{layer:'Rute pengalaman',path:'Alur kawasan',days:'Hari rekomendasi',note:'Tersimpan di perangkat ini. Periksa info terbaru sebelum berangkat.',reset:'Pulihkan rekomendasi',adjust:'Sesuaikan dengan preferensi saya',professional:'Lihat rute profesional saya',driver:'Kirim rute ke driver',publicTitle:'Rute publik',publicBody:'Hari, kawasan, dan peta lengkap gratis.',proTitle:'Rute personal',proBody:'Lihat kecocokan; buka semua tempat dan catatan.',mapDetails:'Buka peta dan detail rute'}
     }[language()] || {};
     var routePath = plan.days.map(function (day) { return day.region_id; }).filter(function (id, index, ids) {
@@ -2379,7 +2379,7 @@
   document.addEventListener('wm:language-change', function(){ if (activeShot) renderModal(); });
 })();
 </script>
-<script src="assets/js/bali-professional.js?v=p60"></script>
+<script src="assets/js/bali-professional.js?v=p61"></script>
 <script src="assets/js/marketing-events.js?v=p2"></script>
 <script src="assets/js/global-auth.js?v=p53"></script>
 </body>

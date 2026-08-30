@@ -1075,10 +1075,10 @@ Object.assign(LANGS.ja, {
   formTierBudget:'予算重視', formTierComfort:'快適・バランス', formTierLuxury:'上質・プライベート', formPeople:'人数', formStart:'出発日', formEnd:'帰着日', formCurrency:'通貨', formBudget:'総予算', formBudgetPh:'例 300000', formSubmitLbl:'プラン方法を選ぶ', formSubmitBtn:'AIで自分で計画', formProfessionalBtn:'プロルートを受け取る', formPrivacyNote:'プロルートはまず無料でプレビュー。AI自分計画にも独自の無料枠があります。'
 });
 Object.assign(LANGS.ko, {
-  formTitle:'여행에서 중요한 것부터 시작하세요', formSub:'이 정보는 AI 직접 계획이나 전문 루트 매칭에 사용되어 같은 내용을 다시 입력할 필요가 없습니다.',
+  formTitle:'여행에서 중요한 것부터 시작하세요', formSub:'이 정보는 AI 직접 계획이나 전문 경로 매칭에 사용되어 같은 내용을 다시 입력할 필요가 없습니다.',
   formAudience:'어떤 발리 여행을 계획하나요?', formAudienceFirst:'첫 발리 여행', formAudienceReturn:'재방문 · 더 깊은 경험',
   formGoal:'이번 여행에서 가장 중요한 것은?', formGoalEasy:'계획은 줄이고 더 편하게', formGoalLocal:'현지 문화와 실제 경험', formGoalPhoto:'사진과 아름다운 풍경', formGoalValue:'가성비와 예산 관리',
-  formTierBudget:'예산 우선', formTierComfort:'편안함과 균형', formTierLuxury:'프리미엄·프라이빗', formPeople:'여행 인원', formStart:'출발일', formEnd:'귀국일', formCurrency:'통화', formBudget:'총예산', formBudgetPh:'예: 3000000', formSubmitLbl:'계획 방식을 선택하세요', formSubmitBtn:'AI로 직접 계획', formProfessionalBtn:'전문 루트 받기', formPrivacyNote:'전문 루트는 먼저 무료로 미리 봅니다. AI 직접 계획에도 별도의 무료 한도가 있습니다.'
+  formTierBudget:'예산 우선', formTierComfort:'편안함과 균형', formTierLuxury:'프리미엄·프라이빗', formPeople:'여행 인원', formStart:'출발일', formEnd:'귀국일', formCurrency:'통화', formBudget:'총예산', formBudgetPh:'예: 3000000', formSubmitLbl:'계획 방식을 선택하세요', formSubmitBtn:'AI로 직접 계획', formProfessionalBtn:'전문 경로 받기', formPrivacyNote:'전문 경로는 먼저 무료로 미리 봅니다. AI 직접 계획에도 별도의 무료 한도가 있습니다.'
 });
 Object.assign(LANGS.id, {
   formTitle:'Mulai dari hal yang paling penting bagi Anda', formSub:'Detail ini digunakan untuk perencanaan mandiri dengan AI atau untuk mencocokkan rute profesional, jadi Anda tidak perlu mengisinya lagi.',

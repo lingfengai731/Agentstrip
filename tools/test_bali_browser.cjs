@@ -183,6 +183,17 @@ function check(condition, message) {
       await languageContext.close();
     }
 
+    const koreanNamingContext = await browser.newContext({ viewport:{ width:390, height:844 }, serviceWorkers:'block' });
+    const koreanNamingPage = await koreanNamingContext.newPage();
+    await koreanNamingPage.addInitScript(() => localStorage.setItem('wm_studio_lang', 'ko'));
+    await koreanNamingPage.goto(base + '/index.html', { waitUntil:'domcontentloaded' });
+    check((await koreanNamingPage.locator('[data-i18n="formProfessionalBtn"]').innerText()).includes('전문 경로'), 'Korean homepage does not use the canonical professional-route name');
+    check(!(await koreanNamingPage.locator('body').innerText()).includes('전문 루트'), 'Legacy Korean professional-route name remains on the homepage');
+    await koreanNamingPage.goto(base + '/services.html', { waitUntil:'domcontentloaded' });
+    const serviceTargets = await koreanNamingPage.locator('.wm-service-action').evaluateAll(actions => actions.slice(0, 3).map(action => action.getAttribute('href')));
+    check(JSON.stringify(serviceTargets) === JSON.stringify(['bali.html#professional-planner','ai-tool.html?mode=diy','find-driver.html']), `Product CTA targets drifted: ${JSON.stringify(serviceTargets)}`);
+    await koreanNamingContext.close();
+
     const staleTripContext = await browser.newContext({ viewport: { width:390, height:844 }, serviceWorkers:'block' });
     const staleTrip = await staleTripContext.newPage();
     const staleTripErrors = [];
