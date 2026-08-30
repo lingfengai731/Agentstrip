@@ -155,3 +155,16 @@ rejected aspects: 不接受已购路线继续显示免费预览、锁定天数�
 reason in reviewer words: 现在这个购买的逻辑有点混乱；巴厘岛界面有点臃肿；旅游强度是由游客主导；点击调整本次行程页面无任何反应
 scope: this project
 recorded at: 2026-08-28
+
+workflow: ui-implementation-workflow-v2
+status: raw
+task: Bali 个性化专业路线表单语义与结果纠错
+page/surface: WanderMind 巴厘岛页（个性化专业路线）
+screenshot or artifact: 生产 7 天未付费路线回调与当前 bali-professional 表单
+reviewer: 用户
+decision: mixed
+accepted aspects: 7 天路线正确开放 5 天并锁定 2 天；付款入口能打开 PayPal
+rejected aspects: 不接受 radio 与 checkbox 被渲染成长条空框；不接受标签远离控件、表单过长且缺乏分组；不接受匹配后没有返回修改和重新匹配入口
+reason in reviewer words: 万一我填写错了想重新填再重新匹配但是没有入口；这些对应下面的空都是不能填写的，是摆设还是
+scope: this surface
+recorded at: 2026-08-30

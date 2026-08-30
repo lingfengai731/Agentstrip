@@ -3,7 +3,7 @@ const fs = require('fs');
 const path = require('path');
 
 const base = process.env.WM_TEST_BASE || 'http://127.0.0.1:8765';
-const artifactRoot = path.resolve('output', 'playwright', '2026-08-28-paid-route-ui');
+const artifactRoot = path.resolve('output', 'playwright', '2026-08-30-professional-form-ux');
 fs.mkdirSync(artifactRoot, { recursive:true });
 const viewports = [
   { width: 320, height: 760 },
@@ -66,7 +66,8 @@ function check(condition, message) {
     const freshPreviewContext = await browser.newContext({ viewport: { width:390, height:844 }, serviceWorkers:'block' });
     const freshPreview = await freshPreviewContext.newPage();
     const freshPreviewErrors = [];
-    let freshPreviewRequest = null;
+    const freshPreviewRequests = [];
+    let freshPreviewAdjustmentCalled = false;
     freshPreview.on('pageerror', error => freshPreviewErrors.push(error.message));
     await freshPreview.addInitScript(() => {
       localStorage.setItem('wm_studio_lang', 'en');
@@ -76,8 +77,13 @@ function check(condition, message) {
     await freshPreview.route('**/api/auth/me', route => route.fulfill({ json:{ id:'fresh-preview-user', email:'fresh-preview@example.test', name:'Fresh preview' } }));
     await freshPreview.route('**/api/paypal/config', route => route.fulfill({ json:{ enabled:true, environment:'sandbox', client_id:'public-test-client', currency:'USD', amount:'1.49' } }));
     await freshPreview.route('**/api/bali/professional-route/recent-unlocked**', route => route.fulfill({ status:404, json:{ detail:{ error:'professional_route_not_found' } } }));
+    await freshPreview.route('**/api/bali/professional-route/**/adjust', route => {
+      freshPreviewAdjustmentCalled = true;
+      return route.fulfill({ status:500, json:{ detail:'Unpaid rematch must not consume an adjustment' } });
+    });
     await freshPreview.route('**/api/bali/professional-route', async route => {
-      freshPreviewRequest = route.request().postDataJSON();
+      const freshPreviewRequest = route.request().postDataJSON();
+      freshPreviewRequests.push(freshPreviewRequest);
       const profile = freshPreviewRequest.trip_profile;
       const previewDays = profile.days <= 1 ? profile.days : Math.min(profile.days - 1, Math.max(1, Math.ceil(profile.days * 0.7)));
       await route.fulfill({ json:{
@@ -88,16 +94,47 @@ function check(condition, message) {
       } });
     });
     await freshPreview.goto(base + '/bali.html#professional-planner', { waitUntil:'domcontentloaded' });
+    const semanticControlMetrics = await freshPreview.locator('#bali-professional-form').evaluate(form => {
+      const radio = form.querySelector('[name="audience"]');
+      const option = radio.nextElementSibling;
+      return { radioWidth:radio.getBoundingClientRect().width, optionHeight:option.getBoundingClientRect().height, fieldsets:form.querySelectorAll('fieldset').length, profile:!!form.querySelector('.bali-professional-profile') };
+    });
+    check(semanticControlMetrics.radioWidth <= 2 && semanticControlMetrics.optionHeight >= 44, `Professional choice controls are not semantic cards: ${JSON.stringify(semanticControlMetrics)}`);
+    check(semanticControlMetrics.fieldsets === 3 && semanticControlMetrics.profile, 'Professional form lacks the three question groups or live trip profile');
+    await freshPreview.locator('.bali-professional-empty').screenshot({ path:path.join(artifactRoot, 'professional-form-390-en.png') });
     await freshPreview.locator('#bali-professional-form [name="budget"]').fill('12000');
     await freshPreview.locator('#bali-professional-form button[type="submit"]').click();
     await freshPreview.locator('#bali-professional-unlock').waitFor();
+    const freshPreviewRequest = freshPreviewRequests[0];
     check(freshPreviewRequest && freshPreviewRequest.trip_id === '', 'Fresh professional preview did not submit without a saved profile');
     check(freshPreviewRequest.trip_profile.currency === 'CNY', 'Fresh professional preview did not apply the default currency');
     check(await freshPreview.locator('.bali-professional-day.is-locked').count() === 2, 'Fresh seven-day professional preview did not preserve the five-open/two-locked gate');
     check(freshPreviewErrors.length === 0, `Fresh professional preview raised page errors: ${freshPreviewErrors.join('|')}`);
+    await freshPreview.locator('#bali-professional-edit').click();
+    await freshPreview.locator('#bali-professional-editor').waitFor();
+    check(await freshPreview.locator('#bali-professional-editor [name="budget"]').inputValue() === '12000', 'Unpaid edit did not preserve the submitted trip information');
+    await freshPreview.locator('#bali-professional-editor [name="budget"]').fill('13000');
+    await freshPreview.locator('#bali-professional-editor button[type="submit"]').click();
+    await freshPreview.locator('#bali-professional-unlock').waitFor();
+    check(freshPreviewRequests.length === 2 && freshPreviewRequests[1].trip_profile.budget_range === 13000, 'Unpaid preview did not re-match with the corrected trip information');
+    check(!freshPreviewAdjustmentCalled, 'Unpaid preview edit consumed a professional-route adjustment');
     await freshPreview.locator('#bali-professional-unlock').click();
     await freshPreview.locator('#bali-professional-payment').waitFor();
     await freshPreviewContext.close();
+
+    const languageExpectations = { en:'Trip basics', zh:'基本行程', ja:'基本情報', ko:'기본 일정', id:'Dasar perjalanan' };
+    for (const [language, expected] of Object.entries(languageExpectations)) {
+      const languageContext = await browser.newContext({ viewport:{ width: language === 'zh' ? 1440 : 390, height:900 }, serviceWorkers:'block' });
+      const languagePage = await languageContext.newPage();
+      await languagePage.addInitScript(lang => localStorage.setItem('wm_studio_lang', lang), language);
+      await languagePage.route('**/api/paypal/config', route => route.fulfill({ json:{ enabled:false } }));
+      await languagePage.goto(base + '/bali.html#professional-planner', { waitUntil:'domcontentloaded' });
+      await languagePage.locator('#bali-professional-form').waitFor();
+      check((await languagePage.locator('.bali-professional-form-section legend').first().innerText()).includes(expected), `Professional form did not localize ${language}`);
+      check(await languagePage.evaluate(() => document.documentElement.scrollWidth <= document.documentElement.clientWidth + 1), `Professional form overflow in ${language}`);
+      if (language === 'zh') await languagePage.locator('.bali-professional-empty').screenshot({ path:path.join(artifactRoot, 'professional-form-1440-zh.png') });
+      await languageContext.close();
+    }
 
     const staleTripContext = await browser.newContext({ viewport: { width:390, height:844 }, serviceWorkers:'block' });
     const staleTrip = await staleTripContext.newPage();
