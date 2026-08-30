@@ -1,0 +1,44 @@
+{
+  "schema_version": 1,
+  "evidence_id": "ev-20260830T062400Z-five-language-product-cta-release-20260830",
+  "task_ref": "five-language-product-cta-release-20260830",
+  "owner": "codex-sol",
+  "captured_at": "2026-08-30T06:24:00Z",
+  "status": "verified",
+  "claim": "Korean professional-route naming is consistent with the other five-language product CTAs, all three product destinations remain correct, and commit 5521daf is live and production-verified.",
+  "source": {
+    "kind": "git_render_and_production",
+    "repository": "https://github.com/lingfengai731/Agentstrip.git",
+    "branch": "codex/fullsite-design-audit-20260828",
+    "product_commit": "5521daf1c35beb39044ded174ad25e1bb8196a7f",
+    "origin_main": "5521daf1c35beb39044ded174ad25e1bb8196a7f",
+    "worktree": "E:\\Agentstrip-wt-fullsite-design-20260828"
+  },
+  "change": {
+    "before": "Korean homepage and professional-route component used 전문 루트 while Services and other CTAs used 전문 경로.",
+    "after": "All Korean professional-route labels use 전문 경로; English, Chinese, Japanese and Indonesian names were already consistent.",
+    "product_targets": [
+      "bali.html#professional-planner",
+      "ai-tool.html?mode=diy",
+      "find-driver.html"
+    ],
+    "legacy_rough_route_copy_found": false
+  },
+  "verification": {
+    "local": "89 product tests passed; JavaScript syntax and diff checks passed; full Bali browser suite passed including the new Korean naming and target contract.",
+    "deployment": {
+      "service": "srv-d8dfs36k1jcs738v9cfg",
+      "deploy_id": "dep-da9snd67bikc73b7m4v0",
+      "commit": "5521daf1c35beb39044ded174ad25e1bb8196a7f",
+      "status": "live",
+      "finished_at": "2026-08-30T06:21:53.605398Z"
+    },
+    "production": "20 mobile page-language combinations passed across index, about, contact and services; max horizontal overflow 0; three service targets matched exactly; p61 and cta1 cache markers loaded; old Korean term absent."
+  },
+  "external_effects": {
+    "real_payment_or_entitlement_write": false,
+    "environment_change": false,
+    "external_message_or_post": false
+  },
+  "notes": "The first production audit failure was a deliberately overbroad test selector that included Explore Bali as a fourth link; it was corrected without changing the valid product path."
+}
