@@ -1,0 +1,105 @@
+{
+  "schema_version": 1,
+  "evidence_id": "ev-20260830T060741Z-bali-form-and-portfolio-production-release-20260830",
+  "task_ref": "bali-form-and-portfolio-production-release-20260830",
+  "owner": "codex-sol",
+  "captured_at": "2026-08-30T06:07:41Z",
+  "status": "verified",
+  "claim": "The editable Bali professional-route form and compact mobile Portfolio filters are committed to main, live on Render, and verified against the production domain without real payment or entitlement writes.",
+  "source": {
+    "kind": "git_render_and_production",
+    "repository": "https://github.com/lingfengai731/Agentstrip.git",
+    "branch": "codex/fullsite-design-audit-20260828",
+    "professional_form_commit": "937173312cdcf8776403a45c20007b9e3da2ac43",
+    "portfolio_filter_commit": "474a90972a71efde7c201909ba96accd837f151e",
+    "origin_main": "474a90972a71efde7c201909ba96accd837f151e",
+    "worktree": "E:\\Agentstrip-wt-fullsite-design-20260828",
+    "tracked_dirty": false,
+    "local_only_untracked": [
+      ".codex/run-state/"
+    ]
+  },
+  "files_changed": [
+    ".codex/ui-visual-review-signals.md",
+    "tools/test_bali_browser.cjs",
+    "wandermind-studio/frontend/assets/js/bali-professional.js",
+    "wandermind-studio/frontend/bali.html",
+    "wandermind/backend/tests/test_product_access.py"
+  ],
+  "product_results": {
+    "professional_route_form": [
+      "three semantic question groups replace visually empty radio and checkbox controls",
+      "unpaid users can edit and rematch without consuming an adjustment",
+      "paid routes retain the separate adjustment endpoint and three-adjustment entitlement",
+      "seven-day unpaid preview remains five open and two locked days"
+    ],
+    "portfolio_mobile_filters": [
+      "primary themes remain visible",
+      "secondary photo tags move into one mobile bottom sheet",
+      "active count, reset, close, Escape and focus return are implemented",
+      "desktop retains both inline filter rows",
+      "English, Chinese, Japanese, Korean and Indonesian labels are verified"
+    ]
+  },
+  "verification": {
+    "local": {
+      "commands": [
+        "node --check tools/test_bali_browser.cjs",
+        "python -m unittest wandermind.backend.tests.test_product_access",
+        "node tools/test_bali_browser.cjs with bundled NODE_PATH and WM_TEST_BASE=http://127.0.0.1:8765",
+        "impeccable detect.mjs --json wandermind-studio/frontend",
+        "git diff --check"
+      ],
+      "result": "pass: 89 tests; responsive browser suite at 320, 390, 768 and 1440; five languages; Portfolio sheet interactions; professional preview, recovery, PayPal-cancel mock, AI deep links and driver handoff",
+      "impeccable_note": "The whole-site detector returned inherited template warnings; no new filter-specific finding was matched. Runtime browser accessibility and overflow checks passed."
+    },
+    "git": {
+      "feature_branch": "474a90972a71efde7c201909ba96accd837f151e",
+      "origin_main": "474a90972a71efde7c201909ba96accd837f151e",
+      "ahead_behind": "0 0"
+    },
+    "deployment": [
+      {
+        "service": "srv-d8dfs36k1jcs738v9cfg",
+        "deploy_id": "dep-da9s8bn10e5c73bbeusg",
+        "commit": "937173312cdcf8776403a45c20007b9e3da2ac43",
+        "status": "live_then_superseded",
+        "finished_at": "2026-08-30T05:49:49.626619Z"
+      },
+      {
+        "service": "srv-d8dfs36k1jcs738v9cfg",
+        "deploy_id": "dep-da9sese7bikc73b7gdeg",
+        "commit": "474a90972a71efde7c201909ba96accd837f151e",
+        "status": "live",
+        "finished_at": "2026-08-30T06:03:43.336542Z"
+      }
+    ],
+    "production": {
+      "http": "https://wandermind.cc/bali.html returned 200 and contained the new Portfolio sheet markup and five-language copy",
+      "browser": "pass: production-domain responsive and five-language suite, Portfolio count/reset/Escape/focus, professional route behavior, mocked payment callbacks, AI deep links and driver handoff",
+      "real_payment_or_entitlement_write": false,
+      "artifacts": [
+        "output/playwright/2026-08-30-professional-form-ux/professional-form-390-en.png",
+        "output/playwright/2026-08-30-professional-form-ux/professional-form-1440-zh.png",
+        "output/playwright/2026-08-30-portfolio-filter/portfolio-filter-390-open.png",
+        "output/playwright/2026-08-30-portfolio-filter/portfolio-filter-1440.png"
+      ]
+    }
+  },
+  "worker_records": [
+    {
+      "agent_id": "01a0506a-b20a-7051-8096-1ea72846c263",
+      "agent_name": "luna_worker",
+      "model": "gpt-5.6-luna",
+      "reasoning_effort": "max",
+      "status": "errored",
+      "result": "explicit usage-limit error; no final and no acceptance claim"
+    }
+  ],
+  "external_gates": [
+    "PayPal Sandbox abnormal-flow canary still requires the dedicated non-admin WanderMind identity, pre-state capture and owner interactive PayPal login",
+    "supplier and driver route/pricing facts require dated external replies before publication as verified facts",
+    "first organic social launch requires explicit account and posting authorization"
+  ],
+  "notes": "No credentials, cookies, tokens, secrets, production environment values, refunds, accepted-order reuse or real-money actions are stored or claimed."
+}
