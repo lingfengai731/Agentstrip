@@ -81,6 +81,11 @@
       .bali-filter.active { border-color:#0e7c6b; background:rgba(14,124,107,.08); color:#0e7c6b; }
       body.dark .bali-filter { background:#232622; border-color:#3a3d38; color:#d1d5db; }
       body.dark .bali-filter-label { color:#a8b0ba; }
+      .bali-filter-mobile-control, .bali-filter-sheet-head, .bali-filter-sheet-actions, .bali-filter-backdrop { display:none; }
+      .bali-filter-sheet { min-width:0; }
+      .bali-filter-sheet-count { color:#0e7c6b; font-size:12px; font-weight:800; }
+      .bali-filter-sheet-button { min-height:44px; border:1px solid #d8d5cc; border-radius:14px; background:#fff; color:#0f6258; font:800 13px/1.2 inherit; cursor:pointer; }
+      .bali-filter-sheet-button:focus-visible, .bali-filter:focus-visible { outline:3px solid rgba(252,191,30,.55); outline-offset:2px; }
       .bali-gallery-empty { margin:12px 0 0; padding:18px; border:1px dashed #d7d2c7; border-radius:12px; color:#64748b; text-align:center; }
       .bali-gallery-more { display:flex; justify-content:center; margin-top:24px; }
       .bali-gallery-more[hidden] { display:none; }
@@ -102,7 +107,30 @@
         .bali-filterbar { width:100%; min-width:0; max-width:100%; justify-content:flex-start; flex-wrap:nowrap; overflow-x:auto; overscroll-behavior-x:contain; padding:0 0 4px; scrollbar-width:none; }
         .bali-filterbar::-webkit-scrollbar { display:none; }
         .bali-filter { flex:0 0 auto; }
+        .bali-filter-mobile-control { display:flex; align-items:center; justify-content:space-between; gap:12px; padding:11px 12px; border:1px solid #ded8ca; border-radius:14px; background:rgba(255,255,255,.78); }
+        .bali-filter-mobile-control .bali-filter-sheet-button { display:inline-flex; flex:1; align-items:center; justify-content:space-between; gap:10px; padding:0 12px; border:0; background:transparent; text-align:left; }
+        .bali-filter-backdrop { position:fixed; inset:0; z-index:1290; border:0; background:rgba(15,23,42,.48); opacity:0; visibility:hidden; pointer-events:none; transition:opacity 180ms ease, visibility 180ms ease; }
+        .bali-filter-backdrop.show { display:block; opacity:1; visibility:visible; pointer-events:auto; }
+        .bali-filter-sheet { position:fixed; left:0; right:0; bottom:0; z-index:1300; max-height:min(72svh,560px); overflow:auto; padding:18px 18px calc(18px + env(safe-area-inset-bottom)); border:1px solid #ded8ca; border-bottom:0; border-radius:22px 22px 0 0; background:#fafaf7; box-shadow:0 -18px 48px rgba(15,23,42,.22); transform:translateY(104%); visibility:hidden; pointer-events:none; transition:transform 200ms ease, visibility 200ms ease; }
+        .bali-filter-sheet.show { transform:translateY(0); visibility:visible; pointer-events:auto; }
+        .bali-filter-sheet-head { display:flex; align-items:flex-start; justify-content:space-between; gap:14px; margin-bottom:18px; }
+        .bali-filter-sheet-title { margin:0 0 4px; color:var(--bali-ink); font-size:18px; font-weight:800; }
+        .bali-filter-sheet-subtitle { margin:0; color:#64748b; font-size:12px; line-height:1.5; }
+        .bali-filter-sheet-close { flex:0 0 44px; width:44px; padding:0; font-size:18px; }
+        .bali-filter-sheet .bali-filter-row { display:block; }
+        .bali-filter-sheet .bali-filterbar { flex-wrap:wrap; overflow:visible; gap:10px; padding:0; }
+        .bali-filter-sheet .bali-filter { min-height:44px; }
+        .bali-filter-sheet-actions { display:grid; grid-template-columns:minmax(0,.72fr) minmax(0,1.28fr); gap:10px; margin-top:20px; }
+        .bali-filter-sheet-actions .is-primary { border-color:#0e7c6b; background:#0e7c6b; color:#fff; }
+        body.bali-filter-sheet-open { overflow:hidden; }
+        body.dark .bali-filter-mobile-control, body.dark .bali-filter-sheet { border-color:#3a3d38; background:#1d2422; }
+        body.dark .bali-filter-sheet-title { color:#f4f4ef; }
+        body.dark .bali-filter-sheet-subtitle { color:#a8b0ba; }
+        body.dark .bali-filter-sheet-button { border-color:#4b5563; background:#252b28; color:#d9f3ed; }
         .bali-gallery { columns: 1; }
+      }
+      @media (prefers-reduced-motion: reduce) {
+        .bali-filter-backdrop, .bali-filter-sheet { transition:none; }
       }
       .bali-timeline { max-width: 920px; margin: 0 auto; position: relative; }
       .bali-tl-line { position: absolute; left: 28px; top: 8px; bottom: 8px; width: 2px; background: linear-gradient(var(--bali-gold), #d97706); opacity: .35; }
@@ -732,14 +760,34 @@
           <button class="bali-filter" type="button" data-filter-kind="category" data-filter="experiences" aria-pressed="false" data-i18n="baliFilterExperiences">Experiences</button>
         </div>
       </div>
-      <div class="bali-filter-row">
-        <span class="bali-filter-label" data-i18n="baliFilterTags">Photo & travel tags</span>
-        <div class="bali-filterbar" role="group" aria-label="Photo and travel tags" data-i18n="baliFilterTags" data-i18n-attr="aria-label">
-          <button class="bali-filter active" type="button" data-filter-kind="tag" data-filter="all" aria-pressed="true" data-i18n="baliFilterAllTags">All tags</button>
-          <button class="bali-filter" type="button" data-filter-kind="tag" data-filter="traveller-moment" aria-pressed="false" data-i18n="baliTagTravellerMoment">Traveller moment</button>
-          <button class="bali-filter" type="button" data-filter-kind="tag" data-filter="golden-hour" aria-pressed="false" data-i18n="baliTagGoldenHour">Golden hour</button>
-          <button class="bali-filter" type="button" data-filter-kind="tag" data-filter="adventure" aria-pressed="false" data-i18n="baliTagAdventure">Adventure</button>
-          <button class="bali-filter" type="button" data-filter-kind="tag" data-filter="documentary" aria-pressed="false" data-i18n="baliTagDocumentary">Documentary</button>
+      <div class="bali-filter-mobile-control">
+        <button class="bali-filter-sheet-button" id="bali-filter-sheet-open" type="button" aria-controls="bali-filter-sheet" aria-expanded="false">
+          <span data-gallery-filter-open-label>More filters</span>
+          <span class="bali-filter-sheet-count" data-gallery-filter-count>0 active</span>
+        </button>
+      </div>
+      <button class="bali-filter-backdrop" id="bali-filter-backdrop" type="button" tabindex="-1" aria-hidden="true"></button>
+      <div class="bali-filter-sheet" id="bali-filter-sheet">
+        <div class="bali-filter-sheet-head">
+          <div>
+            <h3 class="bali-filter-sheet-title" id="bali-filter-sheet-title">Photo &amp; travel filters</h3>
+            <p class="bali-filter-sheet-subtitle" data-gallery-filter-subtitle>Choose one extra tag to narrow the island moments.</p>
+          </div>
+          <button class="bali-filter-sheet-button bali-filter-sheet-close" type="button" data-gallery-filter-close aria-label="Close filters"><span class="fa fa-times" aria-hidden="true"></span></button>
+        </div>
+        <div class="bali-filter-row">
+          <span class="bali-filter-label" data-i18n="baliFilterTags">Photo & travel tags</span>
+          <div class="bali-filterbar" role="group" aria-label="Photo and travel tags" data-i18n="baliFilterTags" data-i18n-attr="aria-label">
+            <button class="bali-filter active" type="button" data-filter-kind="tag" data-filter="all" aria-pressed="true" data-i18n="baliFilterAllTags">All tags</button>
+            <button class="bali-filter" type="button" data-filter-kind="tag" data-filter="traveller-moment" aria-pressed="false" data-i18n="baliTagTravellerMoment">Traveller moment</button>
+            <button class="bali-filter" type="button" data-filter-kind="tag" data-filter="golden-hour" aria-pressed="false" data-i18n="baliTagGoldenHour">Golden hour</button>
+            <button class="bali-filter" type="button" data-filter-kind="tag" data-filter="adventure" aria-pressed="false" data-i18n="baliTagAdventure">Adventure</button>
+            <button class="bali-filter" type="button" data-filter-kind="tag" data-filter="documentary" aria-pressed="false" data-i18n="baliTagDocumentary">Documentary</button>
+          </div>
+        </div>
+        <div class="bali-filter-sheet-actions">
+          <button class="bali-filter-sheet-button" type="button" data-gallery-filter-reset>Reset</button>
+          <button class="bali-filter-sheet-button is-primary" type="button" data-gallery-filter-close>Show results</button>
         </div>
       </div>
     </div>
@@ -2077,6 +2125,71 @@
     .catch(function() { routeCatalog = {}; portfolioPoiCatalog = {}; });
   var galleryFilters = { category:'all', tag:'all' };
   var galleryExpanded = false;
+  var galleryFilterSheet = document.getElementById('bali-filter-sheet');
+  var galleryFilterBackdrop = document.getElementById('bali-filter-backdrop');
+  var galleryFilterOpen = document.getElementById('bali-filter-sheet-open');
+  var galleryFilterMobileQuery = window.matchMedia('(max-width:575px)');
+  var galleryFilterReturnFocus = null;
+  var GALLERY_FILTER_COPY = {
+    en:{open:'More filters',count:function(n){return n+' active';},title:'Photo & travel filters',subtitle:'Choose one extra tag to narrow the island moments.',close:'Close filters',reset:'Reset',show:'Show results'},
+    zh:{open:'更多筛选',count:function(n){return '已选 '+n+' 项';},title:'拍摄与旅行筛选',subtitle:'可再选择一个标签，快速缩小岛屿瞬间范围。',close:'关闭筛选',reset:'重置',show:'查看结果'},
+    ja:{open:'その他の絞り込み',count:function(n){return n+'件選択中';},title:'写真・旅のフィルター',subtitle:'タグを1つ選んで、島のシーンを絞り込めます。',close:'フィルターを閉じる',reset:'リセット',show:'結果を見る'},
+    ko:{open:'추가 필터',count:function(n){return n+'개 선택';},title:'사진·여행 필터',subtitle:'태그 하나를 선택해 발리의 순간을 좁혀 보세요.',close:'필터 닫기',reset:'초기화',show:'결과 보기'},
+    id:{open:'Filter lainnya',count:function(n){return n+' aktif';},title:'Filter foto & perjalanan',subtitle:'Pilih satu tag tambahan untuk mempersempit momen pulau.',close:'Tutup filter',reset:'Atur ulang',show:'Lihat hasil'}
+  };
+  function galleryFilterCopy() { return GALLERY_FILTER_COPY[lang()] || GALLERY_FILTER_COPY.en; }
+  function updateGalleryFilterSheetCopy() {
+    var copy = galleryFilterCopy();
+    var count = galleryFilters.tag === 'all' ? 0 : 1;
+    var openLabel = document.querySelector('[data-gallery-filter-open-label]');
+    var countLabel = document.querySelector('[data-gallery-filter-count]');
+    var title = document.getElementById('bali-filter-sheet-title');
+    var subtitle = document.querySelector('[data-gallery-filter-subtitle]');
+    var reset = document.querySelector('[data-gallery-filter-reset]');
+    var close = document.querySelector('.bali-filter-sheet-close');
+    var show = document.querySelector('.bali-filter-sheet-actions [data-gallery-filter-close]');
+    if (openLabel) openLabel.textContent = copy.open;
+    if (countLabel) countLabel.textContent = copy.count(count);
+    if (title) title.textContent = copy.title;
+    if (subtitle) subtitle.textContent = copy.subtitle;
+    if (reset) reset.textContent = copy.reset;
+    if (close) close.setAttribute('aria-label', copy.close);
+    if (show) show.textContent = copy.show;
+  }
+  function galleryFilterSheetIsOpen() { return galleryFilterSheet && galleryFilterSheet.classList.contains('show'); }
+  function setGalleryFilterSheet(open, restoreFocus) {
+    if (!galleryFilterSheet || !galleryFilterMobileQuery.matches) return;
+    if (open) galleryFilterReturnFocus = document.activeElement;
+    galleryFilterSheet.classList.toggle('show', open);
+    if (galleryFilterBackdrop) galleryFilterBackdrop.classList.toggle('show', open);
+    if (galleryFilterOpen) galleryFilterOpen.setAttribute('aria-expanded', open ? 'true' : 'false');
+    galleryFilterSheet.setAttribute('aria-hidden', open ? 'false' : 'true');
+    document.body.classList.toggle('bali-filter-sheet-open', open);
+    if (open) {
+      var selected = galleryFilterSheet.querySelector('.bali-filter[data-filter-kind="tag"].active');
+      window.requestAnimationFrame(function() { (selected || galleryFilterSheet.querySelector('button')).focus(); });
+    } else if (restoreFocus && galleryFilterReturnFocus && typeof galleryFilterReturnFocus.focus === 'function') {
+      galleryFilterReturnFocus.focus();
+    }
+  }
+  function configureGalleryFilterSheet() {
+    if (!galleryFilterSheet) return;
+    if (galleryFilterMobileQuery.matches) {
+      galleryFilterSheet.setAttribute('role','dialog');
+      galleryFilterSheet.setAttribute('aria-modal','true');
+      galleryFilterSheet.setAttribute('aria-labelledby','bali-filter-sheet-title');
+      galleryFilterSheet.setAttribute('aria-hidden', galleryFilterSheetIsOpen() ? 'false' : 'true');
+    } else {
+      galleryFilterSheet.classList.remove('show');
+      if (galleryFilterBackdrop) galleryFilterBackdrop.classList.remove('show');
+      if (galleryFilterOpen) galleryFilterOpen.setAttribute('aria-expanded','false');
+      galleryFilterSheet.removeAttribute('role');
+      galleryFilterSheet.removeAttribute('aria-modal');
+      galleryFilterSheet.removeAttribute('aria-labelledby');
+      galleryFilterSheet.removeAttribute('aria-hidden');
+      document.body.classList.remove('bali-filter-sheet-open');
+    }
+  }
   function galleryPreviewLimit() { return window.matchMedia('(max-width:575px)').matches ? 6 : 12; }
   function galleryMoreLabel(total) {
     var copy = {
@@ -2108,6 +2221,7 @@
     var moreButton = document.getElementById('bali-gallery-more-btn');
     if (more) more.hidden = !isDefaultView || galleryExpanded || matches <= galleryPreviewLimit();
     if (moreButton) moreButton.textContent = galleryMoreLabel(matches);
+    updateGalleryFilterSheetCopy();
   }
   document.querySelectorAll('.bali-filter').forEach(function(btn) {
     btn.onclick = function() {
@@ -2121,12 +2235,33 @@
       applyGalleryFilters();
     };
   });
+  if (galleryFilterOpen) galleryFilterOpen.addEventListener('click', function() { setGalleryFilterSheet(true, false); });
+  if (galleryFilterBackdrop) galleryFilterBackdrop.addEventListener('click', function() { setGalleryFilterSheet(false, true); });
+  document.querySelectorAll('[data-gallery-filter-close]').forEach(function(button) {
+    button.addEventListener('click', function() { setGalleryFilterSheet(false, true); });
+  });
+  var galleryFilterReset = document.querySelector('[data-gallery-filter-reset]');
+  if (galleryFilterReset) galleryFilterReset.addEventListener('click', function() {
+    var allTags = document.querySelector('.bali-filter[data-filter-kind="tag"][data-filter="all"]');
+    if (allTags) allTags.click();
+  });
+  document.addEventListener('keydown', function(event) {
+    if (!galleryFilterSheetIsOpen()) return;
+    if (event.key === 'Escape') { event.preventDefault(); setGalleryFilterSheet(false, true); return; }
+    if (event.key !== 'Tab') return;
+    var focusable = Array.from(galleryFilterSheet.querySelectorAll('button:not([disabled]),[href],input:not([disabled]),select:not([disabled]),textarea:not([disabled]),[tabindex]:not([tabindex="-1"])')).filter(function(item) { return item.offsetParent !== null; });
+    if (!focusable.length) return;
+    var first = focusable[0];
+    var last = focusable[focusable.length - 1];
+    if (event.shiftKey && document.activeElement === first) { event.preventDefault(); last.focus(); }
+    else if (!event.shiftKey && document.activeElement === last) { event.preventDefault(); first.focus(); }
+  });
   var galleryMoreButton = document.getElementById('bali-gallery-more-btn');
   if (galleryMoreButton) galleryMoreButton.addEventListener('click', function() {
     galleryExpanded = true;
     applyGalleryFilters();
   });
-  var mobileFilterQuery = window.matchMedia('(max-width:575px)');
+  var mobileFilterQuery = galleryFilterMobileQuery;
   function resetMobileFilterScroll(query) {
     if (!query.matches) return;
     var reset = function() {
@@ -2135,10 +2270,11 @@
     window.requestAnimationFrame(reset);
     window.setTimeout(reset, 120);
   }
-  if (mobileFilterQuery.addEventListener) mobileFilterQuery.addEventListener('change', resetMobileFilterScroll);
-  else mobileFilterQuery.addListener(resetMobileFilterScroll);
+  if (mobileFilterQuery.addEventListener) mobileFilterQuery.addEventListener('change', function(event) { resetMobileFilterScroll(event); configureGalleryFilterSheet(); });
+  else mobileFilterQuery.addListener(function(event) { resetMobileFilterScroll(event); configureGalleryFilterSheet(); });
   window.addEventListener('resize', function() { resetMobileFilterScroll(mobileFilterQuery); if (!galleryExpanded) applyGalleryFilters(); });
   resetMobileFilterScroll(mobileFilterQuery);
+  configureGalleryFilterSheet();
   function bindGalleryShot(shot) {
     shot.onclick=function(){ activeShot=shot; renderModal(); modal.classList.add('show'); modal.setAttribute('aria-hidden','false'); document.body.style.overflow='hidden'; modal.querySelector('.bali-place-close').focus(); };
   }

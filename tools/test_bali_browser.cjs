@@ -4,7 +4,9 @@ const path = require('path');
 
 const base = process.env.WM_TEST_BASE || 'http://127.0.0.1:8765';
 const artifactRoot = path.resolve('output', 'playwright', '2026-08-30-professional-form-ux');
+const portfolioArtifactRoot = path.resolve('output', 'playwright', '2026-08-30-portfolio-filter');
 fs.mkdirSync(artifactRoot, { recursive:true });
+fs.mkdirSync(portfolioArtifactRoot, { recursive:true });
 const viewports = [
   { width: 320, height: 760 },
   { width: 390, height: 844 },
@@ -61,6 +63,51 @@ function check(condition, message) {
       check(handoff.includes(`package=${packageId}`), `Package handoff missing at ${viewport.width}px`);
       await page.screenshot({ path:path.join(artifactRoot, `bali-${viewport.width}.png`), fullPage:true });
       await page.close();
+    }
+
+    const portfolioMobile = await browser.newPage({ viewport:{ width:390, height:844 } });
+    const portfolioErrors = [];
+    portfolioMobile.on('pageerror', error => portfolioErrors.push(error.message));
+    await portfolioMobile.addInitScript(() => localStorage.setItem('wm_studio_lang', 'en'));
+    await portfolioMobile.goto(base + '/bali.html#gallery', { waitUntil:'domcontentloaded' });
+    await portfolioMobile.locator('#gallery:not(.bali-mobile-collapsed) #bali-filter-sheet-open').waitFor();
+    check(await portfolioMobile.locator('.bali-filter-groups > .bali-filter-row').first().isVisible(), 'Primary Portfolio themes are hidden on mobile');
+    check(!(await portfolioMobile.locator('#bali-filter-sheet').isVisible()), 'Secondary Portfolio filters are expanded by default on mobile');
+    check(await portfolioMobile.locator('#bali-filter-sheet-open').getAttribute('aria-expanded') === 'false', 'Mobile Portfolio filter control starts expanded');
+    await portfolioMobile.locator('#bali-filter-sheet-open').click();
+    await portfolioMobile.locator('#bali-filter-sheet.show').waitFor();
+    check(await portfolioMobile.locator('#bali-filter-sheet').getAttribute('role') === 'dialog', 'Mobile Portfolio filters are not exposed as a dialog');
+    check(await portfolioMobile.locator('#bali-filter-sheet').getAttribute('aria-hidden') === 'false', 'Open Portfolio filter sheet remains aria-hidden');
+    await portfolioMobile.locator('.bali-filter[data-filter-kind="tag"][data-filter="golden-hour"]').click();
+    check(!(await portfolioMobile.locator('[data-gallery-filter-count]').innerText()).startsWith('0'), 'Active Portfolio tag count did not update');
+    check(await portfolioMobile.locator('.bali-shot:not([hidden])').count() > 0, 'Golden-hour Portfolio filter produced no visible results');
+    check(await portfolioMobile.evaluate(() => document.documentElement.scrollWidth <= document.documentElement.clientWidth + 1), 'Portfolio filter sheet caused mobile overflow');
+    await portfolioMobile.screenshot({ path:path.join(portfolioArtifactRoot, 'portfolio-filter-390-open.png'), fullPage:true });
+    await portfolioMobile.locator('[data-gallery-filter-reset]').click();
+    check((await portfolioMobile.locator('[data-gallery-filter-count]').innerText()).startsWith('0'), 'Portfolio filter reset did not clear the active count');
+    await portfolioMobile.keyboard.press('Escape');
+    check(await portfolioMobile.locator('#bali-filter-sheet-open').getAttribute('aria-expanded') === 'false', 'Escape did not close the Portfolio filter sheet');
+    check(await portfolioMobile.evaluate(() => document.activeElement && document.activeElement.id === 'bali-filter-sheet-open'), 'Portfolio filter sheet did not return focus to its trigger');
+    check(portfolioErrors.length === 0, `Portfolio mobile filter raised page errors: ${portfolioErrors.join('|')}`);
+    await portfolioMobile.close();
+
+    const portfolioDesktop = await browser.newPage({ viewport:{ width:1440, height:1000 } });
+    await portfolioDesktop.goto(base + '/bali.html#gallery', { waitUntil:'domcontentloaded' });
+    check(!(await portfolioDesktop.locator('.bali-filter-mobile-control').isVisible()), 'Mobile Portfolio filter control is visible on desktop');
+    check(await portfolioDesktop.locator('#bali-filter-sheet .bali-filter-row').isVisible(), 'Secondary Portfolio filter row is hidden on desktop');
+    check(await portfolioDesktop.locator('#bali-filter-sheet').getAttribute('role') === null, 'Desktop Portfolio filters incorrectly retain dialog semantics');
+    await portfolioDesktop.locator('#gallery').screenshot({ path:path.join(portfolioArtifactRoot, 'portfolio-filter-1440.png') });
+    await portfolioDesktop.close();
+
+    const portfolioLanguageExpectations = { en:'More filters', zh:'更多筛选', ja:'その他の絞り込み', ko:'추가 필터', id:'Filter lainnya' };
+    for (const [language, expected] of Object.entries(portfolioLanguageExpectations)) {
+      const context = await browser.newContext({ viewport:{ width:390, height:844 }, serviceWorkers:'block' });
+      const page = await context.newPage();
+      await page.addInitScript(lang => localStorage.setItem('wm_studio_lang', lang), language);
+      await page.goto(base + '/bali.html#gallery', { waitUntil:'domcontentloaded' });
+      await page.locator('#bali-filter-sheet-open').waitFor();
+      check((await page.locator('[data-gallery-filter-open-label]').innerText()).includes(expected), `Portfolio filter control did not localize ${language}`);
+      await context.close();
     }
 
     const freshPreviewContext = await browser.newContext({ viewport: { width:390, height:844 }, serviceWorkers:'block' });
@@ -282,7 +329,7 @@ function check(condition, message) {
     const hotelState = await unlocked.evaluate(() => ({ active:Array.from(document.querySelectorAll('.ws-panel-content.active')).map(node => node.dataset.panel), hotel:!!document.querySelector('.ws-subtab[data-sub="hotels"].active') }));
     check(hotelState.active.includes('compare') && hotelState.hotel, `Hotel deep link did not activate: ${JSON.stringify(hotelState)} errors=${unlockedErrors.join('|')}`);
     await unlockedContext.close();
-    console.log('Browser checks passed: responsive Bali, objective package filters, paid-route recovery, route editor feedback, account/search links, AI deep links and driver handoff');
+    console.log('Browser checks passed: responsive Bali, compact Portfolio filters, objective package filters, paid-route recovery, route editor feedback, account/search links, AI deep links and driver handoff');
   } finally {
     await browser.close();
   }
