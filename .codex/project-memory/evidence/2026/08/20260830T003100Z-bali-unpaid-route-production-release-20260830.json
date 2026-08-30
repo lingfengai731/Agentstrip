@@ -1,0 +1,87 @@
+{
+  "schema_version": 1,
+  "evidence_id": "ev-20260830T003100Z-bali-unpaid-route-production-release-20260830",
+  "task_ref": "bali-unpaid-route-production-release-20260830",
+  "owner": "codex-sol",
+  "captured_at": "2026-08-30T00:31:00Z",
+  "status": "verified",
+  "claim": "Commit 8a8dccf fixes the first-time unpaid Bali professional-route match failure, preserves paid-route recovery, exposes the intended 7-day 5-open/2-locked personalized preview and restores both unlock choices; the accepted Services product paths are also live and production-verified.",
+  "source": {
+    "kind": "git_and_production",
+    "repository": "https://github.com/lingfengai731/Agentstrip.git",
+    "commit": "8a8dccf25afec71505b735f5abcdc38f42047bcd",
+    "branch": "codex/fullsite-design-audit-20260828",
+    "main": "8a8dccf25afec71505b735f5abcdc38f42047bcd",
+    "worktree": "E:\\Agentstrip-wt-fullsite-design-20260828",
+    "dirty": false
+  },
+  "defect_before": {
+    "scope": "fresh unpaid user with no saved profile",
+    "result": "the match button raised a null currency TypeError before any professional-route POST",
+    "evidence": ".playwright-cli/console-2026-08-29T16-50-03-499Z.log"
+  },
+  "files_changed": [
+    "wandermind-studio/frontend/assets/js/bali-professional.js",
+    "wandermind-studio/frontend/bali.html",
+    "tools/test_bali_browser.cjs",
+    "wandermind/backend/tests/test_product_access.py",
+    "wandermind-studio/frontend/services.html",
+    "wandermind-studio/frontend/assets/js/i18n.js"
+  ],
+  "verification": {
+    "local": {
+      "commands": [
+        "node --check wandermind-studio/frontend/assets/js/bali-professional.js",
+        "node --check tools/test_bali_browser.cjs",
+        "node tools/test_bali_browser.cjs",
+        "python -m unittest wandermind.backend.tests.test_product_access wandermind.backend.tests.test_entitlements_postgres",
+        "git diff --check"
+      ],
+      "result": "pass: full Bali browser suite; 97 tests passed with 8 PostgreSQL-only skips; JavaScript syntax and diff checks passed"
+    },
+    "git": {
+      "feature_branch": "8a8dccf25afec71505b735f5abcdc38f42047bcd",
+      "origin_main": "8a8dccf25afec71505b735f5abcdc38f42047bcd"
+    },
+    "deployment": {
+      "service": "srv-d8dfs36k1jcs738v9cfg",
+      "deploy_id": "dep-da9ncmc9v7es73dppgs0",
+      "commit": "8a8dccf25afec71505b735f5abcdc38f42047bcd",
+      "status": "live",
+      "finished_at": "2026-08-30T00:17:44.733409Z",
+      "refreshed_at": "2026-08-30T00:29:47.6407179Z"
+    },
+    "production": {
+      "bali_fresh_unpaid": "pass: POST professional route returned 200; 7-day preview showed 5 open and 2 locked days; CNY 9.9 and 30-point unlock choices visible; console errors 0",
+      "services": "pass: professional, AI DIY and driver CTA destinations; zh/en/ja/ko/id switch; 390px scrollWidth equals clientWidth; console errors 0",
+      "artifacts": [
+        "output/playwright/prod-bali-unpaid-preview-390-8a8dccf.png",
+        "output/playwright/prod-services-390-8a8dccf.png",
+        "output/playwright/prod-services-1440-8a8dccf.png"
+      ]
+    }
+  },
+  "product_clarification": {
+    "public_routes": "R1-R6 are intentionally complete and free to browse",
+    "personalized_route": "only the personalized professional route uses the approximately 70 percent preview gate",
+    "saved_paid_route": "a saved 7-day paid R1 can legitimately differ from the public recommended 8-day R1"
+  },
+  "worker_records": [
+    {
+      "agent_id": "01a04e6a-d704-70d2-8f9d-94fc68f785d2",
+      "status": "blocked",
+      "note": "read-only history audit stopped when expected concurrent source edits triggered its STOP condition; no files changed"
+    },
+    {
+      "agent_id": "01a04e7a-0ee5-72c2-9016-58d65b090e95",
+      "status": "errored",
+      "note": "usage limit occurred before final diff review began"
+    }
+  ],
+  "unverified": [
+    "owner-run signed-in unpaid account callback after this deployment",
+    "owner-run re-entry with the existing paid account after this deployment",
+    "a new PayPal Sandbox checkout in this run"
+  ],
+  "notes": "No credentials, account identifiers, cookies, tokens, secrets, live-money actions, refunds or entitlement mutations are stored or claimed."
+}
