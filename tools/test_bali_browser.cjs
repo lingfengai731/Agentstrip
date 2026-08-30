@@ -63,6 +63,76 @@ function check(condition, message) {
       await page.close();
     }
 
+    const freshPreviewContext = await browser.newContext({ viewport: { width:390, height:844 }, serviceWorkers:'block' });
+    const freshPreview = await freshPreviewContext.newPage();
+    const freshPreviewErrors = [];
+    let freshPreviewRequest = null;
+    freshPreview.on('pageerror', error => freshPreviewErrors.push(error.message));
+    await freshPreview.addInitScript(() => {
+      localStorage.setItem('wm_studio_lang', 'en');
+      localStorage.setItem('wm_studio_token', 'fresh-preview-token');
+      localStorage.setItem('wm_studio_user', JSON.stringify({ id:'fresh-preview-user', email:'fresh-preview@example.test', name:'Fresh preview' }));
+    });
+    await freshPreview.route('**/api/auth/me', route => route.fulfill({ json:{ id:'fresh-preview-user', email:'fresh-preview@example.test', name:'Fresh preview' } }));
+    await freshPreview.route('**/api/paypal/config', route => route.fulfill({ json:{ enabled:true, environment:'sandbox', client_id:'public-test-client', currency:'USD', amount:'1.49' } }));
+    await freshPreview.route('**/api/bali/professional-route/recent-unlocked**', route => route.fulfill({ status:404, json:{ detail:{ error:'professional_route_not_found' } } }));
+    await freshPreview.route('**/api/bali/professional-route', async route => {
+      freshPreviewRequest = route.request().postDataJSON();
+      const profile = freshPreviewRequest.trip_profile;
+      const previewDays = profile.days <= 1 ? profile.days : Math.min(profile.days - 1, Math.max(1, Math.ceil(profile.days * 0.7)));
+      await route.fulfill({ json:{
+        ok:true, trip_id:'fresh-preview-trip', professional_route_entitlement:false,
+        professional_adjustments_remaining:0, profile,
+        route:{ route_id:'R1', route_name:'First Bali', route_promise:'A clear first trip', recommendation_reason:'Matched to the trip.', days:profile.days, preview_days:previewDays, locked_days:profile.days - previewDays, unlocked:false,
+          days_plan:Array.from({ length:profile.days }, (_, index) => ({ day:index+1, region_name:'Bali', theme:`Theme ${index+1}`, locked:index >= previewDays, places:index >= previewDays ? [] : [{ name:`Place ${index+1}` }] })) }
+      } });
+    });
+    await freshPreview.goto(base + '/bali.html#professional-planner', { waitUntil:'domcontentloaded' });
+    await freshPreview.locator('#bali-professional-form [name="budget"]').fill('12000');
+    await freshPreview.locator('#bali-professional-form button[type="submit"]').click();
+    await freshPreview.locator('#bali-professional-unlock').waitFor();
+    check(freshPreviewRequest && freshPreviewRequest.trip_id === '', 'Fresh professional preview did not submit without a saved profile');
+    check(freshPreviewRequest.trip_profile.currency === 'CNY', 'Fresh professional preview did not apply the default currency');
+    check(await freshPreview.locator('.bali-professional-day.is-locked').count() === 2, 'Fresh seven-day professional preview did not preserve the five-open/two-locked gate');
+    check(freshPreviewErrors.length === 0, `Fresh professional preview raised page errors: ${freshPreviewErrors.join('|')}`);
+    await freshPreview.locator('#bali-professional-unlock').click();
+    await freshPreview.locator('#bali-professional-payment').waitFor();
+    await freshPreviewContext.close();
+
+    const staleTripContext = await browser.newContext({ viewport: { width:390, height:844 }, serviceWorkers:'block' });
+    const staleTrip = await staleTripContext.newPage();
+    const staleTripErrors = [];
+    const staleTripRequests = [];
+    staleTrip.on('pageerror', error => staleTripErrors.push(error.message));
+    await staleTrip.addInitScript(() => {
+      localStorage.setItem('wm_studio_token', 'new-account-token');
+      localStorage.setItem('wm_studio_user', JSON.stringify({ id:'new-account', email:'new-account@example.test', name:'New account' }));
+      localStorage.setItem('wm_studio_professional_trip_id', 'previous-account-trip');
+      localStorage.setItem('wm_studio_trip_profile', JSON.stringify({ audience:'first', goals:['photo'], travel_style:'comfort', travellers:2, departure_date:'2026-10-01', return_date:'2026-10-06', days:5, currency:'CNY', budget_range:12000, pace:'balanced' }));
+    });
+    await staleTrip.route('**/api/paypal/config', route => route.fulfill({ json:{ enabled:false } }));
+    await staleTrip.route('**/api/auth/me', route => route.fulfill({ json:{ id:'new-account', email:'new-account@example.test', name:'New account' } }));
+    await staleTrip.route('**/api/bali/professional-route/recent-unlocked**', route => route.fulfill({ status:404, json:{ detail:{ error:'professional_route_not_found' } } }));
+    await staleTrip.route('**/api/bali/professional-route', async route => {
+      const request = route.request().postDataJSON();
+      staleTripRequests.push(request);
+      if (request.trip_id === 'previous-account-trip') return route.fulfill({ status:403, json:{ detail:'This trip belongs to another account' } });
+      const profile = request.trip_profile;
+      return route.fulfill({ json:{
+        ok:true, trip_id:'new-account-trip', professional_route_entitlement:false,
+        professional_adjustments_remaining:0, profile,
+        route:{ route_id:'R1', route_name:'First Bali', route_promise:'A clear first trip', recommendation_reason:'Matched to the trip.', days:5, preview_days:4, locked_days:1, unlocked:false,
+          days_plan:Array.from({ length:5 }, (_, index) => ({ day:index+1, region_name:'Bali', theme:`Theme ${index+1}`, locked:index >= 4, places:index >= 4 ? [] : [{ name:`Place ${index+1}` }] })) }
+      } });
+    });
+    await staleTrip.goto(base + '/bali.html#professional-planner', { waitUntil:'domcontentloaded' });
+    await staleTrip.locator('#bali-professional-unlock').waitFor();
+    check(staleTripRequests.length === 2, `Stale trip recovery made ${staleTripRequests.length} route requests instead of 2`);
+    check(staleTripRequests[0].trip_id === 'previous-account-trip' && staleTripRequests[1].trip_id === '', 'Stale trip recovery did not retry as the current account');
+    check(await staleTrip.evaluate(() => localStorage.getItem('wm_studio_professional_trip_id')) === 'new-account-trip', 'Stale trip id was not replaced');
+    check(staleTripErrors.length === 0, `Stale trip recovery raised page errors: ${staleTripErrors.join('|')}`);
+    await staleTripContext.close();
+
     for (const viewport of [
       { width:390, height:844 },
       { width:768, height:900 },
@@ -123,7 +193,7 @@ function check(condition, message) {
     check(await search.evaluate(() => document.documentElement.scrollWidth <= document.documentElement.clientWidth + 1), 'Search mobile overflow');
 
     await search.goto(base + '/find-driver.html?package=batur-dawn-choice', { waitUntil: 'domcontentloaded' });
-    await search.locator('#fd-places').waitFor();
+    await search.locator('#fd-places').waitFor({ state:'attached' });
     check((await search.locator('#fd-places').inputValue()).includes('batur-dawn-choice'), 'Package was not handed to driver form');
     await search.close();
 

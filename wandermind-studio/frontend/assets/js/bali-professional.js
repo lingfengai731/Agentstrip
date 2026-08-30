@@ -107,7 +107,7 @@
       travellers: Number(form.querySelector('[name="people"]').value || 2),
       departure_date: start, return_date: end,
       days: Math.max(1, Math.round((new Date(end) - new Date(start)) / 86400000)),
-      currency: state.profile.currency || 'CNY', budget_range: Number(form.querySelector('[name="budget"]').value || 0),
+      currency: (state.profile && state.profile.currency) || 'CNY', budget_range: Number(form.querySelector('[name="budget"]').value || 0),
       pace: form.querySelector('[name="pace"]').value, origin_region: ''
     };
   }
@@ -140,6 +140,10 @@
   function setStatus(message, isError, targetId) {
     var status = document.getElementById(targetId || 'bali-professional-status');
     if (status) { status.textContent = message || ''; status.className = 'bali-professional-status' + (isError ? ' error' : ''); }
+  }
+  function clearStoredTrip() {
+    state.tripId = '';
+    localStorage.removeItem('wm_studio_professional_trip_id');
   }
   function apiError(body, fallback) {
     var detail = body && body.detail;
@@ -365,9 +369,13 @@
       var requestBody = { trip_id:state.tripId, trip_profile:profile, route_id:routeId || '', lang:currentLang() };
       var response = await fetch(API_BASE + '/api/bali/professional-route', { method:'POST', headers:Object.assign({ 'Content-Type':'application/json', 'X-Anon-Id':sessionId() }, authHeaders()), body:JSON.stringify(requestBody) });
       var body = await response.json().catch(function () { return {}; });
-      if ((response.status === 403 || response.status === 409) && hadTripId) {
+      if ((response.status === 403 || response.status === 404 || response.status === 409) && hadTripId) {
         if (await restoreUnlockedRoute(routeId || '')) return;
-        if (response.status === 403) throw new Error(T().tripUnavailable);
+        if (response.status === 403 || response.status === 404) {
+          clearStoredTrip();
+          await loadRoute(profile, routeId);
+          return;
+        }
       }
       if (response.status === 401) { redirectToLogin(); return; }
       if (!response.ok) throw new Error(apiError(body, T().error));
