@@ -1,0 +1,77 @@
+{
+  "schema_version": 1,
+  "evidence_id": "ev-20260830T144653Z-driver-rates-professional-form-release-20260830",
+  "task_ref": "driver-rates-professional-form-release-20260830",
+  "owner": "codex-sol",
+  "captured_at": "2026-08-30T14:46:53Z",
+  "status": "verified",
+  "claim": "The shared Dicky and Gede starting rates and the semantic five-language Bali professional-route form are deployed from commit 8c0d44c and verified on production.",
+  "source": {
+    "kind": "git_render_and_production",
+    "repository": "https://github.com/lingfengai731/Agentstrip.git",
+    "branch": "codex/fullsite-design-audit-20260828",
+    "product_commit": "8c0d44c92230a6831455224ad3d00a0b491fa354",
+    "origin_main": "8c0d44c92230a6831455224ad3d00a0b491fa354",
+    "worktree": "E:\\Agentstrip-wt-fullsite-design-20260828"
+  },
+  "change": {
+    "driver_rates": {
+      "full_day": "IDR 700k for up to 10 hours",
+      "half_day": "IDR 500k for up to 6 hours",
+      "overtime": "IDR 70k per hour; more than 30 minutes is billed as one hour",
+      "per_guest_markup_removed": true,
+      "same_public_rate_for_dicky_and_gede": true
+    },
+    "professional_form": [
+      "Three grouped semantic sections replace the long empty-input layout",
+      "Audience segments, traveller stepper, date range, locale-aware budget tiers, style and pace cards, and up to three interest tags",
+      "Seven required-item progress, precise missing-field focus, loading lock and preserved state on failure",
+      "Return-to-edit and rematch actions preserve submitted data",
+      "Five-language budget currency and route-prediction labels",
+      "Mobile single-column layout and sticky primary action"
+    ],
+    "portfolio_inventory": {
+      "approved_or_licensed_manifest_assets": 118,
+      "curated_bali_portfolio_moments": 49,
+      "interpretation": "49 is the curated public Bali Portfolio set, not the total authorized image library; driver moments, duplicates and non-Portfolio assets are intentionally excluded."
+    }
+  },
+  "verification": {
+    "local": [
+      "python -m unittest wandermind.backend.tests.test_product_access: 89 passed",
+      "JavaScript syntax checks passed for browser test, professional form, driver estimate and i18n assets",
+      "git diff --check passed after removing the single Markdown trailing blank line",
+      "Full local responsive browser suite passed at 320, 390, 768 and 1440 widths",
+      "Five-language budget currency and route labels, 7-day 5-open/2-locked preview, state-preserving edit/rematch, PayPal cancel mock, auth recovery, product paths and driver handoff passed",
+      "Driver estimate remained IDR 1.2m for one and six travellers when combining one full and one half day"
+    ],
+    "deployment": {
+      "service": "srv-d8dfs36k1jcs738v9cfg",
+      "deploy_id": "dep-daa41267bikc73bcugq0",
+      "commit": "8c0d44c92230a6831455224ad3d00a0b491fa354",
+      "status": "live",
+      "finished_at": "2026-08-30T14:40:22.737128Z"
+    },
+    "production": "WM_TEST_BASE=https://wandermind.cc browser suite exited 0 and reported responsive Bali, compact Portfolio filters, objective package filters, paid-route recovery, route-editor feedback, account/search links, AI deep links and driver handoff passed."
+  },
+  "worker": {
+    "agent": "luna_worker",
+    "model": "gpt-5.6-luna",
+    "reasoning_effort": "max",
+    "status": "shutdown_without_final",
+    "claim": "No Luna completion is claimed. Sol independently reviewed the diff and owns acceptance."
+  },
+  "external_effects": {
+    "real_payment_or_entitlement_write": false,
+    "environment_change": false,
+    "external_message_or_post": false,
+    "git_push": true,
+    "production_deploy": true
+  },
+  "remaining_gates": [
+    "Owner visual callback on the production form",
+    "Driver meal, delayed-flight wait, exact baggage limits, Nusa Penida port, quote validity and tax facts",
+    "Owner-authorized first social launch and measurement",
+    "PayPal Sandbox abnormal-flow owner-interactive checks"
+  ]
+}
