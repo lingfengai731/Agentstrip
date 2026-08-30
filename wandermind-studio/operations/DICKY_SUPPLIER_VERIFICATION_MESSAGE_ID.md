@@ -9,7 +9,7 @@ Kirim satu kali melalui WhatsApp atau email. Tidak perlu mengirim ulang bila Dic
 > 3. **Kelas perak:** apakah kamu bisa mengatur **Parallel Universe Jewelry**? Mohon konfirmasi slot, durasi, harga kelas, bahan/biaya tambahan, keselamatan dan pembatalan. Jika tamu memilih studio lain, apakah kamu bisa menyesuaikan?
 > 4. **Bali Fire Shooting Club:** apakah tempat ini masih buka dan dapat dipesan? Mohon konfirmasi paket dan harga akhir, izin fasilitas, sertifikasi instruktur, briefing, PPE, asuransi, batas usia/kesehatan dan pembatalan.
 > 5. **Nusa Penida:** operator fast boat, mobil pulau, snorkeling/diving mana yang biasa kamu pakai? Mohon harga, yang termasuk, asuransi, aturan cuaca/pembatalan dan biaya tambahan.
-> 6. **Harga mobil Dicky:** mohon konfirmasi syarat harga awal Rp700.000/10 jam, Rp500.000/6 jam, tambahan Rp50.000 per tamu per hari, dan overtime Rp75.000/jam; juga airport, pindah hotel, area tambahan dan menginap driver.
+> 6. **Harga mobil Dicky dan Gede Nico:** WanderMind sudah mencatat Rp700.000/10 jam, Rp500.000/6 jam, tanpa tambahan per tamu, dan overtime Rp70.000/jam (lebih dari 30 menit dihitung 1 jam). Mohon konfirmasi tanggal mulai berlaku, masa berlaku penawaran, pajak/biaya lain, waktu tunggu keterlambatan pesawat, batas bagasi, pelabuhan Nusa Penida, serta biaya menginap driver jika ada.
 >
 > Cukup balas nomor 1–6. Jika ada yang belum pasti, tulis “belum pasti”. Terima kasih.
 

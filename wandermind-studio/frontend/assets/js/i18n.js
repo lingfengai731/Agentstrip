@@ -189,7 +189,7 @@ const LANGS = {
     fdMeetDrivers: 'Meet the local drivers', fdProfilePending: 'Profile details being confirmed',
     fdDickyProfile: 'Bali driving support, airport pickup and route-based requests.', fdGedeProfile: 'Alternative local driver for route and date availability.',
     fdLanguageConfirm: 'Languages and exact vehicle capacity need driver confirmation.', fdGedeForward: 'All driver requests are routed privately by email through WanderMind.',
-    fdQuoteBoundary: '<strong>Full day: IDR 700k base + IDR 50k per guest</strong> (up to 10 hours), or <strong>half day: IDR 500k base + IDR 50k per guest</strong> (up to 6 hours). Includes car, fuel, driver-guide, mineral water, parking and tolls. Additional time is IDR 75k per hour after 10 hours. Airport transfers and hotel changes are quoted by distance; the final route-specific quote is confirmed before booking.',
+    fdQuoteBoundary: '<strong>Full day: IDR 700k</strong> (up to 10 hours), or <strong>half day: IDR 500k</strong> (up to 6 hours). These shared starting rates have no per-guest surcharge. Car, fuel, driver-guide, mineral water, parking and tolls are included. Overtime is IDR 70k per hour; more than 30 minutes is billed as one hour. The final route-specific price is confirmed before booking.',
     fdFirstPh: 'First name', fdLastPh: 'Last name',
     fdIntro: 'A little about you', fdIntroPh: 'e.g. A couple on honeymoon, love photography and beaches…',
     fdPeople: 'How many people', fdDays: 'Days in Bali',
@@ -388,7 +388,7 @@ const LANGS = {
     fdMeetDrivers: '认识本地司机', fdProfilePending: '资料细节确认中',
     fdDickyProfile: '提供巴厘岛用车、机场接送和按路线询价。', fdGedeProfile: '作为另一位本地司机，根据路线与日期确认档期。',
     fdLanguageConfirm: '语言能力和准确载客量仍需司机确认。', fdGedeForward: '所有司机需求均由 WanderMind 通过邮件私密转发。',
-    fdQuoteBoundary: '<strong>全天：基础价 70 万印尼盾 + 每位游客 5 万印尼盾</strong>（最多 10 小时）；或 <strong>半天：基础价 50 万印尼盾 + 每位游客 5 万印尼盾</strong>（最多 6 小时）。包含车辆、燃油、司机兼导游、矿泉水、停车费和过路费。超过 10 小时后每小时加收 7.5 万印尼盾。机场接送和换酒店按距离报价；预订前确认最终路线报价。',
+    fdQuoteBoundary: '<strong>全天：70 万印尼盾</strong>（最多 10 小时）；或 <strong>半天：50 万印尼盾</strong>（最多 6 小时）。两位司机共用这组起始参考价，不再按游客人数加价；包含车辆、燃油、司机兼导游、矿泉水、停车费和过路费。超时每小时 7 万印尼盾，超过 30 分钟按 1 小时计。预订前按实际路线确认最终价格。',
     fdFirstPh: '名', fdLastPh: '姓',
     fdIntro: '简单介绍一下你', fdIntroPh: '例如：蜜月情侣，喜欢摄影和海滩……',
     fdPeople: '多少人', fdDays: '在巴厘岛玩几天',
@@ -587,7 +587,7 @@ const LANGS = {
     fdMeetDrivers: '現地ドライバー紹介', fdProfilePending: 'プロフィール詳細を確認中',
     fdDickyProfile: 'バリ島内の移動、空港送迎、ルート別の依頼に対応。', fdGedeProfile: 'ルートと日程に応じた別の現地ドライバー候補。',
     fdLanguageConfirm: '対応言語と正確な乗車定員はドライバー確認が必要です。', fdGedeForward: 'すべてのドライバー依頼は WanderMind がメールで非公開に取り次ぎます。',
-    fdQuoteBoundary: '<strong>終日：基本 70万 IDR + 1名につき 5万 IDR</strong>（最長10時間）、または <strong>半日：基本 50万 IDR + 1名につき 5万 IDR</strong>（最長6時間）。車、燃料、ドライバー兼ガイド、ミネラルウォーター、駐車料、通行料を含みます。10時間を超える場合は1時間につき 7.5万 IDR の追加です。空港送迎とホテル移動は距離により見積もり、予約前にルート別の最終料金を確認します。',
+    fdQuoteBoundary: '<strong>終日：70万 IDR</strong>（最長10時間）、または <strong>半日：50万 IDR</strong>（最長6時間）。2名のドライバー共通の開始目安で、人数による追加料金はありません。車、燃料、ドライバー兼ガイド、ミネラルウォーター、駐車料、通行料を含みます。延長は1時間 7万 IDR、30分を超える場合は1時間として計算します。予約前に実際のルートで最終料金を確認します。',
     fdFirstPh: '名', fdLastPh: '姓',
     fdIntro: 'あなたについて少し', fdIntroPh: '例：ハネムーンのカップル、写真とビーチが好き…',
     fdPeople: '人数', fdDays: 'バリ島滞在日数',
@@ -786,7 +786,7 @@ const LANGS = {
     fdMeetDrivers: '현지 기사 소개', fdProfilePending: '프로필 세부 정보 확인 중',
     fdDickyProfile: '발리 이동, 공항 픽업, 루트 기반 요청을 지원합니다.', fdGedeProfile: '루트와 날짜 가능 여부에 따른 다른 현지 기사 옵션입니다.',
     fdLanguageConfirm: '언어와 정확한 차량 정원은 기사 확인이 필요합니다.', fdGedeForward: '모든 기사 요청은 WanderMind가 이메일로 비공개 전달합니다.',
-    fdQuoteBoundary: '<strong>종일: 기본 70만 IDR + 1인당 5만 IDR</strong>(최대 10시간), 또는 <strong>반일: 기본 50만 IDR + 1인당 5만 IDR</strong>(최대 6시간)입니다. 차량, 연료, 기사 겸 가이드, 생수, 주차료와 통행료가 포함됩니다. 10시간 초과 시 시간당 7.5만 IDR가 추가됩니다. 공항 이동과 호텔 변경은 거리에 따라 견적을 내며, 예약 전 경로별 최종 금액을 확인합니다.',
+    fdQuoteBoundary: '<strong>종일: 70만 IDR</strong>(최대 10시간), 또는 <strong>반일: 50만 IDR</strong>(최대 6시간)입니다. 두 기사에게 공통으로 적용되는 시작 참고가이며 인원별 추가 요금은 없습니다. 차량, 연료, 기사 겸 가이드, 생수, 주차료와 통행료가 포함됩니다. 초과 시간은 시간당 7만 IDR이며 30분을 넘으면 1시간으로 계산합니다. 예약 전 실제 경로에 따른 최종 금액을 확인합니다.',
     fdFirstPh: '이름', fdLastPh: '성',
     fdIntro: '간단한 자기소개', fdIntroPh: '예: 신혼여행 커플, 사진과 해변을 좋아함…',
     fdPeople: '인원수', fdDays: '발리 체류 일수',
@@ -985,7 +985,7 @@ const LANGS = {
     fdMeetDrivers: 'Kenali driver lokal', fdProfilePending: 'Detail profil sedang dikonfirmasi',
     fdDickyProfile: 'Dukungan berkendara di Bali, jemput bandara, dan permintaan berbasis rute.', fdGedeProfile: 'Alternatif driver lokal berdasarkan rute dan tanggal.',
     fdLanguageConfirm: 'Bahasa dan kapasitas kendaraan perlu dikonfirmasi driver.', fdGedeForward: 'Semua permintaan driver diteruskan secara privat melalui email oleh WanderMind.',
-    fdQuoteBoundary: '<strong>Seharian: dasar IDR 700k + IDR 50k per tamu</strong> (maks. 10 jam), atau <strong>setengah hari: dasar IDR 500k + IDR 50k per tamu</strong> (maks. 6 jam). Termasuk mobil, bahan bakar, driver sekaligus pemandu, air mineral, parkir, dan tol. Setelah 10 jam dikenakan tambahan IDR 75k per jam. Antar-jemput bandara dan pindah hotel dihitung berdasarkan jarak; harga akhir sesuai rute dikonfirmasi sebelum pemesanan.',
+    fdQuoteBoundary: '<strong>Seharian: IDR 700k</strong> (maks. 10 jam), atau <strong>setengah hari: IDR 500k</strong> (maks. 6 jam). Harga awal bersama untuk kedua driver ini tidak memakai tambahan per tamu. Termasuk mobil, bahan bakar, driver sekaligus pemandu, air mineral, parkir, dan tol. Lembur IDR 70k per jam; lebih dari 30 menit dihitung 1 jam. Harga akhir sesuai rute dikonfirmasi sebelum pemesanan.',
     fdFirstPh: 'Nama depan', fdLastPh: 'Nama belakang',
     fdIntro: 'Sedikit tentang Anda', fdIntroPh: 'cth: Pasangan bulan madu, suka fotografi dan pantai…',
     fdPeople: 'Berapa orang', fdDays: 'Hari di Bali',
@@ -1166,48 +1166,43 @@ Object.assign(LANGS.ko, { fdStartDate:'시작일 <span class="fd-req">*</span>',
 Object.assign(LANGS.id, { fdStartDate:'Tanggal mulai <span class="fd-req">*</span>', fdEndDate:'Tanggal selesai <span class="fd-req">*</span>', fdPickupTime:'Waktu jemput pilihan', fdPickupLocation:'Hotel / lokasi jemput', fdPickupPh:'Hotel atau area jika sudah tahu', fdBudget:'Perkiraan anggaran total', fdBudgetFlexible:'Fleksibel / diskusi dulu', fdBudget1:'Di bawah 5 juta IDR', fdBudget2:'5–10 juta IDR', fdBudget3:'10–20 juta IDR', fdBudget4:'20+ juta IDR', fdServices:'Layanan untuk didiskusikan', fdServiceCar:'Driver / mobil privat', fdServiceAirport:'Antar-jemput bandara', fdServiceHotel:'Saran hotel', fdServiceBoat:'Boat dari Sanur', fdServiceFlight:'Koordinasi penerbangan', fdServiceTickets:'Tiket tempat wisata', fdBundleHint:'Ini permintaan penawaran gabungan, bukan pemesanan instan. Ketersediaan dan penyedia akan dikonfirmasi saat membalas.', fdArrival:'Detail pesawat, boat, atau kedatangan', fdArrivalPh:'Nomor penerbangan / waktu tiba / tanggal boat Sanur, jika tahu', fdErrDates:'Masukkan tanggal perjalanan yang valid' });
 Object.assign(LANGS.en, {
   fdEstimateTitle:'Estimate your driver days',
-  fdEstimateIntro:"This uses Dicky's initial price. He may adjust it after reviewing your days and route; the amount in his reply is final. Gede Nico quotes separately.",
+  fdEstimateIntro:'This uses the shared starting rates confirmed for Dicky and Gede Nico. Your selected driver confirms the final route-specific amount by email.',
   fdEstimateFullDays:'Full driver days · up to 10 hours', fdEstimateHalfDays:'Half driver days · up to 6 hours',
-  fdEstimateTotal:'Dicky initial total', fdEstimateStart:'Enter the number of travellers and driver days to see the breakdown.',
+  fdEstimateTotal:'Starting estimate', fdEstimateStart:'Enter the number of driver days to see the breakdown.',
   fdEstimateBoundary:'Not included: overtime, airport or hotel-change transfers, Nusa Penida boat-and-car combinations, activities or route surcharges. Confirm the final price with your chosen driver before booking.',
-  fdEstimateFullLine:'{days} full day(s) × {rate}', fdEstimateHalfLine:'{days} half day(s) × {rate}',
-  fdEstimateGuestLine:'{people} guest(s) × IDR 50,000 = {supplement} guest supplement on each selected day.'
+  fdEstimateFullLine:'{days} full day(s) × {rate}', fdEstimateHalfLine:'{days} half day(s) × {rate}'
 });
 Object.assign(LANGS.zh, {
   fdEstimateTitle:'估算用车参考费用',
-  fdEstimateIntro:'这里采用 Dicky 亲自提供的初始价格。他查看用车天数和路线后可作调整，最终金额以邮件回复为准；Gede Nico 单独报价。',
+  fdEstimateIntro:'这里采用 Dicky 与 Gede Nico 共同确认的起始参考价；所选司机会根据实际路线通过邮件确认最终金额。',
   fdEstimateFullDays:'全天用车天数 · 最多 10 小时', fdEstimateHalfDays:'半天用车天数 · 最多 6 小时',
-  fdEstimateTotal:'Dicky 初始合计', fdEstimateStart:'填写出行人数和用车天数后查看明细。',
+  fdEstimateTotal:'起始参考合计', fdEstimateStart:'填写用车天数后查看明细。',
   fdEstimateBoundary:'暂不包含：超时、机场或换酒店接送、佩妮达船车组合、活动费用及路线附加费。预订前请与所选司机确认最终价格。',
-  fdEstimateFullLine:'{days} 个全天 × {rate}', fdEstimateHalfLine:'{days} 个半天 × {rate}',
-  fdEstimateGuestLine:'{people} 位游客 × IDR 50,000 = 每个所选用车日加收 {supplement}。'
+  fdEstimateFullLine:'{days} 个全天 × {rate}', fdEstimateHalfLine:'{days} 个半天 × {rate}'
 });
 Object.assign(LANGS.ja, {
   fdEstimateTitle:'ドライバー利用日の参考料金',
-  fdEstimateIntro:'Dicky本人が提示した初期料金です。利用日数とルート確認後に調整される場合があり、返信メールの金額が最終です。Gede Nicoは別途見積ります。',
+  fdEstimateIntro:'Dicky と Gede Nico が共通で確認した開始目安です。選択したドライバーが実際のルートに基づく最終金額をメールで確認します。',
   fdEstimateFullDays:'終日利用日数 · 最長10時間', fdEstimateHalfDays:'半日利用日数 · 最長6時間',
-  fdEstimateTotal:'Dicky 初期合計', fdEstimateStart:'旅行人数と利用日数を入力すると内訳を確認できます。',
+  fdEstimateTotal:'開始目安の合計', fdEstimateStart:'利用日数を入力すると内訳を確認できます。',
   fdEstimateBoundary:'延長時間、空港・ホテル移動、ヌサペニダの船と車の組み合わせ、体験料金、ルート追加料金は含みません。予約前に選んだドライバーへ最終料金をご確認ください。',
-  fdEstimateFullLine:'終日 {days} 日 × {rate}', fdEstimateHalfLine:'半日 {days} 日 × {rate}',
-  fdEstimateGuestLine:'{people} 名 × 50,000 IDR = 選択した各利用日に {supplement} を追加。'
+  fdEstimateFullLine:'終日 {days} 日 × {rate}', fdEstimateHalfLine:'半日 {days} 日 × {rate}'
 });
 Object.assign(LANGS.ko, {
   fdEstimateTitle:'기사 이용일 참고 요금',
-  fdEstimateIntro:'Dicky가 직접 제공한 초기 가격입니다. 이용 일수와 경로를 확인한 뒤 조정될 수 있으며 답장 금액이 최종입니다. Gede Nico는 별도로 견적합니다.',
+  fdEstimateIntro:'Dicky와 Gede Nico가 공통으로 확인한 시작 참고가입니다. 선택한 기사가 실제 경로에 따른 최종 금액을 이메일로 확인합니다.',
   fdEstimateFullDays:'종일 이용 일수 · 최대 10시간', fdEstimateHalfDays:'반일 이용 일수 · 최대 6시간',
-  fdEstimateTotal:'Dicky 초기 합계', fdEstimateStart:'여행 인원과 차량 이용 일수를 입력하면 상세 내역을 볼 수 있습니다.',
+  fdEstimateTotal:'시작 참고 합계', fdEstimateStart:'차량 이용 일수를 입력하면 상세 내역을 볼 수 있습니다.',
   fdEstimateBoundary:'초과 시간, 공항·호텔 이동, 누사 페니다 선박·차량 조합, 체험 비용 및 경로 추가 요금은 포함되지 않습니다. 예약 전 선택한 기사에게 최종 가격을 확인하세요.',
-  fdEstimateFullLine:'종일 {days}일 × {rate}', fdEstimateHalfLine:'반일 {days}일 × {rate}',
-  fdEstimateGuestLine:'{people}명 × IDR 50,000 = 선택한 각 이용일에 {supplement} 추가.'
+  fdEstimateFullLine:'종일 {days}일 × {rate}', fdEstimateHalfLine:'반일 {days}일 × {rate}'
 });
 Object.assign(LANGS.id, {
   fdEstimateTitle:'Perkirakan biaya hari driver',
-  fdEstimateIntro:'Ini memakai harga awal yang diberikan langsung oleh Dicky. Harga dapat disesuaikan setelah hari dan rute diperiksa; jumlah dalam balasan adalah final. Gede Nico memberi harga terpisah.',
+  fdEstimateIntro:'Ini memakai harga awal bersama yang dikonfirmasi untuk Dicky dan Gede Nico. Driver pilihan Anda mengonfirmasi jumlah akhir sesuai rute melalui email.',
   fdEstimateFullDays:'Hari penuh dengan driver · hingga 10 jam', fdEstimateHalfDays:'Setengah hari dengan driver · hingga 6 jam',
-  fdEstimateTotal:'Total awal Dicky', fdEstimateStart:'Masukkan jumlah traveler dan hari penggunaan driver untuk melihat rincian.',
+  fdEstimateTotal:'Total perkiraan awal', fdEstimateStart:'Masukkan hari penggunaan driver untuk melihat rincian.',
   fdEstimateBoundary:'Belum termasuk lembur, transfer bandara atau pindah hotel, kombinasi boat dan mobil Nusa Penida, aktivitas, atau biaya tambahan rute. Konfirmasikan harga akhir dengan driver pilihan sebelum memesan.',
-  fdEstimateFullLine:'{days} hari penuh × {rate}', fdEstimateHalfLine:'{days} setengah hari × {rate}',
-  fdEstimateGuestLine:'{people} tamu × IDR 50.000 = tambahan {supplement} pada setiap hari yang dipilih.'
+  fdEstimateFullLine:'{days} hari penuh × {rate}', fdEstimateHalfLine:'{days} setengah hari × {rate}'
 });
 Object.assign(LANGS.en,{fdFirstLabel:'First name <span class="fd-req">*</span>',fdLastLabel:'Last name <span class="fd-req">*</span>'});
 Object.assign(LANGS.zh,{fdFirstLabel:'名字 <span class="fd-req">*</span>',fdLastLabel:'姓氏 <span class="fd-req">*</span>'});
@@ -1288,31 +1283,41 @@ Object.assign(LANGS.en, {
   partnerTitle:'Private local support, when you need it', partnerSub:'A route is only useful when it can work on the ground. For Bali, requests are handled privately through WanderMind — no personal driver accounts are published here.', partnerDickyEyebrow:'Bali · private request channel', partnerDickyName:'Choose a driver only when your route is ready', partnerDickyRole:'Airport transfers, full-day private tours and route-based requests.', partnerDickyDesc:'Share your dates, route and travel details through the private driver request. WanderMind forwards the request for availability and a final quote; individual contact accounts stay private.', partnerDickyCta:'Open a private driver request →',
   contactDriverTitle:'Find a Bali Driver', contactDriverValue:'Private request · choose a driver in the form', contactDriverTag:'We forward the request privately after review',
   baliDriverTitle:'Make your route workable with a local driver', baliDriverSub:'Send your dates and route. Choose a driver after availability and the final quote are confirmed.', baliDriverBtn:'Send a driver request',
-  fdDickyShort:'Local Bali driver', fdGedeShort:'Local Bali driver', fdQuoteBoundary:'<strong>Full day: IDR 700k base + IDR 50k per guest</strong> (up to 10 hours), or <strong>half day: IDR 500k base + IDR 50k per guest</strong> (up to 6 hours). Includes car, fuel, driver-guide, mineral water, parking and tolls. Additional time is IDR 75k per hour after 10 hours. Airport transfers and hotel changes are quoted by distance; the final route-specific quote is confirmed before booking.'
+  fdDickyShort:'Local Bali driver', fdGedeShort:'Local Bali driver', fdQuoteBoundary:'<strong>Full day: IDR 700k</strong> (up to 10 hours), or <strong>half day: IDR 500k</strong> (up to 6 hours). These shared starting rates have no per-guest surcharge. Car, fuel, driver-guide, mineral water, parking and tolls are included. Overtime is IDR 70k per hour; more than 30 minutes is billed as one hour. The final route-specific price is confirmed before booking.',
+  fdRateDetailsTitle:'See airport, Penida and travel conditions',
+  fdRateDetails:'<ul><li><strong>Airport:</strong> Kuta/Legian IDR 225k; Seminyak/Jimbaran/Sanur/Denpasar IDR 250k; Ubud IDR 350k; Lovina IDR 650k; Amed/Tulamben IDR 750k.</li><li><strong>Nusa Penida:</strong> return ferry IDR 250k per person; West or East car package IDR 650k, combination IDR 700k. Island car includes fuel, driver-guide, parking and mineral water; exact departure and package are confirmed for the date.</li><li>A hotel move is free when it is already on the tour route; a separate transfer is quoted from pickup to drop-off. Route starting references: South Bali, Ubud, Kintamani and North Bali IDR 700k; East Bali IDR 800k.</li><li>With luggage, 4 guests is the confirmed comfortable reference. A baby seat is IDR 75k per day. Cancellations one day before are non-refundable.</li></ul>'
 });
 Object.assign(LANGS.zh, {
   partnerTitle:'需要时再启用的私密本地支持', partnerSub:'路线能在当地顺利执行才有价值。巴厘岛需求通过 WanderMind 私密处理；本站不会公开司机个人账号。', partnerDickyEyebrow:'巴厘岛 · 私密需求通道', partnerDickyName:'路线准备好后再选择司机', partnerDickyRole:'机场接送、全天私人包车与按路线提交的需求。', partnerDickyDesc:'通过私密司机需求提交日期、路线和旅行信息。WanderMind 会转交以确认档期和最终报价；个人联系方式保持私密。', partnerDickyCta:'发起私密司机需求 →',
   contactDriverTitle:'寻找巴厘岛司机', contactDriverValue:'私密需求 · 在表单中选择司机', contactDriverTag:'审核后我们会私密转交需求',
   baliDriverTitle:'让本地司机协助路线落地', baliDriverSub:'提交日期与路线，确认档期和最终报价后再选择司机。', baliDriverBtn:'提交司机需求',
-  fdDickyShort:'巴厘岛本地司机', fdGedeShort:'巴厘岛本地司机', fdQuoteBoundary:'<strong>全天：基础价 70 万印尼盾 + 每位游客 5 万印尼盾</strong>（最多 10 小时）；或 <strong>半天：基础价 50 万印尼盾 + 每位游客 5 万印尼盾</strong>（最多 6 小时）。包含车辆、燃油、司机兼导游、矿泉水、停车费和过路费。超过 10 小时后每小时加收 7.5 万印尼盾。机场接送和换酒店按距离报价；预订前确认最终路线报价。'
+  fdDickyShort:'巴厘岛本地司机', fdGedeShort:'巴厘岛本地司机', fdQuoteBoundary:'<strong>全天：70 万印尼盾</strong>（最多 10 小时）；或 <strong>半天：50 万印尼盾</strong>（最多 6 小时）。两位司机共用这组起始参考价，不再按游客人数加价；包含车辆、燃油、司机兼导游、矿泉水、停车费和过路费。超时每小时 7 万印尼盾，超过 30 分钟按 1 小时计。预订前按实际路线确认最终价格。',
+  fdRateDetailsTitle:'查看机场、佩妮达与出行规则',
+  fdRateDetails:'<ul><li><strong>机场接送：</strong>Kuta/Legian 22.5 万；Seminyak/Jimbaran/Sanur/Denpasar 25 万；Ubud 35 万；Lovina 65 万；Amed/Tulamben 75 万印尼盾。</li><li><strong>佩妮达：</strong>往返船票每人 25 万；西线或东线包车 65 万，东西组合 70 万印尼盾。岛上用车包含燃油、司机兼导游、停车和矿泉水；具体出发时间与套餐按日期确认。</li><li>换酒店若已在当天游览路线内不另收费；单独换酒店按接送地点报价。区域起始参考：南部、乌布、Kintamani、北部 70 万；东部 80 万印尼盾。</li><li>携带行李时以 4 位游客为舒适参考；儿童座椅每天 7.5 万印尼盾；出发前 1 天取消不退款。</li></ul>'
 });
 Object.assign(LANGS.ja, {
   partnerTitle:'必要な時だけ使える、プライベートな現地サポート', partnerSub:'現地で実行できてこそルートには価値があります。バリの依頼は WanderMind を通じて非公開で扱い、個人ドライバーのアカウントは公開しません。', partnerDickyEyebrow:'バリ島 · 非公開の依頼窓口', partnerDickyName:'ルートが決まってからドライバーを選ぶ', partnerDickyRole:'空港送迎、終日プライベートツアー、ルートに基づく依頼。', partnerDickyDesc:'日程、ルート、旅行情報を非公開の依頼フォームから送信してください。WanderMind が空き状況と最終見積もりのために転送し、個人の連絡先は非公開のままです。', partnerDickyCta:'非公開のドライバー依頼を開始 →',
   contactDriverTitle:'バリのドライバーを探す', contactDriverValue:'非公開の依頼 · フォームでドライバーを選択', contactDriverTag:'確認後、依頼を非公開で転送します',
   baliDriverTitle:'現地ドライバーと、実行できるルートへ', baliDriverSub:'日程とルートを送り、空き状況と最終見積もりを確認してからドライバーを選べます。', baliDriverBtn:'ドライバーを依頼',
-  fdDickyShort:'バリ島の現地ドライバー', fdGedeShort:'バリ島の現地ドライバー', fdQuoteBoundary:'<strong>終日：基本 70万 IDR + 1名につき 5万 IDR</strong>（最長10時間）、または <strong>半日：基本 50万 IDR + 1名につき 5万 IDR</strong>（最長6時間）。車、燃料、ドライバー兼ガイド、ミネラルウォーター、駐車料、通行料を含みます。10時間を超える場合は1時間につき 7.5万 IDR の追加です。空港送迎とホテル移動は距離により見積もり、予約前にルート別の最終料金を確認します。'
+  fdDickyShort:'バリ島の現地ドライバー', fdGedeShort:'バリ島の現地ドライバー', fdQuoteBoundary:'<strong>終日：70万 IDR</strong>（最長10時間）、または <strong>半日：50万 IDR</strong>（最長6時間）。2名のドライバー共通の開始目安で、人数による追加料金はありません。車、燃料、ドライバー兼ガイド、ミネラルウォーター、駐車料、通行料を含みます。延長は1時間 7万 IDR、30分を超える場合は1時間として計算します。予約前に実際のルートで最終料金を確認します。',
+  fdRateDetailsTitle:'空港・ペニダ・利用条件を見る',
+  fdRateDetails:'<ul><li><strong>空港送迎：</strong>Kuta/Legian 22.5万、Seminyak/Jimbaran/Sanur/Denpasar 25万、Ubud 35万、Lovina 65万、Amed/Tulamben 75万 IDR。</li><li><strong>ヌサペニダ：</strong>往復船券は1名 25万、West または East の車は 65万、Combination は 70万 IDR。島内車両には燃料、ガイド兼ドライバー、駐車、飲料水を含み、出発時刻とパッケージは日付ごとに確認します。</li><li>ホテル移動が当日のツアールート内なら追加料金なし。単独移動は乗車地と降車地で見積もります。エリア開始目安：南部・Ubud・Kintamani・北部 70万、東部 80万 IDR。</li><li>荷物ありの場合は4名が快適人数の目安。チャイルドシートは1日 7.5万 IDR。前日のキャンセルは返金不可です。</li></ul>'
 });
 Object.assign(LANGS.ko, {
   partnerTitle:'필요할 때만 쓰는 비공개 현지 지원', partnerSub:'현지에서 실행할 수 있어야 경로가 의미 있습니다. 발리 요청은 WanderMind를 통해 비공개로 처리하며 개인 기사 계정은 공개하지 않습니다.', partnerDickyEyebrow:'발리 · 비공개 요청 채널', partnerDickyName:'경로가 준비된 뒤 기사를 선택하세요', partnerDickyRole:'공항 이동, 종일 프라이빗 투어와 경로 기반 요청.', partnerDickyDesc:'비공개 기사 요청으로 날짜, 경로와 여행 정보를 보내세요. WanderMind가 가능 일정과 최종 견적 확인을 위해 전달하며, 개인 연락처는 비공개로 유지됩니다.', partnerDickyCta:'비공개 기사 요청 시작 →',
   contactDriverTitle:'발리 기사 찾기', contactDriverValue:'비공개 요청 · 양식에서 기사 선택', contactDriverTag:'검토 후 요청을 비공개로 전달합니다',
   baliDriverTitle:'현지 기사와 실행 가능한 경로 만들기', baliDriverSub:'날짜와 경로를 보내고, 가능 일정과 최종 견적을 확인한 뒤 기사를 선택하세요.', baliDriverBtn:'기사 요청 보내기',
-  fdDickyShort:'발리 현지 기사', fdGedeShort:'발리 현지 기사', fdQuoteBoundary:'<strong>종일: 기본 70만 IDR + 1인당 5만 IDR</strong>(최대 10시간), 또는 <strong>반일: 기본 50만 IDR + 1인당 5만 IDR</strong>(최대 6시간)입니다. 차량, 연료, 기사 겸 가이드, 생수, 주차료와 통행료가 포함됩니다. 10시간 초과 시 시간당 7.5만 IDR가 추가됩니다. 공항 이동과 호텔 변경은 거리에 따라 견적을 내며, 예약 전 경로별 최종 금액을 확인합니다.'
+  fdDickyShort:'발리 현지 기사', fdGedeShort:'발리 현지 기사', fdQuoteBoundary:'<strong>종일: 70만 IDR</strong>(최대 10시간), 또는 <strong>반일: 50만 IDR</strong>(최대 6시간)입니다. 두 기사에게 공통으로 적용되는 시작 참고가이며 인원별 추가 요금은 없습니다. 차량, 연료, 기사 겸 가이드, 생수, 주차료와 통행료가 포함됩니다. 초과 시간은 시간당 7만 IDR이며 30분을 넘으면 1시간으로 계산합니다. 예약 전 실제 경로에 따른 최종 금액을 확인합니다.',
+  fdRateDetailsTitle:'공항·누사 페니다·이용 조건 보기',
+  fdRateDetails:'<ul><li><strong>공항 이동:</strong> Kuta/Legian 22.5만, Seminyak/Jimbaran/Sanur/Denpasar 25만, Ubud 35만, Lovina 65만, Amed/Tulamben 75만 IDR.</li><li><strong>누사 페니다:</strong> 왕복 페리 1인 25만, West 또는 East 차량 65만, Combination 70만 IDR. 섬 차량에는 연료, 기사 겸 가이드, 주차와 생수가 포함되며 출발 시간과 패키지는 날짜별로 확인합니다.</li><li>호텔 이동이 당일 투어 경로 안에 있으면 추가 비용이 없고, 별도 이동은 승차지와 하차지로 견적합니다. 지역 시작 참고: 남부·Ubud·Kintamani·북부 70만, 동부 80만 IDR.</li><li>짐이 있을 때는 4명을 편안한 기준으로 확인했습니다. 유아용 카시트는 하루 7.5만 IDR이며 출발 하루 전 취소는 환불되지 않습니다.</li></ul>'
 });
 Object.assign(LANGS.id, {
   partnerTitle:'Dukungan lokal privat, saat Anda membutuhkannya', partnerSub:'Rute baru berguna jika bisa dijalankan di lapangan. Untuk Bali, permintaan ditangani secara privat melalui WanderMind — akun pribadi driver tidak dipublikasikan di sini.', partnerDickyEyebrow:'Bali · kanal permintaan privat', partnerDickyName:'Pilih driver setelah rute Anda siap', partnerDickyRole:'Antar-jemput bandara, tur privat seharian, dan permintaan berbasis rute.', partnerDickyDesc:'Kirim tanggal, rute, dan detail perjalanan melalui permintaan driver privat. WanderMind meneruskannya untuk ketersediaan dan harga akhir; kontak pribadi tetap privat.', partnerDickyCta:'Mulai permintaan driver privat →',
   contactDriverTitle:'Cari Driver Bali', contactDriverValue:'Permintaan privat · pilih driver di formulir', contactDriverTag:'Kami meneruskan permintaan secara privat setelah ditinjau',
   baliDriverTitle:'Jadikan rute Anda bisa dijalankan bersama driver lokal', baliDriverSub:'Kirim tanggal dan rute Anda. Pilih driver setelah ketersediaan dan harga akhir dikonfirmasi.', baliDriverBtn:'Kirim permintaan driver',
-  fdDickyShort:'Driver lokal Bali', fdGedeShort:'Driver lokal Bali', fdQuoteBoundary:'<strong>Seharian: dasar IDR 700k + IDR 50k per tamu</strong> (maks. 10 jam), atau <strong>setengah hari: dasar IDR 500k + IDR 50k per tamu</strong> (maks. 6 jam). Termasuk mobil, bahan bakar, driver sekaligus pemandu, air mineral, parkir, dan tol. Setelah 10 jam dikenakan tambahan IDR 75k per jam. Antar-jemput bandara dan pindah hotel dihitung berdasarkan jarak; harga akhir sesuai rute dikonfirmasi sebelum pemesanan.'
+  fdDickyShort:'Driver lokal Bali', fdGedeShort:'Driver lokal Bali', fdQuoteBoundary:'<strong>Seharian: IDR 700k</strong> (maks. 10 jam), atau <strong>setengah hari: IDR 500k</strong> (maks. 6 jam). Harga awal bersama untuk kedua driver ini tidak memakai tambahan per tamu. Termasuk mobil, bahan bakar, driver sekaligus pemandu, air mineral, parkir, dan tol. Lembur IDR 70k per jam; lebih dari 30 menit dihitung 1 jam. Harga akhir sesuai rute dikonfirmasi sebelum pemesanan.',
+  fdRateDetailsTitle:'Lihat tarif bandara, Penida, dan ketentuan perjalanan',
+  fdRateDetails:'<ul><li><strong>Bandara:</strong> Kuta/Legian IDR 225k; Seminyak/Jimbaran/Sanur/Denpasar IDR 250k; Ubud IDR 350k; Lovina IDR 650k; Amed/Tulamben IDR 750k.</li><li><strong>Nusa Penida:</strong> tiket ferry pulang-pergi IDR 250k per orang; mobil West atau East IDR 650k, Combination IDR 700k. Mobil di pulau termasuk bahan bakar, driver sekaligus pemandu, parkir, dan air mineral; jam berangkat dan paket dikonfirmasi sesuai tanggal.</li><li>Pindah hotel gratis bila sudah termasuk rute tur hari itu; transfer terpisah dihitung dari lokasi jemput ke lokasi turun. Referensi awal area: South Bali, Ubud, Kintamani, dan North Bali IDR 700k; East Bali IDR 800k.</li><li>Dengan bagasi, 4 tamu adalah acuan nyaman yang dikonfirmasi. Baby car seat IDR 75k per hari. Pembatalan satu hari sebelum berangkat tidak dapat dikembalikan.</li></ul>'
 });
 
 /* Promotion-ready next steps and an honest mail-app contact handoff. */

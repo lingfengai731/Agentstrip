@@ -1852,6 +1852,7 @@ def _normalise_trip_profile(profile: dict) -> dict:
         "days": min(21, max(1, days)),
         "currency": str(source.get("currency") or "CNY"),
         "budget_range": source.get("budget_range") if source.get("budget_range") is not None else source.get("budget", ""),
+        "budget_tier": str(source.get("budget_tier") or "comfort"),
         "pace": str(source.get("pace") or "balanced"),
         "origin_region": str(source.get("origin_region") or ""),
     }
@@ -1866,6 +1867,7 @@ def _route_score(route: dict, profile: dict) -> int:
         "easy": "slow_wellness",
         "local": "local_culture",
         "photo": "photography",
+        "hidden": "deep_experience",
         "value": "budget_control",
     }
     if route.get("primary_intent") == intent_map.get(profile.get("audience")):
@@ -1874,14 +1876,24 @@ def _route_score(route: dict, profile: dict) -> int:
     goal_tags = {
         "local": {"culture", "local", "village"},
         "photo": {"scenery", "nature", "coast", "sunset"},
+        "hidden": {"village", "local", "waterfall", "adventure", "quiet"},
         "easy": {"quiet", "wellness", "balanced"},
         "value": {"value", "budget"},
     }
     for goal in goals:
         score += len(route_tags & goal_tags.get(goal, set()))
-    if profile.get("pace") == route.get("pace"):
+    profile_pace = profile.get("pace")
+    route_pace = route.get("pace")
+    if profile_pace == route_pace or (profile_pace == "slow" and route_pace == "relaxed"):
         score += 2
-    if profile.get("travel_style") in (route.get("budget_level") or []):
+    travel_style = profile.get("travel_style")
+    if travel_style == "deep" and ({"culture", "local", "village", "adventure"} & route_tags):
+        score += 2
+    elif travel_style == "relaxed" and route_pace in {"slow", "relaxed"}:
+        score += 2
+    elif travel_style == "comfort" and "comfort" in (route.get("budget_level") or []):
+        score += 2
+    if profile.get("budget_tier") in (route.get("budget_level") or []):
         score += 2
     if profile.get("days", 5) >= (route.get("recommended_days") or {}).get("min", 1):
         score += 1

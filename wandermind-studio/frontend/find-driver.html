@@ -188,6 +188,17 @@
       .fd-moment img { display:block; width:100%; aspect-ratio:1/1; object-fit:cover; border-radius:9px; background:#e9e5dc; }
       body.dark .fd-moment img { background:#171b1f; }
       .fd-quote-boundary { margin-top:18px; font-size:12px; line-height:1.6; }
+      .fd-rate-details { margin-top:10px; border-top:1px solid rgba(14,124,107,.18); padding-top:10px; }
+      .fd-rate-details summary { min-height:44px; display:flex; align-items:center; justify-content:space-between; gap:12px; color:#0a695b; font-weight:800; cursor:pointer; list-style:none; }
+      .fd-rate-details summary::-webkit-details-marker { display:none; }
+      .fd-rate-details summary::after { content:'+'; font-size:20px; line-height:1; }
+      .fd-rate-details[open] summary::after { content:'−'; }
+      .fd-rate-details-content { padding:4px 0 2px; color:#475569; font-size:12px; line-height:1.65; }
+      .fd-rate-details-content ul { margin:6px 0 0; padding-left:18px; }
+      .fd-rate-details-content li + li { margin-top:6px; }
+      body.dark .fd-rate-details { border-color:rgba(94,234,212,.18); }
+      body.dark .fd-rate-details summary { color:#5eead4; }
+      body.dark .fd-rate-details-content { color:#d8d5cc; }
       @media(max-width:575px){ .fd-driver-picker{grid-template-columns:1fr}.fd-driver-choice{grid-template-columns:56px 1fr}.fd-driver-choice img{width:56px;height:56px} }
       .fd-mobile-progress, .fd-mobile-step-title, .fd-step-actions, .fd-profile-toggle, .fd-view-profile, .fd-mobile-step-msg { display:none; }
       .fd-mobile-step { display:contents; }
@@ -384,7 +395,7 @@
       <h3 class="fd-mobile-step-title" id="fd-step-two-title" data-i18n="fdStepNeedsTitle">Shape the route and quote</h3>
       <section class="fd-estimator" aria-labelledby="fd-estimator-title">
         <h3 id="fd-estimator-title" data-i18n="fdEstimateTitle">Estimate your driver days</h3>
-        <p class="fd-estimator-intro" data-i18n="fdEstimateIntro">This uses Dicky's initial price. He may adjust it after reviewing your days and route; the amount in his reply is final. Gede Nico quotes separately.</p>
+        <p class="fd-estimator-intro" data-i18n="fdEstimateIntro">This uses the shared starting rates confirmed for Dicky and Gede Nico. Your selected driver confirms the final route-specific amount by email.</p>
         <div class="fd-estimator-grid">
           <div>
             <label class="fd-label" for="fd-full-days" data-i18n="fdEstimateFullDays">Full driver days · up to 10 hours</label>
@@ -398,11 +409,11 @@
         <div class="fd-estimator-output">
           <div class="fd-estimator-live" aria-live="polite" aria-atomic="true">
             <div class="fd-estimator-total-row">
-              <span class="fd-estimator-total-label" data-i18n="fdEstimateTotal">Dicky initial total</span>
+              <span class="fd-estimator-total-label" data-i18n="fdEstimateTotal">Starting estimate</span>
               <strong class="fd-estimator-total" id="fd-estimator-total">—</strong>
             </div>
             <div class="fd-estimator-lines" id="fd-estimator-lines">
-              <p data-i18n="fdEstimateStart">Enter the number of travellers and driver days to see the breakdown.</p>
+              <p data-i18n="fdEstimateStart">Enter the number of driver days to see the breakdown.</p>
             </div>
           </div>
           <p class="fd-estimator-boundary" id="fd-estimator-boundary" data-i18n="fdEstimateBoundary">Not included: overtime, airport or hotel transfers, Penida boat/car combinations, activity fees or route-specific additions. Confirm the final price with your selected driver before booking.</p>
@@ -482,7 +493,13 @@
       <div class="fd-profile-shell" id="fd-profile-shell">
       <h3 data-i18n="fdMeetDrivers">Meet the local drivers</h3>
       <div class="fd-profile" id="fd-driver-detail" aria-live="polite"></div>
-<div class="fd-price-box fd-quote-boundary" data-i18n="fdQuoteBoundary"><strong>Full day: IDR 700k base + IDR 50k per guest</strong> (up to 10 hours), or <strong>half day: IDR 500k base + IDR 50k per guest</strong> (up to 6 hours). Includes car, fuel, driver-guide, mineral water, parking and tolls. Additional time is IDR 75k per hour after 10 hours. Airport transfers and hotel changes are quoted by distance; the final route-specific quote is confirmed before booking.</div>
+<div class="fd-price-box fd-quote-boundary">
+  <div data-i18n="fdQuoteBoundary"><strong>Full day: IDR 700k</strong> (up to 10 hours), or <strong>half day: IDR 500k</strong> (up to 6 hours). These shared starting rates have no per-guest surcharge. Car, fuel, driver-guide, mineral water, parking and tolls are included. Overtime is IDR 70k per hour; more than 30 minutes is billed as one hour. The final route-specific price is confirmed before booking.</div>
+  <details class="fd-rate-details">
+    <summary data-i18n="fdRateDetailsTitle">See airport, Penida and travel conditions</summary>
+    <div class="fd-rate-details-content" data-i18n="fdRateDetails"><ul><li>Airport transfer: Kuta/Legian IDR 225k; Seminyak/Jimbaran/Sanur/Denpasar IDR 250k; Ubud IDR 350k; Lovina IDR 650k; Amed/Tulamben IDR 750k.</li><li>Nusa Penida: return ferry from IDR 250k per person; West or East car package IDR 650k, combination IDR 700k. Exact departure and package are confirmed for the date.</li><li>A hotel move is free when it is already on the tour route; a separate transfer is quoted from pickup to drop-off.</li><li>With luggage, 4 guests is the confirmed comfortable reference. A baby seat is IDR 75k per day. Cancellations one day before are non-refundable.</li></ul></div>
+  </details>
+</div>
       </div>
     </div>
 
@@ -830,7 +847,7 @@
   })();
 </script>
     <script src="assets/js/i18n.js?v=search2"></script>
-<script src="assets/js/driver-estimate.js?v=p1"></script>
+<script src="assets/js/driver-estimate.js?v=p2"></script>
 <script>
   // Expose JS-side strings for the dynamic messages (filled after i18n load)
   (function () {

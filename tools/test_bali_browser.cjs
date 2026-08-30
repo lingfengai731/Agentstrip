@@ -149,27 +149,37 @@ function check(condition, message) {
     check(semanticControlMetrics.radioWidth <= 2 && semanticControlMetrics.optionHeight >= 44, `Professional choice controls are not semantic cards: ${JSON.stringify(semanticControlMetrics)}`);
     check(semanticControlMetrics.fieldsets === 3 && semanticControlMetrics.profile, 'Professional form lacks the three question groups or live trip profile');
     await freshPreview.locator('.bali-professional-empty').screenshot({ path:path.join(artifactRoot, 'professional-form-390-en.png') });
-    await freshPreview.locator('#bali-professional-form [name="budget"]').fill('12000');
+    await freshPreview.locator('#bali-professional-form button[type="submit"]').click();
+    check(await freshPreview.locator('[data-required-group="budget_tier"]').getAttribute('aria-invalid') === 'true', 'Missing required budget tier was not identified');
+    await freshPreview.locator('#bali-professional-form label:has([name="budget_tier"][value="comfort"])').click();
+    await freshPreview.locator('#bali-professional-form label:has([name="goal"][value="photo"])').click();
     await freshPreview.locator('#bali-professional-form button[type="submit"]').click();
     await freshPreview.locator('#bali-professional-unlock').waitFor();
     const freshPreviewRequest = freshPreviewRequests[0];
     check(freshPreviewRequest && freshPreviewRequest.trip_id === '', 'Fresh professional preview did not submit without a saved profile');
-    check(freshPreviewRequest.trip_profile.currency === 'CNY', 'Fresh professional preview did not apply the default currency');
+    check(freshPreviewRequest.trip_profile.currency === 'USD' && freshPreviewRequest.trip_profile.budget_tier === 'comfort', 'Fresh professional preview did not apply the locale budget tier');
     check(await freshPreview.locator('.bali-professional-day.is-locked').count() === 2, 'Fresh seven-day professional preview did not preserve the five-open/two-locked gate');
     check(freshPreviewErrors.length === 0, `Fresh professional preview raised page errors: ${freshPreviewErrors.join('|')}`);
-    await freshPreview.locator('#bali-professional-edit').click();
+    await freshPreview.locator('#bali-professional-rematch').click();
     await freshPreview.locator('#bali-professional-editor').waitFor();
-    check(await freshPreview.locator('#bali-professional-editor [name="budget"]').inputValue() === '12000', 'Unpaid edit did not preserve the submitted trip information');
-    await freshPreview.locator('#bali-professional-editor [name="budget"]').fill('13000');
+    check(await freshPreview.locator('#bali-professional-editor [name="budget_tier"][value="comfort"]').isChecked(), 'Unpaid edit did not preserve the submitted budget tier');
+    check(await freshPreview.locator('#bali-professional-editor [name="goal"][value="photo"]').isChecked(), 'Unpaid edit did not preserve the submitted priorities');
+    await freshPreview.locator('#bali-professional-editor label:has([name="budget_tier"][value="premium"])').click();
     await freshPreview.locator('#bali-professional-editor button[type="submit"]').click();
     await freshPreview.locator('#bali-professional-unlock').waitFor();
-    check(freshPreviewRequests.length === 2 && freshPreviewRequests[1].trip_profile.budget_range === 13000, 'Unpaid preview did not re-match with the corrected trip information');
+    check(freshPreviewRequests.length === 2 && freshPreviewRequests[1].trip_profile.budget_tier === 'premium', 'Unpaid preview did not re-match with the corrected trip information');
     check(!freshPreviewAdjustmentCalled, 'Unpaid preview edit consumed a professional-route adjustment');
     await freshPreview.locator('#bali-professional-unlock').click();
     await freshPreview.locator('#bali-professional-payment').waitFor();
     await freshPreviewContext.close();
 
-    const languageExpectations = { en:'Trip basics', zh:'基本行程', ja:'基本情報', ko:'기본 일정', id:'Dasar perjalanan' };
+    const languageExpectations = {
+      en:{ section:'Trip basics', route:'Visual island life', budget:'$900–1,800' },
+      zh:{ section:'基本行程', route:'视觉与岛屿生活', budget:'¥6,000–12,000' },
+      ja:{ section:'基本情報', route:'写真と島の暮らし', budget:'¥140,000–280,000' },
+      ko:{ section:'기본 일정', route:'사진과 섬 라이프스타일', budget:'₩1,200,000–2,400,000' },
+      id:{ section:'Dasar perjalanan', route:'Visual dan gaya hidup pulau', budget:'IDR 14–28 juta' }
+    };
     for (const [language, expected] of Object.entries(languageExpectations)) {
       const languageContext = await browser.newContext({ viewport:{ width: language === 'zh' ? 1440 : 390, height:900 }, serviceWorkers:'block' });
       const languagePage = await languageContext.newPage();
@@ -177,7 +187,11 @@ function check(condition, message) {
       await languagePage.route('**/api/paypal/config', route => route.fulfill({ json:{ enabled:false } }));
       await languagePage.goto(base + '/bali.html#professional-planner', { waitUntil:'domcontentloaded' });
       await languagePage.locator('#bali-professional-form').waitFor();
-      check((await languagePage.locator('.bali-professional-form-section legend').first().innerText()).includes(expected), `Professional form did not localize ${language}`);
+      check((await languagePage.locator('.bali-professional-form-section legend').first().innerText()).includes(expected.section), `Professional form did not localize ${language}`);
+      await languagePage.locator('#bali-professional-form label:has([name="budget_tier"][value="value"])').click();
+      await languagePage.locator('#bali-professional-form label:has([name="goal"][value="photo"])').click();
+      check((await languagePage.locator('[data-summary="route"]').innerText()).includes(expected.route), `Professional route type did not localize ${language}`);
+      check((await languagePage.locator('[data-summary="budget"]').innerText()).includes(expected.budget), `Professional budget currency did not localize ${language}`);
       check(await languagePage.evaluate(() => document.documentElement.scrollWidth <= document.documentElement.clientWidth + 1), `Professional form overflow in ${language}`);
       if (language === 'zh') await languagePage.locator('.bali-professional-empty').screenshot({ path:path.join(artifactRoot, 'professional-form-1440-zh.png') });
       await languageContext.close();
@@ -224,7 +238,7 @@ function check(condition, message) {
     await staleTrip.locator('#bali-professional-unlock').waitFor();
     check(staleTripRequests.length === 2, `Stale trip recovery made ${staleTripRequests.length} route requests instead of 2`);
     check(staleTripRequests[0].trip_id === 'previous-account-trip' && staleTripRequests[1].trip_id === '', 'Stale trip recovery did not retry as the current account');
-    check(await staleTrip.evaluate(() => localStorage.getItem('wm_studio_professional_trip_id')) === 'new-account-trip', 'Stale trip id was not replaced');
+    await staleTrip.waitForFunction(() => localStorage.getItem('wm_studio_professional_trip_id') === 'new-account-trip');
     check(staleTripErrors.length === 0, `Stale trip recovery raised page errors: ${staleTripErrors.join('|')}`);
     await staleTripContext.close();
 
@@ -287,9 +301,21 @@ function check(condition, message) {
     check(await search.locator('.wm-global-auth-link').count() === 1, 'Search page has no global account entry');
     check(await search.evaluate(() => document.documentElement.scrollWidth <= document.documentElement.clientWidth + 1), 'Search mobile overflow');
 
+    await search.evaluate(() => localStorage.setItem('wm_studio_lang', 'en'));
     await search.goto(base + '/find-driver.html?package=batur-dawn-choice', { waitUntil: 'domcontentloaded' });
     await search.locator('#fd-places').waitFor({ state:'attached' });
     check((await search.locator('#fd-places').inputValue()).includes('batur-dawn-choice'), 'Package was not handed to driver form');
+    await search.locator('#fd-people').fill('1');
+    await search.locator('[data-fd-go="2"]').first().click();
+    await search.locator('#fd-full-days').fill('1');
+    await search.locator('#fd-half-days').fill('1');
+    check((await search.locator('#fd-estimator-total').innerText()).replace(/\D/g, '') === '1200000', 'Driver estimator does not use the confirmed 700k + 500k shared rates');
+    await search.locator('[data-fd-go="1"]').first().click();
+    await search.locator('#fd-people').fill('6');
+    await search.locator('[data-fd-go="2"]').first().click();
+    check((await search.locator('#fd-estimator-total').innerText()).replace(/\D/g, '') === '1200000', 'Driver estimator still adds a per-guest surcharge');
+    const driverRateCopy = await search.locator('.fd-quote-boundary').innerText();
+    check(driverRateCopy.includes('IDR 70k per hour') && !driverRateCopy.includes('50k per guest'), 'Driver quote boundary does not reflect the confirmed overtime and no-surcharge rules');
     await search.close();
 
     const unlockedContext = await browser.newContext({ viewport: { width: 390, height: 844 }, serviceWorkers:'block' });

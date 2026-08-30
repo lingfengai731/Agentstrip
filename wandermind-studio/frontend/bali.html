@@ -440,14 +440,26 @@
        .bali-professional-empty-intro h3 { margin:0 0 6px; color:var(--bali-ink); font-size:25px; font-weight:800; }
        .bali-professional-empty-intro p { margin:0; }
        .bali-professional-editor { margin-bottom:20px; scroll-margin-top:88px; }
-       .bali-professional-form { margin-top:14px; }
-       .bali-professional-form-shell { display:grid; grid-template-columns:minmax(0,1fr) 270px; gap:20px; align-items:start; }
+	       .bali-professional-form { margin-top:14px; }
+	       .bali-professional-steps { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:8px; margin:0 0 18px; }
+	       .bali-professional-step { min-height:44px; display:flex; align-items:center; justify-content:center; gap:8px; border:1px solid #dedbd2; border-radius:12px; background:#fffdf8; color:#77817d; font:750 12px/1.25 inherit; cursor:pointer; }
+	       .bali-professional-step > span { width:24px; height:24px; display:grid; place-items:center; border-radius:50%; background:#eef1ec; color:#52605c; font-size:11px; }
+	       .bali-professional-step.is-done { border-color:rgba(14,124,107,.3); color:#0f6258; }
+	       .bali-professional-step.is-done > span { background:#0e7c6b; color:#fff; }
+	       .bali-professional-step.is-current { border-color:rgba(212,155,0,.45); background:#fff8e6; color:#7c5700; }
+	       .bali-professional-step:disabled { cursor:default; opacity:.58; }
+	       .bali-professional-step:focus-visible { outline:3px solid rgba(252,191,30,.45); outline-offset:2px; }
+	       .bali-professional-form-heading { display:flex; justify-content:space-between; gap:18px; align-items:flex-start; margin:0 0 16px; }
+	       .bali-professional-form-heading p { max-width:760px; margin:0; color:#52605c; font-size:12.5px; line-height:1.65; }
+	       .bali-professional-form-heading strong { flex:0 0 auto; padding:6px 9px; border-radius:999px; background:rgba(14,124,107,.09); color:#0f6258; font-size:11px; white-space:nowrap; }
+	       .bali-professional-form-shell { display:grid; grid-template-columns:minmax(0,1fr) 270px; gap:20px; align-items:start; }
        .bali-professional-form-fields { display:grid; gap:14px; min-width:0; }
        .bali-professional-form-section { min-width:0; margin:0; padding:16px; border:1px solid #e6e0d3; border-radius:15px; background:#fffdf8; }
        .bali-professional-form-section legend { padding:0 7px; color:#0f6258; font-size:13px; font-weight:800; letter-spacing:.02em; }
        .bali-professional-field { display:grid; gap:7px; min-width:0; margin-top:12px; }
        .bali-professional-field:first-of-type { margin-top:2px; }
-       .bali-professional-field-label { color:#52605c; font-size:12px; font-weight:800; }
+	       .bali-professional-field-label { color:#52605c; font-size:12px; font-weight:800; }
+	       .bali-professional-required { color:#c2410c; }
        .bali-professional-field-help { display:block; margin:-1px 0 10px; color:#77817d; font-size:11px; }
        .bali-professional-basics-grid,.bali-professional-date-grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:12px; }
        .bali-professional-choice-grid { display:grid; gap:8px; }
@@ -462,8 +474,18 @@
        .bali-professional-choice input:checked + span .fa { display:inline-block; }
        .bali-professional-choice input:focus-visible + span { outline:3px solid rgba(252,191,30,.45); outline-offset:2px; }
        .bali-professional-choice input:disabled + span { opacity:.42; cursor:not-allowed; }
-       .bali-professional-choice.is-chip > span { min-height:40px; border-radius:999px; padding:7px 13px; }
-       .bali-professional-form input[type="number"],.bali-professional-form input[type="date"] { width:100%; min-width:0; height:46px; padding:0 12px; border:1px solid #d8d5cc; border-radius:10px; background:#fff; color:#1e293b; font:inherit; }
+	       .bali-professional-choice.is-chip > span { min-height:40px; border-radius:999px; padding:7px 13px; }
+	       .bali-professional-choice.is-budget > span { min-height:66px; flex-direction:column; align-items:flex-start; justify-content:center; gap:2px; text-align:left; }
+	       .bali-professional-choice.is-budget > span b { font-size:12px; }
+	       .bali-professional-choice.is-budget > span small { color:#77817d; font-size:10.5px; font-weight:650; }
+	       .bali-professional-choice.is-budget input:checked + span small { color:#0f766e; }
+	       [data-required-group][aria-invalid="true"] { border-color:#b91c1c; box-shadow:0 0 0 3px rgba(185,28,28,.08); }
+	       .bali-professional-form input[type="number"],.bali-professional-form input[type="date"] { width:100%; min-width:0; height:46px; padding:0 12px; border:1px solid #d8d5cc; border-radius:10px; background:#fff; color:#1e293b; font:inherit; }
+	       .bali-professional-date-range { display:grid; grid-template-columns:minmax(0,1fr) auto minmax(0,1fr); align-items:center; gap:8px; padding:6px; border:1px solid #d8d5cc; border-radius:11px; background:#fff; }
+	       .bali-professional-date-range label { min-width:0; }
+	       .bali-professional-date-caption { display:block; padding:0 8px; color:#77817d; font-size:10px; font-weight:750; }
+	       .bali-professional-date-range input[type="date"] { height:44px; border:0; background:transparent; }
+	       .bali-professional-date-range > span { color:#94a3b8; font-weight:800; }
        .bali-professional-form input[aria-invalid="true"] { border-color:#b91c1c; box-shadow:0 0 0 3px rgba(185,28,28,.1); }
        .bali-professional-stepper { display:grid; grid-template-columns:46px minmax(54px,1fr) 46px; border:1px solid #d8d5cc; border-radius:11px; overflow:hidden; background:#fff; }
        .bali-professional-stepper button { width:46px; height:46px; border:0; background:#f5f7f4; color:#0f6258; font-size:21px; cursor:pointer; }
@@ -479,14 +501,16 @@
        .bali-professional-profile dl { display:grid; gap:0; margin:13px 0 0; }
        .bali-professional-profile dl div { display:grid; grid-template-columns:88px minmax(0,1fr); gap:9px; padding:9px 0; border-top:1px solid rgba(14,124,107,.12); }
        .bali-professional-profile dt { color:#77817d; font-size:11px; font-weight:700; }
-       .bali-professional-profile dd { margin:0; color:#26413c; font-size:11px; font-weight:750; line-height:1.45; text-align:right; }
+	       .bali-professional-profile dd { margin:0; color:#26413c; font-size:11px; font-weight:750; line-height:1.45; text-align:right; }
+	       .bali-professional-profile .is-route-type { margin-top:4px; border-radius:10px; background:rgba(252,191,30,.09); padding-inline:8px; }
+	       .bali-professional-profile > p { margin:12px 0 0; color:#77817d; font-size:10.5px; line-height:1.5; }
        .bali-professional-form-actions { display:flex; flex-wrap:wrap; gap:9px; }
        .bali-professional-form-actions .bali-btn { min-height:46px; padding:11px 16px; font-size:13px; }
        .bali-professional-form-actions button:disabled { opacity:.72; cursor:wait; }
        body.dark .bali-professional-empty-intro h3 { color:#f0f0ec; }
        body.dark .bali-professional-form-section { border-color:#3a3d38; background:#1f2420; }
        body.dark .bali-professional-form-section legend,body.dark .bali-professional-field-label { color:#d7e7e3; }
-       body.dark .bali-professional-choice > span,body.dark .bali-professional-form input[type="number"],body.dark .bali-professional-form input[type="date"],body.dark .bali-professional-stepper,body.dark .bali-professional-money { border-color:#4b5563; background:#232925; color:#f0f0ec; }
+	       body.dark .bali-professional-choice > span,body.dark .bali-professional-form input[type="number"],body.dark .bali-professional-form input[type="date"],body.dark .bali-professional-stepper,body.dark .bali-professional-money,body.dark .bali-professional-date-range,body.dark .bali-professional-step { border-color:#4b5563; background:#232925; color:#f0f0ec; }
        body.dark .bali-professional-choice input:checked + span { border-color:#5eead4; background:rgba(45,212,191,.12); color:#99f6e4; }
        body.dark .bali-professional-stepper button { background:#2b312c; color:#99f6e4; }
        body.dark .bali-professional-stepper input[type="number"],body.dark .bali-professional-money input[type="number"] { border-color:#3a3d38; }
@@ -507,7 +531,7 @@
        body.dark .bali-professional-paypal { border-color:rgba(94,234,212,.2); background:rgba(45,212,191,.06); }
        body.dark .bali-professional-payment-divider::before,body.dark .bali-professional-payment-divider::after { background:#3a3d38; }
        @media(max-width:991px){ .bali-professional-layout{grid-template-columns:1fr}.bali-professional-form-shell{grid-template-columns:1fr}.bali-professional-profile{position:static}.bali-professional-profile dl{grid-template-columns:repeat(2,minmax(0,1fr));column-gap:18px} }
-       @media(max-width:575px){ .bali-professional-empty,.bali-professional-card{padding:18px}.bali-professional-empty-intro h3{font-size:22px}.bali-profile-summary{grid-template-columns:1fr}.bali-professional-form-shell{gap:14px}.bali-professional-form-section{padding:14px}.bali-professional-basics-grid,.bali-professional-date-grid{grid-template-columns:1fr}.bali-professional-choice-grid.is-three{grid-template-columns:repeat(2,minmax(0,1fr))}.bali-professional-profile dl{grid-template-columns:repeat(2,minmax(0,1fr));column-gap:14px}.bali-professional-profile dl div{display:block}.bali-professional-profile dd{margin-top:3px;text-align:left}.bali-professional-form-actions{display:grid}.bali-professional-form-actions .bali-btn{width:100%;justify-content:center;text-align:center}.bali-professional-actions{display:grid}.bali-professional-actions .bali-btn,.bali-professional-actions .bali-professional-adjustments-badge{width:100%;justify-content:center;text-align:center}.bali-professional-payment-label{display:grid}.bali-professional-payment-label span{text-align:left}.bali-professional-qr-grid{gap:8px}.bali-professional-qr-grid figcaption{font-size:10px} }
+	       @media(max-width:575px){ .bali-professional-empty,.bali-professional-card{padding:18px}.bali-professional-empty-intro h3{font-size:22px}.bali-profile-summary{grid-template-columns:1fr}.bali-professional-steps{gap:5px}.bali-professional-step{min-height:42px;display:grid;gap:3px;padding:5px 3px;font-size:10.5px}.bali-professional-step>span{margin:auto}.bali-professional-form-heading{display:grid;gap:8px}.bali-professional-form-heading strong{width:max-content}.bali-professional-form-shell{gap:14px}.bali-professional-form-section{padding:14px}.bali-professional-basics-grid,.bali-professional-date-grid{grid-template-columns:1fr}.bali-professional-choice-grid.is-three{grid-template-columns:repeat(2,minmax(0,1fr))}.bali-professional-choice-grid.is-pace{grid-template-columns:repeat(3,minmax(0,1fr))}.bali-professional-choice.is-budget:last-child{grid-column:1/-1}.bali-professional-date-range{grid-template-columns:1fr}.bali-professional-date-range>span{display:none}.bali-professional-profile dl{grid-template-columns:repeat(2,minmax(0,1fr));column-gap:14px}.bali-professional-profile dl div{display:block}.bali-professional-profile dd{margin-top:3px;text-align:left}.bali-professional-form-actions{position:sticky;bottom:calc(72px + env(safe-area-inset-bottom));z-index:20;display:grid;padding:10px;border:1px solid rgba(14,124,107,.16);border-radius:14px;background:rgba(255,253,248,.96);box-shadow:0 -8px 24px rgba(38,65,60,.09);backdrop-filter:blur(12px)}body.dark .bali-professional-form-actions{background:rgba(31,36,32,.96)}.bali-professional-form-actions .bali-btn{width:100%;justify-content:center;text-align:center}.bali-professional-actions{display:grid}.bali-professional-actions .bali-btn,.bali-professional-actions .bali-professional-adjustments-badge{width:100%;justify-content:center;text-align:center}.bali-professional-payment-label{display:grid}.bali-professional-payment-label span{text-align:left}.bali-professional-qr-grid{gap:8px}.bali-professional-qr-grid figcaption{font-size:10px} }
        @media(prefers-reduced-motion:reduce){.bali-professional-choice > span{transition:none}}
        @media(max-width:575px){
          body { padding-bottom:calc(66px + env(safe-area-inset-bottom)); }
@@ -2379,7 +2403,7 @@
   document.addEventListener('wm:language-change', function(){ if (activeShot) renderModal(); });
 })();
 </script>
-<script src="assets/js/bali-professional.js?v=p61"></script>
+<script src="assets/js/bali-professional.js?v=p62"></script>
 <script src="assets/js/marketing-events.js?v=p2"></script>
 <script src="assets/js/global-auth.js?v=p53"></script>
 </body>

@@ -1046,7 +1046,7 @@ class ProductAccessTests(unittest.TestCase):
         self.assertNotIn("Real-time pricing across Booking", i18n)
         self.assertNotIn("六项 AI 驱动的服务", i18n)
         self.assertIn('id="professional-planner"', bali_html)
-        self.assertIn("assets/js/bali-professional.js?v=p61", bali_html)
+        self.assertIn("assets/js/bali-professional.js?v=p62", bali_html)
         self.assertNotIn("ai-tool.html?professional=1", bali_html)
         self.assertNotIn("professional_requested", ai_js)
         self.assertIn("history.replaceState({}, document.title, window.location.pathname);", ai_js)
@@ -4578,7 +4578,7 @@ class ProductAccessTests(unittest.TestCase):
         self.assertIn("DRIVER_PROFILES[choice.querySelector('input').value]", driver_html)
         self.assertIn("document.addEventListener('wm:language-change'", driver_html)
         self.assertIn('assets/js/i18n.js?v=search2', driver_html)
-        self.assertIn('assets/js/driver-estimate.js?v=p1', driver_html)
+        self.assertIn('assets/js/driver-estimate.js?v=p2', driver_html)
         self.assertIn('id="fd-full-days"', driver_html)
         self.assertIn('id="fd-half-days"', driver_html)
         self.assertIn('id="fd-estimator-total"', driver_html)
@@ -4589,9 +4589,10 @@ class ProductAccessTests(unittest.TestCase):
         self.assertIn('id="fd-estimator-total">—</strong>', driver_html)
         self.assertIn('inputmode="numeric"', driver_html)
         self.assertIn('viewport-fit=cover', driver_html)
-        self.assertIn("IDR 700k base + IDR 50k per guest", driver_html)
-        self.assertIn("IDR 500k base + IDR 50k per guest", driver_html)
-        self.assertIn("IDR 75k per hour", driver_html)
+        self.assertIn("Full day: IDR 700k", driver_html)
+        self.assertIn("half day: IDR 500k", driver_html)
+        self.assertIn("Overtime is IDR 70k per hour", driver_html)
+        self.assertIn('class="fd-rate-details"', driver_html)
         self.assertIn("Daihatsu Xenia — 7 Seater", driver_html)
         self.assertIn("Comfortable for up to 6 guests with one driver", driver_html)
         self.assertNotIn("direct contact details pending", driver_html)
@@ -4618,17 +4619,25 @@ class ProductAccessTests(unittest.TestCase):
             "fdEstimateBoundary",
             "fdEstimateFullLine",
             "fdEstimateHalfLine",
-            "fdEstimateGuestLine",
         ):
             self.assertEqual(i18n_js.count(estimate_key), 5)
         for confirmed_quote in (
-            "IDR 700k base + IDR 50k per guest",
-            "基础价 70 万印尼盾 + 每位游客 5 万印尼盾",
-            "基本 70万 IDR + 1名につき 5万 IDR",
-            "기본 70만 IDR + 1인당 5만 IDR",
-            "dasar IDR 700k + IDR 50k per tamu",
+            "Full day: IDR 700k",
+            "全天：70 万印尼盾",
+            "終日：70万 IDR",
+            "종일: 70만 IDR",
+            "Seharian: IDR 700k",
         ):
             self.assertIn(confirmed_quote, i18n_js)
+        for removed_quote in (
+            "IDR 50k per guest",
+            "每位游客 5 万印尼盾",
+            "1名につき 5万 IDR",
+            "1인당 5만 IDR",
+            "IDR 50k per tamu",
+            "IDR 75k per hour",
+        ):
+            self.assertNotIn(removed_quote, i18n_js)
         for stale_quote in (
             "From IDR 750k",
             "IDR 750k 起",
@@ -4694,16 +4703,16 @@ class ProductAccessTests(unittest.TestCase):
         script = """
 const estimate = require(process.argv[1]);
 const cases = [
-  [{people: 1, fullDays: 1, halfDays: 0}, 750000],
-  [{people: 2, fullDays: 1, halfDays: 0}, 800000],
-  [{people: 2, fullDays: 0, halfDays: 1}, 600000],
-  [{people: 2, fullDays: 3, halfDays: 1}, 3000000],
+  [{people: 1, fullDays: 1, halfDays: 0}, 700000],
+  [{people: 2, fullDays: 1, halfDays: 0}, 700000],
+  [{people: 2, fullDays: 0, halfDays: 1}, 500000],
+  [{people: 2, fullDays: 3, halfDays: 1}, 2600000],
   [{people: 0, fullDays: 3, halfDays: 1}, 2600000]
 ];
 for (const [input, total] of cases) {
   if (estimate.calculate(input).total !== total) process.exit(1);
 }
-if (estimate.constants.perGuestPerDay !== 50000) process.exit(1);
+if ('perGuestPerDay' in estimate.constants) process.exit(1);
 """
         result = subprocess.run(
             ["node", "-e", script, str(estimator)],

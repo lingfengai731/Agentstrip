@@ -7,7 +7,6 @@
 
   var FULL_DAY_BASE = 700000;
   var HALF_DAY_BASE = 500000;
-  var PER_GUEST_PER_DAY = 50000;
 
   function wholeNumber(value, max) {
     var parsed = Number(value);
@@ -20,17 +19,13 @@
     var people = wholeNumber(input.people, 40);
     var fullDays = wholeNumber(input.fullDays, 60);
     var halfDays = wholeNumber(input.halfDays, 60);
-    var guestSupplement = people * PER_GUEST_PER_DAY;
-    var fullDayRate = FULL_DAY_BASE + guestSupplement;
-    var halfDayRate = HALF_DAY_BASE + guestSupplement;
     return {
       people: people,
       fullDays: fullDays,
       halfDays: halfDays,
-      guestSupplement: guestSupplement,
-      fullDayRate: fullDayRate,
-      halfDayRate: halfDayRate,
-      total: fullDays * fullDayRate + halfDays * halfDayRate
+      fullDayRate: FULL_DAY_BASE,
+      halfDayRate: HALF_DAY_BASE,
+      total: fullDays * FULL_DAY_BASE + halfDays * HALF_DAY_BASE
     };
   }
 
@@ -67,7 +62,7 @@
       var language = currentLanguage();
       var dictionary = typeof LANGS !== 'undefined' ? (LANGS[language] || LANGS.en || {}) : {};
       var result = calculate({ people: people.value, fullDays: fullDays.value, halfDays: halfDays.value });
-      var ready = result.people && (result.fullDays || result.halfDays);
+      var ready = result.fullDays || result.halfDays;
       total.textContent = ready ? money(result.total, language) : '—';
       lines.replaceChildren();
 
@@ -94,12 +89,6 @@
         });
         lines.appendChild(half);
       }
-      var guest = document.createElement('p');
-      guest.textContent = fill(dictionary.fdEstimateGuestLine || '{people} guest(s) × IDR 50,000 = {supplement} guest supplement on each selected day.', {
-        people: result.people,
-        supplement: money(result.guestSupplement, language)
-      });
-      lines.appendChild(guest);
     }
 
     [people, fullDays, halfDays].forEach(function (input) {
@@ -119,8 +108,7 @@
     calculate: calculate,
     constants: {
       fullDayBase: FULL_DAY_BASE,
-      halfDayBase: HALF_DAY_BASE,
-      perGuestPerDay: PER_GUEST_PER_DAY
+      halfDayBase: HALF_DAY_BASE
     }
   };
 });

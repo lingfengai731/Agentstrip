@@ -47,6 +47,12 @@
     id: { noProfile:'Isi detail perjalanan untuk mencocokkan rute profesional dari wilayah dan rute Bali. Anda tetap dapat melihat rute publik.', formTitle:'Perjalanan Bali Anda', submit:'Cocokkan rute saya', submitAdjust:'Terapkan penyesuaian', edit:'Ubah detail perjalanan', cancel:'Tutup editor', basics:'1 · Dasar perjalanan', approach:'2 · Cara bepergian', goalsGroup:'3 · Yang paling penting', optional:'Opsional · pilih hingga 3', profileTitle:'Profil perjalanan Anda', profileHint:'Diperbarui saat memilih', daysCount:'{n} hari', peopleCount:'{n} orang', invalidDates:'Tanggal pulang harus setelah tanggal berangkat.', invalidBudget:'Masukkan perkiraan total anggaran.', increase:'Tambah satu wisatawan', decrease:'Kurangi satu wisatawan', audience:'Tahap perjalanan', first:'Pertama kali', returning:'Pernah datang', people:'Jumlah orang', start:'Tanggal berangkat', end:'Tanggal pulang', budget:'Anggaran', style:'Gaya perjalanan', comfort:'Nyaman', budgetStyle:'Hemat', luxury:'Premium', pace:'Tempo', balanced:'Seimbang', slow:'Santai', goals:'Prioritas', local:'Budaya lokal', photo:'Pemandangan & foto', easy:'Lebih sedikit rencana', value:'Kendali anggaran', route:'Rute profesional yang cocok', preview:'Pratinjau gratis', unlocked:'Rute lengkap terbuka', reason:'Alasan rekomendasi', openDays:'{n} hari terbuka', lockedDays:'{n} hari terkunci', day:'Hari {n}', locked:'Detail terkunci', lockedNote:'Buka kunci untuk melihat urutan tempat, modul pengalaman dan catatan pelaksanaan.', tripUnavailable:'Rute tersimpan ini milik akun lain. Masuk dengan akun yang digunakan saat membeli.', unlock:'Buka rute lengkap · ¥9.9', points:'Gunakan 30 poin referral', adjust:'Sesuaikan perjalanan ini', remaining:'tersisa {n} penyesuaian', adjustExhausted:'Penyesuaian untuk perjalanan ini sudah habis', adjustScope:'Termasuk 3 penyesuaian parameter untuk perjalanan yang sama, seperti jumlah hari, tempo, anggaran atau minat. Tidak termasuk kustomisasi mendalam oleh manusia atau tiga pesanan perjalanan baru.', routeSwitchPending:'{route} dipilih di atas. Menjelajah tidak mengganti rute yang sudah terbuka; kirim “Sesuaikan perjalanan ini” untuk beralih dengan memakai 1 penyesuaian.', driver:'Kirim rute lengkap ke driver', dicky:'Kirim ke Dicky', gede:'Kirim ke Gede Nico', login:'Masuk untuk membuka', public:'Lihat rute publik R1–R6', payTitle:'Buka rute ini', payText:'Bayar ¥9.9 untuk membuka rute profesional lengkap saat ini dan 3 penyesuaian parameter untuk perjalanan yang sama. Kredit AI tetap terpisah; kustomisasi mendalam oleh manusia dan pesanan perjalanan baru tidak termasuk.', paid:'Saya sudah bayar · kirim konfirmasi', orderSent:'Permintaan konfirmasi dikirim. Rute terbuka setelah dikonfirmasi.', pointsDone:'Rute dibuka dengan poin.', loading:'Mencocokkan rute…', error:'Rute profesional tidak dapat dimuat.', noData:'Isi tanggal, jumlah orang dan anggaran.', routeBasis:'Disusun dari geografi Bali, keluarga rute dan modul POI. Jam buka dan ketersediaan tetap perlu dikonfirmasi.' }
   };
 
+  Object.assign(COPY.en, { intro:'Matched from your days, group, goals, budget and pace across Bali G1–G7 and route families R1–R6. Required items are marked *; about 1 minute.', required:'Required', progress:'{n}/7 complete', tripDates:'Travel dates', budget:'Budget tier', budgetValue:'Essential', budgetComfort:'Comfort', budgetPremium:'Premium', budgetHint:'Shown in your language currency', styleComfort:'Comfortably balanced', styleDeep:'Explore deeper', styleRelaxed:'Resort & unwind', slow:'Light', balanced:'Balanced', active:'Full', hidden:'Hidden routes', goalRequired:'Choose 1–3 priorities', routeType:'Expected route type', routePending:'Complete the required choices to see it', routeFamily:'G1–G7 regions × R1–R6 route families', routeR1:'R1 · First Bali foundation', routeR2R3:'R2 / R3 · Slow or coastal Bali', routeR4:'R4 · Culture & local depth', routeR5:'R5 · Outdoor & active Bali', routeR6:'R6 · Visual island life', reassurance:'✓ Your matched route includes 3 adjustments for the same trip.', submit:'Generate my Bali route', public:'Not now — browse public routes', edit:'Return to edit trip', rematch:'Rematch route', stepFill:'Fill trip', stepMatch:'Match route', stepPay:'Confirm payment', missingChoice:'Complete this required choice.', invalidGoals:'Choose at least one priority (up to 3).', budgetTierValue:'Value', budgetTierComfort:'Comfort', budgetTierPremium:'Premium' });
+  Object.assign(COPY.zh, { intro:'根据你的天数、同行者、旅行目标、预算和节奏，从 Bali 的 G1–G7 区域事实与 R1–R6 路线家族中匹配专属路线。带 * 为必填，全程大约 1 分钟。', required:'必填', progress:'已完成 {n}/7', tripDates:'出行日期', budget:'预算档位', budgetValue:'实用省心', budgetComfort:'舒适平衡', budgetPremium:'品质升级', budgetHint:'金额会按当前语言显示对应货币', styleComfort:'舒适平衡', styleDeep:'深度探索', styleRelaxed:'度假放松', slow:'轻松', balanced:'平衡', active:'充实', hidden:'小众路线', goalRequired:'请选择 1–3 项 · 最多 3 项', routeType:'预计路线类型', routePending:'待填写完整后给出', routeFamily:'G1–G7 区域 × R1–R6 路线家族', routeR1:'R1 · 初见巴厘岛基础路线', routeR2R3:'R2 / R3 · 慢生活或南部海岸', routeR4:'R4 · 文化与在地深入', routeR5:'R5 · 户外与火山挑战', routeR6:'R6 · 视觉与岛屿生活', reassurance:'✓ 匹配结果支持 3 次同行程调整，放心试', submit:'生成我的 Bali 路线', public:'暂时跳过，浏览公共路线', edit:'返回修改行程', rematch:'重新匹配', stepFill:'填写行程', stepMatch:'匹配路线', stepPay:'确认支付', missingChoice:'请完成这个必填选项。', invalidGoals:'请至少选择 1 个关注点，最多 3 个。', budgetTierValue:'实用', budgetTierComfort:'舒适', budgetTierPremium:'品质' });
+  Object.assign(COPY.ja, { intro:'日数、同行者、目的、予算、ペースをもとに、Bali の G1–G7 地域と R1–R6 ルートから提案します。* は必須、約1分です。', required:'必須', progress:'{n}/7 完了', tripDates:'旅行日程', budget:'予算レベル', budgetValue:'実用', budgetComfort:'快適', budgetPremium:'上質', budgetHint:'表示言語に合う通貨で目安を表示', styleComfort:'快適なバランス', styleDeep:'深く探索', styleRelaxed:'リゾートで休む', slow:'ゆったり', balanced:'バランス', active:'充実', hidden:'穴場ルート', goalRequired:'1〜3項目を選択', routeType:'予想ルートタイプ', routePending:'必須項目の入力後に表示', routeFamily:'G1–G7 地域 × R1–R6 ルート', routeR1:'R1 · 初めてのBali基礎ルート', routeR2R3:'R2 / R3 · スロー旅または南部海岸', routeR4:'R4 · 文化とローカル体験', routeR5:'R5 · アウトドアと火山', routeR6:'R6 · 写真と島の暮らし', reassurance:'✓ 同じ旅程を3回調整できます。', submit:'私の Bali ルートを作成', public:'今は公開ルートを見る', edit:'旅程を戻って編集', rematch:'再マッチ', stepFill:'旅程入力', stepMatch:'ルート提案', stepPay:'支払い確認', missingChoice:'この必須項目を選択してください。', invalidGoals:'優先事項を1〜3個選択してください。', budgetTierValue:'実用', budgetTierComfort:'快適', budgetTierPremium:'上質' });
+  Object.assign(COPY.ko, { intro:'여행 일수, 동행, 목표, 예산과 속도를 바탕으로 Bali G1–G7 지역과 R1–R6 경로에서 맞춤 추천합니다. *는 필수이며 약 1분 걸립니다.', required:'필수', progress:'7개 중 {n}개 완료', tripDates:'여행 날짜', budget:'예산 등급', budgetValue:'실속', budgetComfort:'편안함', budgetPremium:'프리미엄', budgetHint:'현재 언어에 맞는 통화로 표시', styleComfort:'편안한 균형', styleDeep:'깊이 탐험', styleRelaxed:'휴양과 쉼', slow:'여유', balanced:'균형', active:'알차게', hidden:'숨은 경로', goalRequired:'1–3개 선택 · 최대 3개', routeType:'예상 경로 유형', routePending:'필수 선택을 완료하면 표시', routeFamily:'G1–G7 지역 × R1–R6 경로', routeR1:'R1 · 첫 Bali 기본 경로', routeR2R3:'R2 / R3 · 느린 여행 또는 남부 해안', routeR4:'R4 · 문화와 현지 깊이', routeR5:'R5 · 야외 활동과 화산', routeR6:'R6 · 사진과 섬 라이프스타일', reassurance:'✓ 같은 여행을 3회 조정할 수 있습니다.', submit:'나의 Bali 경로 만들기', public:'나중에 — 공개 경로 보기', edit:'여행 정보로 돌아가기', rematch:'다시 매칭', stepFill:'여행 입력', stepMatch:'경로 매칭', stepPay:'결제 확인', missingChoice:'필수 선택을 완료해 주세요.', invalidGoals:'우선순위를 1–3개 선택해 주세요.', budgetTierValue:'실속', budgetTierComfort:'편안함', budgetTierPremium:'프리미엄' });
+  Object.assign(COPY.id, { intro:'Kami mencocokkan hari, teman perjalanan, tujuan, anggaran, dan tempo Anda dengan wilayah Bali G1–G7 serta rute R1–R6. Tanda * wajib; sekitar 1 menit.', required:'Wajib', progress:'{n}/7 selesai', tripDates:'Tanggal perjalanan', budget:'Tingkat anggaran', budgetValue:'Praktis', budgetComfort:'Nyaman', budgetPremium:'Premium', budgetHint:'Kisaran memakai mata uang sesuai bahasa', styleComfort:'Nyaman seimbang', styleDeep:'Jelajah mendalam', styleRelaxed:'Liburan santai', slow:'Santai', balanced:'Seimbang', active:'Padat', hidden:'Rute tersembunyi', goalRequired:'Pilih 1–3 prioritas', routeType:'Perkiraan tipe rute', routePending:'Lengkapi pilihan wajib untuk melihat', routeFamily:'Wilayah G1–G7 × rute R1–R6', routeR1:'R1 · Fondasi Bali pertama', routeR2R3:'R2 / R3 · Bali santai atau pesisir selatan', routeR4:'R4 · Budaya dan pengalaman lokal', routeR5:'R5 · Alam terbuka dan gunung berapi', routeR6:'R6 · Visual dan gaya hidup pulau', reassurance:'✓ Hasil mencakup 3 penyesuaian untuk perjalanan yang sama.', submit:'Buat rute Bali saya', public:'Nanti — lihat rute publik', edit:'Kembali ubah perjalanan', rematch:'Cocokkan ulang', stepFill:'Isi perjalanan', stepMatch:'Cocokkan rute', stepPay:'Konfirmasi bayar', missingChoice:'Lengkapi pilihan wajib ini.', invalidGoals:'Pilih setidaknya 1 prioritas, maksimal 3.', budgetTierValue:'Praktis', budgetTierComfort:'Nyaman', budgetTierPremium:'Premium' });
+
   function currentLang() {
     return ((document.getElementById('langPicker') || {}).value || localStorage.getItem('wm_studio_lang') || 'en').toLowerCase();
   }
@@ -55,6 +61,25 @@
   function text(value) { return String(value == null ? '' : value); }
   function esc(value) { return text(value).replace(/[&<>"']/g, function (c) { return ({ '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#39;' })[c]; }); }
   function fill(value, vars) { return text(value).replace(/\{(\w+)\}/g, function (_, key) { return esc(vars[key] == null ? '' : vars[key]); }); }
+  function requiredLabel(value) { return esc(value) + ' <span class="bali-professional-required" aria-hidden="true">*</span>'; }
+  function budgetConfig() {
+    var configs = {
+      zh:{ currency:'CNY', tiers:[['value',9000,'¥6,000–12,000'],['comfort',18000,'¥12,000–25,000'],['premium',30000,'¥25,000+']] },
+      en:{ currency:'USD', tiers:[['value',1300,'$900–1,800'],['comfort',2600,'$1,800–3,500'],['premium',4000,'$3,500+']] },
+      ja:{ currency:'JPY', tiers:[['value',210000,'¥140,000–280,000'],['comfort',410000,'¥280,000–550,000'],['premium',600000,'¥550,000+']] },
+      ko:{ currency:'KRW', tiers:[['value',1800000,'₩1,200,000–2,400,000'],['comfort',3600000,'₩2,400,000–4,800,000'],['premium',5500000,'₩4,800,000+']] },
+      id:{ currency:'IDR', tiers:[['value',21000000,'IDR 14–28 juta'],['comfort',41000000,'IDR 28–55 juta'],['premium',60000000,'IDR 55 juta+']] }
+    };
+    return configs[currentLang()] || configs.en;
+  }
+  function stepMarkup(stage) {
+    var l = T();
+    var steps = [[1,l.stepFill],[2,l.stepMatch],[3,l.stepPay]];
+    return '<nav class="bali-professional-steps" aria-label="' + esc(l.formTitle) + '">' + steps.map(function (item) {
+      var status = item[0] < stage ? ' is-done' : item[0] === stage ? ' is-current' : '';
+      return '<button type="button" class="bali-professional-step' + status + '" data-professional-step="' + item[0] + '"' + (item[0] === stage ? ' aria-current="step"' : '') + (item[0] > stage ? ' disabled' : '') + '><span>' + item[0] + '</span>' + esc(item[1]) + '</button>';
+    }).join('') + '</nav>';
+  }
   function authHeaders() {
     var token = localStorage.getItem('wm_studio_token');
     return token ? { Authorization: 'Bearer ' + token } : {};
@@ -85,7 +110,7 @@
         return {
           audience: brief.audience || 'first', goals: brief.goals || [], travel_style: brief.style || 'comfort',
           travellers: Number(brief.people || 2), departure_date: start, return_date: end, days: days || 5,
-          currency: brief.currency || 'CNY', budget_range: brief.budget || '', pace: brief.pace || 'balanced', origin_region: ''
+          currency: brief.currency || budgetConfig().currency, budget_range: brief.budget || '', budget_tier: brief.budget_tier || 'comfort', pace: brief.pace || 'balanced', origin_region: ''
         };
       }
     } catch (_) {}
@@ -94,12 +119,15 @@
   function saveProfile(profile) {
     state.profile = profile;
     localStorage.setItem('wm_studio_trip_profile', JSON.stringify(profile));
-    var brief = { dest:'bali', audience:profile.audience, goals:profile.goals, people:profile.travellers, start:profile.departure_date, end:profile.return_date, days:profile.days, currency:profile.currency, budget:profile.budget_range, style:profile.travel_style, trip_profile:profile };
+    var brief = { dest:'bali', audience:profile.audience, goals:profile.goals, people:profile.travellers, start:profile.departure_date, end:profile.return_date, days:profile.days, currency:profile.currency, budget:profile.budget_range, budget_tier:profile.budget_tier, style:profile.travel_style, pace:profile.pace, trip_profile:profile };
     localStorage.setItem('wm_studio_trip_brief', JSON.stringify(brief));
   }
   function makeProfile(form) {
     var start = form.querySelector('[name="start"]').value;
     var end = form.querySelector('[name="end"]').value;
+    var tier = form.querySelector('[name="budget_tier"]:checked');
+    var config = budgetConfig();
+    var tierData = config.tiers.find(function (item) { return item[0] === (tier && tier.value); }) || config.tiers[1];
     return {
       audience: form.querySelector('[name="audience"]:checked').value,
       goals: Array.from(form.querySelectorAll('[name="goal"]:checked')).map(function (item) { return item.value; }),
@@ -107,36 +135,75 @@
       travellers: Number(form.querySelector('[name="people"]').value || 2),
       departure_date: start, return_date: end,
       days: Math.max(1, Math.round((new Date(end) - new Date(start)) / 86400000)),
-      currency: (state.profile && state.profile.currency) || 'CNY', budget_range: Number(form.querySelector('[name="budget"]').value || 0),
+      currency: config.currency, budget_range: tierData[1], budget_tier: tierData[0],
       pace: form.querySelector('[name="pace"]:checked').value, origin_region: ''
     };
   }
   function choiceMarkup(name, value, label, selected, extraClass) {
-    return '<label class="bali-professional-choice ' + esc(extraClass || '') + '"><input type="' + (name === 'goal' ? 'checkbox' : 'radio') + '" name="' + esc(name) + '" value="' + esc(value) + '" ' + (selected ? 'checked' : '') + '><span><span class="fa fa-check" aria-hidden="true"></span>' + esc(label) + '</span></label>';
+    return '<label class="bali-professional-choice ' + esc(extraClass || '') + '"><input type="' + (name === 'goal' ? 'checkbox' : 'radio') + '" name="' + esc(name) + '" value="' + esc(value) + '" ' + (selected ? 'checked' : '') + (name === 'goal' ? '' : ' required') + '><span><span class="fa fa-check" aria-hidden="true"></span>' + esc(label) + '</span></label>';
+  }
+  function budgetChoiceMarkup(tier, selected, label) {
+    return '<label class="bali-professional-choice is-budget"><input type="radio" name="budget_tier" value="' + esc(tier[0]) + '"' + (selected ? ' checked' : '') + ' required><span><span class="fa fa-check" aria-hidden="true"></span><b>' + esc(label) + '</b><small>' + esc(tier[2]) + '</small></span></label>';
+  }
+  function goalLabel(l, value) {
+    return ({ local:l.local, photo:l.photo, hidden:l.hidden, easy:l.easy, value:l.value })[value] || value;
+  }
+  function predictedRoute(profile, l) {
+    if (!profile || !profile.budget_tier || !(profile.goals || []).length) return '';
+    if (profile.pace === 'active') return l.routeR5;
+    if (profile.travel_style === 'relaxed' || profile.goals.indexOf('easy') >= 0) return l.routeR2R3;
+    if (profile.travel_style === 'deep' && profile.goals.indexOf('local') >= 0) return l.routeR4;
+    if (profile.goals.indexOf('photo') >= 0) return l.routeR6;
+    return l.routeR1;
+  }
+  function bindStepActions() {
+    document.querySelectorAll('[data-professional-step]').forEach(function (button) {
+      button.addEventListener('click', function () {
+        var step = Number(button.dataset.professionalStep || 0);
+        if (step === 1) {
+          if (state.response && !state.editing) { state.editing = true; state.paymentOpen = false; renderResult(); }
+          window.requestAnimationFrame(function () {
+            var form = document.getElementById('bali-professional-form');
+            if (form) form.scrollIntoView({ behavior:window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth', block:'start' });
+          });
+        } else if (step === 2 && state.response) {
+          var result = document.querySelector('.bali-professional-layout');
+          if (result) result.scrollIntoView({ behavior:window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth', block:'start' });
+        } else if (step === 3 && state.response && !state.response.professional_route_entitlement) {
+          var unlock = document.getElementById('bali-professional-unlock');
+          if (unlock) unlock.click();
+        }
+      });
+    });
   }
   function formMarkup(profile) {
     var l = T(); var p = profile || {};
     var start = p.departure_date || new Date(Date.now() + 86400000).toISOString().slice(0, 10);
     var end = p.return_date || new Date(Date.now() + 8 * 86400000).toISOString().slice(0, 10);
     var goals = p.goals || [];
-    var style = p.travel_style || 'comfort';
-    var pace = p.pace || 'balanced';
+    var style = ['deep','relaxed'].indexOf(p.travel_style) >= 0 ? p.travel_style : 'comfort';
+    var pace = ['slow','active'].indexOf(p.pace) >= 0 ? p.pace : 'balanced';
+    var budget = budgetConfig();
+    var budgetTier = p.budget_tier || '';
     var people = Number(p.travellers || 2);
     var days = start && end ? Math.max(1, Math.round((new Date(end) - new Date(start)) / 86400000)) : 0;
     var isAdjustment = !!(state.response && state.response.professional_route_entitlement);
-    return '<form class="bali-professional-form" id="bali-professional-form">' +
+    var draftProfile = { audience:p.audience || 'first', goals:goals, travel_style:style, travellers:people, departure_date:start, return_date:end, days:days, currency:budget.currency, budget_range:'', budget_tier:budgetTier, pace:pace };
+    var complete = [p.audience || 'first', people, days > 0, budgetTier, style, pace, goals.length].filter(Boolean).length;
+    return '<form class="bali-professional-form" id="bali-professional-form" novalidate>' + stepMarkup(1) +
+      '<div class="bali-professional-form-heading"><p>' + esc(l.intro) + '</p><strong data-form-progress>' + fill(l.progress, { n:complete }) + '</strong></div>' +
       '<div class="bali-professional-form-shell"><div class="bali-professional-form-fields">' +
       '<fieldset class="bali-professional-form-section"><legend>' + esc(l.basics) + '</legend>' +
-      '<div class="bali-professional-field"><span class="bali-professional-field-label">' + esc(l.audience) + '</span><div class="bali-professional-choice-grid is-two">' + choiceMarkup('audience', 'first', l.first, p.audience !== 'returning') + choiceMarkup('audience', 'returning', l.returning, p.audience === 'returning') + '</div></div>' +
-      '<div class="bali-professional-basics-grid"><div class="bali-professional-field"><span class="bali-professional-field-label">' + esc(l.people) + '</span><div class="bali-professional-stepper"><button type="button" data-people-step="-1" aria-label="' + esc(l.decrease) + '"><span aria-hidden="true">−</span></button><input name="people" type="number" min="1" max="40" value="' + esc(people) + '" aria-label="' + esc(l.people) + '"><button type="button" data-people-step="1" aria-label="' + esc(l.increase) + '"><span aria-hidden="true">+</span></button></div></div>' +
-      '<label class="bali-professional-field"><span class="bali-professional-field-label">' + esc(l.budget) + '</span><span class="bali-professional-money"><span>CNY</span><input name="budget" type="number" min="100" step="100" required value="' + esc(p.budget_range || '') + '"></span></label></div>' +
-      '<div class="bali-professional-date-grid"><label class="bali-professional-field"><span class="bali-professional-field-label">' + esc(l.start) + '</span><input name="start" type="date" required value="' + esc(start) + '"></label><label class="bali-professional-field"><span class="bali-professional-field-label">' + esc(l.end) + '</span><input name="end" type="date" required value="' + esc(end) + '"></label></div></fieldset>' +
-      '<fieldset class="bali-professional-form-section"><legend>' + esc(l.approach) + '</legend><div class="bali-professional-field"><span class="bali-professional-field-label">' + esc(l.style) + '</span><div class="bali-professional-choice-grid is-three">' + choiceMarkup('style', 'budget', l.budgetStyle, style === 'budget') + choiceMarkup('style', 'comfort', l.comfort, style !== 'budget' && style !== 'luxury') + choiceMarkup('style', 'luxury', l.luxury, style === 'luxury') + '</div></div><div class="bali-professional-field"><span class="bali-professional-field-label">' + esc(l.pace) + '</span><div class="bali-professional-choice-grid is-two">' + choiceMarkup('pace', 'balanced', l.balanced, pace !== 'slow') + choiceMarkup('pace', 'slow', l.slow, pace === 'slow') + '</div></div></fieldset>' +
-      '<fieldset class="bali-professional-form-section"><legend>' + esc(l.goalsGroup) + '</legend><span class="bali-professional-field-help">' + esc(l.optional) + '</span><div class="bali-professional-choice-grid is-goals">' + choiceMarkup('goal', 'local', l.local, goals.indexOf('local') >= 0, 'is-chip') + choiceMarkup('goal', 'photo', l.photo, goals.indexOf('photo') >= 0, 'is-chip') + choiceMarkup('goal', 'easy', l.easy, goals.indexOf('easy') >= 0, 'is-chip') + choiceMarkup('goal', 'value', l.value, goals.indexOf('value') >= 0, 'is-chip') + '</div></fieldset>' +
+      '<div class="bali-professional-field" data-required-group="audience"><span class="bali-professional-field-label">' + requiredLabel(l.audience) + '</span><div class="bali-professional-choice-grid is-two">' + choiceMarkup('audience', 'first', l.first, p.audience !== 'returning') + choiceMarkup('audience', 'returning', l.returning, p.audience === 'returning') + '</div></div>' +
+      '<div class="bali-professional-basics-grid"><div class="bali-professional-field"><span class="bali-professional-field-label">' + requiredLabel(l.people) + '</span><div class="bali-professional-stepper"><button type="button" data-people-step="-1" aria-label="' + esc(l.decrease) + '"><span aria-hidden="true">−</span></button><input name="people" type="number" min="1" max="40" required value="' + esc(people) + '" aria-label="' + esc(l.people) + '"><button type="button" data-people-step="1" aria-label="' + esc(l.increase) + '"><span aria-hidden="true">+</span></button></div></div></div>' +
+      '<div class="bali-professional-field"><span class="bali-professional-field-label">' + requiredLabel(l.tripDates) + '</span><div class="bali-professional-date-range"><label><span class="bali-professional-date-caption">' + esc(l.start) + '</span><input name="start" type="date" required value="' + esc(start) + '"></label><span aria-hidden="true">→</span><label><span class="bali-professional-date-caption">' + esc(l.end) + '</span><input name="end" type="date" required value="' + esc(end) + '"></label></div></div>' +
+      '<div class="bali-professional-field" data-required-group="budget_tier"><span class="bali-professional-field-label">' + requiredLabel(l.budget) + '</span><span class="bali-professional-field-help">' + esc(l.budgetHint) + '</span><div class="bali-professional-choice-grid is-three">' + budgetChoiceMarkup(budget.tiers[0], budgetTier === 'value', l.budgetTierValue) + budgetChoiceMarkup(budget.tiers[1], budgetTier === 'comfort', l.budgetTierComfort) + budgetChoiceMarkup(budget.tiers[2], budgetTier === 'premium', l.budgetTierPremium) + '</div></div></fieldset>' +
+      '<fieldset class="bali-professional-form-section"><legend>' + esc(l.approach) + '</legend><div class="bali-professional-field" data-required-group="style"><span class="bali-professional-field-label">' + requiredLabel(l.style) + '</span><div class="bali-professional-choice-grid is-three">' + choiceMarkup('style', 'comfort', l.styleComfort, style === 'comfort') + choiceMarkup('style', 'deep', l.styleDeep, style === 'deep') + choiceMarkup('style', 'relaxed', l.styleRelaxed, style === 'relaxed') + '</div></div><div class="bali-professional-field" data-required-group="pace"><span class="bali-professional-field-label">' + requiredLabel(l.pace) + '</span><div class="bali-professional-choice-grid is-three is-pace">' + choiceMarkup('pace', 'slow', l.slow, pace === 'slow') + choiceMarkup('pace', 'balanced', l.balanced, pace === 'balanced') + choiceMarkup('pace', 'active', l.active, pace === 'active') + '</div></div></fieldset>' +
+      '<fieldset class="bali-professional-form-section" data-required-group="goal"><legend>' + esc(l.goalsGroup) + '</legend><span class="bali-professional-field-help">' + requiredLabel(l.goalRequired) + '</span><div class="bali-professional-choice-grid is-goals">' + choiceMarkup('goal', 'local', l.local, goals.indexOf('local') >= 0, 'is-chip') + choiceMarkup('goal', 'photo', l.photo, goals.indexOf('photo') >= 0, 'is-chip') + choiceMarkup('goal', 'hidden', l.hidden, goals.indexOf('hidden') >= 0, 'is-chip') + choiceMarkup('goal', 'easy', l.easy, goals.indexOf('easy') >= 0, 'is-chip') + choiceMarkup('goal', 'value', l.value, goals.indexOf('value') >= 0, 'is-chip') + '</div></fieldset>' +
       '<div id="bali-professional-form-status" class="bali-professional-status" role="status" aria-live="polite"></div>' +
       '<div class="bali-professional-form-actions"><button class="bali-btn bali-btn-primary" type="submit" data-form-submit><span class="fa fa-magic"></span> ' + esc(isAdjustment ? l.submitAdjust : l.submit) + '</button><a class="bali-btn bali-route-secondary" href="#route-families">' + esc(l.public) + '</a></div>' +
-      '<div class="bali-professional-form-note">' + esc(l.routeBasis) + '</div></div>' +
-      '<aside class="bali-professional-profile" aria-live="polite"><div><strong>' + esc(l.profileTitle) + '</strong><span>' + esc(l.profileHint) + '</span></div><dl><div><dt>' + esc(l.audience) + '</dt><dd data-summary="audience">' + esc(p.audience === 'returning' ? l.returning : l.first) + '</dd></div><div><dt>' + esc(l.people) + '</dt><dd data-summary="people">' + esc(fill(l.peopleCount, { n:people })) + '</dd></div><div><dt>' + esc(l.start) + '</dt><dd data-summary="dates">' + esc(fill(l.daysCount, { n:days })) + '</dd></div><div><dt>' + esc(l.style) + '</dt><dd data-summary="style">' + esc((style === 'budget' ? l.budgetStyle : style === 'luxury' ? l.luxury : l.comfort) + ' · ' + (pace === 'slow' ? l.slow : l.balanced)) + '</dd></div><div><dt>' + esc(l.goals) + '</dt><dd data-summary="goals">' + esc(goals.length ? goals.map(function (goal) { return ({ local:l.local, photo:l.photo, easy:l.easy, value:l.value })[goal]; }).join(' · ') : l.optional) + '</dd></div></dl></aside></div></form>';
+      '<div class="bali-professional-form-note">' + esc(l.reassurance) + '</div></div>' +
+      '<aside class="bali-professional-profile" aria-live="polite"><div><strong>' + esc(l.profileTitle) + '</strong><span>' + esc(l.profileHint) + '</span></div><dl><div><dt>' + esc(l.audience) + '</dt><dd data-summary="audience">' + esc(p.audience === 'returning' ? l.returning : l.first) + '</dd></div><div><dt>' + esc(l.people) + '</dt><dd data-summary="people">' + esc(fill(l.peopleCount, { n:people })) + '</dd></div><div><dt>' + esc(l.tripDates) + '</dt><dd data-summary="dates">' + esc(fill(l.daysCount, { n:days })) + '</dd></div><div><dt>' + esc(l.budget) + '</dt><dd data-summary="budget">' + esc(budgetTier ? (budget.tiers.find(function (item) { return item[0] === budgetTier; }) || ['',0,l.routePending])[2] : l.routePending) + '</dd></div><div><dt>' + esc(l.style) + '</dt><dd data-summary="style">' + esc((style === 'deep' ? l.styleDeep : style === 'relaxed' ? l.styleRelaxed : l.styleComfort) + ' · ' + (pace === 'slow' ? l.slow : pace === 'active' ? l.active : l.balanced)) + '</dd></div><div><dt>' + esc(l.goals) + '</dt><dd data-summary="goals">' + esc(goals.length ? goals.map(function (goal) { return goalLabel(l, goal); }).join(' · ') : l.goalRequired) + '</dd></div><div class="is-route-type"><dt>' + esc(l.routeType) + '</dt><dd data-summary="route">' + esc(predictedRoute(draftProfile, l) || l.routePending) + '</dd></div></dl><p>' + esc(l.routeFamily) + '</p></aside></div></form>';
   }
   function bindForm(form) {
     if (!form) return;
@@ -144,7 +211,7 @@
     var peopleInput = form.querySelector('[name="people"]');
     var goalInputs = Array.from(form.querySelectorAll('[name="goal"]'));
     function optionLabel(name, value) {
-      var labels = { audience:{ first:l.first, returning:l.returning }, style:{ budget:l.budgetStyle, comfort:l.comfort, luxury:l.luxury }, pace:{ balanced:l.balanced, slow:l.slow }, goal:{ local:l.local, photo:l.photo, easy:l.easy, value:l.value } };
+      var labels = { audience:{ first:l.first, returning:l.returning }, style:{ comfort:l.styleComfort, deep:l.styleDeep, relaxed:l.styleRelaxed }, pace:{ balanced:l.balanced, slow:l.slow, active:l.active }, goal:{ local:l.local, photo:l.photo, hidden:l.hidden, easy:l.easy, value:l.value }, budget_tier:{ value:l.budgetTierValue, comfort:l.budgetTierComfort, premium:l.budgetTierPremium } };
       return (labels[name] && labels[name][value]) || value;
     }
     function syncGoalLimit() {
@@ -155,18 +222,27 @@
       var audience = form.querySelector('[name="audience"]:checked');
       var style = form.querySelector('[name="style"]:checked');
       var pace = form.querySelector('[name="pace"]:checked');
+      var budgetTier = form.querySelector('[name="budget_tier"]:checked');
       var start = form.querySelector('[name="start"]').value;
       var end = form.querySelector('[name="end"]').value;
       var days = start && end && end > start ? Math.max(1, Math.round((new Date(end) - new Date(start)) / 86400000)) : 0;
       var selectedGoals = goalInputs.filter(function (input) { return input.checked; }).map(function (input) { return optionLabel('goal', input.value); });
+      var profile = { audience:audience && audience.value, travellers:Number(peopleInput.value || 1), departure_date:start, return_date:end, days:days, budget_tier:budgetTier && budgetTier.value, travel_style:style && style.value, pace:pace && pace.value, goals:goalInputs.filter(function (input) { return input.checked; }).map(function (input) { return input.value; }) };
+      var complete = [profile.audience, profile.travellers > 0, profile.days > 0, profile.budget_tier, profile.travel_style, profile.pace, profile.goals.length].filter(Boolean).length;
+      var budget = budgetConfig();
+      var budgetData = budget.tiers.find(function (item) { return item[0] === profile.budget_tier; });
       var values = {
         audience: audience ? optionLabel('audience', audience.value) : '',
         people: fill(l.peopleCount, { n:Number(peopleInput.value || 1) }),
         dates: days ? fill(l.daysCount, { n:days }) : l.invalidDates,
         style: (style ? optionLabel('style', style.value) : '') + (pace ? ' · ' + optionLabel('pace', pace.value) : ''),
-        goals: selectedGoals.length ? selectedGoals.join(' · ') : l.optional
+        budget: budgetData ? budgetData[2] : l.routePending,
+        goals: selectedGoals.length ? selectedGoals.join(' · ') : l.goalRequired,
+        route: predictedRoute(profile, l) || l.routePending
       };
       Object.keys(values).forEach(function (key) { var target = form.querySelector('[data-summary="' + key + '"]'); if (target) target.textContent = values[key]; });
+      var progress = form.querySelector('[data-form-progress]');
+      if (progress) progress.textContent = fill(l.progress, { n:complete });
     }
     form.querySelectorAll('[data-people-step]').forEach(function (button) {
       button.addEventListener('click', function () {
@@ -177,14 +253,32 @@
     form.addEventListener('input', updateSummary);
     form.addEventListener('change', function (event) { if (event.target.name === 'goal') syncGoalLimit(); updateSummary(); });
     syncGoalLimit(); updateSummary();
+    bindStepActions();
     form.addEventListener('submit', async function (event) {
       event.preventDefault();
       var start = form.querySelector('[name="start"]').value;
       var end = form.querySelector('[name="end"]').value;
-      var budget = form.querySelector('[name="budget"]');
       form.querySelectorAll('[aria-invalid="true"]').forEach(function (field) { field.removeAttribute('aria-invalid'); });
       if (!start || !end || end <= start) { var dateField = form.querySelector('[name="end"]'); dateField.setAttribute('aria-invalid', 'true'); setStatus(l.invalidDates, true, 'bali-professional-form-status'); dateField.focus(); return; }
-      if (!budget.value || Number(budget.value) < 100) { budget.setAttribute('aria-invalid', 'true'); setStatus(l.invalidBudget, true, 'bali-professional-form-status'); budget.focus(); return; }
+      var requiredGroups = ['audience','budget_tier','style','pace'];
+      for (var i = 0; i < requiredGroups.length; i += 1) {
+        var groupName = requiredGroups[i];
+        if (!form.querySelector('[name="' + groupName + '"]:checked')) {
+          var group = form.querySelector('[data-required-group="' + groupName + '"]');
+          if (group) group.setAttribute('aria-invalid', 'true');
+          setStatus(l.missingChoice, true, 'bali-professional-form-status');
+          var first = group && group.querySelector('input');
+          if (first) first.focus();
+          return;
+        }
+      }
+      if (!goalInputs.some(function (input) { return input.checked; })) {
+        var goalGroup = form.querySelector('[data-required-group="goal"]');
+        if (goalGroup) goalGroup.setAttribute('aria-invalid', 'true');
+        setStatus(l.invalidGoals, true, 'bali-professional-form-status');
+        if (goalInputs[0]) goalInputs[0].focus();
+        return;
+      }
       var profile = makeProfile(form);
       var adjusting = !!(state.response && state.response.professional_route_entitlement);
       var submit = form.querySelector('[data-form-submit]');
@@ -318,19 +412,19 @@
     var unlocked = !!data.professional_route_entitlement;
     var adjustmentRemaining = Number(data.professional_adjustments_remaining || 0);
     if (unlocked && adjustmentRemaining <= 0) state.editing = false;
-    var summary = [p.departure_date && (p.departure_date + ' → ' + (p.return_date || '')), (p.days || route.days || '') + ' days', (p.travellers || 2) + ' people', p.budget_range ? ((p.currency || 'CNY') + ' ' + p.budget_range) : ''].filter(Boolean);
-    var goals = (p.goals || []).join(' · ');
+    var summary = [p.departure_date && (p.departure_date + ' → ' + (p.return_date || '')), fill(l.daysCount, { n:p.days || route.days || '' }), fill(l.peopleCount, { n:p.travellers || 2 }), p.budget_range ? ((p.currency || 'CNY') + ' ' + p.budget_range) : ''].filter(Boolean);
+    var goals = (p.goals || []).map(function (goal) { return goalLabel(l, goal); }).join(' · ');
     var dayHtml = days.map(function (day) {
       var locked = !!day.locked;
       var places = (day.places || []).map(function (place) { return '<span class="bali-professional-place">' + esc(place.name) + '</span>'; }).join('');
       return '<article class="bali-professional-day' + (locked ? ' is-locked' : '') + '"><span class="bali-professional-day-number">' + esc(day.day) + '</span><div class="bali-professional-day-head"><strong>' + esc(fill(l.day, { n:day.day })) + ' · ' + esc(day.region_name) + '</strong>' + (locked ? '<span>' + esc(l.locked) + '</span>' : (unlocked ? '' : '<span>' + esc(l.preview) + '</span>')) + '</div><p>' + esc(day.theme) + '</p>' + (locked ? '<div class="bali-professional-lock-note"><span class="fa fa-lock"></span> ' + esc(l.lockedNote) + '</div>' : '<div class="bali-professional-places">' + (places || '<span class="bali-professional-place">' + esc(l.routeBasis) + '</span>') + '</div>') + '</article>';
     }).join('');
-    var actionHtml = unlocked ? (adjustmentRemaining > 0 ? '<button class="bali-btn bali-btn-primary" type="button" id="bali-professional-edit" aria-expanded="' + String(state.editing) + '"><span class="fa fa-sliders"></span> ' + esc(state.editing ? l.cancel : l.adjust) + '</button><span class="bali-professional-badge bali-professional-adjustments-badge">' + esc(fill(l.remaining, { n:adjustmentRemaining })) + '</span>' : '<button class="bali-btn bali-btn-primary" type="button" disabled><span class="fa fa-sliders"></span> ' + esc(l.adjustExhausted) + '</button><span class="bali-professional-badge bali-professional-adjustments-badge">' + esc(fill(l.remaining, { n:0 })) + '</span>') : '<button class="bali-btn bali-route-secondary" type="button" id="bali-professional-edit" aria-expanded="' + String(state.editing) + '"><span class="fa fa-pencil"></span> ' + esc(state.editing ? l.cancel : l.edit) + '</button><button class="bali-btn bali-btn-primary" type="button" id="bali-professional-unlock"><span class="fa fa-lock"></span> ' + esc(l.unlock) + '</button><button class="bali-btn bali-route-secondary" type="button" id="bali-professional-points"><span class="fa fa-gift"></span> ' + esc(l.points) + '</button>';
+    var actionHtml = unlocked ? (adjustmentRemaining > 0 ? '<button class="bali-btn bali-btn-primary" type="button" id="bali-professional-edit" aria-expanded="' + String(state.editing) + '"><span class="fa fa-sliders"></span> ' + esc(state.editing ? l.cancel : l.adjust) + '</button><span class="bali-professional-badge bali-professional-adjustments-badge">' + esc(fill(l.remaining, { n:adjustmentRemaining })) + '</span>' : '<button class="bali-btn bali-btn-primary" type="button" disabled><span class="fa fa-sliders"></span> ' + esc(l.adjustExhausted) + '</button><span class="bali-professional-badge bali-professional-adjustments-badge">' + esc(fill(l.remaining, { n:0 })) + '</span>') : '<button class="bali-btn bali-route-secondary" type="button" id="bali-professional-edit" aria-expanded="' + String(state.editing) + '"><span class="fa fa-pencil"></span> ' + esc(state.editing ? l.cancel : l.edit) + '</button><button class="bali-btn bali-route-secondary" type="button" id="bali-professional-rematch"><span class="fa fa-refresh"></span> ' + esc(l.rematch) + '</button><button class="bali-btn bali-btn-primary" type="button" id="bali-professional-unlock"><span class="fa fa-lock"></span> ' + esc(l.unlock) + '</button><button class="bali-btn bali-route-secondary" type="button" id="bali-professional-points"><span class="fa fa-gift"></span> ' + esc(l.points) + '</button>';
     var adjustmentNote = unlocked ? '<div class="bali-professional-form-note">' + esc(l.adjustScope) + '</div>' : '';
     var driverHtml = unlocked ? '<div class="bali-professional-actions"><strong style="width:100%;font-size:12px;color:#64748b">' + esc(l.driver) + '</strong><button class="bali-btn bali-route-secondary" type="button" data-driver="dicky">' + esc(l.dicky) + '</button><button class="bali-btn bali-route-secondary" type="button" data-driver="gede">' + esc(l.gede) + '</button></div>' : '';
     var editor = state.editing ? '<div class="bali-professional-card bali-professional-editor" id="bali-professional-editor"><h3>' + esc(l.formTitle) + '</h3>' + formMarkup(p) + '</div>' : '';
     var daysHeader = unlocked ? '<div class="bali-professional-route-label"><strong>' + esc(l.unlocked) + '</strong></div>' : '<div class="bali-professional-route-label"><strong>' + esc(fill(l.openDays, { n:route.preview_days || 0 })) + '</strong><span class="bali-professional-badge">' + esc(fill(l.lockedDays, { n:route.locked_days || 0 })) + '</span></div>';
-    app.innerHTML = editor + '<div class="bali-professional-layout"><div class="bali-professional-card"><div class="bali-professional-route-label"><strong>' + esc(l.route) + '</strong><span class="bali-professional-badge">' + esc(unlocked ? l.unlocked : l.preview) + '</span></div><h3>' + esc(route.route_id || '') + ' · ' + esc(route.route_name || '') + '</h3><p>' + esc(route.route_promise || '') + '</p><div class="bali-profile-summary">' + summary.map(function (item) { return '<span class="bali-profile-chip">' + esc(item) + '</span>'; }).join('') + (goals ? '<span class="bali-profile-chip">' + esc(goals) + '</span>' : '') + '</div><div class="bali-professional-reason"><strong>' + esc(l.reason) + '</strong><br>' + esc(route.recommendation_reason || '') + '</div><div id="bali-professional-status" class="bali-professional-status" role="status" aria-live="polite"></div><div class="bali-professional-actions">' + actionHtml + '</div>' + adjustmentNote + driverHtml + '</div><div class="bali-professional-card">' + daysHeader + '<div class="bali-professional-days">' + dayHtml + '</div></div></div>' + (state.paymentOpen ? paymentPanel() : '');
+    app.innerHTML = stepMarkup(unlocked ? 3 : 2) + editor + '<div class="bali-professional-layout"><div class="bali-professional-card"><div class="bali-professional-route-label"><strong>' + esc(l.route) + '</strong><span class="bali-professional-badge">' + esc(unlocked ? l.unlocked : l.preview) + '</span></div><h3>' + esc(route.route_id || '') + ' · ' + esc(route.route_name || '') + '</h3><p>' + esc(route.route_promise || '') + '</p><div class="bali-profile-summary">' + summary.map(function (item) { return '<span class="bali-profile-chip">' + esc(item) + '</span>'; }).join('') + (goals ? '<span class="bali-profile-chip">' + esc(goals) + '</span>' : '') + '</div><div class="bali-professional-reason"><strong>' + esc(l.reason) + '</strong><br>' + esc(route.recommendation_reason || '') + '</div><div id="bali-professional-status" class="bali-professional-status" role="status" aria-live="polite"></div><div class="bali-professional-actions">' + actionHtml + '</div>' + adjustmentNote + driverHtml + '</div><div class="bali-professional-card">' + daysHeader + '<div class="bali-professional-days">' + dayHtml + '</div></div></div>' + (state.paymentOpen ? paymentPanel() : '');
     bindResultActions();
     if (state.paymentOpen) renderPayPalButtons();
     if (state.pendingRouteId) setStatus(fill(l.routeSwitchPending, { route:state.pendingRouteId }), false);
@@ -362,6 +456,16 @@
         if (firstField) firstField.focus({ preventScroll:true });
       });
     };
+    var rematch = document.getElementById('bali-professional-rematch');
+    if (rematch) rematch.onclick = function () {
+      state.editing = true;
+      state.paymentOpen = false;
+      renderResult();
+      window.requestAnimationFrame(function () {
+        var submit = document.querySelector('#bali-professional-editor [data-form-submit]');
+        if (submit) { submit.scrollIntoView({ behavior:window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth', block:'center' }); submit.focus({ preventScroll:true }); }
+      });
+    };
     document.querySelectorAll('[data-driver]').forEach(function (button) { button.onclick = function () { saveDriverHandoff(button.dataset.driver); }; });
     var paid = document.getElementById('bali-professional-paid');
     if (paid) paid.onclick = async function () {
@@ -377,6 +481,7 @@
     var paymentClose = document.getElementById('bali-professional-payment-close');
     if (paymentClose) paymentClose.onclick = function () { state.paymentOpen = false; renderResult(); };
     bindForm(document.getElementById('bali-professional-form'));
+    bindStepActions();
   }
   async function adjustRoute(profile) {
     var l = T();

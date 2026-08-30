@@ -66,7 +66,9 @@ Nama: Gede Nico
 Tanggal konfirmasi: ____________________
 ```
 
-## Angka yang sedang tampil sebagai referensi
+## Status pembaruan — 30 Agustus 2026
 
-WanderMind saat ini hanya menampilkan referensi: full day Rp700.000 sampai 10 jam, half day Rp500.000 sampai 6 jam, tambahan Rp50.000 per tamu per hari, dan overtime full day Rp75.000 per jam. Angka ini **belum boleh menjadi harga final Gede Nico** sampai formulir di atas dikonfirmasi.
+Bagian angka lama pada templat ini telah digantikan oleh jawaban tertulis yang dicatat di DRIVER_RATE_CONFIRMATION_2026-08-30.md. Pemilik situs menyampaikan bahwa Dicky memberikan jawaban yang sama untuk Dicky dan Gede Nico: full day Rp700.000 sampai 10 jam, half day Rp500.000 sampai 6 jam, tanpa tambahan per tamu, dan overtime Rp70.000 per jam dengan lebih dari 30 menit dihitung satu jam.
+
+Angka tersebut tetap merupakan estimasi awal. Tanggal berlaku, masa berlaku penawaran, pajak, waktu tunggu keterlambatan penerbangan, batas bagasi rinci, pelabuhan Nusa Penida, dan item lain yang belum dijawab masih harus dikonfirmasi sebelum menjadi harga final.
 
