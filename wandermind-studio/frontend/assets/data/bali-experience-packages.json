@@ -70,9 +70,18 @@
       "departure_port": "Sanur Harbour",
       "supplier_candidate": "Axestone Fast Cruise",
       "supplier_url": "https://axestonefastcruise.com/",
+      "published_price": {
+        "amount_idr": 2000000,
+        "party_size": 2,
+        "party_label": "2 adults",
+        "pricing_unit": "total",
+        "pickup_scope": "Seminyak",
+        "status": "permanent_owner_authorized",
+        "includes": ["return_hotel_transfer", "return_fast_boat", "private_penida_car", "driver_guide", "lunch", "entry_tickets", "parking", "mineral_water"]
+      },
       "core": ["kelingking_beach", "broken_beach", "angels_billabong", "crystal_bay"],
       "add_ons": [],
-      "live_checks": ["sanur_check_in", "axestone_sailing", "hotel_shuttle_scope", "return_fast_boat", "island_driver", "road_and_weather", "entry_fees", "final_inclusions", "final_price"]
+      "live_checks": ["sanur_check_in", "axestone_sailing", "hotel_shuttle_scope", "return_fast_boat", "island_driver", "road_and_weather", "entry_fees", "final_inclusions"]
     },
     {
       "id": "penida-east-one-day",

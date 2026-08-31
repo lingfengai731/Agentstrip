@@ -1088,7 +1088,7 @@ class ProductAccessTests(unittest.TestCase):
         self.assertNotIn("Real-time pricing across Booking", i18n)
         self.assertNotIn("六项 AI 驱动的服务", i18n)
         self.assertIn('id="professional-planner"', bali_html)
-        self.assertIn("assets/js/bali-professional.js?v=20260831p63", bali_html)
+        self.assertIn("assets/js/bali-professional.js?v=20260831p64", bali_html)
         self.assertNotIn("ai-tool.html?professional=1", bali_html)
         self.assertNotIn("professional_requested", ai_js)
         self.assertNotIn("Visa on arrival ~$35", ai_js)

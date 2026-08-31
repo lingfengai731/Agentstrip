@@ -36,6 +36,8 @@ function check(condition, message) {
       const publicRouteMeta = page.locator('.bali-route-card').first().locator('.bali-route-meta > span');
       check(await publicRouteMeta.count() === 1, `Public route metadata is still overloaded at ${viewport.width}px`);
       const packageCopy = await page.locator('#experience-packages').innerText();
+      check(await page.locator('.bali-package-price').count() === 1, `Published package price count at ${viewport.width}px`);
+      check((await page.locator('.bali-package-price').innerText()).includes('IDR 2,000,000'), `Published Penida price missing at ${viewport.width}px`);
       check(await page.locator('.bali-package-filters > div').count() === 1, `Subjective package filter remains at ${viewport.width}px`);
       check(!/Energy|强度/.test(packageCopy), `Subjective package intensity remains at ${viewport.width}px`);
       check(await page.locator('#itinerary').count() === 0, `Duplicate legacy itinerary remains at ${viewport.width}px`);

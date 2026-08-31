@@ -37,6 +37,10 @@ def main() -> None:
     contextual_count = 0
     for image in supplemental.get("images", []):
         scope = image.get("media_scope")
+        for field in ("image_url", "thumbnail_url"):
+            display_url = image.get(field, "")
+            assert not display_url.startswith(("http://", "https://")), f"External display hotlink: {image.get('poi_ids')} {field}"
+            assert (FRONTEND / display_url).is_file(), f"Missing controlled display asset: {display_url}"
         if scope == "exact_place":
             exact_count += 1
             rights = image.get("rights", {})
@@ -71,11 +75,20 @@ def main() -> None:
     assert len(penida_packages) == 3
     assert all(item.get("departure_port") == "Sanur Harbour" for item in penida_packages)
     assert all(item.get("supplier_candidate") == "Axestone Fast Cruise" for item in penida_packages)
+    west_package = next(item for item in penida_packages if item["id"] == "penida-west-one-day")
+    west_price = west_package.get("published_price", {})
+    assert west_price.get("amount_idr") == 2_000_000
+    assert west_price.get("party_size") == 2
+    assert west_price.get("pricing_unit") == "total"
+    assert west_price.get("status") == "permanent_owner_authorized"
+    assert "final_price" not in west_package.get("live_checks", [])
+    assert all(not item.get("published_price") for item in penida_packages if item["id"] != "penida-west-one-day")
     assert "north-bali-lovina-overnight" in package_ids
     assert {"lovina_beach", "lovina_dolphin_watching"} <= active_pois
 
     assert len(package_ids) >= 8, "Expected the initial eight-package catalog"
     assert "poi-media-catalog.json" in bali_html
+    assert "poi-media-catalog.json?v=20260901p1" in bali_html
     assert "assets/js/bali-packages.js" in bali_html
     assert "bali-experience-packages.json" in package_script
     assert "该地点照片尚未接入" not in bali_html
