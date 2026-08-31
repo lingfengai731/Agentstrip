@@ -1093,6 +1093,8 @@ class ProductAccessTests(unittest.TestCase):
         self.assertNotIn("professional_requested", ai_js)
         self.assertNotIn("Visa on arrival ~$35", ai_js)
         self.assertNotIn("落地签约 $35", ai_js)
+        self.assertIn("VoA 费用为 IDR 500,000", ai_js)
+        self.assertIn("The official VoA fee is IDR 500,000", ai_js)
         self.assertIn("history.replaceState({}, document.title, window.location.pathname);", ai_js)
         self.assertIn("authHeaders()", ai_js)
         self.assertIn("requestAuthRecovery()", ai_js)
@@ -1149,7 +1151,7 @@ class ProductAccessTests(unittest.TestCase):
             encoding="utf-8"
         )
 
-        self.assertIn("assets/js/ai-tool.js?v=p61", ai_html)
+        self.assertIn("assets/js/ai-tool.js?v=p62", ai_html)
         self.assertIn("initialDestQuery", ai_js)
         self.assertIn("function openHashTarget()", ai_js)
         self.assertIn("switchCompareSub(target)", ai_js)

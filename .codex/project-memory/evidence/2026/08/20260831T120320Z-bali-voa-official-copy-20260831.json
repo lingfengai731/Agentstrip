@@ -1,0 +1,22 @@
+{
+  "schema_version": 1,
+  "evidence_id": "ev-20260831T120320Z-bali-voa-official-copy-20260831",
+  "task_ref": "bali-voa-official-copy-20260831",
+  "owner": "sol-main",
+  "captured_at": "2026-08-31T12:03:20Z",
+  "status": "verified",
+  "claim": "Replaced the obsolete Bali USD visa estimate with the official IDR 500,000 VoA amount in five languages and kept tourism-tax claims absent",
+  "source": {
+    "kind": "git",
+    "repository": "https://github.com/lingfengai731/Agentstrip.git",
+    "commit": "67a77de56f8f34000fa31b29995b746afb5d53a8",
+    "branch": "codex/fullsite-design-audit-20260828",
+    "worktree": "E:\\Agentstrip-wt-fullsite-design-20260828",
+    "dirty": true
+  },
+  "verification": {
+    "command": "official Indonesian Immigration source review; 91 backend tests; node --check; no-tax text scan; full Playwright browser matrix",
+    "result": "Official source lists Rp500,000; tests 91/91; no tax claims found; browser matrix exited 0; AI cache version p62"
+  },
+  "notes": "Eligibility and entry rules remain a live check. This local/Git change is not production proof because Render is billing-suspended."
+}

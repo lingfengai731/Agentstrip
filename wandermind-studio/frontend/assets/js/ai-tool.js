@@ -106,6 +106,8 @@ const DESTS = {
         desc:{ zh:'顶级冲浪、悬崖神庙、凯撒火舞',en:'World-class surf, clifftop temple, Kecak fire dance',ja:'世界クラスのサーフ、断崖の寺院、ケチャック火の踊り',ko:'세계적 서핑, 절벽 사원, 케착 불춤',id:'Surfing kelas dunia, pura tebing, tari Kecak api' } },
     ],
     tips: [
+      { cls:'tag-blue', title:{ zh:'落地签',en:'Visa on arrival',ja:'到着ビザ',ko:'도착 비자',id:'Visa saat kedatangan' }, tag:{ zh:'官方费用',en:'Official fee',ja:'公式料金',ko:'공식 수수료',id:'Biaya resmi' },
+        desc:{ zh:'VoA 费用为 IDR 500,000；适用资格与入境规则请在出发前向印尼移民局复核。',en:'The official VoA fee is IDR 500,000; recheck eligibility and entry rules with Indonesian Immigration before departure.',ja:'VoA の公式料金は IDR 500,000。対象資格と入国条件は出発前にインドネシア入国管理局で再確認してください。',ko:'VoA 공식 수수료는 IDR 500,000입니다. 출발 전 인도네시아 이민국에서 대상 자격과 입국 규정을 다시 확인하세요.',id:'Biaya resmi VoA adalah IDR 500.000; periksa kembali kelayakan dan aturan masuk melalui Imigrasi Indonesia sebelum berangkat.' } },
       { cls:'tag-green', driver: true,
         title:{ zh:'巴厘岛本地司机',en:'Bali local drivers',ja:'バリ島の現地ドライバー',ko:'발리 현지 기사',id:'Driver lokal Bali' },
         tag:{ zh:'表单内选择',en:'Choose in form',ja:'フォームで選択',ko:'양식에서 선택',id:'Pilih di formulir' },
