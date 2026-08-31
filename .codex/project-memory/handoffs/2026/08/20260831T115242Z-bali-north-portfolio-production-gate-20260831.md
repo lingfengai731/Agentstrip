@@ -14,8 +14,8 @@ Local, committed, pushed and main states contain the verified Bali north and Por
 
 ## Verified evidence
 
-- Verification command: 
-- Verification result: 
+- Verification command:
+- Verification result:
 
 ## Files changed
 
