@@ -452,3 +452,4 @@
 - QA 回调：91/91 后端测试、64/64 媒体与 9 套套餐门禁、Node/Python 语法和 `git diff --check` 通过；本机 Playwright 完成 320/390/768/1440、五语言、7 天 5+2 预览、输入保存/重新匹配、PayPal 取消、Portfolio 筛选、司机交接与 AI 深链，真实退出码 0。
 - 发布预检：GitHub CLI 当前未认证；Git 凭据能否推送需由实际 push 验证。Render CLI 已认证，但 Agentstrip 服务在 `2026-08-31T11:30Z` 左右显示 `suspended` / `billing`；在服务恢复前不得把推送写成已部署。
 - GitHub/生产回调：产品提交 `343ad8bf984b1eb81860090c95cdd2524ded077a` 已推送任务分支并在确认 `origin/main` 为其直接祖先后 fast-forward 到 main。Render 没有为该提交创建自动部署；手动触发明确返回 `400 cannot deploy suspended service`。随后 `https://wandermind.cc/healthz`、Bali 页面与数据资产返回 503，连续资产请求出现 429；生产当前不可用且未部署本提交，唯一 P0 是由账户所有者恢复 Render billing/service，再执行部署与生产 E2E。
+- 日志回调：Render 应用日志显示 `/healthz` 在 `2026-08-31T07:59:38Z` 仍为 200，随后于 `08:05:16Z` 正常收到 shutdown、完成 application shutdown 并结束 server process；未见应用异常堆栈。当前故障来源是控制面 billing suspension，而非本轮代码运行错误。
