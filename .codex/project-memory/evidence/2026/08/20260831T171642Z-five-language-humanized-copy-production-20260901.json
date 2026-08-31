@@ -1,0 +1,22 @@
+{
+  "schema_version": 1,
+  "evidence_id": "ev-20260831T171642Z-five-language-humanized-copy-production-20260901",
+  "task_ref": "five-language-humanized-copy-production-20260901",
+  "owner": "sol-main",
+  "captured_at": "2026-08-31T17:16:42Z",
+  "status": "verified",
+  "claim": "Five-language professional-route customer copy is humanized and production runs 7087373 without Japanese, Korean or Indonesian POI-module terminology.",
+  "source": {
+    "kind": "git",
+    "repository": "https://github.com/lingfengai731/Agentstrip.git",
+    "commit": "708737393c0ed6311662b43ad01d20009f805426",
+    "branch": "codex/fullsite-design-audit-20260828",
+    "worktree": "E:\\Agentstrip-wt-fullsite-design-20260828",
+    "dirty": true
+  },
+  "verification": {
+    "command": "104 backend tests; Bali browser matrix; Render dep-daarcqjl550s73eui3kg; production p65 asset probe",
+    "result": "Tests passed; deploy live at 7087373; production HTML references p65; technical term scan returned zero; health 200."
+  },
+  "notes": "Business logic and entitlements are unchanged. Authenticated Portfolio publish E2E, genuine PayPal webhook redelivery, social posting and supplier timing facts remain external gates."
+}
