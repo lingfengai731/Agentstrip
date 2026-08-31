@@ -1,0 +1,82 @@
+{
+  "schema_version": 1,
+  "evidence_id": "ev-20260831T010614Z-recovery-route-quality-release-20260831",
+  "task_ref": "recovery-route-quality-release-20260831",
+  "owner": "codex-sol",
+  "captured_at": "2026-08-31T01:06:14Z",
+  "status": "verified",
+  "claim": "WanderMind shared recovery paths, professional-route POI rotation, five-language Bali geography copy and package-region corrections are deployed from commit 62069ee and verified on production.",
+  "source": {
+    "kind": "git_render_and_production",
+    "repository": "https://github.com/lingfengai731/Agentstrip.git",
+    "branch": "codex/fullsite-design-audit-20260828",
+    "product_commit": "62069ee8f16da70e1a0214948db8a0da312d6b01",
+    "origin_main": "62069ee8f16da70e1a0214948db8a0da312d6b01",
+    "worktree": "E:\\Agentstrip-wt-fullsite-design-20260828"
+  },
+  "change": {
+    "recovery": [
+      "AI retry preserves one visible user message and sends the current prompt exactly once per request",
+      "Professional-route 503 restores the form with the submitted budget and interests intact",
+      "Driver-request 503 preserves fields, re-enables submit and reuses the same idempotency request id",
+      "An expired AI session opens one login prompt and resumes the interrupted request with the refreshed Bearer header"
+    ],
+    "route_quality": [
+      "Repeated visits to a route region rotate through verified POIs rather than reusing an identical first-three list on adjacent days",
+      "Public R1-R6 routes remain fully free; personalized-route preview and entitlement rules are unchanged"
+    ],
+    "bali_geography": [
+      "Five-language route copy explains that Bali is dispersed and area clustering reduces backtracking",
+      "All eight editable packages now have region_ids and five-language area labels",
+      "The Nusa Penida package is G3-only and no longer presents Tulamben in east Bali as a same-area add-on"
+    ]
+  },
+  "verification": {
+    "local": [
+      "python -m unittest discover: 103 tests OK, 13 PostgreSQL-only tests skipped by design",
+      "Bali media/package gate passed: 62/62 POIs, 29 exact photos, 8 labelled context visuals and 8 packages",
+      "AI browser checks passed at 320, 390, 768 and 1440 including one-failure retry",
+      "Recovery browser checks passed for professional route, driver request and one-time auth resume",
+      "Bali browser suite passed responsive, five-language, Portfolio, package, paid-route recovery, editor, AI deep-link and driver-handoff checks",
+      "Site search, SEO index controls and git diff --check passed"
+    ],
+    "deployment": {
+      "service": "srv-d8dfs36k1jcs738v9cfg",
+      "deploy_id": "dep-daad46mq1p3s73963kvg",
+      "commit": "62069ee8f16da70e1a0214948db8a0da312d6b01",
+      "status": "live",
+      "finished_at": "2026-08-31T01:01:35.182756Z"
+    },
+    "production": [
+      "GET /healthz returned ok; bali.html and ai-tool.html returned 200",
+      "Production HTML loaded i18n.js?v=geo1, bali-packages.js?v=20260831p1 and ai-tool.js?v=p61",
+      "Production package data exposed eight packages and the Penida package only region G3 with no east-Bali add-on",
+      "Production recovery and AI suites passed with write requests intercepted in-browser",
+      "Production Bali suite passed responsive, five-language, Portfolio, package, paid-route recovery, route-editor, account/search, AI deep-link and driver-handoff checks"
+    ]
+  },
+  "worker": {
+    "agent_id": "01a05365-789c-7830-933b-f72d50138249",
+    "agent": "luna_worker",
+    "model": "gpt-5.6-luna",
+    "reasoning_effort": "max",
+    "status": "errored",
+    "claim": "The worker returned a usage-limit error before a final. No Luna completion or conclusion is accepted; Sol independently implemented and verified the release."
+  },
+  "external_effects": {
+    "real_payment_or_entitlement_write": false,
+    "driver_email_or_booking_write": false,
+    "portfolio_admin_write": false,
+    "environment_change": false,
+    "external_message_or_post": false,
+    "git_push": true,
+    "production_deploy": true
+  },
+  "remaining_gates": [
+    "Real disposable PayPal buyer-cancel and genuine Sandbox webhook-redelivery evidence",
+    "Separately reviewed Sandbox-only provider-decline canary",
+    "Driver-specific meals, delayed-flight waiting, baggage limits, quote validity and tax treatment",
+    "Authenticated production Portfolio upload-publish-hide-restore E2E using a disposable approved image",
+    "Owner-authorized first organic launch and 14-day conversion measurement"
+  ]
+}
