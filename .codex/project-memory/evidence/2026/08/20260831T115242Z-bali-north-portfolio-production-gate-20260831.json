@@ -1,0 +1,22 @@
+{
+  "schema_version": 1,
+  "evidence_id": "ev-20260831T115242Z-bali-north-portfolio-production-gate-20260831",
+  "task_ref": "bali-north-portfolio-production-gate-20260831",
+  "owner": "sol-main",
+  "captured_at": "2026-08-31T11:52:42Z",
+  "status": "verified",
+  "claim": "GitHub main is 343ad8b, but Render is billing-suspended and production returns 503; no new deployment exists",
+  "source": {
+    "kind": "git",
+    "repository": "https://github.com/lingfengai731/Agentstrip.git",
+    "commit": "343ad8bf984b1eb81860090c95cdd2524ded077a",
+    "branch": "codex/fullsite-design-audit-20260828",
+    "worktree": "E:\\Agentstrip-wt-fullsite-design-20260828",
+    "dirty": true
+  },
+  "verification": {
+    "command": "git rev-parse origin/main; render deploys list; render services --output json; render deploys create; GET /healthz and Bali assets",
+    "result": "origin/main=343ad8b; latest deploy remains 62069ee; service suspended by billing; manual deploy rejected 400; production health/Bali returned 503"
+  },
+  "notes": "No environment variables, billing settings, services, databases, user records or payment entitlements were changed."
+}
