@@ -1923,6 +1923,7 @@ def _professional_route_document(profile: dict, route_id: str = "", lang: str = 
     if not region_ids:
         region_ids = list(regions)
     full_days = []
+    region_visits = {}
     for index in range(days):
         outline_item = outline[index] if index < len(outline) else {}
         region_id = outline_item.get("region_id") or region_ids[index % len(region_ids)]
@@ -1932,12 +1933,21 @@ def _professional_route_document(profile: dict, route_id: str = "", lang: str = 
         if not theme:
             experiences = route.get("core_experiences") or ["Bali experience"]
             theme = f"{region_name} · {experiences[index % len(experiences)].replace('_', ' ')}"
-        route_pois = [
+        eligible_pois = [
             poi for poi in pois
             if poi.get("region_id") == region_id
             and route.get("id") in (poi.get("route_ids") or [])
             and poi.get("verification_status") == "verified"
-        ][:3]
+        ]
+        visit_index = region_visits.get(region_id, 0)
+        region_visits[region_id] = visit_index + 1
+        route_pois = []
+        if eligible_pois:
+            start = (visit_index * 3) % len(eligible_pois)
+            route_pois = [
+                eligible_pois[(start + offset) % len(eligible_pois)]
+                for offset in range(min(3, len(eligible_pois)))
+            ]
         full_days.append({
             "day": index + 1,
             "region_id": region_id,

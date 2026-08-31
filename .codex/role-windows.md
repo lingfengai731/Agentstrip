@@ -432,3 +432,11 @@
 - 发布边界：当前 evidence 为 pre-release；尚未把分支写成 pushed/merged/deployed。没有发送邮件、预订、付款、写权益/积分/admin、公开发帖、投广告或修改 Render 环境变量。
 - GitHub 回调：PR #22 固定 head `bd06308c60c4411054874189dcbdb75f9fce646d` 在 GitHub 为 mergeable/clean，并 squash 合并为 main `33e7a0ff86797a5a2276c83172f74ff96ad444f7`。GitHub Actions 在 opened、synchronize 与一次 close/reopen 后均未产生 run，因此不写 CI 成功；合并依据为固定头本地完整门禁和 clean mergeability。
 - 生产回调：Render 自动部署后 `/healthz`、`/search.html`、POI 媒体 JSON、套餐 JSON 和生成视觉均 200；生产 Chromium 320/390/768/1440 的地点悬停/点按、8 套套餐、搜索、司机交接和页面溢出全部通过。没有发送司机邮件、预订、付款、写订单/权益/积分/admin、公开发帖、投广告或修改 Render 环境变量。
+
+## 2026-08-31 Recovery, route quality and package geography callback
+
+- 路由：large / L3。Sol 在隔离工作树 `E:\Agentstrip-wt-fullsite-design-20260828` 负责产品边界、跨模块集成、失败恢复、路线质量、最终测试、Git 和生产验收；原始脏工作树 `E:\Agentstrip` 未修改。
+- Luna 回调：Averroes（`01a05365-789c-7830-933b-f72d50138249`，正式 `luna_worker` / `gpt-5.6-luna` / `max`）约于 `2026-08-30T23:57:00Z` 启动统一只读审计，最终因使用额度限制返回 `errored`，没有可验收 final，也没有文件改动；不得写成 Luna 完成或 GO。Sol 依照项目 STOP 规则接管并独立复核。
+- 工程回调：专业路线对重复区域使用确定性轮转，避免相邻日期重复相同前三个景点；AI 失败消息支持原请求重试且不重复用户气泡或后端 prompt；专业路线、司机请求和过期 Token 登录恢复均保留输入并自动恢复；八个 Bali 套餐增加五语言区域信息，Penida 套餐移除不属于同一区域的 Tulamben 扩展。
+- 产品回调：Bali 路线区新增“景点很分散，路线不该绕”的五语言短文案，表达按区域串联、减少回头路的真实价值，不使用“畅通无阻”或“衣食住行无忧”等不可核验承诺。调研报表仅用于吸收区域聚类、转场现实性、选择模块和透明包含项，不复制 OTA 文案或未核验价格。
+- 支付边界：既有 PayPal 成功付款和权益恢复保持不动；取消、decline/pending、重复 webhook、退款复核与幂等已有本地覆盖，但真实 disposable buyer cancel、真实 Sandbox webhook redelivery 和独立负向 canary 尚未形成完整生产证据，继续按外部门禁记录。

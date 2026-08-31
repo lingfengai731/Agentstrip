@@ -174,11 +174,11 @@ function check(condition, message) {
     await freshPreviewContext.close();
 
     const languageExpectations = {
-      en:{ section:'Trip basics', route:'Visual island life', budget:'$900–1,800' },
-      zh:{ section:'基本行程', route:'视觉与岛屿生活', budget:'¥6,000–12,000' },
-      ja:{ section:'基本情報', route:'写真と島の暮らし', budget:'¥140,000–280,000' },
-      ko:{ section:'기본 일정', route:'사진과 섬 라이프스타일', budget:'₩1,200,000–2,400,000' },
-      id:{ section:'Dasar perjalanan', route:'Visual dan gaya hidup pulau', budget:'IDR 14–28 juta' }
+      en:{ section:'Trip basics', route:'Visual island life', budget:'$900–1,800', geo:'Bali is spread out', area:'Kintamani highlands' },
+      zh:{ section:'基本行程', route:'视觉与岛屿生活', budget:'¥6,000–12,000', geo:'景点很分散', area:'金塔马尼高地' },
+      ja:{ section:'基本情報', route:'写真と島の暮らし', budget:'¥140,000–280,000', geo:'バリは広い', area:'キンタマーニ高原' },
+      ko:{ section:'기본 일정', route:'사진과 섬 라이프스타일', budget:'₩1,200,000–2,400,000', geo:'발리는 넓습니다', area:'킨타마니 고원' },
+      id:{ section:'Dasar perjalanan', route:'Visual dan gaya hidup pulau', budget:'IDR 14–28 juta', geo:'Bali tersebar luas', area:'Dataran tinggi Kintamani' }
     };
     for (const [language, expected] of Object.entries(languageExpectations)) {
       const languageContext = await browser.newContext({ viewport:{ width: language === 'zh' ? 1440 : 390, height:900 }, serviceWorkers:'block' });
@@ -187,6 +187,8 @@ function check(condition, message) {
       await languagePage.route('**/api/paypal/config', route => route.fulfill({ json:{ enabled:false } }));
       await languagePage.goto(base + '/bali.html#professional-planner', { waitUntil:'domcontentloaded' });
       await languagePage.locator('#bali-professional-form').waitFor();
+      check((await languagePage.locator('.bali-route-promise').innerText()).includes(expected.geo), `Geography promise did not localize ${language}`);
+      check((await languagePage.locator('.bali-package-area').first().innerText()).includes(expected.area), `Package area did not localize ${language}`);
       check((await languagePage.locator('.bali-professional-form-section legend').first().innerText()).includes(expected.section), `Professional form did not localize ${language}`);
       await languagePage.locator('#bali-professional-form label:has([name="budget_tier"][value="value"])').click();
       await languagePage.locator('#bali-professional-form label:has([name="goal"][value="photo"])').click();

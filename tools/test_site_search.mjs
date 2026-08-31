@@ -30,7 +30,7 @@ for (const page of publicPages) {
   check(links[0].includes('data-i18n="searchAriaLabel"'), `${page}: search link needs localized aria text`);
   check(links[0].includes('data-i18n-attr="aria-label"'), `${page}: search link needs data-i18n-attr`);
   check(links[0].includes('aria-hidden="true"'), `${page}: search icon must be decorative`);
-  check(source.includes('assets/js/i18n.js?v=search1'), `${page}: shared i18n must include search strings`);
+  check(/assets\/js\/i18n\.js\?v=[A-Za-z0-9_-]+/.test(source), `${page}: shared i18n must be loaded with a cache version`);
   check(!source.includes('href="#search"'), `${page}: stale hash search link remains`);
   check(!source.includes('id="search"'), `${page}: stale legacy search target remains`);
   check(/search-search\.nav-link\s*\{[^}]*min-width:\s*44px[^}]*min-height:\s*44px[^}]*height:\s*44px/s.test(source), `${page}: desktop search target is not 44px`);

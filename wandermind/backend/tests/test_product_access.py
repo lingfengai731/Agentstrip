@@ -515,6 +515,29 @@ class ProductAccessTests(unittest.TestCase):
                     expected[1],
                 )
 
+    def test_professional_route_rotates_places_across_repeated_region_days(self):
+        for route_id in ("R1", "R2", "R3", "R4", "R5", "R6"):
+            with self.subTest(route_id=route_id):
+                route = main._professional_route_document(
+                    {
+                        "audience": "first",
+                        "goals": ["local", "photo"],
+                        "travel_style": "comfort",
+                        "travellers": 2,
+                        "days": 7 if route_id == "R1" else 5,
+                        "pace": "balanced",
+                    },
+                    route_id=route_id,
+                    lang="en",
+                )
+                previous_day = None
+                for day in route["full_days"]:
+                    if previous_day and day["region_id"] == previous_day["region_id"]:
+                        current_places = tuple(place["id"] for place in day["places"])
+                        previous_places = tuple(place["id"] for place in previous_day["places"])
+                        self.assertNotEqual(previous_places, current_places)
+                    previous_day = day
+
     def test_unlocked_route_reports_every_day_open_and_restores_by_account(self):
         email = f"route-restore-{uuid.uuid4().hex}@example.test"
         user_id = self._create_user(email, "route restore")
@@ -1104,7 +1127,7 @@ class ProductAccessTests(unittest.TestCase):
             encoding="utf-8"
         )
 
-        self.assertIn("assets/js/ai-tool.js?v=p60", ai_html)
+        self.assertIn("assets/js/ai-tool.js?v=p61", ai_html)
         self.assertIn("initialDestQuery", ai_js)
         self.assertIn("function openHashTarget()", ai_js)
         self.assertIn("switchCompareSub(target)", ai_js)
@@ -1141,7 +1164,7 @@ class ProductAccessTests(unittest.TestCase):
             encoding="utf-8"
         )
 
-        self.assertIn("assets/css/ai-tool.css?v=p60", ai_html)
+        self.assertIn("assets/css/ai-tool.css?v=p61", ai_html)
         self.assertIn('aria-controls="ws-left-drawer"', ai_html)
         self.assertIn('aria-controls="ws-right-drawer"', ai_html)
         self.assertIn(".ws-rightpanel.mobile-open {\n    display: flex;", ai_css)

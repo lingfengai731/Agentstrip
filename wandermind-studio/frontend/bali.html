@@ -153,6 +153,12 @@
       body.dark .bali-tl-card p { color: rgba(255,255,255,.7); }
       .bali-route-family { background: #f7faf8; scroll-margin-top:80px; }
       body.dark .bali-route-family { background: rgba(255,255,255,.025); }
+      .bali-route-promise { display:grid; grid-template-columns:auto minmax(0,1fr); gap:14px; align-items:center; max-width:880px; margin:-24px auto 30px; padding:16px 18px; border:1px solid rgba(14,124,107,.18); border-radius:16px; background:linear-gradient(115deg,rgba(14,124,107,.09),rgba(252,191,30,.08)); color:var(--bali-ink); text-align:left; }
+      .bali-route-promise > .fa { display:grid; place-items:center; width:40px; height:40px; border-radius:50%; background:#0e7c6b; color:#fff; font-size:17px; }
+      .bali-route-promise strong { display:block; margin-bottom:2px; font-size:17px; letter-spacing:-.01em; }
+      .bali-route-promise span:last-child { display:block; color:#52605c; font-size:13.5px; line-height:1.55; }
+      body.dark .bali-route-promise { border-color:rgba(94,234,212,.22); background:linear-gradient(115deg,rgba(45,212,191,.1),rgba(252,191,30,.08)); color:#f8fafc; }
+      body.dark .bali-route-promise span:last-child { color:#cbd5e1; }
       .bali-route-grid { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:18px; }
       .bali-route-card { position:relative; min-width:0; padding:22px; border:1px solid #e2e8e4; border-radius:16px; background:#fff; color:#1e293b; text-align:left; cursor:pointer; box-shadow:0 6px 22px rgba(15,23,42,.06); transition:transform .18s,border-color .18s,box-shadow .18s; }
       .bali-route-card:focus-visible { transform:translateY(-2px); border-color:#0e7c6b; box-shadow:0 14px 34px rgba(14,124,107,.13); outline:none; }
@@ -371,6 +377,8 @@
       .bali-package-card.active { border:2px solid #0e7c6b; padding:19px; box-shadow:0 12px 28px rgba(14,124,107,.13); }
       .bali-package-card-top { display:flex; justify-content:space-between; gap:10px; color:#0f766e; font-size:11px; font-weight:800; }
       .bali-package-status { padding:4px 7px; border-radius:999px; background:#fff5d6; color:#8a5c00; text-align:right; }
+      .bali-package-area { display:flex; align-items:flex-start; gap:7px; margin:10px 0 0; color:#52605c; font-size:12px; line-height:1.45; }
+      .bali-package-area .fa { margin-top:2px; color:#d97706; }
       .bali-package-card h3 { margin:13px 0 7px; color:#1f3632; font-size:19px; }
       .bali-package-card p { flex:1; margin:0 0 16px; color:#52605c; font-size:13px; line-height:1.65; }
       .bali-package-card button { min-height:46px; border:1px solid #8fb9ae; border-radius:11px; background:#edf6f3; color:#0f6258; font:800 13px/1.2 inherit; cursor:pointer; }
@@ -383,7 +391,7 @@
       body.dark .bali-package-section { background:#181d1b; }
       body.dark .bali-package-shell, body.dark .bali-package-card { border-color:#3a3d38; background:#252b28; }
       body.dark .bali-package-card h3 { color:#f0f0ec; }
-      body.dark .bali-package-card p, body.dark .bali-package-filters span { color:#cbd5e1; }
+      body.dark .bali-package-card p, body.dark .bali-package-area, body.dark .bali-package-filters span { color:#cbd5e1; }
       body.dark .bali-package-filters button { border-color:#4b766d; background:#202724; color:#ccfbf1; }
       @media(max-width:767px){.bali-package-shell{padding:16px}.bali-package-grid{grid-template-columns:1fr}.bali-package-summary{display:grid}.bali-package-summary .bali-btn{width:100%;text-align:center}.bali-package-filters{display:grid}.bali-package-filters>div{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));}.bali-package-filters>div:first-child{grid-template-columns:auto repeat(3,minmax(0,1fr))}.bali-package-filters button{min-width:0;padding:8px 6px}.bali-package-filters span{align-self:center}}
       @media(max-width:360px){.bali-package-filters>div,.bali-package-filters>div:first-child{grid-template-columns:repeat(2,minmax(0,1fr))}.bali-package-filters span{grid-column:1/-1}.bali-package-card-top{align-items:flex-start}.bali-package-status{max-width:58%;}}
@@ -547,6 +555,10 @@
          .bali-sec-head .bali-sec-eyebrow { margin-bottom:7px; font-size:10px; letter-spacing:.1em; }
          .bali-sec-head h2 { max-width:14ch; margin-bottom:8px; font-size:27px; line-height:1.18; }
          .bali-sec-head p { display:-webkit-box; overflow:hidden; -webkit-box-orient:vertical; -webkit-line-clamp:3; font-size:14px; line-height:1.55; }
+         .bali-route-promise { margin:0 0 18px; padding:13px 14px; gap:11px; }
+         .bali-route-promise > .fa { width:36px; height:36px; font-size:15px; }
+         .bali-route-promise strong { font-size:15.5px; }
+         .bali-route-promise span:last-child { font-size:12.5px; }
          .bali-mobile-section-toggle { position:absolute; top:0; right:0; width:48px; height:48px; display:grid; place-items:center; border:1px solid #d8d5cc; border-radius:14px; background:#fff; color:#0f6258; cursor:pointer; }
          .bali-mobile-section-toggle .fa { transition:transform 160ms var(--bali-ease-out); }
          [data-mobile-section].bali-mobile-collapsed .bali-mobile-section-toggle .fa { transform:rotate(-90deg); }
@@ -721,6 +733,10 @@
       <h2 data-i18n="baliRouteSectionTitle">Six public routes, all free to explore</h2>
       <p data-i18n="baliRouteSectionSub">Compare each complete route first. For a route shaped around your own dates, pace and budget, preview about 70% before unlocking every place and execution detail.</p>
       <button class="bali-mobile-section-toggle" type="button" data-mobile-section-toggle aria-expanded="true" aria-controls="route-families-body"><span class="fa fa-chevron-down" aria-hidden="true"></span></button>
+    </div>
+    <div class="bali-route-promise" role="note">
+      <span class="fa fa-random" aria-hidden="true"></span>
+      <span><strong data-i18n="baliGeoPromiseTitle">Bali is spread out. Your route should not double back.</strong><span data-i18n="baliGeoPromiseSub">We group coast, Ubud, volcano and island days by area, so less time is lost to backtracking.</span></span>
     </div>
     <div class="bali-mobile-section-body" id="route-families-body">
       <div class="bali-route-mobile-toolbar" aria-label="Choose a public route" data-i18n="baliMobileRoutePickerLabel" data-i18n-attr="aria-label">
@@ -983,8 +999,8 @@
 <script>
   function topFunction() { document.body.scrollTop = 0; document.documentElement.scrollTop = 0; }
 </script>
-<script src="assets/js/i18n.js?v=cta1"></script>
-<script src="assets/js/bali-packages.js?v=20260828p2"></script>
+<script src="assets/js/i18n.js?v=geo1"></script>
+<script src="assets/js/bali-packages.js?v=20260831p1"></script>
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
 <script>
 (function () {

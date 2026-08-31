@@ -1242,6 +1242,7 @@ Object.assign(LANGS.en, {
   baliHeroCtaProfessional:'Match my professional route', baliHeroCtaRoutes:'Browse free public routes',
   baliRouteSectionEyebrow:'Bali route library · R1–R6', baliRouteSectionTitle:'Six public routes, all free to explore',
   baliRouteSectionSub:'Compare each complete route first. For a route shaped around your own dates, pace and budget, preview about 70% before unlocking every place and execution detail.',
+  baliGeoPromiseTitle:'Bali is spread out. Your route should not double back.', baliGeoPromiseSub:'We group coast, Ubud, volcano and island days by area, so less time is lost to backtracking.',
   baliRouteLoading:'Loading the Bali route library…', baliProfessionalLoading:'Reading your trip profile and Bali route foundation…',
   contactRouteTitle:'Professional Bali route', contactRouteValue:'Preview a route matched to your trip', contactRouteTag:'Start with dates, pace and budget'
 });
@@ -1250,6 +1251,7 @@ Object.assign(LANGS.zh, {
   baliHeroCtaProfessional:'匹配我的专业路线', baliHeroCtaRoutes:'浏览免费公共路线',
   baliRouteSectionEyebrow:'巴厘岛路线库 · R1–R6', baliRouteSectionTitle:'6 条公共路线，全部免费浏览',
   baliRouteSectionSub:'先比较每条完整路线。需要贴合自己的日期、节奏和预算时，再生成个性化专业路线；先预览约 70%，解锁后查看全部地点与执行细节。',
+  baliGeoPromiseTitle:'景点很分散，路线不该绕。', baliGeoPromiseSub:'按区域串联海岸、乌布、火山与离岛，少走回头路，把时间留给真正想看的巴厘岛。',
   baliRouteLoading:'正在加载巴厘岛路线库…', baliProfessionalLoading:'正在读取你的旅行信息与巴厘岛路线基础…',
   contactRouteTitle:'巴厘岛专业路线', contactRouteValue:'先预览与你行程匹配的路线', contactRouteTag:'从日期、节奏和预算开始'
 });
@@ -1258,6 +1260,7 @@ Object.assign(LANGS.ja, {
   baliHeroCtaProfessional:'プロルートを提案', baliHeroCtaRoutes:'無料の公開ルートを見る',
   baliRouteSectionEyebrow:'バリ島ルート集 · R1–R6', baliRouteSectionTitle:'6つの公開ルートをすべて無料で閲覧',
   baliRouteSectionSub:'まず各ルートを最後まで比較できます。日程・ペース・予算に合わせた個別プロルートは約70%を先に表示し、解除後に全スポットと実行詳細を確認できます。',
+  baliGeoPromiseTitle:'バリは広い。旅程まで遠回りする必要はありません。', baliGeoPromiseSub:'海岸、ウブド、火山、離島を地域ごとにまとめ、往復移動を減らします。',
   baliRouteLoading:'バリ島ルート集を読み込んでいます…', baliProfessionalLoading:'旅行情報とバリ島のルート基盤を読み込んでいます…',
   contactRouteTitle:'バリ島プロルート', contactRouteValue:'旅行に合うルートを先にプレビュー', contactRouteTag:'日程・ペース・予算から開始'
 });
@@ -1266,6 +1269,7 @@ Object.assign(LANGS.ko, {
   baliHeroCtaProfessional:'내 전문 경로 매칭', baliHeroCtaRoutes:'무료 공개 경로 보기',
   baliRouteSectionEyebrow:'발리 경로 라이브러리 · R1–R6', baliRouteSectionTitle:'6개 공개 경로를 모두 무료로 확인',
   baliRouteSectionSub:'먼저 각 경로 전체를 비교하세요. 날짜, 속도와 예산에 맞춘 개인 전문 경로는 약 70%를 먼저 보여 주며, 잠금 해제 후 모든 장소와 실행 정보를 확인할 수 있습니다.',
+  baliGeoPromiseTitle:'발리는 넓습니다. 여행 동선까지 돌아갈 필요는 없습니다.', baliGeoPromiseSub:'해안·우붓·화산·섬 일정을 지역별로 묶어 불필요한 왕복 이동을 줄입니다.',
   baliRouteLoading:'발리 경로 라이브러리를 불러오는 중…', baliProfessionalLoading:'여행 정보와 발리 경로 기반을 불러오는 중…',
   contactRouteTitle:'발리 전문 경로', contactRouteValue:'내 여행에 맞는 경로 먼저 보기', contactRouteTag:'날짜, 속도와 예산부터 시작'
 });
@@ -1274,6 +1278,7 @@ Object.assign(LANGS.id, {
   baliHeroCtaProfessional:'Cocokkan rute profesional', baliHeroCtaRoutes:'Lihat rute publik gratis',
   baliRouteSectionEyebrow:'Koleksi rute Bali · R1–R6', baliRouteSectionTitle:'Enam rute publik, semuanya gratis dijelajahi',
   baliRouteSectionSub:'Bandingkan setiap rute lengkap lebih dulu. Untuk rute yang mengikuti tanggal, tempo, dan anggaranmu, lihat pratinjau sekitar 70% sebelum membuka semua tempat dan detail pelaksanaan.',
+  baliGeoPromiseTitle:'Bali tersebar luas. Rute Anda tidak perlu bolak-balik.', baliGeoPromiseSub:'Kami mengelompokkan pesisir, Ubud, gunung berapi, dan pulau berdasarkan area agar waktu tidak habis di jalan.',
   baliRouteLoading:'Memuat koleksi rute Bali…', baliProfessionalLoading:'Membaca profil perjalanan dan dasar rute Bali…',
   contactRouteTitle:'Rute profesional Bali', contactRouteValue:'Pratinjau rute yang cocok dengan perjalananmu', contactRouteTag:'Mulai dari tanggal, tempo, dan anggaran'
 });

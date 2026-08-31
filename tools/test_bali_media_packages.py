@@ -51,6 +51,7 @@ def main() -> None:
 
     package_ids: set[str] = set()
     route_ids = {route["id"] for route in travel["routes"]}
+    regions_by_poi = {poi["id"]: poi.get("region_id") for poi in travel["pois"]}
     for package in packages.get("packages", []):
         package_id = package["id"]
         assert package_id not in package_ids, f"Duplicate package ID: {package_id}"
@@ -60,6 +61,11 @@ def main() -> None:
         assert set(package.get("core", [])) <= active_pois, f"Unknown core POI: {package_id}"
         assert set(package.get("add_ons", [])) <= active_pois, f"Unknown add-on POI: {package_id}"
         assert package.get("status") in {"live_check", "needs_supplier_confirmation"}, f"Bad status: {package_id}"
+        region_ids = set(package.get("region_ids", []))
+        assert region_ids, f"Package has no geographic cluster: {package_id}"
+        package_pois = package.get("core", []) + package.get("add_ons", [])
+        assert all(regions_by_poi.get(poi_id) in region_ids for poi_id in package_pois), f"Package crosses its geographic cluster: {package_id}"
+        assert set(package.get("area", {})) >= {"zh", "en", "ja", "ko", "id"}, f"Package area is not localized: {package_id}"
 
     assert len(package_ids) >= 8, "Expected the initial eight-package catalog"
     assert "poi-media-catalog.json" in bali_html

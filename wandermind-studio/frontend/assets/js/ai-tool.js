@@ -257,7 +257,7 @@ const TOOL_I18N = {
     greetTitle:'你好，旅行者 👋', greetSub:'我是 WanderMind 旅程规划师 —— 告诉我你想去哪里、什么时候、和谁一起，我会和我的 5 个 AI 同事联手为你设计完整方案。',
     toastPhase2:'此功能将在 Phase 2 上线',
     welcomeUnknown:'欢迎选择目的地开始规划。',
-    sendErr:'抱歉，请求出错了。请稍后重试或检查后端是否在线。',
+    sendErr:'抱歉，请求出错了。请稍后重试或检查后端是否在线。', retrySend:'重新发送',
     quotaFree:'剩余 {n} 次免费', quotaBeans:'{n} 颗豆', quotaUnlimited:'',
     rechargeTitle:'免费次数已用完', rechargeSub:'你已用完 5 次免费 AI 问答。充值「旅行豆」即可继续使用 —— 每次 AI 问答消耗 1 颗豆。',
     rechargeCodeLabel:'有兑换码？', rechargeCodePh:'输入兑换码', rechargeRedeem:'兑换',
@@ -296,7 +296,7 @@ const TOOL_I18N = {
     greetTitle:'Hello traveller 👋', greetSub:'I am the WanderMind Trip Planner. Tell me where, when and with whom — my five AI colleagues and I will draft a complete plan together.',
     toastPhase2:'This feature lands in Phase 2',
     welcomeUnknown:'Pick a destination to start planning.',
-    sendErr:'Sorry, the request failed. Please retry or check that the backend is online.',
+    sendErr:'Sorry, the request failed. Please retry or check that the backend is online.', retrySend:'Send again',
     quotaFree:'{n} free left', quotaBeans:'{n} beans', quotaUnlimited:'',
     rechargeTitle:'Free uses used up', rechargeSub:'You\'ve used all 5 free AI questions. Top up Travel Beans to keep going — each AI question costs 1 bean.',
     rechargeCodeLabel:'Have a code?', rechargeCodePh:'Enter redeem code', rechargeRedeem:'Redeem',
@@ -335,7 +335,7 @@ const TOOL_I18N = {
     greetTitle:'こんにちは、旅人 👋', greetSub:'私はWanderMind旅程プランナーです。行きたい場所·時期·同行者を教えて。5人のAI同僚と一緒に完全プランを設計します。',
     toastPhase2:'この機能はPhase 2で公開',
     welcomeUnknown:'目的地を選んで計画を開始。',
-    sendErr:'リクエストに失敗しました。バックエンドの状態を確認してください。',
+    sendErr:'リクエストに失敗しました。バックエンドの状態を確認してください。', retrySend:'もう一度送信',
     quotaFree:'残り{n}回無料', quotaBeans:'豆{n}個', quotaUnlimited:'',
     rechargeTitle:'無料回数を使い切りました', rechargeSub:'無料のAI質問5回を使い切りました。トラベルビーンズをチャージして続行 —— AI質問1回につき豆1個。',
     rechargeCodeLabel:'コードをお持ちですか？', rechargeCodePh:'引換コードを入力', rechargeRedeem:'引換',
@@ -374,7 +374,7 @@ const TOOL_I18N = {
     greetTitle:'안녕하세요, 여행자 👋', greetSub:'저는 WanderMind 여행 플래너입니다. 어디로, 언제, 누구와 — 5명의 AI 동료와 함께 완전한 계획을 설계합니다.',
     toastPhase2:'이 기능은 Phase 2에서 제공',
     welcomeUnknown:'계획을 시작할 목적지를 선택하세요.',
-    sendErr:'요청 실패. 백엔드 상태를 확인하세요.',
+    sendErr:'요청 실패. 백엔드 상태를 확인하세요.', retrySend:'다시 보내기',
     quotaFree:'무료 {n}회 남음', quotaBeans:'콩 {n}개', quotaUnlimited:'',
     rechargeTitle:'무료 횟수 소진', rechargeSub:'무료 AI 질문 5회를 모두 사용했습니다. 트래블 콩을 충전하면 계속 사용할 수 있어요 —— AI 질문 1회당 콩 1개.',
     rechargeCodeLabel:'코드가 있으신가요?', rechargeCodePh:'교환 코드 입력', rechargeRedeem:'교환',
@@ -413,7 +413,7 @@ const TOOL_I18N = {
     greetTitle:'Halo traveler 👋', greetSub:'Saya Perencana WanderMind. Beri tahu ke mana, kapan, dengan siapa — bersama 5 rekan AI saya, kami buat rencana lengkap.',
     toastPhase2:'Fitur ini hadir di Fase 2',
     welcomeUnknown:'Pilih tujuan untuk mulai merencanakan.',
-    sendErr:'Permintaan gagal. Periksa apakah backend online.',
+    sendErr:'Permintaan gagal. Periksa apakah backend online.', retrySend:'Kirim lagi',
     quotaFree:'sisa {n} gratis', quotaBeans:'{n} bean', quotaUnlimited:'',
     rechargeTitle:'Kuota gratis habis', rechargeSub:'Anda telah memakai 5 pertanyaan AI gratis. Isi Travel Beans untuk lanjut — tiap pertanyaan AI memakai 1 bean.',
     rechargeCodeLabel:'Punya kode?', rechargeCodePh:'Masukkan kode tukar', rechargeRedeem:'Tukar',
@@ -895,9 +895,9 @@ function renderMessages() {
     `;
     return;
   }
-  wrap.innerHTML = messages.map(m => {
+  wrap.innerHTML = messages.map((m, messageIndex) => {
     if (m.role === 'system') {
-      return `<div class="ws-msg system"><div class="ws-msg-body">${escapeHtml(m.text)}</div></div>`;
+      return `<div class="ws-msg system"><div class="ws-msg-body"><span>${escapeHtml(m.text)}</span>${m.retryText ? `<button type="button" class="ws-msg-retry" data-retry-message="${messageIndex}"><span class="fa fa-refresh" aria-hidden="true"></span> ${escapeHtml(t().retrySend || 'Send again')}</button>` : ''}</div></div>`;
     }
     if (m.role === 'user') {
       return `
@@ -928,6 +928,13 @@ function renderMessages() {
       </div>
     `;
   }).join('');
+  wrap.querySelectorAll('[data-retry-message]').forEach(button => {
+    button.addEventListener('click', () => {
+      const messageIndex = Number(button.dataset.retryMessage);
+      const failedMessage = messages[messageIndex];
+      if (failedMessage && failedMessage.retryText) sendMessage(failedMessage.retryText, { retryIndex: messageIndex });
+    });
+  });
   wrap.scrollTop = wrap.scrollHeight;
   _persistLastPlan();
 }
@@ -953,15 +960,21 @@ function pushMsg(m) {
 }
 
 /* ─────────────────── SEND TO BACKEND ─────────────────── */
-async function sendMessage(text) {
+async function sendMessage(text, options = {}) {
   text = (text || $('#ws-input').value).trim();
   if (!text || isSending) return;
-  $('#ws-input').value = '';
-  $('#ws-input').style.height = '46px';
+  const retryIndex = Number.isInteger(options.retryIndex) ? options.retryIndex : -1;
+  if (retryIndex < 0) {
+    $('#ws-input').value = '';
+    $('#ws-input').style.height = '46px';
+  } else if (messages[retryIndex] && messages[retryIndex].retryText === text) {
+    messages.splice(retryIndex, 1);
+    renderMessages();
+  }
   isSending = true;
   $('#ws-send-btn').disabled = true;
 
-  pushMsg({ role:'user', text, ts: Date.now() });
+  if (retryIndex < 0) pushMsg({ role:'user', text, ts: Date.now() });
   const aiPlaceholder = { role:'ai', agent: currentAgent, text:'__typing__', ts: Date.now() };
   pushMsg(aiPlaceholder);
 
@@ -972,8 +985,6 @@ async function sendMessage(text) {
       .filter(m => m.role !== 'system' && m.text !== '__typing__' && m !== aiPlaceholder)
       .slice(-12)
       .map(m => ({ role: m.role === 'ai' ? 'assistant' : 'user', content: m.text }));
-    history.push({ role: 'user', content: text });
-
     const langLabel = { zh:'Chinese', en:'English', ja:'Japanese', ko:'Korean', id:'Indonesian' }[currentLang] || 'English';
     const agentName = AGENT_NAMES[currentLang][currentAgent] || currentAgent;
     const destName = _destNameForApi ? (_destNameForApi() || currentDest) : currentDest;
@@ -1017,7 +1028,7 @@ async function sendMessage(text) {
     console.error('[ai-tool] chat failed', err);
     const idx = messages.indexOf(aiPlaceholder);
     const errMsg = t().sendErr + ' (' + (err.message || err) + ')';
-    if (idx >= 0) messages[idx] = { role:'system', text: errMsg, ts: Date.now() };
+    if (idx >= 0) messages[idx] = { role:'system', text: errMsg, retryText:text, ts: Date.now() };
     renderMessages();
   } finally {
     isSending = false;
@@ -2315,13 +2326,13 @@ async function generateDiary() {
 
 /* ═════════════════ HOOK: log on chat send/recv/switch ═════════════════ */
 const _origSendMessage = sendMessage;
-sendMessage = async function(text) {
+sendMessage = async function(text, options) {
   const before = messages.length;
   const t0 = Date.now();
   const _name = AGENT_NAMES[currentLang][currentAgent] || currentAgent;
   const _text = (text || $('#ws-input').value || '').trim();
   if (_text) addLog('info', 'fa-paper-plane', _interp(t().logChatSent, { agent: _name }));
-  const r = await _origSendMessage(text);
+  const r = await _origSendMessage(text, options);
   // Wait microtask so the AI reply is in messages
   setTimeout(() => {
     const lastAi = [...messages].reverse().find(m => m.role === 'ai' && m.text && m.text !== '__typing__');
@@ -3709,8 +3720,8 @@ async function loadAdminOrders(el, zh) {
 
 // Auto-save after each successful AI reply
 const _origSendMessage2 = sendMessage;
-sendMessage = async function(text) {
-  const r = await _origSendMessage2(text);
+sendMessage = async function(text, options) {
+  const r = await _origSendMessage2(text, options);
   setTimeout(scheduleAutoSave, 1500);
   return r;
 };
@@ -4129,10 +4140,10 @@ async function openProfessionalRouteModal() {
 
 /* Patch sendMessage system prompt to inject prefs */
 const _origSendMessage_v2 = sendMessage;
-sendMessage = async function(text) {
+sendMessage = async function(text, options) {
   // Tucked in via systemPrompt patching done inside sendMessage —
   // we replicate that here by piggy-backing on the input value before forwarding.
-  return _origSendMessage_v2(text);
+  return _origSendMessage_v2(text, options);
 };
 // Also patch the actual system prompt builder by overriding fetch.
 // This single override owns the shared auth/header boundary for API calls.

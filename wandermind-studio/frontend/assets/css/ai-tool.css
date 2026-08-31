@@ -610,6 +610,28 @@ body.dark .ws-share-btn:hover {
   text-align: center;
   font-style: italic;
 }
+.ws-msg-retry {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  min-height: 36px;
+  margin-left: 10px;
+  padding: 7px 12px;
+  border: 1px solid var(--ws-teal);
+  border-radius: 999px;
+  background: transparent;
+  color: var(--ws-teal);
+  font: inherit;
+  font-style: normal;
+  font-weight: 700;
+  cursor: pointer;
+}
+.ws-msg-retry:focus-visible { outline: 3px solid rgba(14,124,107,.2); outline-offset: 2px; }
+@media (max-width: 575px) {
+  .ws-msg.system .ws-msg-body { display: grid; gap: 9px; justify-items: center; }
+  .ws-msg-retry { margin-left: 0; }
+}
 .ws-msg-typing { display: inline-flex; gap: 4px; align-items: center; }
 .ws-msg-typing span {
   width: 6px; height: 6px; border-radius: 50%;

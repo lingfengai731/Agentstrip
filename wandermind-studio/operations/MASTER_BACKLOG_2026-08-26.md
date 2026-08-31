@@ -1,4 +1,4 @@
-# WanderMind unified backlog — updated 2026-08-28
+# WanderMind unified backlog — updated 2026-08-31
 
 Evidence order: fresh production checks > current Git/tests > project-memory evidence > handoff > old plans. Rank 1 is the highest priority. A gate is not a failure: it records the exact external fact or authorization required before a safe production action.
 
@@ -22,6 +22,18 @@ Evidence order: fresh production checks > current Git/tests > project-memory evi
 | 15 | Fine-grained admin roles/audit/storage abstraction | Strong admin is sufficient for current single-operator workflow. | Design least privilege only when real multiple operators exist. | Real staffing need |
 | 16 | Long-term social/content pipeline | First packs exist; no sustained performance dataset. | Use first 14-day results to choose repeatable formats; keep rights and POI gates. | Real launch data |
 | 17 | Mini-program/native app | Web product remains the priority. | Start only after route, driver, payment and verification workflows are stable. | Later phase |
+
+## 2026-08-31 Current execution truth
+
+| Priority | Workstream | Current truthful state | Next exact action / acceptance |
+|---|---|---|---|
+| P0 | Shared recovery paths | **Implemented and locally verified.** Professional-route 503 restores the form and preserves the profile; driver-request 503 preserves all fields and reuses the same idempotency id; an expired AI token opens one login prompt and automatically resumes the interrupted request with the refreshed Bearer token. | Release the exact tested commit, then rerun the intercepted browser matrix against the production pages. |
+| P0 | PayPal Sandbox abnormal flows | **Code/test coverage exists; external closure is incomplete.** Buyer cancel, declined/pending/refund-review states, duplicate webhook and idempotency are covered locally. A real disposable buyer cancel and genuine Sandbox webhook redelivery have not both been preserved as production evidence. | Run only the disposable non-admin cases in `PAYPAL_SANDBOX_ABNORMAL_FLOW_RUNBOOK_2026-08-29.md`; never reuse, refund or mutate the accepted paid order. |
+| P1 | Professional-route quality | **Improved locally.** Repeated visits to the same Bali region now rotate through verified POIs instead of repeating the identical first three places on adjacent days; R1–R6 coverage remains deterministic and public routes remain free. | Release and verify the backend commit; continue opening-hours/drive-time optimization only after live data is mature. |
+| P1 | Bali package geography and conversion copy | **Improved locally.** Eight packages now expose area/region metadata in all five languages. The Penida package no longer presents Tulamben as a same-area add-on. The Bali route section explains the real value proposition: cluster dispersed attractions and reduce backtracking. | Verify five languages and 320/390/768/1440 after deployment. Do not copy OTA package text or publish unverified dynamic prices. |
+| P1 | Portfolio Content Manager | **Implemented and tested in code; operational production E2E remains externally gated.** `/admin/portfolio`, signed Cloudinary upload, PostgreSQL metadata, draft/publish/hide/archive, replace and reorder flows exist. | With an authenticated admin and approved disposable image, preserve one upload → publish → public Portfolio → hide/restore evidence chain. Do not use Render's ephemeral filesystem. |
+| P2 | Driver operational facts | Confirmed shared facts are 700k/10h, 500k/6h, 70k/hour with the supplied rounding rule, and no per-guest surcharge. Public web research cannot establish Dicky/Gede-specific meal inclusion, delayed-flight waiting, baggage limits, tax treatment, quote validity or exact Penida embarkation point. | Keep those fields omitted or explicitly route-specific until each driver gives a dated direct reply. Treat Bali levy, visa and ferry costs as independent traveller costs, not driver inclusions. |
+| P2 | First organic launch and measurement | Copy packs, UTM scheme and first-party funnel events are prepared; no public post is claimed. | After this release is production-verified, publish one named owner-authorized post per chosen account and record URL, visits, route matches and driver enquiries for 14 days. |
 
 ## Closed or materially advanced in this branch
 
