@@ -1,6 +1,6 @@
 {
-  "schema_version": "1.8.0",
-  "updated_at": "2026-08-22",
+  "schema_version": "1.9.0",
+  "updated_at": "2026-08-31",
   "destination": {
     "id": "bali",
     "name": {
@@ -83,16 +83,16 @@
     {
       "id": "G5",
       "map": {"x": 42, "y": 28},
-      "geo": {"lat": -8.2683683, "lng": 115.0777059, "anchor": "Munduk", "source": "OpenStreetMap Nominatim", "role": "planning_anchor", "verification_status": "pending_review"},
+      "geo": {"lat": -8.1605556, "lng": 115.0241667, "anchor": "Lovina", "source": "OpenStreetMap Nominatim", "role": "planning_anchor", "verification_status": "pending_review"},
       "name": {
-        "zh": "中北部山地自然圈",
-        "en": "Central-north highland nature",
-        "ja": "中北部高原の自然",
-        "ko": "중북부 고지대 자연",
-        "id": "Alam dataran tinggi tengah-utara"
+        "zh": "北部海岸与中北部山地自然圈",
+        "en": "North coast and central-north highlands",
+        "ja": "北部海岸と中北部高原の自然",
+        "ko": "북부 해안과 중북부 고지대 자연",
+        "id": "Pesisir utara dan alam dataran tinggi tengah-utara"
       },
-      "nodes": ["munduk", "bedugul", "twin_lakes"],
-      "content_types": ["mountains", "forest", "waterfall", "lake", "cool_climate"],
+      "nodes": ["lovina", "singaraja", "munduk", "bedugul", "twin_lakes"],
+      "content_types": ["north_coast", "dolphin_watching", "sunrise", "black_sand", "mountains", "forest", "waterfall", "lake", "cool_climate"],
       "priority": "P1"
     },
     {
@@ -154,10 +154,10 @@
         {"day": 4, "region_id": "G4", "theme": {"zh": "乌布中心的文化与市场", "en": "Ubud centre, culture and market", "ja": "ウブド中心部の文化と市場", "ko": "우붓 중심의 문화와 시장", "id": "Budaya dan pasar di pusat Ubud"}, "suggested_poi_ids": ["ubud_palace", "ubud_art_market"]},
         {"day": 5, "region_id": "G4", "theme": {"zh": "稻田、泉水与乡间", "en": "Rice terraces, springs and countryside", "ja": "棚田、泉、田園", "ko": "계단식 논, 샘, 전원", "id": "Teras sawah, mata air, dan pedesaan"}, "suggested_poi_ids": ["tegalalang_rice_terrace", "tirta_empul"]},
         {"day": 6, "region_id": "G4", "theme": {"zh": "森林步道与自然文化", "en": "Forest walk and cultural nature", "ja": "森の散歩と自然文化", "ko": "숲길과 자연 문화", "id": "Jalan hutan dan budaya alam"}, "suggested_poi_ids": ["ubud_monkey_forest", "campuhan_ridge_walk"]},
-        {"day": 7, "region_id": "G3", "theme": {"zh": "萨努尔日出与岛屿前奏", "en": "Sanur sunrise and island gateway", "ja": "サヌールの日の出と離島への入口", "ko": "사누르 일출과 섬 여행의 관문", "id": "Matahari terbit Sanur dan gerbang pulau"}, "suggested_poi_ids": ["sanur_beach", "mertasari_beach"]},
-        {"day": 8, "region_id": "G6", "theme": {"zh": "高地、火山与寺庙选择", "en": "Highlands, volcano and temple options", "ja": "高地、火山、寺院の選択肢", "ko": "고지대, 화산, 사원 선택", "id": "Pilihan dataran tinggi, gunung api, dan pura"}, "suggested_poi_ids": ["besakih_temple", "mount_batur_jeep"]}
+        {"day": 7, "region_id": "G6", "theme": {"zh": "从乌布顺路进入高地与火山", "en": "Continue from Ubud into the highlands and volcano area", "ja": "ウブドから高原と火山エリアへ", "ko": "우붓에서 고지대와 화산 지역으로 이동", "id": "Lanjut dari Ubud ke dataran tinggi dan kawasan gunung api"}, "suggested_poi_ids": ["besakih_temple", "mount_batur_jeep"]},
+        {"day": 8, "region_id": "G3", "theme": {"zh": "萨努尔日出与离岛或返程衔接", "en": "Sanur sunrise with an island or departure connection", "ja": "サヌールの日の出と離島または帰路への接続", "ko": "사누르 일출과 섬 또는 귀국 동선 연결", "id": "Matahari terbit Sanur dan sambungan ke pulau atau kepulangan"}, "suggested_poi_ids": ["sanur_beach", "mertasari_beach"]}
       ],
-      "optional_regions": ["G3", "G6"],
+      "optional_regions": ["G3", "G5", "G6"],
       "recommended_days": {
         "min": 5,
         "ideal": 8,
@@ -169,7 +169,7 @@
       "best_for": ["first_time", "couples", "friends", "families"],
       "not_recommended_for": ["single_theme_only"],
       "core_experiences": ["ubud_culture", "south_coast", "sunset", "local_food"],
-      "optional_modules": ["nusa_penida_day", "mount_batur_sunrise", "east_bali"],
+      "optional_modules": ["nusa_penida_day_from_sanur", "north_bali_lovina_overnight", "mount_batur_sunrise", "east_bali"],
       "preview_days": 3,
       "driver_supported": true,
       "verification_status": "needs_supplier_confirmation"
@@ -213,7 +213,7 @@
       "best_for": ["solo", "couples", "slow_travel", "wellness_interest"],
       "not_recommended_for": ["nightlife_first", "daily_long_drive"],
       "core_experiences": ["yoga", "sound_session", "craft", "rice_terrace", "local_food"],
-      "optional_modules": ["munduk_nature", "east_bali_village"],
+      "optional_modules": ["munduk_nature", "lovina_sunrise_overnight", "east_bali_village"],
       "preview_days": 3,
       "driver_supported": true,
       "verification_status": "verified",
@@ -331,7 +331,7 @@
         {"day": 1, "region_id": "G6", "theme": {"zh": "前往高地并确认天气与装备", "en": "Reach the highlands; check weather and gear", "ja": "高地へ移動し、天候と装備を確認", "ko": "고지대로 이동해 날씨와 장비 확인", "id": "Ke dataran tinggi; periksa cuaca dan perlengkapan"}, "suggested_poi_ids": ["mount_batur_jeep", "besakih_temple"]},
         {"day": 2, "region_id": "G6", "theme": {"zh": "日出徒步或吉普路线", "en": "Sunrise hike or jeep route", "ja": "日の出ハイクまたはジープルート", "ko": "일출 하이킹 또는 지프 루트", "id": "Pendakian matahari terbit atau rute jip"}, "suggested_poi_ids": ["mount_batur_trailhead"]},
         {"day": 3, "region_id": "G6", "theme": {"zh": "恢复日：温泉、湖区或短程自然", "en": "Recovery day: hot spring, lake or light nature", "ja": "回復日：温泉、湖、軽い自然散策", "ko": "회복일: 온천, 호수, 가벼운 자연 활동", "id": "Hari pemulihan: pemandian air panas, danau, atau alam ringan"}, "suggested_poi_ids": ["batur_hot_springs", "tukad_cepung_waterfall"]},
-        {"day": 4, "region_id": "G5", "theme": {"zh": "北部高地瀑布扩展", "en": "Northern highland waterfall extension", "ja": "北部高原の滝へ拡張", "ko": "북부 고지대 폭포 확장", "id": "Perpanjangan ke air terjun dataran tinggi utara"}, "suggested_poi_ids": ["banyumala_waterfall", "tamblingan_lake"]},
+        {"day": 4, "region_id": "G5", "theme": {"zh": "住在北部：罗威纳日出与高地自然", "en": "Stay north: Lovina sunrise and highland nature", "ja": "北部滞在：ロビナの日の出と高原の自然", "ko": "북부 숙박: 로비나 일출과 고지대 자연", "id": "Menginap di utara: matahari terbit Lovina dan alam dataran tinggi"}, "suggested_poi_ids": ["lovina_dolphin_watching", "banyumala_waterfall"]},
         {"day": 5, "region_id": "G7", "theme": {"zh": "东部海岸的低强度收尾", "en": "Low-intensity eastern coast finish", "ja": "東海岸で負荷を抑えた締めくくり", "ko": "동부 해안에서 가볍게 마무리", "id": "Akhir santai di pantai timur"}, "suggested_poi_ids": ["amed_beach", "tirta_gangga"]}
       ],
       "optional_regions": ["G5", "G7"],
@@ -346,7 +346,7 @@
       "best_for": ["active_adults", "hikers", "adventure_interest"],
       "not_recommended_for": ["mobility_limit", "late_sleep_schedule"],
       "core_experiences": ["volcano", "sunrise_hike", "highland", "waterfall"],
-      "optional_modules": ["munduk_nature", "east_bali_coast"],
+      "optional_modules": ["lovina_dolphin_overnight", "munduk_nature", "east_bali_coast"],
       "preview_days": 2,
       "driver_supported": true,
       "verification_status": "needs_supplier_confirmation",
@@ -379,7 +379,7 @@
         {"day": 4, "region_id": "G2", "theme": {"zh": "乌鲁瓦图悬崖与文化时刻", "en": "Uluwatu cliffs and a cultural moment", "ja": "ウルワツの断崖と文化の時間", "ko": "울루와뚜 절벽과 문화의 순간", "id": "Tebing Uluwatu dan momen budaya"}, "suggested_poi_ids": ["uluwatu_temple", "bingin_beach"]},
         {"day": 5, "region_id": "G4", "theme": {"zh": "乌布绿色取景扩展", "en": "Ubud greenery visual extension", "ja": "ウブドの緑を撮る拡張日", "ko": "우붓의 초록을 담는 확장일", "id": "Perpanjangan visual hijau Ubud"}, "suggested_poi_ids": ["tegalalang_rice_terrace", "campuhan_ridge_walk"]}
       ],
-      "optional_regions": ["G4"],
+      "optional_regions": ["G4", "G5"],
       "recommended_days": {
         "min": 3,
         "ideal": 5,
@@ -391,7 +391,7 @@
       "best_for": ["photography", "friends", "content_creators", "lifestyle_interest"],
       "not_recommended_for": ["deep_culture_only"],
       "core_experiences": ["golden_hour", "cafe", "design_hotel", "coast"],
-      "optional_modules": ["ubud_visual_day", "private_beach", "gallery"],
+      "optional_modules": ["ubud_visual_day", "lovina_sunrise_photography", "private_beach", "gallery"],
       "preview_days": 3,
       "driver_supported": true,
       "verification_status": "verified"
@@ -668,6 +668,8 @@
     ,
     {"id":"taman_ayun","name":"Pura Taman Ayun","region_id":"G1","node_id":"mengwi","type":"temple","tags":["temple","water_temple","heritage"],"route_ids":["R1","R4","R6"],"official_url":"https://www.indonesia.travel/us/en/destination/bali-nusa-tenggara/bali/pura-taman-ayun","booking_url":"","verification_status":"verified","notes":"UNESCO and national tourism sources confirm Pura Taman Ayun in Mengwi as a royal water temple and a component of Bali's World Heritage cultural landscape, with multi-tiered meru architecture. G1 is an itinerary grouping rather than a coastal-location claim. Recheck opening areas and hours, ticket price, dress guidance, ceremony access, photography rules, maintenance, weather and traffic before travel.","verification":{"reviewed_at":"2026-08-20","verified_scope":["identity","mengwi_location","royal_water_temple_context","world_heritage_component","multi_tiered_meru_context","g1_route_group_boundary"],"live_checks":["opening_areas","opening_hours","ticket_price","dress_guidance","ceremony_access","photography_rules","maintenance","weather","traffic"],"sources":[{"publisher":"UNESCO World Heritage Centre","title":"Cultural Landscape of Bali Province","url":"https://whc.unesco.org/en/list/1194","kind":"international_heritage_registry"},{"publisher":"Ministry of Tourism, Republic of Indonesia","title":"Pura Taman Ayun","url":"https://www.indonesia.travel/us/en/destination/bali-nusa-tenggara/bali/pura-taman-ayun","kind":"government_tourism"}]}},
     {"id":"taman_saraswati","name":"Pura Taman Saraswati / Ubud Water Palace","region_id":"G4","node_id":"ubud","type":"temple","tags":["temple","lotus_pond","culture"],"route_ids":["R1","R4","R6"],"official_url":"https://api2.kemenparekraf.go.id/storage/app/uploads/public/632/96f/a1f/63296fa1f1114224146917.pdf","booking_url":"","verification_status":"verified","notes":"Indonesian tourism records identify Ubud Water Palace / Pura Taman Saraswati in Ubud. The stable identity and visible lotus-pond setting do not verify public access to worship areas or any performance. Recheck opening areas and hours, visitor permission, dress guidance, ceremony access, ticket or contribution, performance schedule, photography rules and temporary closures before travel.","verification":{"reviewed_at":"2026-08-20","verified_scope":["identity","ubud_location","ubud_water_palace_alias","temple_context","visible_lotus_pond_context"],"live_checks":["opening_areas","opening_hours","visitor_permission","dress_guidance","ceremony_access","ticket_or_contribution","performance_schedule","photography_rules","temporary_closures"],"sources":[{"publisher":"Ministry of Tourism and Creative Economy, Republic of Indonesia","title":"Indonesian Adventure Travel Destinations","url":"https://elibrary.kemenpar.go.id/storage/app/uploads/public/668/37d/4bb/66837d4bbc844521945542.pdf","kind":"government_tourism"},{"publisher":"Ministry of Tourism and Creative Economy, Republic of Indonesia","title":"Bali Province Disaster-Resilient Tourism Catalogue","url":"https://api2.kemenparekraf.go.id/storage/app/uploads/public/632/96f/a1f/63296fa1f1114224146917.pdf","kind":"government_registry"}]}},
-    {"id":"sundays_beach_club","name":"Sundays Beach Club","region_id":"G2","node_id":"ungasan","type":"beach_club","tags":["beach","ocean","leisure"],"route_ids":["R3","R6"],"official_url":"https://www.sundaysbeachclub.com/","booking_url":"https://www.sundaysbeachclub.com/","verification_status":"verified","notes":"The official venue site confirms Sundays Beach Club in Ungasan on Bali's Bukit Peninsula, with clifftop arrival and inclinator access to the beachfront. This verifies the venue identity and setting, not admission, activity or sea-condition readiness. Recheck opening hours, pass price and inclusions, reservation availability, tide, weather, swimming and watersports conditions, lifeguard guidance, inclinator operation, driver parking and temporary events before travel.","verification":{"reviewed_at":"2026-08-20","verified_scope":["identity","ungasan_bukit_location","beachfront_setting","clifftop_arrival","inclinator_access","official_booking_path"],"live_checks":["opening_hours","pass_price","pass_inclusions","reservation_availability","tide","weather","swimming_conditions","watersports_availability","lifeguard_guidance","inclinator_operation","driver_parking","temporary_events"],"sources":[{"publisher":"Sundays Beach Club","title":"Sundays Beach Club","url":"https://www.sundaysbeachclub.com/","kind":"official_venue"},{"publisher":"Sundays Beach Club","title":"Frequently Asked Questions","url":"https://www.sundaysbeachclub.com/frequently-asked-questions/","kind":"official_venue"}]}}
+    {"id":"sundays_beach_club","name":"Sundays Beach Club","region_id":"G2","node_id":"ungasan","type":"beach_club","tags":["beach","ocean","leisure"],"route_ids":["R3","R6"],"official_url":"https://www.sundaysbeachclub.com/","booking_url":"https://www.sundaysbeachclub.com/","verification_status":"verified","notes":"The official venue site confirms Sundays Beach Club in Ungasan on Bali's Bukit Peninsula, with clifftop arrival and inclinator access to the beachfront. This verifies the venue identity and setting, not admission, activity or sea-condition readiness. Recheck opening hours, pass price and inclusions, reservation availability, tide, weather, swimming and watersports conditions, lifeguard guidance, inclinator operation, driver parking and temporary events before travel.","verification":{"reviewed_at":"2026-08-20","verified_scope":["identity","ungasan_bukit_location","beachfront_setting","clifftop_arrival","inclinator_access","official_booking_path"],"live_checks":["opening_hours","pass_price","pass_inclusions","reservation_availability","tide","weather","swimming_conditions","watersports_availability","lifeguard_guidance","inclinator_operation","driver_parking","temporary_events"],"sources":[{"publisher":"Sundays Beach Club","title":"Sundays Beach Club","url":"https://www.sundaysbeachclub.com/","kind":"official_venue"},{"publisher":"Sundays Beach Club","title":"Frequently Asked Questions","url":"https://www.sundaysbeachclub.com/frequently-asked-questions/","kind":"official_venue"}]}},
+    {"id":"lovina_beach","name":"Lovina Beach","region_id":"G5","node_id":"lovina","type":"black_sand_beach","tags":["north_coast","black_sand","sunrise","relaxed"],"route_ids":["R1","R2","R5","R6"],"official_url":"https://www.indonesia.travel/uk/en/destination/bali-nusa-tenggara/bali/bali---lovina-beach","booking_url":"","verification_status":"verified","notes":"Indonesia's official tourism site confirms Lovina on Bali's north coast as a quieter volcanic-sand coastal area. This record verifies the place and coastal context only; recheck weather, tide, swimming conditions, beach access, traffic and current facilities before travel.","verification":{"reviewed_at":"2026-08-31","verified_scope":["identity","north_bali_location","volcanic_sand_coast","sunrise_context"],"live_checks":["weather","tide","swimming_conditions","beach_access","traffic","facilities"],"sources":[{"publisher":"Ministry of Tourism, Republic of Indonesia","title":"Lovina Beach","url":"https://www.indonesia.travel/uk/en/destination/bali-nusa-tenggara/bali/bali---lovina-beach","kind":"government_tourism"}]}},
+    {"id":"lovina_dolphin_watching","name":"Lovina Dolphin Watching","region_id":"G5","node_id":"lovina","type":"wildlife_boat_experience","tags":["dolphin_watching","sunrise","boat","wildlife"],"route_ids":["R1","R5","R6"],"official_url":"https://www.indonesia.travel/id/id/destination/bali-nusa-tenggara/bali/lovina-dolphin-watching","booking_url":"","verification_status":"verified","notes":"Official tourism guidance confirms early-morning dolphin-watching trips by small local boats from the Lovina coast. Dolphin sightings are never guaranteed. Confirm the actual licensed operator, departure point and time, boat condition and capacity, safety equipment, wildlife-respect practice, weather, sea conditions, cancellation policy and final price before booking.","verification":{"reviewed_at":"2026-08-31","verified_scope":["experience_identity","lovina_departure_context","early_morning_context","traditional_boat_context"],"live_checks":["operator_identity","departure_point","departure_time","boat_condition","boat_capacity","safety_equipment","wildlife_practice","weather","sea_conditions","cancellation_policy","final_price"],"sources":[{"publisher":"Ministry of Tourism, Republic of Indonesia","title":"Lovina Dolphin Watching","url":"https://www.indonesia.travel/id/id/destination/bali-nusa-tenggara/bali/lovina-dolphin-watching","kind":"government_tourism"}]}}
   ]
 }

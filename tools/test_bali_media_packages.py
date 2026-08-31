@@ -67,6 +67,13 @@ def main() -> None:
         assert all(regions_by_poi.get(poi_id) in region_ids for poi_id in package_pois), f"Package crosses its geographic cluster: {package_id}"
         assert set(package.get("area", {})) >= {"zh", "en", "ja", "ko", "id"}, f"Package area is not localized: {package_id}"
 
+    penida_packages = [item for item in packages["packages"] if item["id"].startswith("penida-")]
+    assert len(penida_packages) == 3
+    assert all(item.get("departure_port") == "Sanur Harbour" for item in penida_packages)
+    assert all(item.get("supplier_candidate") == "Axestone Fast Cruise" for item in penida_packages)
+    assert "north-bali-lovina-overnight" in package_ids
+    assert {"lovina_beach", "lovina_dolphin_watching"} <= active_pois
+
     assert len(package_ids) >= 8, "Expected the initial eight-package catalog"
     assert "poi-media-catalog.json" in bali_html
     assert "assets/js/bali-packages.js" in bali_html

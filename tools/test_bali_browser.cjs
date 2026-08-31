@@ -32,7 +32,7 @@ function check(condition, message) {
       await page.locator('.bali-route-card').first().waitFor();
       const overflow = await page.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth);
       check(overflow <= 1, `Bali overflow at ${viewport.width}px: ${overflow}`);
-      check(await page.locator('[data-package-select]').count() === 8, `Package count at ${viewport.width}px`);
+      check(await page.locator('[data-package-select]').count() === 9, `Package count at ${viewport.width}px`);
       const publicRouteMeta = page.locator('.bali-route-card').first().locator('.bali-route-meta > span');
       check(await publicRouteMeta.count() === 1, `Public route metadata is still overloaded at ${viewport.width}px`);
       const packageCopy = await page.locator('#experience-packages').innerText();
@@ -148,6 +148,7 @@ function check(condition, message) {
     });
     check(semanticControlMetrics.radioWidth <= 2 && semanticControlMetrics.optionHeight >= 44, `Professional choice controls are not semantic cards: ${JSON.stringify(semanticControlMetrics)}`);
     check(semanticControlMetrics.fieldsets === 3 && semanticControlMetrics.profile, 'Professional form lacks the three question groups or live trip profile');
+    check(await freshPreview.locator('[name="hotel_area"] option').count() === 6, 'Professional form lacks the optional hotel-area constraint');
     await freshPreview.locator('.bali-professional-empty').screenshot({ path:path.join(artifactRoot, 'professional-form-390-en.png') });
     await freshPreview.locator('#bali-professional-form button[type="submit"]').click();
     check(await freshPreview.locator('[data-required-group="budget_tier"]').getAttribute('aria-invalid') === 'true', 'Missing required budget tier was not identified');
@@ -158,6 +159,7 @@ function check(condition, message) {
     const freshPreviewRequest = freshPreviewRequests[0];
     check(freshPreviewRequest && freshPreviewRequest.trip_id === '', 'Fresh professional preview did not submit without a saved profile');
     check(freshPreviewRequest.trip_profile.currency === 'USD' && freshPreviewRequest.trip_profile.budget_tier === 'comfort', 'Fresh professional preview did not apply the locale budget tier');
+    check(Object.prototype.hasOwnProperty.call(freshPreviewRequest.trip_profile, 'hotel_area'), 'Fresh professional preview did not send the hotel-area constraint');
     check(await freshPreview.locator('.bali-professional-day.is-locked').count() === 2, 'Fresh seven-day professional preview did not preserve the five-open/two-locked gate');
     check(freshPreviewErrors.length === 0, `Fresh professional preview raised page errors: ${freshPreviewErrors.join('|')}`);
     await freshPreview.locator('#bali-professional-rematch').click();

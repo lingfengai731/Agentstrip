@@ -1,6 +1,6 @@
 {
   "schema_version": "1.0.0",
-  "updated_at": "2026-08-26",
+  "updated_at": "2026-08-31",
   "policy": "Exact reusable place photos are preferred. Generated or area-level media is labelled and must never be presented as an exact venue photo.",
   "images": [
     {
@@ -815,6 +815,35 @@
         "ja": "Virgin Beach / Pantai Perasi のビジュアル参考",
         "ko": "Virgin Beach / Pantai Perasi 시각 참고",
         "id": "Referensi visual Virgin Beach / Pantai Perasi"
+      }
+    },
+    {
+      "image_url": "assets/images/poi/lovina-dolphin-user-approved.webp",
+      "thumbnail_url": "assets/images/poi/lovina-dolphin-user-approved-thumb.webp",
+      "rights": {
+        "status": "approved",
+        "creator": "WanderMind user-provided media",
+        "license_name": "User permission",
+        "license_url": "",
+        "source_url": "",
+        "approval_source": "user_global_confirmation",
+        "approval_date": "2026-08-05",
+        "portrait_consent": "approved",
+        "usage_permission": "approved",
+        "manual_review": "approved",
+        "source_sha256": "94b2803f91a8d2d29e505f2ac62c848bda6b1e64ac1835ade08306e8a14b73f2"
+      },
+      "poi_ids": [
+        "lovina_beach",
+        "lovina_dolphin_watching"
+      ],
+      "media_scope": "experience_context",
+      "alt_text": {
+        "en": "Dolphins and local boats at sunrise off the Lovina coast",
+        "zh": "罗威纳海岸日出时分的海豚与当地小船",
+        "ja": "ロビナ海岸の日の出とイルカ、地元の小舟",
+        "ko": "로비나 해안의 일출, 돌고래와 현지 보트",
+        "id": "Lumba-lumba dan perahu lokal saat matahari terbit di pesisir Lovina"
       }
     }
   ]

@@ -381,6 +381,8 @@
       .bali-package-area .fa { margin-top:2px; color:#d97706; }
       .bali-package-card h3 { margin:13px 0 7px; color:#1f3632; font-size:19px; }
       .bali-package-card p { flex:1; margin:0 0 16px; color:#52605c; font-size:13px; line-height:1.65; }
+      .bali-package-card .bali-package-transport { flex:0 0 auto; margin:-4px 0 16px; padding:10px 12px; border-radius:10px; background:#f4f1e8; color:#405a53; font-size:12px; line-height:1.55; }
+      .bali-package-transport .fa { margin-right:5px; color:#b7791f; }
       .bali-package-card button { min-height:46px; border:1px solid #8fb9ae; border-radius:11px; background:#edf6f3; color:#0f6258; font:800 13px/1.2 inherit; cursor:pointer; }
       .bali-package-card.active button { border-color:#0e7c6b; background:#0e7c6b; color:#fff; }
       .bali-package-summary { display:flex; align-items:center; justify-content:space-between; gap:20px; margin-top:18px; padding:16px 18px; border-radius:14px; background:#0b4d43; color:#fff; }
@@ -392,6 +394,7 @@
       body.dark .bali-package-shell, body.dark .bali-package-card { border-color:#3a3d38; background:#252b28; }
       body.dark .bali-package-card h3 { color:#f0f0ec; }
       body.dark .bali-package-card p, body.dark .bali-package-area, body.dark .bali-package-filters span { color:#cbd5e1; }
+      body.dark .bali-package-card .bali-package-transport { background:#303834; color:#d7e3de; }
       body.dark .bali-package-filters button { border-color:#4b766d; background:#202724; color:#ccfbf1; }
       @media(max-width:767px){.bali-package-shell{padding:16px}.bali-package-grid{grid-template-columns:1fr}.bali-package-summary{display:grid}.bali-package-summary .bali-btn{width:100%;text-align:center}.bali-package-filters{display:grid}.bali-package-filters>div{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));}.bali-package-filters>div:first-child{grid-template-columns:auto repeat(3,minmax(0,1fr))}.bali-package-filters button{min-width:0;padding:8px 6px}.bali-package-filters span{align-self:center}}
       @media(max-width:360px){.bali-package-filters>div,.bali-package-filters>div:first-child{grid-template-columns:repeat(2,minmax(0,1fr))}.bali-package-filters span{grid-column:1/-1}.bali-package-card-top{align-items:flex-start}.bali-package-status{max-width:58%;}}
@@ -439,7 +442,12 @@
        .bali-professional-day-head span { flex:0 0 auto; color:#64748b; font-size:11px; }
        .bali-professional-day p { margin:5px 0 0; font-size:12.5px; }
        .bali-professional-places { display:flex; flex-wrap:wrap; gap:6px; margin-top:10px; }
-       .bali-professional-place { padding:5px 8px; border-radius:12px; background:rgba(14,124,107,.08); color:#0f766e; font-size:11px; font-weight:700; }
+       .bali-professional-place { padding:5px 8px; border-radius:12px; background:rgba(14,124,107,.08); color:#0f766e; font-size:11px; font-weight:700; text-decoration:none; }
+       .bali-professional-place:hover,.bali-professional-place:focus-visible { background:rgba(14,124,107,.16); color:#0b5f55; }
+       .bali-professional-place .fa { margin-left:3px; font-size:9px; }
+       .bali-professional-day .bali-professional-transfer { margin-top:9px; padding:8px 10px; border-radius:9px; background:#f4f1e8; color:#52605c; font-size:11px; line-height:1.5; }
+       .bali-professional-transfer .fa { margin-right:5px; color:#b7791f; }
+       .bali-professional-day .bali-professional-live-note { margin-top:9px; color:#77817d; font-size:10.5px; line-height:1.5; }
        .bali-professional-lock-note { color:#92400e; font-size:12px; line-height:1.55; }
        .bali-professional-actions { display:flex; flex-wrap:wrap; gap:9px; margin-top:18px; }
        .bali-professional-actions .bali-btn { padding:11px 16px; font-size:13px; }
@@ -489,6 +497,7 @@
 	       .bali-professional-choice.is-budget input:checked + span small { color:#0f766e; }
 	       [data-required-group][aria-invalid="true"] { border-color:#b91c1c; box-shadow:0 0 0 3px rgba(185,28,28,.08); }
 	       .bali-professional-form input[type="number"],.bali-professional-form input[type="date"] { width:100%; min-width:0; height:46px; padding:0 12px; border:1px solid #d8d5cc; border-radius:10px; background:#fff; color:#1e293b; font:inherit; }
+	       .bali-professional-select { width:100%; min-width:0; height:46px; padding:0 38px 0 12px; border:1px solid #d8d5cc; border-radius:10px; background:#fff; color:#1e293b; font:inherit; }
 	       .bali-professional-date-range { display:grid; grid-template-columns:minmax(0,1fr) auto minmax(0,1fr); align-items:center; gap:8px; padding:6px; border:1px solid #d8d5cc; border-radius:11px; background:#fff; }
 	       .bali-professional-date-range label { min-width:0; }
 	       .bali-professional-date-caption { display:block; padding:0 8px; color:#77817d; font-size:10px; font-weight:750; }
@@ -518,7 +527,7 @@
        body.dark .bali-professional-empty-intro h3 { color:#f0f0ec; }
        body.dark .bali-professional-form-section { border-color:#3a3d38; background:#1f2420; }
        body.dark .bali-professional-form-section legend,body.dark .bali-professional-field-label { color:#d7e7e3; }
-	       body.dark .bali-professional-choice > span,body.dark .bali-professional-form input[type="number"],body.dark .bali-professional-form input[type="date"],body.dark .bali-professional-stepper,body.dark .bali-professional-money,body.dark .bali-professional-date-range,body.dark .bali-professional-step { border-color:#4b5563; background:#232925; color:#f0f0ec; }
+	       body.dark .bali-professional-choice > span,body.dark .bali-professional-form input[type="number"],body.dark .bali-professional-form input[type="date"],body.dark .bali-professional-select,body.dark .bali-professional-stepper,body.dark .bali-professional-money,body.dark .bali-professional-date-range,body.dark .bali-professional-step { border-color:#4b5563; background:#232925; color:#f0f0ec; }
        body.dark .bali-professional-choice input:checked + span { border-color:#5eead4; background:rgba(45,212,191,.12); color:#99f6e4; }
        body.dark .bali-professional-stepper button { background:#2b312c; color:#99f6e4; }
        body.dark .bali-professional-stepper input[type="number"],body.dark .bali-professional-money input[type="number"] { border-color:#3a3d38; }
@@ -1000,7 +1009,7 @@
   function topFunction() { document.body.scrollTop = 0; document.documentElement.scrollTop = 0; }
 </script>
 <script src="assets/js/i18n.js?v=geo1"></script>
-<script src="assets/js/bali-packages.js?v=20260831p1"></script>
+<script src="assets/js/bali-packages.js?v=20260831p3"></script>
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
 <script>
 (function () {
@@ -1966,7 +1975,7 @@
   }
 
   Promise.all([
-    fetch('assets/data/bali-travel-data.json?v=20260825p3').then(function (response) { if (!response.ok) throw new Error('HTTP ' + response.status); return response.json(); }),
+    fetch('assets/data/bali-travel-data.json?v=20260831p4').then(function (response) { if (!response.ok) throw new Error('HTTP ' + response.status); return response.json(); }),
     fetch('assets/data/image-publish-manifest.json?v=20260825p3').then(function (response) { if (!response.ok) throw new Error('HTTP ' + response.status); return response.json(); }).catch(function () { poiMediaState = 'failed'; return {images:[]}; }),
     fetch('assets/data/poi-media-catalog.json?v=20260826p1').then(function (response) { if (!response.ok) throw new Error('HTTP ' + response.status); return response.json(); }).catch(function () { poiMediaState = 'failed'; return {images:[]}; })
   ])
@@ -2152,7 +2161,7 @@
     applyGalleryFilters();
   }
   Promise.all([
-    fetch('assets/data/bali-travel-data.json?v=20260825p3').then(function(response) { if (!response.ok) throw new Error('HTTP ' + response.status); return response.json(); }),
+    fetch('assets/data/bali-travel-data.json?v=20260831p4').then(function(response) { if (!response.ok) throw new Error('HTTP ' + response.status); return response.json(); }),
     fetch('assets/data/image-publish-manifest.json?v=20260825p3').then(function(response) { if (!response.ok) throw new Error('HTTP ' + response.status); return response.json(); })
   ])
     .then(function(result) {
@@ -2419,8 +2428,8 @@
   document.addEventListener('wm:language-change', function(){ if (activeShot) renderModal(); });
 })();
 </script>
-<script src="assets/js/bali-professional.js?v=p62"></script>
-<script src="assets/js/marketing-events.js?v=p2"></script>
+<script src="assets/js/bali-professional.js?v=20260831p63"></script>
+<script src="assets/js/marketing-events.js?v=20260831p3"></script>
 <script src="assets/js/global-auth.js?v=p53"></script>
 </body>
 </html>

@@ -339,6 +339,29 @@ def init_db():
             "ON portfolio_assets(destination,sha256)"
         )
 
+        # Admins may approve newly uploaded Portfolio images without waiting
+        # for the repository manifest to be regenerated. The approval remains
+        # hash-bound and auditable; it does not weaken authentication or the
+        # five-language publishing requirements.
+        conn.execute(f"""
+            CREATE TABLE IF NOT EXISTS portfolio_publish_approvals (
+                destination       TEXT NOT NULL,
+                sha256            TEXT NOT NULL,
+                approved_by       TEXT NOT NULL,
+                approval_source   TEXT NOT NULL DEFAULT 'admin_upload_confirmation',
+                usage_permission  TEXT NOT NULL DEFAULT 'approved',
+                portrait_consent  TEXT NOT NULL DEFAULT 'approved_or_not_applicable',
+                manual_review     TEXT NOT NULL DEFAULT 'approved',
+                original_filename TEXT DEFAULT '',
+                approved_at       {ts_type} NOT NULL,
+                PRIMARY KEY (destination, sha256)
+            )
+        """)
+        conn.execute(
+            "CREATE INDEX IF NOT EXISTS idx_portfolio_approvals_time "
+            "ON portfolio_publish_approvals(approved_at)"
+        )
+
         # Persistent abuse protection for the driver-request email relay. The
         # client key is an HMAC digest; no raw IP or traveller details are kept.
         conn.execute(f"""

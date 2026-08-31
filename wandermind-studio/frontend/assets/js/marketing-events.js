@@ -10,6 +10,9 @@
     home_professional_route: true,
     bali_public_route_select: true,
     bali_professional_route_start: true,
+    bali_professional_route_match_submit: true,
+    bali_professional_route_match_success: true,
+    bali_professional_route_match_error: true,
     driver_form_start: true,
     driver_request_submitted: true
   };

@@ -2,6 +2,15 @@
   "schema_version": "1.0.0",
   "updated_at": "2026-08-31",
   "policy": "Packages are editable planning products, not instant bookings. Supplier-gated modules require live confirmation before payment or execution.",
+  "transport_policies": {
+    "nusa_penida": {
+      "departure_port": "Sanur Harbour",
+      "supplier_candidate": "Axestone Fast Cruise",
+      "supplier_url": "https://axestonefastcruise.com/",
+      "relationship_source": "Dicky direct supplier contact",
+      "boundary": "WanderMind uses Sanur as the fixed Bali departure point. Axestone is a confirmed supplier candidate, not a guarantee of schedule, vessel, shuttle scope or final price; those details require a live check for each booking."
+    }
+  },
   "packages": [
     {
       "id": "batur-dawn-choice",
@@ -57,9 +66,13 @@
       "area": {"zh":"努沙佩妮达西线","en":"West Nusa Penida","ja":"ヌサ・ペニダ西部","ko":"누사 페니다 서부","id":"Nusa Penida Barat"},
       "title": {"zh":"佩妮达西线一日","en":"Nusa Penida West in One Day","ja":"ヌサ・ペニダ西部1日","ko":"누사 페니다 서부 1일","id":"Nusa Penida Barat Sehari"},
       "summary": {"zh":"以 Kelingking、Broken Beach、Angel's Billabong、Crystal Bay 为候选，按船班和路况删减，不承诺四处全部完成。","en":"Start from Kelingking, Broken Beach, Angel's Billabong and Crystal Bay, then trim the list around boats, roads and daylight.","ja":"4候補から船便・道路・日照に合わせて絞り込み、全て回れるとは約束しません。","ko":"네 후보에서 배편·도로·일광에 맞춰 줄이며 모두 방문을 약속하지 않습니다.","id":"Mulai dari empat kandidat, lalu kurangi sesuai kapal, jalan dan waktu siang; tidak menjanjikan semuanya selesai."},
+      "transport_note": {"zh":"固定从萨努尔港出发；Axestone 为 Dicky 已联系的候选船运公司。每次出发前核对船班、酒店接驳、返程票和最终包含项。","en":"Depart from Sanur Harbour. Axestone is a supplier candidate contacted by Dicky; reconfirm the sailing, hotel shuttle, return ticket and final inclusions for every trip.","ja":"出発港はサヌール固定。Axestone は Dicky が連絡済みの候補で、船便・送迎・往復券・含有項目を毎回確認します。","ko":"사누르 항구에서 출발합니다. Axestone은 Dicky가 연락한 후보 업체이며 배편·호텔 셔틀·왕복권·포함 사항을 매번 확인합니다.","id":"Berangkat tetap dari Pelabuhan Sanur. Axestone adalah kandidat pemasok yang dihubungi Dicky; jadwal kapal, shuttle hotel, tiket pulang-pergi dan semua inklusi wajib dikonfirmasi setiap perjalanan."},
+      "departure_port": "Sanur Harbour",
+      "supplier_candidate": "Axestone Fast Cruise",
+      "supplier_url": "https://axestonefastcruise.com/",
       "core": ["kelingking_beach", "broken_beach", "angels_billabong", "crystal_bay"],
       "add_ons": [],
-      "live_checks": ["fast_boat", "island_driver", "road_and_weather", "entry_fees", "final_price"]
+      "live_checks": ["sanur_check_in", "axestone_sailing", "hotel_shuttle_scope", "return_fast_boat", "island_driver", "road_and_weather", "entry_fees", "final_inclusions", "final_price"]
     },
     {
       "id": "penida-east-one-day",
@@ -71,9 +84,13 @@
       "area": {"zh":"努沙佩妮达东线","en":"East Nusa Penida","ja":"ヌサ・ペニダ東部","ko":"누사 페니다 동부","id":"Nusa Penida Timur"},
       "title": {"zh":"佩妮达东线一日","en":"Nusa Penida East in One Day","ja":"ヌサ・ペニダ東部1日","ko":"누사 페니다 동부 1일","id":"Nusa Penida Timur Sehari"},
       "summary": {"zh":"围绕 Diamond、Atuh 与 Rumah Pohon 安排；“Thousand Islands”名称和入口仍需司机现场确认。","en":"Build around Diamond, Atuh and Rumah Pohon; the Thousand Islands name and access point still need a live driver check.","ja":"Diamond、Atuh、Rumah Pohonを軸にし、Thousand Islandsの名称と入口は現地確認。","ko":"Diamond, Atuh, Rumah Pohon을 중심으로 하며 Thousand Islands 명칭과 진입은 현장 확인이 필요합니다.","id":"Susun Diamond, Atuh dan Rumah Pohon; nama serta akses Thousand Islands tetap perlu konfirmasi langsung."},
+      "transport_note": {"zh":"固定从萨努尔港出发；Axestone 为候选船运公司。船班、酒店接驳、返程票与东线车辆按当天确认。","en":"Depart from Sanur Harbour with Axestone as the supplier candidate. Reconfirm the sailing, hotel shuttle, return ticket and east-side vehicle for the travel date.","ja":"サヌール港から出発し、Axestoneを候補とします。船便、ホテル送迎、往復券、東部車両を当日程で再確認します。","ko":"사누르 항구 출발이며 Axestone이 후보 업체입니다. 여행일의 배편·호텔 셔틀·왕복권·동부 차량을 다시 확인합니다.","id":"Berangkat dari Pelabuhan Sanur dengan Axestone sebagai kandidat. Konfirmasikan jadwal kapal, shuttle hotel, tiket pulang-pergi dan mobil sisi timur sesuai tanggal."},
+      "departure_port": "Sanur Harbour",
+      "supplier_candidate": "Axestone Fast Cruise",
+      "supplier_url": "https://axestonefastcruise.com/",
       "core": ["diamond_beach", "atuh_beach", "rumah_pohon_molenteng"],
       "add_ons": ["thousand_islands_viewpoint"],
-      "live_checks": ["fast_boat", "island_driver", "named_access_point", "road_and_weather", "final_price"]
+      "live_checks": ["sanur_check_in", "axestone_sailing", "hotel_shuttle_scope", "return_fast_boat", "island_driver", "named_access_point", "road_and_weather", "final_inclusions", "final_price"]
     },
     {
       "id": "penida-sea-land-two-day",
@@ -85,9 +102,13 @@
       "area": {"zh":"努沙佩妮达陆地线 + 海上体验","en":"Nusa Penida land route and sea experience","ja":"ヌサ・ペニダ陸路＋海上体験","ko":"누사 페니다 육상 경로 + 해상 체험","id":"Rute darat dan pengalaman laut Nusa Penida"},
       "title": {"zh":"佩妮达海陆两日","en":"Nusa Penida Sea + Land, 2 Days","ja":"ヌサ・ペニダ海陸2日","ko":"누사 페니다 바다+육지 2일","id":"Nusa Penida Laut + Darat, 2 Hari"},
       "summary": {"zh":"第一天集中东/西线陆地，第二天按资质和海况选择浮潜或潜水；潜水不会被当成普通加购。","en":"Use one day for an east or west land route, then choose snorkeling or qualified diving only after operator, health and sea-condition checks.","ja":"陸路1日＋海上1日。ダイビングは事業者・健康・海況確認後のみ。","ko":"육상 하루와 해상 하루로 구성하며 다이빙은 업체·건강·해상 상태 확인 후에만 진행합니다.","id":"Satu hari darat dan satu hari laut; diving hanya setelah operator, kesehatan dan kondisi laut terverifikasi."},
+      "transport_note": {"zh":"固定从萨努尔港往返；Axestone 为船运候选。过夜、返程船班和水上活动供应商分别确认。","en":"Use Sanur Harbour for the round trip, with Axestone as the boat candidate. Confirm the overnight stay, return sailing and marine operator separately.","ja":"往復はサヌール港、船会社候補はAxestone。宿泊、復路便、海上体験事業者は別々に確認します。","ko":"왕복은 사누르 항구, 선박 후보는 Axestone입니다. 숙박·귀항편·해양 활동 업체는 각각 확인합니다.","id":"Perjalanan pergi-pulang melalui Pelabuhan Sanur dengan Axestone sebagai kandidat kapal. Penginapan, kapal pulang dan operator laut dikonfirmasi terpisah."},
+      "departure_port": "Sanur Harbour",
+      "supplier_candidate": "Axestone Fast Cruise",
+      "supplier_url": "https://axestonefastcruise.com/",
       "core": ["diamond_beach", "kelingking_beach"],
       "add_ons": [],
-      "live_checks": ["marine_operator", "certification_or_discover_dive", "equipment", "insurance", "sea_conditions", "final_price"]
+      "live_checks": ["sanur_check_in", "axestone_sailing", "return_fast_boat", "overnight_stay", "marine_operator", "certification_or_discover_dive", "equipment", "insurance", "sea_conditions", "final_price"]
     },
     {
       "id": "south-cliff-sunset",
@@ -102,6 +123,21 @@
       "core": ["melasti_beach", "uluwatu_temple", "jimbaran_bay"],
       "add_ons": ["padang_padang_beach", "gwk"],
       "live_checks": ["traffic", "tide_and_weather", "temple_access", "sunset_time", "final_price"]
+    },
+    {
+      "id": "north-bali-lovina-overnight",
+      "route_id": "R5",
+      "duration_days": 2,
+      "energy": "moderate",
+      "status": "needs_supplier_confirmation",
+      "region_ids": ["G5"],
+      "area": {"zh":"罗威纳北岸 → 门杜克高地","en":"Lovina north coast to the Munduk highlands","ja":"ロビナ北岸 → ムンドゥク高原","ko":"로비나 북부 해안 → 문둑 고지대","id":"Pesisir utara Lovina → dataran tinggi Munduk"},
+      "title": {"zh":"罗威纳日出与北部自然两日","en":"Lovina Sunrise + North Bali Nature","ja":"ロビナの日の出と北部自然2日","ko":"로비나 일출과 북부 자연 2일","id":"Matahari Terbit Lovina + Alam Bali Utara"},
+      "summary": {"zh":"前一晚住北部，清晨从罗威纳出海，再顺路连接火山沙海岸、湖区或一处瀑布；不做南部酒店当天往返，也不承诺一定看到海豚。","en":"Stay in the north, take an early Lovina boat, then continue to the volcanic-sand coast, lakes or one waterfall. Avoid a same-day south-Bali return and never guarantee a dolphin sighting.","ja":"北部に前泊し、早朝ロビナから出航。その後は火山砂の海岸、湖、滝一か所へ。南部からの日帰り往復やイルカ目撃保証はしません。","ko":"북부에서 숙박한 뒤 새벽 로비나 보트를 타고 화산 모래 해안·호수 또는 폭포 한 곳으로 이어갑니다. 남부 당일 왕복과 돌고래 목격을 보장하지 않습니다.","id":"Menginap di utara, naik perahu pagi dari Lovina, lalu lanjut ke pantai pasir vulkanik, danau atau satu air terjun. Hindari pulang-pergi Bali selatan pada hari yang sama dan jangan menjamin melihat lumba-lumba."},
+      "transport_note": {"zh":"建议在罗威纳或门杜克住一晚，把长车程放在前一天下午；清晨出海后按天气与体力选择湖区或瀑布。","en":"Use one night in Lovina or Munduk and place the long transfer on the previous afternoon. After the dawn boat, choose the lakes or a waterfall around weather and energy.","ja":"ロビナまたはムンドゥクに1泊し、長距離移動は前日の午後へ。早朝ボート後は天候と体力で湖か滝を選びます。","ko":"로비나 또는 문둑에서 1박하고 긴 이동은 전날 오후에 배치합니다. 새벽 보트 후 날씨와 체력에 따라 호수 또는 폭포를 고릅니다.","id":"Menginap satu malam di Lovina atau Munduk dan lakukan perjalanan panjang pada sore sebelumnya. Setelah perahu fajar, pilih danau atau air terjun sesuai cuaca dan energi."},
+      "core": ["lovina_dolphin_watching", "lovina_beach"],
+      "add_ons": ["banyumala_waterfall", "tamblingan_lake"],
+      "live_checks": ["north_bali_hotel", "boat_operator", "departure_point_and_time", "boat_capacity", "safety_equipment", "wildlife_practice", "weather", "sea_conditions", "road_time", "waterfall_access", "final_price"]
     },
     {
       "id": "east-bali-water-coast",

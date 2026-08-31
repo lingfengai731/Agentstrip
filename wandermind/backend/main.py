@@ -680,6 +680,7 @@ class PortfolioAssetReq(BaseModel):
     secure_url: str
     response_signature: str
     status: str = "draft"
+    admin_approval: bool = False
 
 
 class PortfolioAssetUpdateReq(BaseModel):
@@ -700,6 +701,7 @@ class PortfolioAssetUpdateReq(BaseModel):
     alt_text: Optional[dict] = None
     verification_status: Optional[str] = None
     status: Optional[str] = None
+    admin_approval: Optional[bool] = None
 
 
 class PortfolioAssetReplaceReq(BaseModel):
@@ -715,6 +717,7 @@ class PortfolioAssetReplaceReq(BaseModel):
     cloudinary_version: int
     secure_url: str
     response_signature: str
+    admin_approval: bool = False
 
 
 class PortfolioReorderReq(BaseModel):
@@ -857,9 +860,63 @@ def _portfolio_approved_hashes() -> set[str]:
     return hashes
 
 
-def _require_portfolio_publish_approval(sha256: str, status: str) -> None:
-    if status == "published" and str(sha256 or "").strip().lower() not in _portfolio_approved_hashes():
-        raise HTTPException(400, "Image must be added to the approved manifest before publishing")
+def _portfolio_publish_approval(
+    conn,
+    *,
+    destination: str,
+    sha256: str,
+    status: str,
+    admin_id: str,
+    admin_approval: bool = False,
+    original_filename: str = "",
+) -> str:
+    """Require a manifest match or persist an explicit admin approval.
+
+    The static image manifest remains the default provenance path. A signed-in
+    administrator can approve a new hash after confirming usage rights and,
+    where people are identifiable, portrait consent. This record is stored in
+    PostgreSQL/SQLite and survives deploys.
+    """
+    if status != "published":
+        return "not_required"
+    normalized_hash = str(sha256 or "").strip().lower()
+    try:
+        if normalized_hash in _portfolio_approved_hashes():
+            return "manifest"
+    except HTTPException:
+        if not admin_approval:
+            raise
+    existing = conn.execute(
+        """SELECT approval_source FROM portfolio_publish_approvals
+           WHERE destination=? AND sha256=?""",
+        (destination, normalized_hash),
+    ).fetchone()
+    if existing:
+        return str(dict(existing).get("approval_source") or "admin_upload_confirmation")
+    if not admin_approval:
+        raise HTTPException(
+            400,
+            "Image needs an approved manifest match or explicit administrator rights confirmation before publishing",
+        )
+    now = int(time.time())
+    conn.execute(
+        """INSERT INTO portfolio_publish_approvals
+           (destination,sha256,approved_by,approval_source,usage_permission,
+            portrait_consent,manual_review,original_filename,approved_at)
+           VALUES (?,?,?,?,?,?,?,?,?)""",
+        (
+            destination,
+            normalized_hash,
+            admin_id,
+            "admin_upload_confirmation",
+            "approved",
+            "approved_or_not_applicable",
+            "approved",
+            _portfolio_text(original_filename, "original_filename", 260),
+            now,
+        ),
+    )
+    return "admin_upload_confirmation"
 
 
 def _cloudinary_sign(params: dict, api_secret: str) -> str:
@@ -1049,9 +1106,14 @@ async def list_admin_portfolio(
     conn = get_db()
     try:
         rows = conn.execute(
-            """SELECT * FROM portfolio_assets
-               WHERE destination=?
-               ORDER BY sort_order ASC, created_at DESC
+            """SELECT pa.*,
+                      CASE WHEN approval.sha256 IS NULL THEN 0 ELSE 1 END AS admin_approved,
+                      approval.approval_source AS approval_source
+               FROM portfolio_assets AS pa
+               LEFT JOIN portfolio_publish_approvals AS approval
+                 ON approval.destination=pa.destination AND approval.sha256=pa.sha256
+               WHERE pa.destination=?
+               ORDER BY pa.sort_order ASC, pa.created_at DESC
                LIMIT 500""",
             (normalized_destination,),
         ).fetchall()
@@ -1160,10 +1222,18 @@ async def create_portfolio_asset(
     destination = _portfolio_destination(data.destination)
     metadata = _validate_portfolio_metadata(data.model_dump())
     storage = _portfolio_storage_payload(data, destination)
-    _require_portfolio_publish_approval(storage["sha256"], metadata["status"])
     now = int(time.time())
     conn = get_db()
     try:
+        _portfolio_publish_approval(
+            conn,
+            destination=destination,
+            sha256=storage["sha256"],
+            status=metadata["status"],
+            admin_id=admin["id"],
+            admin_approval=data.admin_approval,
+            original_filename=storage["original_filename"],
+        )
         max_row = conn.execute(
             "SELECT COALESCE(MAX(sort_order),-10) AS n FROM portfolio_assets WHERE destination=?",
             (destination,),
@@ -1256,7 +1326,15 @@ async def update_portfolio_asset(
         }
         merged.update(data.model_dump(exclude_none=True))
         metadata = _validate_portfolio_metadata(merged)
-        _require_portfolio_publish_approval(existing["sha256"], metadata["status"])
+        _portfolio_publish_approval(
+            conn,
+            destination=existing["destination"],
+            sha256=existing["sha256"],
+            status=metadata["status"],
+            admin_id=admin["id"],
+            admin_approval=bool(data.admin_approval),
+            original_filename=existing.get("original_filename", ""),
+        )
         now = int(time.time())
         published_at = existing.get("published_at")
         archived_at = existing.get("archived_at")
@@ -1303,7 +1381,15 @@ async def replace_portfolio_asset(
             raise HTTPException(404, "Portfolio asset not found")
         existing = dict(row)
         storage = _portfolio_storage_payload(data, existing["destination"])
-        _require_portfolio_publish_approval(storage["sha256"], existing["status"])
+        _portfolio_publish_approval(
+            conn,
+            destination=existing["destination"],
+            sha256=storage["sha256"],
+            status=existing["status"],
+            admin_id=admin["id"],
+            admin_approval=data.admin_approval,
+            original_filename=storage["original_filename"],
+        )
         if storage["cloudinary_public_id"] != existing["cloudinary_public_id"]:
             raise HTTPException(400, "Replacement must preserve the Cloudinary public_id")
         now = int(time.time())
@@ -1814,6 +1900,27 @@ def _lock_professional_route_transaction(conn, trip_id: str, user_id: str = "") 
 _BALI_DATA_PATH = Path(__file__).resolve().parents[2] / "wandermind-studio" / "frontend" / "assets" / "data" / "bali-travel-data.json"
 _BALI_DATA_CACHE = None
 PROFESSIONAL_ROUTE_ADJUSTMENT_LIMIT = int(os.getenv("PROFESSIONAL_ROUTE_ADJUSTMENT_LIMIT", "3"))
+_BALI_HOTEL_REGION_MAP = {
+    "south": {"G1", "G2"},
+    "sanur": {"G3"},
+    "ubud": {"G4"},
+    "north": {"G5"},
+    "east": {"G7"},
+}
+_BALI_REGION_TRANSFER_MINUTES = {
+    frozenset({"G1", "G2"}): (35, 90),
+    frozenset({"G1", "G3"}): (35, 75),
+    frozenset({"G1", "G4"}): (75, 150),
+    frozenset({"G2", "G3"}): (35, 75),
+    frozenset({"G2", "G4"}): (90, 165),
+    frozenset({"G3", "G4"}): (60, 120),
+    frozenset({"G3", "G6"}): (90, 165),
+    frozenset({"G4", "G5"}): (120, 210),
+    frozenset({"G4", "G6"}): (60, 120),
+    frozenset({"G4", "G7"}): (90, 180),
+    frozenset({"G5", "G6"}): (90, 180),
+    frozenset({"G6", "G7"}): (75, 150),
+}
 
 
 def _bali_data() -> dict:
@@ -1855,6 +1962,7 @@ def _normalise_trip_profile(profile: dict) -> dict:
         "budget_tier": str(source.get("budget_tier") or "comfort"),
         "pace": str(source.get("pace") or "balanced"),
         "origin_region": str(source.get("origin_region") or ""),
+        "hotel_area": str(source.get("hotel_area") or "") if str(source.get("hotel_area") or "") in _BALI_HOTEL_REGION_MAP else "",
     }
 
 
@@ -1897,6 +2005,9 @@ def _route_score(route: dict, profile: dict) -> int:
         score += 2
     if profile.get("days", 5) >= (route.get("recommended_days") or {}).get("min", 1):
         score += 1
+    hotel_regions = _BALI_HOTEL_REGION_MAP.get(profile.get("hotel_area"), set())
+    if hotel_regions & (set(route.get("base_regions") or []) | set(route.get("optional_regions") or [])):
+        score += 2
     return score
 
 
@@ -1904,6 +2015,22 @@ def _localized(value, lang: str, fallback: str = "") -> str:
     if isinstance(value, dict):
         return str(value.get(lang) or value.get("en") or value.get("zh") or fallback)
     return str(value or fallback)
+
+
+def _transfer_estimate(from_region: str, to_region: str, lang: str) -> str:
+    if not from_region or not to_region or from_region == to_region:
+        return ""
+    minimum, maximum = _BALI_REGION_TRANSFER_MINUTES.get(
+        frozenset({from_region, to_region}), (120, 240)
+    )
+    templates = {
+        "zh": f"跨区域规划车程约 {minimum}–{maximum} 分钟；出发前查看实时交通。",
+        "en": f"Plan about {minimum}–{maximum} minutes between regions; check live traffic before departure.",
+        "ja": f"地域間の移動目安は約{minimum}〜{maximum}分。出発前に交通状況を確認してください。",
+        "ko": f"지역 간 예상 이동은 약 {minimum}–{maximum}분입니다. 출발 전 실시간 교통을 확인하세요.",
+        "id": f"Perkiraan perjalanan antardaerah sekitar {minimum}–{maximum} menit; periksa lalu lintas terkini sebelum berangkat.",
+    }
+    return templates.get(lang, templates["en"])
 
 
 def _professional_route_document(profile: dict, route_id: str = "", lang: str = "en") -> dict:
@@ -1924,6 +2051,7 @@ def _professional_route_document(profile: dict, route_id: str = "", lang: str = 
         region_ids = list(regions)
     full_days = []
     region_visits = {}
+    previous_region_id = ""
     for index in range(days):
         outline_item = outline[index] if index < len(outline) else {}
         region_id = outline_item.get("region_id") or region_ids[index % len(region_ids)]
@@ -1941,13 +2069,22 @@ def _professional_route_document(profile: dict, route_id: str = "", lang: str = 
         ]
         visit_index = region_visits.get(region_id, 0)
         region_visits[region_id] = visit_index + 1
-        route_pois = []
+        suggested_ids = list(outline_item.get("suggested_poi_ids") or [])
+        suggested_set = set(suggested_ids)
+        route_pois = sorted(
+            [poi for poi in eligible_pois if poi.get("id") in suggested_set],
+            key=lambda poi: suggested_ids.index(poi.get("id")),
+        )
         if eligible_pois:
             start = (visit_index * 3) % len(eligible_pois)
-            route_pois = [
-                eligible_pois[(start + offset) % len(eligible_pois)]
-                for offset in range(min(3, len(eligible_pois)))
-            ]
+            for offset in range(len(eligible_pois)):
+                candidate = eligible_pois[(start + offset) % len(eligible_pois)]
+                if candidate not in route_pois:
+                    route_pois.append(candidate)
+                if len(route_pois) >= min(3, len(eligible_pois)):
+                    break
+        transfer_estimate = _transfer_estimate(previous_region_id, region_id, lang)
+        previous_region_id = region_id
         full_days.append({
             "day": index + 1,
             "region_id": region_id,
@@ -1959,11 +2096,21 @@ def _professional_route_document(profile: dict, route_id: str = "", lang: str = 
                     "name": poi.get("name", ""),
                     "type": poi.get("type", ""),
                     "verification_status": poi.get("verification_status", "pending_review"),
+                    "official_url": poi.get("official_url", ""),
+                    "maps_url": f"https://www.google.com/maps/search/?api=1&query={quote(str(poi.get('name') or '') + ', Bali')}",
+                    "live_checks": list((poi.get("verification") or {}).get("live_checks") or []),
                 }
                 for poi in route_pois
             ],
             "experience_tags": list(route.get("secondary_tags") or [])[:4],
-            "route_note": "Structured route layer; access, timing and availability still require confirmation.",
+            "transfer_estimate": transfer_estimate,
+            "route_note": {
+                "zh": "开放时间、道路、天气与供应商状态需在出发前实时核对。",
+                "en": "Check current opening, roads, weather and supplier availability before departure.",
+                "ja": "出発前に営業時間、道路、天候、事業者の状況を確認してください。",
+                "ko": "출발 전 운영 시간, 도로, 날씨와 업체 이용 가능 여부를 확인하세요.",
+                "id": "Periksa jam buka, jalan, cuaca dan ketersediaan pemasok sebelum berangkat.",
+            }.get(lang, "Check current opening, roads, weather and supplier availability before departure."),
         })
     reasons = {
         "zh": "根据你的天数、同行者、旅行目标、预算和节奏，从 Bali 的 G1–G7 区域事实与 R1–R6 路线家族中匹配。",
@@ -3596,6 +3743,9 @@ _MARKETING_EVENTS = {
     "home_professional_route",
     "bali_public_route_select",
     "bali_professional_route_start",
+    "bali_professional_route_match_submit",
+    "bali_professional_route_match_success",
+    "bali_professional_route_match_error",
     "driver_form_start",
     "driver_request_submitted",
 }

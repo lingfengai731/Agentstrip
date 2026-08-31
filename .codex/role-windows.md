@@ -440,3 +440,14 @@
 - 工程回调：专业路线对重复区域使用确定性轮转，避免相邻日期重复相同前三个景点；AI 失败消息支持原请求重试且不重复用户气泡或后端 prompt；专业路线、司机请求和过期 Token 登录恢复均保留输入并自动恢复；八个 Bali 套餐增加五语言区域信息，Penida 套餐移除不属于同一区域的 Tulamben 扩展。
 - 产品回调：Bali 路线区新增“景点很分散，路线不该绕”的五语言短文案，表达按区域串联、减少回头路的真实价值，不使用“畅通无阻”或“衣食住行无忧”等不可核验承诺。调研报表仅用于吸收区域聚类、转场现实性、选择模块和透明包含项，不复制 OTA 文案或未核验价格。
 - 支付边界：既有 PayPal 成功付款和权益恢复保持不动；取消、decline/pending、重复 webhook、退款复核与幂等已有本地覆盖，但真实 disposable buyer cancel、真实 Sandbox webhook redelivery 和独立负向 canary 尚未形成完整生产证据，继续按外部门禁记录。
+
+## 2026-08-31 North Bali, Portfolio approval and release callback
+
+- 路由：large / L3。Sol 在隔离工作树 `E:\Agentstrip-wt-fullsite-design-20260828` 保留产品边界、跨模块集成、最终回归、Git 与生产判断；原始脏工作树 `E:\Agentstrip` 未修改。
+- Luna 回调一：Hypatia（`01a055c4-7613-77d1-974b-d0e295dbeb6e`，正式 `luna_worker` / `gpt-5.6-luna` / `max`）首次审计因主线程并发产生预期目标 diff，按 STOP 返回 blocked，未修改文件；额度中断后的第二次只读状态无法从新运行时查询，按协议记录为 `unknown_after_quota`，不得写成完成。
+- Luna 回调二：Hooke（`01a05790-eba1-75c1-b647-05a2973d2b66`，正式 `luna_worker` / `gpt-5.6-luna` / `max`）在代码冻结后启动替代只读审计；达到 10 分钟基线并追加一次 2 分钟收敛窗口后仍无 final，关闭时 `previous_status=running`，最终通知为 `shutdown`，零已知文件修改。Sol 独立复核实际数据、diff 与测试，未采用不存在的 Luna 结论。
+- 工程回调：Portfolio 管理员可对未在静态 manifest 的已授权图片作一次显式批准，后端持久记录哈希、管理员、许可来源与时间；未勾选仍失败关闭，既有 manifest 继续有效。Lovina 原图保持不动，生成 1800px WebP 与缩略图并写入媒体目录。
+- 路线回调：G5 补齐 Lovina 北海岸与清晨海豚定位；R1、R2、R5、R6 加入北部过夜或可选模块，新增北巴厘岛两日套餐。64 个路线就绪 POI 全有媒体映射，六条路线无 A-B-A 区域回跳，相邻日期建议 POI 无重复；不把调研报告全部景点冒充为已核验路线数据。
+- 佩妮达边界：三套 Penida 套餐固定 Sanur Harbour 出发，Axestone 仅记录为 Dicky 已联系的候选船运公司；船班、酒店接驳、返程票、岛上车辆、包含项和最终价格每单实时确认。Lovina 海豚套餐明确不保证野生动物出现。
+- QA 回调：91/91 后端测试、64/64 媒体与 9 套套餐门禁、Node/Python 语法和 `git diff --check` 通过；本机 Playwright 完成 320/390/768/1440、五语言、7 天 5+2 预览、输入保存/重新匹配、PayPal 取消、Portfolio 筛选、司机交接与 AI 深链，真实退出码 0。
+- 发布预检：GitHub CLI 当前未认证；Git 凭据能否推送需由实际 push 验证。Render CLI 已认证，但 Agentstrip 服务在 `2026-08-31T11:30Z` 左右显示 `suspended` / `billing`；在服务恢复前不得把推送写成已部署。

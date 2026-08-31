@@ -357,8 +357,11 @@ class ProductAccessTests(unittest.TestCase):
             "ai-tool.html", "bali.html", "find-driver.html",
         ):
             source = (studio / name).read_text(encoding="utf-8")
-            self.assertIn("marketing-events.js?v=p2", source, name)
+            self.assertIn("marketing-events.js?v=", source, name)
             self.assertIn('href="privacy.html"', source, name)
+        self.assertIn("bali_professional_route_match_submit", measurement)
+        self.assertIn("bali_professional_route_match_success", measurement)
+        self.assertIn("bali_professional_route_match_error", measurement)
         sitemap = self._run(self._request("GET", "/sitemap.xml"))
         self.assertEqual(sitemap.status_code, 200)
         self.assertIn("https://wandermind.cc/privacy", sitemap.text)
@@ -616,6 +619,22 @@ class ProductAccessTests(unittest.TestCase):
         self.assertTrue(seen)
         self.assertIn("batur_hot_springs", seen)
         self.assertTrue(excluded.isdisjoint(seen))
+
+    def test_professional_route_uses_outline_priorities_and_transfer_checks(self):
+        profile = main._normalise_trip_profile({
+            "days": 5,
+            "pace": "active",
+            "goals": ["photo"],
+            "hotel_area": "north",
+        })
+        document = main._professional_route_document(profile, "R5", "en")
+        self.assertEqual(profile["hotel_area"], "north")
+        day_four = document["full_days"][3]
+        self.assertEqual(day_four["region_id"], "G5")
+        self.assertIn("lovina_dolphin_watching", {place["id"] for place in day_four["places"]})
+        self.assertTrue(day_four["transfer_estimate"])
+        self.assertTrue(all(place["maps_url"].startswith("https://www.google.com/maps/") for place in day_four["places"]))
+        self.assertTrue(all(place["live_checks"] for place in day_four["places"]))
 
     def test_concurrent_professional_order_creation_returns_one_order(self):
         email = f"order-race-{uuid.uuid4().hex}@example.test"
@@ -1069,9 +1088,11 @@ class ProductAccessTests(unittest.TestCase):
         self.assertNotIn("Real-time pricing across Booking", i18n)
         self.assertNotIn("六项 AI 驱动的服务", i18n)
         self.assertIn('id="professional-planner"', bali_html)
-        self.assertIn("assets/js/bali-professional.js?v=p62", bali_html)
+        self.assertIn("assets/js/bali-professional.js?v=20260831p63", bali_html)
         self.assertNotIn("ai-tool.html?professional=1", bali_html)
         self.assertNotIn("professional_requested", ai_js)
+        self.assertNotIn("Visa on arrival ~$35", ai_js)
+        self.assertNotIn("落地签约 $35", ai_js)
         self.assertIn("history.replaceState({}, document.title, window.location.pathname);", ai_js)
         self.assertIn("authHeaders()", ai_js)
         self.assertIn("requestAuthRecovery()", ai_js)
@@ -1081,7 +1102,8 @@ class ProductAccessTests(unittest.TestCase):
         self.assertIn("window.addEventListener('wm:bali-route-selected'", professional_js)
         self.assertIn("route_id:state.pendingRouteId || ''", professional_js)
         self.assertIn("bali-professional-adjustments-badge", bali_html)
-        self.assertEqual(professional_js.count("adjustScope:"), 5)
+        self.assertEqual(professional_js.count("adjustScope:"), 10)
+        self.assertIn("hotel_area", professional_js)
         self.assertEqual(professional_js.count("routeSwitchPending:"), 5)
         self.assertEqual(professional_js.count("tripUnavailable:"), 5)
         self.assertIn("/api/bali/professional-route/recent-unlocked", professional_js)
@@ -2593,7 +2615,7 @@ class ProductAccessTests(unittest.TestCase):
         route_ids = {route["id"] for route in data["routes"]}
         poi_ids = [poi["id"] for poi in data["pois"]]
         poi_by_id = {poi["id"]: poi for poi in data["pois"]}
-        self.assertEqual(len(poi_ids), 62)
+        self.assertGreaterEqual(len(poi_ids), 64)
         self.assertEqual(len(poi_ids), len(set(poi_ids)))
         verification_states = {
             "verified",
@@ -2665,6 +2687,8 @@ class ProductAccessTests(unittest.TestCase):
             "taman_saraswati",
             "sundays_beach_club",
             "batur_hot_springs",
+            "lovina_beach",
+            "lovina_dolphin_watching",
         }
         self.assertEqual(
             {poi["id"] for poi in data["pois"] if poi["verification_status"] == "verified"},
@@ -3590,7 +3614,33 @@ class ProductAccessTests(unittest.TestCase):
                     )
                 )
             self.assertEqual(blocked_publish.status_code, 400, blocked_publish.text)
-            self.assertIn("approved manifest", blocked_publish.text)
+            self.assertIn("administrator rights confirmation", blocked_publish.text)
+
+            with patch.object(main, "_portfolio_approved_hashes", return_value=set()):
+                admin_published = self._run(
+                    self._request(
+                        "PATCH",
+                        f"/api/admin/portfolio/assets/{second['id']}",
+                        token=self.admin_token,
+                        json={"status": "published", "admin_approval": True},
+                    )
+                )
+            self.assertEqual(admin_published.status_code, 200, admin_published.text)
+            approvals = self._run(
+                self._request("GET", "/api/admin/portfolio?destination=bali", token=self.admin_token)
+            ).json()["assets"]
+            approved_second = next(item for item in approvals if item["id"] == second["id"])
+            self.assertTrue(approved_second["admin_approved"])
+            approval_conn = main.get_db()
+            try:
+                approval_row = approval_conn.execute(
+                    "SELECT * FROM portfolio_publish_approvals WHERE destination=? AND sha256=?",
+                    ("bali", second["sha256"]),
+                ).fetchone()
+            finally:
+                approval_conn.close()
+            self.assertEqual(dict(approval_row)["approved_by"], self.admin_id)
+            self.assertEqual(dict(approval_row)["approval_source"], "admin_upload_confirmation")
 
             unapproved_create = {
                 "destination": "bali",
@@ -3645,6 +3695,19 @@ class ProductAccessTests(unittest.TestCase):
                     )
                 )
             self.assertEqual(blocked_replacement.status_code, 400, blocked_replacement.text)
+
+            with patch.object(main, "_portfolio_approved_hashes", return_value=set()):
+                admin_replacement_payload = dict(unapproved_replacement)
+                admin_replacement_payload["admin_approval"] = True
+                admin_replaced = self._run(
+                    self._request(
+                        "POST",
+                        f"/api/admin/portfolio/assets/{first['id']}/replace",
+                        token=self.admin_token,
+                        json=admin_replacement_payload,
+                    )
+                )
+            self.assertEqual(admin_replaced.status_code, 200, admin_replaced.text)
 
             replacement = signed_upload(
                 "lovina-replacement.jpg", "3", replacement_asset_id=first["id"]
@@ -3744,7 +3807,7 @@ class ProductAccessTests(unittest.TestCase):
         self.assertIn("multiple", admin_html)
         self.assertIn('id="manifestStatus"', admin_html)
         self.assertIn('id="queueDialog"', admin_html)
-        self.assertIn("admin-portfolio.js?v=p6", admin_html)
+        self.assertIn("admin-portfolio.js?v=20260831p7", admin_html)
         self.assertIn('id="uploadDefaults"', admin_html)
         self.assertNotIn('id="uploadDefaults" open', admin_html)
         self.assertIn("Approved images are filled automatically", admin_html)
@@ -3773,7 +3836,9 @@ class ProductAccessTests(unittest.TestCase):
         self.assertIn("isSupportedImageFile(file)", admin_js)
         self.assertIn("t('preview')", admin_js)
         self.assertIn("https://api.cloudinary.com", Path(main.__file__).read_text(encoding="utf-8"))
-        self.assertIn("_require_portfolio_publish_approval", Path(main.__file__).read_text(encoding="utf-8"))
+        self.assertIn("_portfolio_publish_approval", Path(main.__file__).read_text(encoding="utf-8"))
+        self.assertIn('name="admin_approval"', admin_html)
+        self.assertIn("approveAndPublish", admin_js)
         self.assertIn("_validate_portfolio_cleanup_claim", Path(main.__file__).read_text(encoding="utf-8"))
         self.assertIn("/image/destroy", Path(main.__file__).read_text(encoding="utf-8"))
         self.assertNotIn("CLOUDINARY_API_SECRET", admin_js)

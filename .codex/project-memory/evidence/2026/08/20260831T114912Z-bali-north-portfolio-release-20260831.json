@@ -1,0 +1,22 @@
+{
+  "schema_version": 1,
+  "evidence_id": "ev-20260831T114912Z-bali-north-portfolio-release-20260831",
+  "task_ref": "bali-north-portfolio-release-20260831",
+  "owner": "sol-main",
+  "captured_at": "2026-08-31T11:49:12Z",
+  "status": "verified",
+  "claim": "Verified local release candidate: auditable admin Portfolio approval, Lovina north coverage, Sanur-only Penida packages, hotel-area constraints and route-match telemetry",
+  "source": {
+    "kind": "git",
+    "repository": "https://github.com/lingfengai731/Agentstrip.git",
+    "commit": "2f3d55d67c600c5fd7198fa56077784d99bebdca",
+    "branch": "codex/fullsite-design-audit-20260828",
+    "worktree": "E:\\Agentstrip-wt-fullsite-design-20260828",
+    "dirty": true
+  },
+  "verification": {
+    "command": "python -m unittest tests.test_product_access; python tools/test_bali_media_packages.py; node tools/test_bali_browser.cjs; node --check; python -m py_compile; git diff --check",
+    "result": "91 backend tests passed; 64/64 POIs covered; 9 packages; browser matrix exit 0 at 320/390/768/1440; syntax and diff checks passed"
+  },
+  "notes": "Luna replacement returned no final after the required wait and was shutdown; Sol independently verified. Render service is billing-suspended, so this checkpoint is not deployment proof."
+}

@@ -46,11 +46,11 @@
     id:{autoFillTitle:'Informasi gambar yang disetujui terisi otomatis',autoFillHelp:'Setelah cocok dengan manifest, judul, lokasi, rute, dan teks multibahasa disimpan bersama gambar. Draf tidak perlu diisi manual.',advancedMetadata:'Data opsional untuk gambar yang tidak cocok',advancedMetadataHelp:'Buka hanya jika gambar tidak ada di manifest yang disetujui. Setiap gambar juga dapat diedit dari kartu antrean.',autoMetadata:'Data otomatis',manualMetadataNeeded:'Tidak cocok: tinjau data sebelum menerbitkan',reviewAutoMetadata:'Lihat atau ubah data otomatis',publishNeedsManifestReview:'Tambahkan gambar ke manifest yang disetujui sebelum menerbitkan. Gambar yang belum cocok tetap dapat disimpan sebagai draf.',manifestApprovalRequired:'Tambahkan gambar ini ke manifest yang disetujui sebelum menerbitkan.',draftUploadFinished:'Draf tersimpan. Gambar, catatan database, dan pratinjau sudah siap.',publishedUploadFinished:'Gambar telah diterbitkan dan data sudah tersedia di Portfolio.',uploadRolledBack:'Penyimpanan ditolak, jadi file cloud yang belum terhubung sudah dihapus. Gambar siap diunggah ulang.',uploadRecovered:'Server ternyata sudah menyimpan gambar ini. Status selesai telah dipulihkan.',uploadRecoveryPending:'Hasil penyimpanan belum terkonfirmasi. File cloud dipertahankan; coba pemulihan aman sebelum mengunggah ulang.',retryRecovery:'Coba pemulihan aman',uploadCleanupFailed:'Penyimpanan ditolak, tetapi pembersihan cloud belum terkonfirmasi. Coba pembersihan lagi sebelum mengunggah ulang.',retryCleanup:'Coba lagi pembersihan cloud'}
   };
   var PUBLISH_GATE_COPY = {
-    en:{publishNeedsMetadata:'Publishing requires a place name plus title, description and alt text in all five languages.'},
-    zh:{publishNeedsMetadata:'发布前必须填写地点名称，并补齐五语言标题、说明和替代文本。'},
-    ja:{publishNeedsMetadata:'公開には場所名と、5言語すべてのタイトル・説明・代替テキストが必要です。'},
-    ko:{publishNeedsMetadata:'공개하려면 장소 이름과 5개 언어의 제목, 설명, 대체 텍스트가 모두 필요합니다.'},
-    id:{publishNeedsMetadata:'Publikasi memerlukan nama tempat serta judul, deskripsi, dan teks alternatif lengkap dalam lima bahasa.'}
+    en:{publishNeedsMetadata:'Publishing requires a place name plus title, description and alt text in all five languages.',rightsConfirm:'I confirm WanderMind has permission to use these images and, where people are identifiable, their portrait consent has been obtained. Record this approval with my administrator account.',rightsRequired:'Confirm image rights before publishing an image that is not in the approved manifest.',approveAndPublish:'Approve & publish',adminApproved:'Approved by an administrator',adminApprovalConfirm:'Confirm that WanderMind has usage rights and, where applicable, portrait consent for this image, then publish it?'},
+    zh:{publishNeedsMetadata:'发布前必须填写地点名称，并补齐五语言标题、说明和替代文本。',rightsConfirm:'我确认 WanderMind 已获得这些图片的使用许可；如图片中有人物可识别，也已取得肖像授权。请将本次批准记录到我的管理员账户。',rightsRequired:'发布未匹配批准清单的图片前，请先确认图片使用权。',approveAndPublish:'批准并发布',adminApproved:'管理员已批准',adminApprovalConfirm:'确认 WanderMind 已取得这张图片的使用许可，并在适用时取得肖像授权，然后立即发布吗？'},
+    ja:{publishNeedsMetadata:'公開には場所名と、5言語すべてのタイトル・説明・代替テキストが必要です。',rightsConfirm:'WanderMind が画像の利用許可を得ており、人物を識別できる場合は肖像利用の同意も得ていることを確認します。この承認を管理者アカウントに記録します。',rightsRequired:'承認済みマニフェストにない画像を公開する前に、利用権を確認してください。',approveAndPublish:'承認して公開',adminApproved:'管理者承認済み',adminApprovalConfirm:'この画像の利用許可と、該当する場合の肖像同意を確認して公開しますか？'},
+    ko:{publishNeedsMetadata:'공개하려면 장소 이름과 5개 언어의 제목, 설명, 대체 텍스트가 모두 필요합니다.',rightsConfirm:'WanderMind가 이미지 사용 허가를 받았고, 식별 가능한 인물이 있는 경우 초상 사용 동의도 받았음을 확인합니다. 이 승인을 관리자 계정에 기록합니다.',rightsRequired:'승인 매니페스트에 없는 이미지를 공개하기 전에 사용 권한을 확인하세요.',approveAndPublish:'승인 후 공개',adminApproved:'관리자 승인됨',adminApprovalConfirm:'이 이미지의 사용 권한과 필요한 경우 초상 동의를 확인하고 공개하시겠습니까?'},
+    id:{publishNeedsMetadata:'Publikasi memerlukan nama tempat serta judul, deskripsi, dan teks alternatif lengkap dalam lima bahasa.',rightsConfirm:'Saya mengonfirmasi bahwa WanderMind memiliki izin penggunaan gambar ini dan, jika ada orang yang dapat dikenali, persetujuan potret juga telah diperoleh. Catat persetujuan ini pada akun administrator saya.',rightsRequired:'Konfirmasikan hak penggunaan sebelum menerbitkan gambar yang tidak ada di manifest.',approveAndPublish:'Setujui & terbitkan',adminApproved:'Disetujui administrator',adminApprovalConfirm:'Konfirmasikan hak penggunaan dan, bila berlaku, persetujuan potret untuk gambar ini lalu terbitkan?'}
   };
   LANGS.forEach(function (lang) { Object.assign(COPY[lang], QUEUE_COPY[lang], SIMPLE_UPLOAD_COPY[lang], PUBLISH_GATE_COPY[lang]); });
 
@@ -218,7 +218,8 @@
       route_ids:splitList(data.get('route_ids')), extension_ids:splitList(data.get('extension_ids')), tags:splitList(data.get('tags')),
       mood:String(data.get('mood') || '').trim(), photography_style:String(data.get('photography_style') || '').trim(),
       title:localized.title, description:localized.description, alt_text:localized.alt_text,
-      verification_status:String(data.get('verification_status') || 'caption-only'), status:status || 'draft'
+      verification_status:String(data.get('verification_status') || 'caption-only'), status:status || 'draft',
+      admin_approval:Boolean(data.get('admin_approval'))
     };
   }
 
@@ -400,6 +401,7 @@
     var uploaded = await uploadToCloudinary(record.file, signature, function (progress) { record.progress = progress; renderQueue(); });
     record.state = 'saving'; record.progress = 100; renderQueue();
     var metadata = recordMetadata(record, baseMetadata, status);
+    metadata.admin_approval = Boolean(status === 'published' && !record.manifestMatch && baseMetadata.admin_approval);
     metadata.original_filename = record.file.name;
     metadata.sha256 = record.sha256;
     metadata.file_bytes = uploaded.bytes;
@@ -444,7 +446,7 @@
     if (!state.storageReady) return showAlert(t('storageMissing'));
     var status = event.submitter && event.submitter.dataset.status || 'draft';
     var metadata = metadataFromForm(uploadForm, status);
-    if (status === 'published' && selected.some(function (record) { return !record.manifestMatch; })) return showAlert(t('publishNeedsManifestReview'));
+    if (status === 'published' && selected.some(function (record) { return !record.manifestMatch; }) && !metadata.admin_approval) return showAlert(t('rightsRequired'));
     if (status === 'published' && selected.some(function (record) {
       var itemMetadata = recordMetadata(record, metadata, status);
       return !hasCompletePublishedMetadata(itemMetadata);
@@ -466,7 +468,7 @@
   }
 
   function statusLabel(status) { return t(status) || status; }
-  function isApprovedPortfolioAsset(asset) { return Boolean(state.manifestByHash[String(asset.sha256 || '').toLowerCase()]); }
+  function isApprovedPortfolioAsset(asset) { return Boolean(asset && (asset.admin_approved || state.manifestByHash[String(asset.sha256 || '').toLowerCase()])); }
   function renderAssets() {
     var search = String(document.getElementById('assetSearch').value || '').trim().toLowerCase();
     var status = document.getElementById('statusFilter').value;
@@ -479,12 +481,12 @@
     assetList.innerHTML = filtered.map(function (asset, index) {
       var position = state.assets.findIndex(function (item) { return item.id === asset.id; });
       var approved = isApprovedPortfolioAsset(asset);
-      var approvalNote = asset.status !== 'published' && !approved ? '<p class="wm-help">' + escapeHtml(t('manifestApprovalRequired')) + '</p>' : '';
+      var approvalNote = asset.admin_approved ? '<p class="wm-help">' + escapeHtml(t('adminApproved')) + '</p>' : asset.status !== 'published' && !approved ? '<p class="wm-help">' + escapeHtml(t('rightsRequired')) + '</p>' : '';
       return '<article class="wm-asset" data-asset-id="' + escapeHtml(asset.id) + '" draggable="' + (allowDrag ? 'true' : 'false') + '">' +
         '<img src="' + escapeHtml(asset.thumbnail_url) + '" width="112" height="94" alt="' + escapeHtml(localeValue(asset.alt_text)) + '" loading="lazy"><div><div class="wm-asset-top"><div><h3>' + escapeHtml(localeValue(asset.title) || asset.place_name || asset.original_filename) + '</h3><p>' + escapeHtml([asset.area,asset.region,asset.primary_theme].filter(Boolean).join(' · ')) + '</p></div><span class="wm-chip" data-status="' + escapeHtml(asset.status) + '">' + escapeHtml(statusLabel(asset.status)) + '</span></div>' +
         '<p>' + escapeHtml(asset.width + ' × ' + asset.height + ' · ' + String(asset.format || '').toUpperCase() + ' · ' + (asset.verification_status || '')) + '</p>' + approvalNote +
         '<div class="wm-asset-actions"><a class="wm-btn wm-btn-secondary" href="' + escapeHtml(asset.web_url) + '" target="_blank" rel="noopener">' + escapeHtml(t('preview')) + '</a><button class="wm-btn wm-btn-secondary" type="button" data-action="edit">' + escapeHtml(t('edit')) + '</button>' +
-        (asset.status !== 'published' && approved ? '<button class="wm-btn wm-btn-primary" type="button" data-action="published">' + escapeHtml(t('publish')) + '</button>' : '') +
+        (asset.status !== 'published' ? '<button class="wm-btn wm-btn-primary" type="button" data-action="' + (approved ? 'published' : 'approve-published') + '">' + escapeHtml(t(approved ? 'publish' : 'approveAndPublish')) + '</button>' : '') +
         (asset.status !== 'hidden' ? '<button class="wm-btn wm-btn-secondary" type="button" data-action="hidden">' + escapeHtml(t('hide')) + '</button>' : '') +
         (asset.status !== 'archived' ? '<button class="wm-btn wm-btn-danger" type="button" data-action="archived">' + escapeHtml(t('archive')) + '</button>' : '') +
         '<button class="wm-btn wm-btn-secondary" type="button" data-action="up"' + (position <= 0 ? ' disabled' : '') + '>' + escapeHtml(t('moveUp')) + '</button><button class="wm-btn wm-btn-secondary" type="button" data-action="down"' + (position >= state.assets.length - 1 ? ' disabled' : '') + '>' + escapeHtml(t('moveDown')) + '</button></div></div></article>';
@@ -528,10 +530,13 @@
   async function changeStatus(id, status) {
     clearAlert();
     var asset = state.assets.find(function (item) { return item.id === id; });
-    if (status === 'published' && (!asset || !isApprovedPortfolioAsset(asset))) return showAlert(t('manifestApprovalRequired'));
+    var adminApproval = status === 'approve-published';
+    if (adminApproval) status = 'published';
+    if (adminApproval && !window.confirm(t('adminApprovalConfirm'))) return;
+    if (status === 'published' && (!asset || (!isApprovedPortfolioAsset(asset) && !adminApproval))) return showAlert(t('rightsRequired'));
     if (status === 'published' && !hasCompletePublishedMetadata(asset)) return showAlert(t('publishNeedsMetadata'));
     if (status === 'archived' && !window.confirm(t('archiveConfirm'))) return;
-    try { await api('/api/admin/portfolio/assets/' + encodeURIComponent(id), { method:'PATCH', body:{ status:status } }); await loadAssets(); }
+    try { await api('/api/admin/portfolio/assets/' + encodeURIComponent(id), { method:'PATCH', body:{ status:status, admin_approval:adminApproval } }); await loadAssets(); }
     catch (error) { showAlert(error.message || t('networkError')); }
   }
 
@@ -582,10 +587,17 @@
       var details = await Promise.all([digestFile(file), imageDimensions(preview).catch(function () { return { width:0, height:0 }; })]);
       var signature = await api('/api/admin/portfolio/upload-signature', { method:'POST', body:{ destination:'bali', filename:file.name, replacement_asset_id:asset.id } });
       var uploaded = await uploadToCloudinary(file, signature, function () {});
+      var replacementApproved = Boolean(state.manifestByHash[String(details[0] || '').toLowerCase()]);
+      var adminApproval = false;
+      if (asset.status === 'published' && !replacementApproved) {
+        adminApproval = window.confirm(t('adminApprovalConfirm'));
+        if (!adminApproval) throw new Error(t('rightsRequired'));
+      }
       await api('/api/admin/portfolio/assets/' + encodeURIComponent(asset.id) + '/replace', { method:'POST', body:{
         original_filename:file.name, sha256:details[0], file_bytes:uploaded.bytes, width:uploaded.width || details[1].width, height:uploaded.height || details[1].height,
         format:uploaded.format || fileFormat(file), image_metadata:uploaded.image_metadata || {}, cloudinary_asset_id:uploaded.asset_id,
-        cloudinary_public_id:uploaded.public_id, cloudinary_version:uploaded.version, secure_url:uploaded.secure_url, response_signature:uploaded.signature
+        cloudinary_public_id:uploaded.public_id, cloudinary_version:uploaded.version, secure_url:uploaded.secure_url, response_signature:uploaded.signature,
+        admin_approval:adminApproval
       } });
       closeEditor(); showAlert(t('replacementSaved')); await loadAssets();
     } catch (error) { showAlert(error.message || t('networkError')); }

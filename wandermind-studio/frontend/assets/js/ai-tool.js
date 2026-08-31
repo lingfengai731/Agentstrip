@@ -106,8 +106,6 @@ const DESTS = {
         desc:{ zh:'顶级冲浪、悬崖神庙、凯撒火舞',en:'World-class surf, clifftop temple, Kecak fire dance',ja:'世界クラスのサーフ、断崖の寺院、ケチャック火の踊り',ko:'세계적 서핑, 절벽 사원, 케착 불춤',id:'Surfing kelas dunia, pura tebing, tari Kecak api' } },
     ],
     tips: [
-      { cls:'tag-blue', title:{ zh:'签证',en:'Visa',ja:'ビザ',ko:'비자',id:'Visa' }, tag:{ zh:'中国护照',en:'CN Passport',ja:'中国パスポート',ko:'중국 여권',id:'Paspor CN' },
-        desc:{ zh:'落地签约 $35，备美元现金',en:'Visa on arrival ~$35, bring USD cash',ja:'到着ビザ約$35、米ドル現金を準備',ko:'도착 비자 약 $35, USD 현금 준비',id:'VOA ~$35, siapkan USD tunai' } },
       { cls:'tag-green', driver: true,
         title:{ zh:'巴厘岛本地司机',en:'Bali local drivers',ja:'バリ島の現地ドライバー',ko:'발리 현지 기사',id:'Driver lokal Bali' },
         tag:{ zh:'表单内选择',en:'Choose in form',ja:'フォームで選択',ko:'양식에서 선택',id:'Pilih di formulir' },
