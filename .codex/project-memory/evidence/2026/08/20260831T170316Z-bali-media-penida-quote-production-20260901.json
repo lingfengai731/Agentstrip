@@ -1,0 +1,22 @@
+{
+  "schema_version": 1,
+  "evidence_id": "ev-20260831T170316Z-bali-media-penida-quote-production-20260901",
+  "task_ref": "bali-media-penida-quote-production-20260901",
+  "owner": "sol-main",
+  "captured_at": "2026-08-31T17:03:16Z",
+  "status": "verified",
+  "claim": "GitHub main and Render production run 752a02d: 29 licensed POI images are delivered from WanderMind-controlled WebP paths, the scoped West Nusa Penida package publishes one IDR 2,000,000 total quote for 2 adults, and mobile navigation controls have accessible names.",
+  "source": {
+    "kind": "git",
+    "repository": "https://github.com/lingfengai731/Agentstrip.git",
+    "commit": "752a02d4d60b956c6827c3f41f979f03fba3bd31",
+    "branch": "codex/fullsite-design-audit-20260828",
+    "worktree": "E:\\Agentstrip-wt-fullsite-design-20260828",
+    "dirty": true
+  },
+  "verification": {
+    "command": "104 backend tests; Bali browser matrix; 18-page public control matrix; WebKit 390/1440 media test; Render deploy dep-daar4he417fc73c3efrg; production HTTP probes",
+    "result": "104 tests OK with 13 environment skips; 64/64 POIs; 204 local controls and 413 links; production 205 controls and 413 links; WebKit images decoded; external display URLs=0; deploy live at 752a02d."
+  },
+  "notes": "Authenticated Portfolio upload-publish E2E remains unverified because safe browser control was unavailable; PayPal abnormal webhook redelivery and first social posting remain external actions. No environment variables, user data, orders, entitlements or original source images were changed."
+}
