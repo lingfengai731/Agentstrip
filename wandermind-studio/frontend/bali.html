@@ -383,6 +383,11 @@
       .bali-package-card p { flex:1; margin:0 0 16px; color:#52605c; font-size:13px; line-height:1.65; }
       .bali-package-card .bali-package-transport { flex:0 0 auto; margin:-4px 0 16px; padding:10px 12px; border-radius:10px; background:#f4f1e8; color:#405a53; font-size:12px; line-height:1.55; }
       .bali-package-transport .fa { margin-right:5px; color:#b7791f; }
+      .bali-package-schedule { margin:0 0 16px; padding:10px 12px; border:1px solid rgba(14,124,107,.22); border-radius:10px; background:#f7fbfa; }
+      .bali-package-schedule summary { cursor:pointer; color:#0f6258; font-size:12px; font-weight:800; }
+      .bali-package-card .bali-package-schedule p { margin:9px 0 0; color:#405a53; font-size:11px; line-height:1.55; }
+      .bali-package-schedule small { display:block; margin-top:8px; color:#60706c; font-size:10px; line-height:1.45; }
+      .bali-package-schedule a { display:inline-flex; margin-top:7px; color:#0e7c6b; font-size:11px; font-weight:800; }
       .bali-package-price { margin:0 0 16px; padding:13px 14px; border:1px solid #ead9a7; border-radius:12px; background:#fffbeb; color:#604a12; }
       .bali-package-price>span { display:block; margin-bottom:4px; color:#8a5c00; font-size:10px; font-weight:900; letter-spacing:.08em; text-transform:uppercase; }
       .bali-package-price strong { display:inline-block; margin-right:8px; color:#1f3632; font-size:21px; }
@@ -401,6 +406,9 @@
       body.dark .bali-package-card h3 { color:#f0f0ec; }
       body.dark .bali-package-card p, body.dark .bali-package-area, body.dark .bali-package-filters span { color:#cbd5e1; }
       body.dark .bali-package-card .bali-package-transport { background:#303834; color:#d7e3de; }
+      body.dark .bali-package-schedule { border-color:rgba(141,191,180,.28); background:#202724; }
+      body.dark .bali-package-schedule summary, body.dark .bali-package-schedule a { color:#9adfd0; }
+      body.dark .bali-package-card .bali-package-schedule p, body.dark .bali-package-schedule small { color:#cbd5e1; }
       body.dark .bali-package-price { border-color:rgba(252,191,30,.3); background:rgba(252,191,30,.08); color:#fde68a; }
       body.dark .bali-package-price strong, body.dark .bali-package-card .bali-package-price p { color:#f0f0ec; }
       body.dark .bali-package-filters button { border-color:#4b766d; background:#202724; color:#ccfbf1; }
@@ -1017,7 +1025,7 @@
   function topFunction() { document.body.scrollTop = 0; document.documentElement.scrollTop = 0; }
 </script>
 <script src="assets/js/i18n.js?v=geo1"></script>
-<script src="assets/js/bali-packages.js?v=20260831p4"></script>
+<script src="assets/js/bali-packages.js?v=20260901p5"></script>
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
 <script>
 (function () {

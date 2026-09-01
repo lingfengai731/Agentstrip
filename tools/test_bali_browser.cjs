@@ -38,6 +38,10 @@ function check(condition, message) {
       const packageCopy = await page.locator('#experience-packages').innerText();
       check(await page.locator('.bali-package-price').count() === 1, `Published package price count at ${viewport.width}px`);
       check((await page.locator('.bali-package-price').innerText()).includes('IDR 2,000,000'), `Published Penida price missing at ${viewport.width}px`);
+      check(await page.locator('.bali-package-schedule').count() === 3, `Axestone schedule count at ${viewport.width}px`);
+      const scheduleText = await page.locator('.bali-package-schedule').first().textContent();
+      check(scheduleText.includes('06:30') && scheduleText.includes('17:00'), `Axestone times missing at ${viewport.width}px`);
+      check(await page.locator('.bali-package-schedule a').first().getAttribute('href') === 'https://axestonefastcruise.com/time-schedule/', `Axestone source missing at ${viewport.width}px`);
       check(await page.locator('.bali-package-filters > div').count() === 1, `Subjective package filter remains at ${viewport.width}px`);
       check(!/Energy|强度/.test(packageCopy), `Subjective package intensity remains at ${viewport.width}px`);
       check(await page.locator('#itinerary').count() === 0, `Duplicate legacy itinerary remains at ${viewport.width}px`);
@@ -372,7 +376,29 @@ function check(condition, message) {
     const hotelState = await unlocked.evaluate(() => ({ active:Array.from(document.querySelectorAll('.ws-panel-content.active')).map(node => node.dataset.panel), hotel:!!document.querySelector('.ws-subtab[data-sub="hotels"].active') }));
     check(hotelState.active.includes('compare') && hotelState.hotel, `Hotel deep link did not activate: ${JSON.stringify(hotelState)} errors=${unlockedErrors.join('|')}`);
     await unlockedContext.close();
-    console.log('Browser checks passed: responsive Bali, compact Portfolio filters, objective package filters, paid-route recovery, route editor feedback, account/search links, AI deep links and driver handoff');
+
+    const adminContext = await browser.newContext({ viewport:{ width:390, height:844 }, serviceWorkers:'block' });
+    await adminContext.route('**/api/auth/me', route => route.fulfill({ status:200, contentType:'application/json', body:JSON.stringify({ role:'admin' }) }));
+    await adminContext.route('**/api/admin/portfolio?destination=bali', route => route.fulfill({ status:200, contentType:'application/json', body:JSON.stringify({ assets:[], storage_ready:true }) }));
+    const adminPage = await adminContext.newPage();
+    const adminErrors = [];
+    adminPage.on('pageerror', error => adminErrors.push(error.message));
+    await adminPage.addInitScript(() => {
+      localStorage.setItem('wm_studio_lang', 'en');
+      localStorage.setItem('wm_studio_token', 'browser-test-token');
+    });
+    await adminPage.goto(base + '/admin/portfolio.html', { waitUntil:'domcontentloaded' });
+    await adminPage.locator('#fileInput').setInputFiles({ name:'Lovina dolphin.jpg', mimeType:'image/png', buffer:Buffer.from('new-lovina-admin-upload') });
+    await adminPage.locator('.wm-queue-item').waitFor();
+    const adminQueueText = await adminPage.locator('.wm-queue-item').innerText();
+    check(adminQueueText.includes('New image · auto-filled'), 'New admin image still appears blocked by the approved manifest');
+    check(adminQueueText.includes('Lovina Dolphin Watching') && adminQueueText.includes('G5') && adminQueueText.includes('R1 / R5 / R6'), 'Lovina filename did not receive place-library suggestions');
+    check(await adminPage.locator('#uploadDefaults').count() === 0, 'Legacy unmatched-image form remains');
+    check(await adminPage.locator('[name="admin_approval"]').count() === 0, 'Legacy approval checkbox remains');
+    check(await adminPage.locator('#uploadPublish').isEnabled(), 'Automatic admin upload cannot be published');
+    check(adminErrors.length === 0, `Portfolio admin auto-fill raised page errors: ${adminErrors.join('|')}`);
+    await adminContext.close();
+    console.log('Browser checks passed: responsive Bali, compact Portfolio filters, Axestone schedule, Portfolio admin auto-fill, paid-route recovery, route editor feedback, account/search links, AI deep links and driver handoff');
   } finally {
     await browser.close();
   }

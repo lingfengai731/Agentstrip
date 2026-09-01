@@ -83,9 +83,9 @@ for (const lang of ['en', 'zh', 'ja', 'ko', 'id']) {
 const data = JSON.parse(read('wandermind-studio/frontend/assets/data/bali-travel-data.json'));
 const routeIds = new Set((data.routes || []).map((route) => route.id));
 check(routeIds.size === 6 && ['R1', 'R2', 'R3', 'R4', 'R5', 'R6'].every((id) => routeIds.has(id)), 'Bali data: expected R1-R6 routes');
-check((data.pois || []).length === 62, 'Bali data: expected 62 POIs');
+check((data.pois || []).length >= 64, 'Bali data: expected the expanded 64+ POI catalog');
 for (const poi of data.pois || []) {
   for (const id of poi.route_ids || []) check(routeIds.has(id), `${poi.id}: invalid route id ${id}`);
 }
 
-console.log('site-search checks passed: 7 links, GET form, 5-language keys, R1-R6, 62 POIs, retired guard, 44px/overflow CSS');
+console.log(`site-search checks passed: 7 links, GET form, 5-language keys, R1-R6, ${(data.pois || []).length} POIs, retired guard, 44px/overflow CSS`);

@@ -8,7 +8,14 @@
       "supplier_candidate": "Axestone Fast Cruise",
       "supplier_url": "https://axestonefastcruise.com/",
       "relationship_source": "Dicky direct supplier contact",
-      "boundary": "WanderMind uses Sanur as the fixed Bali departure point. Axestone is a confirmed supplier candidate, not a guarantee of schedule, vessel, shuttle scope or final price; those details require a live check for each booking."
+      "boundary": "WanderMind uses Sanur as the fixed Bali departure point. Axestone is a confirmed supplier candidate; sailing availability, vessel, shuttle scope and final inclusions still require a live check for each booking.",
+      "schedule": {
+        "timezone": "WITA",
+        "verified_at": "2026-09-01",
+        "source_url": "https://axestonefastcruise.com/time-schedule/",
+        "sanur_to_penida": ["06:30", "07:00", "07:30", "08:00", "08:30", "09:00", "11:00", "15:30"],
+        "penida_to_sanur": ["09:15", "14:30", "15:30", "16:00", "16:30", "17:00"]
+      }
     }
   },
   "packages": [

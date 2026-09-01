@@ -163,3 +163,25 @@ Live-money action was performed during this release verification.
 Four generated photorealistic activity images remain excluded from the Portfolio because Portfolio is
 presented as real island moments. They may be used later only as explicitly labelled AI illustrations;
 they must not be represented as traveller or supplier evidence.
+
+## 2026-09-01 website closeout before mini-program work
+
+The project owner confirmed that the disposable production Portfolio upload/publish/public/hide E2E
+and the fresh PayPal Sandbox webhook-redelivery abnormal flow are complete. These are owner-confirmed
+production acceptances; this task does not repeat or mutate the accepted asset, order or entitlement.
+
+The next website release removes the static approved-image manifest as a Portfolio publishing gate.
+An authenticated administrator can upload any new image; the filename and the current 64-POI Bali
+catalog provide automatic theme, place, route and five-language copy suggestions. Publishing itself
+records the administrator's rights/portrait-consent confirmation. The manifest remains only as a
+curated metadata source for known images. Axestone's official reference schedule is now structured
+for the three Sanur-to-Penida packages, with WITA and date-specific availability warnings retained.
+
+Local acceptance for this release is 104 backend tests (13 environment skips), 64/64 POI media
+coverage, Chromium at 320/390/768/1440, 18 public page/viewport control cases covering 204 buttons and
+419 links, recovery-path tests, and WebKit POI media at 390/1440. Production status must still be
+recorded separately after commit, push and the exact Render deploy becomes live.
+
+The first mini-program engineering gates are not website blockers: reconcile the mini-program's
+60-second chat timeout with the backend's 120-second request window, and replace or deliberately
+remove the itinerary/profile placeholder entries before calling the mini-program feature-complete.

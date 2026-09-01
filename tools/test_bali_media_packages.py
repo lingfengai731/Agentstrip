@@ -75,6 +75,11 @@ def main() -> None:
     assert len(penida_packages) == 3
     assert all(item.get("departure_port") == "Sanur Harbour" for item in penida_packages)
     assert all(item.get("supplier_candidate") == "Axestone Fast Cruise" for item in penida_packages)
+    penida_schedule = packages["transport_policies"]["nusa_penida"]["schedule"]
+    assert penida_schedule["verified_at"] == "2026-09-01"
+    assert penida_schedule["source_url"] == "https://axestonefastcruise.com/time-schedule/"
+    assert penida_schedule["sanur_to_penida"] == ["06:30", "07:00", "07:30", "08:00", "08:30", "09:00", "11:00", "15:30"]
+    assert penida_schedule["penida_to_sanur"] == ["09:15", "14:30", "15:30", "16:00", "16:30", "17:00"]
     west_package = next(item for item in penida_packages if item["id"] == "penida-west-one-day")
     west_price = west_package.get("published_price", {})
     assert west_price.get("amount_idr") == 2_000_000
@@ -90,7 +95,9 @@ def main() -> None:
     assert "poi-media-catalog.json" in bali_html
     assert "poi-media-catalog.json?v=20260901p1" in bali_html
     assert "assets/js/bali-packages.js" in bali_html
+    assert "bali-packages.js?v=20260901p5" in bali_html
     assert "bali-experience-packages.json" in package_script
+    assert "renderSchedule(item, c)" in package_script
     assert "该地点照片尚未接入" not in bali_html
     assert "Photo for this place has not been added yet" not in bali_html
 

@@ -14,8 +14,9 @@ function check(condition, message) {
       const page = await browser.newPage({ viewport });
       const errors = [];
       page.on('pageerror', error => errors.push(error.message));
-      await page.goto(`${base}/bali.html`, { waitUntil: 'networkidle' });
+      await page.goto(`${base}/bali.html`, { waitUntil: 'domcontentloaded' });
       const openPicker = page.locator('[data-open-place-picker]:not([disabled])').first();
+      await openPicker.waitFor({ state:'visible' });
       await openPicker.scrollIntoViewIfNeeded();
       await openPicker.click();
       await page.locator('#bali-route-picker.show').waitFor({ state: 'visible' });

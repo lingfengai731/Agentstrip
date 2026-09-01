@@ -454,3 +454,12 @@
 - GitHub/生产回调：产品提交 `343ad8bf984b1eb81860090c95cdd2524ded077a` 已推送任务分支并在确认 `origin/main` 为其直接祖先后 fast-forward 到 main。Render 没有为该提交创建自动部署；手动触发明确返回 `400 cannot deploy suspended service`。随后 `https://wandermind.cc/healthz`、Bali 页面与数据资产返回 503，连续资产请求出现 429；生产当前不可用且未部署本提交，唯一 P0 是由账户所有者恢复 Render billing/service，再执行部署与生产 E2E。
 - 日志回调：Render 应用日志显示 `/healthz` 在 `2026-08-31T07:59:38Z` 仍为 200，随后于 `08:05:16Z` 正常收到 shutdown、完成 application shutdown 并结束 server process；未见应用异常堆栈。当前故障来源是控制面 billing suspension，而非本轮代码运行错误。
 - 入境文案回调：印尼移民局官方页面当前列明 VoA 费用为 IDR 500,000。AI 页面将旧美元估价替换为五语言官方金额，并提示出发前复核适用资格与入境规则；前端不保留“旅游税/税费”承诺。缓存版本升至 p62，91 项测试、Node、diff check 与完整浏览器矩阵再次通过。
+
+## 2026-09-01 Portfolio auto-fill and pre-mini-program callback
+
+- 路由：large / L3。Sol 在隔离 worktree `E:\Agentstrip-wt-fullsite-design-20260828` 保留 Portfolio 授权边界、自动建议算法、Axestone 官方时刻表、全站集成、发布和最终判断；原始脏工作区 `E:\Agentstrip` 未修改。
+- Luna 回调：Dalton（`01a05a60-2f19-7bc3-911e-d6a86dcd88a6`，正式 `luna_worker` / `gpt-5.6-luna` / `max`）完成只读小程序前审计，零文件修改。工具层未提供精确启动时间和稳定耗时；达到只读等待基线后收到一次“按现有证据收敛”消息并返回 completed final。它因观察到 Sol 并发新增的三个预期测试 diff 按 STOP 写 blocked；Sol 对照实际 diff 确认这些均为本轮测试修正，不是意外漂移或产品阻塞。
+- 产品回调：Portfolio 静态 manifest 从发布门禁降为已知图片的高质量资料来源。任意新图由文件名和 64-POI Bali 库建议主题、地点、路线与五语言文案；管理员点击发布即持久记录授权/肖像确认，草稿和单图编辑保持可用。
+- 船班回调：Axestone 官方 Sanur ↔ Nusa Penida WITA 参考班次写入共享套餐数据，并在 3 个 Penida 卡片以可折叠详情呈现；余位、酒店接驳、船况与临时改班仍按日期确认。
+- QA 回调：104 项后端测试通过、13 项环境测试 skip；64/64 POI、9 套套餐通过；Chromium 320/390/768/1440、18 个公共页面/视口、204 个按钮、419 个链接、恢复路径和 WebKit 390/1440 媒体加载通过。旧站内搜索测试的 62 POI 写死值已改为当前 64+ 数据门禁；WebKit 从不稳定 `networkidle` 改为等待真实交互控件。
+- 用户验收回调：项目负责人明确确认 Portfolio 生产上传→发布→公开→隐藏 E2E 与全新 Sandbox webhook 异常重发已经完成；按“用户生产验收确认”记账，本轮不重复改动真实图片、订单或权益。Live 支付、公开发帖、Search Console 和按日期变化的供应商事实仍分别管理。
