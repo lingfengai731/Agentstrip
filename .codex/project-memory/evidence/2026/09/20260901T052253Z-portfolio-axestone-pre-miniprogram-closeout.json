@@ -1,0 +1,51 @@
+{
+  "schema_version": 1,
+  "evidence_id": "ev-20260901T052253Z-portfolio-axestone-pre-miniprogram-closeout",
+  "task_ref": "portfolio-axestone-pre-miniprogram-closeout",
+  "owner": "sol-main",
+  "captured_at": "2026-09-01T05:22:53Z",
+  "status": "verified",
+  "claim": "Portfolio admin auto-fill and unrestricted authenticated-admin publishing, the official Axestone Penida reference schedule, controlled POI media, recovery paths and the website pre-mini-program release are live and regression-verified.",
+  "source": {
+    "kind": "git",
+    "repository": "https://github.com/lingfengai731/Agentstrip.git",
+    "product_commit": "0797d5b0d31fba951d8801411aafac11972ac212",
+    "closeout_commit": "72ea9006071611db38b7ce188c14a5954cb2445b",
+    "branch": "codex/fullsite-design-audit-20260828",
+    "worktree": "E:\\Agentstrip-wt-fullsite-design-20260828",
+    "dirty": true,
+    "dirty_reason": ".codex/run-state is an intentional local-only quota checkpoint"
+  },
+  "verification": {
+    "local": [
+      "python -m unittest discover -s wandermind/backend/tests: 104 passed, 13 skipped",
+      "python tools/test_bali_media_packages.py: 64/64 POIs and 9 packages passed",
+      "tools/test_bali_browser.cjs, test_public_controls.cjs, test_recovery_paths.cjs, test_ai_tool_intro.cjs, test_ambient_hero.cjs, test_site_search.mjs and test_seo_index_controls.mjs passed",
+      "tools/test_bali_media_webkit.cjs: 390px=5 and 1440px=5 passed",
+      "git diff --check passed with Windows line-ending warnings only"
+    ],
+    "production": [
+      "Render product deploy dep-dab222u7bikc73fmdto0 became live at exact commit 0797d5b0d31fba951d8801411aafac11972ac212",
+      "Render closeout deploy dep-dab6113bc2fs73au4lm0 became live at exact commit 72ea9006071611db38b7ce188c14a5954cb2445b at 2026-09-01T05:21:22.769597Z",
+      "healthz, Bali HTML, Portfolio admin HTML and JS, Bali package JSON and Portfolio API returned HTTP 200",
+      "production Chromium product/control matrices passed on the product commit",
+      "production WebKit controlled POI media passed at 390px=5 and 1440px=5 after the closeout deploy"
+    ],
+    "owner_confirmed": [
+      "Portfolio production upload-publish-public-hide E2E is complete; this task did not repeat or mutate the accepted asset",
+      "A fresh PayPal Sandbox order webhook abnormal redelivery is complete; this task did not touch the accepted order or entitlement"
+    ]
+  },
+  "boundaries": [
+    "The Portfolio static manifest remains an optional curated metadata source, not a publishing authorization gate.",
+    "Automatic Portfolio suggestions are deterministic filename plus 64-POI catalog suggestions and remain administrator-editable; no external vision-model result is claimed.",
+    "Axestone times are official reference times in WITA; seats, shuttle, weather, sea conditions and temporary changes remain date-specific checks.",
+    "Live payments, refunds, real money, public social posting and Search Console changes were not performed."
+  ],
+  "next": [
+    "Align the mini-program 60-second chat timeout with the backend 120-second request window.",
+    "Replace or remove mini-program itinerary and profile placeholders before feature-complete status.",
+    "Define mini-program v1 parity using the existing API, users, orders, routes and entitlement truth.",
+    "Run the first social launch and measure the 14-day funnel; request Search Console recrawl."
+  ]
+}
