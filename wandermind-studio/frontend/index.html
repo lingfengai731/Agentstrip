@@ -25,7 +25,8 @@
   <link rel="apple-touch-icon" href="assets/images/logo-mark-256.png">
     <!-- Template CSS -->
     <link rel="stylesheet" href="assets/css/style-starter.css?v=search1">
-<link rel="preload" as="image" href="assets/images/web/18029bd74c32ef72.webp" fetchpriority="high">
+<link rel="preload" as="image" href="assets/images/thumbs/18029bd74c32ef72.webp" media="(max-width: 767px)" fetchpriority="high">
+<link rel="preload" as="image" href="assets/images/web/18029bd74c32ef72.webp" media="(min-width: 768px)" fetchpriority="high">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=optional" rel="stylesheet">
@@ -406,7 +407,7 @@
 							<!-- Language picker (5 languages) -->
 							<div class="lang-picker">
 								<span class="fa fa-globe"></span>
-								<select id="langPicker">
+								<select id="langPicker" aria-label="Language">
 									<option value="en">English</option>
 									<option value="zh">中文</option>
 									<option value="ja">日本語</option>
@@ -537,12 +538,16 @@ $(function () { $('.navbar-toggler').click(function () { $('body').toggleClass('
 					$('.owl-one .owl-dot').each(function (index) {
 						this.setAttribute('aria-label', 'Show slide ' + (index + 1));
 					});
+					$('.owl-one .owl-nav button').each(function (index) {
+						this.removeAttribute('role');
+						this.setAttribute('aria-label', index === 0 ? 'Previous slide' : 'Next slide');
+					});
 				},
 				responsive: {
 					0:    { items: 1, nav: false },
 					480:  { items: 1, nav: false },
-					667:  { items: 1, nav: true },
-					1000: { items: 1, nav: true }
+					667:  { items: 1, nav: false },
+					1000: { items: 1, nav: false }
 				}
 			})
 			$('.owl-one').on('pointerdown keydown', '.owl-nav button, .owl-dot', prepareSecondarySlides);
@@ -701,7 +706,7 @@ $(function () { $('.navbar-toggler').click(function () { $('body').toggleClass('
 			<div class="gallery-image row">
 				<div class="col-lg-4 col-md-6">
 					<div class="img-box wm-service-card">
-						<img src="assets/images/bali-3.jpg" alt="Bali — Kelingking Beach" class="img-responsive" loading="lazy">
+						<img src="assets/images/thumbs/c11a45dfcccc8767.webp" alt="Bali — Kelingking Beach" class="img-responsive" loading="lazy">
 						<span class="wm-card-kicker" data-i18n="service1Kicker">Step 1 · Shape the trip</span>
 						<h5 class="my-2" role="heading" aria-level="3"><a href="#trip-brief" data-i18n="service1Title">Start with your time and budget</a></h5>
 						<div class="blog-date">
@@ -717,7 +722,7 @@ $(function () { $('.navbar-toggler').click(function () { $('body').toggleClass('
 				</div>
 				<div class="col-lg-4 col-md-6 top-top2">
 					<div class="img-box wm-service-card">
-						<img src="assets/images/bali-4.jpg" alt="Bali volcano landscape" class="img-responsive" loading="lazy">
+						<img src="assets/images/thumbs/353e3b2879150547.webp" alt="Bali volcano landscape" class="img-responsive" loading="lazy">
 						<span class="wm-card-kicker" data-i18n="service2Kicker">Step 2 · See before you choose</span>
 						<h5 class="my-2" role="heading" aria-level="3"><a href="bali.html" data-i18n="service2Title">Browse the real Bali first</a></h5>
 						<div class="blog-date">

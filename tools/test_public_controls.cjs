@@ -44,12 +44,33 @@ function check(condition, message) { if (!condition) throw new Error(message); }
             if (href.startsWith('#')) return !document.getElementById(decodeURIComponent(href.slice(1)));
             return false;
           }).map(link => link.outerHTML.slice(0,180));
-          return {buttons:buttons.length, links:links.length, unnamed, badLinks, overflow:document.documentElement.scrollWidth-document.documentElement.clientWidth};
+          const languagePicker = document.querySelector('#langPicker');
+          const privacyLink = document.querySelector('.copy-footer-29 a[href*="privacy"]');
+          const privacyStyle = privacyLink ? getComputedStyle(privacyLink) : null;
+          return {
+            buttons:buttons.length,
+            links:links.length,
+            unnamed,
+            badLinks,
+            overflow:document.documentElement.scrollWidth-document.documentElement.clientWidth,
+            languageNamed:!languagePicker || accessibleName(languagePicker).length > 0,
+            privacyDistinguished:!privacyStyle || privacyStyle.textDecorationLine.includes('underline'),
+            invalidOwlNavButtons:[...document.querySelectorAll('.owl-one .owl-nav button')].filter(button => !accessibleName(button) || button.getAttribute('role') === 'presentation').length,
+            mainLandmarks:document.querySelectorAll('main').length,
+            invalidBaliFooterChildren:document.querySelectorAll('.footer-2 > ul > :not(li)').length
+          };
         });
 
         check(result.unnamed.length === 0, `${file} ${viewport.width}px has unnamed controls: ${result.unnamed.join(' | ')}`);
         check(result.badLinks.length === 0, `${file} ${viewport.width}px has inert links: ${result.badLinks.join(' | ')}`);
         check(result.overflow <= 1, `${file} ${viewport.width}px horizontal overflow: ${result.overflow}`);
+        check(result.languageNamed, `${file} language selector has no accessible name`);
+        check(result.privacyDistinguished, `${file} privacy link is not visually distinguished from surrounding text`);
+        if (file === 'index.html') check(result.invalidOwlNavButtons === 0, `${file} creates ${result.invalidOwlNavButtons} unnamed or presentational carousel buttons`);
+        if (file === 'bali.html') {
+          check(result.mainLandmarks === 1, `${file} has ${result.mainLandmarks} main landmarks`);
+          check(result.invalidBaliFooterChildren === 0, `${file} footer list contains non-list children`);
+        }
         check(errors.length === 0, `${file} ${viewport.width}px page errors: ${errors.join(' | ')}`);
 
         const toggler = page.locator('.navbar-toggler:visible').first();
