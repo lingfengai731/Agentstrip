@@ -59,6 +59,35 @@
 .form-row {
   margin-bottom: 20rpx;
 }
+.code-row {
+  display: flex;
+  align-items: stretch;
+  gap: 16rpx;
+}
+.code-input {
+  flex: 1;
+  min-width: 0;
+}
+.code-btn {
+  width: 220rpx;
+  margin: 0;
+  padding: 0 16rpx;
+  border-radius: 14rpx;
+  background: #E3F5F1;
+  color: #0E6658;
+  font-size: 24rpx;
+  font-weight: 700;
+  line-height: 88rpx;
+}
+.code-btn::after { border: 0; }
+.code-btn[disabled] { color: #8A857F; background: #F0EDE6; }
+.code-hint {
+  margin-top: 16rpx;
+  color: #6F6962;
+  font-size: 22rpx;
+  line-height: 1.5;
+  text-align: center;
+}
 .auth-btn {
   margin-top: 10rpx;
 }

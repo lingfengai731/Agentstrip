@@ -22,10 +22,13 @@ const PARTY_OPTIONS = [
   { value: 'group',  label: '朋友/团体' },
 ];
 
+const selectedStyleOptions = (values = []) =>
+  STYLE_OPTIONS.map(item => ({ ...item, selected: values.includes(item.value) }));
+
 Page({
   data: {
     budgetOptions: BUDGET_OPTIONS,
-    styleOptions:  STYLE_OPTIONS,
+    styleOptions:  selectedStyleOptions(),
     partyOptions:  PARTY_OPTIONS,
     // 当前选中
     budgetLevel: '',
@@ -39,9 +42,11 @@ Page({
   onLoad() {
     // 先从本地恢复（即时反馈），再从后端拉一次（保证多端同步）
     const cached = app.globalData.preferences || {};
+    const styleList = Array.isArray(cached.styleList) ? cached.styleList : [];
     this.setData({
       budgetLevel: cached.budgetLevel || '',
-      styleList:   Array.isArray(cached.styleList) ? cached.styleList : [],
+      styleList,
+      styleOptions: selectedStyleOptions(styleList),
       party:       cached.party || '',
       notes:       cached.notes || '',
       hasAny:      this._hasAny(cached),
@@ -54,9 +59,11 @@ Page({
     try {
       const p = await api.getPrefs();
       app.setPrefs(p || {});
+      const styleList = Array.isArray(p.styleList) ? p.styleList : [];
       this.setData({
         budgetLevel: p.budgetLevel || '',
-        styleList:   Array.isArray(p.styleList) ? p.styleList : [],
+        styleList,
+        styleOptions: selectedStyleOptions(styleList),
         party:       p.party || '',
         notes:       p.notes || '',
         hasAny:      this._hasAny(p),
@@ -84,7 +91,7 @@ Page({
     const idx = list.indexOf(v);
     if (idx >= 0) list.splice(idx, 1);
     else list.push(v);
-    this.setData({ styleList: list });
+    this.setData({ styleList: list, styleOptions: selectedStyleOptions(list) });
   },
 
   // —— 单选：同行 ——
@@ -137,7 +144,7 @@ Page({
       success: async (res) => {
         if (!res.confirm) return;
         const empty = { budgetLevel: '', styleList: [], party: '', notes: '' };
-        this.setData(empty);
+        this.setData({ ...empty, styleOptions: selectedStyleOptions() });
         try {
           if (app.globalData.token) await api.savePrefs(empty);
         } catch (e) { /* ignore */ }

@@ -43,6 +43,13 @@ Page({
     wx.navigateTo({ url: '/pages/prefs/prefs' });
   },
 
+  openHistory() {
+    if (!app.globalData.token) { this.goLogin(); return; }
+    wx.navigateTo({ url: '/pages/history/history' });
+  },
+
+  openLanguage() { wx.navigateTo({ url: '/pages/language/language' }); },
+
   goLogin() {
     wx.switchTab({ url: '/pages/index/index' });
   },
@@ -63,7 +70,7 @@ Page({
 
   openH5() {
     wx.setClipboardData({
-      data: 'https://agentstrip.onrender.com',
+      data: 'https://wandermind.cc',
       success: () => wx.showToast({ title: '网址已复制', icon: 'success' }),
     });
   },
@@ -71,12 +78,9 @@ Page({
   about() {
     wx.showModal({
       title: 'WanderMind · 游心',
-      content: 'AI 多智能体旅行规划助手\n网页版：agentstrip.onrender.com\n版本：v0.1.0',
+      content: 'AI 自助规划、Bali 公共路线、专业路线与当地司机交接共用同一 WanderMind 账号。\n网页版：wandermind.cc\n版本：v1.0.0',
       showCancel: false,
     });
   },
 
-  todo() {
-    wx.showToast({ title: '功能开发中…', icon: 'none' });
-  },
 });

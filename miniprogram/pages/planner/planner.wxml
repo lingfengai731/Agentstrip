@@ -1,0 +1,18 @@
+<view class="planner-page">
+  <view class="intro"><view class="eyebrow">1 MINUTE ROUTE MATCH</view><view class="title">把分散的景点，排成一条顺路的 Bali 行程</view><view class="subtitle">根据天数、同行者、目标、预算和节奏，从 G1–G7 与 R1–R6 中匹配。</view></view>
+  <view class="section">
+    <view class="section-title"><text>01</text> 基本行程</view>
+    <view class="label">是否第一次去 Bali *</view>
+    <view class="segmented"><view class="choice {{audience === 'first' ? 'active' : ''}}" bindtap="setChoice" data-field="audience" data-value="first">第一次去</view><view class="choice {{audience === 'returning' ? 'active' : ''}}" bindtap="setChoice" data-field="audience" data-value="returning">去过 Bali</view></view>
+    <view class="two-col"><view><view class="label">出发日期 *</view><picker mode="date" value="{{departureDate}}" bindchange="onDeparture"><view class="field">{{departureDate}}</view></picker></view><view><view class="label">返程日期 *</view><picker mode="date" value="{{returnDate}}" bindchange="onReturn"><view class="field">{{returnDate}}</view></picker></view></view>
+    <view class="two-col"><view><view class="label">同行人数 *</view><view class="stepper"><button data-delta="-1" bindtap="changePeople">−</button><text>{{travellers}}</text><button data-delta="1" bindtap="changePeople">＋</button></view></view><view><view class="label">预算档位 *</view><picker mode="selector" range="{{budgetOptions}}" value="{{budgetIndex}}" bindchange="onBudget"><view class="field">CNY {{budgetOptions[budgetIndex]}}</view></picker></view></view>
+  </view>
+  <view class="section">
+    <view class="section-title"><text>02</text> 旅行方式</view><view class="label">行程风格 *</view>
+    <view class="cards"><view class="mini-card {{travelStyle === 'comfort' ? 'active' : ''}}" bindtap="setChoice" data-field="travelStyle" data-value="comfort"><b>舒适平衡</b><small>经典与松弛兼顾</small></view><view class="mini-card {{travelStyle === 'deep' ? 'active' : ''}}" bindtap="setChoice" data-field="travelStyle" data-value="deep"><b>深度探索</b><small>更多文化与在地体验</small></view><view class="mini-card {{travelStyle === 'resort' ? 'active' : ''}}" bindtap="setChoice" data-field="travelStyle" data-value="resort"><b>度假放松</b><small>少换酒店、留足空白</small></view></view>
+    <view class="label">行程节奏 *</view><view class="segmented three"><view class="choice {{pace === 'relaxed' ? 'active' : ''}}" bindtap="setChoice" data-field="pace" data-value="relaxed">轻松</view><view class="choice {{pace === 'balanced' ? 'active' : ''}}" bindtap="setChoice" data-field="pace" data-value="balanced">平衡</view><view class="choice {{pace === 'active' ? 'active' : ''}}" bindtap="setChoice" data-field="pace" data-value="active">充实</view></view>
+  </view>
+  <view class="section"><view class="section-title"><text>03</text> 最关注什么</view><view class="label">最多选择 3 项 *</view><view class="chips"><view wx:for="{{goalOptions}}" wx:key="id" class="chip {{item.selected ? 'active' : ''}}" bindtap="toggleGoal" data-id="{{item.id}}">{{item.selected ? '✓ ' : ''}}{{item.label}}</view></view></view>
+  <view wx:if="{{error}}" class="error">{{error}}</view>
+  <view class="sticky-action"><view class="summary">{{days}} 天 · {{travellers}} 人 · 已选 {{goals.length}} 项</view><button class="submit" bindtap="submit" loading="{{busy}}" disabled="{{busy}}">{{busy ? '正在匹配适合你的路线…' : '生成我的 Bali 路线'}}</button><view class="benefit">先预览约 70%；解锁后包含 3 次同行程调整</view></view>
+</view>

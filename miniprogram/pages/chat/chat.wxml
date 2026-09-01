@@ -6,7 +6,7 @@
     <view class="dest-bar-flag">{{destFlag}}</view>
     <view class="dest-bar-info">
       <view class="dest-bar-name">{{destName}}</view>
-      <view class="dest-bar-hint">6 位智能体协同 · {{modeLabel}}</view>
+      <view class="dest-bar-hint">WanderMind AI · {{modeLabel}}</view>
     </view>
     <view class="mode-toggle">
       <view class="mode-btn {{mode === 'fast' ? 'active' : ''}}" bindtap="setMode" data-mode="fast">⚡ 极速</view>
@@ -66,6 +66,9 @@
 
   <!-- 输入区 -->
   <view class="input-area">
+    <view wx:if="{{saveError}}" class="save-notice">{{saveError}}</view>
+    <button wx:if="{{retryText}}" class="retry-btn" bindtap="retryLast">重试刚才的问题</button>
+    <view class="composer">
     <textarea
       class="input-box"
       placeholder="问任何关于 {{destName}} 的问题…"
@@ -79,9 +82,10 @@
       adjust-position="{{true}}"
       show-confirm-bar="{{false}}"
     />
-    <button class="send-btn" bindtap="sendMsg" disabled="{{busy || !inputText.trim()}}">
+    <button class="send-btn" bindtap="sendMsg" disabled="{{busy || !canSend}}">
       {{busy ? '…' : '发送'}}
     </button>
+    </view>
   </view>
 
 </view>
