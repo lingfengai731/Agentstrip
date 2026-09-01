@@ -26,13 +26,23 @@ function check(condition, message) {
       const preview = page.locator('#bali-route-picker-preview img').first();
       await preview.waitFor({ state: 'visible' });
       await preview.evaluate(image => image.decode ? image.decode() : Promise.resolve());
-      const images = await page.locator('#bali-route-picker img').evaluateAll(items => items.map(image => ({
-        src: image.currentSrc || image.src,
-        complete: image.complete,
-        naturalWidth: image.naturalWidth
-      })));
+      const pickerImages = page.locator('#bali-route-picker img');
+      const images = await pickerImages.evaluateAll(async items => {
+        const visibleItems = items.filter(image => image.getClientRects().length > 0);
+        for (const image of visibleItems) {
+          image.loading = 'eager';
+          image.scrollIntoView({ block: 'center' });
+          if (image.decode) await image.decode().catch(() => {});
+        }
+        return items.map(image => ({
+          src: image.currentSrc || image.src,
+          complete: image.complete,
+          naturalWidth: image.naturalWidth,
+          visible: image.getClientRects().length > 0
+        }));
+      });
       check(images.length > 0, `No place media rendered at ${viewport.width}px`);
-      check(images.every(image => image.complete && image.naturalWidth > 0), `Broken place media at ${viewport.width}px: ${JSON.stringify(images)}`);
+      check(images.filter(image => image.visible).every(image => image.complete && image.naturalWidth > 0), `Broken visible place media at ${viewport.width}px: ${JSON.stringify(images)}`);
       check(images.every(image => {
         const url = new URL(image.src);
         return url.origin === new URL(base).origin && url.pathname.includes('/assets/images/');

@@ -170,7 +170,7 @@ The project owner confirmed that the disposable production Portfolio upload/publ
 and the fresh PayPal Sandbox webhook-redelivery abnormal flow are complete. These are owner-confirmed
 production acceptances; this task does not repeat or mutate the accepted asset, order or entitlement.
 
-The next website release removes the static approved-image manifest as a Portfolio publishing gate.
+Website release `0797d5b0d31fba951d8801411aafac11972ac212` removes the static approved-image manifest as a Portfolio publishing gate.
 An authenticated administrator can upload any new image; the filename and the current 64-POI Bali
 catalog provide automatic theme, place, route and five-language copy suggestions. Publishing itself
 records the administrator's rights/portrait-consent confirmation. The manifest remains only as a
@@ -178,9 +178,12 @@ curated metadata source for known images. Axestone's official reference schedule
 for the three Sanur-to-Penida packages, with WITA and date-specific availability warnings retained.
 
 Local acceptance for this release is 104 backend tests (13 environment skips), 64/64 POI media
-coverage, Chromium at 320/390/768/1440, 18 public page/viewport control cases covering 204 buttons and
-419 links, recovery-path tests, and WebKit POI media at 390/1440. Production status must still be
-recorded separately after commit, push and the exact Render deploy becomes live.
+coverage, Chromium at 320/390/768/1440, 18 public page/viewport control cases, recovery-path tests,
+and WebKit POI media at 390/1440. GitHub main and the task branch both reached `0797d5b`; Render deploy
+`dep-dab222u7bikc73fmdto0` became live at that exact commit on 2026-09-01. Fresh production probes
+returned HTTP 200 for health, Bali, Portfolio admin assets, package data and the Portfolio API;
+production Chromium and WebKit regression matrices passed. A subsequent test-only closeout may
+trigger another synchronization deploy but does not change product behavior.
 
 The first mini-program engineering gates are not website blockers: reconcile the mini-program's
 60-second chat timeout with the backend's 120-second request window, and replace or deliberately
