@@ -1,0 +1,51 @@
+{
+  "schema_version": 1,
+  "evidence_id": "ev-20260901T160200Z-miniprogram-v1-release-candidate",
+  "task_ref": "miniprogram-v1-release-candidate",
+  "owner": "sol-main",
+  "captured_at": "2026-09-01T16:02:00Z",
+  "status": "verified",
+  "claim": "The WanderMind WeChat mini-program v1 foundation is committed and pushed to its task branch with deterministic contract and local WeChat DevTools compile evidence; it is not merged, uploaded, submitted or released.",
+  "source": {
+    "kind": "git",
+    "repository": "https://github.com/lingfengai731/Agentstrip.git",
+    "product_commit": "b5f7fa3c61f46c6b157564d0f4fa23e89b7f860b",
+    "branch": "codex/premini-final-20260901",
+    "worktree": "E:\\Agentstrip-wt-premini-final-20260901",
+    "pushed": true,
+    "merged": false
+  },
+  "verification": {
+    "local": [
+      "node tools/test_miniprogram_contract.cjs: 212 checks passed",
+      "git diff --check passed with Windows line-ending warnings only",
+      "WeChat DevTools recompiled the current worktree and returned to the login page; Problems panel remained at zero",
+      "English and Chinese language selection were previously exercised in the simulator and returned with synchronized TabBar labels"
+    ],
+    "review": [
+      "Sol found and fixed professional-route profile extraction for driver handoff, including dates, travellers, trip length and budget",
+      "Sol aligned the planner budget goal id with the backend value intent",
+      "A fresh luna_worker audit ran beyond the 10-minute read-only baseline and one 2-minute convergence window but returned no final; it was closed from running state and no Luna conclusion was accepted"
+    ]
+  },
+  "implemented": [
+    "Shared WanderMind login and email verification-code registration",
+    "Public R1-R6 Bali routes and professional-route 70-percent preview/full-entitlement display",
+    "AI chat persistence, retry, history restoration and 401-safe login recovery",
+    "Email-only Dicky and Gede driver requests without private contact disclosure",
+    "Language selector with five-language AI reply selection, route-name localization and TabBar labels"
+  ],
+  "boundaries": [
+    "The mini-program has not been previewed on a physical phone, uploaded, submitted for review or released.",
+    "WeChat request-domain and privacy configuration remain external platform gates.",
+    "The language page does not claim full five-language localization of every mini-program screen.",
+    "The grey base library 3.16.1 still emits a framework-only timeout and reportRealtimeAction warning without project source frames; the Problems panel is zero.",
+    "No payment, email, driver request, entitlement, account, production database or Render mutation was performed."
+  ],
+  "next": [
+    "Open and merge the task-branch pull request after GitHub checks.",
+    "Verify the exact merged website commit on Render before calling website changes deployed.",
+    "Confirm wandermind.cc in the WeChat request-domain and privacy settings, then request a separate go/no-go for preview QR, upload and submission.",
+    "Perform a physical-phone preview before the first mini-program upload."
+  ]
+}

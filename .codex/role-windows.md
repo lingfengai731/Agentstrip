@@ -463,3 +463,11 @@
 - 船班回调：Axestone 官方 Sanur ↔ Nusa Penida WITA 参考班次写入共享套餐数据，并在 3 个 Penida 卡片以可折叠详情呈现；余位、酒店接驳、船况与临时改班仍按日期确认。
 - QA 回调：104 项后端测试通过、13 项环境测试 skip；64/64 POI、9 套套餐通过；Chromium 320/390/768/1440、18 个公共页面/视口、204 个按钮、419 个链接、恢复路径和 WebKit 390/1440 媒体加载通过。旧站内搜索测试的 62 POI 写死值已改为当前 64+ 数据门禁；WebKit 从不稳定 `networkidle` 改为等待真实交互控件。
 - 用户验收回调：项目负责人明确确认 Portfolio 生产上传→发布→公开→隐藏 E2E 与全新 Sandbox webhook 异常重发已经完成；按“用户生产验收确认”记账，本轮不重复改动真实图片、订单或权益。Live 支付、公开发帖、Search Console 和按日期变化的供应商事实仍分别管理。
+
+## 2026-09-01 Mini-program v1 release-candidate callback
+
+- 路由：small / L2 / compact。Sol 保留小程序集成、API 契约、发布判断、Git 与最终验收；Darwin（`01a05da1-9060-7fd0-8c42-dc3bedc00dec`，正式 `luna_worker` / `gpt-5.6-luna` / `max`）只做冻结只读审计。
+- Luna 回调：Darwin 运行超过 10 分钟只读基线并收到一次 2 分钟收敛请求，仍未返回 final；关闭前状态为 running，最终为 shutdown。没有采用不存在的 Luna 结论；Sol 独立复核实际 diff、后端契约和测试。
+- 工程回调：小程序 v1 接入既有账号、邮件验证码、AI 对话、R1–R6 公共路线、专业路线约 70% 预览/完整权益、历史恢复和 Dicky/Gede 邮箱交接。最终审计修复司机交接未读取根级 `profile` 导致日期、人数、天数和预算丢失的问题，并把预算关注项改为后端识别的 `value`。
+- QA 回调：212 项确定性契约和 `git diff --check` 通过；微信开发者工具重新编译并回到登录页，Problems 为 0。灰色基础库 3.16.1 的 framework timeout 与 reportRealtimeAction 警告无项目源码帧，继续按工具残余信号记录。
+- Git/发布边界：产品提交 `b5f7fa3c61f46c6b157564d0f4fa23e89b7f860b` 已推送 `origin/codex/premini-final-20260901`，尚未合并 main、未核验 Render 精确提交、未生成真机预览二维码、未上传、未提审、未发布。`.codex/run-state/`、`output/` 和两个仅换行变化的微信项目配置不纳入 Git。
