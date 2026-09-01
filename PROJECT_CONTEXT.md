@@ -188,3 +188,18 @@ trigger another synchronization deploy but does not change product behavior.
 The first mini-program engineering gates are not website blockers: reconcile the mini-program's
 60-second chat timeout with the backend's 120-second request window, and replace or deliberately
 remove the itinerary/profile placeholder entries before calling the mini-program feature-complete.
+
+## 2026-09-01 mini-program v1 release candidate
+
+The mini-program engineering gates above are now implemented in task-branch commit
+`b5f7fa3c61f46c6b157564d0f4fa23e89b7f860b`. The chat timeout is 130 seconds, placeholder route/profile
+surfaces are replaced by real public/professional route, planner, history, language and email-only
+driver flows, and the existing WanderMind account and entitlement APIs remain the source of truth.
+The final Sol audit also corrected root-level professional profile extraction so driver handoff retains
+dates, travellers, trip length, route details and budget.
+
+Local acceptance is 212 deterministic mini-program contract checks, `git diff --check`, and a fresh
+WeChat DevTools compile with zero Problems-panel findings. The task branch is pushed, but this state is
+not yet GitHub main, Render-verified, physically previewed, uploaded, submitted or released. Full
+five-language localization of every mini-program screen is not claimed. Confirm WeChat request-domain
+and privacy configuration and obtain a fresh release go/no-go before Preview, Upload or submission.

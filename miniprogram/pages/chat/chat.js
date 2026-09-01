@@ -4,12 +4,19 @@ const { DESTINATIONS } = require('../../utils/const.js');
 
 const app = getApp();
 
-const BASE_SYSTEM = `你是 WanderMind 游心 — 一个专业的多智能体旅行规划助手。
-- 用中文回复，专业名词括号标注英文
+const BASE_SYSTEM = `你是 WanderMind 游心的旅行规划助手。
 - 提供具体地点、价格参考（当地货币/人民币双标注）
 - 适当使用 emoji 让回复生动
 - 分段清晰，避免大段密集文字
 - 像去过目的地 20 次的朋友在分享真实经验`;
+
+const LANG_PROMPT = {
+  zh: '请使用简体中文回复，专业名词可括号标注英文。',
+  en: 'Reply in clear, concise English.',
+  ja: '自然で簡潔な日本語で回答してください。',
+  ko: '자연스럽고 간결한 한국어로 답변해 주세요.',
+  id: 'Jawab dalam bahasa Indonesia yang alami dan ringkas.',
+};
 
 const SUGG_BY_DEST = {
   bali:      ['🏨 推荐乌布精品民宿', '🌊 巴厘岛冲浪入门攻略', '🍜 必吃地道美食清单', '💰 两人 7 天预算规划'],
@@ -29,7 +36,11 @@ Page({
     modeLabel: '⚡ 极速模式',
     messages: [],
     inputText: '',
+    canSend: false,
     busy: false,
+    retryText: '',
+    saveError: '',
+    convId: '',
     scrollAnchor: '',
     suggestions: [],
   },
@@ -37,15 +48,76 @@ Page({
   onLoad() {
     this._syncDestFromGlobal();
     const mode = wx.getStorageSync('wm_chat_mode') || 'fast';
+    const saved = wx.getStorageSync('wm_chat_state') || {};
+    const currentDest = this._destKey();
+    const sameDest = saved.destKey === currentDest;
+    const pendingText = sameDest ? (saved.pendingText || '') : '';
     this.setData({
       mode,
       modeLabel: mode === 'fast' ? '⚡ 极速模式' : '🎯 精细模式',
+      messages: sameDest ? this._normalizeMessages(saved.messages || []) : [],
+      inputText: pendingText || (sameDest ? (saved.inputText || '') : ''),
+      canSend: !!(pendingText || (sameDest && saved.inputText)),
+      retryText: pendingText,
+      convId: sameDest ? (saved.convId || '') : '',
     });
   },
 
-  onShow() {
+  async onShow() {
     // 切换目的地后回来要同步
     this._syncDestFromGlobal();
+    const openId = wx.getStorageSync('wm_open_conversation');
+    if (openId && !this._loadingConversation) {
+      wx.removeStorageSync('wm_open_conversation');
+      await this._openConversation(openId);
+    }
+  },
+
+  _destKey() {
+    return app.globalData.currentDest === 'custom'
+      ? `custom:${app.globalData.customDestName || ''}`
+      : app.globalData.currentDest;
+  },
+
+  _normalizeMessages(messages) {
+    return (messages || []).filter(item => item && item.role && item.content).map(item => ({
+      ...item,
+      id: item.id || _nextId(),
+    }));
+  },
+
+  _persistState(overrides = {}) {
+    wx.setStorageSync('wm_chat_state', {
+      destKey: this._destKey(),
+      messages: this.data.messages,
+      inputText: this.data.inputText,
+      pendingText: '',
+      convId: this.data.convId,
+      ...overrides,
+    });
+  },
+
+  async _openConversation(id) {
+    this._loadingConversation = true;
+    this.setData({ busy: true, saveError: '', retryText: '' });
+    try {
+      const conversation = await api.getConversation(id);
+      const messages = this._normalizeMessages(conversation.messages || []);
+      this.setData({
+        convId: conversation.id || id,
+        messages,
+        inputText: '',
+        canSend: false,
+        busy: false,
+        destName: conversation.dest || this.data.destName,
+        scrollAnchor: messages.length ? `msg-${messages[messages.length - 1].id}` : '',
+      });
+      this._persistState();
+    } catch (err) {
+      this.setData({ busy: false, saveError: err.message || '对话恢复失败' });
+    } finally {
+      this._loadingConversation = false;
+    }
   },
 
   _syncDestFromGlobal() {
@@ -78,7 +150,8 @@ Page({
   },
 
   onInputChange(e) {
-    this.setData({ inputText: e.detail.value });
+    const inputText = e.detail.value;
+    this.setData({ inputText, canSend: !!inputText.trim(), retryText: '', saveError: '' }, () => this._persistState());
   },
 
   quickSend(e) {
@@ -100,15 +173,20 @@ Page({
       return;
     }
 
+    const previousMessages = this.data.messages.slice();
     const userMsg = { id: _nextId(), role: 'user', content: text };
-    const messages = this.data.messages.concat(userMsg);
+    const messages = previousMessages.concat(userMsg);
 
     this.setData({
       messages,
       inputText: '',
+      canSend: false,
       busy: true,
+      retryText: '',
+      saveError: '',
       scrollAnchor: 'msg-typing',
     });
+    this._persistState({ messages: previousMessages, inputText: '', pendingText: text });
 
     try {
       const dest = app.globalData.currentDest === 'custom'
@@ -116,7 +194,8 @@ Page({
         : this.data.destName;
       // 注入旅行偏好（如果用户在"我的-旅行偏好"里设置过）
       const memoryPrompt = app.buildMemoryPrompt();
-      const system = BASE_SYSTEM + memoryPrompt + `\n\n当前目的地: ${dest}`;
+      const lang = app.globalData.currentLang || 'zh';
+      const system = BASE_SYSTEM + `\n${LANG_PROMPT[lang] || LANG_PROMPT.zh}` + memoryPrompt + `\n\n当前目的地: ${dest}`;
       // 把所有历史发给后端（角色+内容）
       const history = messages.map(m => ({ role: m.role, content: m.content }));
       const res = await api.chatOnce(history, system, dest, this.data.mode);
@@ -128,18 +207,45 @@ Page({
         mode: res.mode || this.data.mode,
         searched: !!res.searched,
       };
+      const completedMessages = messages.concat(assistantMsg);
       this.setData({
-        messages: this.data.messages.concat(assistantMsg),
+        messages: completedMessages,
         busy: false,
         scrollAnchor: 'msg-' + assistantMsg.id,
       });
+      this._persistState({ messages: completedMessages, pendingText: '' });
+      try {
+        const title = text.replace(/\s+/g, ' ').slice(0, 32) || `${dest} 行程`;
+        const saved = await api.saveConversation({
+          conv_id: this.data.convId || null,
+          dest,
+          title,
+          messages: completedMessages.map(item => ({ role: item.role, content: item.content })),
+        });
+        this.setData({ convId: saved.id || this.data.convId });
+        this._persistState({ convId: saved.id || this.data.convId, messages: completedMessages });
+      } catch (saveErr) {
+        this.setData({ saveError: '回复已保存在本机；云端同步失败，可继续使用。' });
+      }
     } catch (err) {
-      this.setData({ busy: false });
+      this.setData({
+        messages: previousMessages,
+        inputText: text,
+        canSend: true,
+        retryText: text,
+        busy: false,
+      });
+      this._persistState({ messages: previousMessages, inputText: text, pendingText: '' });
       wx.showModal({
         title: '出了点问题 🌊',
-        content: err.message || '请稍后重试',
+        content: `${err.message || '请稍后重试'}\n\n输入内容已保留。`,
         showCancel: false,
       });
     }
+  },
+
+  retryLast() {
+    if (!this.data.retryText || this.data.busy) return;
+    this.setData({ inputText: this.data.retryText, canSend: true }, () => this.sendMsg());
   },
 });

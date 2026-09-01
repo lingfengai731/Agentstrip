@@ -1,12 +1,50 @@
-<!--pages/itinerary/itinerary.wxml-->
-<view class="placeholder">
-  <view class="ph-icon">📋</view>
-  <view class="ph-title">我的行程</view>
-  <view class="ph-desc">即将上线</view>
-  <view class="ph-list">
-    <view class="ph-item">📅 行程时间轴展示</view>
-    <view class="ph-item">✏️ AI 行程修改助手</view>
-    <view class="ph-item">📄 一键导出 PDF</view>
+<view class="route-page">
+  <view class="route-hero">
+    <view class="eyebrow">BALI ROUTE STUDIO</view>
+    <view class="route-title">景点很分散，路线不该绕</view>
+    <view class="route-sub">先完整浏览 6 条公共路线，再按日期、节奏与预算匹配你的专业路线。</view>
+    <view class="hero-actions">
+      <button class="btn primary" bindtap="openPlanner">匹配我的路线</button>
+      <button class="btn ghost" bindtap="goChat">AI 自助规划</button>
+    </view>
   </view>
-  <view class="ph-tip">先在「聊天」里和 AI 规划行程 ✨</view>
+
+  <view wx:if="{{professional}}" class="pro-card">
+    <view class="pro-top">
+      <view><view class="section-kicker">个性化专业路线</view><view class="pro-title">{{professional.route.route_id}} · {{professional.route.route_name}}</view></view>
+      <view class="status {{professional.route.unlocked ? 'open' : ''}}">{{professional.route.unlocked ? '已解锁' : '约 70% 预览'}}</view>
+    </view>
+    <view class="pro-reason">{{professional.route.recommendation_reason}}</view>
+    <view class="day-list">
+      <view wx:for="{{professional.route.days_plan}}" wx:key="day" class="pro-day {{item.locked ? 'locked' : ''}}">
+        <view class="day-number">{{item.day}}</view>
+        <view class="day-body">
+          <view class="day-title">第 {{item.day}} 天 · {{item.region_name}}</view>
+          <view class="day-theme">{{item.theme}}</view>
+          <view wx:if="{{!item.locked}}" class="places"><text wx:for="{{item.places}}" wx:key="id">{{item.name}}{{index < item.places.length - 1 ? ' · ' : ''}}</text></view>
+          <view wx:else class="lock-copy">{{item.lock_reason}}</view>
+        </view>
+      </view>
+    </view>
+    <view class="pro-actions">
+      <button wx:if="{{!professional.route.unlocked}}" class="btn primary" bindtap="copyUnlockLink">到网页解锁完整路线</button>
+      <button wx:if="{{professional.route.unlocked}}" class="btn primary" bindtap="openDriver">联系当地司机</button>
+      <view class="allowance">{{professional.route.unlocked ? '同一行程还可调整 ' + professional.professional_adjustments_remaining + ' 次' : '¥9.9 或 30 积分解锁，含 3 次同行程调整'}}</view>
+    </view>
+  </view>
+
+  <view class="section-head">
+    <view><view class="section-kicker">PUBLIC ROUTES</view><view class="section-title">6 条公共路线 · 全部免费</view></view>
+    <view class="section-note">路线事实与 wandermind.cc 同步</view>
+  </view>
+  <view wx:if="{{loading}}" class="state-card">正在读取路线…</view>
+  <view wx:if="{{error}}" class="state-card error"><view>{{error}}</view><button class="text-btn" bindtap="retry">重试</button></view>
+  <scroll-view wx:if="{{routes.length}}" class="route-tabs" scroll-x enhanced show-scrollbar="{{false}}"><view class="route-tabs-inner"><view wx:for="{{routes}}" wx:key="id" class="route-tab {{selected.id === item.id ? 'active' : ''}}" bindtap="selectRoute" data-id="{{item.id}}"><text>{{item.id}}</text><text>{{item.name}}</text></view></view></scroll-view>
+  <view wx:if="{{selected}}" class="public-card">
+    <view class="public-title">{{selected.id}} · {{selected.name}}</view>
+    <view class="public-promise">{{selected.promise}}</view>
+    <view class="route-facts"><text>推荐 {{selected.idealDays}} 天</text><text>{{selected.regionPath}}</text></view>
+    <view class="day-list public-days"><view wx:for="{{selected.days}}" wx:key="day" class="public-day"><view class="day-number">{{item.day}}</view><view class="day-body"><view class="day-title">{{item.regionId}} · {{item.theme}}</view><view class="places">{{item.placesText}}</view></view></view></view>
+    <button class="btn primary full" bindtap="openPlanner">按这条路线匹配我的行程</button>
+  </view>
 </view>

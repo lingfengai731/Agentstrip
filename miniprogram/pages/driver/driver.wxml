@@ -1,0 +1,54 @@
+<view class="driver-page">
+  <view wx:if="{{sent}}" class="success-card">
+    <view class="success-mark">✓</view>
+    <view class="success-title">申请已发送</view>
+    <view class="success-copy">WanderMind 会通过邮箱确认档期并转交给你选择的司机。司机私人联系方式不会公开。</view>
+    <button class="btn" bindtap="back">返回路线</button>
+  </view>
+
+  <block wx:else>
+    <view class="driver-hero">
+      <view class="eyebrow">BALI LOCAL DRIVER</view>
+      <view class="hero-title">让当地司机协助路线落地</view>
+      <view class="hero-copy">选择司机并填写关键行程信息。所有联系统一经 WanderMind 邮箱转交。</view>
+    </view>
+
+    <view class="section">
+      <view class="section-title">选择司机</view>
+      <view class="driver-grid">
+        <view class="driver-card {{driverId === 'dicky' ? 'active' : ''}}" bindtap="selectDriver" data-id="dicky"><view class="avatar">D</view><view><b>Dicky</b><small>Bali 本地司机</small></view></view>
+        <view class="driver-card {{driverId === 'gede' ? 'active' : ''}}" bindtap="selectDriver" data-id="gede"><view class="avatar">G</view><view><b>Gede Nico</b><small>Bali 本地司机</small></view></view>
+      </view>
+    </view>
+
+    <view class="section">
+      <view class="section-title">你的行程</view>
+      <view wx:if="{{routeId}}" class="route-badge">已带入专业路线 {{routeId}}</view>
+      <view class="two-col">
+        <input class="field" placeholder="名字 *" value="{{firstName}}" bindinput="onInput" data-field="firstName" />
+        <input class="field" placeholder="姓氏" value="{{lastName}}" bindinput="onInput" data-field="lastName" />
+      </view>
+      <input class="field" placeholder="联系邮箱 *" value="{{email}}" bindinput="onInput" data-field="email" />
+      <view class="two-col">
+        <picker mode="date" value="{{startDate}}" bindchange="setStart"><view class="field picker">{{startDate || '开始日期 *'}}</view></picker>
+        <picker mode="date" value="{{endDate}}" bindchange="setEnd"><view class="field picker">{{endDate || '结束日期 *'}}</view></picker>
+      </view>
+      <picker mode="selector" range="{{peopleOptions}}" value="{{people - 1}}" bindchange="setPeople"><view class="field picker">{{people}} 位游客</view></picker>
+      <input class="field" placeholder="接送地点或酒店区域 *" value="{{pickup}}" bindinput="onInput" data-field="pickup" />
+      <input class="field" placeholder="预算范围（可选）" value="{{budget}}" bindinput="onInput" data-field="budget" />
+      <textarea class="textarea" placeholder="想去的地点或每日路线" value="{{attractions}}" bindinput="onInput" data-field="attractions" maxlength="2000" />
+      <textarea class="textarea compact" placeholder="补充说明、行李或航班信息（可选）" value="{{intro}}" bindinput="onInput" data-field="intro" maxlength="800" />
+    </view>
+
+    <view class="section">
+      <view class="section-title">需要什么服务</view>
+      <checkbox-group class="services" bindchange="setServices">
+        <label wx:for="{{serviceOptions}}" wx:key="value"><checkbox value="{{item.value}}" checked="{{item.checked}}" color="#0E7C6B" />{{item.label}}</label>
+      </checkbox-group>
+      <checkbox-group bindchange="setConsent"><label class="consent"><checkbox value="yes" checked="{{privacyConsent}}" color="#0E7C6B" />我同意 WanderMind 将本申请和邮箱转交给所选司机，仅用于确认本次行程。</label></checkbox-group>
+    </view>
+
+    <view wx:if="{{error}}" class="error">{{error}}</view>
+    <view class="sticky-action"><button class="submit" bindtap="submit" loading="{{busy}}" disabled="{{busy}}">{{busy ? '正在安全转交…' : '发送司机申请'}}</button><view class="privacy-note">不会展示司机私人电话、社交账号或个人邮箱。</view></view>
+  </block>
+</view>

@@ -3132,6 +3132,9 @@
     z-index: 0;
     display: grid;
     align-items: center; }
+  @media (max-width: 767px) {
+    .w3l-main-slider .banner-view:not(.banner-top1):not(.banner-top2) {
+      background-image: url(../images/thumbs/18029bd74c32ef72.webp); } }
   .w3l-main-slider .banner-top1 {
     background: url(../images/hero-2.jpg) no-repeat center;
     background-size: cover; }
@@ -3686,7 +3689,7 @@
   grid-template-columns: 1fr 1fr; }
 
 .w3l-specification-6 .ser-bg1 {
-  background: url(../images/kyoto-1.jpg) no-repeat center;
+  background: url(../images/web/ea9382023285d36a.webp) no-repeat center;
   background-size: cover;
   min-height: 400px;
   position: relative;
@@ -3698,7 +3701,7 @@
   max-width: 500px; }
 
 .w3l-specification-6 .images-right {
-  background: url(../images/bali-1.jpg) no-repeat center;
+  background: url(../images/web/51ab7ab45565e4b5.webp) no-repeat center;
   background-size: cover;
   min-height: 800px;
   position: relative;
@@ -3717,7 +3720,7 @@
   z-index: -1; }
 
 .w3l-specification-6 .ser-bg2 {
-  background: url(../images/santorini-1.jpg) no-repeat center;
+  background: url(../images/web/7ede1e61fcad44f9.webp) no-repeat center;
   background-size: cover;
   min-height: 400px;
   position: relative;
@@ -3726,7 +3729,7 @@
   align-items: end; }
 
 .w3l-specification-6 .ser-bg3 {
-  background: url(../images/world-1.jpg) no-repeat center;
+  background: url(../images/web/cb8410da9a66867d.webp) no-repeat center;
   background-size: cover;
   min-height: 400px;
   position: relative;
@@ -3735,7 +3738,7 @@
   align-items: end; }
 
 .w3l-specification-6 .ser-bg4 {
-  background: url(../images/paris-1.jpg) no-repeat center;
+  background: url(../images/web/388bc0b1c0e1648d.webp) no-repeat center;
   background-size: cover;
   min-height: 400px;
   position: relative;
@@ -3976,7 +3979,10 @@
     line-height: 25px;
     color: #aaa; }
   .w3l-footer-29-main .copy-footer-29 a {
-    color: #ccc; }
+    color: #fff;
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 3px; }
   .w3l-footer-29-main .copy-footer-29 a:hover {
     color: #fff; }
   .w3l-footer-29-main ul.list-btm-29,

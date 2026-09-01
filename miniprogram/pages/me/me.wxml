@@ -26,12 +26,12 @@
         <view wx:else class="me-row-value">未设置</view>
         <view class="me-row-arrow">›</view>
       </view>
-      <view class="me-row" bindtap="todo" data-key="history">
+      <view class="me-row" bindtap="openHistory">
         <view class="me-row-icon">📜</view>
         <view class="me-row-label">对话历史</view>
         <view class="me-row-arrow">›</view>
       </view>
-      <view class="me-row" bindtap="todo" data-key="lang">
+      <view class="me-row" bindtap="openLanguage">
         <view class="me-row-icon">🌐</view>
         <view class="me-row-label">语言设置</view>
         <view class="me-row-value">{{currentLangLabel}}</view>
@@ -54,7 +54,7 @@
 
     <button class="btn-ghost logout-btn" bindtap="doLogout">退出登录</button>
 
-    <view class="me-footer">WanderMind · 游心 v0.1.0</view>
+    <view class="me-footer">WanderMind · 游心 v1.0.0</view>
   </view>
 
 </view>

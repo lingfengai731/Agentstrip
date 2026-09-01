@@ -28,7 +28,7 @@
       <view
         wx:for="{{styleOptions}}"
         wx:key="value"
-        class="pref-chip {{styleList.indexOf(item.value) >= 0 ? 'active' : ''}}"
+        class="pref-chip {{item.selected ? 'active' : ''}}"
         bindtap="toggleStyle"
         data-value="{{item.value}}"
       >{{item.label}}</view>
