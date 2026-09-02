@@ -312,3 +312,11 @@ release was performed.
 - QA 回调：116/116 后端 product-access tests、242 项 Mini Program contract、Python/JavaScript 语法与 `git diff --check` 通过；13 项 PostgreSQL 专项在未提供隔离 `DATABASE_URL` 时按设计 skip。内联 `driver-reply.html` JavaScript 另行解析通过。
 - Git/发布边界：本地提交 `c523816bac191a4f3104bac1d0f5569b91115c8e`，工作树 clean；未 push、未创建 PR、未 merge、未部署 Render、未发真实邮件、未写生产数据库、未 Upload、未提审、未发布。证据与 handoff 已落在 `.codex/project-memory/evidence/2026/09/20260902T123243Z-miniprogram-driver-relay-20260902.json` 和 `.codex/project-memory/handoffs/2026/09/20260902T123243Z-miniprogram-driver-relay-20260902.md`，需随本地提交一起由父 Agent 审阅并同步。
 - 下一动作：父 Agent 对比基线与实际 diff，复跑本地门禁，送固定 head PR/CI（含隔离 PostgreSQL），再按精确合并提交部署并做单独授权的 Mini Program Preview/司机中转验收；不得把本地完成写成生产上线。
+
+PR #51 fixed head `2afece9379c2c1934530d6060f512551caf7afc4` passed Project memory validation
+and PostgreSQL integration, then squash merged as `main@90832175bfe973740c01334dff828e36a0607bce`;
+the fixed-head and merge Git trees are identical. Render deploy `dep-dac1jmf8diss73a0umr0` became Live at
+that exact commit. Fresh no-write checks returned 200 for `/healthz` and `/driver-reply.html`, confirmed
+the reply page is `noindex`, and confirmed both driver-relay API paths in OpenAPI. A Preview package was
+compiled to 1,536,315 bytes. No real driver email/reply, production driver-request write, Upload, review
+submission or release was performed; these remain separate external gates.
