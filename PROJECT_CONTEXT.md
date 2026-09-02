@@ -266,3 +266,18 @@ Markdown markers and model-generated line breaks were displayed literally. The c
 a native, non-HTML message formatter, tightens the Mini Program output prompt, and aligns Mini Program
 surfaces with the owner-confirmed public name `WanderMind 智旅`. Local contract, backend regression and
 WeChat DevTools Preview compilation must remain green before integration.
+
+PR #47 fixed head `a7ace5f90e5bf146424f59d18a0c5faf30d38f0c` passed Project memory
+validation and squash merged as `main@e9745f3d81d1f8149d1d531db4516a3aa36c7cd1`; the two Git trees
+are identical. Render deploy `dep-dac0ff0n74is738nudv0` became Live at that exact merge commit, and fresh
+production checks returned 200 for both `/healthz` and the public landing page. A new Preview package was
+compiled successfully from the same tree and stored under the local `E:\Agentstrip-artifacts` hierarchy;
+this remains Preview only, not Upload, review submission or release.
+
+The E-drive worktree audit found eight clean worktrees with merged-PR evidence. Seven were removed through
+`git worktree remove`, releasing their working-copy space without deleting branches or Git history. One
+content-safety worktree was deregistered but its remaining directory is held open by WeChat DevTools; do
+not force-kill the tool or claim that directory removed. All dirty worktrees, the protected `E:\Agentstrip`
+source workspace, Agentstrip2, backups, user media and evidence artifacts were retained. Future task
+worktrees and non-Git preview artifacts now have a centralized creation convention documented in
+`.codex/project-memory/ACCOUNT_SETUP.md` and automated by `tools/new-agentstrip-worktree.ps1`.

@@ -8,9 +8,26 @@ remote, while Git worktree metadata keeps their indexes and HEADs separate.
 Recommended eventual layout:
 
 ```text
-Account 1: E:\Agentstrip
-Account 2: E:\Agentstrip2-worktree
+Legacy source workspace: E:\Agentstrip
+Account 1 active tasks: E:\Agentstrip-worktrees\active\account1\<task>
+Account 2 active tasks: E:\Agentstrip-worktrees\active\account2\<task>
+Task evidence and previews: E:\Agentstrip-artifacts\<date>\<task>
 ```
+
+`E:\Agentstrip` currently contains user-owned, uncommitted material and remains a protected source
+workspace. Do not develop there or move it automatically. New task worktrees should use the
+centralized layout above so daily task folders no longer accumulate directly under `E:\`.
+
+Create a new isolated task and its matching artifact folder with:
+
+```powershell
+.\tools\new-agentstrip-worktree.ps1 -Account account1 -TaskSlug miniprogram-next-step
+```
+
+The script fetches `origin/main`, refuses existing branches or paths, creates a
+`codex/<task>` branch, and prints both resulting paths. It never removes old worktrees. A completed
+worktree may be removed only after it is clean and its PR, Git tree, evidence and deployment status
+have been verified independently.
 
 Do not create the second operational worktree from an unreviewed bootstrap branch. First merge the
 project-memory pull request, then create a task branch from the updated main branch:

@@ -1,0 +1,22 @@
+{
+  "schema_version": 1,
+  "evidence_id": "ev-20260902T113219Z-workspace-governance-20260902",
+  "task_ref": "workspace-governance-20260902",
+  "owner": "codex-sol",
+  "captured_at": "2026-09-02T11:32:19Z",
+  "status": "verified",
+  "claim": "Seven clean, merged Agentstrip worktrees were removed safely and future task worktrees and artifacts received a centralized creation convention.",
+  "source": {
+    "kind": "git",
+    "repository": "https://github.com/lingfengai731/Agentstrip.git",
+    "commit": "e9745f3d81d1f8149d1d531db4516a3aa36c7cd1",
+    "branch": "codex/workspace-governance-20260902",
+    "worktree": "E:\\Agentstrip-wt-miniprogram-content-safety-release-20260902",
+    "dirty": true
+  },
+  "verification": {
+    "command": "git status --porcelain per candidate; git worktree remove; PowerShell parser; duplicate-path refusal; git diff --check",
+    "result": "PASS for seven removals and script checks. One deregistered content-safety directory remains because WeChat DevTools holds it open."
+  },
+  "notes": "No dirty worktree, original workspace, Agentstrip2 directory, backup, user media, evidence artifact, branch or remote ref was deleted."
+}
