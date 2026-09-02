@@ -21,6 +21,7 @@ Same interface as before. Internally:
   • IntegrityError is unified for both backends
 """
 import os
+import re
 import sqlite3
 import time
 from pathlib import Path
@@ -116,7 +117,7 @@ def init_db():
         conn.execute(f"""
             CREATE TABLE IF NOT EXISTS users (
                 id            TEXT PRIMARY KEY,
-                email         TEXT UNIQUE NOT NULL,
+                email         TEXT UNIQUE,
                 name          TEXT NOT NULL,
                 password_hash TEXT NOT NULL,
                 lang          TEXT DEFAULT 'zh',
@@ -126,6 +127,22 @@ def init_db():
                 created_at    {ts_type} NOT NULL
             )
         """)
+        conn.execute(f"""
+            CREATE TABLE IF NOT EXISTS auth_identities (
+                id                TEXT PRIMARY KEY,
+                user_id           TEXT NOT NULL,
+                provider          TEXT NOT NULL,
+                provider_subject  TEXT NOT NULL,
+                email_at_provider TEXT,
+                created_at        {ts_type} NOT NULL,
+                last_seen_at      {ts_type} NOT NULL,
+                UNIQUE(provider, provider_subject)
+            )
+        """)
+        conn.execute(
+            "CREATE INDEX IF NOT EXISTS idx_auth_identities_user "
+            "ON auth_identities(user_id)"
+        )
         conn.execute(f"""
             CREATE TABLE IF NOT EXISTS email_verification_codes (
                 email         TEXT PRIMARY KEY,
@@ -468,6 +485,26 @@ def init_db():
                 except Exception:
                     pass
 
+        # The first SQLite schema used ``email TEXT UNIQUE NOT NULL``. SQLite
+        # cannot drop a column constraint in place, so rebuild that one table
+        # transactionally while preserving every existing column and value.
+        # PostgreSQL supports the migration directly. This is intentionally a
+        # hard startup failure if the rebuild cannot be completed: creating a
+        # WeChat-only account without a nullable email would be unsafe.
+        try:
+            if USE_POSTGRES:
+                conn.execute("ALTER TABLE users ALTER COLUMN email DROP NOT NULL")
+                conn.commit()
+            else:
+                _sqlite_make_users_email_nullable(conn)
+                conn.commit()
+        except Exception:
+            try:
+                conn.rollback()
+            except Exception:
+                pass
+            raise
+
         for index_sql in (
             "CREATE UNIQUE INDEX IF NOT EXISTS idx_pro_orders_provider_order ON professional_route_orders(provider_order_id)",
             "CREATE UNIQUE INDEX IF NOT EXISTS idx_pro_orders_provider_capture ON professional_route_orders(provider_capture_id)",
@@ -490,6 +527,36 @@ def init_db():
             except Exception:
                 pass
 
+        # Existing Google accounts remain fully compatible with the legacy
+        # google_sub column while also becoming visible to the generic identity
+        # table. No provider secret or credential is copied here.
+        try:
+            google_rows = conn.execute(
+                "SELECT id,google_sub,email,created_at FROM users "
+                "WHERE google_sub IS NOT NULL AND TRIM(google_sub) <> ''"
+            ).fetchall()
+            for row in google_rows:
+                identity = dict(row)
+                conn.execute(
+                    """INSERT INTO auth_identities
+                       (id,user_id,provider,provider_subject,email_at_provider,created_at,last_seen_at)
+                       VALUES (?,?,?,?,?,?,?)
+                       ON CONFLICT(provider,provider_subject) DO NOTHING""",
+                    (
+                        f"google-{identity['id']}", identity["id"], "google",
+                        identity["google_sub"], identity.get("email"),
+                        identity.get("created_at") or int(time.time()),
+                        identity.get("created_at") or int(time.time()),
+                    ),
+                )
+            conn.commit()
+        except Exception:
+            try:
+                conn.rollback()
+            except Exception:
+                pass
+            raise
+
         try:
             conn.execute("CREATE UNIQUE INDEX IF NOT EXISTS idx_users_username ON users(username)")
             conn.execute("CREATE UNIQUE INDEX IF NOT EXISTS idx_users_referral_code ON users(referral_code)")
@@ -508,3 +575,51 @@ def init_db():
 # ─── Helpers for code outside ────────────────────────────────
 def backend_name() -> str:
     return "postgres" if USE_POSTGRES else "sqlite"
+
+
+def _sqlite_make_users_email_nullable(conn) -> None:
+    """Rebuild legacy SQLite ``users`` only when email is still NOT NULL."""
+    columns = [dict(row) for row in conn.execute("PRAGMA table_info(users)").fetchall()]
+    email_column = next(
+        (column for column in columns if str(column.get("name", "")).lower() == "email"),
+        None,
+    )
+    if not email_column or not int(email_column.get("notnull") or 0):
+        return
+
+    schema_row = conn.execute(
+        "SELECT sql FROM sqlite_master WHERE type='table' AND name='users'"
+    ).fetchone()
+    schema_sql = dict(schema_row).get("sql") if schema_row else None
+    if not schema_sql:
+        raise RuntimeError("users schema is unavailable")
+
+    rebuilt_sql = schema_sql.replace(
+        "CREATE TABLE users", "CREATE TABLE users__email_nullable", 1
+    )
+    if rebuilt_sql == schema_sql:
+        rebuilt_sql = re.sub(
+            r"(?i)(CREATE\s+TABLE\s+(?:IF\s+NOT\s+EXISTS\s+)?)[\"`\[]?users[\"`\]]?",
+            r"\1users__email_nullable",
+            schema_sql,
+            count=1,
+        )
+    rebuilt_sql, replacements = re.subn(
+        r"(?i)(\bemail\s+TEXT\s+UNIQUE)\s+NOT\s+NULL\b",
+        r"\1",
+        rebuilt_sql,
+        count=1,
+    )
+    if "users__email_nullable" not in rebuilt_sql or replacements != 1:
+        raise RuntimeError("could not prepare nullable users schema")
+
+    conn.execute("ALTER TABLE users RENAME TO users__email_required")
+    conn.execute(rebuilt_sql)
+    column_names = [str(column["name"]) for column in columns]
+    quoted = ", ".join('"' + name.replace('"', '""') + '"' for name in column_names)
+    conn.execute(
+        f"INSERT INTO users__email_nullable ({quoted}) "
+        f"SELECT {quoted} FROM users__email_required"
+    )
+    conn.execute("DROP TABLE users__email_required")
+    conn.execute("ALTER TABLE users__email_nullable RENAME TO users")

@@ -81,7 +81,12 @@ check(api.includes('/api/auth/send-verification-code'), 'verification-code API w
 check(/data:\s*\{\s*email,\s*password,\s*name,\s*code,\s*lang\s*\}/.test(api), 'registration payload must include verification code and language');
 check(api.includes('/api/wechat/content-check') && api.includes('wx.login') && api.includes('allowed'), 'WeChat content-safety wrapper missing');
 check(api.includes('_chunkUtf8') && api.includes('chunks[index]') && api.includes('checkChunk(index + 1)'), 'content safety must inspect every UTF-8 chunk');
+check(api.includes('/api/auth/wechat/login') && api.includes('const wechatLogin'), 'WeChat login API wrapper missing');
+check(api.includes('/api/auth/wechat/link') && api.includes('const linkWechat'), 'explicit WeChat link API wrapper missing');
 check(auth.includes('sendCode()') && auth.includes('verificationCode'), 'registration UI must send and submit the verification code');
+check(auth.includes('wechatLogin()') && auth.includes('wx.login') && auth.includes('api.wechatLogin'), 'WeChat one-click login UI is missing');
+check(auth.includes('linkWechat()') && auth.includes('api.linkWechat'), 'explicit WeChat link UI is missing');
+check(!/open-type=["']getPhoneNumber/.test(read('miniprogram/pages/index/index.wxml')), 'WeChat login must not request phone authorization');
 check(auth.includes('api.checkUserContent(regName.trim(), 1)'), 'registration name must be checked before account creation');
 check(chat.includes('contentForSafetyCheck') && chat.includes('api.checkUserContent(contentForSafetyCheck, 2)'), 'AI user messages must be checked before sending');
 check(chat.includes('customDestination') && chat.includes('${customDestination}\\n${text}'), 'custom destinations must be included in AI content checks');

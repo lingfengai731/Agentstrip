@@ -35,6 +35,12 @@
         {{authMode === 'login' ? '登录' : '注册'}}
       </button>
 
+      <view class="auth-divider"><view></view><text>或</text><view></view></view>
+      <button class="wechat-btn" bindtap="wechatLogin" loading="{{wechatBusy}}" disabled="{{wechatBusy || authBusy}}">
+        <text class="wechat-mark">微</text>
+        {{wechatBusy ? '正在连接微信…' : '微信一键登录'}}
+      </button>
+
       <view wx:if="{{authMode === 'register'}}" class="code-hint">验证码 10 分钟内有效；60 秒后可重新发送。</view>
 
       <view wx:if="{{authError}}" class="auth-error">{{authError}}</view>
@@ -71,6 +77,15 @@
       <view class="custom-text">输入其他目的地…</view>
       <view class="custom-arrow">›</view>
     </view>
+
+    <view wx:if="{{!wechatLinked}}" class="card wechat-link-card">
+      <view class="wechat-link-copy">
+        <view class="wechat-link-title">绑定微信账号</view>
+        <view class="wechat-link-subtitle">下次可直接使用微信登录，不会合并其他账号</view>
+      </view>
+      <button class="wechat-link-btn" bindtap="linkWechat" loading="{{wechatBusy}}" disabled="{{wechatBusy}}">绑定</button>
+    </view>
+    <view wx:if="{{wechatLinked}}" class="wechat-linked-note">微信账号已绑定</view>
 
     <view class="quick-actions">
       <view class="qa-title">快速开始</view>

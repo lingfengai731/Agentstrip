@@ -91,6 +91,46 @@
 .auth-btn {
   margin-top: 10rpx;
 }
+.auth-divider {
+  display: flex;
+  align-items: center;
+  gap: 16rpx;
+  margin: 28rpx 0 20rpx;
+  color: #A39B91;
+  font-size: 22rpx;
+}
+.auth-divider view {
+  flex: 1;
+  height: 1rpx;
+  background: #E1DCD3;
+}
+.wechat-btn,
+.wechat-link-btn {
+  border: 1rpx solid #B6D9D1;
+  border-radius: 14rpx;
+  background: #F5FBF9;
+  color: #0E6658;
+  font-size: 28rpx;
+  font-weight: 700;
+  line-height: 88rpx;
+}
+.wechat-btn::after,
+.wechat-link-btn::after { border: 0; }
+.wechat-btn[disabled],
+.wechat-link-btn[disabled] { opacity: .58; }
+.wechat-mark {
+  display: inline-block;
+  width: 42rpx;
+  height: 42rpx;
+  margin-right: 10rpx;
+  border-radius: 50%;
+  background: #0E7C6B;
+  color: #FAF7F2;
+  font-size: 23rpx;
+  line-height: 42rpx;
+  text-align: center;
+  vertical-align: -3rpx;
+}
 .auth-error {
   margin-top: 20rpx;
   color: #C13B3B;
@@ -166,6 +206,40 @@
 .custom-icon { font-size: 44rpx; }
 .custom-text { flex: 1; font-size: 28rpx; color: #2A2723; font-weight: 600; }
 .custom-arrow { color: #8A857F; font-size: 40rpx; }
+
+.wechat-link-card {
+  display: flex;
+  align-items: center;
+  gap: 18rpx;
+  margin-top: 24rpx;
+  padding: 24rpx 26rpx;
+}
+.wechat-link-copy { flex: 1; min-width: 0; }
+.wechat-link-title {
+  color: #2A2723;
+  font-size: 28rpx;
+  font-weight: 700;
+}
+.wechat-link-subtitle {
+  margin-top: 6rpx;
+  color: #8A857F;
+  font-size: 21rpx;
+  line-height: 1.45;
+}
+.wechat-link-btn {
+  flex: 0 0 132rpx;
+  width: 132rpx;
+  margin: 0;
+  padding: 0;
+  font-size: 24rpx;
+  line-height: 68rpx;
+}
+.wechat-linked-note {
+  margin-top: 24rpx;
+  color: #0E7C6B;
+  font-size: 22rpx;
+  text-align: center;
+}
 
 /* —— 快速入口 —— */
 .quick-actions {
