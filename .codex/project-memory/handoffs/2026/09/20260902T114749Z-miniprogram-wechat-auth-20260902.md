@@ -4,7 +4,7 @@
 - Owner: Codex Luna
 - Captured at: 2026-09-02T11:47:49Z
 - Branch: codex/miniprogram-wechat-auth-20260902
-- Commit: 946dfb7772c250a1666398816ff078a94c9bf633
+- Commit: 6f905bc6454385e6df62cdebaf0f414f1e2ae929
 - Worktree: E:\Agentstrip-worktrees\active\account1\wechat-auth-20260902
 - Working tree: clean before this evidence/handoff record
 

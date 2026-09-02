@@ -9,7 +9,7 @@
   "source": {
     "kind": "git",
     "repository": "https://github.com/lingfengai731/Agentstrip.git",
-    "commit": "946dfb7772c250a1666398816ff078a94c9bf633",
+    "commit": "6f905bc6454385e6df62cdebaf0f414f1e2ae929",
     "branch": "codex/miniprogram-wechat-auth-20260902",
     "worktree": "E:\\Agentstrip-worktrees\\active\\account1\\wechat-auth-20260902",
     "dirty": false

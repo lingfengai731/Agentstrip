@@ -4,7 +4,7 @@
 - Owner: codex-sol
 - Captured at: 2026-09-02T11:54:38Z
 - Branch: codex/miniprogram-wechat-auth-20260902
-- Reviewed commit: 449257509fce6486e67d461267c941d09e1890fa
+- Reviewed commit: 8b2db9f8048f7f15e5310cd1b2641f91e1a36367
 - Worktree: E:\Agentstrip-worktrees\active\account1\wechat-auth-20260902
 
 ## Current state
