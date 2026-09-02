@@ -1,0 +1,22 @@
+{
+  "schema_version": 1,
+  "evidence_id": "ev-20260902T035327Z-miniprogram-content-safety-production-20260902",
+  "task_ref": "miniprogram-content-safety-production-20260902",
+  "owner": "Codex Sol",
+  "captured_at": "2026-09-02T03:53:27Z",
+  "status": "verified",
+  "claim": "PR #45 fixed-head CI passed, the content-safety change squash merged to main, Render deployed the exact merge commit Live, and production fail-closed smoke checks passed without data writes.",
+  "source": {
+    "kind": "git",
+    "repository": "https://github.com/lingfengai731/Agentstrip.git",
+    "commit": "79cdc2399d3836de4d9b47b4f6817332eb99a8a2",
+    "branch": "codex/miniprogram-content-safety-release-20260902",
+    "worktree": "E:\\Agentstrip-wt-miniprogram-content-safety-release-20260902",
+    "dirty": false
+  },
+  "verification": {
+    "command": "GitHub PR #45 fixed-head checks; Git tree equality; Render deploy list; GET /healthz; GET /openapi.json; POST /api/wechat/content-check with one deliberately invalid temporary code",
+    "result": "Project memory validation and PostgreSQL integration success; fixed and merge trees equal; main 408d153 Live as dep-dabppmrbc2fs73epc48g; health 200/ok; route present; invalid-code check returned generic 502 with no code echo."
+  },
+  "notes": "Owner confirmed the two Render environment variables were configured directly. No secret values were read or stored. No user, order, entitlement or content record was created. No Preview, Upload, review submission or release."
+}
