@@ -124,6 +124,7 @@ Page({
     };
     this.setData({ busy: true });
     try {
+      await api.checkUserContent(prefs.notes, 2);
       await api.savePrefs(prefs);
       app.setPrefs(prefs);
       this.setData({ hasAny: this._hasAny(prefs) });

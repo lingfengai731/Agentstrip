@@ -128,12 +128,14 @@ Page({
     }
     this.setData({ authBusy: true, authError: '' });
     try {
-      const fn = authMode === 'login'
-        ? api.login(email.trim(), password)
-        : api.register(
+      if (authMode === 'register') {
+        await api.checkUserContent(regName.trim(), 1);
+      }
+      const res = authMode === 'login'
+        ? await api.login(email.trim(), password)
+        : await api.register(
           email.trim(), password, regName.trim(), verificationCode.trim(), app.globalData.currentLang
         );
-      const res = await fn;
       app.setToken(res.token, res.user);
       wx.showToast({ title: authMode === 'login' ? '欢迎回来' : '注册成功', icon: 'success' });
       this.setData({ loggedIn: true, user: res.user, password: '', verificationCode: '' });

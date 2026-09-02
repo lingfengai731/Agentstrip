@@ -173,6 +173,34 @@ Page({
       return;
     }
 
+    const dest = app.globalData.currentDest === 'custom'
+      ? (app.globalData.customDestName || 'custom')
+      : this.data.destName;
+    const customDestination = app.globalData.currentDest === 'custom'
+      ? (app.globalData.customDestName || '').trim()
+      : '';
+    const contentForSafetyCheck = customDestination
+      ? `${customDestination}\n${text}`
+      : text;
+    this.setData({ busy: true, saveError: '', retryText: '' });
+    try {
+      await api.checkUserContent(contentForSafetyCheck, 2);
+    } catch (err) {
+      this.setData({
+        busy: false,
+        inputText: text,
+        canSend: true,
+        retryText: text,
+        saveError: err.message || '内容安全校验暂不可用，请稍后重试',
+      });
+      wx.showModal({
+        title: '暂时无法发送',
+        content: err.message || '内容安全校验暂不可用，请稍后重试',
+        showCancel: false,
+      });
+      return;
+    }
+
     const previousMessages = this.data.messages.slice();
     const userMsg = { id: _nextId(), role: 'user', content: text };
     const messages = previousMessages.concat(userMsg);
@@ -189,9 +217,6 @@ Page({
     this._persistState({ messages: previousMessages, inputText: '', pendingText: text });
 
     try {
-      const dest = app.globalData.currentDest === 'custom'
-        ? (app.globalData.customDestName || 'custom')
-        : this.data.destName;
       // 注入旅行偏好（如果用户在"我的-旅行偏好"里设置过）
       const memoryPrompt = app.buildMemoryPrompt();
       const lang = app.globalData.currentLang || 'zh';

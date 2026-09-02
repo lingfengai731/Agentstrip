@@ -39,6 +39,69 @@ function _request({ url, method = 'GET', data, auth = true, timeout = 30000 }) {
   });
 }
 
+function _utf8ByteLength(value) {
+  return encodeURIComponent(value).replace(/%[0-9a-f]{2}/gi, 'x').length;
+}
+
+function _chunkUtf8(value, maxBytes = 2500) {
+  const chunks = [];
+  let chunk = '';
+  let bytes = 0;
+  for (const char of Array.from(String(value || ''))) {
+    const charBytes = _utf8ByteLength(char);
+    if (bytes && bytes + charBytes > maxBytes) {
+      chunks.push(chunk);
+      chunk = '';
+      bytes = 0;
+    }
+    chunk += char;
+    bytes += charBytes;
+  }
+  if (chunk) chunks.push(chunk);
+  return chunks;
+}
+
+// The backend performs the authoritative check. wx.login is intentionally
+// called immediately before every chunk so each short-lived code maps to this
+// user. No tail of a long input is silently omitted.
+const checkUserContent = (content, scene = 2) => new Promise((resolve, reject) => {
+  const text = String(content || '').trim();
+  if (!text) {
+    resolve({ ok: true, allowed: true, skipped: true });
+    return;
+  }
+  const chunks = _chunkUtf8(text);
+  const checkChunk = (index) => {
+    if (index >= chunks.length) {
+      resolve({ ok: true, allowed: true });
+      return;
+    }
+    wx.login({
+      success: (loginResult) => {
+        if (!loginResult || !loginResult.code) {
+          reject(new Error('内容安全校验暂不可用，请稍后重试'));
+          return;
+        }
+        _request({
+          url: '/api/wechat/content-check',
+          method: 'POST',
+          auth: false,
+          timeout: 20000,
+          data: { code: loginResult.code, content: chunks[index], scene },
+        }).then((result) => {
+          if (result && result.allowed === true) {
+            checkChunk(index + 1);
+            return;
+          }
+          reject(new Error((result && result.reason) || '这段内容暂时无法提交，请修改后重试'));
+        }, () => reject(new Error('内容安全校验暂不可用，请稍后重试')));
+      },
+      fail: () => reject(new Error('内容安全校验暂不可用，请稍后重试')),
+    });
+  };
+  checkChunk(0);
+});
+
 // ─── 认证 ───────────────────────────────────
 const sendVerificationCode = (email, lang = 'zh') =>
   _request({ url: '/api/auth/send-verification-code', method: 'POST', auth: false,
@@ -104,6 +167,7 @@ const deleteConversation = (convId) =>
 
 module.exports = {
   sendVerificationCode, register, login, me,
+  checkUserContent,
   chatOnce,
   baliRouteData, createProfessionalRoute, recentUnlockedProfessionalRoute,
   sendDriverRequest,

@@ -76,7 +76,14 @@ check(/apiBase:\s*'https:\/\/wandermind\.cc'/.test(app), 'API base must use the 
 check(/timeout:\s*130000/.test(api), 'AI chat timeout must exceed the backend 120-second window');
 check(api.includes('/api/auth/send-verification-code'), 'verification-code API wrapper missing');
 check(/data:\s*\{\s*email,\s*password,\s*name,\s*code,\s*lang\s*\}/.test(api), 'registration payload must include verification code and language');
+check(api.includes('/api/wechat/content-check') && api.includes('wx.login') && api.includes('allowed'), 'WeChat content-safety wrapper missing');
+check(api.includes('_chunkUtf8') && api.includes('chunks[index]') && api.includes('checkChunk(index + 1)'), 'content safety must inspect every UTF-8 chunk');
 check(auth.includes('sendCode()') && auth.includes('verificationCode'), 'registration UI must send and submit the verification code');
+check(auth.includes('api.checkUserContent(regName.trim(), 1)'), 'registration name must be checked before account creation');
+check(chat.includes('contentForSafetyCheck') && chat.includes('api.checkUserContent(contentForSafetyCheck, 2)'), 'AI user messages must be checked before sending');
+check(chat.includes('customDestination') && chat.includes('${customDestination}\\n${text}'), 'custom destinations must be included in AI content checks');
+check(read('miniprogram/pages/prefs/prefs.js').includes('api.checkUserContent(prefs.notes, 2)'), 'preference notes must be checked before saving');
+check(driver.includes('contentForSafetyCheck') && driver.includes('api.checkUserContent(contentForSafetyCheck, 2)'), 'driver request text must be checked before handoff');
 check(api.includes('/api/bali/professional-route') && api.includes('recent-unlocked'), 'shared professional-route API wrappers missing');
 check(api.includes('/api/driver-request') && driver.includes('privacy_consent: true'), 'driver handoff contract missing');
 check(driver.includes('payload.profile || route.trip_profile') && driver.includes('budget: profile.budget_range'), 'driver handoff must restore the professional-route profile and budget');

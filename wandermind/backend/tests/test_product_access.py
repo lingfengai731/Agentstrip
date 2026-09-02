@@ -109,6 +109,211 @@ class ProductAccessTests(unittest.TestCase):
         ) as client:
             return await client.request(method, path, headers=headers, json=json)
 
+    @staticmethod
+    def _fake_wechat_client(responses):
+        class FakeResponse:
+            def __init__(self, payload, status_code=200):
+                self.payload = payload
+                self.status_code = status_code
+
+            def json(self):
+                return self.payload
+
+        class FakeClient:
+            def __init__(self, queued):
+                self.queued = list(queued)
+                self.calls = []
+
+            async def __aenter__(self):
+                return self
+
+            async def __aexit__(self, *_):
+                return None
+
+            def _next(self):
+                if not self.queued:
+                    raise RuntimeError("missing fake response")
+                response = self.queued.pop(0)
+                if isinstance(response, tuple):
+                    payload, status_code = response
+                else:
+                    payload, status_code = response, 200
+                return FakeResponse(payload, status_code)
+
+            async def get(self, url, *, params=None):
+                self.calls.append(("GET", url, params, None))
+                return self._next()
+
+            async def post(self, url, *, params=None, json=None):
+                self.calls.append(("POST", url, params, json))
+                return self._next()
+
+        return FakeClient(responses)
+
+    def _wechat_check(self, fake_client, *, content="safe text", scene=2):
+        class EndpointResponse:
+            def __init__(self, status_code, payload):
+                self.status_code = status_code
+                self.payload = payload
+                self.text = json.dumps(payload, ensure_ascii=False)
+
+            def json(self):
+                return self.payload
+
+        with patch.dict(
+            os.environ,
+            {
+                "WECHAT_MINIPROGRAM_APP_ID": "mini-app-test",
+                "WECHAT_MINIPROGRAM_APP_SECRET": "mini-secret-test",
+            },
+            clear=False,
+        ), patch.object(main.httpx, "AsyncClient", return_value=fake_client):
+            main._wechat_clear_access_token()
+            try:
+                payload = self._run(
+                    main.check_wechat_content(
+                        main.WeChatContentCheckReq(
+                            code="wx-code-test", content=content, scene=scene
+                        )
+                    )
+                )
+                response = EndpointResponse(200, payload)
+            except HTTPException as error:
+                detail = error.detail if isinstance(error.detail, str) else {"detail": error.detail}
+                response = EndpointResponse(error.status_code, {"detail": detail})
+            main._wechat_clear_access_token()
+            return response
+
+    def test_wechat_content_check_missing_config_fails_closed(self):
+        with patch.dict(
+            os.environ,
+            {
+                "WECHAT_MINIPROGRAM_APP_ID": "",
+                "WECHAT_MINIPROGRAM_APP_SECRET": "",
+            },
+            clear=False,
+        ):
+            main._wechat_clear_access_token()
+            response = self._run(
+                self._request(
+                    "POST",
+                    "/api/wechat/content-check",
+                    json={"code": "wx-code-test", "content": "safe text", "scene": 2},
+                )
+            )
+        self.assertEqual(response.status_code, 503)
+        self.assertNotIn("wx-code-test", response.text)
+        self.assertNotIn("mini-secret-test", response.text)
+
+    def test_wechat_content_check_jscode2session_failure_is_generic(self):
+        fake = self._fake_wechat_client([{"errcode": 40029, "errmsg": "invalid code"}])
+        response = self._wechat_check(fake)
+        self.assertEqual(response.status_code, 502)
+        self.assertNotIn("invalid code", response.text)
+        self.assertNotIn("wx-code-test", response.text)
+        self.assertEqual(len(fake.calls), 1)
+
+    def test_wechat_content_check_pass_does_not_return_sensitive_values(self):
+        fake = self._fake_wechat_client(
+            [
+                {"openid": "openid-test"},
+                {"access_token": "access-token-test", "expires_in": 7200},
+                {"errcode": 0, "result": {"suggest": "pass"}},
+            ]
+        )
+        response = self._wechat_check(fake, content="我想去乌布")
+        self.assertEqual(response.status_code, 200, response.text)
+        self.assertEqual(response.json(), {"ok": True, "allowed": True})
+        for sensitive in ("我想去乌布", "wx-code-test", "openid-test", "access-token-test", "mini-secret-test"):
+            self.assertNotIn(sensitive, response.text)
+        self.assertEqual([call[0] for call in fake.calls], ["GET", "GET", "POST"])
+        self.assertEqual(fake.calls[2][3]["version"], 2)
+        self.assertEqual(fake.calls[2][3]["scene"], 2)
+
+    def test_wechat_access_token_short_expiry_never_exceeds_provider_lifetime(self):
+        fake = self._fake_wechat_client(
+            [{"access_token": "short-lived-token", "expires_in": 30}]
+        )
+        with patch.dict(
+            os.environ,
+            {
+                "WECHAT_MINIPROGRAM_APP_ID": "mini-app-test",
+                "WECHAT_MINIPROGRAM_APP_SECRET": "mini-secret-test",
+            },
+            clear=False,
+        ), patch.object(main.httpx, "AsyncClient", return_value=fake):
+            main._wechat_clear_access_token()
+            token = self._run(main._wechat_access_token())
+            ttl = main._WECHAT_ACCESS_TOKEN_CACHE["expires_at"] - time.time()
+            main._wechat_clear_access_token()
+        self.assertEqual(token, "short-lived-token")
+        self.assertGreater(ttl, 0)
+        self.assertLessEqual(ttl, 30)
+
+    def test_wechat_content_check_review_and_risky_are_blocked_without_labels(self):
+        for suggest in ("review", "risky"):
+            fake = self._fake_wechat_client(
+                [
+                    {"openid": "openid-test"},
+                    {"access_token": "access-token-test", "expires_in": 7200},
+                    {"errcode": 0, "result": {"suggest": suggest}},
+                ]
+            )
+            response = self._wechat_check(fake, content="需要检查的文本")
+            self.assertEqual(response.status_code, 200, response.text)
+            self.assertEqual(response.json()["allowed"], False)
+            self.assertIn("暂时无法提交", response.json()["reason"])
+            self.assertNotIn(suggest, response.text)
+
+    def test_wechat_content_check_expired_access_token_retries_once(self):
+        fake = self._fake_wechat_client(
+            [
+                {"openid": "openid-test"},
+                {"access_token": "access-token-one", "expires_in": 7200},
+                {"errcode": 40001, "errmsg": "invalid credential"},
+                {"access_token": "access-token-two", "expires_in": 7200},
+                {"errcode": 0, "result": {"suggest": "pass"}},
+            ]
+        )
+        response = self._wechat_check(fake)
+        self.assertEqual(response.status_code, 200, response.text)
+        self.assertEqual(response.json(), {"ok": True, "allowed": True})
+        self.assertEqual([call[0] for call in fake.calls], ["GET", "GET", "POST", "GET", "POST"])
+        self.assertEqual(sum(call[0] == "POST" for call in fake.calls), 2)
+
+    def test_wechat_content_check_expired_access_token_stops_after_one_retry(self):
+        fake = self._fake_wechat_client(
+            [
+                {"openid": "openid-test"},
+                {"access_token": "access-token-one", "expires_in": 7200},
+                {"errcode": 42001, "errmsg": "expired token"},
+                {"access_token": "access-token-two", "expires_in": 7200},
+                {"errcode": 40014, "errmsg": "invalid token"},
+            ]
+        )
+        response = self._wechat_check(fake)
+        self.assertEqual(response.status_code, 502)
+        self.assertEqual([call[0] for call in fake.calls], ["GET", "GET", "POST", "GET", "POST"])
+        self.assertEqual(sum(call[0] == "POST" for call in fake.calls), 2)
+
+    def test_wechat_content_check_unknown_provider_result_fails_closed(self):
+        fake = self._fake_wechat_client(
+            [
+                {"openid": "openid-test"},
+                {"access_token": "access-token-test", "expires_in": 7200},
+                {"errcode": 0, "result": {"suggest": "unknown"}},
+            ]
+        )
+        response = self._wechat_check(fake)
+        self.assertEqual(response.status_code, 502)
+        self.assertNotIn("unknown", response.text)
+
+    def test_wechat_content_check_rejects_oversized_utf8_content(self):
+        fake = self._fake_wechat_client([])
+        response = self._wechat_check(fake, content="旅" * 900)
+        self.assertEqual(response.status_code, 400)
+        self.assertEqual(fake.calls, [])
+
     def test_cors_allows_wandermind_and_rejects_unknown_origins(self):
         allowed = self._run(
             self._request(

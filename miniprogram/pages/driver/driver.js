@@ -95,12 +95,28 @@ Page({
     if (!this.data.pickup.trim()) { this.setData({ error: '请填写接送地点或酒店区域' }); return; }
     if (!this.data.privacyConsent) { this.setData({ error: '请确认由 WanderMind 转交申请' }); return; }
 
+    const contentForSafetyCheck = [
+      this.data.firstName,
+      this.data.lastName,
+      this.data.intro,
+      this.data.pickup,
+      this.data.budget,
+      this.data.attractions,
+    ].map(value => (value || '').trim()).filter(Boolean).join('\n');
+    this.setData({ busy: true, error: '' });
+    try {
+      await api.checkUserContent(contentForSafetyCheck, 2);
+    } catch (err) {
+      this.saveDraft();
+      this.setData({ busy: false, error: err.message || '内容安全校验暂不可用，请稍后重试' });
+      return;
+    }
+
     let stableId = wx.getStorageSync('wm_driver_request_id');
     if (!stableId) {
       stableId = requestId();
       wx.setStorageSync('wm_driver_request_id', stableId);
     }
-    this.setData({ busy: true, error: '' });
     try {
       await api.sendDriverRequest({
         request_id: stableId,
