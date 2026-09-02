@@ -115,6 +115,14 @@ const login = (email, password) =>
   _request({ url: '/api/auth/login', method: 'POST', auth: false,
     data: { email, password } });
 
+const wechatLogin = (code, lang = 'zh', referralCode = '') =>
+  _request({ url: '/api/auth/wechat/login', method: 'POST', auth: false,
+    data: { code, lang, referral_code: referralCode } });
+
+const linkWechat = (code) =>
+  _request({ url: '/api/auth/wechat/link', method: 'POST',
+    data: { code } });
+
 const me = () => _request({ url: '/api/auth/me' });
 
 // ─── 对话（非流式，小程序专用） ────────────────
@@ -166,7 +174,7 @@ const deleteConversation = (convId) =>
   _request({ url: `/api/conversations/${convId}`, method: 'DELETE' });
 
 module.exports = {
-  sendVerificationCode, register, login, me,
+  sendVerificationCode, register, login, wechatLogin, linkWechat, me,
   checkUserContent,
   chatOnce,
   baliRouteData, createProfessionalRoute, recentUnlockedProfessionalRoute,

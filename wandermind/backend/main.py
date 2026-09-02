@@ -87,7 +87,7 @@ def _sign(header_b64: str, payload_b64: str) -> str:
     return _b64(sig)
 
 
-def make_token(user_id: str, email: str) -> str:
+def make_token(user_id: str, email: Optional[str]) -> str:
     header = _b64(json.dumps({"alg": "HS256", "typ": "JWT"}).encode())
     payload = _b64(
         json.dumps({
@@ -483,6 +483,16 @@ class GoogleLoginReq(BaseModel):
     credential: str
     lang: str = "en"
     referral_code: str = ""
+
+
+class WeChatLoginReq(BaseModel):
+    code: str = Field(min_length=1, max_length=128)
+    lang: str = "en"
+    referral_code: str = ""
+
+
+class WeChatLinkReq(BaseModel):
+    code: str = Field(min_length=1, max_length=128)
 
 
 class WeChatContentCheckReq(BaseModel):
@@ -1478,6 +1488,7 @@ _WECHAT_TOKEN_RETRY_CODES = {40001, 40014, 42001}
 _WECHAT_CONTENT_LIMIT_BYTES = 2500
 _WECHAT_UNAVAILABLE = "内容安全校验暂不可用，请稍后重试"
 _WECHAT_BLOCKED = "这段内容暂时无法提交，请修改后重试"
+_WECHAT_PROVIDER = "wechat"
 
 
 def _wechat_config() -> tuple[str, str]:
@@ -1541,9 +1552,87 @@ async def _wechat_openid(code: str, app_id: str, app_secret: str) -> str:
     if _wechat_errcode(payload) != 0:
         raise HTTPException(502, _WECHAT_UNAVAILABLE)
     openid = payload.get("openid")
-    if not isinstance(openid, str) or not openid.strip():
+    if not isinstance(openid, str) or not openid.strip() or len(openid.strip()) > 256:
         raise HTTPException(502, _WECHAT_UNAVAILABLE)
-    return openid
+    return openid.strip()
+
+
+def _clean_wechat_code(value: str) -> str:
+    """Validate a temporary wx.login code without ever echoing it."""
+    code = (value or "").strip()
+    if not code or len(code) > 128:
+        raise HTTPException(400, "Invalid WeChat login code")
+    return code
+
+
+def _auth_identity(conn, provider: str, provider_subject: str):
+    return conn.execute(
+        "SELECT id,user_id,provider,provider_subject,email_at_provider,created_at,last_seen_at "
+        "FROM auth_identities WHERE provider=? AND provider_subject=?",
+        (provider, provider_subject),
+    ).fetchone()
+
+
+def _user_for_identity(conn, identity):
+    if not identity:
+        return None
+    row = conn.execute("SELECT * FROM users WHERE id=?", (dict(identity)["user_id"],)).fetchone()
+    if not row:
+        # A dangling identity must never be rebound to a new account silently.
+        raise HTTPException(503, _WECHAT_UNAVAILABLE)
+    return row
+
+
+def _touch_auth_identity(
+    conn,
+    *,
+    user_id: str,
+    provider: str,
+    provider_subject: str,
+    email_at_provider: Optional[str],
+    now: int,
+) -> None:
+    """Insert or touch one provider identity without cross-account merging."""
+    existing = _auth_identity(conn, provider, provider_subject)
+    if existing:
+        identity = dict(existing)
+        if identity["user_id"] != user_id:
+            raise HTTPException(409, "This sign-in identity is already linked")
+        conn.execute(
+            "UPDATE auth_identities SET email_at_provider=COALESCE(?,email_at_provider),last_seen_at=? WHERE id=?",
+            (email_at_provider, now, identity["id"]),
+        )
+        return
+    conn.execute(
+        """INSERT INTO auth_identities
+           (id,user_id,provider,provider_subject,email_at_provider,created_at,last_seen_at)
+           VALUES (?,?,?,?,?,?,?)""",
+        (
+            str(uuid.uuid4()), user_id, provider, provider_subject,
+            email_at_provider, now, now,
+        ),
+    )
+
+
+def _wechat_linked(conn, user_id: str) -> bool:
+    return bool(
+        conn.execute(
+            "SELECT 1 FROM auth_identities WHERE user_id=? AND provider=? LIMIT 1",
+            (user_id, _WECHAT_PROVIDER),
+        ).fetchone()
+    )
+
+
+def _wechat_user_response(conn, row: dict) -> dict:
+    """Return only public account fields; provider subjects never leave storage."""
+    user = dict(row)
+    return {
+        "id": user["id"],
+        "email": user.get("email"),
+        "name": user["name"],
+        "role": user.get("role") or "user",
+        "wechat_linked": _wechat_linked(conn, user["id"]),
+    }
 
 
 def _wechat_clear_access_token() -> None:
@@ -1656,6 +1745,147 @@ async def check_wechat_content(data: WeChatContentCheckReq):
     raise HTTPException(502, _WECHAT_UNAVAILABLE)
 
 
+@app.post("/api/auth/wechat/login")
+async def wechat_login(data: WeChatLoginReq, request: Request):
+    """Exchange one wx.login code and sign in or create its WeChat account.
+
+    WeChat's openid is an internal provider subject only. It is never returned
+    to the Mini Program, put in a token, or written to logs. A new account has
+    a nullable email because WeChat login does not provide a verified email.
+    """
+    app_id, app_secret = _wechat_config()
+    code = _clean_wechat_code(data.code)
+    provider_subject = await _wechat_openid(code, app_id, app_secret)
+    now = int(time.time())
+    lang = _clean_lang(data.lang)
+    conn = get_db()
+    try:
+        identity = _auth_identity(conn, _WECHAT_PROVIDER, provider_subject)
+        if identity:
+            row = _user_for_identity(conn, identity)
+            _touch_auth_identity(
+                conn,
+                user_id=dict(row)["id"],
+                provider=_WECHAT_PROVIDER,
+                provider_subject=provider_subject,
+                email_at_provider=None,
+                now=now,
+            )
+            conn.commit()
+            user = _wechat_user_response(conn, row)
+            return {"token": make_token(user["id"], user["email"]), "user": user}
+
+        uid = str(uuid.uuid4())
+        referral_code = _new_referral_code()
+        while conn.execute(
+            "SELECT 1 FROM users WHERE referral_code=?", (referral_code,)
+        ).fetchone():
+            referral_code = _new_referral_code()
+        signup_ip_hash = _request_ip_hash(request)
+        conn.execute(
+            """INSERT INTO users
+               (id,email,name,password_hash,lang,email_verified,auth_provider,
+                referral_code,signup_ip_hash,created_at)
+               VALUES (?,?,?,?,?,?,?,?,?,?)""",
+            (
+                uid, None, "WanderMind 用户", hash_pw(secrets.token_urlsafe(32)),
+                lang, 0, _WECHAT_PROVIDER, referral_code, signup_ip_hash, now,
+            ),
+        )
+        _apply_referral(
+            conn,
+            referral_code=data.referral_code,
+            invitee_user_id=uid,
+            invitee_ip_hash=signup_ip_hash,
+            now=now,
+        )
+        _touch_auth_identity(
+            conn,
+            user_id=uid,
+            provider=_WECHAT_PROVIDER,
+            provider_subject=provider_subject,
+            email_at_provider=None,
+            now=now,
+        )
+        conn.commit()
+        row = conn.execute("SELECT * FROM users WHERE id=?", (uid,)).fetchone()
+        if not row:
+            raise HTTPException(503, _WECHAT_UNAVAILABLE)
+        user = _wechat_user_response(conn, row)
+        return {"token": make_token(user["id"], user["email"]), "user": user}
+    except IntegrityError:
+        # A duplicate provider identity can only be a concurrent login. The
+        # transaction is rolled back before re-reading the canonical account;
+        # never create a second user or reassign an existing identity.
+        conn.rollback()
+        identity = _auth_identity(conn, _WECHAT_PROVIDER, provider_subject)
+        if not identity:
+            raise HTTPException(503, _WECHAT_UNAVAILABLE)
+        row = _user_for_identity(conn, identity)
+        _touch_auth_identity(
+            conn,
+            user_id=dict(row)["id"],
+            provider=_WECHAT_PROVIDER,
+            provider_subject=provider_subject,
+            email_at_provider=None,
+            now=now,
+        )
+        conn.commit()
+        user = _wechat_user_response(conn, row)
+        return {"token": make_token(user["id"], user["email"]), "user": user}
+    finally:
+        conn.close()
+
+
+@app.post("/api/auth/wechat/link")
+async def wechat_link(data: WeChatLinkReq, user=Depends(current_user)):
+    """Explicitly bind one WeChat identity to the current account.
+
+    This endpoint intentionally never searches by email, nickname or phone.
+    A provider identity already owned by another user is a hard conflict.
+    """
+    app_id, app_secret = _wechat_config()
+    code = _clean_wechat_code(data.code)
+    provider_subject = await _wechat_openid(code, app_id, app_secret)
+    now = int(time.time())
+    conn = get_db()
+    try:
+        current = _db_user(conn, user)
+        user_id = current["id"]
+        identity = _auth_identity(conn, _WECHAT_PROVIDER, provider_subject)
+        if identity and dict(identity)["user_id"] != user_id:
+            raise HTTPException(409, "This WeChat account is already linked")
+        _touch_auth_identity(
+            conn,
+            user_id=user_id,
+            provider=_WECHAT_PROVIDER,
+            provider_subject=provider_subject,
+            email_at_provider=None,
+            now=now,
+        )
+        conn.commit()
+        return {"ok": True, "linked": True}
+    except IntegrityError:
+        conn.rollback()
+        identity = _auth_identity(conn, _WECHAT_PROVIDER, provider_subject)
+        if not identity:
+            raise HTTPException(503, _WECHAT_UNAVAILABLE)
+        if dict(identity)["user_id"] != user["sub"]:
+            raise HTTPException(409, "This WeChat account is already linked")
+        _touch_auth_identity(
+            conn,
+            user_id=user["sub"],
+            provider=_WECHAT_PROVIDER,
+            provider_subject=provider_subject,
+            email_at_provider=None,
+            now=now,
+        )
+        conn.commit()
+        return {"ok": True, "linked": True}
+    finally:
+        conn.close()
+
+
 @app.post("/api/auth/send-verification-code")
 async def send_registration_code(data: SendVerificationReq):
     email = _clean_email(data.email)
@@ -1758,7 +1988,10 @@ async def register(data: RegisterReq, request: Request):
         asyncio.create_task(send_welcome(email, name, _public_base_url(request), lang))
         return {
             "token": make_token(uid, email),
-            "user": {"id": uid, "email": email, "name": name, "role": "user"},
+            "user": {
+                "id": uid, "email": email, "name": name, "role": "user",
+                "wechat_linked": False,
+            },
             "referral_applied": referral_applied,
         }
     except IntegrityError:
@@ -1827,6 +2060,7 @@ async def google_login(data: GoogleLoginReq, request: Request):
             "user": {
                 "id": row["id"], "email": row["email"], "name": row["name"],
                 "role": dict(row).get("role") or "user",
+                "wechat_linked": _wechat_linked(conn, row["id"]),
             },
         }
     finally:
@@ -1850,6 +2084,7 @@ async def login(data: LoginReq):
                 "id": row["id"], "email": row["email"], "name": row["name"],
                 "username": dict(row).get("username"),
                 "role": dict(row).get("role") or "user",
+                "wechat_linked": _wechat_linked(conn, row["id"]),
             },
         }
     finally:
@@ -2018,6 +2253,12 @@ async def me(user=Depends(current_user)):
         if not row:
             raise HTTPException(404, "User not found")
         result = dict(row)
+        result["wechat_linked"] = bool(
+            conn.execute(
+                "SELECT 1 FROM auth_identities WHERE user_id=? AND provider=? LIMIT 1",
+                (user["sub"], _WECHAT_PROVIDER),
+            ).fetchone()
+        )
         result["route_points"] = _points_balance(conn, user["sub"])
         return result
     finally:

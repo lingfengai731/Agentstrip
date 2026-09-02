@@ -3,6 +3,7 @@ import csv
 import hashlib
 import json
 import os
+import sqlite3
 import subprocess
 import sys
 import tempfile
@@ -31,7 +32,7 @@ sys.path.insert(0, str(BACKEND_DIR))
 
 import email_service  # noqa: E402
 import main  # noqa: E402
-from db import get_db  # noqa: E402
+from db import _sqlite_make_users_email_nullable, get_db  # noqa: E402
 from email_service import render_driver_request  # noqa: E402
 
 
@@ -183,6 +184,210 @@ class ProductAccessTests(unittest.TestCase):
                 response = EndpointResponse(error.status_code, {"detail": detail})
             main._wechat_clear_access_token()
             return response
+
+    def _wechat_auth(self, path, fake_client, *, token=None, payload=None):
+        class EndpointResponse:
+            def __init__(self, status_code, body):
+                self.status_code = status_code
+                self._body = body
+                self.text = json.dumps(body, ensure_ascii=False)
+
+            def json(self):
+                return self._body
+
+        async def invoke():
+            request = MagicMock()
+            request.headers = {}
+            request.client = MagicMock(host="127.0.0.1")
+            try:
+                if path.endswith("/login"):
+                    result = await main.wechat_login(
+                        main.WeChatLoginReq(**(payload or {"code": "wx-code-test"})),
+                        request,
+                    )
+                else:
+                    result = await main.wechat_link(
+                        main.WeChatLinkReq(**(payload or {"code": "wx-code-test"})),
+                        {"sub": token and main.verify_token(token)["sub"]},
+                    )
+                return EndpointResponse(200, result)
+            except HTTPException as error:
+                detail = error.detail if isinstance(error.detail, str) else {"detail": error.detail}
+                return EndpointResponse(error.status_code, {"detail": detail})
+
+        with patch.dict(
+            os.environ,
+            {
+                "WECHAT_MINIPROGRAM_APP_ID": "mini-app-test",
+                "WECHAT_MINIPROGRAM_APP_SECRET": "mini-secret-test",
+            },
+            clear=False,
+        ), patch.object(main.httpx, "AsyncClient", return_value=fake_client):
+            return self._run(invoke())
+
+    @staticmethod
+    def _add_wechat_identity(user_id, subject, *, email=None, created_at=None):
+        now = int(created_at if created_at is not None else time.time())
+        conn = get_db()
+        try:
+            conn.execute(
+                """INSERT INTO auth_identities
+                   (id,user_id,provider,provider_subject,email_at_provider,created_at,last_seen_at)
+                   VALUES (?,?,?,?,?,?,?)""",
+                (
+                    str(uuid.uuid4()), user_id, "wechat", subject, email, now, now,
+                ),
+            )
+            conn.commit()
+        finally:
+            conn.close()
+
+    def test_legacy_sqlite_users_email_migration_preserves_rows_and_accepts_null(self):
+        conn = sqlite3.connect(":memory:")
+        conn.row_factory = sqlite3.Row
+        try:
+            conn.execute(
+                "CREATE TABLE users (id TEXT PRIMARY KEY, email TEXT UNIQUE NOT NULL, "
+                "name TEXT NOT NULL, password_hash TEXT NOT NULL, created_at INTEGER NOT NULL)"
+            )
+            conn.execute(
+                "INSERT INTO users (id,email,name,password_hash,created_at) VALUES (?,?,?,?,?)",
+                ("legacy-user", "legacy@example.test", "Legacy", "hash", 1),
+            )
+            _sqlite_make_users_email_nullable(conn)
+            _sqlite_make_users_email_nullable(conn)
+            conn.execute(
+                "INSERT INTO users (id,email,name,password_hash,created_at) VALUES (?,?,?,?,?)",
+                ("wechat-user", None, "WeChat", "hash", 2),
+            )
+            rows = conn.execute("SELECT id,email,name FROM users ORDER BY created_at").fetchall()
+            email_column = next(
+                row for row in conn.execute("PRAGMA table_info(users)").fetchall()
+                if row["name"] == "email"
+            )
+        finally:
+            conn.close()
+        self.assertEqual([dict(row) for row in rows], [
+            {"id": "legacy-user", "email": "legacy@example.test", "name": "Legacy"},
+            {"id": "wechat-user", "email": None, "name": "WeChat"},
+        ])
+        self.assertEqual(email_column["notnull"], 0)
+
+    def test_wechat_login_creates_nullable_email_account_and_hides_provider_subject(self):
+        fake = self._fake_wechat_client([{"openid": "openid-new-login"}])
+        response = self._wechat_auth("/api/auth/wechat/login", fake)
+        self.assertEqual(response.status_code, 200, response.text)
+        body = response.json()
+        self.assertTrue(body["token"])
+        self.assertIsNone(body["user"]["email"])
+        self.assertTrue(body["user"]["wechat_linked"])
+        for sensitive in ("openid-new-login", "wx-code-test", "mini-secret-test"):
+            self.assertNotIn(sensitive, response.text)
+        conn = get_db()
+        try:
+            row = conn.execute(
+                """SELECT u.email,u.auth_provider,ai.provider,ai.provider_subject
+                   FROM users u JOIN auth_identities ai ON ai.user_id=u.id
+                   WHERE ai.provider=? AND ai.provider_subject=?""",
+                ("wechat", "openid-new-login"),
+            ).fetchone()
+        finally:
+            conn.close()
+        self.assertIsNotNone(row)
+        self.assertIsNone(row["email"])
+        self.assertEqual(row["auth_provider"], "wechat")
+        self.assertEqual(row["provider"], "wechat")
+
+    def test_wechat_login_reuses_existing_identity_and_updates_last_seen(self):
+        uid = self._create_user("wechat-bound@example.test", "Bound")
+        old_seen = int(time.time()) - 3600
+        self._add_wechat_identity(uid, "openid-existing", email="provider@example.test", created_at=old_seen)
+        fake = self._fake_wechat_client([{"openid": "openid-existing"}])
+        response = self._wechat_auth("/api/auth/wechat/login", fake)
+        self.assertEqual(response.status_code, 200, response.text)
+        self.assertEqual(response.json()["user"]["id"], uid)
+        self.assertEqual(main.verify_token(response.json()["token"])["sub"], uid)
+        conn = get_db()
+        try:
+            row = conn.execute(
+                "SELECT user_id,last_seen_at FROM auth_identities WHERE provider=? AND provider_subject=?",
+                ("wechat", "openid-existing"),
+            ).fetchone()
+        finally:
+            conn.close()
+        self.assertEqual(row["user_id"], uid)
+        self.assertGreaterEqual(int(row["last_seen_at"]), old_seen)
+
+    def test_wechat_link_requires_explicit_session_and_is_idempotent_for_same_user(self):
+        fake = self._fake_wechat_client([{"openid": "openid-link"}])
+        response = self._wechat_auth("/api/auth/wechat/link", fake, token=self.user_token)
+        self.assertEqual(response.status_code, 200, response.text)
+        self.assertEqual(response.json(), {"ok": True, "linked": True})
+        fake_again = self._fake_wechat_client([{"openid": "openid-link"}])
+        again = self._wechat_auth("/api/auth/wechat/link", fake_again, token=self.user_token)
+        self.assertEqual(again.status_code, 200, again.text)
+        conn = get_db()
+        try:
+            rows = conn.execute(
+                "SELECT user_id FROM auth_identities WHERE provider=? AND provider_subject=?",
+                ("wechat", "openid-link"),
+            ).fetchall()
+        finally:
+            conn.close()
+        self.assertEqual(len(rows), 1)
+        self.assertEqual(rows[0]["user_id"], self.user_id)
+
+    def test_wechat_link_rejects_missing_bearer_session_before_provider_exchange(self):
+        response = self._run(
+            self._request(
+                "POST", "/api/auth/wechat/link", json={"code": "wx-code-test"}
+            )
+        )
+        self.assertEqual(response.status_code, 401, response.text)
+        self.assertNotIn("wx-code-test", response.text)
+
+    def test_wechat_link_rejects_identity_owned_by_another_user_without_merging(self):
+        other_id = self._create_user("wechat-other@example.test", "Other")
+        self._add_wechat_identity(other_id, "openid-conflict")
+        fake = self._fake_wechat_client([{"openid": "openid-conflict"}])
+        response = self._wechat_auth("/api/auth/wechat/link", fake, token=self.user_token)
+        self.assertEqual(response.status_code, 409, response.text)
+        self.assertNotIn("openid-conflict", response.text)
+        conn = get_db()
+        try:
+            rows = conn.execute(
+                "SELECT user_id FROM auth_identities WHERE provider=? AND provider_subject=?",
+                ("wechat", "openid-conflict"),
+            ).fetchall()
+        finally:
+            conn.close()
+        self.assertEqual(len(rows), 1)
+        self.assertEqual(rows[0]["user_id"], other_id)
+
+    def test_wechat_login_remote_error_is_fail_closed_and_generic(self):
+        fake = self._fake_wechat_client([{"errcode": 40029, "errmsg": "invalid code"}])
+        response = self._wechat_auth("/api/auth/wechat/login", fake)
+        self.assertEqual(response.status_code, 502, response.text)
+        self.assertNotIn("invalid code", response.text)
+        self.assertNotIn("wx-code-test", response.text)
+
+    def test_wechat_login_missing_config_is_fail_closed(self):
+        with patch.dict(
+            os.environ,
+            {
+                "WECHAT_MINIPROGRAM_APP_ID": "",
+                "WECHAT_MINIPROGRAM_APP_SECRET": "",
+            },
+            clear=False,
+        ):
+            response = self._run(
+                self._request(
+                    "POST", "/api/auth/wechat/login", json={"code": "wx-code-test"}
+                )
+            )
+        self.assertEqual(response.status_code, 503, response.text)
+        self.assertNotIn("wx-code-test", response.text)
+        self.assertNotIn("mini-secret-test", response.text)
 
     def test_wechat_content_check_missing_config_fails_closed(self):
         with patch.dict(

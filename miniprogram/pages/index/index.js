@@ -17,6 +17,8 @@ Page({
     codeBusy: false,
     codeCooldown: 0,
     authBusy: false,
+    wechatBusy: false,
+    wechatLinked: false,
     authError: '',
     // 目的地
     destinations: DESTINATIONS,
@@ -44,6 +46,7 @@ Page({
     this.setData({
       loggedIn: !!token,
       user: user || null,
+      wechatLinked: !!(user && user.wechat_linked),
       currentDest: app.globalData.currentDest,
     });
   },
@@ -65,7 +68,7 @@ Page({
     try {
       const user = await api.me();
       app.setToken(app.globalData.token, user);
-      this.setData({ loggedIn: true, user });
+      this.setData({ loggedIn: true, user, wechatLinked: !!(user && user.wechat_linked) });
     } catch (err) {
       // 401 由统一请求层清理并回到登录页；普通网络错误保留本地会话供稍后重试。
     } finally {
@@ -86,6 +89,25 @@ Page({
       this.setData({ codeCooldown: Math.max(0, next) });
       if (next <= 0) this._clearCodeTimer();
     }, 1000);
+  },
+
+  async _finishAuth(res, title) {
+    app.setToken(res.token, res.user);
+    wx.showToast({ title, icon: 'success' });
+    this.setData({
+      loggedIn: true,
+      user: res.user,
+      wechatLinked: !!(res.user && res.user.wechat_linked),
+      password: '',
+      verificationCode: '',
+      authError: '',
+    });
+    // 登录成功后异步拉取后端的旅行偏好（不阻塞 UI）
+    try {
+      const prefs = await api.getPrefs();
+      app.setPrefs(prefs || {});
+    } catch (e) { /* 静默失败 */ }
+    app.resumePendingRoute();
   },
 
   async sendCode() {
@@ -136,20 +158,62 @@ Page({
         : await api.register(
           email.trim(), password, regName.trim(), verificationCode.trim(), app.globalData.currentLang
         );
-      app.setToken(res.token, res.user);
-      wx.showToast({ title: authMode === 'login' ? '欢迎回来' : '注册成功', icon: 'success' });
-      this.setData({ loggedIn: true, user: res.user, password: '', verificationCode: '' });
-      // 登录成功后异步拉取后端的旅行偏好（不阻塞 UI）
-      try {
-        const prefs = await api.getPrefs();
-        app.setPrefs(prefs || {});
-      } catch (e) { /* 静默失败 */ }
-      app.resumePendingRoute();
+      await this._finishAuth(res, authMode === 'login' ? '欢迎回来' : '注册成功');
     } catch (err) {
       this.setData({ authError: err.message || '操作失败' });
     } finally {
       this.setData({ authBusy: false });
     }
+  },
+
+  // —— 微信一键登录（仅使用 wx.login，不请求手机号） ——
+  wechatLogin() {
+    if (this.data.wechatBusy || this.data.authBusy) return;
+    this.setData({ wechatBusy: true, authError: '' });
+    wx.login({
+      timeout: 10000,
+      success: async (loginResult) => {
+        try {
+          if (!loginResult || !loginResult.code) throw new Error('微信登录暂不可用，请稍后重试');
+          const res = await api.wechatLogin(loginResult.code, app.globalData.currentLang);
+          await this._finishAuth(res, '微信登录成功');
+        } catch (err) {
+          this.setData({ authError: err.message || '微信登录暂不可用，请稍后重试' });
+        } finally {
+          this.setData({ wechatBusy: false });
+        }
+      },
+      fail: () => {
+        this.setData({ wechatBusy: false, authError: '微信登录暂不可用，请稍后重试' });
+      },
+    });
+  },
+
+  // —— 已有账号的显式微信绑定，不按昵称/手机号/邮箱自动合并 ——
+  linkWechat() {
+    if (this.data.wechatBusy || !this.data.loggedIn) return;
+    this.setData({ wechatBusy: true, authError: '' });
+    wx.login({
+      timeout: 10000,
+      success: async (loginResult) => {
+        try {
+          if (!loginResult || !loginResult.code) throw new Error('微信绑定暂不可用，请稍后重试');
+          await api.linkWechat(loginResult.code);
+          const user = { ...(this.data.user || {}), wechat_linked: true };
+          app.globalData.user = user;
+          wx.setStorageSync('wm_user', user);
+          this.setData({ user, wechatLinked: true });
+          wx.showToast({ title: '微信账号已绑定', icon: 'success' });
+        } catch (err) {
+          this.setData({ authError: err.message || '微信绑定暂不可用，请稍后重试' });
+        } finally {
+          this.setData({ wechatBusy: false });
+        }
+      },
+      fail: () => {
+        this.setData({ wechatBusy: false, authError: '微信绑定暂不可用，请稍后重试' });
+      },
+    });
   },
 
   // —— 退出 ——
@@ -160,7 +224,7 @@ Page({
       success: (res) => {
         if (res.confirm) {
           app.clearAuth();
-          this.setData({ loggedIn: false, user: null, password: '', email: '' });
+          this.setData({ loggedIn: false, user: null, wechatLinked: false, password: '', email: '' });
         }
       }
     });

@@ -508,3 +508,10 @@
 - E 盘回调：正式 `luna_worker` `/root/agentstrip_e_drive_audit` 只读完成 19 个 worktree 盘点。Sol 二次确认后用 `git worktree remove` 删除 7 个 clean 且已有合并 PR 证据的旧 worktree；分支和提交仍可恢复。第 8 个目录被微信开发者工具占用，仅完成 Git 登记移除，残留目录未强删。所有 dirty、用户素材、备份、原始工作区和 Agentstrip2 均保留。
 - 治理回调：新增集中式任务创建脚本和目录规范。未来账号任务进入 `E:\Agentstrip-worktrees\active\<account>\<task>`，预览和验收产物进入 `E:\Agentstrip-artifacts\<date>\<task>`；不直接移动现有 Git worktree。
 - 下一角色：正式 `luna_worker` `/root/wechat_auth_implementation` 在独立 worktree 实现微信一键登录和显式账号绑定；Sol 保留迁移、安全、GitHub、Render 与真机发布判断。
+
+## 2026-09-02 Mini-program WeChat identity callback
+
+- 路由：large / L2，发布为 L3。Sol 固定 `users.id` 主键、显式绑定和生产门禁；正式 `luna_worker` `/root/wechat_auth_implementation`（`gpt-5.6-luna` / `max`）在独立集中式 worktree 完成本地实现并返回 complete，未 push、PR、部署或发布。
+- 身份回调：新增幂等 `auth_identities`，纯微信账号允许空 email，不制造假邮箱；已有邮箱用户必须先登录再绑定，不能按昵称、手机号或邮箱自动合并。登录只调用 `wx.login`，不请求手机号。
+- Sol 复核：增加旧 SQLite 必填邮箱迁移的持久回归测试、无 Bearer 绑定拒绝测试、openid 规范化以及避免已有邮箱用户误建第二账号的移动端提示。最终 108 项后端测试、235 项小程序契约和 `git diff --check` 通过。
+- 边界：未调用真实微信身份接口，未创建生产用户，未触碰司机中转、支付、Upload、提审或发布。下一步为固定 head PR/CI、Render 精确部署和新的 owner-authorized Preview。

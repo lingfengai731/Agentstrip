@@ -1,0 +1,22 @@
+{
+  "schema_version": 1,
+  "evidence_id": "ev-20260902T115438Z-miniprogram-wechat-auth-sol-review-20260902",
+  "task_ref": "miniprogram-wechat-auth-sol-review-20260902",
+  "owner": "codex-sol",
+  "captured_at": "2026-09-02T11:54:38Z",
+  "status": "verified",
+  "claim": "Sol independently reviewed and hardened the Luna WeChat identity implementation; canonical user IDs, explicit linking, nullable-email migration, fail-closed provider handling and mobile account-split guidance are locally verified.",
+  "source": {
+    "kind": "git",
+    "repository": "https://github.com/lingfengai731/Agentstrip.git",
+    "commit": "8b2db9f8048f7f15e5310cd1b2641f91e1a36367",
+    "branch": "codex/miniprogram-wechat-auth-20260902",
+    "worktree": "E:\\Agentstrip-worktrees\\active\\account1\\wechat-auth-20260902",
+    "dirty": true
+  },
+  "verification": {
+    "command": "python -m unittest wandermind.backend.tests.test_product_access; node tools/test_miniprogram_contract.cjs; git diff --check; manual security and migration diff review",
+    "result": "108 backend tests passed; 235 Mini Program contract checks passed; diff check passed."
+  },
+  "notes": "Local review evidence only. No production user, provider code, openid, secret, driver request, payment, Upload, review submission, release, PR merge or Render deployment is claimed."
+}

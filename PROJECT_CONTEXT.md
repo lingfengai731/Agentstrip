@@ -281,3 +281,13 @@ not force-kill the tool or claim that directory removed. All dirty worktrees, th
 source workspace, Agentstrip2, backups, user media and evidence artifacts were retained. Future task
 worktrees and non-Git preview artifacts now have a centralized creation convention documented in
 `.codex/project-memory/ACCOUNT_SETUP.md` and automated by `tools/new-agentstrip-worktree.ps1`.
+
+The next isolated stage adds WeChat Mini Program identity without replacing the canonical `users.id` used
+by routes, points, orders and entitlements. `auth_identities` maps a provider subject to the existing user;
+pure WeChat accounts use a nullable email instead of a fabricated address, while an existing email user
+must sign in first and explicitly bind WeChat. The Mini Program does not request a phone number at login.
+Provider configuration and failures are fail-closed, and temporary codes, openid, session keys and secrets
+are not returned or logged. Local acceptance reached 108 backend tests and 235 Mini Program contract
+checks, including a legacy SQLite migration test and an unauthenticated-link rejection test. This remains
+local/PR-ready until CI, Render and a new physical Preview are verified; no Upload, review submission or
+release is implied.
