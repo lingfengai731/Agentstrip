@@ -210,3 +210,28 @@ This closes the website production-verification part of PR #43 only. The mini-pr
 physically previewed, uploaded, submitted or released, and full five-language localization of every
 mini-program screen is not claimed. Confirm WeChat request-domain and privacy configuration and obtain
 a fresh release go/no-go before Preview, Upload or submission.
+
+## 2026-09-02 mini-program content-safety gate
+
+The project owner confirmed that the WeChat request domain `https://wandermind.cc`, the privacy
+declaration and the UGC declaration are configured in the WeChat console. This is owner-confirmed
+external state; no console mutation is claimed by the repository.
+
+The mini-program now calls `wx.login` immediately before checking user-supplied profile or text
+content. The backend exchanges the one-use code for an openid and calls WeChat's official version-2
+message security check. Registration names use scene 1; AI prompts, custom destinations, preference
+notes and driver-request text use scene 2. Text is split by the official 2500 UTF-8-byte limit and
+every chunk receives a fresh login code. Configuration, network, provider and unknown-result failures
+fail closed. Passwords, verification codes and AI output are not inspected, stored or returned by the
+content-check path.
+
+Local acceptance is 100 backend tests, 219 deterministic mini-program checks, `git diff --check`, and
+a fresh WeChat DevTools compile with zero Problems-panel findings. The login page rendered in the
+simulator. A WeChat base-library `WAServiceMainContext timeout` without project source frames remains
+recorded as a tool/runtime residual signal. The DevTools service port was enabled locally so its
+official CLI could open the isolated worktree; this is reversible local workstation state.
+
+`WECHAT_MINIPROGRAM_APP_ID` and `WECHAT_MINIPROGRAM_APP_SECRET` are not stored in Git and remain a
+Render configuration gate. No Preview QR code, Upload, review submission or release action was
+performed. Configure the two server-side values directly in Render, deploy the merged backend and
+smoke-check the content endpoint before requesting a separate physical-device Preview go/no-go.

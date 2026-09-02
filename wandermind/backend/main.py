@@ -485,6 +485,12 @@ class GoogleLoginReq(BaseModel):
     referral_code: str = ""
 
 
+class WeChatContentCheckReq(BaseModel):
+    code: str = Field(min_length=1, max_length=128)
+    content: str = Field(min_length=1, max_length=5000)
+    scene: int = Field(default=2, ge=1, le=2)
+
+
 class ResetPwReq(BaseModel):
     token: str
     password: str
@@ -1464,6 +1470,127 @@ def _public_base_url(request: Request) -> str:
 _SUPPORTED_LANGS = {"zh", "en", "ja", "ko", "id"}
 
 
+# ─── WeChat Mini Program content safety ──────────────────────
+# The token is deliberately process-local and short-lived. It is never
+# persisted, returned to a client, or written to logs.
+_WECHAT_ACCESS_TOKEN_CACHE = {"token": "", "expires_at": 0.0}
+_WECHAT_TOKEN_RETRY_CODES = {40001, 40014, 42001}
+_WECHAT_CONTENT_LIMIT_BYTES = 2500
+_WECHAT_UNAVAILABLE = "内容安全校验暂不可用，请稍后重试"
+_WECHAT_BLOCKED = "这段内容暂时无法提交，请修改后重试"
+
+
+def _wechat_config() -> tuple[str, str]:
+    app_id = os.getenv("WECHAT_MINIPROGRAM_APP_ID", "").strip()
+    app_secret = os.getenv("WECHAT_MINIPROGRAM_APP_SECRET", "").strip()
+    if not app_id or not app_secret:
+        raise HTTPException(503, _WECHAT_UNAVAILABLE)
+    return app_id, app_secret
+
+
+def _wechat_errcode(payload: dict) -> Optional[int]:
+    value = payload.get("errcode", 0)
+    try:
+        return int(value or 0)
+    except (TypeError, ValueError):
+        return None
+
+
+async def _wechat_get_json(url: str, *, params: dict) -> dict:
+    """Call a WeChat JSON endpoint without exposing request secrets."""
+    try:
+        async with httpx.AsyncClient(timeout=15.0) as client:
+            response = await client.get(url, params=params)
+            if int(response.status_code) >= 400:
+                raise RuntimeError("wechat http error")
+            payload = response.json()
+            if not isinstance(payload, dict):
+                raise ValueError("wechat response is not an object")
+            return payload
+    except Exception:
+        # Deliberately use one generic message; exception text may contain a
+        # URL with query parameters or other provider-specific details.
+        raise HTTPException(502, _WECHAT_UNAVAILABLE)
+
+
+async def _wechat_post_json(url: str, *, params: dict, payload: dict) -> dict:
+    """POST to a WeChat JSON endpoint with fail-closed error handling."""
+    try:
+        async with httpx.AsyncClient(timeout=15.0) as client:
+            response = await client.post(url, params=params, json=payload)
+            if int(response.status_code) >= 400:
+                raise RuntimeError("wechat http error")
+            result = response.json()
+            if not isinstance(result, dict):
+                raise ValueError("wechat response is not an object")
+            return result
+    except Exception:
+        raise HTTPException(502, _WECHAT_UNAVAILABLE)
+
+
+async def _wechat_openid(code: str, app_id: str, app_secret: str) -> str:
+    payload = await _wechat_get_json(
+        "https://api.weixin.qq.com/sns/jscode2session",
+        params={
+            "appid": app_id,
+            "secret": app_secret,
+            "js_code": code,
+            "grant_type": "authorization_code",
+        },
+    )
+    if _wechat_errcode(payload) != 0:
+        raise HTTPException(502, _WECHAT_UNAVAILABLE)
+    openid = payload.get("openid")
+    if not isinstance(openid, str) or not openid.strip():
+        raise HTTPException(502, _WECHAT_UNAVAILABLE)
+    return openid
+
+
+def _wechat_clear_access_token() -> None:
+    _WECHAT_ACCESS_TOKEN_CACHE.update(token="", expires_at=0.0)
+
+
+async def _wechat_access_token(*, force_refresh: bool = False) -> str:
+    app_id, app_secret = _wechat_config()
+    cache = _WECHAT_ACCESS_TOKEN_CACHE
+    if not force_refresh and cache["token"] and cache["expires_at"] > time.time():
+        return cache["token"]
+
+    payload = await _wechat_get_json(
+        "https://api.weixin.qq.com/cgi-bin/token",
+        params={
+            "grant_type": "client_credential",
+            "appid": app_id,
+            "secret": app_secret,
+        },
+    )
+    if _wechat_errcode(payload) != 0:
+        raise HTTPException(502, _WECHAT_UNAVAILABLE)
+    token = payload.get("access_token")
+    try:
+        expires_in = int(payload.get("expires_in") or 0)
+    except (TypeError, ValueError):
+        expires_in = 0
+    if not isinstance(token, str) or not token.strip() or expires_in <= 0:
+        raise HTTPException(502, _WECHAT_UNAVAILABLE)
+
+    # Keep a conservative, process-local cache even if WeChat returns a long
+    # lifetime. For short provider lifetimes, never let our cache outlive the
+    # token itself; for normal lifetimes, retain a 60-second refresh buffer.
+    refresh_buffer = 60 if expires_in > 60 else 0
+    cache_ttl = max(1, min(expires_in - refresh_buffer, 3600))
+    cache.update(token=token, expires_at=time.time() + cache_ttl)
+    return token
+
+
+async def _wechat_msg_sec_check(token: str, *, openid: str, content: str, scene: int) -> dict:
+    return await _wechat_post_json(
+        "https://api.weixin.qq.com/wxa/msg_sec_check",
+        params={"access_token": token},
+        payload={"version": 2, "scene": scene, "openid": openid, "content": content},
+    )
+
+
 def _clean_email(value: str) -> str:
     email = (value or "").lower().strip()
     if not re.fullmatch(r"[^\s@]+@[^\s@]+\.[^\s@]+", email):
@@ -1483,6 +1610,50 @@ def _verification_hash(email: str, code: str) -> str:
 async def auth_config():
     """Return public auth configuration. Secrets are never exposed."""
     return {"google_client_id": os.getenv("GOOGLE_CLIENT_ID", "").strip()}
+
+
+@app.post("/api/wechat/content-check")
+async def check_wechat_content(data: WeChatContentCheckReq):
+    """Fail-closed text check for Mini Program user-generated content.
+
+    The temporary Mini Program login code is exchanged for an openid only for
+    this request. Neither it, the openid, provider tokens, nor user content is
+    persisted or returned to the client.
+    """
+    app_id, app_secret = _wechat_config()
+    content = data.content
+    if not content.strip():
+        raise HTTPException(400, "请输入内容")
+    if len(content.encode("utf-8")) > _WECHAT_CONTENT_LIMIT_BYTES:
+        raise HTTPException(400, "内容过长，请缩短后重试")
+
+    openid = await _wechat_openid(data.code.strip(), app_id, app_secret)
+    token = await _wechat_access_token()
+    result = await _wechat_msg_sec_check(
+        token, openid=openid, content=content, scene=data.scene
+    )
+    errcode = _wechat_errcode(result)
+    if errcode in _WECHAT_TOKEN_RETRY_CODES:
+        # One forced refresh is allowed for a stale/revoked token. A second
+        # failure remains blocked; there is intentionally no retry loop.
+        _wechat_clear_access_token()
+        token = await _wechat_access_token(force_refresh=True)
+        result = await _wechat_msg_sec_check(
+            token, openid=openid, content=content, scene=data.scene
+        )
+        errcode = _wechat_errcode(result)
+
+    if errcode != 0:
+        raise HTTPException(502, _WECHAT_UNAVAILABLE)
+    check_result = result.get("result")
+    suggest = check_result.get("suggest") if isinstance(check_result, dict) else None
+    if suggest == "pass":
+        return {"ok": True, "allowed": True}
+    if suggest in {"review", "risky"}:
+        return {"ok": True, "allowed": False, "reason": _WECHAT_BLOCKED}
+    # Do not pass through provider labels or raw responses to the Mini
+    # Program. An unknown provider response is a hard failure.
+    raise HTTPException(502, _WECHAT_UNAVAILABLE)
 
 
 @app.post("/api/auth/send-verification-code")

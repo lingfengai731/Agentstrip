@@ -471,3 +471,11 @@
 - 工程回调：小程序 v1 接入既有账号、邮件验证码、AI 对话、R1–R6 公共路线、专业路线约 70% 预览/完整权益、历史恢复和 Dicky/Gede 邮箱交接。最终审计修复司机交接未读取根级 `profile` 导致日期、人数、天数和预算丢失的问题，并把预算关注项改为后端识别的 `value`。
 - QA 回调：212 项确定性契约和 `git diff --check` 通过；微信开发者工具重新编译并回到登录页，Problems 为 0。灰色基础库 3.16.1 的 framework timeout 与 reportRealtimeAction 警告无项目源码帧，继续按工具残余信号记录。
 - Git/发布边界：产品提交 `b5f7fa3c61f46c6b157564d0f4fa23e89b7f860b` 已推送 `origin/codex/premini-final-20260901`，尚未合并 main、未核验 Render 精确提交、未生成真机预览二维码、未上传、未提审、未发布。`.codex/run-state/`、`output/` 和两个仅换行变化的微信项目配置不纳入 Git。
+
+## 2026-09-02 Mini-program content-safety callback
+
+- 路由：medium / L3。Sol 保留内容安全架构、敏感信息边界、跨模块集成、最终验收、Git 与发布判断；正式 `luna_worker` Halley（`/root/miniprogram_content_safety`，`gpt-5.6-luna` / `max`）完成实现，并在 Sol 发现长文本截断绕过后完成一次定向修正。Agent 最终状态 completed；工具层未提供精确启动时间和稳定耗时。
+- Sol 复核：逐项阅读实际 diff，确认完整 UTF-8 分块、每块新 `wx.login` code、custom destination 覆盖、token 到期上限与 fail-closed 行为；独立复跑 100 项后端测试、219 项小程序契约与 `git diff --check`，全部通过。
+- 本机回调：Computer Use 在微信开发者工具内开启可逆的“服务端口”，随后使用官方 `cli.bat open` 打开隔离 worktree 并 Ctrl+B 编译。Problems 为 0，登录页在模拟器渲染；基础库仍出现无项目源码帧的 `WAServiceMainContext timeout`，继续按工具残余信号记录。
+- 外部事实：站主确认 request 合法域名、隐私说明与 UGC 声明均已完成。Render 仍缺/未核验 `WECHAT_MINIPROGRAM_APP_ID` 与 `WECHAT_MINIPROGRAM_APP_SECRET`，值不得进入聊天或 Git。
+- 发布边界：未生成 Preview 二维码、未 Upload、未提审、未发布。下一准确动作是站主在 Render 直接配置两项服务端凭据，合并并部署后做一次内容安全端点 smoke check；真机 Preview 继续要求单独 go/no-go。
