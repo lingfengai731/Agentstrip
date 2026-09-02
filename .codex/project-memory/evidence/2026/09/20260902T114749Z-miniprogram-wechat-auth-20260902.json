@@ -1,0 +1,22 @@
+{
+  "schema_version": 1,
+  "evidence_id": "ev-20260902T114749Z-miniprogram-wechat-auth-20260902",
+  "task_ref": "miniprogram-wechat-auth-20260902",
+  "owner": "Codex Luna",
+  "captured_at": "2026-09-02T11:47:49Z",
+  "status": "verified",
+  "claim": "The bounded WeChat Mini Program authentication implementation is complete locally: nullable-email accounts, idempotent provider identities, explicit account linking, fail-closed provider errors, and teal/gold Mini Program login and link controls are covered by automated tests.",
+  "source": {
+    "kind": "git",
+    "repository": "https://github.com/lingfengai731/Agentstrip.git",
+    "commit": "946dfb7772c250a1666398816ff078a94c9bf633",
+    "branch": "codex/miniprogram-wechat-auth-20260902",
+    "worktree": "E:\\Agentstrip-worktrees\\active\\account1\\wechat-auth-20260902",
+    "dirty": false
+  },
+  "verification": {
+    "command": "python -m unittest wandermind.backend.tests.test_product_access; node tools/test_miniprogram_contract.cjs; git diff --check; python -m py_compile wandermind/backend/db.py wandermind/backend/main.py wandermind/backend/tests/test_product_access.py",
+    "result": "106 backend tests passed; 234 Mini Program contract checks passed; diff check passed; Python compilation passed. A legacy SQLite users schema migration probe also preserved rows and allowed NULL email values."
+  },
+  "notes": "This is local branch evidence only. No credentials, provider subjects, session keys, codes, phone authorization, driver relay, payment, Upload, review submission, release, push, PR, merge, or Render deployment was performed. Production requires the configured WeChat AppID/AppSecret and an independent owner-authorized Preview/release gate."
+}
