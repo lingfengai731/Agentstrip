@@ -531,3 +531,10 @@
 - Verification: 116 backend tests passed, 242 Mini Program contract checks passed, syntax checks and `git diff --check` passed; 13 PostgreSQL tests skipped because no isolated `DATABASE_URL` was supplied.
 - Handoff/evidence: `.codex/project-memory/handoffs/2026/09/20260902T123243Z-miniprogram-driver-relay-20260902.md` and `.codex/project-memory/evidence/2026/09/20260902T123243Z-miniprogram-driver-relay-20260902.json`.
 - Parent callback: inspect actual diff and commit, rerun validation, then use the normal fixed-head PR/CI and exact Render deployment gates before any external relay smoke test.
+
+## 2026-09-02 Mini-program driver relay production callback
+
+- Luna callback: formal `luna_worker` `/root/driver_relay_implementation` (`gpt-5.6-luna` / `max`) completed the bounded implementation in the isolated centralized worktree. Sol reviewed the actual diff and independently reran all acceptance gates.
+- GitHub callback: PR #51 fixed head `2afece9` passed Project memory validation and PostgreSQL integration, then squash merged as `main@9083217`; fixed-head and merge Git trees are identical.
+- Render callback: exact deploy `dep-dac1jmf8diss73a0umr0` is Live; health and reply page are 200, reply page is noindex, and both relay API paths are present.
+- Preview callback: official WeChat DevTools CLI compiled a 1,536,315-byte Preview outside Git. No real driver email/reply, production request write, Upload, review submission or release was performed.

@@ -1,0 +1,22 @@
+{
+  "schema_version": 1,
+  "evidence_id": "ev-20260902T124606Z-miniprogram-driver-relay-production-20260902",
+  "task_ref": "miniprogram-driver-relay-production-20260902",
+  "owner": "codex-sol",
+  "captured_at": "2026-09-02T12:46:06Z",
+  "status": "verified",
+  "claim": "PR 51 passed fixed-head Project memory and PostgreSQL checks, merged with tree equality, and deployed Live on Render at the exact merge commit; safe no-write production probes and Mini Program Preview compilation passed.",
+  "source": {
+    "kind": "production",
+    "repository": "https://github.com/lingfengai731/Agentstrip.git",
+    "commit": "90832175bfe973740c01334dff828e36a0607bce",
+    "branch": "main",
+    "worktree": "E:\\Agentstrip-worktrees\\active\\account1\\miniprogram-driver-relay-20260902",
+    "dirty": false
+  },
+  "verification": {
+    "command": "116 backend tests; 242 Mini Program checks; GitHub fixed-head workflows; Git tree equality; Render exact-commit deploy; /healthz; OpenAPI route presence; reply page noindex; WeChat DevTools CLI Preview",
+    "result": "PASS: main 9083217, deploy dep-dac1jmf8diss73a0umr0 Live, health 200, reply page 200/noindex, mine and reply endpoints present, Preview 1,536,315 bytes."
+  },
+  "notes": "No real driver email or reply, production driver-request write, Mini Program Upload, review submission or release was performed. Real-device WeChat login/link and relay end-to-end observations remain external gates."
+}
