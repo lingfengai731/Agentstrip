@@ -479,3 +479,10 @@
 - 本机回调：Computer Use 在微信开发者工具内开启可逆的“服务端口”，随后使用官方 `cli.bat open` 打开隔离 worktree 并 Ctrl+B 编译。Problems 为 0，登录页在模拟器渲染；基础库仍出现无项目源码帧的 `WAServiceMainContext timeout`，继续按工具残余信号记录。
 - 外部事实：站主确认 request 合法域名、隐私说明与 UGC 声明均已完成。Render 仍缺/未核验 `WECHAT_MINIPROGRAM_APP_ID` 与 `WECHAT_MINIPROGRAM_APP_SECRET`，值不得进入聊天或 Git。
 - 发布边界：未生成 Preview 二维码、未 Upload、未提审、未发布。下一准确动作是站主在 Render 直接配置两项服务端凭据，合并并部署后做一次内容安全端点 smoke check；真机 Preview 继续要求单独 go/no-go。
+
+## 2026-09-02 Mini-program content-safety production callback
+
+- 路由：medium / L3，由 Sol 串行保留固定提交、CI、合并、Render 精确提交和生产 fail-closed 判定；本轮是生产发布门禁，不属于可独立交给 Luna 的代码执行任务，因此未新增 worker。
+- GitHub 回调：PR #45 固定 head `bbd6b62cc3b157ae597070435af04323070cba13` 的 Project memory validation 与 PostgreSQL integration 均 success，GitHub 判定 mergeable；squash 合并为 `main@408d153fade4fe7602be725458660f0c5f54fe38`，固定 head 与合并提交 Git tree 完全一致。
+- Render 回调：站主确认两项微信服务端环境变量已直接配置；自动部署 `dep-dabppmrbc2fs73epc48g` 在精确合并提交上变为 Live。公开 `/healthz` 为 200/ok，OpenAPI 含内容安全端点；一次无效临时 code 得到预期通用 502，而非缺配置 503，且响应未回显 code，证明配置已读取并进入微信 provider 交换路径。
+- 安全边界：生产烟测没有用户、订单、权益或内容写入。未生成 Preview 二维码、未 Upload、未提审、未发布；下一步仅是真机 Preview 的独立 go/no-go。
