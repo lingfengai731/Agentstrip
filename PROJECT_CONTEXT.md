@@ -235,3 +235,17 @@ official CLI could open the isolated worktree; this is reversible local workstat
 Render configuration gate. No Preview QR code, Upload, review submission or release action was
 performed. Configure the two server-side values directly in Render, deploy the merged backend and
 smoke-check the content endpoint before requesting a separate physical-device Preview go/no-go.
+
+The owner later confirmed that both server-side values were configured directly in Render and a
+configuration deploy completed. PR #45 fixed head `bbd6b62cc3b157ae597070435af04323070cba13`
+passed Project memory validation and PostgreSQL integration, then squash merged as
+`main@408d153fade4fe7602be725458660f0c5f54fe38`. The fixed-head and squash-merge Git trees are
+identical. Render automatic deploy `dep-dabppmrbc2fs73epc48g` became Live at that exact merge commit.
+
+Fresh production probes returned 200/`ok` for `/healthz`, confirmed `/api/wechat/content-check` in
+OpenAPI, and received the expected generic 502 fail-closed response for one deliberately invalid
+temporary login code. That distinction from the missing-configuration 503 proves the deployed service
+read both required environment variables and reached the provider exchange path; the response did not
+echo the temporary code. No user, order, entitlement or content record was created. No Preview QR,
+Upload, review submission or mini-program release was performed. Physical-device Preview remains the
+next separate go/no-go.
