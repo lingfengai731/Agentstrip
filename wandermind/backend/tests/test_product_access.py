@@ -3,6 +3,7 @@ import csv
 import hashlib
 import json
 import os
+import sqlite3
 import subprocess
 import sys
 import tempfile
@@ -31,7 +32,7 @@ sys.path.insert(0, str(BACKEND_DIR))
 
 import email_service  # noqa: E402
 import main  # noqa: E402
-from db import get_db  # noqa: E402
+from db import _sqlite_make_users_email_nullable, get_db  # noqa: E402
 from email_service import render_driver_request  # noqa: E402
 
 
@@ -241,6 +242,37 @@ class ProductAccessTests(unittest.TestCase):
         finally:
             conn.close()
 
+    def test_legacy_sqlite_users_email_migration_preserves_rows_and_accepts_null(self):
+        conn = sqlite3.connect(":memory:")
+        conn.row_factory = sqlite3.Row
+        try:
+            conn.execute(
+                "CREATE TABLE users (id TEXT PRIMARY KEY, email TEXT UNIQUE NOT NULL, "
+                "name TEXT NOT NULL, password_hash TEXT NOT NULL, created_at INTEGER NOT NULL)"
+            )
+            conn.execute(
+                "INSERT INTO users (id,email,name,password_hash,created_at) VALUES (?,?,?,?,?)",
+                ("legacy-user", "legacy@example.test", "Legacy", "hash", 1),
+            )
+            _sqlite_make_users_email_nullable(conn)
+            _sqlite_make_users_email_nullable(conn)
+            conn.execute(
+                "INSERT INTO users (id,email,name,password_hash,created_at) VALUES (?,?,?,?,?)",
+                ("wechat-user", None, "WeChat", "hash", 2),
+            )
+            rows = conn.execute("SELECT id,email,name FROM users ORDER BY created_at").fetchall()
+            email_column = next(
+                row for row in conn.execute("PRAGMA table_info(users)").fetchall()
+                if row["name"] == "email"
+            )
+        finally:
+            conn.close()
+        self.assertEqual([dict(row) for row in rows], [
+            {"id": "legacy-user", "email": "legacy@example.test", "name": "Legacy"},
+            {"id": "wechat-user", "email": None, "name": "WeChat"},
+        ])
+        self.assertEqual(email_column["notnull"], 0)
+
     def test_wechat_login_creates_nullable_email_account_and_hides_provider_subject(self):
         fake = self._fake_wechat_client([{"openid": "openid-new-login"}])
         response = self._wechat_auth("/api/auth/wechat/login", fake)
@@ -304,6 +336,15 @@ class ProductAccessTests(unittest.TestCase):
             conn.close()
         self.assertEqual(len(rows), 1)
         self.assertEqual(rows[0]["user_id"], self.user_id)
+
+    def test_wechat_link_rejects_missing_bearer_session_before_provider_exchange(self):
+        response = self._run(
+            self._request(
+                "POST", "/api/auth/wechat/link", json={"code": "wx-code-test"}
+            )
+        )
+        self.assertEqual(response.status_code, 401, response.text)
+        self.assertNotIn("wx-code-test", response.text)
 
     def test_wechat_link_rejects_identity_owned_by_another_user_without_merging(self):
         other_id = self._create_user("wechat-other@example.test", "Other")

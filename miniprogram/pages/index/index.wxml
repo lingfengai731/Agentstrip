@@ -40,6 +40,7 @@
         <text class="wechat-mark">微</text>
         {{wechatBusy ? '正在连接微信…' : '微信一键登录'}}
       </button>
+      <view class="wechat-login-hint">已有邮箱账号请先用邮箱登录，再在首页绑定微信，避免形成两个独立账号。</view>
 
       <view wx:if="{{authMode === 'register'}}" class="code-hint">验证码 10 分钟内有效；60 秒后可重新发送。</view>
 

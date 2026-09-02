@@ -87,6 +87,7 @@ check(auth.includes('sendCode()') && auth.includes('verificationCode'), 'registr
 check(auth.includes('wechatLogin()') && auth.includes('wx.login') && auth.includes('api.wechatLogin'), 'WeChat one-click login UI is missing');
 check(auth.includes('linkWechat()') && auth.includes('api.linkWechat'), 'explicit WeChat link UI is missing');
 check(!/open-type=["']getPhoneNumber/.test(read('miniprogram/pages/index/index.wxml')), 'WeChat login must not request phone authorization');
+check(read('miniprogram/pages/index/index.wxml').includes('已有邮箱账号请先用邮箱登录'), 'WeChat login must warn existing email users to link explicitly');
 check(auth.includes('api.checkUserContent(regName.trim(), 1)'), 'registration name must be checked before account creation');
 check(chat.includes('contentForSafetyCheck') && chat.includes('api.checkUserContent(contentForSafetyCheck, 2)'), 'AI user messages must be checked before sending');
 check(chat.includes('customDestination') && chat.includes('${customDestination}\\n${text}'), 'custom destinations must be included in AI content checks');

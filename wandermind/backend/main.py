@@ -1554,7 +1554,7 @@ async def _wechat_openid(code: str, app_id: str, app_secret: str) -> str:
     openid = payload.get("openid")
     if not isinstance(openid, str) or not openid.strip() or len(openid.strip()) > 256:
         raise HTTPException(502, _WECHAT_UNAVAILABLE)
-    return openid
+    return openid.strip()
 
 
 def _clean_wechat_code(value: str) -> str:
