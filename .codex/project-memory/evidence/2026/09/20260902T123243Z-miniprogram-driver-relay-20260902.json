@@ -4,7 +4,7 @@
   "task_ref": "miniprogram-driver-relay-20260902",
   "owner": "Codex Luna worker",
   "captured_at": "2026-09-02T12:32:43Z",
-  "status": "verified_local",
+  "status": "verified",
   "claim": "The bounded driver relay implementation is complete and verified locally: authenticated email-free Mini Program users can create a private request, receive a one-use fragment-token reply link through the existing driver email route, and read the driver's reply in their own Mini Program history. Existing email-based direct Reply-To behavior remains intact.",
   "source": {
     "kind": "git",
