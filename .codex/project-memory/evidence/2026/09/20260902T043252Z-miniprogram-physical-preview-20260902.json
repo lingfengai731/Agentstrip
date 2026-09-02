@@ -1,0 +1,22 @@
+{
+  "schema_version": 1,
+  "evidence_id": "ev-20260902T043252Z-miniprogram-physical-preview-20260902",
+  "task_ref": "miniprogram-physical-preview-20260902",
+  "owner": "Codex Sol",
+  "captured_at": "2026-09-02T04:32:52Z",
+  "status": "verified",
+  "claim": "One owner-authorized WeChat physical-device Preview QR was generated from a clean worktree whose Git tree matched origin/main; this verifies QR preparation only, while device acceptance remains pending.",
+  "source": {
+    "kind": "git",
+    "repository": "https://github.com/lingfengai731/Agentstrip.git",
+    "commit": "313d07394cab57f84098402bb1c3570eb88f4fca",
+    "branch": "codex/miniprogram-preview-20260902",
+    "worktree": "E:\\Agentstrip-wt-miniprogram-content-safety-release-20260902",
+    "dirty": false
+  },
+  "verification": {
+    "command": "git tree equality; WeChat DevTools cli islogin; WeChat DevTools cli preview --qr-format image; local QR image inspection",
+    "result": "tree matched origin/main@1b01d6d; IDE login true; Preview succeeded; package 1,521,602 bytes; QR image exists and is readable."
+  },
+  "notes": "The verified claim is limited to QR generation. The QR is a temporary local artifact and is not committed. No physical-device acceptance, formal Upload, review submission or release is claimed."
+}

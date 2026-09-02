@@ -25,6 +25,7 @@ function walk(dir, extension) {
 
 const appConfig = JSON.parse(read('miniprogram/app.json'));
 check(appConfig.pages.length >= 10, 'app.json should declare the v1 feature pages');
+check(appConfig.window.navigationBarTitleText === 'WanderMind 智旅', 'mini-program navigation must use the confirmed public name');
 
 for (const page of appConfig.pages) {
   for (const ext of ['.js', '.json', '.wxml', '.wxss']) {
@@ -63,6 +64,7 @@ for (const [pattern, label] of [
   [/即将上线|coming soon/i, 'placeholder copy'],
   [/6 位智能体/, 'misleading six-agent claim'],
   [/agentstrip\.onrender\.com/i, 'legacy API host'],
+  [/WanderMind\s*[· ]?\s*游心|关于游心/, 'retired mini-program name'],
 ]) check(!pattern.test(allText), `mini-program still contains ${label}`);
 
 const api = read('miniprogram/utils/api.js');
@@ -71,6 +73,7 @@ const auth = read('miniprogram/pages/index/index.js');
 const chat = read('miniprogram/pages/chat/chat.js');
 const driver = read('miniprogram/pages/driver/driver.js');
 const language = read('miniprogram/pages/language/language.js');
+const { formatAssistantMessage } = require(path.join(mini, 'utils', 'message-format.js'));
 
 check(/apiBase:\s*'https:\/\/wandermind\.cc'/.test(app), 'API base must use the canonical production domain');
 check(/timeout:\s*130000/.test(api), 'AI chat timeout must exceed the backend 120-second window');
@@ -91,6 +94,31 @@ check(driver.includes('num_days: this.data.days || null'), 'driver handoff must 
 check(read('miniprogram/pages/planner/planner.js').includes("{ id: 'value', label: '控制预算'"), 'planner budget goal must use the backend value intent');
 check(chat.includes('saveConversation') && chat.includes('getConversation'), 'chat must save and restore account conversations');
 check(chat.includes('pendingText') && chat.includes('retryLast()'), 'chat must preserve and retry interrupted input');
+check(chat.includes('formatAssistantMessage'), 'AI replies must use the native safe formatting layer');
+const formattedReply = formatAssistantMessage([
+  '### 上午：乌布文化散步',
+  '',
+  '**先去市场**，再参观王宫。',
+  '- 营业时间请实时确认',
+  '价格约 IDR 100,000',
+  '（约 CNY 45）。',
+].join('\n'));
+check(
+  formattedReply.some(block => block.type === 'heading' && block.text === '上午：乌布文化散步'),
+  'AI formatter must remove Markdown heading markers'
+);
+check(
+  formattedReply.some(block => block.type === 'list' && block.text === '营业时间请实时确认'),
+  'AI formatter must convert Markdown bullets into native list blocks'
+);
+check(
+  formattedReply.every(block => !/[#*]{2}/.test(block.text)),
+  'AI formatter must not expose common Markdown control markers'
+);
+check(
+  formattedReply.some(block => block.text.includes('IDR 100,000（约 CNY 45）。')),
+  'AI formatter must join wrapped price units without splitting the sentence'
+);
 check(app.includes('rememberCurrentRoute') && app.includes('resumePendingRoute'), 'login recovery route contract missing');
 check(!/(?:whatsapp|wechat|Nicho\.otir|gmail\.com|\+62)/i.test(driver), 'driver page must not expose private contact channels');
 check(/wx\.setTabBarItem/.test(app), 'five-language tab labels are not wired');

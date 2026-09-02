@@ -1,0 +1,22 @@
+{
+  "schema_version": 1,
+  "evidence_id": "ev-20260902T111920Z-miniprogram-chat-rendering-20260902",
+  "task_ref": "miniprogram-chat-rendering-20260902",
+  "owner": "Codex Sol",
+  "captured_at": "2026-09-02T11:19:20Z",
+  "status": "claimed",
+  "claim": "Added a native non-HTML AI reply formatter for headings, lists, paragraphs and quotes; tightened the Mini Program output contract to avoid raw Markdown, mixed-language fragments and split currency units; aligned Mini Program surfaces to the confirmed WanderMind 智旅 name. WeChat DevTools Preview compiled a 1,526,156-byte package. No Upload, review submission or release.",
+  "source": {
+    "kind": "git",
+    "repository": "https://github.com/lingfengai731/Agentstrip.git",
+    "commit": "549b14800bf13606f736cfe09575d45c0f598ea3",
+    "branch": "codex/miniprogram-chat-rendering-20260902",
+    "worktree": "E:\\Agentstrip-wt-miniprogram-content-safety-release-20260902",
+    "dirty": true
+  },
+  "verification": {
+    "command": "node tools/test_miniprogram_contract.cjs; python -m unittest wandermind.backend.tests.test_product_access; git diff --check; WeChat DevTools cli preview",
+    "result": "226 mini-program checks passed; 100 backend tests passed; diff check passed; Preview compilation succeeded"
+  },
+  "notes": ""
+}

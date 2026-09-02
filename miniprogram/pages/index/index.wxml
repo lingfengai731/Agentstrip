@@ -5,7 +5,7 @@
   <view wx:if="{{!loggedIn}}" class="auth-section">
     <view class="hero">
       <view class="hero-logo">游</view>
-      <view class="hero-title">WanderMind · 游心</view>
+      <view class="hero-title">WanderMind · 智旅</view>
       <view class="hero-subtitle">AI 旅行规划与 Bali 路线助手</view>
     </view>
 

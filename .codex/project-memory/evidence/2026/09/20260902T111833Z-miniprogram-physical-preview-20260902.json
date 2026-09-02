@@ -1,0 +1,22 @@
+{
+  "schema_version": 1,
+  "evidence_id": "ev-20260902T111833Z-miniprogram-physical-preview-20260902",
+  "task_ref": "miniprogram-physical-preview-20260902",
+  "owner": "Codex Sol",
+  "captured_at": "2026-09-02T11:18:33Z",
+  "status": "claimed",
+  "claim": "Project owner confirmed the physical Preview opened without a white screen, existing email login succeeded, public routes loaded, a benign AI prompt returned, and ordinary preference notes saved. The same field test exposed raw Markdown markers and poor sentence/language continuity in the AI reply; this is acceptance evidence for the previous Preview only, not Upload, review submission, or release.",
+  "source": {
+    "kind": "git",
+    "repository": "https://github.com/lingfengai731/Agentstrip.git",
+    "commit": "549b14800bf13606f736cfe09575d45c0f598ea3",
+    "branch": "codex/miniprogram-chat-rendering-20260902",
+    "worktree": "E:\\Agentstrip-wt-miniprogram-content-safety-release-20260902",
+    "dirty": true
+  },
+  "verification": {
+    "command": "Owner physical-device acceptance report in the Codex task on 2026-09-02",
+    "result": "pass-with-follow-up-chat-rendering-defect"
+  },
+  "notes": ""
+}

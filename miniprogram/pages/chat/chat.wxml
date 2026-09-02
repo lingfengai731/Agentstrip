@@ -47,7 +47,18 @@
     >
       <view class="msg-bubble">
         <view wx:if="{{item.role === 'assistant' && item.searched}}" class="msg-search-badge">🌐 已联网搜索</view>
-        <text class="msg-text" user-select="{{item.role === 'assistant'}}">{{item.content}}</text>
+        <block wx:if="{{item.role === 'assistant'}}">
+          <view
+            wx:for="{{item.renderBlocks}}"
+            wx:key="id"
+            wx:for-item="block"
+            class="msg-block msg-block-{{block.type}}"
+          >
+            <text wx:if="{{block.type === 'list'}}" class="msg-list-marker">{{block.marker}}</text>
+            <text class="msg-block-text" user-select="{{true}}">{{block.text}}</text>
+          </view>
+        </block>
+        <text wx:else class="msg-text">{{item.content}}</text>
         <view wx:if="{{item.role === 'assistant'}}" class="msg-mode-badge {{item.mode}}">{{item.mode === 'fast' ? '⚡' : '🎯'}}</view>
       </view>
     </view>
