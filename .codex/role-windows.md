@@ -486,3 +486,10 @@
 - GitHub 回调：PR #45 固定 head `bbd6b62cc3b157ae597070435af04323070cba13` 的 Project memory validation 与 PostgreSQL integration 均 success，GitHub 判定 mergeable；squash 合并为 `main@408d153fade4fe7602be725458660f0c5f54fe38`，固定 head 与合并提交 Git tree 完全一致。
 - Render 回调：站主确认两项微信服务端环境变量已直接配置；自动部署 `dep-dabppmrbc2fs73epc48g` 在精确合并提交上变为 Live。公开 `/healthz` 为 200/ok，OpenAPI 含内容安全端点；一次无效临时 code 得到预期通用 502，而非缺配置 503，且响应未回显 code，证明配置已读取并进入微信 provider 交换路径。
 - 安全边界：生产烟测没有用户、订单、权益或内容写入。未生成 Preview 二维码、未 Upload、未提审、未发布；下一步仅是真机 Preview 的独立 go/no-go。
+
+## 2026-09-02 Mini-program physical Preview pending callback
+
+- 路由：medium / L3，由 Sol 串行保留 Preview 授权、固定 Git tree、工具登录、二维码生成和真机验收边界；本轮没有新增代码执行任务，因此未新增 Luna worker。
+- 授权回调：站主明确授权“仅生成真机 Preview 二维码，不 Upload、不提审、不发布”。预览目录为 clean，Git tree 与 `origin/main@1b01d6d0512f951e6c4d745fedc5fa78ac84417a` 完全一致。
+- 工具回调：微信开发者工具官方 CLI 确认登录，使用 AppID `wx26bfe1e0c37a54b6` 成功生成一次 image-format Preview；包体 1,521,602 bytes，二维码图片已确认可读。临时二维码位于系统 TEMP，不纳入 Git。
+- 状态边界：当前仅为 Preview QR prepared；站主尚未回传真机打开、登录、路线、AI 正常文本和偏好保存的观察结果，不得写为真机验收通过。未执行正式 Upload、提审或发布。

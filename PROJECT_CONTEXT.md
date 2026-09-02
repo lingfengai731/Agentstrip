@@ -249,3 +249,11 @@ read both required environment variables and reached the provider exchange path;
 echo the temporary code. No user, order, entitlement or content record was created. No Preview QR,
 Upload, review submission or mini-program release was performed. Physical-device Preview remains the
 next separate go/no-go.
+
+On 2026-09-02 the owner explicitly authorized one physical-device Preview QR only. WeChat DevTools was
+already logged in and its official CLI generated the Preview successfully from a clean worktree whose
+Git tree exactly matched `origin/main@1b01d6d0512f951e6c4d745fedc5fa78ac84417a`. The package was
+1,521,602 bytes (about 1.5 MB), and the image-format QR was confirmed readable. The QR remains a local
+temporary artifact and is not committed. Device scanning and functional acceptance are still pending;
+do not write them as passed until the owner reports the observed results. No formal Upload, review
+submission or release action was performed.
