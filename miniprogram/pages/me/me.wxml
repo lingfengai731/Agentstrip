@@ -47,14 +47,14 @@
       </view>
       <view class="me-row" bindtap="about">
         <view class="me-row-icon">ℹ️</view>
-        <view class="me-row-label">关于游心</view>
+        <view class="me-row-label">关于智旅</view>
         <view class="me-row-arrow">›</view>
       </view>
     </view>
 
     <button class="btn-ghost logout-btn" bindtap="doLogout">退出登录</button>
 
-    <view class="me-footer">WanderMind · 游心 v1.0.0</view>
+    <view class="me-footer">WanderMind · 智旅 v1.0.0</view>
   </view>
 
 </view>

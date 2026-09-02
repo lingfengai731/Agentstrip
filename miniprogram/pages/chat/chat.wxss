@@ -76,6 +76,7 @@
   font-size: 28rpx;
   line-height: 1.6;
   position: relative;
+  box-sizing: border-box;
 }
 .msg.user .msg-bubble {
   background: #0E7C6B;
@@ -83,6 +84,7 @@
   border-bottom-right-radius: 6rpx;
 }
 .msg.assistant .msg-bubble {
+  max-width: 88%;
   background: #fff;
   color: #2A2723;
   border-bottom-left-radius: 6rpx;
@@ -90,6 +92,44 @@
 }
 .msg-text {
   white-space: pre-wrap;
+  word-break: break-word;
+}
+.msg-block {
+  display: flex;
+  align-items: flex-start;
+  margin-top: 12rpx;
+}
+.msg-block:first-of-type { margin-top: 0; }
+.msg-block-heading {
+  margin-top: 24rpx;
+  color: #075E52;
+  font-size: 29rpx;
+  font-weight: 700;
+  line-height: 1.45;
+}
+.msg-block-paragraph,
+.msg-block-quote {
+  line-height: 1.65;
+}
+.msg-block-list {
+  gap: 12rpx;
+  line-height: 1.6;
+}
+.msg-block-quote {
+  padding-left: 16rpx;
+  border-left: 5rpx solid #D29B42;
+  color: #5F5A54;
+}
+.msg-list-marker {
+  flex: 0 0 auto;
+  min-width: 24rpx;
+  color: #C3841D;
+  font-weight: 700;
+}
+.msg-block-text {
+  min-width: 0;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
   word-break: break-word;
 }
 .msg-search-badge {

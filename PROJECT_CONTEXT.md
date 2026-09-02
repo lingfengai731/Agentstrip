@@ -257,3 +257,12 @@ Git tree exactly matched `origin/main@1b01d6d0512f951e6c4d745fedc5fa78ac84417a`.
 temporary artifact and is not committed. Device scanning and functional acceptance are still pending;
 do not write them as passed until the owner reports the observed results. No formal Upload, review
 submission or release action was performed.
+
+The owner subsequently completed the five requested physical-device checks: the Preview opened without
+a white screen, an existing email account logged in, public routes loaded, a benign AI prompt returned,
+and ordinary preference notes saved. This closes the v1 physical Preview baseline only; it does not mean
+the Mini Program was uploaded, submitted for review, or released. The same field test found that AI
+Markdown markers and model-generated line breaks were displayed literally. The current task branch adds
+a native, non-HTML message formatter, tightens the Mini Program output prompt, and aligns Mini Program
+surfaces with the owner-confirmed public name `WanderMind 智旅`. Local contract, backend regression and
+WeChat DevTools Preview compilation must remain green before integration.

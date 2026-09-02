@@ -1,4 +1,4 @@
-// app.js — WanderMind 游心 小程序全局入口
+// app.js — WanderMind 智旅 小程序全局入口
 App({
   globalData: {
     // 后端 API base URL（指向 Render 部署的 H5 服务）

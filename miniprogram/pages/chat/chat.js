@@ -1,14 +1,19 @@
 // pages/chat/chat.js
 const api = require('../../utils/api.js');
 const { DESTINATIONS } = require('../../utils/const.js');
+const { formatAssistantMessage } = require('../../utils/message-format.js');
 
 const app = getApp();
 
-const BASE_SYSTEM = `你是 WanderMind 游心的旅行规划助手。
+const BASE_SYSTEM = `你是 WanderMind 智旅的旅行规划助手。
 - 提供具体地点、价格参考（当地货币/人民币双标注）
 - 适当使用 emoji 让回复生动
 - 分段清晰，避免大段密集文字
-- 像去过目的地 20 次的朋友在分享真实经验`;
+- 像去过目的地 20 次的朋友在分享真实经验
+- 使用完整、自然的句子；不要把数字、币种、专有名词或单词拆到不同的行
+- 不使用 Markdown 的 # 标题、表格或代码块；需要列举时使用简短小标题和“•”项目符号
+- 除地点原名等专有名词外，只使用用户选择的语言，不混入其他语言
+- 价格仅作为参考，统一写成“IDR 100,000（约 CNY 45）”这样的完整格式；无法核实时明确提示实时确认`;
 
 const LANG_PROMPT = {
   zh: '请使用简体中文回复，专业名词可括号标注英文。',
@@ -80,10 +85,11 @@ Page({
   },
 
   _normalizeMessages(messages) {
-    return (messages || []).filter(item => item && item.role && item.content).map(item => ({
-      ...item,
-      id: item.id || _nextId(),
-    }));
+    return (messages || []).filter(item => item && item.role && item.content).map(item => {
+      const normalized = { ...item, id: item.id || _nextId() };
+      if (item.role === 'assistant') normalized.renderBlocks = formatAssistantMessage(item.content);
+      return normalized;
+    });
   },
 
   _persistState(overrides = {}) {
@@ -229,6 +235,7 @@ Page({
         id: _nextId(),
         role: 'assistant',
         content: res.text || '（AI 没有返回内容，请重试）',
+        renderBlocks: formatAssistantMessage(res.text || '（AI 没有返回内容，请重试）'),
         mode: res.mode || this.data.mode,
         searched: !!res.searched,
       };

@@ -493,3 +493,11 @@
 - 授权回调：站主明确授权“仅生成真机 Preview 二维码，不 Upload、不提审、不发布”。预览目录为 clean，Git tree 与 `origin/main@1b01d6d0512f951e6c4d745fedc5fa78ac84417a` 完全一致。
 - 工具回调：微信开发者工具官方 CLI 确认登录，使用 AppID `wx26bfe1e0c37a54b6` 成功生成一次 image-format Preview；包体 1,521,602 bytes，二维码图片已确认可读。临时二维码位于系统 TEMP，不纳入 Git。
 - 状态边界：当前仅为 Preview QR prepared；站主尚未回传真机打开、登录、路线、AI 正常文本和偏好保存的观察结果，不得写为真机验收通过。未执行正式 Upload、提审或发布。
+
+## 2026-09-02 Mini-program chat rendering callback
+
+- 路由：large / L2。Sol 保留真机缺陷解释、原生展示方案、品牌定名、集成、测试、Git 与发布判断；正式 `luna_worker` `/root/miniprogram_chat_render_audit` 只读定位直接输出 Markdown 的根因，因 Sol 同步产生预期目标 diff 按 STOP 返回 blocked，零文件修改，不写成 Luna completed。
+- 真机回调：站主确认上一版 Preview 的白屏、邮箱登录、公共路线、普通 AI 请求和偏好保存 5 项均通过；同一回调发现 AI 原始 Markdown 标记和语言/价格断句缺陷。该验收仅关闭 Preview 基线，不代表 Upload、提审或发布。
+- UI/开发回调：保留既有奶油底、teal/gold 气泡和原始对话内容；新增纯函数把标题、列表、段落和引用转成原生安全展示块，不注入模型 HTML。提示词限制 Markdown 控制符、跨语言漂移和币种断行；小程序公开名称统一为 `WanderMind 智旅`。
+- 当前边界：微信登录、统一身份和无邮箱司机中转仍是后续独立架构阶段；当前提交不得夹带数据库迁移或正式小程序发布。
+- Skill 命中：cross-account-project-memory 固定事实与 Preview 状态边界；agent-role-orchestrator/codex-luna-worker 约束 Sol/Luna 分工；ui-implementation-workflow 把本轮限制为 mobile/chat 的既有风格内修复和真机尺寸验收。
