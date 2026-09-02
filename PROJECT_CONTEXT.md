@@ -302,3 +302,13 @@ code without echoing it. No user was created by that failed exchange. An image-f
 from the same Git tree (1,531,140 bytes) and stored in the centralized local artifacts folder. Real-device
 WeChat login and explicit-link acceptance remain owner-observed gates; no Upload, review submission or
 release was performed.
+
+## 2026-09-02 Mini-program driver relay local callback
+
+- 路由：medium / L3。Sol 保留司机中转架构、隐私边界、跨模块集成、固定 head、CI、Render、真机 Preview 与发布判断；正式 `luna_worker` 在独立 worktree `E:\Agentstrip-worktrees\active\account1\miniprogram-driver-relay-20260902` 完成唯一目标，未触碰其他账号工作树。
+- 工程回调：匿名网页用户继续要求邮箱并保持无存储；已认证且无邮箱的微信用户可以提交司机请求。服务端仅保存 user-linked 最小摘要和 HMAC 指纹；回复能力只保存 SHA-256 hash，邮件链接把 opaque token 放在 `/driver-reply.html?request=<uuid>#token=<opaque>` fragment，30 天到期且成功回复后清除。
+- 司机交接：复用 Dicky/Gede 现有 Resend 路由与 request UUID/idempotency key；有邮箱仍使用 Reply-To，微信纯账号通过安全网页回复，回复只写回该用户的 Mini Program history。没有实现入站邮件 webhook、手机号授权或私密邮箱暴露。
+- 小程序回调：司机页邮箱改为可选，未登录无邮箱会得到明确错误；新增“我的司机请求”状态/回复列表、刷新控件和窄屏触控样式；DevTools 私有项目标题与公开名统一为 `WanderMind 智旅小程序`。
+- QA 回调：116/116 后端 product-access tests、242 项 Mini Program contract、Python/JavaScript 语法与 `git diff --check` 通过；13 项 PostgreSQL 专项在未提供隔离 `DATABASE_URL` 时按设计 skip。内联 `driver-reply.html` JavaScript 另行解析通过。
+- Git/发布边界：本地提交 `c523816bac191a4f3104bac1d0f5569b91115c8e`，工作树 clean；未 push、未创建 PR、未 merge、未部署 Render、未发真实邮件、未写生产数据库、未 Upload、未提审、未发布。证据与 handoff 已落在 `.codex/project-memory/evidence/2026/09/20260902T123243Z-miniprogram-driver-relay-20260902.json` 和 `.codex/project-memory/handoffs/2026/09/20260902T123243Z-miniprogram-driver-relay-20260902.md`，需随本地提交一起由父 Agent 审阅并同步。
+- 下一动作：父 Agent 对比基线与实际 diff，复跑本地门禁，送固定 head PR/CI（含隔离 PostgreSQL），再按精确合并提交部署并做单独授权的 Mini Program Preview/司机中转验收；不得把本地完成写成生产上线。

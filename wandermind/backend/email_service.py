@@ -321,7 +321,8 @@ def _esc(s) -> str:
 def render_driver_request(data: dict) -> tuple:
     """Build the email that goes to the driver. `data` keys:
     first_name, last_name, intro, contact_email, num_people, num_days,
-    attractions."""
+    attractions, and optional reply_link for email-free authenticated
+    travellers."""
     full_name = f"{_esc(data.get('first_name',''))} {_esc(data.get('last_name',''))}".strip() or "A traveller"
     driver_id = str(data.get("driver_id") or "dicky").strip().lower()
     driver_name = "Gede" if driver_id == "gede" else "Dicky"
@@ -338,14 +339,33 @@ def render_driver_request(data: dict) -> tuple:
     if data.get("contact_email"):
         contacts.append(("Email", data["contact_email"]))
     contacts_html = "".join(row(l, v) for l, v in contacts)
+    reply_link = str(data.get("reply_link") or "").strip()
+    if reply_link:
+        contact_instructions = (
+            "This traveller signed in without an email address. Use the secure "
+            "WanderMind reply link below to send one response back to them."
+        )
+        reply_cta_html = f"""
+      <div style="margin-top:22px;padding:18px 18px 16px;background:#e8f6f2;border:1px solid #b9e5da;border-radius:12px;">
+        <div style="font-size:13px;font-weight:700;color:#0e6658;margin-bottom:10px;">Reply securely to this traveller</div>
+        <a href="{_esc(reply_link)}" style="display:inline-block;padding:11px 16px;border-radius:9px;background:#0e7c6b;color:#fff;text-decoration:none;font-size:14px;font-weight:700;">Open reply form</a>
+        <div style="margin-top:10px;font-size:12px;line-height:1.55;color:#52605c;">This private link expires in 30 days and accepts one reply.</div>
+      </div>
+        """
+    else:
+        contact_instructions = (
+            "A traveller found you through WanderMind and would like to book "
+            "your driving service in Bali. Just hit <strong>Reply</strong> to "
+            "contact them directly."
+        )
+        reply_cta_html = ""
 
     inner = f"""
       <h1 style="margin:0 0 6px;font-size:22px;font-weight:700;color:#1e293b;">
         🚗 New driver request for {_esc(driver_name)}
       </h1>
       <p style="margin:0 0 20px;font-size:14px;line-height:1.6;color:#475569;">
-        A traveller found you through WanderMind and would like to book your driving service in Bali.
-        Just hit <strong>Reply</strong> to contact them directly.
+        {contact_instructions}
       </p>
       <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%"
              style="border-collapse:collapse;background:#f8fafc;border-radius:10px;padding:6px 16px;">
@@ -372,6 +392,8 @@ def render_driver_request(data: dict) -> tuple:
         "<div style='font-size:14.5px;line-height:1.7;color:#1e293b;background:#fffbeb;border:1px solid #fde68a;border-radius:10px;padding:14px 16px;white-space:pre-wrap;'>"
         + _esc(data.get("attractions","")) + "</div></div>") if data.get("attractions") else ""}
 
+      {reply_cta_html}
+
       <div style="margin-top:24px;padding-top:18px;border-top:1px solid #e5e2d8;font-size:12.5px;color:#94a3b8;line-height:1.7;">
         <strong style="color:#475569;">Quote boundary:</strong><br>
         The driver reviews the route, dates, pickup area and requested hours before confirming availability and price.
@@ -391,6 +413,7 @@ def render_driver_request(data: dict) -> tuple:
         + "".join(f"{l}: {v}\n" for l, v in contacts)
         + (f"\nAbout: {data.get('intro','')}\n" if data.get("intro") else "")
         + (f"\nPlaces: {data.get('attractions','')}\n" if data.get("attractions") else "")
+        + (f"\nSecure reply form (one reply, valid for 30 days): {reply_link}\n" if reply_link else "")
         + "\nPrice and availability must be confirmed by the selected driver after reviewing the route.\n"
     )
     return subject, _wrapper(inner, preheader=f"New Bali driver request from {full_name}"), text

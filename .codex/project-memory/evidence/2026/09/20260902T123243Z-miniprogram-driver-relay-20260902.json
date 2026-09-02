@@ -1,0 +1,44 @@
+{
+  "schema_version": 1,
+  "evidence_id": "ev-20260902T123243Z-miniprogram-driver-relay-20260902",
+  "task_ref": "miniprogram-driver-relay-20260902",
+  "owner": "Codex Luna worker",
+  "captured_at": "2026-09-02T12:32:43Z",
+  "status": "verified",
+  "claim": "The bounded driver relay implementation is complete and verified locally: authenticated email-free Mini Program users can create a private request, receive a one-use fragment-token reply link through the existing driver email route, and read the driver's reply in their own Mini Program history. Existing email-based direct Reply-To behavior remains intact.",
+  "source": {
+    "kind": "git",
+    "repository": "https://github.com/lingfengai731/Agentstrip.git",
+    "commit": "c523816bac191a4f3104bac1d0f5569b91115c8e",
+    "branch": "codex/miniprogram-driver-relay-20260902",
+    "worktree": "E:\\Agentstrip-worktrees\\active\\account1\\miniprogram-driver-relay-20260902",
+    "dirty": false
+  },
+  "verification": {
+    "commands": [
+      "python -m unittest wandermind.backend.tests.test_product_access",
+      "node tools/test_miniprogram_contract.cjs",
+      "python -m unittest wandermind.backend.tests.test_driver_rate_limit_postgres wandermind.backend.tests.test_entitlements_postgres",
+      "python -m py_compile wandermind/backend/db.py wandermind/backend/main.py wandermind/backend/email_service.py wandermind/backend/tests/test_product_access.py",
+      "node --check miniprogram/pages/driver/driver.js",
+      "node --check miniprogram/utils/api.js",
+      "node --check tools/test_miniprogram_contract.cjs",
+      "git diff --check"
+    ],
+    "result": "116 backend product-access tests passed; 242 Mini Program contract checks passed; 13 PostgreSQL integration tests were skipped because no isolated PostgreSQL DATABASE_URL was provided; Python and JavaScript syntax checks passed; git diff check passed. The driver-reply.html inline script was independently parsed successfully."
+  },
+  "files_changed": [
+    "wandermind/backend/db.py",
+    "wandermind/backend/main.py",
+    "wandermind/backend/email_service.py",
+    "wandermind/backend/tests/test_product_access.py",
+    "wandermind-studio/frontend/driver-reply.html",
+    "miniprogram/pages/driver/driver.js",
+    "miniprogram/pages/driver/driver.wxml",
+    "miniprogram/pages/driver/driver.wxss",
+    "miniprogram/utils/api.js",
+    "miniprogram/project.private.config.json",
+    "tools/test_miniprogram_contract.cjs"
+  ],
+  "notes": "Local worker evidence only. No credentials, provider tokens, real email, production database, Render, GitHub push/PR/merge, payment, phone authorization, Mini Program Upload, review submission, or release action was performed. The parent Sol agent must independently inspect and integrate this local commit before any external or production gate. The reply token is never returned by the API or written to evidence/logs; only its SHA-256 digest is persisted and it is cleared after one successful reply."
+}

@@ -14,6 +14,7 @@
 .route-badge { margin-bottom: 16rpx; padding: 12rpx 16rpx; border-radius: 12rpx; background: #FFF1DC; color: #8B4A0B; font-size: 22rpx; font-weight: 700; }
 .field, .textarea { width: 100%; margin-bottom: 16rpx; padding: 0 22rpx; box-sizing: border-box; border-radius: 14rpx; background: #F4F1EB; color: #2A2723; font-size: 26rpx; }
 .field { height: 84rpx; line-height: 84rpx; }
+.field-hint { margin: -5rpx 2rpx 16rpx; color: #7A746C; font-size: 21rpx; line-height: 1.55; }
 .picker { color: #5A554F; }
 .textarea { height: 190rpx; padding-top: 20rpx; line-height: 1.55; }
 .textarea.compact { height: 130rpx; }
@@ -29,3 +30,31 @@
 .success-mark { width: 84rpx; height: 84rpx; margin: 0 auto 22rpx; border-radius: 50%; background: #E3F5F1; color: #0E6658; font-size: 48rpx; line-height: 84rpx; }
 .success-title { font-size: 36rpx; font-weight: 800; }
 .success-copy { margin: 14rpx 0 30rpx; color: #5A554F; font-size: 25rpx; line-height: 1.7; }
+.history-section { margin: 28rpx 0 40rpx; padding: 28rpx; background: rgba(255,255,255,.84); border: 1rpx solid #E8E1D7; border-radius: 24rpx; box-shadow: 0 8rpx 28rpx rgba(42,39,35,.05); }
+.history-title-row { display: flex; align-items: center; justify-content: space-between; gap: 16rpx; }
+.history-title-row .section-title { margin-bottom: 0; }
+.refresh-btn { flex: 0 0 auto; min-width: 92rpx; margin: 0; padding: 0 18rpx; height: 64rpx; line-height: 64rpx; border: 1rpx solid #C8DED8; border-radius: 14rpx; background: #E3F5F1; color: #0E6658; font-size: 22rpx; }
+.refresh-btn::after { border: 0; }
+.refresh-btn[disabled] { opacity: .58; }
+.history-empty, .history-error { margin-top: 16rpx; padding: 18rpx; border-radius: 14rpx; color: #6F6962; background: #F7F4EF; font-size: 23rpx; line-height: 1.6; }
+.history-error { color: #A62F2F; background: #FDE9E6; }
+.history-list { display: grid; gap: 14rpx; margin-top: 18rpx; }
+.history-card { padding: 20rpx; border: 1rpx solid #E1DCD3; border-radius: 18rpx; background: #fff; }
+.history-card-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 16rpx; }
+.history-driver { color: #2A2723; font-size: 27rpx; font-weight: 800; }
+.history-date { margin-top: 4rpx; color: #8B857D; font-size: 20rpx; }
+.status-chip { flex: 0 0 auto; padding: 7rpx 12rpx; border-radius: 999rpx; color: #0E6658; background: #E3F5F1; font-size: 20rpx; font-weight: 700; }
+.status-failed { color: #A62F2F; background: #FDE9E6; }
+.status-pending { color: #8B4A0B; background: #FFF1DC; }
+.history-meta { margin-top: 12rpx; color: #5A554F; font-size: 22rpx; line-height: 1.55; }
+.history-reply { margin-top: 16rpx; padding: 16rpx; border-left: 5rpx solid #F0AE18; border-radius: 10rpx; background: #FFFBEB; }
+.history-reply-label { color: #8B4A0B; font-size: 20rpx; font-weight: 700; }
+.history-reply-text { margin-top: 8rpx; color: #2A2723; font-size: 24rpx; line-height: 1.65; white-space: pre-wrap; }
+.history-note { margin-top: 14rpx; color: #0E6658; font-size: 21rpx; line-height: 1.55; }
+
+@media (max-width: 680rpx) {
+  .driver-grid, .two-col { grid-template-columns: 1fr; }
+  .services { grid-template-columns: 1fr; }
+  .hero-title { font-size: 38rpx; }
+  .history-section { padding: 24rpx; }
+}

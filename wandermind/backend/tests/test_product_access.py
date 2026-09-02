@@ -55,6 +55,8 @@ class ProductAccessTests(unittest.TestCase):
     def setUp(self):
         conn = get_db()
         try:
+            conn.execute("DELETE FROM driver_request_replies")
+            conn.execute("DELETE FROM driver_requests")
             conn.execute("DELETE FROM driver_request_rate_limits")
             conn.execute("DELETE FROM marketing_event_rate_limits")
             conn.execute("DELETE FROM marketing_events")
@@ -2619,6 +2621,21 @@ class ProductAccessTests(unittest.TestCase):
         self.assertNotIn("private-phone-value", html)
         self.assertNotIn("private-phone-value", text)
 
+    def test_driver_email_has_secure_reply_link_for_email_free_traveller(self):
+        reply_link = "https://wandermind.cc/driver-reply.html?request=test#token=opaque-token"
+        _, html, text = render_driver_request(
+            {
+                "driver_id": "dicky",
+                "first_name": "WeChat",
+                "reply_link": reply_link,
+            }
+        )
+        self.assertIn("Open reply form", html)
+        self.assertIn(reply_link, html)
+        self.assertIn(reply_link, text)
+        self.assertIn("one reply", html)
+        self.assertNotIn("contact them directly", html)
+
     def test_driver_email_routing_uses_private_env_or_owner_fallback(self):
         cases = (
             ("dicky", "dicky@example.test", "", "dicky@example.test", "owner@example.test"),
@@ -2731,6 +2748,223 @@ class ProductAccessTests(unittest.TestCase):
         self.assertEqual(payload["end_date"], "2026-10-08")
         self.assertEqual(payload["budget_range"], "USD 6000")
         self.assertIn("Day 2: Sidemen", payload["attractions"])
+
+    def test_driver_request_rejects_email_free_anonymous_submit_with_clear_message(self):
+        with patch.object(main, "send_driver_request", new_callable=AsyncMock) as send:
+            response = self._run(
+                self._request(
+                    "POST", "/api/driver-request", json={
+                        "driver_id": "dicky", "first_name": "Anonymous",
+                        "privacy_consent": True,
+                    }
+                )
+            )
+        self.assertEqual(response.status_code, 400, response.text)
+        self.assertIn("sign in", response.json()["detail"].lower())
+        send.assert_not_awaited()
+        conn = get_db()
+        try:
+            self.assertIsNone(conn.execute("SELECT 1 FROM driver_requests").fetchone())
+        finally:
+            conn.close()
+
+    def test_driver_request_accepts_email_free_authenticated_user_and_stores_only_token_hash(self):
+        request_id = "c0a80123-1234-4abc-8def-1234567890ab"
+        with patch.object(main, "send_driver_request", new_callable=AsyncMock) as send:
+            send.return_value = {"ok": True, "id": "relay-email-1"}
+            response = self._run(
+                self._request(
+                    "POST", "/api/driver-request", token=self.user_token, json={
+                        "request_id": request_id,
+                        "driver_id": "gede",
+                        "route_id": "r5",
+                        "package_id": "batur-dawn-choice",
+                        "first_name": "Member",
+                        "last_name": "Traveller",
+                        "intro": "Private arrival note",
+                        "attractions": "Day 1: Ubud",
+                        "num_people": 2,
+                        "num_days": 5,
+                        "start_date": "2026-10-01",
+                        "end_date": "2026-10-06",
+                        "pickup_location": "Ubud hotel",
+                        "budget_range": "IDR 5000000",
+                        "privacy_consent": True,
+                    }
+                )
+            )
+        self.assertEqual(response.status_code, 200, response.text)
+        body = response.json()
+        self.assertEqual(body["request_id"], request_id)
+        self.assertTrue(body["reply_available"])
+        relay_payload = send.await_args.args[0]
+        self.assertEqual(relay_payload["contact_email"], "")
+        link = relay_payload["reply_link"]
+        self.assertIn("#token=", link)
+        token = link.split("#token=", 1)[1]
+        self.assertNotIn(token, response.text)
+        conn = get_db()
+        try:
+            row = dict(conn.execute("SELECT * FROM driver_requests WHERE request_id=?", (request_id,)).fetchone())
+        finally:
+            conn.close()
+        self.assertRegex(row["reply_token_hash"], r"^[0-9a-f]{64}$")
+        self.assertEqual(row["reply_token_hash"], hashlib.sha256(token.encode()).hexdigest())
+        self.assertNotIn(token, json.dumps(row, ensure_ascii=False))
+        self.assertNotIn("Private arrival note", json.dumps(row, ensure_ascii=False))
+        self.assertNotIn("contact_email", row)
+
+    def test_anonymous_email_driver_request_keeps_legacy_no_storage_and_direct_reply_to(self):
+        with patch.object(main, "send_driver_request", new_callable=AsyncMock) as send:
+            send.return_value = {"ok": True, "id": "direct-email-1"}
+            response = self._run(
+                self._request(
+                    "POST", "/api/driver-request", json={
+                        "request_id": "c0a80123-1234-4abc-8def-1234567890ac",
+                        "driver_id": "dicky", "first_name": "Email Traveller",
+                        "contact_email": "traveller@example.test", "privacy_consent": True,
+                    }
+                )
+            )
+        self.assertEqual(response.status_code, 200, response.text)
+        self.assertFalse(response.json()["reply_available"])
+        payload = send.await_args.args[0]
+        self.assertEqual(payload["contact_email"], "traveller@example.test")
+        self.assertNotIn("reply_link", payload)
+        conn = get_db()
+        try:
+            self.assertIsNone(conn.execute(
+                "SELECT 1 FROM driver_requests WHERE request_id=?",
+                ("c0a80123-1234-4abc-8def-1234567890ac",),
+            ).fetchone())
+        finally:
+            conn.close()
+
+    def test_driver_request_stable_id_is_idempotent_without_duplicate_record_or_email(self):
+        request_id = "c0a80123-1234-4abc-8def-1234567890ad"
+        payload = {
+            "request_id": request_id, "driver_id": "dicky", "first_name": "Repeat",
+            "privacy_consent": True,
+        }
+        with patch.object(main, "send_driver_request", new_callable=AsyncMock) as send:
+            send.return_value = {"ok": True, "id": "idempotent-email"}
+            first = self._run(self._request("POST", "/api/driver-request", token=self.user_token, json=payload))
+            second = self._run(self._request("POST", "/api/driver-request", token=self.user_token, json=payload))
+        self.assertEqual(first.status_code, 200, first.text)
+        self.assertEqual(second.status_code, 200, second.text)
+        self.assertEqual(first.json()["request_id"], second.json()["request_id"])
+        self.assertEqual(send.await_count, 1)
+        conn = get_db()
+        try:
+            count = conn.execute(
+                "SELECT COUNT(*) AS count FROM driver_requests WHERE request_id=?", (request_id,)
+            ).fetchone()["count"]
+        finally:
+            conn.close()
+        self.assertEqual(count, 1)
+
+    def test_driver_reply_page_is_noindex_and_does_not_put_token_in_query(self):
+        response = self._run(self._request("GET", "/driver-reply.html"))
+        self.assertEqual(response.status_code, 200, response.text[:500])
+        self.assertIn('name="robots" content="noindex,nofollow,noarchive"', response.text)
+        self.assertIn("window.location.hash", response.text)
+        self.assertNotIn("?token=", response.text)
+
+    def test_driver_reply_is_correct_once_and_mine_isolated_without_sensitive_fields(self):
+        request_id = "c0a80123-1234-4abc-8def-1234567890ae"
+        with patch.object(main, "send_driver_request", new_callable=AsyncMock) as send:
+            send.return_value = {"ok": True, "id": "reply-email-1"}
+            created = self._run(self._request(
+                "POST", "/api/driver-request", token=self.user_token, json={
+                    "request_id": request_id, "driver_id": "gede", "route_id": "R2",
+                    "first_name": "Reply", "contact_email": "", "privacy_consent": True,
+                }
+            ))
+        self.assertEqual(created.status_code, 200, created.text)
+        token = send.await_args.args[0]["reply_link"].split("#token=", 1)[1]
+        replied = self._run(self._request(
+            "POST", "/api/driver-request/reply", json={
+                "request_id": request_id, "token": token,
+                "message": "I can confirm the requested dates and will send the final price shortly.",
+            }
+        ))
+        self.assertEqual(replied.status_code, 200, replied.text)
+        self.assertNotIn(token, replied.text)
+        mine = self._run(self._request("GET", "/api/driver-requests/mine", token=self.user_token))
+        self.assertEqual(mine.status_code, 200, mine.text)
+        body = mine.json()
+        self.assertEqual(len(body["requests"]), 1)
+        item = body["requests"][0]
+        self.assertEqual(item["driver"], "Gede Nico")
+        self.assertEqual(item["status"], "replied")
+        self.assertIn("final price", item["reply"]["message"])
+        for forbidden in ("reply_token_hash", "provider_message_id", "traveller@example.test", token):
+            self.assertNotIn(forbidden, mine.text)
+
+        other_id = self._create_user("other-driver@example.test", "Other")
+        other = self._run(self._request(
+            "GET", "/api/driver-requests/mine", token=main.make_token(other_id, "other-driver@example.test")
+        ))
+        self.assertEqual(other.status_code, 200, other.text)
+        self.assertEqual(other.json(), {"requests": []})
+        conn = get_db()
+        try:
+            stored = dict(conn.execute(
+                "SELECT status,reply_token_hash,reply_used_at FROM driver_requests WHERE request_id=?",
+                (request_id,),
+            ).fetchone())
+        finally:
+            conn.close()
+        self.assertEqual(stored["status"], "replied")
+        self.assertIsNone(stored["reply_token_hash"])
+        self.assertTrue(stored["reply_used_at"])
+
+        duplicate = self._run(self._request(
+            "POST", "/api/driver-request/reply", json={
+                "request_id": request_id, "token": token, "message": "Second reply",
+            }
+        ))
+        self.assertEqual(duplicate.status_code, 400, duplicate.text)
+
+    def test_driver_reply_rejects_wrong_expired_and_unknown_capabilities(self):
+        request_id = "c0a80123-1234-4abc-8def-1234567890af"
+        with patch.object(main, "send_driver_request", new_callable=AsyncMock) as send:
+            send.return_value = {"ok": True, "id": "reply-email-2"}
+            self._run(self._request(
+                "POST", "/api/driver-request", token=self.user_token, json={
+                    "request_id": request_id, "driver_id": "dicky", "first_name": "Expiry",
+                    "privacy_consent": True,
+                }
+            ))
+        token = send.await_args.args[0]["reply_link"].split("#token=", 1)[1]
+        wrong = self._run(self._request(
+            "POST", "/api/driver-request/reply", json={
+                "request_id": request_id, "token": "x" * len(token), "message": "Wrong",
+            }
+        ))
+        self.assertEqual(wrong.status_code, 400, wrong.text)
+        conn = get_db()
+        try:
+            conn.execute(
+                "UPDATE driver_requests SET reply_token_expires_at=? WHERE request_id=?",
+                (int(time.time()) - 1, request_id),
+            )
+            conn.commit()
+        finally:
+            conn.close()
+        expired = self._run(self._request(
+            "POST", "/api/driver-request/reply", json={
+                "request_id": request_id, "token": token, "message": "Expired",
+            }
+        ))
+        self.assertEqual(expired.status_code, 410, expired.text)
+        unknown = self._run(self._request(
+            "POST", "/api/driver-request/reply", json={
+                "request_id": "c0a80123-1234-4abc-8def-1234567890b0", "token": token,
+                "message": "Unknown request",
+            }
+        ))
+        self.assertEqual(unknown.status_code, 400, unknown.text)
 
     def test_driver_request_rejects_invalid_request_id(self):
         with patch.object(main, "send_driver_request", new_callable=AsyncMock) as send:

@@ -522,3 +522,12 @@
 - Render 回调：精确部署 `dep-dac0ve4hf6qs73cofeo0` 已 Live；`/healthz` 为 200，OpenAPI 含 login/link 两端点，无 Bearer 的绑定为 401，一次无效临时 code 得到通用 502 且未回显 code。未产生成功 provider 身份或用户写入。
 - Preview 回调：官方 CLI 从同一 Git tree 编译 1,531,140-byte image-format Preview 并写入 `E:\Agentstrip-artifacts\2026-09-02\mini-program`。真机微信登录/绑定尚待站主观察，不得写成通过。
 - 发布边界：未请求手机号、未司机中转、未支付、未 Upload、未提审、未发布。
+
+## 2026-09-02 Mini-program driver relay
+
+- Parent: `/root/driver_relay_implementation`; worker: `codex-luna-worker` in `E:\Agentstrip-worktrees\active\account1\miniprogram-driver-relay-20260902`; model/reasoning: `gpt-5.6-luna` / `max`; branch: `codex/miniprogram-driver-relay-20260902`.
+- Objective: implement the bounded authenticated email-free WeChat user → existing driver email → secure one-use web reply → Mini Program history relay while preserving email Reply-To compatibility.
+- Status: completed locally at `c523816bac191a4f3104bac1d0f5569b91115c8e`; worktree clean; no push, PR, merge, deploy, real email, production write, Upload, review submission, or release.
+- Verification: 116 backend tests passed, 242 Mini Program contract checks passed, syntax checks and `git diff --check` passed; 13 PostgreSQL tests skipped because no isolated `DATABASE_URL` was supplied.
+- Handoff/evidence: `.codex/project-memory/handoffs/2026/09/20260902T123243Z-miniprogram-driver-relay-20260902.md` and `.codex/project-memory/evidence/2026/09/20260902T123243Z-miniprogram-driver-relay-20260902.json`.
+- Parent callback: inspect actual diff and commit, rerun validation, then use the normal fixed-head PR/CI and exact Render deployment gates before any external relay smoke test.

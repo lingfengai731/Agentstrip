@@ -37,6 +37,38 @@ const SERVICES = [
 const serviceOptions = values =>
   SERVICES.map(item => ({ ...item, checked: (values || []).includes(item.value) }));
 
+function dateLabel(timestamp) {
+  const value = Number(timestamp || 0);
+  if (!value) return '';
+  const date = new Date(value * 1000);
+  if (Number.isNaN(date.getTime())) return '';
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, '0');
+  const day = String(date.getDate()).padStart(2, '0');
+  return `${year}-${month}-${day}`;
+}
+
+function statusLabel(status) {
+  return ({
+    pending: '处理中',
+    sent: '已转交司机',
+    replied: '司机已回复',
+    failed: '等待重试',
+  })[status] || '处理中';
+}
+
+function viewRequest(item) {
+  return {
+    ...item,
+    statusLabel: statusLabel(item.status),
+    dateLabel: dateLabel(item.created_at),
+    replyDateLabel: item.reply ? dateLabel(item.reply.created_at) : '',
+    tripLabel: item.start_date && item.end_date
+      ? `${item.start_date} → ${item.end_date}`
+      : (item.num_days ? `${item.num_days} 天行程` : '行程日期待补充'),
+  };
+}
+
 Page({
   data: {
     driverId: 'dicky',
@@ -47,6 +79,7 @@ Page({
     services: ['full_day'], privacyConsent: false,
     serviceOptions: serviceOptions(['full_day']),
     routeId: '', busy: false, error: '', sent: false,
+    requests: [], loadingRequests: false, requestsError: '',
   },
 
   onLoad() {
@@ -64,6 +97,10 @@ Page({
     });
   },
 
+  onShow() {
+    this.loadRequests();
+  },
+
   onInput(e) {
     this.setData({ [e.currentTarget.dataset.field]: e.detail.value, error: '' }, () => this.saveDraft());
   },
@@ -78,17 +115,54 @@ Page({
   setConsent(e) { this.setData({ privacyConsent: e.detail.value.includes('yes'), error: '' }, () => this.saveDraft()); },
 
   saveDraft() {
-    const { busy, error, sent, ...draft } = this.data;
+    const draft = {
+      driverId: this.data.driverId,
+      firstName: this.data.firstName,
+      lastName: this.data.lastName,
+      email: this.data.email,
+      startDate: this.data.startDate,
+      endDate: this.data.endDate,
+      people: this.data.people,
+      days: this.data.days,
+      pickup: this.data.pickup,
+      budget: this.data.budget,
+      intro: this.data.intro,
+      attractions: this.data.attractions,
+      services: this.data.services,
+      privacyConsent: this.data.privacyConsent,
+      routeId: this.data.routeId,
+    };
     wx.setStorageSync('wm_driver_draft', draft);
   },
 
   back() { wx.navigateBack({ delta: 1 }); },
 
+  async loadRequests() {
+    if (!app.globalData.token) {
+      this.setData({ requests: [], loadingRequests: false, requestsError: '' });
+      return;
+    }
+    this.setData({ loadingRequests: true, requestsError: '' });
+    try {
+      const result = await api.listDriverRequests();
+      const requests = (result && Array.isArray(result.requests) ? result.requests : [])
+        .map(viewRequest);
+      this.setData({ requests, loadingRequests: false });
+    } catch (err) {
+      this.setData({ loadingRequests: false, requestsError: err.message || '暂时无法读取司机回复' });
+    }
+  },
+
   async submit() {
     if (this.data.busy) return;
     const name = `${this.data.firstName} ${this.data.lastName}`.trim();
     if (!name) { this.setData({ error: '请填写姓名' }); return; }
-    if (!/^\S+@\S+\.\S+$/.test(this.data.email.trim())) { this.setData({ error: '请填写有效邮箱' }); return; }
+    const email = this.data.email.trim();
+    if (email && !/^\S+@\S+\.\S+$/.test(email)) { this.setData({ error: '请填写有效邮箱' }); return; }
+    if (!email && !app.globalData.token) {
+      this.setData({ error: '未登录时请填写联系邮箱；微信用户可以留空' });
+      return;
+    }
     if (!this.data.startDate || !this.data.endDate || this.data.endDate < this.data.startDate) {
       this.setData({ error: '请选择正确的旅行日期' }); return;
     }
@@ -125,7 +199,7 @@ Page({
         first_name: this.data.firstName.trim(),
         last_name: this.data.lastName.trim(),
         intro: this.data.intro.trim(),
-        contact_email: this.data.email.trim(),
+        contact_email: email,
         num_people: this.data.people,
         num_days: this.data.days || null,
         attractions: this.data.attractions.trim(),
@@ -141,6 +215,7 @@ Page({
       wx.removeStorageSync('wm_driver_draft');
       wx.removeStorageSync('wm_driver_request_id');
       this.setData({ sent: true });
+      this.loadRequests();
     } catch (err) {
       this.saveDraft();
       this.setData({ error: err.message || '发送失败；内容已保留，请重试' });
