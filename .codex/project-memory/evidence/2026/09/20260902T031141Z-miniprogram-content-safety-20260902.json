@@ -1,0 +1,22 @@
+{
+  "schema_version": 1,
+  "evidence_id": "ev-20260902T031141Z-miniprogram-content-safety-20260902",
+  "task_ref": "miniprogram-content-safety-20260902",
+  "owner": "Codex Sol",
+  "captured_at": "2026-09-02T03:11:41Z",
+  "status": "verified",
+  "claim": "Mini-program user profile and text UGC now pass through official WeChat content safety with complete UTF-8 chunk coverage and fail-closed behavior; Sol accepted the Luna implementation after independent tests and local WeChat DevTools compilation.",
+  "source": {
+    "kind": "git",
+    "repository": "https://github.com/lingfengai731/Agentstrip.git",
+    "commit": "ab9bbc8425dc7c8651e6ba01147f4603eb885f5c",
+    "branch": "codex/miniprogram-content-safety-20260902",
+    "worktree": "E:\\Agentstrip-wt-miniprogram-content-safety-20260902",
+    "dirty": false
+  },
+  "verification": {
+    "command": "python -m unittest wandermind.backend.tests.test_product_access; node tools/test_miniprogram_contract.cjs; git diff --check; WeChat DevTools Ctrl+B",
+    "result": "100 backend tests OK; 219 mini-program checks passed; diff check passed; DevTools Problems=0 and login page rendered."
+  },
+  "notes": "Request domain, privacy and UGC completion are user-confirmed external state. WeChat base-library WAServiceMainContext timeout remains without project source frames. Render environment values remain absent or unverified. No Preview, Upload, submission or release."
+}
