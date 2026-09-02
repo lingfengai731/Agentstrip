@@ -515,3 +515,10 @@
 - 身份回调：新增幂等 `auth_identities`，纯微信账号允许空 email，不制造假邮箱；已有邮箱用户必须先登录再绑定，不能按昵称、手机号或邮箱自动合并。登录只调用 `wx.login`，不请求手机号。
 - Sol 复核：增加旧 SQLite 必填邮箱迁移的持久回归测试、无 Bearer 绑定拒绝测试、openid 规范化以及避免已有邮箱用户误建第二账号的移动端提示。最终 108 项后端测试、235 项小程序契约和 `git diff --check` 通过。
 - 边界：未调用真实微信身份接口，未创建生产用户，未触碰司机中转、支付、Upload、提审或发布。下一步为固定 head PR/CI、Render 精确部署和新的 owner-authorized Preview。
+
+## 2026-09-02 Mini-program WeChat identity production callback
+
+- GitHub 回调：PR #49 固定 head `526547d` 的 Project memory validation 与 PostgreSQL integration 均 success；squash 合并为 `main@e10875f`，固定 head 与合并 Git tree 完全一致。
+- Render 回调：精确部署 `dep-dac0ve4hf6qs73cofeo0` 已 Live；`/healthz` 为 200，OpenAPI 含 login/link 两端点，无 Bearer 的绑定为 401，一次无效临时 code 得到通用 502 且未回显 code。未产生成功 provider 身份或用户写入。
+- Preview 回调：官方 CLI 从同一 Git tree 编译 1,531,140-byte image-format Preview 并写入 `E:\Agentstrip-artifacts\2026-09-02\mini-program`。真机微信登录/绑定尚待站主观察，不得写成通过。
+- 发布边界：未请求手机号、未司机中转、未支付、未 Upload、未提审、未发布。

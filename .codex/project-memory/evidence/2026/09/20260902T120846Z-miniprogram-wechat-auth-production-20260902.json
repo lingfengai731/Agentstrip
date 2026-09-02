@@ -1,0 +1,22 @@
+{
+  "schema_version": 1,
+  "evidence_id": "ev-20260902T120846Z-miniprogram-wechat-auth-production-20260902",
+  "task_ref": "miniprogram-wechat-auth-production-20260902",
+  "owner": "codex-sol",
+  "captured_at": "2026-09-02T12:08:46Z",
+  "status": "verified",
+  "claim": "PR 49 passed fixed-head Project memory and PostgreSQL checks, merged with tree equality, and deployed Live on Render at the exact merge commit; safe endpoint probes and Preview compilation passed.",
+  "source": {
+    "kind": "production",
+    "repository": "https://github.com/lingfengai731/Agentstrip.git",
+    "commit": "e10875fe21649661ad5b342cedd411c2669399f0",
+    "branch": "main",
+    "worktree": "E:\\Agentstrip-worktrees\\active\\account1\\wechat-auth-20260902",
+    "dirty": true
+  },
+  "verification": {
+    "command": "GitHub fixed-head workflow checks; git tree equality; Render exact-commit deploy; /healthz; OpenAPI; invalid-code and unauthenticated-link probes; WeChat DevTools CLI Preview",
+    "result": "PASS: main e10875f, deploy dep-dac0ve4hf6qs73cofeo0 Live, health 200, endpoints present, invalid code 502 generic/not echoed, unauthenticated link 401, Preview 1,531,140 bytes."
+  },
+  "notes": "No successful WeChat identity exchange, production user creation, phone authorization, driver request, payment, Upload, review submission or release was performed. Real-device login and account-link observations remain pending."
+}

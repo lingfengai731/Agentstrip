@@ -291,3 +291,14 @@ are not returned or logged. Local acceptance reached 108 backend tests and 235 M
 checks, including a legacy SQLite migration test and an unauthenticated-link rejection test. This remains
 local/PR-ready until CI, Render and a new physical Preview are verified; no Upload, review submission or
 release is implied.
+
+PR #49 fixed head `526547d76fe0470ce04f011222ef60e91449a172` passed both Project memory
+validation and PostgreSQL integration, then squash merged as
+`main@e10875fe21649661ad5b342cedd411c2669399f0`; the fixed-head and merge Git trees are identical.
+Render deploy `dep-dac0ve4hf6qs73cofeo0` became Live at that exact commit. Fresh no-side-effect probes
+returned 200 for `/healthz`, confirmed both WeChat auth paths in OpenAPI, returned 401 for a link attempt
+without Bearer auth, and returned the expected generic 502 for one deliberately invalid temporary login
+code without echoing it. No user was created by that failed exchange. An image-format Preview was compiled
+from the same Git tree (1,531,140 bytes) and stored in the centralized local artifacts folder. Real-device
+WeChat login and explicit-link acceptance remain owner-observed gates; no Upload, review submission or
+release was performed.
