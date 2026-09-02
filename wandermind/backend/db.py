@@ -394,6 +394,55 @@ def init_db():
             "ON driver_request_rate_limits(updated_at)"
         )
 
+        # Authenticated driver handoffs are retained as a minimal, private
+        # conversation record so a WeChat-only traveller can receive a
+        # driver's reply in the Mini Program. Anonymous email handoffs keep
+        # their historical no-storage behaviour. The opaque reply capability
+        # is stored only as a SHA-256 digest and is cleared after one use.
+        conn.execute(f"""
+            CREATE TABLE IF NOT EXISTS driver_requests (
+                request_id              TEXT PRIMARY KEY,
+                user_id                 TEXT,
+                driver_id               TEXT NOT NULL,
+                route_id                TEXT DEFAULT '',
+                package_id              TEXT DEFAULT '',
+                first_name              TEXT DEFAULT '',
+                last_name               TEXT DEFAULT '',
+                num_people              INTEGER,
+                num_days                INTEGER,
+                start_date              TEXT DEFAULT '',
+                end_date                TEXT DEFAULT '',
+                pickup_location         TEXT DEFAULT '',
+                budget_range            TEXT DEFAULT '',
+                requested_services      TEXT DEFAULT '[]',
+                request_fingerprint     TEXT NOT NULL DEFAULT '',
+                status                  TEXT NOT NULL DEFAULT 'pending',
+                provider_message_id     TEXT DEFAULT '',
+                reply_token_hash        TEXT,
+                reply_token_expires_at  {ts_type},
+                reply_used_at           {ts_type},
+                created_at              {ts_type} NOT NULL,
+                updated_at              {ts_type} NOT NULL,
+                sent_at                 {ts_type}
+            )
+        """)
+        conn.execute(
+            "CREATE INDEX IF NOT EXISTS idx_driver_requests_user "
+            "ON driver_requests(user_id,created_at)"
+        )
+        conn.execute(f"""
+            CREATE TABLE IF NOT EXISTS driver_request_replies (
+                id          TEXT PRIMARY KEY,
+                request_id  TEXT UNIQUE NOT NULL,
+                message     TEXT NOT NULL,
+                created_at  {ts_type} NOT NULL
+            )
+        """)
+        conn.execute(
+            "CREATE INDEX IF NOT EXISTS idx_driver_request_replies_request "
+            "ON driver_request_replies(request_id)"
+        )
+
         # Privacy-minimised launch measurement. Events contain only a bounded
         # event name, page path and campaign labels; no contact details, raw IP,
         # cookie identifier or browser fingerprint is stored.

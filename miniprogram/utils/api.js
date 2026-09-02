@@ -143,6 +143,8 @@ const recentUnlockedProfessionalRoute = (lang = 'zh') =>
 
 const sendDriverRequest = (data) =>
   _request({ url: '/api/driver-request', method: 'POST', data, timeout: 45000 });
+const listDriverRequests = () =>
+  _request({ url: '/api/driver-requests/mine' });
 
 // ─── 目的地动态信息 ────────────────────────────
 const destInfo = (destination, lang = 'zh') =>
@@ -178,7 +180,7 @@ module.exports = {
   checkUserContent,
   chatOnce,
   baliRouteData, createProfessionalRoute, recentUnlockedProfessionalRoute,
-  sendDriverRequest,
+  sendDriverRequest, listDriverRequests,
   destInfo,
   searchHotels, searchFlights,
   getPrefs, savePrefs,

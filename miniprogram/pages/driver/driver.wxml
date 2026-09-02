@@ -28,7 +28,8 @@
         <input class="field" placeholder="名字 *" value="{{firstName}}" bindinput="onInput" data-field="firstName" />
         <input class="field" placeholder="姓氏" value="{{lastName}}" bindinput="onInput" data-field="lastName" />
       </view>
-      <input class="field" placeholder="联系邮箱 *" value="{{email}}" bindinput="onInput" data-field="email" />
+      <input class="field" placeholder="联系邮箱（可选）" value="{{email}}" bindinput="onInput" data-field="email" />
+      <view class="field-hint">已有邮箱可直接接收司机回复；微信账号不填写邮箱时，司机会通过 WanderMind 安全链接回复。</view>
       <view class="two-col">
         <picker mode="date" value="{{startDate}}" bindchange="setStart"><view class="field picker">{{startDate || '开始日期 *'}}</view></picker>
         <picker mode="date" value="{{endDate}}" bindchange="setEnd"><view class="field picker">{{endDate || '结束日期 *'}}</view></picker>
@@ -51,4 +52,26 @@
     <view wx:if="{{error}}" class="error">{{error}}</view>
     <view class="sticky-action"><button class="submit" bindtap="submit" loading="{{busy}}" disabled="{{busy}}">{{busy ? '正在安全转交…' : '发送司机申请'}}</button><view class="privacy-note">不会展示司机私人电话、社交账号或个人邮箱。</view></view>
   </block>
+
+  <view class="history-section">
+    <view class="history-title-row"><view class="section-title">我的司机请求</view><button class="refresh-btn" bindtap="loadRequests" loading="{{loadingRequests}}" disabled="{{loadingRequests}}">刷新</button></view>
+    <view wx:if="{{requestsError}}" class="history-error">{{requestsError}}</view>
+    <view wx:if="{{loadingRequests && !requests.length}}" class="history-empty">正在读取回复…</view>
+    <view wx:elif="{{!requests.length}}" class="history-empty">登录后提交的司机申请和回复会显示在这里。</view>
+    <view wx:else class="history-list">
+      <view class="history-card" wx:for="{{requests}}" wx:key="request_id">
+        <view class="history-card-head">
+          <view><view class="history-driver">{{item.driver}}</view><view class="history-date">{{item.dateLabel}}</view></view>
+          <view class="status-chip status-{{item.status}}">{{item.statusLabel}}</view>
+        </view>
+        <view class="history-meta" wx:if="{{item.tripLabel}}">{{item.tripLabel}}</view>
+        <view class="history-meta" wx:if="{{item.route_id}}">路线 {{item.route_id}}</view>
+        <view class="history-reply" wx:if="{{item.reply}}">
+          <view class="history-reply-label">司机回复 · {{item.replyDateLabel}}</view>
+          <view class="history-reply-text">{{item.reply.message}}</view>
+        </view>
+        <view class="history-note" wx:elif="{{item.reply_available}}">司机可以通过邮件中的安全链接回复一次；链接有效期 30 天。</view>
+      </view>
+    </view>
+  </view>
 </view>

@@ -601,6 +601,12 @@ class DriverReq(BaseModel):
     website: str = ""
 
 
+class DriverReplyReq(BaseModel):
+    request_id: str = Field(max_length=64)
+    token: str = Field(max_length=200)
+    message: str = Field(max_length=2000)
+
+
 class MarketingEventReq(BaseModel):
     event_name: str = Field(max_length=64)
     page_path: str = Field(default="/", max_length=256)
@@ -4345,11 +4351,15 @@ async def marketing_summary(days: int = 14, _admin=Depends(current_admin)):
 
 
 # ─── Find a Driver → email the request to the driver ──────────
-# Privacy by design: we do NOT persist any of the traveller's contact
-# details. The request is relayed once by email and never stored in the DB.
+# Anonymous email handoffs retain the original no-storage behaviour. When an
+# authenticated traveller has no email address (the normal WeChat-only case),
+# we keep only a private request summary and a one-use reply capability so the
+# driver's response can return to that traveller in the Mini Program.
 _DRIVER_REQUEST_WINDOW_SECONDS = 30 * 60
 _DRIVER_REQUEST_LIMIT = 5
 _DRIVER_REQUEST_LIMIT_RETENTION_SECONDS = 24 * 60 * 60
+_DRIVER_REPLY_TTL_SECONDS = 30 * 24 * 60 * 60
+_DRIVER_REPLY_TOKEN_PATTERN = re.compile(r"^[A-Za-z0-9_-]{40,128}$")
 
 
 def _driver_request_client_key(request: Request) -> str:
@@ -4426,33 +4436,111 @@ def _check_driver_request_rate_limit(request: Request) -> None:
         raise HTTPException(429, "Too many requests. Please wait before sending another request.")
 
 
+def _canonical_driver_request_id(value: str) -> str:
+    request_id = (value or "").strip()
+    if not request_id:
+        return str(uuid.uuid4())
+    try:
+        return str(uuid.UUID(request_id))
+    except (ValueError, AttributeError, TypeError):
+        raise HTTPException(400, "Invalid request ID")
+
+
+def _driver_request_fingerprint(payload: dict) -> str:
+    """Hash the complete normalized request without retaining its free text."""
+    fields = {
+        key: payload.get(key)
+        for key in (
+            "driver_id", "route_id", "package_id", "first_name", "last_name",
+            "intro", "contact_email", "num_people", "num_days", "attractions",
+            "start_date", "end_date", "preferred_time", "pickup_location",
+            "budget_range", "requested_services", "arrival_details", "lang",
+        )
+    }
+    encoded = json.dumps(fields, ensure_ascii=False, sort_keys=True, separators=(",", ":"))
+    return hmac.new(
+        _SECRET.encode(), f"driver-request-fingerprint:{encoded}".encode(), hashlib.sha256
+    ).hexdigest()
+
+
+def _driver_reply_token(request_id: str, user_id: str) -> str:
+    """Derive a high-entropy capability without persisting its plaintext.
+
+    The UUID and canonical user id are public only to the authenticated
+    account; the server secret makes the resulting URL-safe token infeasible
+    to guess. Derivation also lets a safe retry reuse the same Resend
+    idempotency key and the same link if a network response is lost.
+    """
+    digest = hmac.new(
+        _SECRET.encode(), f"driver-reply:{user_id}:{request_id}".encode(), hashlib.sha256
+    ).digest()
+    return base64.urlsafe_b64encode(digest).rstrip(b"=").decode()
+
+
+def _driver_reply_token_hash(token: str) -> str:
+    return hashlib.sha256(token.encode()).hexdigest()
+
+
+def _driver_reply_link(request: Request, request_id: str, token: str) -> str:
+    # The token stays in the URL fragment so it is not sent in HTTP query
+    # logs, Referer headers, or server-side routing.
+    return (
+        f"{_public_base_url(request)}/driver-reply.html?request={quote(request_id, safe='')}"
+        f"#token={quote(token, safe='')}"
+    )
+
+
+def _driver_request_public_summary(row: dict, reply: Optional[dict], now: int) -> dict:
+    driver_id = str(row.get("driver_id") or "").strip().lower()
+    driver_name = "Gede Nico" if driver_id == "gede" else "Dicky"
+    reply_hash = str(row.get("reply_token_hash") or "")
+    reply_expiry = int(row.get("reply_token_expires_at") or 0)
+    return {
+        "request_id": row["request_id"],
+        "driver": driver_name,
+        "route_id": row.get("route_id") or "",
+        "package_id": row.get("package_id") or "",
+        "start_date": row.get("start_date") or "",
+        "end_date": row.get("end_date") or "",
+        "num_people": row.get("num_people"),
+        "num_days": row.get("num_days"),
+        "pickup_location": row.get("pickup_location") or "",
+        "budget_range": row.get("budget_range") or "",
+        "status": row.get("status") or "pending",
+        "created_at": int(row.get("created_at") or 0),
+        "updated_at": int(row.get("updated_at") or 0),
+        "reply_available": bool(reply_hash and reply_expiry > now and not row.get("reply_used_at")),
+        "reply": (
+            {"message": reply.get("message") or "", "created_at": int(reply.get("created_at") or 0)}
+            if reply else None
+        ),
+    }
+
+
 @app.post("/api/driver-request")
-async def driver_request(data: DriverReq, request: Request):
+async def driver_request(data: DriverReq, request: Request, user=Depends(optional_user)):
     _check_driver_request_rate_limit(request)
     if data.website.strip():
         # Honeypot bots receive an indistinguishable acknowledgement, but no mail is sent.
         return {"ok": True, "delivered": False}
     if not data.privacy_consent:
         raise HTTPException(400, "Please confirm that WanderMind may forward this request to the selected driver")
-    # Email-only handoff keeps driver phone and social accounts out of the flow.
-    if not data.contact_email.strip():
-        raise HTTPException(400, "Please provide an email address")
+    # Email remains optional only for a verified authenticated session. This
+    # lets a pure WeChat account use a server-side reply relay while keeping
+    # anonymous web requests email-only.
+    contact_email = ""
+    if data.contact_email.strip():
+        contact_email = _clean_email(data.contact_email)
+    elif not user:
+        # Keep the legacy validation status for anonymous web clients while
+        # making the new authentication requirement explicit.
+        raise HTTPException(400, "Please sign in or provide an email address")
     if not (data.first_name.strip() or data.last_name.strip()):
         raise HTTPException(400, "Please provide your name")
     driver_id = data.driver_id.strip().lower()
     if driver_id not in {"dicky", "gede"}:
         raise HTTPException(400, "Unknown driver")
-    request_id = data.request_id.strip()
-    if request_id:
-        try:
-            request_id = str(uuid.UUID(request_id))
-        except ValueError:
-            raise HTTPException(400, "Invalid request ID")
-    else:
-        # Backwards-compatible fallback for older clients. The current web form
-        # always supplies a stable UUID so a network retry reuses the same
-        # provider idempotency key without storing traveller data on our side.
-        request_id = str(uuid.uuid4())
+    request_id = _canonical_driver_request_id(data.request_id)
     payload = {
         "request_id": request_id,
         "driver_id": driver_id,
@@ -4461,7 +4549,7 @@ async def driver_request(data: DriverReq, request: Request):
         "first_name": data.first_name.strip(),
         "last_name": data.last_name.strip(),
         "intro": data.intro.strip(),
-        "contact_email": _clean_email(data.contact_email),
+        "contact_email": contact_email,
         "num_people": data.num_people,
         "num_days": data.num_days,
         "attractions": data.attractions.strip(),
@@ -4474,10 +4562,202 @@ async def driver_request(data: DriverReq, request: Request):
         "arrival_details": data.arrival_details.strip(),
         "lang": _clean_lang(data.lang),
     }
-    result = await send_driver_request(payload)
-    if not result.get("ok"):
-        raise HTTPException(503, "Request email could not be delivered. Please retry shortly.")
-    return {"ok": True, "delivered": True}
+
+    # Only authenticated requests are retained, and only as a bounded summary
+    # plus an HMAC fingerprint. Anonymous email requests still send exactly as
+    # before and leave no traveller record behind.
+    user_id = None
+    request_row = None
+    should_persist = bool(user)
+    if should_persist:
+        user_id = str(user.get("sub") or "").strip()
+        if not user_id:
+            raise HTTPException(401, "Not authenticated")
+    fingerprint = _driver_request_fingerprint(payload)
+    reply_token = _driver_reply_token(request_id, user_id) if user_id and not contact_email else ""
+    now = int(time.time())
+    conn = get_db() if should_persist else None
+    try:
+        if conn:
+            if not conn.execute("SELECT id FROM users WHERE id=?", (user_id,)).fetchone():
+                raise HTTPException(401, "User account no longer exists")
+            request_row = conn.execute(
+                "SELECT * FROM driver_requests WHERE request_id=?", (request_id,)
+            ).fetchone()
+            if request_row:
+                request_row = dict(request_row)
+                existing_user = str(request_row.get("user_id") or "")
+                existing_fingerprint = str(request_row.get("request_fingerprint") or "")
+                if existing_user != user_id or not hmac.compare_digest(
+                    existing_fingerprint, fingerprint
+                ):
+                    raise HTTPException(409, "This driver request already exists")
+            else:
+                reply_hash = _driver_reply_token_hash(reply_token) if reply_token else None
+                try:
+                    conn.execute(
+                        """INSERT INTO driver_requests
+                           (request_id,user_id,driver_id,route_id,package_id,first_name,last_name,
+                            num_people,num_days,start_date,end_date,pickup_location,budget_range,
+                            requested_services,request_fingerprint,status,reply_token_hash,
+                            reply_token_expires_at,created_at,updated_at)
+                           VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)""",
+                        (
+                            request_id, user_id, driver_id, payload["route_id"], payload["package_id"],
+                            payload["first_name"], payload["last_name"], payload["num_people"],
+                            payload["num_days"], payload["start_date"], payload["end_date"],
+                            payload["pickup_location"], payload["budget_range"],
+                            json.dumps(payload["requested_services"], ensure_ascii=False, separators=(",", ":")),
+                            fingerprint, "pending", reply_hash,
+                            (now + _DRIVER_REPLY_TTL_SECONDS) if reply_token else None,
+                            now, now,
+                        ),
+                    )
+                    conn.commit()
+                except IntegrityError:
+                    # Another retry may have inserted the same stable UUID.
+                    # Re-read and apply the same ownership/fingerprint gate.
+                    conn.rollback()
+                    request_row = conn.execute(
+                        "SELECT * FROM driver_requests WHERE request_id=?", (request_id,)
+                    ).fetchone()
+                    if not request_row:
+                        raise HTTPException(503, "Request is temporarily unavailable")
+                    request_row = dict(request_row)
+                    if (
+                        str(request_row.get("user_id") or "") != user_id
+                        or not hmac.compare_digest(
+                            str(request_row.get("request_fingerprint") or ""), fingerprint
+                        )
+                    ):
+                        raise HTTPException(409, "This driver request already exists")
+            # A sent/replied record is already the provider-idempotent result;
+            # do not issue another email on a normal client retry.
+            if request_row and request_row.get("status") in {"sent", "replied"}:
+                return {
+                    "ok": True,
+                    "delivered": True,
+                    "request_id": request_id,
+                    "status": request_row.get("status"),
+                    "reply_available": bool(
+                        request_row.get("reply_token_hash")
+                        and int(request_row.get("reply_token_expires_at") or 0) > int(time.time())
+                        and not request_row.get("reply_used_at")
+                    ),
+                }
+            payload["reply_link"] = _driver_reply_link(request, request_id, reply_token) if reply_token else ""
+        result = await send_driver_request(payload)
+        if conn:
+            updated_at = int(time.time())
+            if result.get("ok"):
+                conn.execute(
+                    """UPDATE driver_requests
+                       SET status='sent',provider_message_id=?,sent_at=?,updated_at=?
+                       WHERE request_id=?""",
+                    (str(result.get("id") or ""), updated_at, updated_at, request_id),
+                )
+                conn.commit()
+            else:
+                conn.execute(
+                    "UPDATE driver_requests SET status='failed',updated_at=? WHERE request_id=?",
+                    (updated_at, request_id),
+                )
+                conn.commit()
+        if not result.get("ok"):
+            raise HTTPException(503, "Request email could not be delivered. Please retry shortly.")
+        return {
+            "ok": True,
+            "delivered": True,
+            "request_id": request_id,
+            "status": "sent",
+            "reply_available": bool(reply_token),
+        }
+    finally:
+        if conn:
+            conn.close()
+
+
+@app.get("/api/driver-requests/mine")
+async def driver_requests_mine(user=Depends(current_user)):
+    """Return only the signed-in traveller's safe request summaries and replies."""
+    conn = get_db()
+    try:
+        rows = conn.execute(
+            """SELECT dr.*, rr.message AS reply_message, rr.created_at AS reply_created_at
+               FROM driver_requests dr
+               LEFT JOIN driver_request_replies rr ON rr.request_id=dr.request_id
+               WHERE dr.user_id=? ORDER BY dr.created_at DESC""",
+            (user["sub"],),
+        ).fetchall()
+        now = int(time.time())
+        result = []
+        for raw in rows:
+            row = dict(raw)
+            reply = None
+            if row.get("reply_message") is not None:
+                reply = {
+                    "message": str(row.get("reply_message") or ""),
+                    "created_at": int(row.get("reply_created_at") or 0),
+                }
+            result.append(_driver_request_public_summary(row, reply, now))
+        return {"requests": result}
+    finally:
+        conn.close()
+
+
+@app.post("/api/driver-request/reply")
+async def driver_request_reply(data: DriverReplyReq):
+    """Accept exactly one private driver response via a fragment token."""
+    try:
+        request_id = str(uuid.UUID((data.request_id or "").strip()))
+    except (ValueError, AttributeError, TypeError):
+        raise HTTPException(400, "Reply could not be accepted")
+    token = (data.token or "").strip()
+    message = (data.message or "").strip()
+    if (
+        not _DRIVER_REPLY_TOKEN_PATTERN.fullmatch(token)
+        or not message
+        or len(message.encode("utf-8")) > 8000
+    ):
+        raise HTTPException(400, "Reply could not be accepted")
+
+    conn = get_db()
+    try:
+        row = conn.execute(
+            """SELECT request_id,reply_token_hash,reply_token_expires_at,reply_used_at,status
+               FROM driver_requests WHERE request_id=?""",
+            (request_id,),
+        ).fetchone()
+        if not row:
+            raise HTTPException(400, "Reply could not be accepted")
+        row = dict(row)
+        expected_hash = str(row.get("reply_token_hash") or "")
+        supplied_hash = _driver_reply_token_hash(token)
+        if not expected_hash or not hmac.compare_digest(expected_hash, supplied_hash):
+            raise HTTPException(400, "Reply could not be accepted")
+        if row.get("reply_used_at"):
+            raise HTTPException(409, "This reply link has already been used")
+        if int(row.get("reply_token_expires_at") or 0) <= int(time.time()):
+            raise HTTPException(410, "This reply link has expired")
+        now = int(time.time())
+        try:
+            conn.execute(
+                "INSERT INTO driver_request_replies (id,request_id,message,created_at) VALUES (?,?,?,?)",
+                (str(uuid.uuid4()), request_id, message, now),
+            )
+            conn.execute(
+                """UPDATE driver_requests
+                   SET status='replied',reply_token_hash=NULL,reply_used_at=?,updated_at=?
+                   WHERE request_id=? AND reply_used_at IS NULL""",
+                (now, now, request_id),
+            )
+            conn.commit()
+        except IntegrityError:
+            conn.rollback()
+            raise HTTPException(409, "This reply link has already been used")
+        return {"ok": True, "request_id": request_id, "status": "replied"}
+    finally:
+        conn.close()
 
 
 # ─── Destination info (curated presets + optional AI draft) ──

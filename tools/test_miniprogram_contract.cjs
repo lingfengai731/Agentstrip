@@ -24,8 +24,10 @@ function walk(dir, extension) {
 }
 
 const appConfig = JSON.parse(read('miniprogram/app.json'));
+const privateConfig = JSON.parse(read('miniprogram/project.private.config.json'));
 check(appConfig.pages.length >= 10, 'app.json should declare the v1 feature pages');
 check(appConfig.window.navigationBarTitleText === 'WanderMind 智旅', 'mini-program navigation must use the confirmed public name');
+check(privateConfig.projectname.includes('%E6%99%BA%E6%97%85'), 'WeChat DevTools project title must use WanderMind 智旅');
 
 for (const page of appConfig.pages) {
   for (const ext of ['.js', '.json', '.wxml', '.wxss']) {
@@ -93,6 +95,11 @@ check(chat.includes('contentForSafetyCheck') && chat.includes('api.checkUserCont
 check(chat.includes('customDestination') && chat.includes('${customDestination}\\n${text}'), 'custom destinations must be included in AI content checks');
 check(read('miniprogram/pages/prefs/prefs.js').includes('api.checkUserContent(prefs.notes, 2)'), 'preference notes must be checked before saving');
 check(driver.includes('contentForSafetyCheck') && driver.includes('api.checkUserContent(contentForSafetyCheck, 2)'), 'driver request text must be checked before handoff');
+check(api.includes('/api/driver-requests/mine') && api.includes('listDriverRequests'), 'driver request history API wrapper missing');
+check(driver.includes('api.listDriverRequests') && driver.includes('loadRequests'), 'driver request history UI is missing');
+check(driver.includes('未登录时请填写联系邮箱') && driver.includes('!app.globalData.token'), 'email-free driver handoff must fail clearly before anonymous submit');
+check(read('miniprogram/pages/driver/driver.wxml').includes('联系邮箱（可选）'), 'email field must be optional for authenticated WeChat accounts');
+check(read('miniprogram/pages/driver/driver.wxml').includes('我的司机请求'), 'driver request history surface is missing');
 check(api.includes('/api/bali/professional-route') && api.includes('recent-unlocked'), 'shared professional-route API wrappers missing');
 check(api.includes('/api/driver-request') && driver.includes('privacy_consent: true'), 'driver handoff contract missing');
 check(driver.includes('payload.profile || route.trip_profile') && driver.includes('budget: profile.budget_range'), 'driver handoff must restore the professional-route profile and budget');
