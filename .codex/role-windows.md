@@ -501,3 +501,10 @@
 - UI/开发回调：保留既有奶油底、teal/gold 气泡和原始对话内容；新增纯函数把标题、列表、段落和引用转成原生安全展示块，不注入模型 HTML。提示词限制 Markdown 控制符、跨语言漂移和币种断行；小程序公开名称统一为 `WanderMind 智旅`。
 - 当前边界：微信登录、统一身份和无邮箱司机中转仍是后续独立架构阶段；当前提交不得夹带数据库迁移或正式小程序发布。
 - Skill 命中：cross-account-project-memory 固定事实与 Preview 状态边界；agent-role-orchestrator/codex-luna-worker 约束 Sol/Luna 分工；ui-implementation-workflow 把本轮限制为 mobile/chat 的既有风格内修复和真机尺寸验收。
+
+## 2026-09-02 Mini-program chat production and workspace-governance callback
+
+- 发布回调：PR #47 固定 head `a7ace5f` 的 Project memory validation success；squash 合并为 `main@e9745f3` 且 Git tree 相同。Render 精确部署 `dep-dac0ff0n74is738nudv0` 已 Live，`/healthz` 与首页均为 200。新的官方 CLI Preview 编译成功，未 Upload、未提审、未发布。
+- E 盘回调：正式 `luna_worker` `/root/agentstrip_e_drive_audit` 只读完成 19 个 worktree 盘点。Sol 二次确认后用 `git worktree remove` 删除 7 个 clean 且已有合并 PR 证据的旧 worktree；分支和提交仍可恢复。第 8 个目录被微信开发者工具占用，仅完成 Git 登记移除，残留目录未强删。所有 dirty、用户素材、备份、原始工作区和 Agentstrip2 均保留。
+- 治理回调：新增集中式任务创建脚本和目录规范。未来账号任务进入 `E:\Agentstrip-worktrees\active\<account>\<task>`，预览和验收产物进入 `E:\Agentstrip-artifacts\<date>\<task>`；不直接移动现有 Git worktree。
+- 下一角色：正式 `luna_worker` `/root/wechat_auth_implementation` 在独立 worktree 实现微信一键登录和显式账号绑定；Sol 保留迁移、安全、GitHub、Render 与真机发布判断。
