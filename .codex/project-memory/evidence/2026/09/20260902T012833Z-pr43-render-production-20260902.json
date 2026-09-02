@@ -1,0 +1,48 @@
+{
+  "schema_version": 1,
+  "evidence_id": "ev-20260902T012833Z-pr43-render-production-20260902",
+  "task_ref": "pr43-render-production-20260902",
+  "owner": "sol-main",
+  "captured_at": "2026-09-02T01:28:33Z",
+  "status": "verified",
+  "claim": "PR #43 passed its fixed-head project-memory check, merged without tree drift, and Render production is Live at the exact merged website commit; the mini-program remains a locally verified, unreleased v1 foundation.",
+  "source": {
+    "kind": "github_render_public_production",
+    "repository": "https://github.com/lingfengai731/Agentstrip.git",
+    "pull_request": 43,
+    "fixed_head": "e9ce690cc642fe6088e0f6833f2cf825e6697283",
+    "fixed_head_tree": "deac1deeb87fba70081a7116fe4d239788724f4d",
+    "merge_commit": "5c2ae420b82b98e888f781e6f61b6747f9dad333",
+    "merge_tree": "deac1deeb87fba70081a7116fe4d239788724f4d",
+    "render_service": "srv-d8dfs36k1jcs738v9cfg",
+    "render_deploy": "dep-dabfeb6q1p3s739m8o0g",
+    "render_status": "live",
+    "render_started_at": "2026-09-01T16:02:52.201215Z",
+    "render_finished_at": "2026-09-01T16:27:44.526495Z"
+  },
+  "verification": {
+    "github": "PR #43 merged; Project memory validation succeeded for fixed head e9ce690",
+    "tree_parity": "fixed-head and squash-merge trees both deac1deeb87fba70081a7116fe4d239788724f4d",
+    "render": "dep-dabfeb6q1p3s739m8o0g is Live at exact commit 5c2ae420",
+    "http": "health, home, Bali, AI tool, driver page, CSS, two responsive thumbnails and Bali full WebP returned HTTP 200",
+    "browser": "production Chromium passed 18 page/viewport cases at 390 and 1440 px; 164 visible buttons and 416 visible links inspected"
+  },
+  "accepted_prior_evidence": [
+    ".codex/project-memory/evidence/2026/09/20260901T160200Z-miniprogram-v1-release-candidate.json",
+    "node tools/test_miniprogram_contract.cjs: 212 checks passed",
+    "WeChat DevTools local compile: zero Problems-panel findings"
+  ],
+  "do_not_repeat": [
+    "Do not repeat the accepted Portfolio production E2E.",
+    "Do not repeat the accepted PayPal Sandbox webhook-redelivery flow or touch that order or entitlement.",
+    "Do not repeat PR #43 merge or Render deployment dep-dabfeb6q1p3s739m8o0g.",
+    "Do not call the mini-program uploaded, submitted or released."
+  ],
+  "remaining_gates": [
+    "Confirm https://wandermind.cc in WeChat request-domain configuration.",
+    "Confirm WeChat privacy declarations match the actual account, email verification, AI chat and driver-request data flow.",
+    "Obtain a fresh go/no-go before physical-phone Preview, Upload or submission.",
+    "Full five-language localization of every mini-program screen is not claimed."
+  ],
+  "external_side_effects": "Read-only GitHub, Render and public production verification only. No new deploy, payment, refund, entitlement, email, driver request, WeChat preview/upload/submission, social post, advertisement or environment mutation."
+}

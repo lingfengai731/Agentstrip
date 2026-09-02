@@ -1,0 +1,88 @@
+{
+  "schema_version": 1,
+  "checkpoint_revision": 1,
+  "previous_checkpoint_sha256": null,
+  "run_id": "20260902T012833Z-pr43-production",
+  "objective": "Close PR #43 website production verification and continue the mini-program through explicit WeChat release gates",
+  "status": "active",
+  "phase": "miniprogram_release_gates",
+  "baseline": {
+    "cwd": "E:\\Agentstrip-wt-pr43-production-20260902",
+    "worktree": "E:\\Agentstrip-wt-pr43-production-20260902",
+    "branch": "codex/pr43-production-evidence-20260902",
+    "head": "5c2ae420b82b98e888f781e6f61b6747f9dad333",
+    "dirty_allowlist": [
+      "PROJECT_CONTEXT.md",
+      ".codex/project-memory/evidence/2026/09/20260902T012833Z-pr43-render-production-20260902.json",
+      ".codex/project-memory/handoffs/2026/09/20260902T012833Z-pr43-render-production-20260902.md",
+      ".codex/run-state/CURRENT.json"
+    ]
+  },
+  "completed": [
+    "Verified PR #43 fixed-head check and squash merge",
+    "Verified fixed-head and merged Git tree parity",
+    "Verified Render deploy dep-dabfeb6q1p3s739m8o0g Live at exact main commit 5c2ae420",
+    "Passed fresh public HTTP resource probes",
+    "Passed production Chromium 18-case public control matrix at 390 and 1440 px"
+  ],
+  "current_step": "Website production verification is closed; verify WeChat request-domain and privacy configuration before any physical-phone preview",
+  "workers": [
+    {
+      "agent_id": "01a05da1-9060-7fd0-8c42-dc3bedc00dec",
+      "agent_name": "Darwin (luna_worker)",
+      "model": "gpt-5.6-luna",
+      "reasoning_effort": "max",
+      "goal": "Independent read-only mini-program release audit",
+      "status": "shutdown",
+      "started_at_utc": "2026-09-01T15:41:00Z",
+      "last_observed_at_utc": "2026-09-01T16:02:00Z",
+      "evidence": ".codex/project-memory/handoffs/2026/09/20260901T160200Z-miniprogram-v1-release-candidate.md"
+    }
+  ],
+  "accepted_evidence": [
+    ".codex/project-memory/evidence/2026/09/20260901T160200Z-miniprogram-v1-release-candidate.json",
+    ".codex/project-memory/evidence/2026/09/20260902T012833Z-pr43-render-production-20260902.json"
+  ],
+  "unverified": [
+    "Current WeChat request-domain configuration",
+    "Current WeChat privacy declarations",
+    "Physical-phone preview",
+    "Mini-program upload, submission and release",
+    "Full five-language localization of every mini-program screen"
+  ],
+  "do_not_repeat": [
+    {
+      "action_id": "portfolio-production-e2e",
+      "reason": "Owner-confirmed production acceptance; do not mutate the accepted asset",
+      "evidence": ".codex/project-memory/evidence/2026/09/20260901T052253Z-portfolio-axestone-pre-miniprogram-closeout.json"
+    },
+    {
+      "action_id": "paypal-webhook-abnormal-redelivery",
+      "reason": "Owner-confirmed Sandbox acceptance; do not touch the accepted order or entitlement",
+      "evidence": ".codex/project-memory/evidence/2026/09/20260901T052253Z-portfolio-axestone-pre-miniprogram-closeout.json"
+    },
+    {
+      "action_id": "pr43-merge",
+      "reason": "PR #43 fixed head passed and merged as main 5c2ae420",
+      "evidence": ".codex/project-memory/evidence/2026/09/20260902T012833Z-pr43-render-production-20260902.json"
+    },
+    {
+      "action_id": "pr43-render-deploy",
+      "reason": "Exact merged commit is already Live as dep-dabfeb6q1p3s739m8o0g",
+      "evidence": ".codex/project-memory/evidence/2026/09/20260902T012833Z-pr43-render-production-20260902.json"
+    },
+    {
+      "action_id": "pr43-production-public-controls",
+      "reason": "Fresh production Chromium 18-case matrix passed",
+      "evidence": ".codex/project-memory/evidence/2026/09/20260902T012833Z-pr43-render-production-20260902.json"
+    }
+  ],
+  "next_action": {
+    "action_id": "verify-wechat-domain-privacy",
+    "description": "Read-only verify WeChat request-domain and privacy settings against WanderMind account, email verification, AI chat and driver-request data flows",
+    "external_effect": false,
+    "effect_key": null,
+    "authority_confirmed": false
+  },
+  "updated_at_utc": "2026-09-02T01:30:03.4970168Z"
+}

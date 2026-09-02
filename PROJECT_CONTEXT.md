@@ -199,7 +199,14 @@ The final Sol audit also corrected root-level professional profile extraction so
 dates, travellers, trip length, route details and budget.
 
 Local acceptance is 212 deterministic mini-program contract checks, `git diff --check`, and a fresh
-WeChat DevTools compile with zero Problems-panel findings. The task branch is pushed, but this state is
-not yet GitHub main, Render-verified, physically previewed, uploaded, submitted or released. Full
-five-language localization of every mini-program screen is not claimed. Confirm WeChat request-domain
-and privacy configuration and obtain a fresh release go/no-go before Preview, Upload or submission.
+WeChat DevTools compile with zero Problems-panel findings. PR #43 fixed head `e9ce690` passed Project
+memory validation and squash merged as `main@5c2ae420b82b98e888f781e6f61b6747f9dad333`; the fixed-head
+and squash-merge Git trees are identical. Render auto-deploy `dep-dabfeb6q1p3s739m8o0g` became Live
+at that exact commit on 2026-09-01T16:27:44Z. Fresh production HTTP probes returned 200 for health,
+the core website pages, CSS and the new responsive WebP assets. Chromium then passed 18 public
+page/viewport control cases at 390 and 1440 px, inspecting 164 visible buttons and 416 visible links.
+
+This closes the website production-verification part of PR #43 only. The mini-program has not been
+physically previewed, uploaded, submitted or released, and full five-language localization of every
+mini-program screen is not claimed. Confirm WeChat request-domain and privacy configuration and obtain
+a fresh release go/no-go before Preview, Upload or submission.
