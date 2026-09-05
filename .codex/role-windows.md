@@ -559,3 +559,9 @@
 - Sol callback: official CLI generated a 1,536,330-byte image-format Preview from `main@fd5a14e`; the contract gate now requires the exact encoded `WanderMind 智旅小程序` project name and separately rejects encoded `游心`. Acceptance is 245 Mini Program checks, 116 backend tests and `git diff --check`.
 - Tool boundary: after two same-AppID DevTools windows were opened, one local simulator instance showed navigation/tab chrome but an empty WXML tree across pages and no project-source error. A graceful DevTools restart and the successful official Preview compile leave this recorded as a local tool/cache signal, not a verified product regression; the real-device Preview is authoritative.
 - Release boundary: no real driver request/email, production write, Mini Program Upload, review submission or release. Next callback owner reports the five current-Preview observations before any external gate advances.
+
+## 2026-09-05 Mini-program brand gate merge callback
+
+- GitHub callback: PR #55 fixed head `1affbbd` passed Project memory validation run `33952993187` and squash merged as `main@3b60c3f`; both Git trees equal `09dde410a152cc3c200505109bd5ad629178813d`.
+- Release callback: test/evidence-only change, so no Render deployment is required. The fresh QR remains Preview only; no Upload, review submission, release, real driver email or production write occurred.
+- Next callback owner: report the current real-device Preview observations; all later external gates remain separate.

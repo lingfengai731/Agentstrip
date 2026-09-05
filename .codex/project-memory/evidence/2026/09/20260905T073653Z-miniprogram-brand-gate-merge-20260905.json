@@ -1,0 +1,23 @@
+{
+  "schema_version": 1,
+  "evidence_id": "ev-20260905T073653Z-miniprogram-brand-gate-merge-20260905",
+  "task_ref": "miniprogram-next-qa-20260905",
+  "owner": "codex-sol",
+  "captured_at": "2026-09-05T07:36:53Z",
+  "status": "verified",
+  "claim": "PR 55 passed fixed-head Project memory validation and squash merged as main 3b60c3f; the fixed-head and merge Git trees are identical. The Preview remains owner-observed and was not uploaded, submitted or released.",
+  "source": {
+    "kind": "github",
+    "repository": "https://github.com/lingfengai731/Agentstrip.git",
+    "commit": "3b60c3fe441071994f59801a6fd54fa5af43e18c",
+    "fixed_head": "1affbbd2cc5775b6a4bdf7ccf8c4acf313d8478c",
+    "branch": "main",
+    "pull_request": 55,
+    "dirty": false
+  },
+  "verification": {
+    "command": "GitHub fixed-head workflow; squash merge with expected head; git rev-parse fixed^{tree} and origin/main^{tree}",
+    "result": "PASS: Project memory validation run 33952993187 succeeded; both trees equal 09dde410a152cc3c200505109bd5ad629178813d."
+  },
+  "notes": "This slice changes tests and repository evidence only; no Render runtime deployment is needed. No real driver request/email, production write, Mini Program Upload, review submission or release occurred."
+}
