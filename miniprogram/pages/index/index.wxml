@@ -113,6 +113,13 @@
       </view>
     </view>
 
+    <view class="portfolio-card" bindtap="openGallery" hover-class="portfolio-pressed" hover-stay-time="90">
+      <view class="portfolio-kicker">BALI PORTFOLIO</view>
+      <view class="portfolio-title">岛屿上的真实瞬间</view>
+      <view class="portfolio-copy">浏览已授权作品，点开地点可看不同景色与旅行提示。</view>
+      <view class="portfolio-action">进入作品集 <text>→</text></view>
+    </view>
+
     <view class="logout-row"><button class="logout-link" bindtap="doLogout">退出登录</button></view>
   </view>
 

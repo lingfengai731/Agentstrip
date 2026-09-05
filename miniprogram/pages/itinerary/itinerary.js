@@ -37,12 +37,8 @@ Page({
           theme: localized(day.theme, lang),
           places: (day.suggested_poi_ids || []).map(id => {
             const poi = poiById[id] || {};
-            return localized(poi.localized_name, lang, poi.name || id);
+            return { id, name: localized(poi.name_i18n || poi.localized_name, lang, poi.name || id) };
           }),
-          placesText: (day.suggested_poi_ids || []).map(id => {
-            const poi = poiById[id] || {};
-            return localized(poi.localized_name, lang, poi.name || id);
-          }).join(' · '),
         })),
       }));
       this.setData({ routes, selected: routes[0] || null, loading: false });
@@ -83,6 +79,13 @@ Page({
   },
 
   openDriver() { if (this.data.professional) wx.navigateTo({ url: '/pages/driver/driver' }); },
+  openGallery() { wx.navigateTo({ url: '/pages/gallery/gallery' }); },
+  openPlace(e) {
+    const id = e.currentTarget.dataset.id;
+    if (!id) return;
+    const routeId = e.currentTarget.dataset.route || (this.data.selected && this.data.selected.id) || '';
+    wx.navigateTo({ url: `/pages/place/place?id=${encodeURIComponent(id)}&routeId=${encodeURIComponent(routeId)}` });
+  },
   copyUnlockLink() {
     wx.setClipboardData({
       data: 'https://wandermind.cc/bali.html#professional-planner',

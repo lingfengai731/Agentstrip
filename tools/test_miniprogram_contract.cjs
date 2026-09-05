@@ -25,7 +25,9 @@ function walk(dir, extension) {
 
 const appConfig = JSON.parse(read('miniprogram/app.json'));
 const privateConfig = JSON.parse(read('miniprogram/project.private.config.json'));
-check(appConfig.pages.length >= 10, 'app.json should declare the v1 feature pages');
+check(appConfig.pages.length >= 12, 'app.json should declare the v1 feature pages plus gallery and place detail');
+check(appConfig.pages.includes('pages/gallery/gallery'), 'gallery page must be declared');
+check(appConfig.pages.includes('pages/place/place'), 'place detail page must be declared');
 check(appConfig.window.navigationBarTitleText === 'WanderMind 智旅', 'mini-program navigation must use the confirmed public name');
 check(
   privateConfig.projectname === 'WanderMind%20%E6%99%BA%E6%97%85%E5%B0%8F%E7%A8%8B%E5%BA%8F',
@@ -81,6 +83,15 @@ const app = read('miniprogram/app.js');
 const auth = read('miniprogram/pages/index/index.js');
 const chat = read('miniprogram/pages/chat/chat.js');
 const driver = read('miniprogram/pages/driver/driver.js');
+const itinerary = read('miniprogram/pages/itinerary/itinerary.js');
+const itineraryView = read('miniprogram/pages/itinerary/itinerary.wxml');
+const homeView = read('miniprogram/pages/index/index.wxml');
+const gallery = read('miniprogram/pages/gallery/gallery.js');
+const place = read('miniprogram/pages/place/place.js');
+const baliMedia = read('miniprogram/utils/bali-media.js');
+const baliTravelData = JSON.parse(read('wandermind-studio/frontend/assets/data/bali-travel-data.json'));
+const poiMediaCatalog = JSON.parse(read('wandermind-studio/frontend/assets/data/poi-media-catalog.json'));
+const imagePublishManifest = JSON.parse(read('wandermind-studio/frontend/assets/data/image-publish-manifest.json'));
 const language = read('miniprogram/pages/language/language.js');
 const { formatAssistantMessage } = require(path.join(mini, 'utils', 'message-format.js'));
 
@@ -110,6 +121,35 @@ check(read('miniprogram/pages/driver/driver.wxml').includes('联系邮箱（可�
 check(read('miniprogram/pages/driver/driver.wxml').includes('必要联系信息'), 'driver consent copy must also cover email-free WeChat relay');
 check(read('miniprogram/pages/driver/driver.wxml').includes('我的司机请求'), 'driver request history surface is missing');
 check(api.includes('/api/bali/professional-route') && api.includes('recent-unlocked'), 'shared professional-route API wrappers missing');
+check(api.includes('/assets/data/poi-media-catalog.json') && api.includes('baliMediaCatalog'), 'shared POI media catalog wrapper missing');
+check(api.includes('/assets/data/image-publish-manifest.json') && api.includes('imagePublishManifest'), 'shared approved-image manifest wrapper missing');
+check(api.includes('/api/portfolio?destination=') && api.includes('publicPortfolio'), 'published portfolio API wrapper missing');
+check(baliMedia.includes('imagesByPoi') && baliMedia.includes('poiIds.includes(poi.id)'), 'POI media utility must preserve multiple images per place');
+check(baliMedia.includes("SITE_ORIGIN = 'https://wandermind.cc/'"), 'relative media must resolve through the approved Mini Program domain');
+check(baliMedia.includes("GALLERY_VERIFICATION = new Set(['route-linked', 'bali-named'])"), 'gallery must only use approved static Bali imagery');
+check(baliMedia.includes('EXISTING_WEBSITE_GALLERY'), 'Mini Program gallery must preserve the website gallery selection');
+check(itinerary.includes('openPlace(e)') && itineraryView.includes('data-id="{{item.id}}"'), 'route places must open a real detail page by POI id');
+check(itinerary.includes('openGallery()') && homeView.includes('bindtap="openGallery"'), 'gallery must be reachable from Home and Trips');
+check(gallery.includes('loadBaliMedia') && gallery.includes('openAsset(e)'), 'gallery must load shared media and open a detail');
+check(place.includes('imagesByPoi') && place.includes('onSlide(e)'), 'place detail must expose the full multi-image set');
+check(read('miniprogram/pages/place/place.wxml').includes('<swiper'), 'place detail must use a native image swiper');
+check(gallery.includes('markImageFailed(e)') && place.includes('markImageFailed(e)'), 'remote image failures must have visible fallbacks');
+const publicRoutePoiIds = new Set(
+  (baliTravelData.routes || []).flatMap(route => (route.days || []).flatMap(day => day.suggested_poi_ids || []))
+);
+const staticMediaPoiIds = new Set(
+  [...(poiMediaCatalog.images || []), ...(imagePublishManifest.images || [])]
+    .flatMap(image => image.poi_ids || [])
+);
+check(
+  [...publicRoutePoiIds].every(poiId => staticMediaPoiIds.has(poiId)),
+  'every POI used by a public Bali route must have static media before dynamic Portfolio is loaded'
+);
+const websiteGalleryBlock = baliMedia.match(/EXISTING_WEBSITE_GALLERY\s*=\s*new Set\(\[([\s\S]*?)\]\)/);
+const websiteGalleryHashes = websiteGalleryBlock ? [...websiteGalleryBlock[1].matchAll(/'([0-9a-f]{16})'/g)].map(match => match[1]) : [];
+const manifestHashPrefixes = new Set((imagePublishManifest.images || []).map(image => String(image.sha256 || '').slice(0, 16)));
+check(websiteGalleryHashes.length === 37, 'Mini Program must preserve all 37 website gallery selections');
+check(websiteGalleryHashes.every(hash => manifestHashPrefixes.has(hash)), 'every preserved website gallery hash must still exist in the approved manifest');
 check(api.includes('/api/driver-request') && driver.includes('privacy_consent: true'), 'driver handoff contract missing');
 check(driver.includes('payload.profile || route.trip_profile') && driver.includes('budget: profile.budget_range'), 'driver handoff must restore the professional-route profile and budget');
 check(driver.includes('num_days: this.data.days || null'), 'driver handoff must forward the matched trip length');
@@ -146,6 +186,9 @@ check(!/(?:whatsapp|wechat|Nicho\.otir|gmail\.com|\+62)/i.test(driver), 'driver 
 check(/wx\.setTabBarItem/.test(app), 'five-language tab labels are not wired');
 check(/onShow\(\)\s*\{\s*app\.updateTabBarLanguage\(\)/.test(auth), 'Home must refresh translated tab labels when shown');
 check(/success:\s*\(\)\s*=>\s*setTimeout\(\(\)\s*=>\s*app\.updateTabBarLanguage\(\)/.test(language), 'language page must refresh tab labels after returning');
+
+const bundledPhotos = walk(path.join(mini, 'assets'), '').filter(file => /\.(?:jpe?g|webp|avif)$/i.test(file));
+check(bundledPhotos.length === 0, 'destination photos must stay remote so the Mini Program package remains below 2 MB');
 
 if (failures.length) {
   console.error(`Mini-program contract: ${failures.length} failure(s) across ${checks} checks`);

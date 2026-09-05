@@ -1,0 +1,29 @@
+<view class="gallery-page">
+  <view class="gallery-intro">
+    <view class="eyebrow">WANDERMIND PORTFOLIO</view>
+    <view class="gallery-title">岛屿上的真实瞬间</view>
+    <view class="gallery-subtitle">先看看巴厘岛原本的样子，再决定你想抵达哪里。照片来自已授权项目图库与已发布作品。</view>
+  </view>
+
+  <scroll-view class="filter-scroll" scroll-x enhanced show-scrollbar="{{false}}">
+    <view class="filter-row">
+      <button wx:for="{{filters}}" wx:key="id" class="filter-chip {{filter === item.id ? 'active' : ''}}" data-id="{{item.id}}" bindtap="chooseFilter">{{item.label}}</button>
+    </view>
+  </scroll-view>
+
+  <view wx:if="{{loading}}" class="state-card">正在整理岛屿照片…</view>
+  <view wx:if="{{error}}" class="state-card error"><text>{{error}}</text><button class="retry" bindtap="retry">重新加载</button></view>
+  <view wx:if="{{!loading && !error && !visibleAssets.length}}" class="state-card">这个分类暂时还没有已发布照片。</view>
+
+  <view wx:if="{{visibleAssets.length}}" class="gallery-grid">
+    <view wx:for="{{visibleAssets}}" wx:key="key" class="gallery-card" data-index="{{index}}" bindtap="openAsset" hover-class="card-pressed" hover-stay-time="90">
+      <image wx:if="{{!item.imageFailed}}" class="gallery-image" src="{{item.thumbUrl}}" mode="aspectFill" lazy-load show-menu-by-longpress="{{true}}" data-key="{{item.key}}" binderror="markImageFailed" />
+      <view wx:else class="gallery-image image-fallback">图片暂时无法加载</view>
+      <view class="gallery-copy">
+        <view class="gallery-place">{{item.placeName || item.region || 'Bali'}}</view>
+        <view class="gallery-card-title">{{item.title}}</view>
+        <view class="gallery-meta">{{item.primaryPoiId ? '查看地点与更多景色' : '查看照片说明'}}</view>
+      </view>
+    </view>
+  </view>
+</view>
