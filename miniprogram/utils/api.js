@@ -16,7 +16,7 @@ function _request({ url, method = 'GET', data, auth = true, timeout = 30000 }) {
       header,
       timeout,
       success: (res) => {
-        if (res.statusCode === 401) {
+        if (res.statusCode === 401 && auth) {
           app.rememberCurrentRoute();
           app.clearAuth();
           wx.showToast({ title: '登录已过期', icon: 'none' });
