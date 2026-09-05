@@ -1,17 +1,17 @@
 <view class="route-page">
   <view class="route-hero">
-    <view class="eyebrow">BALI ROUTE STUDIO</view>
+    <view class="route-stamp">BALI</view>
     <view class="route-title">景点很分散，路线不该绕</view>
     <view class="route-sub">先完整浏览 6 条公共路线，再按日期、节奏与预算匹配你的专业路线。</view>
     <view class="hero-actions">
       <button class="btn primary" bindtap="openPlanner">匹配我的路线</button>
-      <button class="btn ghost" bindtap="goChat">AI 自助规划</button>
+      <button class="btn ghost" bindtap="goChat">自己调整路线</button>
     </view>
   </view>
 
   <view wx:if="{{professional}}" class="pro-card">
     <view class="pro-top">
-      <view><view class="section-kicker">个性化专业路线</view><view class="pro-title">{{professional.route.route_id}} · {{professional.route.route_name}}</view></view>
+      <view class="pro-heading"><view class="pro-label">个性化专业路线</view><view class="pro-title">{{professional.route.route_id}} · {{professional.route.route_name}}</view></view>
       <view class="status {{professional.route.unlocked ? 'open' : ''}}">{{professional.route.unlocked ? '已解锁' : '约 70% 预览'}}</view>
     </view>
     <view class="pro-reason">{{professional.route.recommendation_reason}}</view>
@@ -34,7 +34,7 @@
   </view>
 
   <view class="section-head">
-    <view><view class="section-kicker">PUBLIC ROUTES</view><view class="section-title">6 条公共路线 · 全部免费</view></view>
+    <view><view class="section-title">6 条公共路线 · 全部免费</view></view>
     <view class="section-note">路线事实与 wandermind.cc 同步</view>
   </view>
   <view wx:if="{{loading}}" class="state-card">正在读取路线…</view>

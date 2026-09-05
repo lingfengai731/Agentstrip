@@ -565,3 +565,11 @@
 - GitHub callback: PR #55 fixed head `1affbbd` passed Project memory validation run `33952993187` and squash merged as `main@3b60c3f`; both Git trees equal `09dde410a152cc3c200505109bd5ad629178813d`.
 - Release callback: test/evidence-only change, so no Render deployment is required. The fresh QR remains Preview only; no Upload, review submission, release, real driver email or production write occurred.
 - Next callback owner: report the current real-device Preview observations; all later external gates remain separate.
+
+## 2026-09-05 Mini-program design polish callback
+
+- Route: large / L2. Sol retained the existing-design interpretation, cross-page integration, Computer Use safety boundary, Git and release judgment.
+- Worker: formal `luna_worker` `/root/miniprogram_ui_audit` (`gpt-5.6-luna` / `max`) completed one bounded read-only audit with no file changes; the collaboration API did not expose a reliable start timestamp or duration. Sol independently reviewed and implemented the accepted findings.
+- UI callback: the cream/teal/gold system is preserved across index, chat, compare, itinerary, planner, preferences, driver, history, language and account pages. Controls are centred and touch-sized; visible labels and narrow-phone stacking replace compressed or generic AI-template surfaces.
+- QA callback: 245 Mini Program checks, 116 backend tests, 17 JavaScript syntax checks, 15 JSON parses, `git diff --check`, zero Impeccable findings and a 1,546,262-byte official Preview compile passed.
+- Tool/release boundary: two same-title DevTools windows were returned after opening the new worktree, so Computer Use stopped without selecting by guess. Owner re-checks the new Preview; no real driver request/email, production write, Render deployment, Upload, review submission or release occurred.

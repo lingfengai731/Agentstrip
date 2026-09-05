@@ -2,24 +2,37 @@
 /* 颜色与字体复用 H5 主题，让小程序和网页版视觉一致 */
 
 page {
-  background: #FAF7F2;
+  background: #FAFAF7;
   color: #2A2723;
   font-family: -apple-system, "PingFang SC", "Microsoft YaHei", "Helvetica Neue", Arial, sans-serif;
   font-size: 28rpx;
   line-height: 1.5;
   --teal:        #0E7C6B;
+  --teal-dark:   #075E52;
   --teal-light:  #5DBDA7;
-  --teal-pale:   #E3F5F1;
-  --amber:       #E07A12;
-  --amber-light: #F5C078;
+  --teal-pale:   #E8F4F0;
+  --amber:       #FCBF1E;
+  --amber-deep:  #B66A10;
+  --amber-pale:  #FFF5D7;
   --crimson:     #C13B3B;
   --ink:         #2A2723;
   --ink-2:       #5A554F;
   --ink-3:       #8A857F;
-  --paper:       #FAF7F2;
-  --paper-2:     #F0EDE6;
-  --paper-3:     #E1DCD3;
+  --paper:       #FAFAF7;
+  --paper-2:     #F3F1EA;
+  --paper-3:     #E5E2DA;
   --white:       #FFFFFF;
+  --radius-sm:   12rpx;
+  --radius-md:   18rpx;
+  --radius-lg:   24rpx;
+  --space-1:     8rpx;
+  --space-2:     12rpx;
+  --space-3:     18rpx;
+  --space-4:     24rpx;
+  --space-5:     32rpx;
+  --shadow-sm:   0 4rpx 14rpx rgba(42,39,35,.035);
+  --shadow-md:   0 10rpx 28rpx rgba(42,39,35,.055);
+  --ease-out:    cubic-bezier(.23,1,.32,1);
 }
 
 /* —— 通用容器 —— */
@@ -31,38 +44,53 @@ page {
 /* —— 卡片 —— */
 .card {
   background: #fff;
-  border-radius: 20rpx;
+  border: 1rpx solid var(--paper-3);
+  border-radius: var(--radius-lg);
   padding: 30rpx;
   margin-bottom: 24rpx;
-  box-shadow: 0 4rpx 16rpx rgba(0,0,0,.04);
+  box-shadow: var(--shadow-sm);
 }
 
 /* —— 按钮（覆盖小程序默认按钮样式） —— */
+button,
 .btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 88rpx;
+  box-sizing: border-box;
+  margin-left: 0;
+  margin-right: 0;
   background: #0E7C6B;
   color: #fff;
   border: none;
   border-radius: 16rpx;
-  padding: 22rpx 36rpx;
+  padding: 0 36rpx;
   font-size: 30rpx;
   font-weight: 600;
   text-align: center;
   line-height: 1.2;
+  transition: transform 140ms var(--ease-out), opacity 140ms ease, background-color 140ms ease;
 }
-.btn[disabled] { background: #C0C0C0 !important; color: #fff !important; }
+button:active,
+.btn:active { transform: scale(.98); }
+button[disabled],
+.btn[disabled] { background: #D7D4CD !important; color: #77736D !important; transform: none; }
 .btn-ghost {
   background: transparent;
   color: #0E7C6B;
   border: 2rpx solid #5DBDA7;
 }
 .btn-ghost[disabled] { color: #C0C0C0 !important; border-color: #E1DCD3 !important; background: transparent !important; }
+button::after,
 .btn::after { border: none; }
 
 /* —— 输入框（统一风格） —— */
 /* 关键：小程序 input 默认高度太小，placeholder 会被裁切。
    必须显式设置 min-height + line-height 让文字垂直居中。 */
 .input-base {
-  background: #F0EDE6;
+  background: #FFFFFF;
+  border: 1rpx solid var(--paper-3);
   border-radius: 16rpx;
   padding: 0 28rpx;
   font-size: 30rpx;
@@ -75,7 +103,7 @@ page {
 }
 /* placeholder 样式（小程序需要单独类） */
 .input-ph {
-  color: #B0A89D;
+  color: #77716A;
   font-size: 30rpx;
 }
 

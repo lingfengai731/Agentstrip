@@ -6,9 +6,18 @@
   text-align: center;
 }
 .me-avatar-empty {
-  font-size: 100rpx;
-  margin-bottom: 30rpx;
-  opacity: .5;
+  display: flex;
+  width: 96rpx;
+  height: 96rpx;
+  margin: 0 auto 30rpx;
+  align-items: center;
+  justify-content: center;
+  border: 1rpx solid #E5E2DA;
+  border-radius: 24rpx;
+  background: #FFFFFF;
+  color: #A06A17;
+  font-size: 24rpx;
+  font-weight: 800;
 }
 .me-empty-text {
   font-size: 28rpx;
@@ -27,8 +36,10 @@
   background: #0E7C6B;
   color: #fff;
   border-radius: 50%;
-  text-align: center;
-  line-height: 100rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
   font-size: 40rpx;
   font-weight: 700;
 }
@@ -38,6 +49,7 @@
 
 .me-card {
   background: #fff;
+  border: 1rpx solid #E5E2DA;
   border-radius: 20rpx;
   margin-bottom: 30rpx;
   overflow: hidden;
@@ -50,9 +62,9 @@
   gap: 16rpx;
 }
 .me-row:last-child { border-bottom: none; }
-.me-row-icon { font-size: 36rpx; }
-.me-row-label { flex: 1; font-size: 28rpx; color: #2A2723; }
-.me-row-value { font-size: 24rpx; color: #8A857F; }
+.me-row-icon { display:flex; width:50rpx; height:50rpx; align-items:center; justify-content:center; border-radius:13rpx; background:#F3F1EA; color:#0E6658; font-size:21rpx; font-weight:800; }
+.me-row-label { min-width: 0; flex: 1; font-size: 28rpx; color: #2A2723; }
+.me-row-value { flex:0 0 auto; font-size: 24rpx; color: #8A857F; }
 .me-row-badge {
   font-size: 22rpx;
   color: #0E7C6B;
@@ -64,8 +76,11 @@
 .me-row-arrow { color: #C0C0C0; font-size: 32rpx; }
 
 .logout-btn {
+  width:100%;
+  min-height:88rpx;
   margin-top: 20rpx;
 }
+.me-row:active { background:#F8F6F1; }
 .me-footer {
   text-align: center;
   font-size: 22rpx;

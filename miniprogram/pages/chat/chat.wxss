@@ -11,11 +11,11 @@
   display: flex;
   align-items: center;
   gap: 16rpx;
-  padding: 16rpx 24rpx;
-  background: #fff;
-  border-bottom: 1rpx solid #E1DCD3;
+  padding: 14rpx 24rpx 16rpx;
+  background: #FAFAF7;
+  border-bottom: 1rpx solid #E5E2DA;
 }
-.dest-bar-flag { font-size: 44rpx; }
+.dest-bar-flag { font-size: 38rpx; }
 .dest-bar-info { flex: 1; }
 .dest-bar-name { font-size: 28rpx; font-weight: 700; color: #2A2723; }
 .dest-bar-hint { font-size: 20rpx; color: #8A857F; margin-top: 2rpx; }
@@ -23,40 +23,48 @@
 .mode-toggle {
   display: flex;
   gap: 4rpx;
-  background: #F0EDE6;
-  border-radius: 24rpx;
+  background: #ECE9E2;
+  border-radius: 14rpx;
   padding: 4rpx;
 }
 .mode-btn {
-  padding: 8rpx 16rpx;
-  font-size: 20rpx;
+  display: flex;
+  min-width: 76rpx;
+  min-height: 80rpx;
+  padding: 0 14rpx;
+  align-items: center;
+  justify-content: center;
+  font-size: 21rpx;
   font-weight: 700;
   color: #8A857F;
-  border-radius: 20rpx;
+  border-radius: 11rpx;
 }
-.mode-btn.active { background: #0E7C6B; color: #fff; }
+.mode-btn.active { background: #FFFFFF; color: #075E52; box-shadow: 0 2rpx 6rpx rgba(42,39,35,.05); }
 
 /* —— 消息流 —— */
 .messages {
   flex: 1;
+  min-height: 0;
   padding: 24rpx 24rpx;
   box-sizing: border-box;
 }
 
 /* —— 欢迎语 —— */
 .welcome {
-  padding: 60rpx 20rpx;
-  text-align: center;
+  padding: 54rpx 8rpx 32rpx;
 }
-.welcome-emoji { font-size: 80rpx; margin-bottom: 20rpx; }
-.welcome-title { font-size: 32rpx; font-weight: 700; color: #2A2723; margin-bottom: 8rpx; }
-.welcome-hint { font-size: 24rpx; color: #8A857F; margin-bottom: 40rpx; }
+.welcome-mark { display:flex; width:68rpx; height:68rpx; align-items:center; justify-content:center; margin-bottom:20rpx; border:1rpx solid #E5E2DA; border-radius:18rpx; background:#FFFFFF; font-size:38rpx; }
+.welcome-title { font-size: 34rpx; font-weight: 750; color: #2A2723; margin-bottom: 8rpx; }
+.welcome-hint { max-width: 580rpx; font-size: 24rpx; line-height: 1.6; color: #6F6962; margin-bottom: 34rpx; }
 .sugg-list { display: flex; flex-direction: column; gap: 16rpx; }
 .sugg-chip {
+  display: flex;
+  min-height: 88rpx;
+  align-items: center;
   background: #fff;
-  border: 2rpx solid #E1DCD3;
+  border: 1rpx solid #E5E2DA;
   border-radius: 16rpx;
-  padding: 24rpx;
+  padding: 14rpx 22rpx;
   font-size: 26rpx;
   color: #2A2723;
   text-align: left;
@@ -72,14 +80,14 @@
 .msg-bubble {
   max-width: 80%;
   padding: 20rpx 24rpx;
-  border-radius: 20rpx;
+  border-radius: 18rpx;
   font-size: 28rpx;
   line-height: 1.6;
   position: relative;
   box-sizing: border-box;
 }
 .msg.user .msg-bubble {
-  background: #0E7C6B;
+  background: #075E52;
   color: #fff;
   border-bottom-right-radius: 6rpx;
 }
@@ -88,7 +96,8 @@
   background: #fff;
   color: #2A2723;
   border-bottom-left-radius: 6rpx;
-  box-shadow: 0 2rpx 8rpx rgba(0,0,0,.04);
+  border: 1rpx solid #E8E4DC;
+  box-shadow: 0 3rpx 10rpx rgba(42,39,35,.03);
 }
 .msg-text {
   white-space: pre-wrap;
@@ -117,7 +126,8 @@
 }
 .msg-block-quote {
   padding-left: 16rpx;
-  border-left: 5rpx solid #D29B42;
+  border-left: 1rpx solid #D29B42;
+  background: #FFFAEF;
   color: #5F5A54;
 }
 .msg-list-marker {
@@ -135,24 +145,26 @@
 .msg-search-badge {
   display: inline-block;
   font-size: 20rpx;
-  color: #0E7C6B;
-  background: #E3F5F1;
-  padding: 4rpx 12rpx;
-  border-radius: 12rpx;
+  color: #53635E;
+  background: #EEF3F0;
+  padding: 5rpx 12rpx;
+  border-radius: 8rpx;
   margin-bottom: 10rpx;
 }
 .msg-mode-badge {
   position: absolute;
   top: -10rpx;
   right: -10rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   background: #fff;
-  border: 2rpx solid #E1DCD3;
-  border-radius: 50%;
-  width: 36rpx;
-  height: 36rpx;
+  border: 1rpx solid #E1DCD3;
+  border-radius: 10rpx;
+  width: 38rpx;
+  height: 34rpx;
   font-size: 18rpx;
-  text-align: center;
-  line-height: 32rpx;
+  line-height: 1;
 }
 .msg-mode-badge.fast { color: #E07A12; }
 .msg-mode-badge.pro  { color: #0E7C6B; }
@@ -181,13 +193,16 @@
 .input-area {
   padding: 16rpx 24rpx;
   padding-bottom: calc(16rpx + env(safe-area-inset-bottom));
-  background: #fff;
+  background: #FAFAF7;
   border-top: 1rpx solid #E1DCD3;
 }
 .composer { display: flex; align-items: flex-end; gap: 16rpx; }
 .save-notice { margin-bottom: 10rpx; color: #7A5A22; font-size: 21rpx; }
 .retry-btn {
   display: inline-flex;
+  min-height: 80rpx;
+  align-items: center;
+  justify-content: center;
   margin: 0 0 12rpx;
   padding: 10rpx 18rpx;
   border: 2rpx solid #D29B42;
@@ -200,7 +215,8 @@
 .retry-btn::after { border: 0; }
 .input-box {
   flex: 1;
-  background: #F0EDE6;
+  background: #FFFFFF;
+  border: 1rpx solid #E5E2DA;
   border-radius: 16rpx;
   padding: 18rpx 24rpx;
   font-size: 28rpx;
@@ -208,10 +224,12 @@
   min-height: 60rpx;
 }
 .send-btn {
+  min-width: 128rpx;
+  min-height: 72rpx;
   background: #0E7C6B;
   color: #fff;
   border-radius: 16rpx;
-  padding: 16rpx 32rpx;
+  padding: 0 28rpx;
   font-size: 26rpx;
   font-weight: 700;
   margin: 0;

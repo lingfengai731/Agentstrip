@@ -1,0 +1,22 @@
+{
+  "schema_version": 1,
+  "evidence_id": "ev-20260905T080233Z-miniprogram-owner-preview-acceptance-20260905",
+  "task_ref": "miniprogram-owner-preview-acceptance-20260905",
+  "owner": "project-owner",
+  "captured_at": "2026-09-05T08:02:33Z",
+  "status": "verified",
+  "claim": "Owner reports the current Mini Program Preview passed all five checks: no white screen, WanderMind 智旅 title, wrong-password inline error, normal email login, and visible/successful WeChat one-click login.",
+  "source": {
+    "kind": "git",
+    "repository": "https://github.com/lingfengai731/Agentstrip.git",
+    "commit": "c39024da062599bce19ef03f9cfd04b5cb7dfef0",
+    "branch": "codex/miniprogram-design-polish-20260905",
+    "worktree": "E:\\Agentstrip-worktrees\\active\\account1\\miniprogram-design-polish-20260905",
+    "dirty": false
+  },
+  "verification": {
+    "command": "Owner real-device Preview observation reported in current Codex task on 2026-09-05",
+    "result": "pass"
+  },
+  "notes": "Preview acceptance only. No Mini Program Upload, review submission, release, Render deployment, real driver email, or production write is implied."
+}

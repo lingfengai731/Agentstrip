@@ -8,7 +8,6 @@
 
   <block wx:else>
     <view class="driver-hero">
-      <view class="eyebrow">BALI LOCAL DRIVER</view>
       <view class="hero-title">让当地司机协助路线落地</view>
       <view class="hero-copy">选择司机并填写关键行程信息。所有联系统一经 WanderMind 邮箱转交。</view>
     </view>
@@ -16,8 +15,8 @@
     <view class="section">
       <view class="section-title">选择司机</view>
       <view class="driver-grid">
-        <view class="driver-card {{driverId === 'dicky' ? 'active' : ''}}" bindtap="selectDriver" data-id="dicky"><view class="avatar">D</view><view><b>Dicky</b><small>Bali 本地司机</small></view></view>
-        <view class="driver-card {{driverId === 'gede' ? 'active' : ''}}" bindtap="selectDriver" data-id="gede"><view class="avatar">G</view><view><b>Gede Nico</b><small>Bali 本地司机</small></view></view>
+        <view class="driver-card {{driverId === 'dicky' ? 'active' : ''}}" bindtap="selectDriver" data-id="dicky"><view class="avatar">D</view><view><text class="driver-name">Dicky</text><text class="driver-role">Bali 本地司机</text></view></view>
+        <view class="driver-card {{driverId === 'gede' ? 'active' : ''}}" bindtap="selectDriver" data-id="gede"><view class="avatar">G</view><view><text class="driver-name">Gede Nico</text><text class="driver-role">Bali 本地司机</text></view></view>
       </view>
     </view>
 
@@ -25,20 +24,20 @@
       <view class="section-title">你的行程</view>
       <view wx:if="{{routeId}}" class="route-badge">已带入专业路线 {{routeId}}</view>
       <view class="two-col">
-        <input class="field" placeholder="名字 *" value="{{firstName}}" bindinput="onInput" data-field="firstName" />
-        <input class="field" placeholder="姓氏" value="{{lastName}}" bindinput="onInput" data-field="lastName" />
+        <view class="field-group"><view class="field-label">名字 *</view><input class="field" placeholder="你的名字" value="{{firstName}}" bindinput="onInput" data-field="firstName" /></view>
+        <view class="field-group"><view class="field-label">姓氏</view><input class="field" placeholder="可选" value="{{lastName}}" bindinput="onInput" data-field="lastName" /></view>
       </view>
-      <input class="field" placeholder="联系邮箱（可选）" value="{{email}}" bindinput="onInput" data-field="email" />
+      <view class="field-group"><view class="field-label">联系邮箱（可选）</view><input class="field" placeholder="微信登录用户可不填" value="{{email}}" bindinput="onInput" data-field="email" /></view>
       <view class="field-hint">已有邮箱可直接接收司机回复；微信账号不填写邮箱时，司机会通过 WanderMind 安全链接回复。</view>
       <view class="two-col">
-        <picker mode="date" value="{{startDate}}" bindchange="setStart"><view class="field picker">{{startDate || '开始日期 *'}}</view></picker>
-        <picker mode="date" value="{{endDate}}" bindchange="setEnd"><view class="field picker">{{endDate || '结束日期 *'}}</view></picker>
+        <view class="field-group"><view class="field-label">开始日期 *</view><picker mode="date" value="{{startDate}}" bindchange="setStart"><view class="field picker">{{startDate || '请选择'}}</view></picker></view>
+        <view class="field-group"><view class="field-label">结束日期 *</view><picker mode="date" value="{{endDate}}" bindchange="setEnd"><view class="field picker">{{endDate || '请选择'}}</view></picker></view>
       </view>
-      <picker mode="selector" range="{{peopleOptions}}" value="{{people - 1}}" bindchange="setPeople"><view class="field picker">{{people}} 位游客</view></picker>
-      <input class="field" placeholder="接送地点或酒店区域 *" value="{{pickup}}" bindinput="onInput" data-field="pickup" />
-      <input class="field" placeholder="预算范围（可选）" value="{{budget}}" bindinput="onInput" data-field="budget" />
-      <textarea class="textarea" placeholder="想去的地点或每日路线" value="{{attractions}}" bindinput="onInput" data-field="attractions" maxlength="2000" />
-      <textarea class="textarea compact" placeholder="补充说明、行李或航班信息（可选）" value="{{intro}}" bindinput="onInput" data-field="intro" maxlength="800" />
+      <view class="field-group"><view class="field-label">同行人数 *</view><picker mode="selector" range="{{peopleOptions}}" value="{{people - 1}}" bindchange="setPeople"><view class="field picker">{{people}} 位游客</view></picker></view>
+      <view class="field-group"><view class="field-label">接送地点或酒店区域 *</view><input class="field" placeholder="例如：Ubud 酒店" value="{{pickup}}" bindinput="onInput" data-field="pickup" /></view>
+      <view class="field-group"><view class="field-label">预算范围</view><input class="field" placeholder="可选" value="{{budget}}" bindinput="onInput" data-field="budget" /></view>
+      <view class="field-group"><view class="field-label">想去的地点或每日路线</view><textarea class="textarea" placeholder="可以直接粘贴行程" value="{{attractions}}" bindinput="onInput" data-field="attractions" maxlength="2000" /></view>
+      <view class="field-group"><view class="field-label">补充说明</view><textarea class="textarea compact" placeholder="行李、航班或其他需要司机知道的信息" value="{{intro}}" bindinput="onInput" data-field="intro" maxlength="800" /></view>
     </view>
 
     <view class="section">

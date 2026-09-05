@@ -78,7 +78,7 @@ Page({
   about() {
     wx.showModal({
       title: 'WanderMind · 智旅',
-      content: 'AI 自助规划、Bali 公共路线、专业路线与当地司机交接共用同一 WanderMind 账号。\n网页版：wandermind.cc\n版本：v1.0.0',
+      content: '智能规划、Bali 公共路线、专业路线与当地司机交接共用同一 WanderMind 账号。\n网页版：wandermind.cc\n版本：v1.0.0',
       showCancel: false,
     });
   },
