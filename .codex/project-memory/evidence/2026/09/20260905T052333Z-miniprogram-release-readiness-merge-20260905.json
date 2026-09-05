@@ -1,0 +1,23 @@
+{
+  "schema_version": 1,
+  "evidence_id": "ev-20260905T052333Z-miniprogram-release-readiness-merge-20260905",
+  "task_ref": "miniprogram-release-readiness-20260905",
+  "owner": "codex-sol",
+  "captured_at": "2026-09-05T05:23:33Z",
+  "status": "verified",
+  "claim": "PR 53 passed fixed-head Project memory validation and squash merged; the fixed-head and merge Git trees are identical. The Mini Program Preview is ready for owner testing but was not uploaded, submitted or released.",
+  "source": {
+    "kind": "github",
+    "repository": "https://github.com/lingfengai731/Agentstrip.git",
+    "commit": "e916e6f90daec0bba9c986f0d622f5a4bf9252ae",
+    "fixed_head": "0581be4bd1365f6d7ee414368b696fd8f44f7efb",
+    "branch": "main",
+    "pull_request": 53,
+    "dirty": false
+  },
+  "verification": {
+    "command": "GitHub fixed-head workflow; squash merge with expected head; git rev-parse fixed^{tree} and origin/main^{tree}",
+    "result": "PASS: Project memory validation run 33947010601 succeeded; both trees equal 050df14b23e8a8f1e0539e722715ec1f2a9c44fd."
+  },
+  "notes": "The change is Mini Program source and repository evidence only. No Render runtime deployment was required or triggered. No real driver email, production request write, Mini Program Upload, review submission or release was performed."
+}
