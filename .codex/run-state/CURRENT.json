@@ -1,58 +1,66 @@
 {
   "schema_version": 1,
-  "checkpoint_revision": 5,
-  "previous_checkpoint_sha256": "F51C17C1705ED6497D3736C876F3CFEFAC592CDE517A3A4BC35A67DFB9EDF735",
+  "checkpoint_revision": 7,
+  "previous_checkpoint_sha256": "FBFB464DFA17B701A1D2D6B4CC7B1AA185EEBD857409083385C8E4974913E9F4",
   "run_id": "20260905T045930Z-miniprogram-release-readiness",
-  "objective": "Close the next WanderMind Mini Program release-readiness slice without Upload, review submission, release, or real driver email.",
+  "objective": "Regenerate the expired Mini Program Preview and continue a bounded release-readiness QA slice without Upload, review submission, release, or real driver email.",
   "status": "active",
   "phase": "owner_preview_acceptance",
   "baseline": {
-    "cwd": "E:\\Agentstrip-worktrees\\active\\account1\\miniprogram-release-readiness-20260905",
-    "worktree": "E:\\Agentstrip-worktrees\\active\\account1\\miniprogram-release-readiness-20260905",
-    "branch": "codex/miniprogram-release-readiness-evidence-20260905",
-    "head": "e916e6f90daec0bba9c986f0d622f5a4bf9252ae",
+    "cwd": "E:\\Agentstrip-worktrees\\active\\account1\\miniprogram-next-qa-20260905",
+    "worktree": "E:\\Agentstrip-worktrees\\active\\account1\\miniprogram-next-qa-20260905",
+    "branch": "codex/miniprogram-next-qa-20260905",
+    "head": "fd5a14e289306298e9fdc16196f868b47e841f11",
     "dirty_allowlist": [
       ".codex/run-state/CURRENT.json",
+      "tools/test_miniprogram_contract.cjs",
+      ".codex/project-memory/evidence/2026/09/20260905T073222Z-miniprogram-fresh-preview-brand-gate-20260905.json",
+      ".codex/project-memory/handoffs/2026/09/20260905T073222Z-miniprogram-fresh-preview-brand-gate-20260905.md",
       ".codex/role-windows.md",
-      "PROJECT_CONTEXT.md",
-      ".codex/project-memory/evidence/2026/09/20260905T052333Z-miniprogram-release-readiness-merge-20260905.json",
-      ".codex/project-memory/handoffs/2026/09/20260905T052333Z-miniprogram-release-readiness-merge-20260905.md"
+      "PROJECT_CONTEXT.md"
     ]
   },
   "completed": [
-    "Recovered latest cross-account main and production evidence",
-    "Verified PR 51 and PR 52 are merged",
-    "Verified Render driver-relay code deployment was previously recorded Live",
-    "Created a clean centralized continuation worktree",
-    "Closed the Luna read-only audit attempt without accepting an absent final",
-    "Fixed unauthenticated 401 handling and driver relay consent copy",
-    "Passed 244 Mini Program checks, 116 backend tests, syntax and diff checks",
-    "Compiled a fresh 1,536,330-byte WeChat Preview",
-    "Merged PR 53 after successful fixed-head Project memory CI and verified Git tree equality"
+    "Recovered the latest cross-account main state in a new centralized worktree",
+    "Generated a fresh 1536330-byte image-format Preview through the official WeChat DevTools CLI",
+    "Confirmed current Mini Program source and configuration use WanderMind 智旅",
+    "Strengthened the exact DevTools brand regression contract",
+    "Passed 245 Mini Program checks, 116 backend tests and git diff validation"
   ],
-  "current_step": "Await owner observations from the fresh merged-tree Preview",
+  "current_step": "Wait for owner-observed results from the fresh real-device Preview, then integrate the verified brand gate through fixed-head PR and CI",
   "workers": [
     {
-      "agent_id": "/root/miniprogram_release_audit",
+      "agent_id": "/root/miniprogram_brand_audit",
       "agent_name": "luna_worker",
       "model": "gpt-5.6-luna",
       "reasoning_effort": "max",
-      "goal": "Read-only audit of Mini Program interactions, API contracts, authentication, driver relay, AI rendering and 390px layout",
-      "status": "shutdown",
-      "started_at_utc": "2026-09-05T04:59:30Z",
-      "last_observed_at_utc": "2026-09-05T05:13:35Z",
-      "evidence": null
+      "goal": "Read-only current Mini Program brand audit",
+      "status": "completed",
+      "started_at_utc": "unavailable_from_collaboration_api",
+      "last_observed_at_utc": "2026-09-05T07:32:22Z",
+      "evidence": ".codex/project-memory/evidence/2026/09/20260905T073222Z-miniprogram-fresh-preview-brand-gate-20260905.json"
+    },
+    {
+      "agent_id": "/root/miniprogram_brand_audit",
+      "agent_name": "luna_worker",
+      "model": "gpt-5.6-luna",
+      "reasoning_effort": "max",
+      "goal": "Read-only all-page blank DevTools simulator diagnosis",
+      "status": "blocked",
+      "started_at_utc": "unavailable_from_collaboration_api",
+      "last_observed_at_utc": "2026-09-05T07:32:22Z",
+      "evidence": ".codex/project-memory/handoffs/2026/09/20260905T073222Z-miniprogram-fresh-preview-brand-gate-20260905.md"
     }
   ],
   "accepted_evidence": [
-    ".codex/project-memory/evidence/2026/09/20260902T124606Z-miniprogram-driver-relay-production-20260902.json",
-    ".codex/project-memory/evidence/2026/09/20260905T051831Z-miniprogram-release-readiness-20260905.json",
     ".codex/project-memory/evidence/2026/09/20260905T052333Z-miniprogram-release-readiness-merge-20260905.json",
-    ".codex/project-memory/handoffs/2026/09/20260905T052333Z-miniprogram-release-readiness-merge-20260905.md"
+    ".codex/project-memory/evidence/2026/09/20260905T073222Z-miniprogram-fresh-preview-brand-gate-20260905.json",
+    ".codex/project-memory/handoffs/2026/09/20260905T073222Z-miniprogram-fresh-preview-brand-gate-20260905.md"
   ],
   "unverified": [
-    "Real-device wrong-password behavior on the current Preview",
-    "Real-device WeChat one-click login and explicit account-linking on the current build",
+    "Real-device no-white-screen and WanderMind 智旅 title on the newly generated Preview",
+    "Real-device wrong-password behavior and normal email login on the current build",
+    "Real-device WeChat one-click login and explicit account linking on the current build",
     "Real driver relay request and one-time reply end to end",
     "Mini Program Upload, review submission and release"
   ],
@@ -68,37 +76,22 @@
       "evidence": ".codex/project-memory/evidence/2026/09/20260901T052253Z-portfolio-axestone-pre-miniprogram-closeout.json"
     },
     {
-      "action_id": "pr43-merge",
-      "reason": "PR 43 was already merged and accepted",
-      "evidence": ".codex/project-memory/evidence/2026/09/20260902T012833Z-pr43-render-production-20260902.json"
-    },
-    {
-      "action_id": "merge-driver-relay-pr51",
-      "reason": "Completed and independently accepted",
-      "evidence": ".codex/project-memory/evidence/2026/09/20260902T124606Z-miniprogram-driver-relay-production-20260902.json"
-    },
-    {
       "action_id": "send-real-driver-relay-email",
       "reason": "Not authorized in the current turn; avoid duplicate external effects",
       "evidence": ".codex/project-memory/handoffs/2026/09/20260902T124606Z-miniprogram-driver-relay-production-20260902.md"
     },
     {
-      "action_id": "sol-audit-current-miniprogram-build",
-      "reason": "Completed locally with accepted tests and Preview evidence",
-      "evidence": ".codex/project-memory/evidence/2026/09/20260905T051831Z-miniprogram-release-readiness-20260905.json"
-    },
-    {
-      "action_id": "push-fixed-head-and-open-pr",
-      "reason": "PR 53 fixed head passed CI and merged with Git tree equality",
-      "evidence": ".codex/project-memory/evidence/2026/09/20260905T052333Z-miniprogram-release-readiness-merge-20260905.json"
+      "action_id": "miniprogram-upload-review-release",
+      "reason": "The owner authorized Preview only",
+      "evidence": ".codex/project-memory/handoffs/2026/09/20260905T073222Z-miniprogram-fresh-preview-brand-gate-20260905.md"
     }
   ],
   "next_action": {
-    "action_id": "owner-preview-negative-login-check",
-    "description": "Owner scans the fresh Preview and checks wrong-password handling plus one normal login without submitting a driver request",
+    "action_id": "owner-fresh-preview-acceptance-20260905",
+    "description": "Owner scans the fresh Preview and reports the five bounded observations without submitting the driver form",
     "external_effect": false,
     "effect_key": null,
-    "authority_confirmed": false
+    "authority_confirmed": true
   },
-  "updated_at_utc": "2026-09-05T05:25:00.4858740Z"
+  "updated_at_utc": "2026-09-05T07:34:42.2687023Z"
 }

@@ -551,3 +551,11 @@
 - GitHub callback: PR #53 fixed head `0581be4` passed Project memory validation and squash merged as `main@e916e6f`; the fixed-head and merge Git trees are identical.
 - Release callback: the change is Mini Program-only, so no Render deployment was required. A fresh Preview exists, but no Upload, review submission or release occurred.
 - Next callback owner: project owner reports wrong-password and normal-login observations from the current Preview; a real driver relay remains a separately authorized external-effect gate.
+
+## 2026-09-05 Mini-program fresh Preview and brand gate
+
+- Route: medium / L2. Sol retained cross-account recovery, Computer Use/DevTools inspection, test integration and release boundaries.
+- Luna callback: formal `luna_worker` `/root/miniprogram_brand_audit` (`gpt-5.6-luna` / `max`) completed the first read-only audit and confirmed current Mini Program source/config contain no retired `游心` brand outside the intentional negative test. Its follow-up all-page blank-simulator audit stopped as `blocked` after detecting the concurrent Sol-owned test edit; it changed no files. The collaboration API did not expose a reliable start timestamp or duration.
+- Sol callback: official CLI generated a 1,536,330-byte image-format Preview from `main@fd5a14e`; the contract gate now requires the exact encoded `WanderMind 智旅小程序` project name and separately rejects encoded `游心`. Acceptance is 245 Mini Program checks, 116 backend tests and `git diff --check`.
+- Tool boundary: after two same-AppID DevTools windows were opened, one local simulator instance showed navigation/tab chrome but an empty WXML tree across pages and no project-source error. A graceful DevTools restart and the successful official Preview compile leave this recorded as a local tool/cache signal, not a verified product regression; the real-device Preview is authoritative.
+- Release boundary: no real driver request/email, production write, Mini Program Upload, review submission or release. Next callback owner reports the five current-Preview observations before any external gate advances.
