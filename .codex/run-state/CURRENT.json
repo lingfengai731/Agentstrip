@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
-  "checkpoint_revision": 8,
-  "previous_checkpoint_sha256": "D04FAC89F2CC58D65FDEB48334F89F33A4AB5334150C481D76D984C88BAE58D9",
+  "checkpoint_revision": 9,
+  "previous_checkpoint_sha256": "E3770F5105CD77519C035C5F067082376B88C6137F3861DABF37AA2DD5BE9098",
   "run_id": "20260905T045930Z-miniprogram-release-readiness",
   "objective": "Regenerate the expired Mini Program Preview and continue a bounded release-readiness QA slice without Upload, review submission, release, or real driver email.",
   "status": "active",
@@ -9,23 +9,20 @@
   "baseline": {
     "cwd": "E:\\Agentstrip-worktrees\\active\\account1\\miniprogram-next-qa-20260905",
     "worktree": "E:\\Agentstrip-worktrees\\active\\account1\\miniprogram-next-qa-20260905",
-    "branch": "codex/miniprogram-next-qa-20260905",
-    "head": "1affbbd2cc5775b6a4bdf7ccf8c4acf313d8478c",
+    "branch": "codex/miniprogram-brand-merge-evidence-20260905",
+    "head": "bfa849a613d3b671287a27c8bb54b037569cd389",
     "dirty_allowlist": [
-      ".codex/run-state/CURRENT.json",
-      ".codex/role-windows.md",
-      "PROJECT_CONTEXT.md",
-      ".codex/project-memory/evidence/2026/09/20260905T073653Z-miniprogram-brand-gate-merge-20260905.json",
-      ".codex/project-memory/handoffs/2026/09/20260905T073653Z-miniprogram-brand-gate-merge-20260905.md"
+      ".codex/run-state/CURRENT.json"
     ]
   },
   "completed": [
     "Generated a fresh 1536330-byte image-format Preview through the official WeChat DevTools CLI",
     "Confirmed current Mini Program source and configuration use WanderMind 智旅",
     "Passed 245 Mini Program checks, 116 backend tests and project-memory validation",
-    "Merged fixed-head PR 55 as main 3b60c3f with identical Git trees"
+    "Merged fixed-head PR 55 as main 3b60c3f with identical Git trees",
+    "Moved merge evidence to a clean branch based on current main instead of force-updating the conflicted history"
   ],
-  "current_step": "Wait for owner-observed results from the fresh real-device Preview",
+  "current_step": "Sync the clean merge-evidence branch, then wait for owner-observed results from the fresh real-device Preview",
   "workers": [
     {
       "agent_id": "/root/miniprogram_brand_audit",
@@ -69,6 +66,11 @@
       "evidence": ".codex/project-memory/evidence/2026/09/20260905T073653Z-miniprogram-brand-gate-merge-20260905.json"
     },
     {
+      "action_id": "reuse-conflicted-pr56",
+      "reason": "The post-squash branch history conflicts with main; use the clean evidence branch instead of force-pushing",
+      "evidence": ".codex/project-memory/handoffs/2026/09/20260905T073653Z-miniprogram-brand-gate-merge-20260905.md"
+    },
+    {
       "action_id": "send-real-driver-relay-email",
       "reason": "Not authorized in the current turn; avoid duplicate external effects",
       "evidence": ".codex/project-memory/handoffs/2026/09/20260902T124606Z-miniprogram-driver-relay-production-20260902.md"
@@ -86,5 +88,5 @@
     "effect_key": null,
     "authority_confirmed": true
   },
-  "updated_at_utc": "2026-09-05T07:38:13.9388817Z"
+  "updated_at_utc": "2026-09-05T07:40:27.9479804Z"
 }
