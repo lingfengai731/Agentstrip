@@ -21,7 +21,7 @@
         <view class="day-body">
           <view class="day-title">第 {{item.day}} 天 · {{item.region_name}}</view>
           <view class="day-theme">{{item.theme}}</view>
-          <view wx:if="{{!item.locked}}" class="places"><text wx:for="{{item.places}}" wx:key="id">{{item.name}}{{index < item.places.length - 1 ? ' · ' : ''}}</text></view>
+          <view wx:if="{{!item.locked}}" class="places place-links"><button wx:for="{{item.places}}" wx:key="id" class="place-link" data-id="{{item.id}}" data-route="{{professional.route.route_id}}" bindtap="openPlace">{{item.name}}<text>看景色</text></button></view>
           <view wx:else class="lock-copy">{{item.lock_reason}}</view>
         </view>
       </view>
@@ -34,8 +34,8 @@
   </view>
 
   <view class="section-head">
-    <view><view class="section-title">6 条公共路线 · 全部免费</view></view>
-    <view class="section-note">路线事实与 wandermind.cc 同步</view>
+    <view><view class="section-title">6 条公共路线 · 全部免费</view><button class="gallery-link" bindtap="openGallery">看岛屿作品集</button></view>
+    <view class="section-note">点开景点名称，可查看不同景色与介绍</view>
   </view>
   <view wx:if="{{loading}}" class="state-card">正在读取路线…</view>
   <view wx:if="{{error}}" class="state-card error"><view>{{error}}</view><button class="text-btn" bindtap="retry">重试</button></view>
@@ -44,7 +44,7 @@
     <view class="public-title">{{selected.id}} · {{selected.name}}</view>
     <view class="public-promise">{{selected.promise}}</view>
     <view class="route-facts"><text>推荐 {{selected.idealDays}} 天</text><text>{{selected.regionPath}}</text></view>
-    <view class="day-list public-days"><view wx:for="{{selected.days}}" wx:key="day" class="public-day"><view class="day-number">{{item.day}}</view><view class="day-body"><view class="day-title">{{item.regionId}} · {{item.theme}}</view><view class="places">{{item.placesText}}</view></view></view></view>
+    <view class="day-list public-days"><view wx:for="{{selected.days}}" wx:key="day" class="public-day"><view class="day-number">{{item.day}}</view><view class="day-body"><view class="day-title">{{item.regionId}} · {{item.theme}}</view><view class="places place-links"><button wx:for="{{item.places}}" wx:key="id" class="place-link" data-id="{{item.id}}" data-route="{{selected.id}}" bindtap="openPlace">{{item.name}}<text>看景色</text></button></view></view></view></view>
     <button class="btn primary full" bindtap="openPlanner">按这条路线匹配我的行程</button>
   </view>
 </view>

@@ -27,6 +27,9 @@ def settings(require_enabled: bool = False) -> dict:
     client_id = os.getenv("PAYPAL_CLIENT_ID", "").strip()
     client_secret = os.getenv("PAYPAL_CLIENT_SECRET", "").strip()
     webhook_id = os.getenv("PAYPAL_WEBHOOK_ID", "").strip()
+    live_approved = os.getenv("PAYPAL_LIVE_APPROVED", "").strip().lower() in {
+        "1", "true", "yes", "on"
+    }
     currency = os.getenv("PAYPAL_CURRENCY", "USD").strip().upper()
     if currency != "USD":
         raise PayPalError("paypal_currency_not_supported", 503)
@@ -38,9 +41,12 @@ def settings(require_enabled: bool = False) -> dict:
         raise PayPalError("paypal_price_invalid", 503)
     if amount <= 0:
         raise PayPalError("paypal_price_invalid", 503)
-    enabled = bool(client_id and client_secret)
-    if require_enabled and not enabled:
+    credentials_present = bool(client_id and client_secret)
+    enabled = credentials_present and (environment != "live" or live_approved)
+    if require_enabled and not credentials_present:
         raise PayPalError("paypal_not_configured", 503)
+    if require_enabled and environment == "live" and not live_approved:
+        raise PayPalError("paypal_live_not_approved", 503)
     return {
         "environment": environment,
         "base_url": (
@@ -56,6 +62,9 @@ def settings(require_enabled: bool = False) -> dict:
         "amount_text": format(amount, ".2f"),
         "amount_cents": int(amount * 100),
         "enabled": enabled,
+        "live_approved": live_approved,
+        "product_type": "digital_route_access",
+        "transport_included": False,
     }
 
 
@@ -116,7 +125,7 @@ async def create_order(config: dict, local_order_id: str) -> dict:
                     "reference_id": local_order_id,
                     "custom_id": local_order_id,
                     "invoice_id": local_order_id,
-                    "description": "WanderMind professional Bali route unlock",
+                    "description": "WanderMind digital Bali route access (transport not included)",
                     "amount": {
                         "currency_code": config["currency"],
                         "value": config["amount_text"],

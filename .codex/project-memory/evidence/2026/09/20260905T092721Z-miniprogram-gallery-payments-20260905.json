@@ -1,0 +1,22 @@
+{
+  "schema_version": 1,
+  "evidence_id": "ev-20260905T092721Z-miniprogram-gallery-payments-20260905",
+  "task_ref": "miniprogram-gallery-payments-20260905",
+  "owner": "codex-sol",
+  "captured_at": "2026-09-05T09:27:21Z",
+  "status": "verified",
+  "claim": "Mini Program gallery and POI media migration plus digital-route payment boundary completed locally.",
+  "source": {
+    "kind": "git",
+    "repository": "https://github.com/lingfengai731/Agentstrip.git",
+    "commit": "0a76004f63e3a016e6ebdbb1fc084b0036bedae6",
+    "branch": "codex/miniprogram-gallery-payments-20260905",
+    "worktree": "E:\\Agentstrip-worktrees\\active\\account1\\miniprogram-gallery-payments-20260905",
+    "dirty": true
+  },
+  "verification": {
+    "command": "node tools/test_miniprogram_contract.cjs; python -m unittest wandermind.backend.tests.test_product_access; node tools/test_bali_browser.cjs; node tools/test_recovery_paths.cjs; git diff --check; WeChat DevTools CLI preview",
+    "result": "294 Mini Program checks, 118 backend tests, Bali browser and recovery suites passed; Preview compiled at 1,571,935 bytes; 37/37 public-route POIs have static media; 37 website gallery selections preserved."
+  },
+  "notes": "PayPal remains Sandbox. No real payment, refund, entitlement write, driver email, Mini Program Upload, review submission or release."
+}

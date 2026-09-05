@@ -3104,6 +3104,9 @@ async def paypal_public_config():
         "client_id": config["client_id"] if config["enabled"] else "",
         "currency": config["currency"],
         "amount": config["amount_text"],
+        "live_approved": config["live_approved"],
+        "product_type": config["product_type"],
+        "transport_included": config["transport_included"],
     }
 
 

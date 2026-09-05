@@ -1,0 +1,42 @@
+<view class="place-page">
+  <view wx:if="{{loading}}" class="state-card">正在读取地点与照片…</view>
+  <view wx:if="{{error}}" class="state-card error"><text>{{error}}</text><button class="retry" bindtap="retry">重新加载</button></view>
+
+  <block wx:if="{{place}}">
+    <view class="photo-stage">
+      <swiper wx:if="{{images.length}}" class="photo-swiper" current="{{current}}" indicator-dots="{{images.length > 1}}" indicator-color="rgba(255,255,255,.55)" indicator-active-color="#FCBF1E" bindchange="onSlide">
+        <swiper-item wx:for="{{images}}" wx:key="key">
+          <image wx:if="{{!item.imageFailed}}" class="place-image" src="{{item.fullUrl}}" mode="aspectFill" show-menu-by-longpress="{{true}}" data-index="{{index}}" binderror="markImageFailed" />
+          <view wx:else class="place-image place-image-fallback">这张图片暂时无法加载</view>
+        </swiper-item>
+      </swiper>
+      <view wx:else class="photo-empty">这个地点的照片仍在核验中</view>
+      <view wx:if="{{images.length}}" class="photo-count">{{current + 1}} / {{images.length}}</view>
+    </view>
+
+    <view class="place-card">
+      <view class="eyebrow">{{place.region || 'BALI'}}{{routeId ? ' · ' + routeId : ''}}</view>
+      <view class="place-title">{{place.title}}</view>
+      <view class="place-description">{{place.description}}</view>
+      <view class="facts">
+        <text wx:if="{{place.type}}">{{place.type}}</text>
+        <text wx:if="{{place.routesText}}">路线 {{place.routesText}}</text>
+      </view>
+      <view class="live-note">照片用于识别地点与感受环境；天气、开放时间、门票和预约请在出发前实时确认。</view>
+    </view>
+
+    <view wx:if="{{images.length}}" class="credits-card">
+      <view class="credits-title">当前照片</view>
+      <view class="credits-name">{{images[current].alt || images[current].title}}</view>
+      <view class="credits-scope">{{images[current].scope === 'exact_place' ? '真实地点照片' : '区域或体验参考图'}}</view>
+      <view class="credits-line">{{images[current].rights.credit}}</view>
+      <button wx:if="{{images[current].rights.sourceUrl}}" class="link-btn" data-value="{{images[current].rights.sourceUrl}}" bindtap="copyLink">复制图片来源链接</button>
+    </view>
+
+    <view class="actions-card">
+      <button wx:if="{{place.officialUrl}}" class="action primary" data-value="{{place.officialUrl}}" bindtap="copyLink">复制官方地点链接</button>
+      <button wx:if="{{place.bookingUrl}}" class="action secondary" data-value="{{place.bookingUrl}}" bindtap="copyLink">复制预约链接</button>
+      <button class="action secondary" bindtap="backToTrips">返回路线</button>
+    </view>
+  </block>
+</view>

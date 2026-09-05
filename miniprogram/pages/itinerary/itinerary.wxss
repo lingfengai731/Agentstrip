@@ -32,6 +32,10 @@
 .day-title { font-size: 25rpx; font-weight: 750; }
 .day-theme, .places, .lock-copy { margin-top: 8rpx; font-size: 22rpx; line-height: 1.55; color: #6B756F; }
 .places { color: #365F54; }
+.place-links { display: flex; gap: 10rpx; flex-wrap: wrap; }
+.place-link { display: inline-flex; min-height: 72rpx; margin: 0; padding: 0 18rpx; align-items: center; gap: 10rpx; border: 1rpx solid #D7E2DD; border-radius: 999rpx; background: #FFFFFF; color: #285B50; font-size: 22rpx; line-height: 1.2; }
+.place-link text { color: #9A731A; font-size: 18rpx; font-weight: 700; }
+.gallery-link { display: flex; min-height: 72rpx; margin: 12rpx 0 0; padding: 0 22rpx; align-items: center; justify-content: center; border: 1rpx solid #D8C68F; border-radius: 999rpx; background: #FFF9E9; color: #725513; font-size: 22rpx; font-weight: 750; line-height: 1.2; }
 .lock-copy { color: #8B8E8A; }
 .pro-top { display: flex; justify-content: space-between; gap: 20rpx; }
 .pro-heading { min-width: 0; }

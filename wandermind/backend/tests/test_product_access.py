@@ -1786,6 +1786,47 @@ class ProductAccessTests(unittest.TestCase):
         self.assertEqual(response.status_code, 200, response.text)
         self.assertEqual(response.json()["enabled"], False)
         self.assertNotIn("client_secret", response.json())
+        self.assertEqual(response.json()["product_type"], "digital_route_access")
+        self.assertEqual(response.json()["transport_included"], False)
+
+    def test_paypal_live_requires_explicit_approval_gate(self):
+        with patch.dict(
+            os.environ,
+            {
+                "PAYPAL_ENV": "live",
+                "PAYPAL_CLIENT_ID": "live-public-client",
+                "PAYPAL_CLIENT_SECRET": "live-server-secret",
+                "PAYPAL_WEBHOOK_ID": "live-webhook",
+                "PAYPAL_LIVE_APPROVED": "",
+                "PAYPAL_CURRENCY": "USD",
+                "PAYPAL_ROUTE_PRICE": "1.49",
+            },
+            clear=False,
+        ):
+            public = self._run(self._request("GET", "/api/paypal/config"))
+            self.assertEqual(public.status_code, 200, public.text)
+            self.assertEqual(public.json()["enabled"], False)
+            self.assertEqual(public.json()["live_approved"], False)
+            with self.assertRaises(main.paypal_service.PayPalError) as raised:
+                main.paypal_service.settings(require_enabled=True)
+        self.assertEqual(raised.exception.code, "paypal_live_not_approved")
+
+    def test_paypal_sandbox_does_not_require_live_approval_gate(self):
+        with patch.dict(
+            os.environ,
+            {
+                "PAYPAL_ENV": "sandbox",
+                "PAYPAL_CLIENT_ID": "sandbox-public-client",
+                "PAYPAL_CLIENT_SECRET": "sandbox-server-secret",
+                "PAYPAL_LIVE_APPROVED": "",
+                "PAYPAL_CURRENCY": "USD",
+                "PAYPAL_ROUTE_PRICE": "1.49",
+            },
+            clear=False,
+        ):
+            config = main.paypal_service.settings(require_enabled=True)
+        self.assertEqual(config["enabled"], True)
+        self.assertEqual(config["environment"], "sandbox")
 
     def test_paypal_capture_revalidates_amount_and_unlocks_once(self):
         trip_id = self._new_trip(token=self.user_token)

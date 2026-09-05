@@ -262,4 +262,5 @@ Page({
   goCompare()   { wx.switchTab({ url: '/pages/compare/compare' }); },
   goItinerary() { wx.switchTab({ url: '/pages/itinerary/itinerary' }); },
   goMe()        { wx.switchTab({ url: '/pages/me/me' }); },
+  openGallery() { wx.navigateTo({ url: '/pages/gallery/gallery' }); },
 });

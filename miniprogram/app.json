@@ -4,6 +4,8 @@
     "pages/chat/chat",
     "pages/compare/compare",
     "pages/itinerary/itinerary",
+    "pages/gallery/gallery",
+    "pages/place/place",
     "pages/me/me",
     "pages/prefs/prefs",
     "pages/planner/planner",

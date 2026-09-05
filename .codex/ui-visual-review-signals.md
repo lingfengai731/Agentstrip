@@ -181,3 +181,16 @@ rejected aspects: 不接受明显的 AI 模板感；不接受方框内文字未�
 reason in reviewer words: 现在的小程序真的是 AI 味较重，有的框文字甚至都还不居中，需要全面检查改善
 scope: this project
 recorded at: 2026-09-05
+
+workflow: ui-implementation-workflow-v2
+status: raw
+task: 网站作品集与路线景点多图能力迁移到微信小程序
+page/surface: WanderMind 智旅微信小程序首页、公共路线与景点详情
+screenshot or artifact: 2026-09-05 用户反馈与网站现有作品集/POI 多图交互
+reviewer: 用户
+decision: rejected
+accepted aspects: 小程序现有登录、公共路线和整体 WanderMind 风格继续保留
+rejected aspects: 不接受网站已有作品集和点击路线景点查看不同景色图片的能力遗漏在小程序迁移之外
+reason in reviewer words: 作品集还有路线可以点开景点的名字看不同景色图片这一个没有从网站转移到小程序吗
+scope: this project
+recorded at: 2026-09-05

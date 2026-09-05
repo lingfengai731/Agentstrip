@@ -579,3 +579,11 @@
 - GitHub callback: PR #58 fixed head `d36a41a` passed Project memory validation run `33955131707` and squash merged as `main@a7aa5e5`; the fixed-head and merge Git trees are identical.
 - Release callback: Render exposes no deployment for the Mini Program-only commit, so no redundant manual deployment was triggered. The backend remains on the previously verified live release.
 - Next callback owner: scan the fresh design Preview and report cross-page alignment/clipping observations. No Upload, review submission or release occurred.
+
+## 2026-09-05 Mini-program gallery and payment-boundary callback
+
+- Route: large / L2, with payment release treated as L3. Sol retained product classification, payment-compliance judgment, cross-module integration, final QA and release ownership.
+- Worker: formal `luna_worker` `/root/miniprogram_gallery_gap_audit` (`gpt-5.6-luna` / `max`) performed a bounded read-only comparison of website and Mini Program media capabilities. It identified the missing gallery, POI navigation, multi-image swiper and attribution path, then stopped as `blocked` when concurrent Sol-owned files changed; it made no edits. Sol independently verified the accepted counts and implemented the slice.
+- UI callback: the existing cream / teal / gold Mini Program system now exposes the website gallery from Home and Trips. All 37 POIs used by R1–R6 open a native detail page; current approved data gives every one at least one image and gives four POIs multiple images. Remote-image failure, empty and retry states are visible; the main package stays around 1.5 MB.
+- Payment callback: ¥9.9 is explicitly the digital route-access product with three same-trip parameter adjustments; transport, drivers, hotels and supplier bookings remain separate quote/direct-payment flows. PayPal Sandbox stays usable, while Live requires the additional `PAYPAL_LIVE_APPROVED` gate after written provider approval. No license substitution or merchant-category workaround is accepted.
+- QA/release boundary: Mini Program contract, backend, browser and recovery suites plus official Preview compilation are required before integration. Preview is not Upload, review submission or release; no real payment, refund, entitlement mutation or driver message is authorized by this callback.
