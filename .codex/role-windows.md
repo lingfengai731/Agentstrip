@@ -587,3 +587,10 @@
 - UI callback: the existing cream / teal / gold Mini Program system now exposes the website gallery from Home and Trips. All 37 POIs used by R1–R6 open a native detail page; current approved data gives every one at least one image and gives four POIs multiple images. Remote-image failure, empty and retry states are visible; the main package stays around 1.5 MB.
 - Payment callback: ¥9.9 is explicitly the digital route-access product with three same-trip parameter adjustments; transport, drivers, hotels and supplier bookings remain separate quote/direct-payment flows. PayPal Sandbox stays usable, while Live requires the additional `PAYPAL_LIVE_APPROVED` gate after written provider approval. No license substitution or merchant-category workaround is accepted.
 - QA/release boundary: Mini Program contract, backend, browser and recovery suites plus official Preview compilation are required before integration. Preview is not Upload, review submission or release; no real payment, refund, entitlement mutation or driver message is authorized by this callback.
+
+## 2026-09-05 Mini-program gallery production callback
+
+- GitHub callback: PR #60 fixed head `c73f3f6` passed Project memory validation and PostgreSQL integration, then squash merged as `main@909569a`; both Git trees equal `fe552f6c754db5608af65e1b2c0d8bba71b8d355`.
+- Render callback: automatic deploy `dep-dadu29942hec73bsr0t0` became Live at the exact merge commit. Fresh health, payment-config, Bali route/media data and professional-route asset probes all returned HTTP 200.
+- Payment callback: production remains PayPal Sandbox at USD 1.49; public config reports `digital_route_access`, `transport_included=false` and `live_approved=false`. No credential values are stored in project memory.
+- Mini Program boundary: the 1,571,935-byte Preview is compiled but still awaits owner device acceptance. No Upload, review submission or release occurred.
