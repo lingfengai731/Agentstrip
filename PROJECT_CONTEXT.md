@@ -74,6 +74,22 @@ Create a handoff before changing accounts or ending incomplete work:
 
 ## Current integration boundary
 
+### 2026-09-05 Mini Program gallery and payment boundary
+
+PR #60 fixed head `c73f3f6c3cdebf2501960b190703ff31fe3b3389` passed Project memory
+validation and PostgreSQL integration, then squash merged as
+`main@909569a729053e65a35f3d8c52b132a91a6f90f6`. The fixed-head and merge Git trees are
+identical. Render automatic deploy `dep-dadu29942hec73bsr0t0` became Live at that exact merge
+commit; fresh probes returned HTTP 200 for health, PayPal public configuration, the Bali route/media
+data and the professional-route JavaScript asset.
+
+The public payment configuration remains enabled in Sandbox at USD 1.49 and reports
+`product_type=digital_route_access`, `transport_included=false` and `live_approved=false`. No Live
+money, refund, entitlement mutation or driver message occurred. The Mini Program Preview compiled at
+1,571,935 bytes and now exposes the reviewed website gallery plus a native place-detail swiper for all
+37 POIs used by R1-R6. This does not mean the Mini Program was uploaded, submitted or released; the
+new gallery still needs owner physical-device acceptance.
+
 PR #28 merged at main commit `aa670459629b4c628867a63df18d21df84ade299`; GitHub project-memory
 workflow run 83 passed. Render production served the stronger 12-second teal/gold ambient layer,
 AI workspace product context and utility-page index controls on 2026-08-27. Fresh production
