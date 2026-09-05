@@ -1,41 +1,46 @@
 /* pages/index/index.wxss */
 .page {
   min-height: 100vh;
-  padding: 30rpx 30rpx 80rpx;
+  padding: 24rpx 28rpx 80rpx;
   box-sizing: border-box;
 }
 
 /* —— Hero (登录页头部) —— */
 .hero {
   text-align: center;
-  padding: 60rpx 0 40rpx;
+  padding: 44rpx 0 32rpx;
 }
 .hero-logo {
-  display: inline-block;
-  width: 120rpx; height: 120rpx;
-  background: #0E7C6B;
-  color: #FAF7F2;
+  display: flex;
+  width: 108rpx;
+  height: 108rpx;
+  margin: 0 auto 24rpx;
+  align-items: center;
+  justify-content: center;
+  border: 1rpx solid #E5E2DA;
   border-radius: 28rpx;
-  font-size: 70rpx;
-  font-family: 'Songti SC', 'STSong', serif;
-  text-align: center;
-  line-height: 120rpx;
-  margin-bottom: 24rpx;
+  background: #FFFFFF;
+  box-shadow: 0 12rpx 30rpx rgba(42,39,35,.06);
 }
+.hero-logo image { width: 72rpx; height: 72rpx; }
 .hero-title {
-  font-size: 44rpx;
-  font-weight: 700;
+  font-size: 42rpx;
+  font-weight: 750;
+  letter-spacing: -.5rpx;
   color: #2A2723;
 }
 .hero-subtitle {
   font-size: 24rpx;
-  color: #8A857F;
-  margin-top: 6rpx;
+  color: #6F6962;
+  margin: 10rpx auto 0;
+  max-width: 560rpx;
+  line-height: 1.55;
 }
 
 /* —— 登录卡片 —— */
 .auth-card {
   margin-top: 20rpx;
+  padding: 24rpx 28rpx 28rpx;
 }
 .auth-tabs {
   display: flex;
@@ -43,9 +48,13 @@
   border-bottom: 1rpx solid #E1DCD3;
 }
 .auth-tab {
+  display: flex;
+  min-height: 88rpx;
+  align-items: center;
+  justify-content: center;
   flex: 1;
   text-align: center;
-  padding: 20rpx 0;
+  padding: 0;
   font-size: 30rpx;
   color: #8A857F;
   font-weight: 600;
@@ -59,11 +68,13 @@
 .form-row {
   margin-bottom: 20rpx;
 }
+.field-label { margin: 0 4rpx 9rpx; color: #4F4A45; font-size: 22rpx; font-weight: 700; }
 .code-row {
   display: flex;
-  align-items: stretch;
+  align-items: flex-end;
   gap: 16rpx;
 }
+.code-field { flex: 1; min-width: 0; }
 .code-input {
   flex: 1;
   min-width: 0;
@@ -77,7 +88,9 @@
   color: #0E6658;
   font-size: 24rpx;
   font-weight: 700;
-  line-height: 88rpx;
+  height: 88rpx;
+  min-height: 88rpx;
+  line-height: 1.2;
 }
 .code-btn::after { border: 0; }
 .code-btn[disabled] { color: #8A857F; background: #F0EDE6; }
@@ -106,30 +119,34 @@
 }
 .wechat-btn,
 .wechat-link-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
   border: 1rpx solid #B6D9D1;
   border-radius: 14rpx;
   background: #F5FBF9;
   color: #0E6658;
   font-size: 28rpx;
   font-weight: 700;
-  line-height: 88rpx;
+  min-height: 88rpx;
+  line-height: 1.2;
 }
 .wechat-btn::after,
 .wechat-link-btn::after { border: 0; }
 .wechat-btn[disabled],
 .wechat-link-btn[disabled] { opacity: .58; }
 .wechat-mark {
-  display: inline-block;
+  display: flex;
   width: 42rpx;
   height: 42rpx;
   margin-right: 10rpx;
+  align-items: center;
+  justify-content: center;
   border-radius: 50%;
   background: #0E7C6B;
   color: #FAF7F2;
   font-size: 23rpx;
-  line-height: 42rpx;
-  text-align: center;
-  vertical-align: -3rpx;
+  line-height: 1;
 }
 .wechat-login-hint {
   margin-top: 12rpx;
@@ -147,7 +164,7 @@
 
 /* —— 已登录：欢迎区 —— */
 .welcome {
-  padding: 30rpx 10rpx 30rpx;
+  padding: 28rpx 4rpx 26rpx;
 }
 .welcome-greeting {
   font-size: 38rpx;
@@ -169,18 +186,20 @@
 }
 .dest-card {
   background: #fff;
-  border-radius: 20rpx;
-  padding: 28rpx;
+  border: 1rpx solid #E5E2DA;
+  border-radius: 22rpx;
+  padding: 24rpx 26rpx;
   display: flex;
   align-items: center;
   gap: 24rpx;
-  box-shadow: 0 4rpx 16rpx rgba(0,0,0,.04);
-  border-left: 8rpx solid #E07A12;
+  box-shadow: 0 4rpx 14rpx rgba(42,39,35,.035);
   transition: transform .15s;
 }
 .dest-card.active {
+  border-color: #0E7C6B;
   background: #E3F5F1;
 }
+.dest-card:active, .custom-dest-card:active, .qa-item:active { transform: scale(.985); }
 .dest-flag {
   font-size: 56rpx;
 }
@@ -210,7 +229,7 @@
   gap: 20rpx;
   padding: 26rpx 28rpx;
 }
-.custom-icon { font-size: 44rpx; }
+.custom-icon { display:flex; width:52rpx; height:52rpx; align-items:center; justify-content:center; border-radius:14rpx; background:#F3F1EA; color:#0E6658; font-size:32rpx; }
 .custom-text { flex: 1; font-size: 28rpx; color: #2A2723; font-weight: 600; }
 .custom-arrow { color: #8A857F; font-size: 40rpx; }
 
@@ -239,7 +258,9 @@
   margin: 0;
   padding: 0;
   font-size: 24rpx;
-  line-height: 68rpx;
+  min-height: 88rpx;
+  height: 88rpx;
+  line-height: 1.2;
 }
 .wechat-linked-note {
   margin-top: 24rpx;
@@ -257,7 +278,6 @@
   color: #8A857F;
   font-weight: 600;
   letter-spacing: 1rpx;
-  text-transform: uppercase;
   margin: 0 10rpx 16rpx;
 }
 .qa-grid {
@@ -266,20 +286,40 @@
   gap: 20rpx;
 }
 .qa-item {
+  display: flex;
+  align-items: center;
+  min-height: 116rpx;
   background: #fff;
+  border: 1rpx solid #E5E2DA;
   border-radius: 20rpx;
-  padding: 30rpx 20rpx;
-  text-align: center;
-  box-shadow: 0 4rpx 16rpx rgba(0,0,0,.04);
+  padding: 22rpx 20rpx;
+  text-align: left;
+  box-shadow: 0 4rpx 14rpx rgba(42,39,35,.035);
 }
 .qa-icon {
-  font-size: 56rpx;
-  margin-bottom: 12rpx;
+  display: flex;
+  flex: 0 0 54rpx;
+  width: 54rpx;
+  height: 54rpx;
+  margin-right: 16rpx;
+  align-items: center;
+  justify-content: center;
+  border-radius: 15rpx;
+  background: #173E37;
+  color: #FCBF1E;
+  font-size: 22rpx;
+  font-weight: 800;
 }
+.qa-copy { min-width: 0; }
 .qa-label {
   font-size: 26rpx;
   color: #2A2723;
-  font-weight: 600;
+  font-weight: 700;
+}
+.qa-note { margin-top: 3rpx; color: #8A857F; font-size: 20rpx; line-height: 1.35; }
+
+@media (max-width: 360px) {
+  .qa-grid { grid-template-columns: 1fr; gap: 14rpx; }
 }
 
 /* —— 退出登录 —— */
@@ -288,7 +328,12 @@
   padding: 40rpx 0 20rpx;
 }
 .logout-link {
+  width: 220rpx;
+  min-height: 88rpx;
+  margin: 0 auto;
+  background: transparent;
   color: #8A857F;
   font-size: 24rpx;
   text-decoration: underline;
 }
+.logout-link::after { border: 0; }

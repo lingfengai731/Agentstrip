@@ -7,7 +7,7 @@ const app = getApp();
 
 const BASE_SYSTEM = `你是 WanderMind 智旅的旅行规划助手。
 - 提供具体地点、价格参考（当地货币/人民币双标注）
-- 适当使用 emoji 让回复生动
+- 用自然、具体的旅行语言表达，不用 emoji 堆砌气氛
 - 分段清晰，避免大段密集文字
 - 像去过目的地 20 次的朋友在分享真实经验
 - 使用完整、自然的句子；不要把数字、币种、专有名词或单词拆到不同的行
@@ -24,10 +24,10 @@ const LANG_PROMPT = {
 };
 
 const SUGG_BY_DEST = {
-  bali:      ['🏨 推荐乌布精品民宿', '🌊 巴厘岛冲浪入门攻略', '🍜 必吃地道美食清单', '💰 两人 7 天预算规划'],
-  kyoto:     ['🏯 京都 5 日深度路线', '🌸 樱花季最佳赏花点', '🍣 米其林餐厅推荐', '🎋 岚山一日游攻略'],
-  paris:     ['🗼 巴黎 4 日经典路线', '🥐 必去面包店和咖啡馆', '🎨 卢浮宫攻略', '🌃 浪漫晚餐推荐'],
-  santorini: ['🌅 伊亚日落最佳位置', '🍷 当地酒庄推荐', '🛳️ 跳岛游攻略', '💍 蜜月酒店推荐'],
+  bali:      ['推荐适合住三晚的乌布民宿', '第一次冲浪应该选哪个海滩', '整理一份巴厘岛在地餐厅清单', '规划两个人七天的大致预算'],
+  kyoto:     ['安排一条京都五日深度路线', '樱花季怎么避开人潮', '推荐值得提前预约的餐厅', '安排一条顺路的岚山一日路线'],
+  paris:     ['安排一条巴黎四日经典路线', '推荐本地人常去的面包店和咖啡馆', '第一次去卢浮宫怎么安排', '推荐适合纪念日晚餐的街区'],
+  santorini: ['伊亚日落应该提前多久到', '推荐可以参观的当地酒庄', '怎么安排一天跳岛行程', '蜜月住在哪个区域更安静'],
 };
 
 let _msgIdCounter = 0;
@@ -38,7 +38,7 @@ Page({
     destFlag: '🌺',
     destName: '巴厘岛',
     mode: 'fast',
-    modeLabel: '⚡ 极速模式',
+    modeLabel: '快速回答',
     messages: [],
     inputText: '',
     canSend: false,
@@ -59,7 +59,7 @@ Page({
     const pendingText = sameDest ? (saved.pendingText || '') : '';
     this.setData({
       mode,
-      modeLabel: mode === 'fast' ? '⚡ 极速模式' : '🎯 精细模式',
+      modeLabel: mode === 'fast' ? '快速回答' : '深入规划',
       messages: sameDest ? this._normalizeMessages(saved.messages || []) : [],
       inputText: pendingText || (sameDest ? (saved.inputText || '') : ''),
       canSend: !!(pendingText || (sameDest && saved.inputText)),
@@ -146,11 +146,11 @@ Page({
     const mode = e.currentTarget.dataset.mode;
     this.setData({
       mode,
-      modeLabel: mode === 'fast' ? '⚡ 极速模式' : '🎯 精细模式',
+      modeLabel: mode === 'fast' ? '快速回答' : '深入规划',
     });
     wx.setStorageSync('wm_chat_mode', mode);
     wx.showToast({
-      title: mode === 'fast' ? '已切换 ⚡ 极速' : '已切换 🎯 精细',
+      title: mode === 'fast' ? '已切换到快速回答' : '已切换到深入规划',
       icon: 'none',
     });
   },

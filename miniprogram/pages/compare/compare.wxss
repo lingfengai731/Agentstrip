@@ -1,7 +1,7 @@
 /* pages/compare/compare.wxss */
 .compare-page {
   min-height: 100vh;
-  background: #FAF7F2;
+  background: #FAFAF7;
   padding-bottom: 40rpx;
 }
 
@@ -11,8 +11,8 @@
   align-items: center;
   gap: 16rpx;
   padding: 24rpx 28rpx;
-  background: #fff;
-  border-bottom: 1rpx solid #E1DCD3;
+  background: #FAFAF7;
+  border-bottom: 1rpx solid #E5E2DA;
 }
 .dest-flag { font-size: 56rpx; }
 .dest-info { flex: 1; }
@@ -24,13 +24,16 @@
   display: flex;
   margin: 24rpx 24rpx 0;
   background: #F0EDE6;
-  border-radius: 16rpx;
+  border-radius: 14rpx;
   padding: 6rpx;
 }
 .sub-tab {
+  display: flex;
+  min-height: 88rpx;
+  align-items: center;
+  justify-content: center;
   flex: 1;
-  text-align: center;
-  padding: 18rpx 0;
+  padding: 0 18rpx;
   font-size: 28rpx;
   font-weight: 700;
   color: #8A857F;
@@ -52,7 +55,6 @@
   font-weight: 700;
   color: #5A554F;
   letter-spacing: 1rpx;
-  text-transform: uppercase;
   margin: 24rpx 4rpx 14rpx;
 }
 
@@ -62,8 +64,11 @@
   margin-bottom: 8rpx;
 }
 .chip {
-  display: inline-block;
-  padding: 12rpx 22rpx;
+  display: inline-flex;
+  min-height: 80rpx;
+  padding: 0 22rpx;
+  align-items: center;
+  justify-content: center;
   border-radius: 28rpx;
   background: #fff;
   border: 2rpx solid #E1DCD3;
@@ -89,13 +94,12 @@
   background: #fff;
   border-radius: 16rpx;
   padding: 16rpx 20rpx;
-  border: 2rpx solid #E1DCD3;
+  border: 1rpx solid #E1DCD3;
 }
 .field-label {
   font-size: 20rpx;
   color: #8A857F;
   font-weight: 600;
-  text-transform: uppercase;
   letter-spacing: .5rpx;
 }
 .picker-display {
@@ -107,10 +111,14 @@
 
 /* —— 搜索按钮 —— */
 .search-btn {
+  display: flex;
+  min-height: 88rpx;
+  align-items: center;
+  justify-content: center;
   background: #0E7C6B;
   color: #fff;
   border-radius: 16rpx;
-  padding: 20rpx;
+  padding: 0 24rpx;
   font-size: 30rpx;
   font-weight: 700;
   margin-top: 24rpx;
@@ -129,9 +137,13 @@
   margin-bottom: 8rpx;
 }
 .trip-btn {
+  display: flex;
+  min-height: 80rpx;
+  align-items: center;
+  justify-content: center;
   flex: 1;
   text-align: center;
-  padding: 14rpx 0;
+  padding: 0 14rpx;
   font-size: 26rpx;
   font-weight: 700;
   color: #8A857F;
@@ -162,7 +174,8 @@
   margin-bottom: 16rpx;
   padding: 16rpx;
   gap: 16rpx;
-  box-shadow: 0 2rpx 8rpx rgba(0,0,0,.04);
+  border: 1rpx solid #E8E3DA;
+  box-shadow: 0 3rpx 12rpx rgba(42,39,35,.03);
 }
 .hotel-thumb {
   width: 140rpx; height: 140rpx;
@@ -171,12 +184,15 @@
   flex-shrink: 0;
 }
 .hotel-thumb-placeholder {
+  display: flex;
+  align-items: center;
+  justify-content: center;
   width: 140rpx; height: 140rpx;
   border-radius: 12rpx;
   background: #F0EDE6;
-  text-align: center;
-  line-height: 140rpx;
-  font-size: 60rpx;
+  color: #0E6658;
+  font-size: 28rpx;
+  font-weight: 800;
   flex-shrink: 0;
 }
 .hotel-info {
@@ -224,7 +240,8 @@
   margin-bottom: 16rpx;
   padding: 20rpx 18rpx;
   gap: 16rpx;
-  box-shadow: 0 2rpx 8rpx rgba(0,0,0,.04);
+  border: 1rpx solid #E8E3DA;
+  box-shadow: 0 3rpx 12rpx rgba(42,39,35,.03);
 }
 .flight-logo {
   width: 60rpx; height: 60rpx;
@@ -233,12 +250,15 @@
   flex-shrink: 0;
 }
 .flight-logo-placeholder {
+  display: flex;
+  align-items: center;
+  justify-content: center;
   width: 60rpx; height: 60rpx;
   border-radius: 12rpx;
   background: #F0EDE6;
-  text-align: center;
-  line-height: 60rpx;
-  font-size: 32rpx;
+  color: #0E6658;
+  font-size: 22rpx;
+  font-weight: 800;
   flex-shrink: 0;
 }
 .flight-info { flex: 1; min-width: 0; }
@@ -269,11 +289,14 @@
   flex-shrink: 0;
 }
 .flight-book-all {
-  text-align: center;
-  padding: 18rpx;
+  display: flex;
+  min-height: 76rpx;
+  align-items: center;
+  justify-content: center;
+  padding: 0 18rpx;
   background: transparent;
   color: #0E7C6B;
-  border: 2rpx dashed #5DBDA7;
+  border: 1rpx solid #B6D9D1;
   border-radius: 14rpx;
   font-size: 24rpx;
   font-weight: 700;
@@ -285,7 +308,13 @@
   text-align: center;
   padding: 60rpx 20rpx;
 }
-.empty-icon { font-size: 80rpx; opacity: .5; margin-bottom: 20rpx; }
+.empty-icon { margin-bottom: 20rpx; color: #8A857F; font-size: 21rpx; font-weight: 800; letter-spacing: .12em; }
+
+@media (max-width: 360px) {
+  .flight-card { align-items: flex-start; flex-wrap: wrap; }
+  .flight-price { width: 100%; padding-left: 76rpx; }
+  .form-row { flex-direction: column; }
+}
 .empty-text { font-size: 26rpx; color: #8A857F; }
 
 .flex-1 { flex: 1; }

@@ -1,1 +1,15 @@
-.history-page{min-height:100vh;padding:30rpx 24rpx;background:#faf7f2;box-sizing:border-box;color:#26342f}.header{padding:26rpx 12rpx 30rpx}.eyebrow{font-size:20rpx;letter-spacing:.16em;font-weight:800;color:#9b6117}.title{margin-top:12rpx;font-size:40rpx;font-weight:850}.subtitle{margin-top:10rpx;color:#747b77;font-size:24rpx}.state{padding:70rpx 30rpx;border-radius:28rpx;background:#fff;text-align:center;color:#747b77}.state.error{color:#ae4030}.state button{margin-top:20rpx;background:none;color:#0e7c6b}.state button::after{border:0}.empty-icon{font-size:64rpx}.empty-sub{margin-top:12rpx;font-size:22rpx}.list{display:flex;flex-direction:column;gap:16rpx}.item{display:flex;align-items:center;gap:16rpx;padding:26rpx;border:1rpx solid #e7e0d5;border-radius:24rpx;background:#fff}.item-main{min-width:0;flex:1}.item-title{font-size:27rpx;font-weight:750;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.item-meta{margin-top:8rpx;color:#8a908c;font-size:21rpx}.delete{margin:0;padding:10rpx 14rpx;background:#fff5f3;color:#a94b3b;font-size:20rpx}.delete::after{border:0}
+.history-page { min-height: 100vh; padding: 30rpx 24rpx; background: #FAFAF7; box-sizing: border-box; color: #26342F; }
+.header { padding: 26rpx 12rpx 30rpx; }
+.title { font-size: 40rpx; line-height: 1.3; font-weight: 800; }
+.subtitle { margin-top: 10rpx; color: #747B77; font-size: 24rpx; line-height: 1.55; }
+.state { padding: 64rpx 30rpx; border: 1rpx solid #E5E2DA; border-radius: 22rpx; background: #FFFFFF; text-align: center; color: #747B77; }
+.state.error { color: #AE4030; background: #FFF8F6; }
+.state-action { min-height: 88rpx; margin: 20rpx auto 0; background: transparent; color: #0E7C6B; }
+.empty-icon { display: flex; width: 62rpx; height: 62rpx; margin: 0 auto 18rpx; align-items: center; justify-content: center; border-radius: 16rpx; background: #F3F1EA; color: #0E6658; font-size: 23rpx; font-weight: 800; }
+.empty-sub { margin-top: 12rpx; font-size: 22rpx; line-height: 1.55; }
+.list { display: flex; flex-direction: column; gap: 14rpx; }
+.item { display: flex; align-items: center; gap: 16rpx; padding: 24rpx; border: 1rpx solid #E7E0D5; border-radius: 20rpx; background: #FFFFFF; }
+.item-main { min-width: 0; flex: 1; padding: 8rpx 0; }
+.item-title { display: -webkit-box; overflow: hidden; font-size: 27rpx; font-weight: 750; line-height: 1.45; -webkit-box-orient: vertical; -webkit-line-clamp: 2; }
+.item-meta { margin-top: 8rpx; color: #747B77; font-size: 21rpx; }
+.delete { min-height: 80rpx; margin: 0; padding: 0 18rpx; background: #FFF5F3; color: #A94B3B; font-size: 20rpx; }

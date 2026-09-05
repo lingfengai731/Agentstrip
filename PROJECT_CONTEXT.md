@@ -365,3 +365,24 @@ run `33952993187` and squash merged as `main@3b60c3fe441071994f59801a6fd54fa5af4
 both Git trees equal `09dde410a152cc3c200505109bd5ad629178813d`. Because this slice changes only
 tests and repository evidence, no Render deployment is required. Preview acceptance and all external
 Mini Program release gates remain unchanged.
+
+## 2026-09-05 Mini-program design polish Preview
+
+The owner confirmed all five previous physical Preview gates: no white screen, the public name
+`WanderMind 智旅`, honest wrong-password feedback, normal email login and WeChat one-click login.
+That closes the authentication Preview gate only; it is not an Upload, review submission or release.
+
+An isolated worktree based on `main@c39024da062599bce19ef03f9cfd04b5cb7dfef0` now refines the Mini
+Program without changing its product or identity architecture. Index, chat, comparison, itinerary,
+planner, preferences, driver, history, language and account surfaces use the incumbent cream, teal and
+gold system; generic emoji/English decoration is reduced, form labels are visible, controls are centred
+and enlarged for touch, and narrow-phone layouts stack rather than compress. The itinerary hero remains
+distinctive but uses a quiet solid treatment instead of a generic gradient.
+
+Local acceptance is 245 Mini Program contract checks, 116 backend tests, 17 JavaScript syntax checks,
+15 JSON parses, `git diff --check`, zero Impeccable detector findings and an official 1,546,262-byte
+image-format Preview compile. Computer Use found two same-title DevTools windows after opening the new
+worktree, so it intentionally stopped instead of guessing which simulator was authoritative. The new
+design remains owner-observed Preview acceptance pending. No Render deployment is required for this
+Mini Program-only slice, and no driver email, production write, Upload, review submission or release
+occurred.

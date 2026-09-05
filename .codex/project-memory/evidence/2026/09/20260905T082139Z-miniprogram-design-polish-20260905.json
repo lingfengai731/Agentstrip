@@ -1,0 +1,22 @@
+{
+  "schema_version": 1,
+  "evidence_id": "ev-20260905T082139Z-miniprogram-design-polish-20260905",
+  "task_ref": "miniprogram-design-polish-20260905",
+  "owner": "codex-sol",
+  "captured_at": "2026-09-05T08:21:39Z",
+  "status": "verified",
+  "claim": "The Mini Program design-polish branch preserves the WanderMind cream, teal and gold identity while improving cross-page control centering, touch sizing, form clarity, narrow-phone layouts and human copy, and it compiles as a fresh Preview.",
+  "source": {
+    "kind": "local_worktree",
+    "repository": "https://github.com/lingfengai731/Agentstrip.git",
+    "baseline_commit": "c39024da062599bce19ef03f9cfd04b5cb7dfef0",
+    "branch": "codex/miniprogram-design-polish-20260905",
+    "worktree": "E:\\Agentstrip-worktrees\\active\\account1\\miniprogram-design-polish-20260905",
+    "dirty": true
+  },
+  "verification": {
+    "command": "node tools/test_miniprogram_contract.cjs; python -m unittest wandermind.backend.tests.test_product_access; node --check Mini Program JS; parse Mini Program JSON; git diff --check; impeccable detect --json miniprogram; WeChat DevTools CLI preview",
+    "result": "PASS: 245 Mini Program checks, 116 backend tests, 17 JavaScript syntax checks, 15 JSON parses, diff validation, zero detector findings and official Preview package 1,546,262 bytes."
+  },
+  "notes": "The owner separately confirmed the preceding Preview's five authentication checks. Formal luna_worker completed a read-only UI audit and changed no files; Sol reviewed and implemented the accepted findings. Computer Use stopped after two same-title DevTools windows were returned, so the new design still requires owner-observed Preview acceptance. No real driver request/email, production write, Render deployment, Upload, review submission or release occurred."
+}

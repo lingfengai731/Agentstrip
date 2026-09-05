@@ -168,3 +168,16 @@ rejected aspects: 不接受 radio 与 checkbox 被渲染成长条空框；不接
 reason in reviewer words: 万一我填写错了想重新填再重新匹配但是没有入口；这些对应下面的空都是不能填写的，是摆设还是
 scope: this surface
 recorded at: 2026-08-30
+
+workflow: ui-implementation-workflow-v2
+status: raw
+task: 微信小程序全页面视觉与排版精修
+page/surface: WanderMind 智旅微信小程序全部页面
+screenshot or artifact: 2026-09-05 真机 Preview 与当前 miniprogram 源码
+reviewer: 用户
+decision: mixed
+accepted aspects: 小程序正常打开；品牌标题、错误密码反馈、邮箱登录和微信一键登录均已在真机通过
+rejected aspects: 不接受明显的 AI 模板感；不接受方框内文字未居中；要求全面检查手机端页面的层级、对齐和视觉一致性
+reason in reviewer words: 现在的小程序真的是 AI 味较重，有的框文字甚至都还不居中，需要全面检查改善
+scope: this project
+recorded at: 2026-09-05

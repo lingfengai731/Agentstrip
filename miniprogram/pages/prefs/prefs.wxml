@@ -2,14 +2,13 @@
 <view class="prefs-page">
 
   <view class="hero">
-    <view class="hero-emoji">🧠</view>
-    <view class="hero-title">让 AI 更懂你</view>
-    <view class="hero-desc">保存后，AI 每次对话都会自动参考你的偏好</view>
+    <view class="hero-title">记下你的旅行偏好</view>
+    <view class="hero-desc">预算、同行方式与特殊需求会用于后续建议，你可以随时修改</view>
   </view>
 
   <!-- 预算档次（单选） -->
   <view class="section">
-    <view class="section-title">💰 预算档次</view>
+    <view class="section-title">预算档次</view>
     <view class="chip-row">
       <view
         wx:for="{{budgetOptions}}"
@@ -23,7 +22,7 @@
 
   <!-- 旅行风格（多选） -->
   <view class="section">
-    <view class="section-title">🎭 旅行风格 <text class="multi-hint">（可多选）</text></view>
+    <view class="section-title">旅行风格 <text class="multi-hint">可多选</text></view>
     <view class="chip-row">
       <view
         wx:for="{{styleOptions}}"
@@ -37,7 +36,7 @@
 
   <!-- 同行方式（单选） -->
   <view class="section">
-    <view class="section-title">👥 同行方式</view>
+    <view class="section-title">同行方式</view>
     <view class="chip-row">
       <view
         wx:for="{{partyOptions}}"
@@ -51,7 +50,7 @@
 
   <!-- 特殊偏好（备注） -->
   <view class="section">
-    <view class="section-title">📝 特殊偏好 / 备注</view>
+    <view class="section-title">特殊偏好与备注</view>
     <textarea
       class="notes-input"
       placeholder="如：素食、不喜欢太商业化、需要无障碍设施、对海鲜过敏…"
@@ -69,12 +68,12 @@
   <view class="action-bar">
     <button class="btn-ghost" bindtap="clearPrefs">清除全部</button>
     <button class="btn save-btn" bindtap="savePrefs" loading="{{busy}}" disabled="{{busy}}">
-      💾 {{busy ? '保存中…' : '保存偏好，让 AI 记住我'}}
+      {{busy ? '正在保存…' : '保存旅行偏好'}}
     </button>
   </view>
 
   <view wx:if="{{hasAny}}" class="saved-tip">
-    ✓ 已为你保存偏好，每次 AI 对话都会自动参考
+    已保存。后续规划会参考这些偏好。
   </view>
 
 </view>

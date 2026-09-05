@@ -1,7 +1,25 @@
 <view class="history-page">
-  <view class="header"><view class="eyebrow">YOUR TRIP MEMORY</view><view class="title">继续上次的旅行讨论</view><view class="subtitle">对话保存在同一 WanderMind 账号中。</view></view>
+  <view class="header">
+    <view class="title">继续上次的旅行讨论</view>
+    <view class="subtitle">对话保存在同一 WanderMind 账号中。</view>
+  </view>
   <view wx:if="{{loading}}" class="state">正在读取…</view>
-  <view wx:if="{{error}}" class="state error">{{error}}<button bindtap="load">重试</button></view>
-  <view wx:if="{{!loading && !error && conversations.length === 0}}" class="state"><view class="empty-icon">💬</view><view>还没有保存的对话</view><view class="empty-sub">在 AI 聊天中发送第一条消息后会自动保存。</view></view>
-  <view class="list"><view wx:for="{{conversations}}" wx:key="id" class="item"><view class="item-main" bindtap="open" data-id="{{item.id}}"><view class="item-title">{{item.title}}</view><view class="item-meta">{{item.dest}} · {{item.updated_at}}</view></view><button class="delete" bindtap="remove" data-id="{{item.id}}">删除</button></view></view>
+  <view wx:if="{{error}}" class="state error">
+    <view>{{error}}</view>
+    <button class="state-action" bindtap="load">重试</button>
+  </view>
+  <view wx:if="{{!loading && !error && conversations.length === 0}}" class="state">
+    <view class="empty-icon">记</view>
+    <view>还没有保存的对话</view>
+    <view class="empty-sub">发送第一条旅行问题后，会自动保存在这里。</view>
+  </view>
+  <view class="list">
+    <view wx:for="{{conversations}}" wx:key="id" class="item">
+      <view class="item-main" bindtap="open" data-id="{{item.id}}">
+        <view class="item-title">{{item.title}}</view>
+        <view class="item-meta">{{item.dest}} · {{item.updated_at}}</view>
+      </view>
+      <button class="delete" bindtap="remove" data-id="{{item.id}}">删除</button>
+    </view>
+  </view>
 </view>
