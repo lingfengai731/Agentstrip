@@ -545,3 +545,9 @@
 - Worker: formal `luna_worker` `/root/miniprogram_release_audit` (`gpt-5.6-luna` / `max`) was assigned one bounded read-only audit. It exceeded the 10-minute read-only baseline, received one 2-minute convergence request, returned no final and was interrupted. No worker findings or file edits were accepted.
 - Sol callback: fixed public 401 handling, aligned driver consent with email-free relay, passed 244 Mini Program checks, 116 backend tests, syntax and diff checks, and compiled a 1,536,330-byte Preview.
 - Boundary: no real driver email, production request write, Upload, review submission or release. This slice has no Render runtime change.
+
+## 2026-09-05 Mini-program release-readiness merge callback
+
+- GitHub callback: PR #53 fixed head `0581be4` passed Project memory validation and squash merged as `main@e916e6f`; the fixed-head and merge Git trees are identical.
+- Release callback: the change is Mini Program-only, so no Render deployment was required. A fresh Preview exists, but no Upload, review submission or release occurred.
+- Next callback owner: project owner reports wrong-password and normal-login observations from the current Preview; a real driver relay remains a separately authorized external-effect gate.
