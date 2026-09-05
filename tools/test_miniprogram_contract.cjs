@@ -27,7 +27,14 @@ const appConfig = JSON.parse(read('miniprogram/app.json'));
 const privateConfig = JSON.parse(read('miniprogram/project.private.config.json'));
 check(appConfig.pages.length >= 10, 'app.json should declare the v1 feature pages');
 check(appConfig.window.navigationBarTitleText === 'WanderMind 智旅', 'mini-program navigation must use the confirmed public name');
-check(privateConfig.projectname.includes('%E6%99%BA%E6%97%85'), 'WeChat DevTools project title must use WanderMind 智旅');
+check(
+  privateConfig.projectname === 'WanderMind%20%E6%99%BA%E6%97%85%E5%B0%8F%E7%A8%8B%E5%BA%8F',
+  'WeChat DevTools project title must exactly use WanderMind 智旅小程序'
+);
+check(
+  !privateConfig.projectname.includes('%E6%B8%B8%E5%BF%83'),
+  'WeChat DevTools project title must not use the retired 游心 name'
+);
 
 for (const page of appConfig.pages) {
   for (const ext of ['.js', '.json', '.wxml', '.wxss']) {

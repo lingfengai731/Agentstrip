@@ -1,0 +1,22 @@
+{
+  "schema_version": 1,
+  "evidence_id": "ev-20260905T073222Z-miniprogram-fresh-preview-brand-gate-20260905",
+  "task_ref": "miniprogram-next-qa-20260905",
+  "owner": "codex-sol",
+  "captured_at": "2026-09-05T07:32:22Z",
+  "status": "verified",
+  "claim": "A fresh image-format WeChat Preview was compiled from the Mini Program tree at main fd5a14e, and the contract gate now requires the exact WanderMind 智旅小程序 DevTools project name while rejecting the retired encoded 游心 name.",
+  "source": {
+    "kind": "local_worktree",
+    "repository": "https://github.com/lingfengai731/Agentstrip.git",
+    "baseline_commit": "fd5a14e289306298e9fdc16196f868b47e841f11",
+    "branch": "codex/miniprogram-next-qa-20260905",
+    "worktree": "E:\\Agentstrip-worktrees\\active\\account1\\miniprogram-next-qa-20260905",
+    "dirty": true
+  },
+  "verification": {
+    "command": "WeChat DevTools CLI preview; node tools/test_miniprogram_contract.cjs; python -m unittest wandermind.backend.tests.test_product_access; git diff --check",
+    "result": "PASS: official Preview package 1,536,330 bytes; 245 Mini Program checks; 116 backend tests; diff validation passed. DevTools project title resolved to WanderMind 智旅小程序. The temporary QR is stored outside Git under E:\\Agentstrip-artifacts\\2026-09-05\\miniprogram-next-qa-20260905."
+  },
+  "notes": "The formal Luna Max brand audit completed read-only and confirmed no current Mini Program source/config uses 游心 except the intended negative regression test. Its follow-up blank-simulator audit stopped after detecting the Sol-owned concurrent test edit; no worker files changed. The all-page blank DevTools simulator instance had an empty WXML tree and no project-source error, while the official Preview compilation succeeded; this remains a local DevTools/cache signal rather than a proven product defect. No real driver request/email, production write, Mini Program Upload, review submission or release occurred."
+}

@@ -341,3 +341,21 @@ validation and squash merged as `main@e916e6f90daec0bba9c986f0d622f5a4bf9252ae`;
 equal `050df14b23e8a8f1e0539e722715ec1f2a9c44fd`. No Render deployment was needed because the
 merged files affect only Mini Program source and repository evidence. The Preview remains an
 owner-observed acceptance gate, not an Upload, review submission or release.
+
+## 2026-09-05 Mini-program fresh Preview and brand gate
+
+A new centralized worktree based on `main@fd5a14e289306298e9fdc16196f868b47e841f11` generated an
+official image-format WeChat Preview package of 1,536,330 bytes. The temporary QR is stored outside Git
+under `E:\Agentstrip-artifacts\2026-09-05\miniprogram-next-qa-20260905`. Current source, navigation and
+DevTools project configuration consistently use the confirmed public name `WanderMind 智旅`.
+
+The deterministic contract now requires the exact encoded `WanderMind 智旅小程序` DevTools project
+name and separately rejects the retired encoded `游心` name. Local acceptance is 245 Mini Program
+checks, 116 backend tests and `git diff --check`. One DevTools simulator instance with two same-AppID
+projects open showed an empty WXML tree across pages without a project-source error; the official CLI
+compile succeeded, so this is recorded as a local tool/cache signal pending real-device observation,
+not as a source-code regression.
+
+No real driver request/email, production write, Mini Program Upload, review submission or release was
+performed. The exact next gate is owner-observed Preview acceptance, followed only with separate
+authorization by one no-email driver-relay E2E or a later Upload/review/release decision.
