@@ -320,3 +320,18 @@ that exact commit. Fresh no-write checks returned 200 for `/healthz` and `/drive
 the reply page is `noindex`, and confirmed both driver-relay API paths in OpenAPI. A Preview package was
 compiled to 1,536,315 bytes. No real driver email/reply, production driver-request write, Upload, review
 submission or release was performed; these remain separate external gates.
+
+## 2026-09-05 Mini-program release-readiness regression
+
+An isolated worktree based on `main@69dee32860bce4576d6dbcc418e5a6973a6c78ee` fixed one
+authentication negative path: only authenticated requests now interpret 401 as an expired session.
+Wrong-password and other public login failures stay on the form and expose the backend error. The
+driver-consent sentence now describes forwarding the application and necessary contact information,
+which is accurate for both email and email-free WeChat accounts.
+
+Local acceptance is 244 Mini Program contract checks, 116 backend tests, JavaScript syntax,
+`git diff --check`, and an official WeChat DevTools Preview compile of 1,536,330 bytes. The formal
+`luna_worker` audit returned no final after the required wait and convergence windows and was
+interrupted without accepted findings or file changes; Sol performed the final audit. No real driver
+email, production request write, Mini Program Upload, review submission or release was performed.
+This Mini Program-only slice does not change the Render runtime.

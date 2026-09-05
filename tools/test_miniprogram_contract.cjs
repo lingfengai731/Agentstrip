@@ -79,6 +79,7 @@ const { formatAssistantMessage } = require(path.join(mini, 'utils', 'message-for
 
 check(/apiBase:\s*'https:\/\/wandermind\.cc'/.test(app), 'API base must use the canonical production domain');
 check(/timeout:\s*130000/.test(api), 'AI chat timeout must exceed the backend 120-second window');
+check(/res\.statusCode === 401 && auth/.test(api), 'public auth failures must not be treated as expired authenticated sessions');
 check(api.includes('/api/auth/send-verification-code'), 'verification-code API wrapper missing');
 check(/data:\s*\{\s*email,\s*password,\s*name,\s*code,\s*lang\s*\}/.test(api), 'registration payload must include verification code and language');
 check(api.includes('/api/wechat/content-check') && api.includes('wx.login') && api.includes('allowed'), 'WeChat content-safety wrapper missing');
@@ -99,6 +100,7 @@ check(api.includes('/api/driver-requests/mine') && api.includes('listDriverReque
 check(driver.includes('api.listDriverRequests') && driver.includes('loadRequests'), 'driver request history UI is missing');
 check(driver.includes('未登录时请填写联系邮箱') && driver.includes('!app.globalData.token'), 'email-free driver handoff must fail clearly before anonymous submit');
 check(read('miniprogram/pages/driver/driver.wxml').includes('联系邮箱（可选）'), 'email field must be optional for authenticated WeChat accounts');
+check(read('miniprogram/pages/driver/driver.wxml').includes('必要联系信息'), 'driver consent copy must also cover email-free WeChat relay');
 check(read('miniprogram/pages/driver/driver.wxml').includes('我的司机请求'), 'driver request history surface is missing');
 check(api.includes('/api/bali/professional-route') && api.includes('recent-unlocked'), 'shared professional-route API wrappers missing');
 check(api.includes('/api/driver-request') && driver.includes('privacy_consent: true'), 'driver handoff contract missing');

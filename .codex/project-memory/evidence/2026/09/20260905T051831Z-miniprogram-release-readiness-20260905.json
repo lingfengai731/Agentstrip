@@ -1,0 +1,22 @@
+{
+  "schema_version": 1,
+  "evidence_id": "ev-20260905T051831Z-miniprogram-release-readiness-20260905",
+  "task_ref": "miniprogram-release-readiness-20260905",
+  "owner": "codex-sol",
+  "captured_at": "2026-09-05T05:18:31Z",
+  "status": "verified",
+  "claim": "A Mini Program release-readiness regression fixed unauthenticated 401 handling and aligned driver-consent copy with the email-free WeChat relay; deterministic tests and a fresh Preview compilation passed.",
+  "source": {
+    "kind": "local",
+    "repository": "https://github.com/lingfengai731/Agentstrip.git",
+    "baseline_commit": "69dee32860bce4576d6dbcc418e5a6973a6c78ee",
+    "branch": "codex/miniprogram-release-readiness-20260905",
+    "worktree": "E:\\Agentstrip-worktrees\\active\\account1\\miniprogram-release-readiness-20260905",
+    "dirty": true
+  },
+  "verification": {
+    "command": "node tools/test_miniprogram_contract.cjs; python -m unittest wandermind.backend.tests.test_product_access; node --check miniprogram/utils/api.js; git diff --check; WeChat DevTools CLI preview",
+    "result": "PASS: 244 Mini Program checks, 116 backend tests, JavaScript syntax and diff checks; Preview package 1,536,330 bytes."
+  },
+  "notes": "The formal luna_worker audit was interrupted after the required wait and convergence windows without a final or file edits; Sol independently audited and verified this slice. No real driver email, production request write, Mini Program Upload, review submission or release was performed."
+}

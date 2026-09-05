@@ -1,54 +1,62 @@
 {
   "schema_version": 1,
-  "checkpoint_revision": 1,
-  "previous_checkpoint_sha256": null,
-  "run_id": "20260902T012833Z-pr43-production",
-  "objective": "Close PR #43 website production verification and continue the mini-program through explicit WeChat release gates",
+  "checkpoint_revision": 4,
+  "previous_checkpoint_sha256": "60D011FC8FAAF5A0D3DE022055BD689D0D96CF86FEAEF93CC184DF1E0137F482",
+  "run_id": "20260905T045930Z-miniprogram-release-readiness",
+  "objective": "Close the next WanderMind Mini Program release-readiness slice without Upload, review submission, release, or real driver email.",
   "status": "active",
-  "phase": "miniprogram_release_gates",
+  "phase": "fixed_head_integration",
   "baseline": {
-    "cwd": "E:\\Agentstrip-wt-pr43-production-20260902",
-    "worktree": "E:\\Agentstrip-wt-pr43-production-20260902",
-    "branch": "codex/pr43-production-evidence-20260902",
-    "head": "5c2ae420b82b98e888f781e6f61b6747f9dad333",
+    "cwd": "E:\\Agentstrip-worktrees\\active\\account1\\miniprogram-release-readiness-20260905",
+    "worktree": "E:\\Agentstrip-worktrees\\active\\account1\\miniprogram-release-readiness-20260905",
+    "branch": "codex/miniprogram-release-readiness-20260905",
+    "head": "69dee32860bce4576d6dbcc418e5a6973a6c78ee",
     "dirty_allowlist": [
+      ".codex/run-state/CURRENT.json",
+      ".codex/role-windows.md",
       "PROJECT_CONTEXT.md",
-      ".codex/project-memory/evidence/2026/09/20260902T012833Z-pr43-render-production-20260902.json",
-      ".codex/project-memory/handoffs/2026/09/20260902T012833Z-pr43-render-production-20260902.md",
-      ".codex/run-state/CURRENT.json"
+      "miniprogram/pages/driver/driver.wxml",
+      "miniprogram/utils/api.js",
+      "tools/test_miniprogram_contract.cjs",
+      ".codex/project-memory/evidence/2026/09/20260905T051831Z-miniprogram-release-readiness-20260905.json",
+      ".codex/project-memory/handoffs/2026/09/20260905T051831Z-miniprogram-release-readiness-20260905.md"
     ]
   },
   "completed": [
-    "Verified PR #43 fixed-head check and squash merge",
-    "Verified fixed-head and merged Git tree parity",
-    "Verified Render deploy dep-dabfeb6q1p3s739m8o0g Live at exact main commit 5c2ae420",
-    "Passed fresh public HTTP resource probes",
-    "Passed production Chromium 18-case public control matrix at 390 and 1440 px"
+    "Recovered latest cross-account main and production evidence",
+    "Verified PR 51 and PR 52 are merged",
+    "Verified Render driver-relay code deployment was previously recorded Live",
+    "Created a clean centralized continuation worktree",
+    "Closed the Luna read-only audit attempt without accepting an absent final",
+    "Fixed unauthenticated 401 handling and driver relay consent copy",
+    "Passed 244 Mini Program checks, 116 backend tests, syntax and diff checks",
+    "Compiled a fresh 1,536,330-byte WeChat Preview"
   ],
-  "current_step": "Website production verification is closed; verify WeChat request-domain and privacy configuration before any physical-phone preview",
+  "current_step": "Commit and push the verified fixed head, then run PR and CI gates",
   "workers": [
     {
-      "agent_id": "01a05da1-9060-7fd0-8c42-dc3bedc00dec",
-      "agent_name": "Darwin (luna_worker)",
+      "agent_id": "/root/miniprogram_release_audit",
+      "agent_name": "luna_worker",
       "model": "gpt-5.6-luna",
       "reasoning_effort": "max",
-      "goal": "Independent read-only mini-program release audit",
+      "goal": "Read-only audit of Mini Program interactions, API contracts, authentication, driver relay, AI rendering and 390px layout",
       "status": "shutdown",
-      "started_at_utc": "2026-09-01T15:41:00Z",
-      "last_observed_at_utc": "2026-09-01T16:02:00Z",
-      "evidence": ".codex/project-memory/handoffs/2026/09/20260901T160200Z-miniprogram-v1-release-candidate.md"
+      "started_at_utc": "2026-09-05T04:59:30Z",
+      "last_observed_at_utc": "2026-09-05T05:13:35Z",
+      "evidence": null
     }
   ],
   "accepted_evidence": [
-    ".codex/project-memory/evidence/2026/09/20260901T160200Z-miniprogram-v1-release-candidate.json",
-    ".codex/project-memory/evidence/2026/09/20260902T012833Z-pr43-render-production-20260902.json"
+    ".codex/project-memory/evidence/2026/09/20260902T124606Z-miniprogram-driver-relay-production-20260902.json",
+    ".codex/project-memory/handoffs/2026/09/20260902T124606Z-miniprogram-driver-relay-production-20260902.md",
+    ".codex/project-memory/evidence/2026/09/20260905T051831Z-miniprogram-release-readiness-20260905.json",
+    ".codex/project-memory/handoffs/2026/09/20260905T051831Z-miniprogram-release-readiness-20260905.md"
   ],
   "unverified": [
-    "Current WeChat request-domain configuration",
-    "Current WeChat privacy declarations",
-    "Physical-phone preview",
-    "Mini-program upload, submission and release",
-    "Full five-language localization of every mini-program screen"
+    "Real-device wrong-password behavior on the current Preview",
+    "Real-device WeChat one-click login and explicit account-linking on the current build",
+    "Real driver relay request and one-time reply end to end",
+    "Mini Program Upload, review submission and release"
   ],
   "do_not_repeat": [
     {
@@ -63,26 +71,41 @@
     },
     {
       "action_id": "pr43-merge",
-      "reason": "PR #43 fixed head passed and merged as main 5c2ae420",
+      "reason": "PR 43 was already merged and accepted",
       "evidence": ".codex/project-memory/evidence/2026/09/20260902T012833Z-pr43-render-production-20260902.json"
     },
     {
       "action_id": "pr43-render-deploy",
-      "reason": "Exact merged commit is already Live as dep-dabfeb6q1p3s739m8o0g",
+      "reason": "Exact PR 43 merged commit was already deployed and accepted",
       "evidence": ".codex/project-memory/evidence/2026/09/20260902T012833Z-pr43-render-production-20260902.json"
     },
     {
-      "action_id": "pr43-production-public-controls",
-      "reason": "Fresh production Chromium 18-case matrix passed",
-      "evidence": ".codex/project-memory/evidence/2026/09/20260902T012833Z-pr43-render-production-20260902.json"
+      "action_id": "merge-driver-relay-pr51",
+      "reason": "Completed and independently accepted",
+      "evidence": ".codex/project-memory/evidence/2026/09/20260902T124606Z-miniprogram-driver-relay-production-20260902.json"
+    },
+    {
+      "action_id": "deploy-driver-relay-9083217",
+      "reason": "Exact commit deployment already completed and accepted",
+      "evidence": ".codex/project-memory/evidence/2026/09/20260902T124606Z-miniprogram-driver-relay-production-20260902.json"
+    },
+    {
+      "action_id": "send-real-driver-relay-email",
+      "reason": "Not authorized in the current turn; avoid duplicate external effects",
+      "evidence": ".codex/project-memory/handoffs/2026/09/20260902T124606Z-miniprogram-driver-relay-production-20260902.md"
+    },
+    {
+      "action_id": "sol-audit-current-miniprogram-build",
+      "reason": "Completed locally with accepted tests and Preview evidence",
+      "evidence": ".codex/project-memory/evidence/2026/09/20260905T051831Z-miniprogram-release-readiness-20260905.json"
     }
   ],
   "next_action": {
-    "action_id": "verify-wechat-domain-privacy",
-    "description": "Read-only verify WeChat request-domain and privacy settings against WanderMind account, email verification, AI chat and driver-request data flows",
-    "external_effect": false,
-    "effect_key": null,
-    "authority_confirmed": false
+    "action_id": "push-fixed-head-and-open-pr",
+    "description": "Commit and push the verified changes, open a fixed-head pull request and wait for required CI",
+    "external_effect": true,
+    "effect_key": "github:lingfengai731/Agentstrip:codex/miniprogram-release-readiness-20260905",
+    "authority_confirmed": true
   },
-  "updated_at_utc": "2026-09-02T01:30:03.4970168Z"
+  "updated_at_utc": "2026-09-05T05:21:03.8871246Z"
 }

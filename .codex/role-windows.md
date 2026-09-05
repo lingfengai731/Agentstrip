@@ -538,3 +538,10 @@
 - GitHub callback: PR #51 fixed head `2afece9` passed Project memory validation and PostgreSQL integration, then squash merged as `main@9083217`; fixed-head and merge Git trees are identical.
 - Render callback: exact deploy `dep-dac1jmf8diss73a0umr0` is Live; health and reply page are 200, reply page is noindex, and both relay API paths are present.
 - Preview callback: official WeChat DevTools CLI compiled a 1,536,315-byte Preview outside Git. No real driver email/reply, production request write, Upload, review submission or release was performed.
+
+## 2026-09-05 Mini-program release-readiness audit
+
+- Route: small / L2. Sol retained the regression decision, implementation, fixed-head integration and release boundary.
+- Worker: formal `luna_worker` `/root/miniprogram_release_audit` (`gpt-5.6-luna` / `max`) was assigned one bounded read-only audit. It exceeded the 10-minute read-only baseline, received one 2-minute convergence request, returned no final and was interrupted. No worker findings or file edits were accepted.
+- Sol callback: fixed public 401 handling, aligned driver consent with email-free relay, passed 244 Mini Program checks, 116 backend tests, syntax and diff checks, and compiled a 1,536,330-byte Preview.
+- Boundary: no real driver email, production request write, Upload, review submission or release. This slice has no Render runtime change.

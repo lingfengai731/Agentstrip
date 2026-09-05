@@ -46,7 +46,7 @@
       <checkbox-group class="services" bindchange="setServices">
         <label wx:for="{{serviceOptions}}" wx:key="value"><checkbox value="{{item.value}}" checked="{{item.checked}}" color="#0E7C6B" />{{item.label}}</label>
       </checkbox-group>
-      <checkbox-group bindchange="setConsent"><label class="consent"><checkbox value="yes" checked="{{privacyConsent}}" color="#0E7C6B" />我同意 WanderMind 将本申请和邮箱转交给所选司机，仅用于确认本次行程。</label></checkbox-group>
+      <checkbox-group bindchange="setConsent"><label class="consent"><checkbox value="yes" checked="{{privacyConsent}}" color="#0E7C6B" />我同意 WanderMind 将本申请及必要联系信息转交给所选司机，仅用于确认本次行程。</label></checkbox-group>
     </view>
 
     <view wx:if="{{error}}" class="error">{{error}}</view>
