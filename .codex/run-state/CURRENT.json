@@ -1,33 +1,31 @@
 {
   "schema_version": 1,
-  "checkpoint_revision": 7,
-  "previous_checkpoint_sha256": "FBFB464DFA17B701A1D2D6B4CC7B1AA185EEBD857409083385C8E4974913E9F4",
+  "checkpoint_revision": 8,
+  "previous_checkpoint_sha256": "D04FAC89F2CC58D65FDEB48334F89F33A4AB5334150C481D76D984C88BAE58D9",
   "run_id": "20260905T045930Z-miniprogram-release-readiness",
   "objective": "Regenerate the expired Mini Program Preview and continue a bounded release-readiness QA slice without Upload, review submission, release, or real driver email.",
   "status": "active",
-  "phase": "owner_preview_acceptance",
+  "phase": "main_merged_owner_preview_acceptance",
   "baseline": {
     "cwd": "E:\\Agentstrip-worktrees\\active\\account1\\miniprogram-next-qa-20260905",
     "worktree": "E:\\Agentstrip-worktrees\\active\\account1\\miniprogram-next-qa-20260905",
     "branch": "codex/miniprogram-next-qa-20260905",
-    "head": "fd5a14e289306298e9fdc16196f868b47e841f11",
+    "head": "1affbbd2cc5775b6a4bdf7ccf8c4acf313d8478c",
     "dirty_allowlist": [
       ".codex/run-state/CURRENT.json",
-      "tools/test_miniprogram_contract.cjs",
-      ".codex/project-memory/evidence/2026/09/20260905T073222Z-miniprogram-fresh-preview-brand-gate-20260905.json",
-      ".codex/project-memory/handoffs/2026/09/20260905T073222Z-miniprogram-fresh-preview-brand-gate-20260905.md",
       ".codex/role-windows.md",
-      "PROJECT_CONTEXT.md"
+      "PROJECT_CONTEXT.md",
+      ".codex/project-memory/evidence/2026/09/20260905T073653Z-miniprogram-brand-gate-merge-20260905.json",
+      ".codex/project-memory/handoffs/2026/09/20260905T073653Z-miniprogram-brand-gate-merge-20260905.md"
     ]
   },
   "completed": [
-    "Recovered the latest cross-account main state in a new centralized worktree",
     "Generated a fresh 1536330-byte image-format Preview through the official WeChat DevTools CLI",
     "Confirmed current Mini Program source and configuration use WanderMind 智旅",
-    "Strengthened the exact DevTools brand regression contract",
-    "Passed 245 Mini Program checks, 116 backend tests and git diff validation"
+    "Passed 245 Mini Program checks, 116 backend tests and project-memory validation",
+    "Merged fixed-head PR 55 as main 3b60c3f with identical Git trees"
   ],
-  "current_step": "Wait for owner-observed results from the fresh real-device Preview, then integrate the verified brand gate through fixed-head PR and CI",
+  "current_step": "Wait for owner-observed results from the fresh real-device Preview",
   "workers": [
     {
       "agent_id": "/root/miniprogram_brand_audit",
@@ -53,9 +51,9 @@
     }
   ],
   "accepted_evidence": [
-    ".codex/project-memory/evidence/2026/09/20260905T052333Z-miniprogram-release-readiness-merge-20260905.json",
     ".codex/project-memory/evidence/2026/09/20260905T073222Z-miniprogram-fresh-preview-brand-gate-20260905.json",
-    ".codex/project-memory/handoffs/2026/09/20260905T073222Z-miniprogram-fresh-preview-brand-gate-20260905.md"
+    ".codex/project-memory/evidence/2026/09/20260905T073653Z-miniprogram-brand-gate-merge-20260905.json",
+    ".codex/project-memory/handoffs/2026/09/20260905T073653Z-miniprogram-brand-gate-merge-20260905.md"
   ],
   "unverified": [
     "Real-device no-white-screen and WanderMind 智旅 title on the newly generated Preview",
@@ -66,14 +64,9 @@
   ],
   "do_not_repeat": [
     {
-      "action_id": "portfolio-production-e2e",
-      "reason": "Owner-confirmed production acceptance; do not mutate the accepted asset",
-      "evidence": ".codex/project-memory/evidence/2026/09/20260901T052253Z-portfolio-axestone-pre-miniprogram-closeout.json"
-    },
-    {
-      "action_id": "paypal-webhook-abnormal-redelivery",
-      "reason": "Owner-confirmed Sandbox acceptance; do not touch the accepted order or entitlement",
-      "evidence": ".codex/project-memory/evidence/2026/09/20260901T052253Z-portfolio-axestone-pre-miniprogram-closeout.json"
+      "action_id": "merge-miniprogram-brand-gate-pr55",
+      "reason": "Completed through fixed-head CI and accepted with Git tree equality",
+      "evidence": ".codex/project-memory/evidence/2026/09/20260905T073653Z-miniprogram-brand-gate-merge-20260905.json"
     },
     {
       "action_id": "send-real-driver-relay-email",
@@ -83,7 +76,7 @@
     {
       "action_id": "miniprogram-upload-review-release",
       "reason": "The owner authorized Preview only",
-      "evidence": ".codex/project-memory/handoffs/2026/09/20260905T073222Z-miniprogram-fresh-preview-brand-gate-20260905.md"
+      "evidence": ".codex/project-memory/handoffs/2026/09/20260905T073653Z-miniprogram-brand-gate-merge-20260905.md"
     }
   ],
   "next_action": {
@@ -93,5 +86,5 @@
     "effect_key": null,
     "authority_confirmed": true
   },
-  "updated_at_utc": "2026-09-05T07:34:42.2687023Z"
+  "updated_at_utc": "2026-09-05T07:38:13.9388817Z"
 }
