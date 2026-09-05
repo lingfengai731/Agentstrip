@@ -1,0 +1,21 @@
+{
+  "schema_version": 1,
+  "evidence_id": "ev-20260905T082524Z-miniprogram-design-polish-merge-20260905",
+  "task_ref": "miniprogram-design-polish-merge-20260905",
+  "owner": "codex-sol",
+  "captured_at": "2026-09-05T08:25:24Z",
+  "status": "verified",
+  "claim": "PR #58 passed its fixed-head project-memory workflow and squash merged without Git-tree drift; the Mini Program-only slice did not create a Render deployment.",
+  "source": {
+    "kind": "github_and_render",
+    "repository": "https://github.com/lingfengai731/Agentstrip.git",
+    "pull_request": 58,
+    "fixed_head": "d36a41aacbf0077994791d9b62a5dacec84c0855",
+    "merge_commit": "a7aa5e51b529fafd61a61c9a2512bdac174e13dc"
+  },
+  "verification": {
+    "command": "GitHub fixed-head workflow query; expected-head squash merge; git rev-parse fixed_head^{tree} and merge_commit^{tree}; Render deploys list",
+    "result": "PASS: workflow run 33955131707 completed success; PR #58 merged; both Git trees equal 85c113c28ed5a782a6b6a7bed05d1d7cb3663abd; no Render deployment exists for the Mini Program-only commit."
+  },
+  "notes": "The backend remains on its previously verified live release. The design Preview still requires owner observation. No driver email, production write, Mini Program Upload, review submission or release occurred."
+}

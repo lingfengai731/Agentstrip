@@ -573,3 +573,9 @@
 - UI callback: the cream/teal/gold system is preserved across index, chat, compare, itinerary, planner, preferences, driver, history, language and account pages. Controls are centred and touch-sized; visible labels and narrow-phone stacking replace compressed or generic AI-template surfaces.
 - QA callback: 245 Mini Program checks, 116 backend tests, 17 JavaScript syntax checks, 15 JSON parses, `git diff --check`, zero Impeccable findings and a 1,546,262-byte official Preview compile passed.
 - Tool/release boundary: two same-title DevTools windows were returned after opening the new worktree, so Computer Use stopped without selecting by guess. Owner re-checks the new Preview; no real driver request/email, production write, Render deployment, Upload, review submission or release occurred.
+
+## 2026-09-05 Mini-program design polish merge callback
+
+- GitHub callback: PR #58 fixed head `d36a41a` passed Project memory validation run `33955131707` and squash merged as `main@a7aa5e5`; the fixed-head and merge Git trees are identical.
+- Release callback: Render exposes no deployment for the Mini Program-only commit, so no redundant manual deployment was triggered. The backend remains on the previously verified live release.
+- Next callback owner: scan the fresh design Preview and report cross-page alignment/clipping observations. No Upload, review submission or release occurred.
