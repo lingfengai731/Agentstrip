@@ -410,3 +410,23 @@ validation run `33955131707` and squash merged as
 Mini Program-only commit and remains healthy on its previously verified backend release; no manual
 Render deployment was triggered. The fresh design Preview remains owner-observed acceptance pending,
 and no Upload, review submission or release occurred.
+
+## 2026-09-06 Domestic payments, driver estimate and Mini Program Upload
+
+PR #62 fixed head `8f647cc42bb35ef83de1ab9b870a52b2f2caa07b` passed PostgreSQL integration
+run `34042025279` and squash merged as `main@449b20669a4e623970d190dbf8e920b25bca44a0`;
+both Git trees equal `1d13160b3233597f5482a9606c043997f5cc51c8`. Render automatic deploy
+`dep-daeoaqjm8hqs73d91r20` became Live at that exact commit. Fresh no-write production checks returned
+200 for `/healthz`, 401 for unauthenticated `/api/manual-payments/config`, and confirmed both manual
+payment endpoints in OpenAPI.
+
+The website keeps PayPal Sandbox fail-closed and adds authenticated manual bank-transfer support without
+committing real bank details. WeChat Pay and Alipay retain administrator confirmation; UnionPay remains
+unavailable until merchant acquiring. The Mini Program adds transparent Dicky/Gede starting estimates
+and expands the curated static gallery from the 37 website selections to 50 approved images while still
+loading published Portfolio assets dynamically.
+
+After 305 Mini Program checks and 120 backend tests passed on the exact merge tree, the official WeChat
+DevTools CLI uploaded version `1.0.0` as a 1,584,409-byte development version. This is Upload only: no
+review submission or public release occurred. `BANK_TRANSFER_ACCOUNTS_JSON` remains an owner-only Render
+configuration gate; no real payment, entitlement mutation or driver message was performed.
