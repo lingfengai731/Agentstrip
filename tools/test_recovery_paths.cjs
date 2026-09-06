@@ -33,6 +33,7 @@ function routePayload(profile) {
     const professional = await professionalContext.newPage();
     const professionalErrors = [];
     const professionalBodies = [];
+    const manualOrderBodies = [];
     const profile = {
       audience: 'first', goals: ['photo'], travel_style: 'comfort', travellers: 2,
       departure_date: '2026-10-01', return_date: '2026-10-08', days: 7,
@@ -42,8 +43,21 @@ function routePayload(profile) {
     await professional.addInitScript(value => {
       localStorage.setItem('wm_studio_lang', 'en');
       localStorage.setItem('wm_studio_trip_profile', JSON.stringify(value));
+      localStorage.setItem('wm_studio_token', 'manual-payment-test-token');
+      localStorage.setItem('wm_studio_user', JSON.stringify({ id:'payer', email:'payer@example.test', name:'Payer' }));
     }, profile);
+    await professional.route('**/api/auth/me', route => route.fulfill({ json: { id:'payer', email:'payer@example.test', name:'Payer' } }));
+    await professional.route('**/api/auth/config', route => route.fulfill({ json: {} }));
     await professional.route('**/api/paypal/config', route => route.fulfill({ json: { enabled: false } }));
+    await professional.route('**/api/manual-payments/config', route => route.fulfill({ json: {
+      amount:9.9, currency:'CNY',
+      bank_transfer:{ available:true, accounts:[{ bank_name:'Test Bank', account_name:'Test Owner', account_number:'0000000012345678', branch:'Test Branch' }] },
+      unionpay:{ available:false, reason:'merchant_acquiring_required' },
+    } }));
+    await professional.route('**/api/professional-route/orders', route => {
+      manualOrderBodies.push(JSON.parse(route.request().postData() || '{}'));
+      return route.fulfill({ json: { ok:true, order:{ id:'offline-order', status:'pending' } } });
+    });
     await professional.route('**/api/bali/professional-route**', async route => {
       if (route.request().url().includes('/recent-unlocked')) {
         return route.fulfill({ status: 404, json: { detail: { error: 'professional_route_not_found' } } });
@@ -63,6 +77,14 @@ function routePayload(profile) {
     await professional.locator('#bali-professional-unlock').waitFor();
     check(professionalBodies.length === 2, `Professional route retry made ${professionalBodies.length} POSTs`);
     check(professionalBodies[1].trip_profile.budget_tier === 'comfort', 'Professional route retry changed the saved profile');
+    await professional.locator('#bali-professional-unlock').click();
+    await professional.locator('#bali-professional-bank-paid').waitFor();
+    check((await professional.locator('.bali-professional-bank-number').innerText()) === '0000000012345678', 'Authenticated bank details are missing');
+    check((await professional.locator('.bali-professional-unionpay-note').innerText()).includes('merchant'), 'UnionPay acquiring boundary is missing');
+    const paymentOverflow = await professional.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth);
+    check(paymentOverflow <= 1, `Manual payment panel overflows mobile by ${paymentOverflow}px`);
+    await professional.locator('#bali-professional-bank-paid').click();
+    check(manualOrderBodies.length === 1 && manualOrderBodies[0].payment_method === 'bank_transfer', 'Bank payment confirmation did not preserve the selected method');
     check(professionalErrors.length === 0, `Professional route recovery page errors: ${professionalErrors.join('|')}`);
     await professionalContext.close();
 

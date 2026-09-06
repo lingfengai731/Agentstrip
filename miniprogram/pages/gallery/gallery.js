@@ -9,7 +9,7 @@ const FILTERS = [
 ];
 
 Page({
-  data: { loading: true, error: '', filter: 'all', filters: FILTERS, assets: [], visibleAssets: [] },
+  data: { loading: true, error: '', filter: 'all', filters: FILTERS, assets: [], visibleAssets: [], totalCount: 0, visibleCount: 0 },
 
   onLoad() { this.loadGallery(); },
 
@@ -22,7 +22,7 @@ Page({
     this.setData({ loading: true, error: '' });
     try {
       const media = await loadBaliMedia(app.globalData.currentLang || 'zh', refresh);
-      this.setData({ assets: media.gallery, loading: false });
+      this.setData({ assets: media.gallery, totalCount: media.gallery.length, loading: false });
       this.applyFilter(this.data.filter);
     } catch (error) {
       this.setData({ loading: false, error: error.message || '作品集暂时无法加载' });
@@ -33,7 +33,7 @@ Page({
     const visibleAssets = filter === 'all'
       ? this.data.assets
       : this.data.assets.filter(item => item.theme === filter);
-    this.setData({ filter, visibleAssets });
+    this.setData({ filter, visibleAssets, visibleCount: visibleAssets.length });
   },
 
   chooseFilter(e) { this.applyFilter(e.currentTarget.dataset.id); },
