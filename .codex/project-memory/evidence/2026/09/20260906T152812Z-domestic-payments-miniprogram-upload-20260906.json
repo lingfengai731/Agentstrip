@@ -1,0 +1,22 @@
+{
+  "schema_version": 1,
+  "evidence_id": "ev-20260906T152812Z-domestic-payments-miniprogram-upload-20260906",
+  "task_ref": "domestic-payments-miniprogram-upload-20260906",
+  "owner": "sol-main",
+  "captured_at": "2026-09-06T15:28:12Z",
+  "status": "verified",
+  "claim": "PR 62 fixed head 8f647cc passed PostgreSQL integration, squash merged as main 449b206 with identical Git trees; exact Render deploy dep-daeoaqjm8hqs73d91r20 is Live; production health and unauthenticated privacy probes passed; Mini Program version 1.0.0 uploaded successfully as a 1,584,409-byte development version. No review submission or public release occurred.",
+  "source": {
+    "kind": "git",
+    "repository": "https://github.com/lingfengai731/Agentstrip.git",
+    "commit": "449b20669a4e623970d190dbf8e920b25bca44a0",
+    "branch": "codex/domestic-payments-upload-evidence-20260906",
+    "worktree": "E:\\Agentstrip-worktrees\\release\\miniprogram-upload-20260906",
+    "dirty": false
+  },
+  "verification": {
+    "command": "120 backend tests; 305 Mini Program checks; Git tree equality; Render exact-commit deploy query; production health/OpenAPI/auth probes; official WeChat DevTools CLI upload",
+    "result": "PASS: main 449b206 tree equals fixed head; Render deploy live; health 200; manual-payment config unauthenticated 401; endpoints present; upload CLI exit 0."
+  },
+  "notes": "BANK_TRANSFER_ACCOUNTS_JSON remains unconfigured until the owner adds real bank data directly in Render. UnionPay stays unavailable until merchant acquiring. PayPal Live stays fail-closed. No real payment, entitlement mutation, driver email, review submission or release was performed."
+}

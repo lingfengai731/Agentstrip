@@ -594,3 +594,11 @@
 - Render callback: automatic deploy `dep-dadu29942hec73bsr0t0` became Live at the exact merge commit. Fresh health, payment-config, Bali route/media data and professional-route asset probes all returned HTTP 200.
 - Payment callback: production remains PayPal Sandbox at USD 1.49; public config reports `digital_route_access`, `transport_included=false` and `live_approved=false`. No credential values are stored in project memory.
 - Mini Program boundary: the 1,571,935-byte Preview is compiled but still awaits owner device acceptance. No Upload, review submission or release occurred.
+
+## 2026-09-06 Domestic payments and Mini Program Upload callback
+
+- Route: large / L3 for payment and release. Sol retained payment classification, server-only bank-detail handling, fixed-head integration, exact Render deployment and Upload authority.
+- Luna routing: the formal `luna_worker` preflight failed closed because the local role registry was missing `registry/plugin-packages.json`; no worker ran and no Luna completion is claimed. Sol completed and independently verified the bounded slice serially.
+- GitHub/Render callback: PR #62 fixed head `8f647cc` passed PostgreSQL integration and squash merged as `main@449b206`; both Git trees equal `1d13160b`. Exact Render deploy `dep-daeoaqjm8hqs73d91r20` is Live; health is 200, unauthenticated manual-payment config is 401, and the new endpoints are present.
+- Product callback: PayPal remains Sandbox and fail-closed; WeChat/Alipay and optional bank transfer use manual administrator confirmation. Real bank details stay only in owner-configured Render JSON. UnionPay remains gated by merchant acquiring. Dicky/Gede estimates are starting values and local suppliers take payment directly.
+- Mini Program callback: 305 contract checks and 120 backend tests passed on the exact merge tree. Official CLI Upload of version `1.0.0` succeeded at 1,584,409 bytes. This is a development version only; no review submission or release occurred.
