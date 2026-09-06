@@ -629,6 +629,7 @@ class ProductTripUseReq(BaseModel):
 
 class ProRouteOrderReq(BaseModel):
     trip_id: str
+    payment_method: str = "manual_qr"
 
 
 class ProRouteConfirmReq(BaseModel):
@@ -3442,12 +3443,68 @@ async def paypal_webhook(request: Request):
         conn.close()
 
 
+def _manual_bank_accounts() -> list[dict]:
+    """Return authenticated-payer bank details from one server-only JSON value.
+
+    The value is intentionally not stored in Git. Invalid or incomplete entries
+    are omitted so bank transfer fails closed instead of showing unusable data.
+    """
+    raw = os.getenv("BANK_TRANSFER_ACCOUNTS_JSON", "").strip()
+    if not raw:
+        return []
+    try:
+        parsed = json.loads(raw)
+    except (TypeError, ValueError, json.JSONDecodeError):
+        return []
+    if not isinstance(parsed, list):
+        return []
+    accounts = []
+    for item in parsed[:3]:
+        if not isinstance(item, dict):
+            continue
+        bank_name = str(item.get("bank_name") or "").strip()[:80]
+        account_name = str(item.get("account_name") or "").strip()[:80]
+        account_number = re.sub(r"[\s-]+", "", str(item.get("account_number") or ""))[:32]
+        branch = str(item.get("branch") or "").strip()[:160]
+        if not bank_name or not account_name or not re.fullmatch(r"\d{8,32}", account_number):
+            continue
+        accounts.append({
+            "bank_name": bank_name,
+            "account_name": account_name,
+            "account_number": account_number,
+            "branch": branch,
+        })
+    return accounts
+
+
+@app.get("/api/manual-payments/config")
+async def manual_payment_config(user=Depends(current_user)):
+    accounts = _manual_bank_accounts()
+    return JSONResponse({
+        "amount": 9.9,
+        "currency": "CNY",
+        "wechat_pay": {"available": True, "confirmation": "manual"},
+        "alipay": {"available": True, "confirmation": "manual"},
+        "bank_transfer": {
+            "available": bool(accounts),
+            "confirmation": "manual",
+            "accounts": accounts,
+        },
+        "unionpay": {"available": False, "reason": "merchant_acquiring_required"},
+    }, headers={"Cache-Control": "private, no-store", "Pragma": "no-cache"})
+
+
 @app.post("/api/professional-route/orders")
 async def create_professional_route_order(
     data: ProRouteOrderReq,
     user=Depends(current_user),
     anon_id=Depends(anon_id_header),
 ):
+    payment_method = (data.payment_method or "manual_qr").strip().lower()
+    if payment_method not in {"manual_qr", "bank_transfer"}:
+        raise HTTPException(400, "Unsupported manual payment method")
+    if payment_method == "bank_transfer" and not _manual_bank_accounts():
+        raise HTTPException(503, "Bank transfer is not configured")
     conn = get_db()
     try:
         trip = _trip_owner(conn, data.trip_id, user, anon_id)
@@ -3459,9 +3516,9 @@ async def create_professional_route_order(
         existing = conn.execute(
             """SELECT * FROM professional_route_orders
                WHERE trip_id=? AND user_id=? AND status='pending'
-                 AND payment_method='manual_qr'
+                 AND payment_method=?
                ORDER BY created_at DESC LIMIT 1""",
-            (data.trip_id, user["sub"]),
+            (data.trip_id, user["sub"], payment_method),
         ).fetchone()
         if existing:
             order = dict(existing)
@@ -3473,7 +3530,7 @@ async def create_professional_route_order(
                 "amount_cents": 990,
                 "currency": "CNY",
                 "status": "pending",
-                "payment_method": "manual_qr",
+                "payment_method": payment_method,
                 "created_at": int(time.time()),
             }
             conn.execute(
@@ -3496,7 +3553,7 @@ async def create_professional_route_order(
                 "status": order["status"],
                 "amount": order["amount_cents"] / 100,
                 "currency": order["currency"],
-                "payment_method": "manual_qr",
+                "payment_method": payment_method,
             },
         }
     finally:
@@ -3570,8 +3627,8 @@ async def confirm_professional_route_order(
             return {"ok": True, "already_confirmed": True, "order_id": order_id}
         if order["status"] != "pending":
             raise HTTPException(409, "Only pending orders can be confirmed")
-        if order.get("payment_method") != "manual_qr":
-            raise HTTPException(409, "Only manual QR orders can be confirmed by an admin")
+        if order.get("payment_method") not in {"manual_qr", "bank_transfer"}:
+            raise HTTPException(409, "Only manual offline orders can be confirmed by an admin")
         now = int(time.time())
         conn.execute(
             """UPDATE professional_route_orders

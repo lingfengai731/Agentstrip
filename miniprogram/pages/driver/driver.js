@@ -1,4 +1,5 @@
 const api = require('../../utils/api.js');
+const driverEstimate = require('../../utils/driver-estimate.js');
 const app = getApp();
 
 function requestId() {
@@ -75,6 +76,9 @@ Page({
     firstName: '', lastName: '', email: '',
     startDate: '', endDate: '', people: 2, days: 0,
     peopleOptions: [1, 2, 3, 4, 5, 6],
+    dayOptions: Array.from({ length: 15 }, (_, index) => index),
+    fullDays: 0, halfDays: 0,
+    estimate: driverEstimate.calculate(),
     pickup: '', budget: '', intro: '', attractions: '',
     services: ['full_day'], privacyConsent: false,
     serviceOptions: serviceOptions(['full_day']),
@@ -87,14 +91,24 @@ Page({
     const saved = wx.getStorageSync('wm_driver_draft') || {};
     const user = app.globalData.user || {};
     const services = saved.services || ['full_day'];
-    this.setData({
+    const fullDays = saved.fullDays == null
+      ? (services.includes('full_day') ? Math.max(1, route.days || 1) : 0)
+      : Number(saved.fullDays);
+    const halfDays = saved.halfDays == null ? 0 : Number(saved.halfDays);
+    const next = {
       ...route,
       ...saved,
       services,
       serviceOptions: serviceOptions(services),
       firstName: saved.firstName || user.name || '',
       email: saved.email || user.email || '',
-    });
+      fullDays,
+      halfDays,
+    };
+    next.estimate = driverEstimate.calculate(next);
+    next.fullDays = next.estimate.fullDays;
+    next.halfDays = next.estimate.halfDays;
+    this.setData(next);
   },
 
   onShow() {
@@ -107,10 +121,12 @@ Page({
   selectDriver(e) { this.setData({ driverId: e.currentTarget.dataset.id, error: '' }, () => this.saveDraft()); },
   setStart(e) { this.setData({ startDate: e.detail.value, error: '' }, () => this.saveDraft()); },
   setEnd(e) { this.setData({ endDate: e.detail.value, error: '' }, () => this.saveDraft()); },
-  setPeople(e) { this.setData({ people: Number(e.detail.value) + 1 }, () => this.saveDraft()); },
+  setPeople(e) { this.setData({ people: Number(e.detail.value) + 1 }, () => this.refreshEstimate()); },
+  setFullDays(e) { this.setData({ fullDays: Number(e.detail.value) }, () => this.refreshEstimate()); },
+  setHalfDays(e) { this.setData({ halfDays: Number(e.detail.value) }, () => this.refreshEstimate()); },
   setServices(e) {
     const services = e.detail.value;
-    this.setData({ services, serviceOptions: serviceOptions(services) }, () => this.saveDraft());
+    this.setData({ services, serviceOptions: serviceOptions(services) }, () => this.refreshEstimate());
   },
   setConsent(e) { this.setData({ privacyConsent: e.detail.value.includes('yes'), error: '' }, () => this.saveDraft()); },
 
@@ -124,6 +140,8 @@ Page({
       endDate: this.data.endDate,
       people: this.data.people,
       days: this.data.days,
+      fullDays: this.data.fullDays,
+      halfDays: this.data.halfDays,
       pickup: this.data.pickup,
       budget: this.data.budget,
       intro: this.data.intro,
@@ -133,6 +151,10 @@ Page({
       routeId: this.data.routeId,
     };
     wx.setStorageSync('wm_driver_draft', draft);
+  },
+
+  refreshEstimate() {
+    this.setData({ estimate: driverEstimate.calculate(this.data) }, () => this.saveDraft());
   },
 
   back() { wx.navigateBack({ delta: 1 }); },
@@ -192,6 +214,10 @@ Page({
       wx.setStorageSync('wm_driver_request_id', stableId);
     }
     try {
+      const requestedServices = this.data.services.slice();
+      if (this.data.fullDays) requestedServices.push(`Full-day driver × ${this.data.fullDays}`);
+      if (this.data.halfDays) requestedServices.push(`Half-day driver × ${this.data.halfDays}`);
+      if (this.data.estimate.total) requestedServices.push(`Starting driver estimate: IDR ${this.data.estimate.total.toLocaleString('en-US')}`);
       await api.sendDriverRequest({
         request_id: stableId,
         driver_id: this.data.driverId,
@@ -207,7 +233,7 @@ Page({
         end_date: this.data.endDate,
         pickup_location: this.data.pickup.trim(),
         budget_range: this.data.budget.trim(),
-        requested_services: this.data.services,
+        requested_services: requestedServices,
         lang: app.globalData.currentLang || 'zh',
         privacy_consent: true,
         website: '',

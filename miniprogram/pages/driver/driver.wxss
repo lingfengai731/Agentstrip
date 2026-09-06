@@ -4,6 +4,16 @@
 .hero-copy { margin-top: 12rpx; color: #5A554F; font-size: 25rpx; line-height: 1.7; }
 .section { margin-bottom: 22rpx; padding: 28rpx; background: #fff; border:1rpx solid #E5E2DA; border-radius: 22rpx; box-shadow: 0 5rpx 18rpx rgba(42,39,35,.035); }
 .section-title { margin-bottom: 20rpx; font-size: 28rpx; font-weight: 800; }
+.section-kicker { margin-bottom: 8rpx; color:#9B7417; font-size:19rpx; font-weight:800; letter-spacing:.12em; }
+.estimate-section { border-color:#D9D0BC; background:#FFFCF4; }
+.estimate-copy { margin:-6rpx 0 20rpx; color:#626D68; font-size:23rpx; line-height:1.6; }
+.estimate-fields { margin-top:4rpx; }
+.estimate-total { display:flex; align-items:flex-end; justify-content:space-between; gap:18rpx; margin-top:6rpx; padding:20rpx; border-radius:16rpx; background:#173E37; color:#FFFFFF; }
+.estimate-label { color:rgba(255,255,255,.72); font-size:21rpx; }
+.estimate-value { text-align:right; color:#FCBF1E; font-size:34rpx; font-weight:800; line-height:1.2; }
+.estimate-lines { display:grid; gap:8rpx; margin-top:16rpx; color:#40534C; font-size:22rpx; line-height:1.55; }
+.estimate-addition { color:#7A5A18; }
+.estimate-note { margin-top:16rpx; padding-top:14rpx; border-top:1rpx solid #E5DDCD; color:#6E746F; font-size:20rpx; line-height:1.65; }
 .driver-grid, .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 16rpx; }
 .driver-card { display: flex; align-items: center; gap: 14rpx; padding: 20rpx; border: 2rpx solid #E1DCD3; border-radius: 18rpx; }
 .driver-card.active { border-color: #0E7C6B; background: #E3F5F1; color: #0E6658; }
@@ -59,4 +69,6 @@
   .services { grid-template-columns: 1fr; }
   .hero-title { font-size: 38rpx; }
   .history-section { padding: 24rpx; }
+  .estimate-total { align-items:flex-start; flex-direction:column; }
+  .estimate-value { text-align:left; }
 }

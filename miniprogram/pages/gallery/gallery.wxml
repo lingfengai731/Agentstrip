@@ -3,6 +3,7 @@
     <view class="eyebrow">WANDERMIND PORTFOLIO</view>
     <view class="gallery-title">岛屿上的真实瞬间</view>
     <view class="gallery-subtitle">先看看巴厘岛原本的样子，再决定你想抵达哪里。照片来自已授权项目图库与已发布作品。</view>
+    <view class="gallery-summary"><text>{{totalCount || '—'}} 张精选</text><text>长按图片可保存</text><text>点开查看地点</text></view>
   </view>
 
   <scroll-view class="filter-scroll" scroll-x enhanced show-scrollbar="{{false}}">
@@ -26,4 +27,5 @@
       </view>
     </view>
   </view>
+  <view wx:if="{{visibleAssets.length}}" class="gallery-count">当前分类显示 {{visibleCount}} 张；更多管理员发布作品会自动加入。</view>
 </view>

@@ -20,6 +20,19 @@
       </view>
     </view>
 
+    <view class="section estimate-section">
+      <view class="section-kicker">透明起步价</view>
+      <view class="section-title">先看大概用车费用</view>
+      <view class="estimate-copy">Dicky 已确认这套起步规则同样适用于 Dicky 与 Gede Nico；没有按人数加价。</view>
+      <view class="two-col estimate-fields">
+        <view class="field-group"><view class="field-label">全天包车 · 10 小时</view><picker mode="selector" range="{{dayOptions}}" value="{{fullDays}}" bindchange="setFullDays"><view class="field picker">{{fullDays}} 天</view></picker></view>
+        <view class="field-group"><view class="field-label">半天包车 · 6 小时</view><picker mode="selector" range="{{dayOptions}}" value="{{halfDays}}" bindchange="setHalfDays"><view class="field picker">{{halfDays}} 天</view></picker></view>
+      </view>
+      <view class="estimate-total"><view class="estimate-label">起步估价</view><view class="estimate-value">{{estimate.totalLabel}}</view></view>
+      <view class="estimate-lines"><view wx:for="{{estimate.breakdown}}" wx:key="*this">{{item}}</view><view wx:for="{{estimate.additions}}" wx:key="*this" class="estimate-addition">{{item}}</view></view>
+      <view class="estimate-note">含车辆、燃油、司机向导、矿泉水、停车和过路费。超时 IDR 70,000/小时，超过 30 分钟按 1 小时；特殊路线、机场、佩妮达、儿童座椅及最终金额以所选司机回复为准。当地服务由司机或供应商直接收款，WanderMind 不代收。</view>
+    </view>
+
     <view class="section">
       <view class="section-title">你的行程</view>
       <view wx:if="{{routeId}}" class="route-badge">已带入专业路线 {{routeId}}</view>

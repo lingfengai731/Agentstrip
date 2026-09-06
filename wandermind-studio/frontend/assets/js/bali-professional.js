@@ -14,6 +14,7 @@
     editing: false,
     paymentOpen: false,
     paypal: null,
+    manualPayments: null,
     loading: false,
     pendingRouteId: '',
     queuedRouteId: '',
@@ -26,6 +27,14 @@
     ja: { option:'PayPal またはカードでデジタルルート利用権を購入', sandbox:'Sandbox テスト・実際の請求なし', local:'またはローカルQR決済', processing:'サーバーで決済を確認しています…', done:'決済を確認し、デジタルルートを開放しました。', cancelled:'決済を閉じました。ルートは開放されていません。もう一度お試しいただけます。', failed:'PayPalで決済を確認できなかったため、ルートは開放されていません。' },
     ko: { option:'PayPal 또는 카드로 디지털 경로 이용권 결제', sandbox:'Sandbox 테스트 · 실제 청구 없음', local:'또는 현지 QR 결제', processing:'서버에서 결제를 안전하게 확인 중입니다…', done:'결제가 확인되어 디지털 경로가 열렸습니다.', cancelled:'결제를 닫았습니다. 경로 권한은 부여되지 않았으며 다시 시도할 수 있습니다.', failed:'PayPal 결제를 확인하지 못해 경로가 잠금 해제되지 않았습니다.' },
     id: { option:'Bayar akses rute digital dengan PayPal atau kartu', sandbox:'Uji Sandbox · tidak ada tagihan nyata', local:'Atau gunakan pembayaran QR lokal', processing:'Memverifikasi pembayaran dengan aman…', done:'Pembayaran terverifikasi. Rute digital sudah terbuka.', cancelled:'Checkout ditutup. Akses rute belum diberikan; Anda dapat mencoba lagi.', failed:'PayPal tidak dapat memverifikasi pembayaran ini. Rute belum dibuka.' }
+  };
+
+  var OFFLINE_COPY = {
+    en: { qrTitle:'Mainland China QR payment', qrText:'WeChat Pay and Alipay are confirmed manually by the site owner.', qrPaid:'I paid by WeChat Pay or Alipay', bankTitle:'Mainland China bank transfer', bankText:'Bank details are shown only after sign-in and only when the owner has configured them securely.', bankUnavailable:'Bank transfer is being prepared. No account details are stored in the website code.', bankPaid:'I completed the bank transfer', accountName:'Account name', accountNumber:'Account number', branch:'Branch', unionPay:'UnionPay online checkout requires merchant acquiring and is not open yet.', safety:'Include the order number in the transfer note. Route access opens only after the owner confirms receipt.' },
+    zh: { qrTitle:'中国大陆扫码付款', qrText:'微信和支付宝由站长人工核对到账。', qrPaid:'我已通过微信或支付宝付款', bankTitle:'中国大陆银行卡转账', bankText:'登录后、且站长已在服务器安全配置时才显示收款账户。', bankUnavailable:'银行卡转账正在准备中；账户资料不会写入网站代码。', bankPaid:'我已完成银行卡转账', accountName:'户名', accountNumber:'账号', branch:'开户行', unionPay:'银联在线收银台需要完成商户入网，目前尚未开放。', safety:'转账附言请填写订单编号；站长确认到账后才会开放路线。' },
+    ja: { qrTitle:'中国本土QR決済', qrText:'WeChat PayとAlipayはサイト運営者が入金を確認します。', qrPaid:'WeChat Pay / Alipayで支払い済み', bankTitle:'中国本土の銀行振込', bankText:'ログイン後、運営者がサーバーに安全に設定した場合のみ口座情報を表示します。', bankUnavailable:'銀行振込は準備中です。口座情報はサイトのコードに保存しません。', bankPaid:'銀行振込を完了しました', accountName:'口座名義', accountNumber:'口座番号', branch:'支店', unionPay:'UnionPayオンライン決済は加盟店契約が必要で、現在は未開通です。', safety:'振込メモに注文番号を記載してください。入金確認後にルートを開放します。' },
+    ko: { qrTitle:'중국 본토 QR 결제', qrText:'WeChat Pay와 Alipay 입금은 사이트 운영자가 직접 확인합니다.', qrPaid:'WeChat Pay / Alipay 결제 완료', bankTitle:'중국 본토 은행 송금', bankText:'로그인 후 운영자가 서버에 안전하게 설정한 경우에만 계좌 정보를 표시합니다.', bankUnavailable:'은행 송금을 준비 중입니다. 계좌 정보는 웹사이트 코드에 저장하지 않습니다.', bankPaid:'은행 송금을 완료했습니다', accountName:'예금주', accountNumber:'계좌번호', branch:'지점', unionPay:'UnionPay 온라인 결제는 가맹점 등록이 필요하며 아직 열리지 않았습니다.', safety:'송금 메모에 주문 번호를 입력하세요. 입금 확인 후 경로가 열립니다.' },
+    id: { qrTitle:'Pembayaran QR Tiongkok daratan', qrText:'WeChat Pay dan Alipay dikonfirmasi secara manual oleh pemilik situs.', qrPaid:'Saya sudah bayar lewat WeChat Pay / Alipay', bankTitle:'Transfer bank Tiongkok daratan', bankText:'Detail rekening hanya tampil setelah masuk dan setelah dikonfigurasi aman di server.', bankUnavailable:'Transfer bank sedang disiapkan. Detail rekening tidak disimpan dalam kode situs.', bankPaid:'Saya sudah menyelesaikan transfer bank', accountName:'Nama rekening', accountNumber:'Nomor rekening', branch:'Cabang', unionPay:'Checkout UnionPay memerlukan pendaftaran merchant dan belum dibuka.', safety:'Cantumkan nomor pesanan pada catatan transfer. Rute dibuka setelah dana dikonfirmasi.' }
   };
 
   var COPY = {
@@ -59,6 +68,7 @@
   }
   function T() { return COPY[currentLang()] || COPY.en; }
   function paypalT() { return PAYPAL_COPY[currentLang()] || PAYPAL_COPY.en; }
+  function offlineT() { return OFFLINE_COPY[currentLang()] || OFFLINE_COPY.en; }
   function text(value) { return String(value == null ? '' : value); }
   function esc(value) { return text(value).replace(/[&<>"']/g, function (c) { return ({ '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#39;' })[c]; }); }
   function fill(value, vars) { return text(value).replace(/\{(\w+)\}/g, function (_, key) { return esc(vars[key] == null ? '' : vars[key]); }); }
@@ -358,6 +368,16 @@
     }
     return state.paypal;
   }
+  async function loadManualPaymentConfig() {
+    try {
+      var response = await fetch(API_BASE + '/api/manual-payments/config', { headers:authHeaders() });
+      var body = await response.json().catch(function () { return {}; });
+      state.manualPayments = response.ok ? body : { bank_transfer:{ available:false, accounts:[] } };
+    } catch (_) {
+      state.manualPayments = { bank_transfer:{ available:false, accounts:[] } };
+    }
+    return state.manualPayments;
+  }
   function loadPayPalSdk(config) {
     if (window.paypal && window.paypal.Buttons) return Promise.resolve(window.paypal);
     return new Promise(function (resolve, reject) {
@@ -422,9 +442,17 @@
     }
   }
   function paymentPanel() {
-    var l = T(); var pc = paypalT(); var config = state.paypal || {};
+    var l = T(); var pc = paypalT(); var oc = offlineT(); var config = state.paypal || {};
+    var manual = state.manualPayments || {}; var bank = manual.bank_transfer || {};
+    var accounts = Array.isArray(bank.accounts) ? bank.accounts : [];
     var paypalOption = config.enabled ? '<section class="bali-professional-paypal"><div class="bali-professional-payment-label"><strong>' + esc(pc.option) + '</strong><span>' + esc(config.environment === 'sandbox' ? pc.sandbox : (config.currency + ' ' + config.amount)) + '</span></div><div id="bali-professional-paypal-buttons"></div></section><div class="bali-professional-payment-divider"><span>' + esc(pc.local) + '</span></div>' : '';
-    return '<div class="bali-professional-card" id="bali-professional-payment"><h3>' + esc(l.payTitle) + '</h3><p>' + esc(l.payText) + '</p>' + paypalOption + '<div class="bali-professional-qr-grid"><figure><img src="assets/images/pay-wechat.jpg" alt="WeChat Pay"><figcaption>WeChat Pay · CNY 9.90</figcaption></figure><figure><img src="assets/images/pay-alipay.jpg" alt="Alipay"><figcaption>Alipay · CNY 9.90</figcaption></figure></div><div class="bali-professional-actions"><button class="bali-btn bali-btn-primary" id="bali-professional-paid" type="button">' + esc(l.paid) + '</button><button class="bali-btn bali-route-secondary" id="bali-professional-payment-close" type="button">' + esc(l.cancel) + '</button></div><div id="bali-professional-payment-status" class="bali-professional-status" role="status" aria-live="polite"></div></div>';
+    var bankAccounts = accounts.map(function (account) {
+      return '<dl class="bali-professional-bank-account"><div><dt>' + esc(account.bank_name) + '</dt><dd>' + esc(account.branch || '') + '</dd></div><div><dt>' + esc(oc.accountName) + '</dt><dd>' + esc(account.account_name) + '</dd></div><div><dt>' + esc(oc.accountNumber) + '</dt><dd class="bali-professional-bank-number">' + esc(account.account_number) + '</dd></div></dl>';
+    }).join('');
+    var bankBody = bank.available && bankAccounts
+      ? bankAccounts + '<p class="bali-professional-payment-note">' + esc(oc.safety) + '</p><button class="bali-btn bali-btn-primary" id="bali-professional-bank-paid" type="button">' + esc(oc.bankPaid) + '</button>'
+      : '<p class="bali-professional-payment-note">' + esc(oc.bankUnavailable) + '</p>';
+    return '<div class="bali-professional-card" id="bali-professional-payment"><h3>' + esc(l.payTitle) + '</h3><p>' + esc(l.payText) + '</p>' + paypalOption + '<section class="bali-professional-offline"><div class="bali-professional-payment-label"><strong>' + esc(oc.qrTitle) + '</strong><span>' + esc(oc.qrText) + '</span></div><div class="bali-professional-qr-grid"><figure><img src="assets/images/pay-wechat.jpg" alt="WeChat Pay"><figcaption>WeChat Pay · CNY 9.90</figcaption></figure><figure><img src="assets/images/pay-alipay.jpg" alt="Alipay"><figcaption>Alipay · CNY 9.90</figcaption></figure></div><button class="bali-btn bali-btn-primary" id="bali-professional-qr-paid" type="button">' + esc(oc.qrPaid) + '</button></section><section class="bali-professional-offline"><div class="bali-professional-payment-label"><strong>' + esc(oc.bankTitle) + '</strong><span>' + esc(oc.bankText) + '</span></div>' + bankBody + '</section><p class="bali-professional-unionpay-note">' + esc(oc.unionPay) + '</p><div class="bali-professional-actions"><button class="bali-btn bali-route-secondary" id="bali-professional-payment-close" type="button">' + esc(l.cancel) + '</button></div><div id="bali-professional-payment-status" class="bali-professional-status" role="status" aria-live="polite"></div></div>';
   }
   function renderResult() {
     var l = T(); var data = state.response || {}; var route = data.route || {};
@@ -453,7 +481,7 @@
   }
   function bindResultActions() {
     var l = T(); var unlock = document.getElementById('bali-professional-unlock');
-    if (unlock) unlock.onclick = async function () { if (!isLoggedIn()) { redirectToLogin(); return; } if (!state.paypal) await loadPayPalConfig(); state.paymentOpen = true; renderResult(); };
+    if (unlock) unlock.onclick = async function () { if (!isLoggedIn()) { redirectToLogin(); return; } await Promise.all([state.paypal ? Promise.resolve(state.paypal) : loadPayPalConfig(), state.manualPayments ? Promise.resolve(state.manualPayments) : loadManualPaymentConfig()]); state.paymentOpen = true; renderResult(); };
     var points = document.getElementById('bali-professional-points');
     if (points) points.onclick = async function () {
       if (!isLoggedIn()) { redirectToLogin(); return; }
@@ -489,17 +517,22 @@
       });
     };
     document.querySelectorAll('[data-driver]').forEach(function (button) { button.onclick = function () { saveDriverHandoff(button.dataset.driver); }; });
-    var paid = document.getElementById('bali-professional-paid');
-    if (paid) paid.onclick = async function () {
+    function bindManualPaid(buttonId, paymentMethod) {
+      var paid = document.getElementById(buttonId);
+      if (!paid) return;
+      paid.onclick = async function () {
       if (!isLoggedIn()) { redirectToLogin(); return; }
       paid.disabled = true;
       try {
-        var response = await fetch(API_BASE + '/api/professional-route/orders', { method:'POST', headers:Object.assign({ 'Content-Type':'application/json' }, authHeaders()), body:JSON.stringify({ trip_id:state.tripId }) });
+        var response = await fetch(API_BASE + '/api/professional-route/orders', { method:'POST', headers:Object.assign({ 'Content-Type':'application/json' }, authHeaders()), body:JSON.stringify({ trip_id:state.tripId, payment_method:paymentMethod }) });
         var body = await response.json().catch(function () { return {}; });
-        if (!response.ok) throw new Error(body.detail || 'Order failed');
+        if (!response.ok) throw new Error(apiError(body, 'Order failed'));
         setStatus(body.already_unlocked ? l.unlocked : l.orderSent, false, 'bali-professional-payment-status');
       } catch (error) { setStatus(error.message || l.error, true); paid.disabled = false; }
-    };
+      };
+    }
+    bindManualPaid('bali-professional-qr-paid', 'manual_qr');
+    bindManualPaid('bali-professional-bank-paid', 'bank_transfer');
     var paymentClose = document.getElementById('bali-professional-payment-close');
     if (paymentClose) paymentClose.onclick = function () { state.paymentOpen = false; renderResult(); };
     bindForm(document.getElementById('bali-professional-form'));

@@ -94,6 +94,7 @@ const poiMediaCatalog = JSON.parse(read('wandermind-studio/frontend/assets/data/
 const imagePublishManifest = JSON.parse(read('wandermind-studio/frontend/assets/data/image-publish-manifest.json'));
 const language = read('miniprogram/pages/language/language.js');
 const { formatAssistantMessage } = require(path.join(mini, 'utils', 'message-format.js'));
+const driverEstimate = require(path.join(mini, 'utils', 'driver-estimate.js'));
 
 check(/apiBase:\s*'https:\/\/wandermind\.cc'/.test(app), 'API base must use the canonical production domain');
 check(/timeout:\s*130000/.test(api), 'AI chat timeout must exceed the backend 120-second window');
@@ -120,6 +121,15 @@ check(driver.includes('未登录时请填写联系邮箱') && driver.includes('!
 check(read('miniprogram/pages/driver/driver.wxml').includes('联系邮箱（可选）'), 'email field must be optional for authenticated WeChat accounts');
 check(read('miniprogram/pages/driver/driver.wxml').includes('必要联系信息'), 'driver consent copy must also cover email-free WeChat relay');
 check(read('miniprogram/pages/driver/driver.wxml').includes('我的司机请求'), 'driver request history surface is missing');
+const driverView = read('miniprogram/pages/driver/driver.wxml');
+check(driver.includes("require('../../utils/driver-estimate.js')"), 'driver estimate utility is not connected');
+check(driverView.includes('透明起步价') && driverView.includes('bindchange="setFullDays"') && driverView.includes('bindchange="setHalfDays"'), 'driver estimate controls are missing');
+check(driverView.includes('当地服务由司机或供应商直接收款'), 'foreign local-service direct-payment boundary is missing');
+check(driver.includes('Starting driver estimate: IDR') && driver.includes('requested_services: requestedServices'), 'driver handoff must include the visible starting estimate');
+const estimateFixture = driverEstimate.calculate({ fullDays: 2, halfDays: 1, people: 4, services: ['penida'] });
+check(estimateFixture.total === 1900000, 'driver base estimate must use IDR 700k full-day and IDR 500k half-day rates');
+check(driverEstimate.constants.overtimeRate === 70000, 'driver overtime estimate must use the latest confirmed IDR 70k rule');
+check(estimateFixture.perGuestSurcharge == null, 'driver estimate must not reintroduce the retired per-guest surcharge');
 check(api.includes('/api/bali/professional-route') && api.includes('recent-unlocked'), 'shared professional-route API wrappers missing');
 check(api.includes('/assets/data/poi-media-catalog.json') && api.includes('baliMediaCatalog'), 'shared POI media catalog wrapper missing');
 check(api.includes('/assets/data/image-publish-manifest.json') && api.includes('imagePublishManifest'), 'shared approved-image manifest wrapper missing');
@@ -131,6 +141,7 @@ check(baliMedia.includes('EXISTING_WEBSITE_GALLERY'), 'Mini Program gallery must
 check(itinerary.includes('openPlace(e)') && itineraryView.includes('data-id="{{item.id}}"'), 'route places must open a real detail page by POI id');
 check(itinerary.includes('openGallery()') && homeView.includes('bindtap="openGallery"'), 'gallery must be reachable from Home and Trips');
 check(gallery.includes('loadBaliMedia') && gallery.includes('openAsset(e)'), 'gallery must load shared media and open a detail');
+check(read('miniprogram/pages/gallery/gallery.wxml').includes('长按图片可保存') && read('miniprogram/pages/gallery/gallery.wxml').includes('{{visibleCount}}'), 'gallery must explain saving and expose the visible image count');
 check(place.includes('imagesByPoi') && place.includes('onSlide(e)'), 'place detail must expose the full multi-image set');
 check(read('miniprogram/pages/place/place.wxml').includes('<swiper'), 'place detail must use a native image swiper');
 check(gallery.includes('markImageFailed(e)') && place.includes('markImageFailed(e)'), 'remote image failures must have visible fallbacks');
