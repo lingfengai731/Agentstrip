@@ -1,0 +1,22 @@
+{
+  "schema_version": 1,
+  "evidence_id": "ev-20260907T021939Z-remove-personal-bank-transfer-20260907",
+  "task_ref": "remove-personal-bank-transfer-20260907",
+  "owner": "account1-sol",
+  "captured_at": "2026-09-07T02:19:39Z",
+  "status": "verified",
+  "claim": "PR #64 removed the personal bank-transfer endpoint, UI, environment contract and order support while preserving PayPal Sandbox and WeChat/Alipay QR confirmation. Fixed head d7a8d23 passed PostgreSQL CI; squash merge 268d58f has the same Git tree and Render deploy dep-daf1tb97lnhs73f8s430 is Live. Fresh production probes returned health 200, Bali 200, removed endpoint 404, no OpenAPI path and no bank fields in the deployed script.",
+  "source": {
+    "kind": "git",
+    "repository": "https://github.com/lingfengai731/Agentstrip.git",
+    "commit": "d7a8d23cc21627ccc4efcd8f7370e90e5216a3a9",
+    "branch": "codex/remove-bank-transfer-20260907",
+    "worktree": "E:\\Agentstrip-worktrees\\active\\account1\\remove-bank-transfer-20260907",
+    "dirty": false
+  },
+  "verification": {
+    "command": "python unittest; Mini Program contract; Playwright recovery; GitHub fixed-head CI; Render exact-commit deploy; production HTTP probes",
+    "result": "120 backend tests, 305 Mini Program checks and recovery browser test passed; PR #64 merged; exact Render deployment Live; production bank endpoint absent."
+  },
+  "notes": "No real bank details were committed or required. No Mini Program Upload, review submission, release, real payment or entitlement mutation occurred."
+}

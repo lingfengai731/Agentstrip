@@ -430,3 +430,17 @@ After 305 Mini Program checks and 120 backend tests passed on the exact merge tr
 DevTools CLI uploaded version `1.0.0` as a 1,584,409-byte development version. This is Upload only: no
 review submission or public release occurred. `BANK_TRANSFER_ACCOUNTS_JSON` remains an owner-only Render
 configuration gate; no real payment, entitlement mutation or driver message was performed.
+
+## 2026-09-07 Personal bank transfer removed
+
+The owner cancelled personal bank transfer to avoid disclosing collection account details. PR #64 fixed
+head `d7a8d23cc21627ccc4efcd8f7370e90e5216a3a9` passed PostgreSQL integration and squash
+merged as `main@268d58f66edfbd309bd46960ae2d13548c5971aa`; both Git trees equal
+`cb7db84aa491d39033c5ec297898b4cefe7b38d6`. Render automatic deploy
+`dep-daf1tb97lnhs73f8s430` became Live at that exact commit.
+
+Fresh production checks returned 200 for `/healthz` and `/bali.html`; the retired
+`/api/manual-payments/config` path returns 404, is absent from OpenAPI, and the deployed payment script
+contains neither `bank_transfer` nor `account_number`. The server rejects legacy bank-transfer and
+UnionPay manual-order values. WeChat/Alipay QR confirmation and PayPal Sandbox remain unchanged.
+No real payment, entitlement mutation, Mini Program Upload, review submission or release occurred.
