@@ -602,3 +602,10 @@
 - GitHub/Render callback: PR #62 fixed head `8f647cc` passed PostgreSQL integration and squash merged as `main@449b206`; both Git trees equal `1d13160b`. Exact Render deploy `dep-daeoaqjm8hqs73d91r20` is Live; health is 200, unauthenticated manual-payment config is 401, and the new endpoints are present.
 - Product callback: PayPal remains Sandbox and fail-closed; WeChat/Alipay and optional bank transfer use manual administrator confirmation. Real bank details stay only in owner-configured Render JSON. UnionPay remains gated by merchant acquiring. Dicky/Gede estimates are starting values and local suppliers take payment directly.
 - Mini Program callback: 305 contract checks and 120 backend tests passed on the exact merge tree. Official CLI Upload of version `1.0.0` succeeded at 1,584,409 bytes. This is a development version only; no review submission or release occurred.
+
+## 2026-09-07 Personal bank transfer removal callback
+
+- Route: small, security-sensitive product correction completed serially by Sol; no worker was needed under the Luna routing threshold.
+- GitHub/Render callback: PR #64 fixed head `d7a8d23` passed PostgreSQL integration and squash merged as `main@268d58f`; both Git trees equal `cb7db84`. Exact Render deploy `dep-daf1tb97lnhs73f8s430` is Live.
+- Product callback: all personal bank-account parsing, API exposure, UI, environment examples and order support are removed. Legacy bank-transfer and UnionPay order values fail closed. WeChat/Alipay QR confirmation and PayPal Sandbox remain available.
+- Release boundary: fresh production probes confirmed health 200, retired endpoint 404, no OpenAPI route and no bank fields in the deployed script. No real payment, entitlement mutation, Mini Program Upload, review submission or release occurred.
