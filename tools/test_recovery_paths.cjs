@@ -49,11 +49,6 @@ function routePayload(profile) {
     await professional.route('**/api/auth/me', route => route.fulfill({ json: { id:'payer', email:'payer@example.test', name:'Payer' } }));
     await professional.route('**/api/auth/config', route => route.fulfill({ json: {} }));
     await professional.route('**/api/paypal/config', route => route.fulfill({ json: { enabled: false } }));
-    await professional.route('**/api/manual-payments/config', route => route.fulfill({ json: {
-      amount:9.9, currency:'CNY',
-      bank_transfer:{ available:true, accounts:[{ bank_name:'Test Bank', account_name:'Test Owner', account_number:'0000000012345678', branch:'Test Branch' }] },
-      unionpay:{ available:false, reason:'merchant_acquiring_required' },
-    } }));
     await professional.route('**/api/professional-route/orders', route => {
       manualOrderBodies.push(JSON.parse(route.request().postData() || '{}'));
       return route.fulfill({ json: { ok:true, order:{ id:'offline-order', status:'pending' } } });
@@ -78,13 +73,13 @@ function routePayload(profile) {
     check(professionalBodies.length === 2, `Professional route retry made ${professionalBodies.length} POSTs`);
     check(professionalBodies[1].trip_profile.budget_tier === 'comfort', 'Professional route retry changed the saved profile');
     await professional.locator('#bali-professional-unlock').click();
-    await professional.locator('#bali-professional-bank-paid').waitFor();
-    check((await professional.locator('.bali-professional-bank-number').innerText()) === '0000000012345678', 'Authenticated bank details are missing');
-    check((await professional.locator('.bali-professional-unionpay-note').innerText()).includes('merchant'), 'UnionPay acquiring boundary is missing');
+    await professional.locator('#bali-professional-qr-paid').waitFor();
+    check(await professional.locator('#bali-professional-bank-paid').count() === 0, 'Removed bank transfer button is still visible');
+    check(await professional.locator('.bali-professional-bank-account').count() === 0, 'Removed bank account details are still visible');
     const paymentOverflow = await professional.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth);
     check(paymentOverflow <= 1, `Manual payment panel overflows mobile by ${paymentOverflow}px`);
-    await professional.locator('#bali-professional-bank-paid').click();
-    check(manualOrderBodies.length === 1 && manualOrderBodies[0].payment_method === 'bank_transfer', 'Bank payment confirmation did not preserve the selected method');
+    await professional.locator('#bali-professional-qr-paid').click();
+    check(manualOrderBodies.length === 1 && manualOrderBodies[0].payment_method === 'manual_qr', 'QR payment confirmation did not preserve the selected method');
     check(professionalErrors.length === 0, `Professional route recovery page errors: ${professionalErrors.join('|')}`);
     await professionalContext.close();
 
