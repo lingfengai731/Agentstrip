@@ -1500,7 +1500,7 @@ class ProductAccessTests(unittest.TestCase):
         self.assertNotIn("Real-time pricing across Booking", i18n)
         self.assertNotIn("六项 AI 驱动的服务", i18n)
         self.assertIn('id="professional-planner"', bali_html)
-        self.assertIn("assets/js/bali-professional.js?v=20260906p66", bali_html)
+        self.assertIn("assets/js/bali-professional.js?v=20260907p67", bali_html)
         self.assertNotIn("ai-tool.html?professional=1", bali_html)
         self.assertNotIn("professional_requested", ai_js)
         self.assertNotIn("Visa on arrival ~$35", ai_js)
@@ -1523,6 +1523,9 @@ class ProductAccessTests(unittest.TestCase):
         self.assertIn("/api/bali/professional-route/recent-unlocked", professional_js)
         self.assertIn("function clearStoredTrip()", professional_js)
         self.assertIn("localStorage.removeItem('wm_studio_professional_trip_id')", professional_js)
+        self.assertNotIn("/api/manual-payments/config", professional_js)
+        self.assertNotIn("bank_transfer", professional_js)
+        self.assertNotIn("bali-professional-bank", bali_html)
         self.assertIn("response.status === 403 || response.status === 404 || response.status === 409", professional_js)
         self.assertIn("window.location.pathname + window.location.search + '#professional-planner'", professional_js)
         self.assertIn("editor.scrollIntoView", professional_js)
@@ -1652,101 +1655,24 @@ class ProductAccessTests(unittest.TestCase):
             self.assertIn(f"{lang}:{{", admin_js)
         self.assertNotIn("innerHTML", admin_js)
 
-    def test_manual_payment_config_is_private_and_fails_closed_without_bank_details(self):
-        denied = self._run(self._request("GET", "/api/manual-payments/config"))
-        self.assertEqual(denied.status_code, 401)
+    def test_manual_bank_details_endpoint_is_removed(self):
+        response = self._run(
+            self._request("GET", "/api/manual-payments/config", token=self.user_token)
+        )
+        self.assertEqual(response.status_code, 404)
 
-        with patch.dict(os.environ, {"BANK_TRANSFER_ACCOUNTS_JSON": ""}):
+    def test_bank_transfer_and_unionpay_orders_are_rejected(self):
+        trip_id = self._new_trip(token=self.user_token)
+        for payment_method in ("bank_transfer", "unionpay"):
             response = self._run(
                 self._request(
-                    "GET", "/api/manual-payments/config", token=self.user_token
-                )
-            )
-        self.assertEqual(response.status_code, 200, response.text)
-        self.assertEqual(response.headers.get("cache-control"), "private, no-store")
-        payload = response.json()
-        self.assertEqual(payload["amount"], 9.9)
-        self.assertEqual(payload["currency"], "CNY")
-        self.assertTrue(payload["wechat_pay"]["available"])
-        self.assertTrue(payload["alipay"]["available"])
-        self.assertFalse(payload["bank_transfer"]["available"])
-        self.assertEqual(payload["bank_transfer"]["accounts"], [])
-        self.assertFalse(payload["unionpay"]["available"])
-        self.assertEqual(
-            payload["unionpay"]["reason"], "merchant_acquiring_required"
-        )
-
-    def test_bank_transfer_order_requires_server_config_and_can_be_confirmed(self):
-        trip_without_bank = self._new_trip(token=self.user_token)
-        with patch.dict(os.environ, {"BANK_TRANSFER_ACCOUNTS_JSON": ""}):
-            unavailable = self._run(
-                self._request(
                     "POST",
                     "/api/professional-route/orders",
                     token=self.user_token,
-                    json={
-                        "trip_id": trip_without_bank,
-                        "payment_method": "bank_transfer",
-                    },
+                    json={"trip_id": trip_id, "payment_method": payment_method},
                 )
             )
-        self.assertEqual(unavailable.status_code, 503, unavailable.text)
-
-        unsupported = self._run(
-            self._request(
-                "POST",
-                "/api/professional-route/orders",
-                token=self.user_token,
-                json={"trip_id": trip_without_bank, "payment_method": "unionpay"},
-            )
-        )
-        self.assertEqual(unsupported.status_code, 400, unsupported.text)
-
-        configured_accounts = json.dumps(
-            [
-                {
-                    "bank_name": "Test Bank",
-                    "account_name": "WanderMind Test",
-                    "account_number": "0000000012345678",
-                    "branch": "Test Branch",
-                }
-            ]
-        )
-        trip_id = self._new_trip(token=self.user_token)
-        with patch.dict(
-            os.environ, {"BANK_TRANSFER_ACCOUNTS_JSON": configured_accounts}
-        ):
-            config = self._run(
-                self._request(
-                    "GET", "/api/manual-payments/config", token=self.user_token
-                )
-            )
-            created = self._run(
-                self._request(
-                    "POST",
-                    "/api/professional-route/orders",
-                    token=self.user_token,
-                    json={"trip_id": trip_id, "payment_method": "bank_transfer"},
-                )
-            )
-        self.assertEqual(config.status_code, 200, config.text)
-        account = config.json()["bank_transfer"]["accounts"][0]
-        self.assertEqual(account["bank_name"], "Test Bank")
-        self.assertEqual(account["account_number"], "0000000012345678")
-        self.assertEqual(created.status_code, 200, created.text)
-        self.assertEqual(created.json()["order"]["payment_method"], "bank_transfer")
-
-        order_id = created.json()["order"]["id"]
-        confirmed = self._run(
-            self._request(
-                "POST",
-                f"/api/admin/professional-route/orders/{order_id}/confirm",
-                token=self.admin_token,
-                json={"payment_reference": "bank-transfer-test"},
-            )
-        )
-        self.assertEqual(confirmed.status_code, 200, confirmed.text)
-        self.assertEqual(confirmed.json()["status"], "confirmed")
+            self.assertEqual(response.status_code, 400, response.text)
 
     def test_only_admin_can_confirm_and_confirmation_is_idempotent(self):
         trip_id = self._new_trip(token=self.user_token)

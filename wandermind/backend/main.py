@@ -3443,57 +3443,6 @@ async def paypal_webhook(request: Request):
         conn.close()
 
 
-def _manual_bank_accounts() -> list[dict]:
-    """Return authenticated-payer bank details from one server-only JSON value.
-
-    The value is intentionally not stored in Git. Invalid or incomplete entries
-    are omitted so bank transfer fails closed instead of showing unusable data.
-    """
-    raw = os.getenv("BANK_TRANSFER_ACCOUNTS_JSON", "").strip()
-    if not raw:
-        return []
-    try:
-        parsed = json.loads(raw)
-    except (TypeError, ValueError, json.JSONDecodeError):
-        return []
-    if not isinstance(parsed, list):
-        return []
-    accounts = []
-    for item in parsed[:3]:
-        if not isinstance(item, dict):
-            continue
-        bank_name = str(item.get("bank_name") or "").strip()[:80]
-        account_name = str(item.get("account_name") or "").strip()[:80]
-        account_number = re.sub(r"[\s-]+", "", str(item.get("account_number") or ""))[:32]
-        branch = str(item.get("branch") or "").strip()[:160]
-        if not bank_name or not account_name or not re.fullmatch(r"\d{8,32}", account_number):
-            continue
-        accounts.append({
-            "bank_name": bank_name,
-            "account_name": account_name,
-            "account_number": account_number,
-            "branch": branch,
-        })
-    return accounts
-
-
-@app.get("/api/manual-payments/config")
-async def manual_payment_config(user=Depends(current_user)):
-    accounts = _manual_bank_accounts()
-    return JSONResponse({
-        "amount": 9.9,
-        "currency": "CNY",
-        "wechat_pay": {"available": True, "confirmation": "manual"},
-        "alipay": {"available": True, "confirmation": "manual"},
-        "bank_transfer": {
-            "available": bool(accounts),
-            "confirmation": "manual",
-            "accounts": accounts,
-        },
-        "unionpay": {"available": False, "reason": "merchant_acquiring_required"},
-    }, headers={"Cache-Control": "private, no-store", "Pragma": "no-cache"})
-
-
 @app.post("/api/professional-route/orders")
 async def create_professional_route_order(
     data: ProRouteOrderReq,
@@ -3501,10 +3450,8 @@ async def create_professional_route_order(
     anon_id=Depends(anon_id_header),
 ):
     payment_method = (data.payment_method or "manual_qr").strip().lower()
-    if payment_method not in {"manual_qr", "bank_transfer"}:
+    if payment_method != "manual_qr":
         raise HTTPException(400, "Unsupported manual payment method")
-    if payment_method == "bank_transfer" and not _manual_bank_accounts():
-        raise HTTPException(503, "Bank transfer is not configured")
     conn = get_db()
     try:
         trip = _trip_owner(conn, data.trip_id, user, anon_id)
@@ -3627,7 +3574,7 @@ async def confirm_professional_route_order(
             return {"ok": True, "already_confirmed": True, "order_id": order_id}
         if order["status"] != "pending":
             raise HTTPException(409, "Only pending orders can be confirmed")
-        if order.get("payment_method") not in {"manual_qr", "bank_transfer"}:
+        if order.get("payment_method") != "manual_qr":
             raise HTTPException(409, "Only manual offline orders can be confirmed by an admin")
         now = int(time.time())
         conn.execute(
