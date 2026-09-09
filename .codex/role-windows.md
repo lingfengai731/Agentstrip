@@ -609,3 +609,11 @@
 - GitHub/Render callback: PR #64 fixed head `d7a8d23` passed PostgreSQL integration and squash merged as `main@268d58f`; both Git trees equal `cb7db84`. Exact Render deploy `dep-daf1tb97lnhs73f8s430` is Live.
 - Product callback: all personal bank-account parsing, API exposure, UI, environment examples and order support are removed. Legacy bank-transfer and UnionPay order values fail closed. WeChat/Alipay QR confirmation and PayPal Sandbox remain available.
 - Release boundary: fresh production probes confirmed health 200, retired endpoint 404, no OpenAPI route and no bank fields in the deployed script. No real payment, entitlement mutation, Mini Program Upload, review submission or release occurred.
+
+## 2026-09-09 Astra skill-governance callback
+
+- Route: medium / L2. The current main Agent retained instruction architecture, source/licence judgment, global-file edits, integration and final validation; no Luna task was dispatched because these changes share one routing surface and do not form an independently writable bounded package.
+- Recovery callback: isolated worktree `E:\Agentstrip-worktrees\active\account1\astra-skill-governance-20260909` started clean from `origin/main@183a0d21`; the materially dirty `E:\Agentstrip` checkout was left unchanged. Render deploy `dep-daf1vupt0dsc73c75ej0` was freshly verified Live at the same commit.
+- Governance callback: user and project `AGENTS.md`, cross-account/quota/role/Luna routing descriptions, and the model-routing reference were adapted for Astra ownership, progressive disclosure and risk-matched verification. Existing safety and cross-account gates remain in force.
+- Skill callback: Vercel `web-design-guidelines` was already current; `design-taste-frontend` and `yueban-image-to-code` were installed as E-drive upstream sources plus concise global adapters. All six modified/new Skill roots pass `quick_validate.py`, and Codex discovery lists all three requested design Skills.
+- Product boundary: no application source, payment, user data, Render variable, deployment, Mini Program Upload, review submission or public release was changed by this task.
