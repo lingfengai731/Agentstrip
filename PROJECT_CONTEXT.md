@@ -475,3 +475,13 @@ PR #67 passed its project-memory validation and squash merged as
 evidence, so no new runtime deployment was required or observed. Render remains Live on the same
 application tree at deploy `dep-daf1vupt0dsc73c75ej0`; fresh public probes still return 200 for
 health, home and Bali, and 404 for the retired personal-bank endpoint.
+
+## 2026-09-09 Mini Program recovery verification
+
+The recovery slice rejects equal/reversed planner dates, persists drafts per account, clears
+private route caches on logout/account changes, ignores old-session route responses, and refreshes
+cached route labels after language changes. Local behavioral tests, 305 Mini Program contracts,
+diff checks and an official 1,578,889-byte Preview passed. Full-page localization and rendered
+mobile visual acceptance remain open; Computer Use could not initialize its runtime dependency.
+This changes Mini Program JavaScript only, with no backend deployment requirement. Preview is
+not development Upload, review submission or public release. See the 20260909T123126Z handoff.

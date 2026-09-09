@@ -18,11 +18,11 @@ Page({
   },
 
   async loadRoutes() {
-    if (this.data.routes.length) return;
+    const lang = app.globalData.currentLang || 'zh';
+    if (this.data.routes.length && this.routesLang === lang) return;
     this.setData({ loading: true, error: '' });
     try {
       const data = await api.baliRouteData();
-      const lang = app.globalData.currentLang || 'zh';
       const poiById = {};
       (data.pois || []).forEach(poi => { poiById[poi.id] = poi; });
       const routes = (data.routes || []).map(route => ({
@@ -41,18 +41,23 @@ Page({
           }),
         })),
       }));
-      this.setData({ routes, selected: routes[0] || null, loading: false });
+      if ((app.globalData.currentLang || 'zh') !== lang) return;
+      const selectedId = this.data.selected && this.data.selected.id;
+      this.routesLang = lang;
+      this.setData({ routes, selected: routes.find(route => route.id === selectedId) || routes[0] || null, loading: false });
     } catch (err) {
       this.setData({ loading: false, error: err.message || '路线加载失败' });
     }
   },
 
   async loadProfessionalRoute() {
+    const token = app.globalData.token;
+    if (!token) { this.setData({ professional: null }); return; }
     const cached = app.globalData.professionalRoute;
-    if (cached) this.setData({ professional: cached });
-    if (!app.globalData.token) return;
+    this.setData({ professional: cached || null });
     try {
       const payload = await api.recentUnlockedProfessionalRoute(app.globalData.currentLang || 'zh');
+      if (app.globalData.token !== token) return;
       app.setProfessionalRoute(payload);
       this.setData({ professional: payload });
     } catch (err) {
