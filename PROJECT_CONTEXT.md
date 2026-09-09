@@ -469,3 +469,9 @@ caveat. No website, backend, payment, user data, Render configuration or Mini Pr
 The current product release boundary is unchanged: Mini Program `1.0.0` is a development Upload,
 not a review submission or public release. PayPal remains Sandbox; WeChat/Alipay QR flows remain
 manual-confirmation; personal bank transfer must not be restored.
+
+PR #67 passed its project-memory validation and squash merged as
+`main@f362626312f1a75cf48285f9b386ea36e034eab7`. It changes only instructions and project
+evidence, so no new runtime deployment was required or observed. Render remains Live on the same
+application tree at deploy `dep-daf1vupt0dsc73c75ej0`; fresh public probes still return 200 for
+health, home and Bali, and 404 for the retired personal-bank endpoint.
