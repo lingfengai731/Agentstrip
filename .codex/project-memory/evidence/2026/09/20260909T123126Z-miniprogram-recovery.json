@@ -1,0 +1,22 @@
+{
+  "schema_version": 1,
+  "evidence_id": "ev-20260909T123126Z-miniprogram-recovery",
+  "task_ref": "miniprogram-final-qa-20260909",
+  "owner": "account1-current-main",
+  "captured_at": "2026-09-09T12:31:26Z",
+  "status": "verified",
+  "claim": "Local Mini Program recovery fixes verified: reversed/equal date ranges never submit; drafts survive reopening per user; logout clears private route cache; old-session responses cannot populate current account; changing route language refreshes labels while preserving selection.",
+  "source": {
+    "kind": "git",
+    "repository": "https://github.com/lingfengai731/Agentstrip.git",
+    "commit": "911a7e6026e9ae96f6e235e637b773dc8530ead9",
+    "branch": "codex/miniprogram-final-qa-20260909",
+    "worktree": "E:\\Agentstrip-worktrees\\active\\account1\\miniprogram-final-qa-20260909",
+    "dirty": true
+  },
+  "verification": {
+    "command": "node tools/test_miniprogram_recovery.cjs; node tools/test_miniprogram_contract.cjs; git diff --check; official DevTools CLI preview",
+    "result": "Behavioral recovery suite passed; 305 contracts passed; diff check passed; final Preview compiled at 1578889 bytes."
+  },
+  "notes": "Preview is not Upload/review/public release. No backend change or production mutation. Computer Use failed to initialize due missing tslib.es6.js dependency; visual acceptance is not claimed. Artifact: E:/Agentstrip-artifacts/2026-09-09/miniprogram-final-qa/preview-final.jpg."
+}

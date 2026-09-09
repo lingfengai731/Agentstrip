@@ -46,6 +46,9 @@ App({
 
   // 设置 token 并持久化
   setToken(token, user) {
+    if (!this.globalData.user || !user || this.globalData.user.id !== user.id) {
+      this.setProfessionalRoute(null);
+    }
     this.globalData.token = token;
     this.globalData.user = user;
     wx.setStorageSync('wm_token', token);
@@ -55,6 +58,7 @@ App({
 
   // 清除登录态
   clearAuth() {
+    this.setProfessionalRoute(null);
     this.globalData.token = '';
     this.globalData.user = null;
     wx.removeStorageSync('wm_token');

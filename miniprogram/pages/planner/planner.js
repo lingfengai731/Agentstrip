@@ -21,18 +21,39 @@ Page({
   },
 
   onLoad(query) {
-    this.setData({ routeId: query.routeId || '', departureDate: isoDate(30), returnDate: isoDate(37) });
+    const user = app.globalData.user;
+    this.draftKey = user && user.id != null ? `wm_planner_draft_${user.id}` : '';
+    const draft = this.draftKey ? wx.getStorageSync(this.draftKey) : null;
+    const restored = {};
+    if (draft && typeof draft === 'object') {
+      ['audience', 'travellers', 'departureDate', 'returnDate', 'budgetIndex', 'travelStyle', 'pace', 'goals'].forEach(key => {
+        if (draft[key] !== undefined) restored[key] = draft[key];
+      });
+    }
+    this.setData({ departureDate: isoDate(30), returnDate: isoDate(37), ...restored,
+      routeId: query.routeId || (draft && draft.routeId) || '' });
+    this.setData({ goalOptions: this.data.goalOptions.map(item => ({ ...item, selected: this.data.goals.includes(item.id) })) });
+    this.updateDays();
   },
-  setChoice(e) { this.setData({ [e.currentTarget.dataset.field]: e.currentTarget.dataset.value, error: '' }); },
-  changePeople(e) { this.setData({ travellers: Math.max(1, Math.min(8, this.data.travellers + Number(e.currentTarget.dataset.delta))) }); },
+  saveDraft() {
+    if (!this.draftKey) return;
+    const draft = {};
+    ['routeId', 'audience', 'travellers', 'departureDate', 'returnDate', 'budgetIndex', 'travelStyle', 'pace', 'goals'].forEach(key => {
+      draft[key] = this.data[key];
+    });
+    wx.setStorageSync(this.draftKey, draft);
+  },
+  setChoice(e) { this.setData({ [e.currentTarget.dataset.field]: e.currentTarget.dataset.value, error: '' }); this.saveDraft(); },
+  changePeople(e) { this.setData({ travellers: Math.max(1, Math.min(8, this.data.travellers + Number(e.currentTarget.dataset.delta))) }); this.saveDraft(); },
   onDeparture(e) { this.setData({ departureDate: e.detail.value }); this.updateDays(); },
   onReturn(e) { this.setData({ returnDate: e.detail.value }); this.updateDays(); },
-  onBudget(e) { this.setData({ budgetIndex: Number(e.detail.value) }); },
+  onBudget(e) { this.setData({ budgetIndex: Number(e.detail.value) }); this.saveDraft(); },
   updateDays() {
     const start = new Date(this.data.departureDate + 'T00:00:00');
     const end = new Date(this.data.returnDate + 'T00:00:00');
     const days = Math.round((end - start) / 86400000);
-    if (days > 0) this.setData({ days });
+    this.setData({ days: Number.isFinite(days) && days > 0 ? days : 0 });
+    this.saveDraft();
   },
   toggleGoal(e) {
     const id = e.currentTarget.dataset.id;
@@ -45,10 +66,12 @@ Page({
       goals,
       goalOptions: this.data.goalOptions.map(item => ({ ...item, selected: goals.includes(item.id) })),
     });
+    this.saveDraft();
   },
 
   async submit() {
     if (this.data.busy) return;
+    this.updateDays();
     if (!this.data.departureDate || !this.data.returnDate || this.data.days < 1) {
       this.setData({ error: '请选择正确的出发与返程日期' }); return;
     }
