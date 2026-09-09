@@ -444,3 +444,28 @@ Fresh production checks returned 200 for `/healthz` and `/bali.html`; the retire
 contains neither `bank_transfer` nor `account_number`. The server rejects legacy bank-transfer and
 UnionPay manual-order values. WeChat/Alipay QR confirmation and PayPal Sandbox remain unchanged.
 No real payment, entitlement mutation, Mini Program Upload, review submission or release occurred.
+
+## 2026-09-09 Astra instruction and design-skill governance
+
+The repository baseline was recovered from `origin/main@183a0d21d2f00e6c92adeabd7ec859158c0b4691`
+in an isolated account-1 worktree. Fresh read-only checks confirmed Render deploy
+`dep-daf1vupt0dsc73c75ej0` is Live at that exact commit; `/healthz`, `/`, and `/bali.html`
+returned 200 while the retired personal-bank endpoint remained 404. The original
+`E:\Agentstrip` checkout remains materially dirty and was not used for development.
+
+Project `AGENTS.md` now contains only WanderMind-specific continuity, privacy, payment,
+deployment, design and delegation boundaries. User-level instructions and the high-frequency
+cross-account, quota, role-routing and Luna Skill descriptions were shortened for GPT-6 Astra
+progressive disclosure without changing their safety protocols. The user-selected main model now
+retains owner responsibility; bounded Luna Max work remains optional under the existing auto route.
+
+The Vercel `web-design-guidelines` Skill was already installed and its Skill directory matches the
+latest fetched upstream content. `design-taste-frontend` and `yueban-image-to-code` upstream sources
+are stored under `E:\CodexSkills\.sources`; concise Codex adapters are globally discoverable. The
+former is explicit visual-reference only because of broad overlap and brand-license boundaries;
+the latter is limited to screenshot-based high-fidelity work and retains a no-license redistribution
+caveat. No website, backend, payment, user data, Render configuration or Mini Program package changed.
+
+The current product release boundary is unchanged: Mini Program `1.0.0` is a development Upload,
+not a review submission or public release. PayPal remains Sandbox; WeChat/Alipay QR flows remain
+manual-confirmation; personal bank transfer must not be restored.
