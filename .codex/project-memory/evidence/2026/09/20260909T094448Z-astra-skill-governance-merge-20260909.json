@@ -1,0 +1,22 @@
+{
+  "schema_version": 1,
+  "evidence_id": "ev-20260909T094448Z-astra-skill-governance-merge-20260909",
+  "task_ref": "astra-skill-governance-merge-20260909",
+  "owner": "account1-current-main",
+  "captured_at": "2026-09-09T09:44:48Z",
+  "status": "verified",
+  "claim": "PR #67 passed validation and squash merged the Astra project guidance and cross-account evidence as main f362626. No runtime deployment was required or observed; Render remains Live on the unchanged application commit and fresh public probes retain expected 200/404 behavior.",
+  "source": {
+    "kind": "git",
+    "repository": "https://github.com/lingfengai731/Agentstrip.git",
+    "commit": "f362626312f1a75cf48285f9b386ea36e034eab7",
+    "branch": "codex/astra-skill-governance-callback-20260909",
+    "worktree": "E:\\Agentstrip-worktrees\\active\\account1\\astra-skill-governance-callback-20260909",
+    "dirty": true
+  },
+  "verification": {
+    "command": "GitHub PR and check-run API; git fetch/log; Render deploy list; fresh public HTTP probes",
+    "result": "PR #67 validate success and mergeable clean before merge; main is f362626; Render dep-daf1vupt0dsc73c75ej0 remains Live; health/home/Bali are 200 and retired manual-payments config is 404."
+  },
+  "notes": "No website, backend, production configuration, payment, entitlement, user data, Mini Program Upload, review submission or public release changed."
+}

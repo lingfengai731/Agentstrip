@@ -617,3 +617,9 @@
 - Governance callback: user and project `AGENTS.md`, cross-account/quota/role/Luna routing descriptions, and the model-routing reference were adapted for Astra ownership, progressive disclosure and risk-matched verification. Existing safety and cross-account gates remain in force.
 - Skill callback: Vercel `web-design-guidelines` was already current; `design-taste-frontend` and `yueban-image-to-code` were installed as E-drive upstream sources plus concise global adapters. All six modified/new Skill roots pass `quick_validate.py`, and Codex discovery lists all three requested design Skills.
 - Product boundary: no application source, payment, user data, Render variable, deployment, Mini Program Upload, review submission or public release was changed by this task.
+
+## 2026-09-09 Astra skill-governance merge callback
+
+- GitHub callback: PR #67 fixed head `8a0d014` passed its `validate` check and squash merged as `main@f362626`; the branch and merge represent instruction/evidence changes only.
+- Render callback: no new deployment was required or observed. Existing deploy `dep-daf1vupt0dsc73c75ej0` remains Live on application commit `183a0d2`; fresh health, home and Bali probes are 200 and the retired personal-bank endpoint is 404.
+- Cross-account callback: the Astra project rules are now on `origin/main`. The machine-global AGENTS and Skill adapters remain local host configuration, with backups and hashes recorded in the prior evidence.
