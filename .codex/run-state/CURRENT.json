@@ -1,24 +1,21 @@
 {
   "schema_version": 1,
-  "checkpoint_revision": 11,
-  "previous_checkpoint_sha256": "d4c25e4418db11935500a08f750e002fdc3889a6e17d65b3d0a653da39793a11",
+  "checkpoint_revision": 12,
+  "previous_checkpoint_sha256": "3df057b81cd27a3be7634d78f2d55dacd4f7bc97910ed28079ac75d2c9bd3ed5",
   "run_id": "20260909-astra-skill-governance",
   "objective": "Recover WanderMind and adapt its effective AGENTS and Skill routing for GPT-6 Astra while installing the requested design Skills.",
   "status": "completed",
-  "phase": "validated_and_ready_for_integration",
+  "phase": "validated_committed_and_pushed",
   "baseline": {
     "cwd": "E:\\Agentstrip-worktrees\\active\\account1\\astra-skill-governance-20260909",
     "worktree": "E:\\Agentstrip-worktrees\\active\\account1\\astra-skill-governance-20260909",
     "branch": "codex/astra-skill-governance-20260909",
-    "head": "183a0d21d2f00e6c92adeabd7ec859158c0b4691",
+    "head": "38831deda542c543b2893b0e6f62db258a59eb7a",
     "dirty_allowlist": [
       ".codex/project-memory/evidence/2026/09/20260909T093526Z-astra-skill-governance-20260909.json",
       ".codex/project-memory/handoffs/2026/09/20260909T093526Z-astra-skill-governance-20260909.md",
-      ".codex/role-windows.md",
       ".codex/run-state/CURRENT.json",
-      ".codex/run-state/NEXT-20260909.json",
-      "AGENTS.md",
-      "PROJECT_CONTEXT.md"
+      ".codex/run-state/NEXT-20260909.json"
     ]
   },
   "completed": [
@@ -27,7 +24,7 @@
     "Adapted user and project instructions plus Luna/model routing for GPT-6 Astra",
     "Preserved global backups and avoided application or production changes"
   ],
-  "current_step": "Integrate repository instruction and cross-account evidence changes",
+  "current_step": "Cross-account synchronization complete on the pushed task branch",
   "workers": [],
   "accepted_evidence": [
     ".codex/project-memory/evidence/2026/09/20260909T093526Z-astra-skill-governance-20260909.json"
@@ -56,5 +53,5 @@
     "effect_key": null,
     "authority_confirmed": true
   },
-  "updated_at_utc": "2026-09-09T09:37:50.8684013Z"
+  "updated_at_utc": "2026-09-09T09:40:03.3260374Z"
 }
