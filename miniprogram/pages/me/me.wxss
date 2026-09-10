@@ -43,7 +43,8 @@
   font-size: 40rpx;
   font-weight: 700;
 }
-.me-info { flex: 1; }
+.me-info { flex: 1; min-width: 0; overflow-wrap: break-word; }
+.me-avatar, .me-row-icon, .me-row-arrow { flex-shrink: 0; }
 .me-name { font-size: 36rpx; font-weight: 700; color: #2A2723; }
 .me-email { font-size: 24rpx; color: #8A857F; margin-top: 4rpx; }
 
@@ -64,7 +65,7 @@
 .me-row:last-child { border-bottom: none; }
 .me-row-icon { display:flex; width:50rpx; height:50rpx; align-items:center; justify-content:center; border-radius:13rpx; background:#F3F1EA; color:#0E6658; font-size:21rpx; font-weight:800; }
 .me-row-label { min-width: 0; flex: 1; font-size: 28rpx; color: #2A2723; }
-.me-row-value { flex:0 0 auto; font-size: 24rpx; color: #8A857F; }
+.me-row-value { flex:0 1 auto; max-width: 45%; overflow-wrap: break-word; font-size: 24rpx; color: #8A857F; }
 .me-row-badge {
   font-size: 22rpx;
   color: #0E7C6B;
