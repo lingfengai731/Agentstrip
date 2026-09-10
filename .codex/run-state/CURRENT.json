@@ -1,56 +1,60 @@
 {
   "schema_version": 1,
-  "checkpoint_revision": 14,
-  "previous_checkpoint_sha256": "7c07ad8e29e49a53e69c069fd6654f3138d268df25f657e7923b2bb983cc7c48",
-  "run_id": "20260909-miniprogram-recovery",
-  "objective": "Fix release-blocking Mini Program recovery issues and compile an owner-reviewable Preview.",
+  "checkpoint_revision": 15,
+  "previous_checkpoint_sha256": "b767614c469d3c91bb7354873530c5b0d0c283f397dbe417f033257d3ced260c",
+  "run_id": "20260910-mini-ui-continuation",
+  "objective": "Verify and preserve Mini Program UI and language-page changes",
   "status": "active",
-  "phase": "verified_preview_integration",
+  "phase": "visual_acceptance_pending",
   "baseline": {
-    "cwd": "E:\\Agentstrip-worktrees\\active\\account1\\miniprogram-final-qa-20260909",
-    "worktree": "E:\\Agentstrip-worktrees\\active\\account1\\miniprogram-final-qa-20260909",
-    "branch": "codex/miniprogram-final-qa-20260909",
-    "head": "911a7e6026e9ae96f6e235e637b773dc8530ead9",
+    "cwd": "E:\\Agentstrip-worktrees\\active\\account1\\miniprogram-ui-languages-20260909",
+    "worktree": "E:\\Agentstrip-worktrees\\active\\account1\\miniprogram-ui-languages-20260909",
+    "branch": "codex/miniprogram-ui-languages-20260909",
+    "head": "0cc8582a146f137597d9f0b1adf02dbbdfb02860",
     "dirty_allowlist": [
-      "miniprogram/app.js",
-      "miniprogram/pages/planner/planner.js",
-      "miniprogram/pages/itinerary/itinerary.js",
-      "tools/test_miniprogram_recovery.cjs",
-      ".codex/project-memory/evidence/2026/09/20260909T123126Z-miniprogram-recovery.json",
-      ".codex/project-memory/handoffs/2026/09/20260909T123126Z-miniprogram-recovery.md",
-      "PROJECT_CONTEXT.md",
-      ".codex/run-state/CURRENT.json",
-      ".codex/run-state/NEXT-20260909-RECOVERY.json"
+      "miniprogram/pages/language/language.js",
+      "miniprogram/pages/language/language.wxml",
+      "miniprogram/pages/language/language.wxss",
+      "miniprogram/pages/planner/planner.wxml",
+      "miniprogram/pages/planner/planner.wxss",
+      "tools/test_miniprogram_language_page.cjs",
+      ".codex/project-memory/handoffs/2026/09/20260910T011200Z-mini-ui.md",
+      ".codex/project-memory/evidence/2026/09/20260910T011200Z-mini-ui.md",
+      ".codex/run-state/CURRENT.json"
     ]
   },
   "completed": [
-    "Reproduced invalid-date API submission and logout private-cache leaks before fixing",
-    "Verified date/draft/session/route-language behaviors plus 305 contracts",
-    "Compiled final Preview: 1578889 bytes"
+    "Recovered exact six-file cutoff; PR69 already merged",
+    "Five-language page behavior tests passed; Preview 1580830 bytes"
   ],
-  "current_step": "Commit and integrate verified Mini Program recovery fixes",
+  "current_step": "Push reviewed local changes and preserve visual acceptance boundary",
   "workers": [],
   "accepted_evidence": [
-    ".codex/project-memory/evidence/2026/09/20260909T123126Z-miniprogram-recovery.json"
+    ".codex/project-memory/evidence/2026/09/20260910T011200Z-mini-ui.md"
   ],
   "unverified": [
-    "Fresh rendered mobile visual acceptance: Computer Use initialization failed",
-    "Full five-language Mini Program page copy coverage",
+    "Native rendered alignment",
+    "Full-page five-language coverage",
     "Mini Program review/public release"
   ],
   "do_not_repeat": [
     {
+      "action_id": "integrate-mini-recovery-20260909",
+      "reason": "PR69 merged as baseline0cc8582",
+      "evidence": ".codex/project-memory/handoffs/2026/09/20260910T011200Z-mini-ui.md"
+    },
+    {
       "action_id": "duplicate-upload-miniprogram-1.0.0",
-      "reason": "Existing development upload is recorded; current work generated Preview only",
-      "evidence": ".codex/project-memory/evidence/2026/09/20260906T152812Z-domestic-payments-miniprogram-upload-20260906.json"
+      "reason": "Existing development upload; Preview only this slice",
+      "evidence": ".codex/project-memory/handoffs/2026/09/20260910T011200Z-mini-ui.md"
     }
   ],
   "next_action": {
-    "action_id": "integrate-mini-recovery-20260909",
-    "description": "Check whether the task branch is already merged; if not, push and integrate through a reviewed PR. Then continue full-page language and mobile rendering acceptance from fresh main.",
-    "external_effect": true,
-    "effect_key": "Agentstrip:codex/miniprogram-final-qa-20260909:integration",
-    "authority_confirmed": true
+    "action_id": "mini-ui-rendered-acceptance",
+    "description": "Check pushed branch/PR state, obtain native rendered planner/language evidence or owner Preview feedback before integration; do not repeat unchanged SDK failures.",
+    "external_effect": false,
+    "effect_key": null,
+    "authority_confirmed": false
   },
-  "updated_at_utc": "2026-09-09T12:32:34.7193587Z"
+  "updated_at_utc": "2026-09-10T01:12:55.1544205Z"
 }

@@ -8,8 +8,8 @@
     <view class="section-title"><text class="step-index">1</text><text>基本行程</text></view>
     <view class="label">是否第一次去 Bali *</view>
     <view class="segmented">
-      <view class="choice {{audience === 'first' ? 'active' : ''}}" bindtap="setChoice" data-field="audience" data-value="first">第一次去</view>
-      <view class="choice {{audience === 'returning' ? 'active' : ''}}" bindtap="setChoice" data-field="audience" data-value="returning">去过 Bali</view>
+      <view class="choice {{audience === 'first' ? 'active' : ''}}" bindtap="setChoice" data-field="audience" data-value="first"><text class="choice-mark">{{audience === 'first' ? '✓' : '○'}}</text>第一次去</view>
+      <view class="choice {{audience === 'returning' ? 'active' : ''}}" bindtap="setChoice" data-field="audience" data-value="returning"><text class="choice-mark">{{audience === 'returning' ? '✓' : '○'}}</text>去过 Bali</view>
     </view>
     <view class="two-col">
       <view><view class="label">出发日期 *</view><picker mode="date" value="{{departureDate}}" bindchange="onDeparture"><view class="field">{{departureDate}}</view></picker></view>
@@ -31,9 +31,9 @@
     </view>
     <view class="label">每天希望安排多少内容 *</view>
     <view class="segmented three">
-      <view class="choice {{pace === 'relaxed' ? 'active' : ''}}" bindtap="setChoice" data-field="pace" data-value="relaxed">少一些</view>
-      <view class="choice {{pace === 'balanced' ? 'active' : ''}}" bindtap="setChoice" data-field="pace" data-value="balanced">刚刚好</view>
-      <view class="choice {{pace === 'active' ? 'active' : ''}}" bindtap="setChoice" data-field="pace" data-value="active">多一些</view>
+      <view class="choice {{pace === 'relaxed' ? 'active' : ''}}" bindtap="setChoice" data-field="pace" data-value="relaxed"><text class="choice-mark">{{pace === 'relaxed' ? '✓' : '○'}}</text>轻松</view>
+      <view class="choice {{pace === 'balanced' ? 'active' : ''}}" bindtap="setChoice" data-field="pace" data-value="balanced"><text class="choice-mark">{{pace === 'balanced' ? '✓' : '○'}}</text>平衡</view>
+      <view class="choice {{pace === 'active' ? 'active' : ''}}" bindtap="setChoice" data-field="pace" data-value="active"><text class="choice-mark">{{pace === 'active' ? '✓' : '○'}}</text>充实</view>
     </view>
   </view>
 
@@ -47,6 +47,6 @@
   <view class="sticky-action">
     <view class="summary">{{days}} 天 · {{travellers}} 人 · 已选 {{goals.length}} 项</view>
     <button class="submit" bindtap="submit" loading="{{busy}}" disabled="{{busy}}">{{busy ? '正在匹配适合你的路线…' : '生成我的 Bali 路线'}}</button>
-    <view class="benefit">先看完整路线框架；执行细节解锁后可调整 3 次</view>
+    <view class="benefit">先预览约 70%；解锁完整路线后含 3 次同一行程调整</view>
   </view>
 </view>
