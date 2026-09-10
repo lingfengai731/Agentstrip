@@ -1,37 +1,36 @@
 {
   "schema_version": 1,
-  "checkpoint_revision": 16,
-  "previous_checkpoint_sha256": "2743e415a135f06552092fa093fcaee16a9cd0e5247b0dea5a768501055b935e",
+  "checkpoint_revision": 17,
+  "previous_checkpoint_sha256": "7be54959b4a077580db388d6817baef8c04109e14e84d76b472941b036e27c35",
   "run_id": "20260910-mini-ui-continuation",
   "objective": "Verify and preserve Mini Program UI and language-page changes",
   "status": "active",
-  "phase": "visual_acceptance_pending",
+  "phase": "remaining_page_localization",
   "baseline": {
     "cwd": "E:\\Agentstrip-worktrees\\active\\account1\\miniprogram-ui-languages-20260909",
     "worktree": "E:\\Agentstrip-worktrees\\active\\account1\\miniprogram-ui-languages-20260909",
     "branch": "codex/miniprogram-ui-languages-20260909",
-    "head": "8e8034ae3740d69c73f98ed125049546e77523b2",
+    "head": "d70dca2e8168a55d0df2128cec06b6d8b1be8928",
     "dirty_allowlist": [
-      "miniprogram/pages/planner/planner.js",
-      "miniprogram/pages/planner/planner.wxml",
-      "miniprogram/pages/planner/planner.wxss",
-      "miniprogram/pages/planner/copy.js",
-      "tools/test_miniprogram_recovery.cjs",
-      "tools/test_miniprogram_planner_languages.cjs",
-      ".codex/project-memory/handoffs/2026/09/20260910T012200Z-planner-languages.md",
+      "miniprogram/app.js",
+      "tools/test_miniprogram_auto_language.cjs",
+      ".codex/ui-visual-review-signals.md",
+      ".codex/project-memory/handoffs/2026/09/20260910-auto-language-audit.md",
       ".codex/run-state/CURRENT.json"
     ]
   },
   "completed": [
     "Recovered exact six-file cutoff; PR69 already merged",
     "Five-language page behavior tests passed; Preview 1580830 bytes",
-    "Planner fully localized in five languages with behavioral tests; Preview1587030"
+    "Planner fully localized in five languages with behavioral tests; Preview1587030",
+    "Owner accepted prior Preview; auto-language tests and local browser matrix passed"
   ],
-  "current_step": "Preserve planner localization; await native rendered evidence",
+  "current_step": "Save auto language and customer-flow evidence",
   "workers": [],
   "accepted_evidence": [
     ".codex/project-memory/evidence/2026/09/20260910T011200Z-mini-ui.md",
-    ".codex/project-memory/handoffs/2026/09/20260910T012200Z-planner-languages.md"
+    ".codex/project-memory/handoffs/2026/09/20260910T012200Z-planner-languages.md",
+    ".codex/project-memory/handoffs/2026/09/20260910-auto-language-audit.md"
   ],
   "unverified": [
     "Native rendered alignment",
@@ -51,11 +50,11 @@
     }
   ],
   "next_action": {
-    "action_id": "mini-ui-rendered-acceptance",
-    "description": "Check pushed branch/PR state, obtain native rendered planner/language evidence or owner Preview feedback before integration; do not repeat unchanged SDK failures.",
+    "action_id": "remaining-mini-localization",
+    "description": "Localize remaining page copy and validate callbacks; auto language is implemented but not full-page translation. Inspect mobile whitespace before CSS repair.",
     "external_effect": false,
     "effect_key": null,
     "authority_confirmed": false
   },
-  "updated_at_utc": "2026-09-10T01:22:04.7804014Z"
+  "updated_at_utc": "2026-09-10T06:50:10.7008339Z"
 }

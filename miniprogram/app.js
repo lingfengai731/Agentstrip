@@ -30,7 +30,19 @@ App({
     if (token) this.globalData.token = token;
     if (user)  this.globalData.user = user;
     if (dest)  this.globalData.currentDest = dest;
-    if (lang)  this.globalData.currentLang = lang;
+    const supported = ['zh', 'en', 'ja', 'ko', 'id'];
+    if (supported.includes(lang)) {
+      this.globalData.currentLang = lang;
+    } else {
+      let locale = '';
+      try { locale = wx.getAppBaseInfo().language; } catch (e) {
+        try { locale = wx.getSystemInfoSync().language; } catch (legacyError) { /* use default */ }
+      }
+      const base = String(locale || '').toLowerCase().replace(/_/g, '-').split('-')[0];
+      const normalized = base === 'in' ? 'id' : base;
+      this.globalData.currentLang = supported.includes(normalized) ? normalized : 'zh';
+      // Automatic detection is not a manual preference: do not persist wm_lang.
+    }
     if (prefs) this.globalData.preferences = prefs;
     this.globalData.customDestName = wx.getStorageSync('wm_custom_dest') || '';
     this.globalData.professionalRoute = wx.getStorageSync('wm_professional_route') || null;
@@ -80,6 +92,7 @@ App({
 
   // 切换语言
   setLang(lang) {
+    if (!['zh', 'en', 'ja', 'ko', 'id'].includes(lang)) return;
     this.globalData.currentLang = lang;
     wx.setStorageSync('wm_lang', lang);
     this.updateTabBarLanguage();
