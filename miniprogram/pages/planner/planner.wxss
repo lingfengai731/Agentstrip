@@ -32,7 +32,7 @@
 .two-col > view { min-width: 0; }
 .field { height: auto; padding-top: 10rpx; padding-bottom: 10rpx; overflow-wrap: break-word; }
 .step-index { flex-shrink: 0; }
-.mini-card { min-width: 0; flex-basis: 0; }
+.mini-card { min-width: 0; flex-basis: 0; overflow-wrap: break-word; }
 .submit { height: auto; padding-top: 20rpx; padding-bottom: 20rpx; }
 
 @media (max-width: 360px) {

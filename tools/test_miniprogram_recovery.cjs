@@ -10,7 +10,7 @@ function planner(storage, userId = 1) {
   const app = { globalData: { user: { id: userId }, currentLang: 'zh' }, setProfessionalRoute() {} };
   vm.runInNewContext(fs.readFileSync(path.join(root, 'miniprogram/pages/planner/planner.js'), 'utf8'), {
     Page(value) { page = value; }, getApp: () => app,
-    require: () => ({ async createProfessionalRoute() { calls++; throw new Error('offline'); } }),
+    require: name => name === './copy.js' ? require('../miniprogram/pages/planner/copy.js') : ({ async createProfessionalRoute() { calls++; throw new Error('offline'); } }),
     wx: { getStorageSync: key => storage[key], setStorageSync: (key, value) => { storage[key] = JSON.parse(JSON.stringify(value)); }, showToast() {} },
     setTimeout() {}, Date,
   });
