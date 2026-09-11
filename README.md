@@ -82,6 +82,8 @@
 | 文案去 AI 化 | ✅ 五语言通过 | 首页、关于、AI 欢迎语、搜索和专业路线表述改为具体旅行任务与真实服务边界，不再把内部角色、区域代码或路线代码当作卖点 |
 | 发布边界 | ⏳ 待站主扫新 Preview | 官方微信开发者工具已生成 1,669,318 字节 Preview；这是 Upload 前验收包，不是新的 Upload、提审或公开发布 |
 
+地点详情语言补丁：中文、日文、韩文和印尼文不再回退到英文核验底稿；R1–R6 使用的 37 个地点均已通过五语言图片说明覆盖检查。最新本地 Preview 为 1,669,670 字节，仍不是 Upload 或发布。
+
 详细执行台账见 [`.codex/plans/wandermind-master-roadmap-2026-08-02.md`](.codex/plans/wandermind-master-roadmap-2026-08-02.md)。
 
 首发传播文案、图片顺序、隐私边界和 14 天复盘流程见 [`wandermind-studio/MARKETING_LAUNCH_PLAYBOOK.md`](wandermind-studio/MARKETING_LAUNCH_PLAYBOOK.md)。

@@ -1,0 +1,18 @@
+{
+  "schema_version": 1,
+  "evidence_id": "ev-20260911T083533Z-mini-place-i18n-20260911",
+  "task_ref": "mini-place-i18n-20260911",
+  "owner": "account1-main",
+  "captured_at": "2026-09-11T08:35:33Z",
+  "status": "verified",
+  "claim": "Mini Program place details no longer expose English verification notes in Chinese, Japanese, Korean or Indonesian interfaces. All 37 public-route POIs have media copy for all five supported languages, nine Mini Program suites pass with 328 contract checks, and an official 1669670-byte Preview compiled. This does not claim integration, Upload, review submission or public release.",
+  "source": {
+    "kind": "test",
+    "reference": "codex/mini-place-i18n-20260911; tools/test_miniprogram_contract.cjs; tools/test_miniprogram_support_languages.cjs; E:/Agentstrip-artifacts/2026-09-11/mini-place-i18n/mini-place-i18n-preview.json"
+  },
+  "verification": {
+    "command": "Nine Mini Program suites; node --check; git diff --check; WeChat DevTools CLI preview",
+    "result": "All nine suites passed. Contract coverage increased to 328 checks and asserts five-language media copy for every public-route POI. Official Preview size: 1669670 bytes."
+  },
+  "notes": "English remains the intended fallback only for an English interface. Other languages prefer approved localized image title and description or localized alt text. No business API, website, payment, driver email or production data was changed."
+}

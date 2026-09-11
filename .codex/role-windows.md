@@ -651,3 +651,10 @@
 - PR #72 fixed head `a3680f9` passed both required checks and squash merged as `main@4cee9bf`; Git trees are identical.
 - Exact Render deploy `dep-dahrgu8ae00c73do3a90` is Live and five fresh production customer-flow suites pass.
 - The 1,669,318-byte Mini Program Preview remains Preview-only and needs owner physical-device acceptance before any separately authorized Upload.
+
+## 2026-09-11 Place-detail language callback
+
+- Route: small, Mini Program detail-page correctness; main Agent completed it serially because Luna delegation had no meaningful parallel benefit.
+- Root cause: English-only POI verification notes were used as the universal traveller description fallback.
+- Repair and QA: non-English pages now prefer approved localized media copy; all 37 R1–R6 POIs have five-language coverage; nine suites pass with 328 contracts; Preview is 1,669,670 bytes.
+- Boundary: no Upload, review submission, public release, website/backend deployment, payment, driver email or production data mutation.

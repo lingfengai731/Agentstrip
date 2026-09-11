@@ -26,10 +26,18 @@ Page({
       if (!images.length && selectedAsset) images = [selectedAsset];
       if (!poi && !selectedAsset) throw new Error(this.data.copy.notFound);
       const current = selectedAsset ? Math.max(0, images.findIndex(image => image.key === selectedAsset.key)) : 0;
-      const title = poi ? poi.displayName : selectedAsset.title;
+      const lang = app.globalData.currentLang || 'zh';
+      const primaryImage = selectedAsset || images.find(image => image.description || image.alt) || null;
+      const poiHasLocalizedName = poi && (poi.name_i18n || poi.localized_name);
+      const title = poi
+        ? (poiHasLocalizedName ? poi.displayName : ((lang !== 'en' && primaryImage && primaryImage.title) || poi.displayName))
+        : selectedAsset.title;
+      const localizedPoiNotes = poi && typeof poi.notes === 'object'
+        ? (poi.notes[lang] || poi.notes.en || poi.notes.zh || '')
+        : (lang === 'en' && poi ? poi.notes : '');
       const description = poi
-        ? (selectedAsset && selectedAsset.description) || poi.notes || this.data.copy.placeDefault
-        : selectedAsset.description;
+        ? (primaryImage && (primaryImage.description || primaryImage.alt)) || localizedPoiNotes || this.data.copy.placeDefault
+        : (selectedAsset.description || selectedAsset.alt || this.data.copy.placeDefault);
       this.setData({
         loading: false,
         place: {
