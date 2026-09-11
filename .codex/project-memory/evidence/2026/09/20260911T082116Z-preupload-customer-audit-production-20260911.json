@@ -1,0 +1,48 @@
+{
+  "schema_version": 1,
+  "evidence_id": "ev-20260911T082116Z-preupload-customer-audit-production",
+  "task_ref": "preupload-customer-audit-20260911",
+  "owner": "account1-main",
+  "captured_at": "2026-09-11T08:21:16Z",
+  "status": "verified",
+  "claim": "PR #72 passed both required checks, merged with an identical Git tree, and its exact merge commit is Live on Render. Fresh production probes and five customer-flow suites pass. This does not claim Mini Program Upload, review submission, public release, real payment, driver email or production data mutation.",
+  "source": {
+    "kind": "production",
+    "reference": "github:pull/72#a3680f9a3dfc9c78598350dbba4c5010db2b9c51; github:commit/4cee9bfbf39afa8128b6c2566b0704c5cb235ab7; render:deploy/dep-dahrgu8ae00c73do3a90"
+  },
+  "scope": "Upload-preparation customer audit integration and website production verification",
+  "git": {
+    "pull_request": 72,
+    "fixed_head": "a3680f9a3dfc9c78598350dbba4c5010db2b9c51",
+    "merge_commit": "4cee9bfbf39afa8128b6c2566b0704c5cb235ab7",
+    "tree_equal": true,
+    "checks": {
+      "validate": "success",
+      "contracts-and-recovery": "success"
+    }
+  },
+  "render": {
+    "service": "srv-d8dfs36k1jcs738v9cfg",
+    "deploy": "dep-dahrgu8ae00c73do3a90",
+    "commit": "4cee9bfbf39afa8128b6c2566b0704c5cb235ab7",
+    "status": "live"
+  },
+  "production": {
+    "http_200": ["/healthz", "/", "/bali.html", "/ai-tool.html", "/contact.html"],
+    "public_controls": "18 page and viewport cases; 204 visible buttons and 419 visible links passed",
+    "site_search": "passed",
+    "ai_tool_intro": "passed at 320, 390, 768 and 1440 pixels",
+    "ambient_hero": "passed at 320, 390, 768 and 1440 pixels plus reduced motion",
+    "bali_browser": "responsive routes, gallery, paid-route recovery, editor feedback, account and search links, AI deep links and driver handoff passed"
+  },
+  "miniprogram": {
+    "preview_bytes": 1669318,
+    "preview_qr": "E:\\Agentstrip-artifacts\\2026-09-11\\preupload-audit\\preview\\preupload-final-preview.png",
+    "owner_physical_acceptance": "pending"
+  },
+  "boundaries": [
+    "No Mini Program Upload, review submission or public release",
+    "No real payment, driver email or production data mutation",
+    "Preview is not release proof"
+  ]
+}

@@ -523,3 +523,14 @@ IDs, missing alt text, unsafe blank targets or semantically unlabeled fields. Th
 compiled a 1,669,318-byte Preview. This is local/Preview evidence only: no Mini Program Upload, review,
 release, real payment, driver email or production write occurred. Website production status is pending the
 fixed-head PR, CI, merge and exact Render deployment callback.
+
+## 2026-09-11 Upload-preparation production callback
+
+PR #72 fixed head `a3680f9a3dfc9c78598350dbba4c5010db2b9c51` passed both required checks and
+was squash merged as `main@4cee9bfbf39afa8128b6c2566b0704c5cb235ab7`; both Git trees are identical.
+Render deploy `dep-dahrgu8ae00c73do3a90` is Live at that exact merge commit. Fresh production
+health, home, Bali, AI Tool and Contact probes returned 200, and all five customer-flow suites pass.
+
+The final Mini Program Preview remains 1,669,318 bytes and still requires owner physical-device
+acceptance. No new Upload, review submission, public release, real payment, driver email or production
+data mutation occurred.
