@@ -1,4 +1,11 @@
 // app.js — WanderMind 智旅 小程序全局入口
+const MEMORY_COPY = {
+  zh: { heading: '用户旅行偏好', budget: '预算', party: '同行方式', styles: '兴趣', notes: '需要注意', instruction: '请按这些偏好给出具体、可执行的建议。', budgetMap: { budget: '预算优先', midrange: '舒适平衡', luxury: '高端私享' }, partyMap: { solo: '独自旅行', couple: '两人同行', family: '家庭亲子', group: '朋友或团体' }, styleMap: { culture: '文化历史', food: '当地美食', adventure: '户外体验', relax: '放松度假', nature: '自然风景', wellness: '疗愈养生' } },
+  en: { heading: 'Traveller preferences', budget: 'Budget', party: 'Travelling with', styles: 'Interests', notes: 'Important notes', instruction: 'Use these preferences to give specific, practical advice.', budgetMap: { budget: 'budget-conscious', midrange: 'comfort and value', luxury: 'premium and private' }, partyMap: { solo: 'solo', couple: 'two travellers', family: 'family with children', group: 'friends or group' }, styleMap: { culture: 'culture and history', food: 'local food', adventure: 'outdoor activities', relax: 'rest and resorts', nature: 'nature', wellness: 'wellness' } },
+  ja: { heading: '旅行者の希望', budget: '予算', party: '同行者', styles: '興味', notes: '注意事項', instruction: 'これらの希望に沿って、具体的で実行しやすい提案をしてください。', budgetMap: { budget: '予算重視', midrange: '快適さと価格のバランス', luxury: '上質・プライベート' }, partyMap: { solo: '一人旅', couple: '二人旅', family: '家族・子ども連れ', group: '友人・グループ' }, styleMap: { culture: '文化・歴史', food: '地元の食', adventure: 'アウトドア', relax: '休息・リゾート', nature: '自然', wellness: 'ウェルネス' } },
+  ko: { heading: '여행자 선호', budget: '예산', party: '동행', styles: '관심사', notes: '중요 메모', instruction: '이 선호에 맞춰 구체적이고 실행 가능한 조언을 주세요.', budgetMap: { budget: '예산 우선', midrange: '편안함과 가격 균형', luxury: '프리미엄·프라이빗' }, partyMap: { solo: '혼자', couple: '두 명', family: '가족·아이 동반', group: '친구·단체' }, styleMap: { culture: '문화·역사', food: '현지 음식', adventure: '야외 활동', relax: '휴식·리조트', nature: '자연', wellness: '웰니스' } },
+  id: { heading: 'Preferensi wisatawan', budget: 'Anggaran', party: 'Teman perjalanan', styles: 'Minat', notes: 'Catatan penting', instruction: 'Gunakan preferensi ini untuk memberi saran yang spesifik dan praktis.', budgetMap: { budget: 'hemat', midrange: 'nyaman dan sepadan', luxury: 'premium dan privat' }, partyMap: { solo: 'sendiri', couple: 'dua orang', family: 'keluarga dengan anak', group: 'teman atau grup' }, styleMap: { culture: 'budaya dan sejarah', food: 'kuliner lokal', adventure: 'aktivitas luar ruang', relax: 'santai dan resor', nature: 'alam', wellness: 'kebugaran' } },
+};
 App({
   globalData: {
     // 后端 API base URL（指向 Render 部署的 H5 服务）
@@ -157,23 +164,18 @@ App({
   // 构建 system prompt 的偏好片段（chat 时调用，注入到 AI 上下文）
   buildMemoryPrompt() {
     const p = this.globalData.preferences || {};
-    const budgetMap = { budget: '经济实惠', midrange: '标准舒适', luxury: '豪华享受' };
-    const partyMap  = { solo: '独自旅行', couple: '情侣出行', family: '家庭亲子', group: '朋友/团体' };
-    const styleMap  = {
-      culture: '文化历史', food: '美食探索', adventure: '冒险户外',
-      relax: '悠闲放松', nature: '自然风光', wellness: '养生健康',
-    };
+    const copy = MEMORY_COPY[this.globalData.currentLang] || MEMORY_COPY.zh;
 
     const lines = [];
-    if (p.budgetLevel && budgetMap[p.budgetLevel]) lines.push(`- 预算档次：${budgetMap[p.budgetLevel]}`);
+    if (p.budgetLevel && copy.budgetMap[p.budgetLevel]) lines.push(`- ${copy.budget}: ${copy.budgetMap[p.budgetLevel]}`);
     if (Array.isArray(p.styleList) && p.styleList.length > 0) {
-      const styles = p.styleList.map(s => styleMap[s] || s).join('、');
-      lines.push(`- 旅行风格：${styles}`);
+      const styles = p.styleList.map(s => copy.styleMap[s] || s).join(', ');
+      lines.push(`- ${copy.styles}: ${styles}`);
     }
-    if (p.party && partyMap[p.party]) lines.push(`- 同行方式：${partyMap[p.party]}`);
-    if (p.notes && p.notes.trim()) lines.push(`- 特殊偏好/备注：${p.notes.trim()}`);
+    if (p.party && copy.partyMap[p.party]) lines.push(`- ${copy.party}: ${copy.partyMap[p.party]}`);
+    if (p.notes && p.notes.trim()) lines.push(`- ${copy.notes}: ${p.notes.trim()}`);
 
     if (lines.length === 0) return '';
-    return `\n\n【用户旅行偏好档案】\n${lines.join('\n')}\n请在推荐时充分考虑用户偏好，提供个性化建议。`;
+    return `\n\n${copy.heading}\n${lines.join('\n')}\n${copy.instruction}`;
   },
 });

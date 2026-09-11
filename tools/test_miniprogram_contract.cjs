@@ -139,6 +139,9 @@ check(baliMedia.includes("SITE_ORIGIN = 'https://wandermind.cc/'"), 'relative me
 check(baliMedia.includes("GALLERY_VERIFICATION = new Set(['route-linked', 'bali-named'])"), 'gallery must only use approved static Bali imagery');
 check(baliMedia.includes('EXISTING_WEBSITE_GALLERY'), 'Mini Program gallery must preserve the website gallery selection');
 check(itinerary.includes('openPlace(e)') && itineraryView.includes('data-id="{{item.id}}"'), 'route places must open a real detail page by POI id');
+check(itinerary.includes("const isBali = destination === 'bali'") && itineraryView.includes('wx:if="{{!isBali}}"'), 'non-Bali destinations must not silently render Bali routes');
+check(itinerary.includes('source=miniprogram') && itinerary.includes('route=${encodeURIComponent(routeId)}'), 'web unlock handoff must preserve the selected route and Mini Program source');
+check(!itineraryView.includes('{{selected.id}} ·') && !itineraryView.includes('{{item.regionId}} ·'), 'internal route and region codes must not lead customer-facing route copy');
 check(itinerary.includes('openGallery()') && homeView.includes('bindtap="openGallery"'), 'gallery must be reachable from Home and Trips');
 check(gallery.includes('loadBaliMedia') && gallery.includes('openAsset(e)'), 'gallery must load shared media and open a detail');
 check(read('miniprogram/pages/gallery/gallery.wxml').includes('{{copy.saveHint}}') && require('../miniprogram/utils/browse-copy.js').zh.saveHint.includes('长按图片可保存') && read('miniprogram/pages/gallery/gallery.wxml').includes('{{visibleCount}}'), 'gallery must explain saving and expose the visible image count');
@@ -165,6 +168,9 @@ check(api.includes('/api/driver-request') && driver.includes('privacy_consent: t
 check(driver.includes('payload.profile || route.trip_profile') && driver.includes('budget: profile.budget_range'), 'driver handoff must restore the professional-route profile and budget');
 check(driver.includes('num_days: this.data.days || null'), 'driver handoff must forward the matched trip length');
 check(read('miniprogram/pages/planner/planner.js').includes("{ id: 'value', label: '控制预算'"), 'planner budget goal must use the backend value intent');
+const plannerCopy = require('../miniprogram/pages/planner/copy.js');
+check(!Object.values(plannerCopy).some(dict => /G1|R1/.test(dict.subtitle)), 'planner subtitle must not expose internal geography or route codes');
+check(Object.values(plannerCopy).every(dict => /CNY|人民币/.test(dict.budget)), 'planner budget must name its fixed currency clearly');
 check(chat.includes('saveConversation') && chat.includes('getConversation'), 'chat must save and restore account conversations');
 check(chat.includes('pendingText') && chat.includes('retryLast()'), 'chat must preserve and retry interrupted input');
 check(chat.includes('formatAssistantMessage'), 'AI replies must use the native safe formatting layer');

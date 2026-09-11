@@ -508,3 +508,18 @@ preferences, stale-session guards, measured touch targets and narrow-phone layou
 The official DevTools CLI rebuilt a fresh Preview at 1,662,338 bytes. Physical-device acceptance is
 still pending; Preview is not Upload, review submission or public release. This slice contains no
 website/backend change and requires no Render deployment.
+
+## 2026-09-11 Upload-preparation customer audit
+
+The next Mini Program Upload remains gated. In an isolated worktree, a new-customer audit covered the
+website and Mini Program from entry through routes, gallery, AI, planner, driver and account. Accepted
+repairs prevent non-Bali destinations from silently showing Bali products, preserve route context across
+handoffs, replace vague pace labels with concrete places-per-day choices, hide internal region codes from
+traveller-facing surfaces, clarify comparison-card actions, and improve touch targets, focus and form names.
+
+Nine Mini Program suites pass with 322 contracts. Five website suites pass, including 204 visible buttons
+and 419 links. A 33-case 390/768/1440 customer matrix reports zero page errors, broken anchors, duplicate
+IDs, missing alt text, unsafe blank targets or semantically unlabeled fields. The official DevTools CLI
+compiled a 1,669,318-byte Preview. This is local/Preview evidence only: no Mini Program Upload, review,
+release, real payment, driver email or production write occurred. Website production status is pending the
+fixed-head PR, CI, merge and exact Render deployment callback.

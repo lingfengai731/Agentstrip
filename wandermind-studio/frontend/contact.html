@@ -18,7 +18,7 @@
     <meta name="twitter:image" content="https://wandermind.cc/assets/images/logo-mark.png">
   <link rel="icon" type="image/png" href="assets/images/logo-mark-256.png">
   <link rel="apple-touch-icon" href="assets/images/logo-mark-256.png">
-    <link rel="stylesheet" href="assets/css/style-starter.css?v=search1">
+    <link rel="stylesheet" href="assets/css/style-starter.css?v=preupload20260911">
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=optional" rel="stylesheet">
     <style>
       /* Shared header CSS */
@@ -269,11 +269,15 @@
 				</div>
 				<form id="contact-email-form">
 					<div class="twice-two">
-						<input type="text" class="form-control" name="Name" placeholder="Name" required data-i18n="contactFormName" data-i18n-attr="placeholder">
-						<input type="email" class="form-control" name="Email" placeholder="Email" required data-i18n="contactFormEmail" data-i18n-attr="placeholder">
-						<input type="text" class="form-control" name="Subject" placeholder="Subject" required data-i18n="contactFormSubject" data-i18n-attr="placeholder">
+						<label class="sr-only" for="contact-name" data-i18n="contactFormName">Name</label>
+						<input id="contact-name" type="text" class="form-control" name="Name" placeholder="Name" required autocomplete="name" data-i18n="contactFormName" data-i18n-attr="placeholder">
+						<label class="sr-only" for="contact-email" data-i18n="contactFormEmail">Email</label>
+						<input id="contact-email" type="email" class="form-control" name="Email" placeholder="Email" required autocomplete="email" data-i18n="contactFormEmail" data-i18n-attr="placeholder">
+						<label class="sr-only" for="contact-subject" data-i18n="contactFormSubject">Subject</label>
+						<input id="contact-subject" type="text" class="form-control" name="Subject" placeholder="Subject" required data-i18n="contactFormSubject" data-i18n-attr="placeholder">
 					</div>
-					<textarea name="Message" class="form-control" placeholder="Message" required data-i18n="contactFormMessage" data-i18n-attr="placeholder"></textarea>
+					<label class="sr-only" for="contact-message" data-i18n="contactFormMessage">Message</label>
+					<textarea id="contact-message" name="Message" class="form-control" placeholder="Message" required data-i18n="contactFormMessage" data-i18n-attr="placeholder"></textarea>
 					<div class="text-right">
 						<button type="submit" class="btn btn-contact" data-i18n="contactFormBtn">Send Message</button>
 					</div>
@@ -294,7 +298,7 @@
 						<li class="footer-contact-line"><span class="fa fa-envelope"></span><a href="mailto:lfwu22@126.com">lfwu22@126.com</a></li>
 					</ul>
 					<div class="main-social-footer-29">
-						<a href="mailto:lfwu22@126.com" class="twitter"><span class="fa fa-envelope"></span></a>
+						<a href="mailto:lfwu22@126.com" class="twitter" aria-label="Email WanderMind"><span class="fa fa-envelope" aria-hidden="true"></span></a>
 					</div>
 				</div>
 				<div class="footer-list-29 footer-2">
@@ -355,7 +359,7 @@
 		window.location.href = 'mailto:lfwu22@126.com?subject=' + encodeURIComponent(subject) + '&body=' + encodeURIComponent(body);
 	});
 </script>
-    <script src="assets/js/i18n.js?v=search1"></script>
+<script src="assets/js/i18n.js?v=preupload20260911"></script>
 <script src="assets/js/marketing-events.js?v=p2"></script>
 <script src="assets/js/global-auth.js?v=p53"></script>
 </body>

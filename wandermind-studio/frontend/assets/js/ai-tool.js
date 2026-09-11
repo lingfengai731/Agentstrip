@@ -243,7 +243,7 @@ const TOOL_I18N = {
     topChat:'AI 对话', topItinerary:'行程规划', topMap:'探索地图', topBudget:'预算管理', topDiary:'游记生成',
     toolIntroTitle:'WanderMind AI 行程工作台', toolIntroBody:'六位专业助手协同规划路线；预订前请再次核对档期、价格与供应商信息。',
     mobileTrips:'行程与助手', mobileTools:'行程工具',
-    sideMyTrips:'我的行程', sideNewTrip:'＋ 新建行程', sideAgents:'智能体团队',
+    sideMyTrips:'我的行程', sideNewTrip:'＋ 新建行程', sideAgents:'规划分工',
     tripEmpty:'还没有行程<br>点击下方新建一个',
     askAll:'问全队', modePrecise:'精准', modeFast:'快速',
     quickMultiverse:'平行宇宙预览', quickMap:'探索地图', quickBudgetCalc:'预算计算器',
@@ -254,7 +254,7 @@ const TOOL_I18N = {
     rateLbl:'实时汇率', seasonLbl:'季节',
     comingTitle:'即将在 Phase 2 上线',
     comingDesc:'此模块功能正在迁移中，将与现有 H5 完全等价但视觉为 Studio 风格。',
-    greetTitle:'你好，旅行者 👋', greetSub:'我是 WanderMind 旅程规划师 —— 告诉我你想去哪里、什么时候、和谁一起，我会和我的 5 个 AI 同事联手为你设计完整方案。',
+    greetTitle:'你好，旅行者', greetSub:'告诉我目的地、日期、预算和同行人，我先帮你整理一份能继续调整的行程初稿。',
     toastPhase2:'此功能将在 Phase 2 上线',
     welcomeUnknown:'欢迎选择目的地开始规划。',
     sendErr:'抱歉，请求出错了。请稍后重试或检查后端是否在线。', retrySend:'重新发送',
@@ -282,7 +282,7 @@ const TOOL_I18N = {
     topChat:'Chat', topItinerary:'Itinerary', topMap:'Map', topBudget:'Budget', topDiary:'Diary',
     toolIntroTitle:'WanderMind AI trip workspace', toolIntroBody:'Six specialist agents shape your route. Recheck availability, prices and supplier details before booking.',
     mobileTrips:'Trips & agents', mobileTools:'Trip tools',
-    sideMyTrips:'My Trips', sideNewTrip:'+ New Trip', sideAgents:'Agent Team',
+    sideMyTrips:'My Trips', sideNewTrip:'+ New Trip', sideAgents:'Planning roles',
     tripEmpty:'No trips yet<br>Click below to create one',
     askAll:'Ask the Team', modePrecise:'Precise', modeFast:'Fast',
     quickMultiverse:'Multiverse Preview', quickMap:'Explore Map', quickBudgetCalc:'Budget Calculator',
@@ -293,7 +293,7 @@ const TOOL_I18N = {
     rateLbl:'Live FX', seasonLbl:'Season',
     comingTitle:'Coming in Phase 2',
     comingDesc:'This module is being migrated — full feature parity with the existing H5, restyled to Studio.',
-    greetTitle:'Hello traveller 👋', greetSub:'I am the WanderMind Trip Planner. Tell me where, when and with whom — my five AI colleagues and I will draft a complete plan together.',
+    greetTitle:'Hello, traveller', greetSub:'Tell me the destination, dates, budget and who is coming. I will organise a practical first draft you can adjust.',
     toastPhase2:'This feature lands in Phase 2',
     welcomeUnknown:'Pick a destination to start planning.',
     sendErr:'Sorry, the request failed. Please retry or check that the backend is online.', retrySend:'Send again',
@@ -321,7 +321,7 @@ const TOOL_I18N = {
     topChat:'チャット', topItinerary:'旅程', topMap:'地図', topBudget:'予算', topDiary:'紀行',
     toolIntroTitle:'WanderMind AI 旅程ワークスペース', toolIntroBody:'6人の専門アシスタントが旅程を作成します。予約前に空き状況・料金・提供元を再確認してください。',
     mobileTrips:'旅程と担当', mobileTools:'旅程ツール',
-    sideMyTrips:'マイトリップ', sideNewTrip:'＋ 新規旅行', sideAgents:'エージェントチーム',
+    sideMyTrips:'マイトリップ', sideNewTrip:'＋ 新規旅行', sideAgents:'計画の分担',
     tripEmpty:'まだ旅行がありません<br>下のボタンで作成',
     askAll:'チームに聞く', modePrecise:'精密', modeFast:'高速',
     quickMultiverse:'パラレルプレビュー', quickMap:'地図を探索', quickBudgetCalc:'予算計算機',
@@ -332,7 +332,7 @@ const TOOL_I18N = {
     rateLbl:'為替', seasonLbl:'シーズン',
     comingTitle:'Phase 2 で公開予定',
     comingDesc:'このモジュールは移行中です。既存H5と機能同等、Studio風にリスタイル。',
-    greetTitle:'こんにちは、旅人 👋', greetSub:'私はWanderMind旅程プランナーです。行きたい場所·時期·同行者を教えて。5人のAI同僚と一緒に完全プランを設計します。',
+    greetTitle:'こんにちは、旅人', greetSub:'目的地、日程、予算、同行者を教えてください。あとから調整できる旅程のたたき台を整理します。',
     toastPhase2:'この機能はPhase 2で公開',
     welcomeUnknown:'目的地を選んで計画を開始。',
     sendErr:'リクエストに失敗しました。バックエンドの状態を確認してください。', retrySend:'もう一度送信',
@@ -360,7 +360,7 @@ const TOOL_I18N = {
     topChat:'챗', topItinerary:'일정', topMap:'지도', topBudget:'예산', topDiary:'기행문',
     toolIntroTitle:'WanderMind AI 여행 워크스페이스', toolIntroBody:'6명의 전문 도우미가 동선을 설계합니다. 예약 전 일정·가격·업체 정보를 다시 확인하세요.',
     mobileTrips:'여행과 도우미', mobileTools:'여행 도구',
-    sideMyTrips:'내 여행', sideNewTrip:'＋ 새 여행', sideAgents:'에이전트 팀',
+    sideMyTrips:'내 여행', sideNewTrip:'＋ 새 여행', sideAgents:'계획 역할',
     tripEmpty:'아직 여행이 없습니다<br>아래에서 만들기',
     askAll:'팀에 묻기', modePrecise:'정밀', modeFast:'빠름',
     quickMultiverse:'평행 우주 미리보기', quickMap:'지도 탐색', quickBudgetCalc:'예산 계산기',
@@ -371,7 +371,7 @@ const TOOL_I18N = {
     rateLbl:'환율', seasonLbl:'시즌',
     comingTitle:'Phase 2 출시 예정',
     comingDesc:'이 모듈은 마이그레이션 중. 기존 H5와 동등하며 Studio 스타일.',
-    greetTitle:'안녕하세요, 여행자 👋', greetSub:'저는 WanderMind 여행 플래너입니다. 어디로, 언제, 누구와 — 5명의 AI 동료와 함께 완전한 계획을 설계합니다.',
+    greetTitle:'안녕하세요, 여행자', greetSub:'목적지, 날짜, 예산, 동행자를 알려 주세요. 계속 수정할 수 있는 실용적인 초안을 정리해 드립니다.',
     toastPhase2:'이 기능은 Phase 2에서 제공',
     welcomeUnknown:'계획을 시작할 목적지를 선택하세요.',
     sendErr:'요청 실패. 백엔드 상태를 확인하세요.', retrySend:'다시 보내기',
@@ -399,7 +399,7 @@ const TOOL_I18N = {
     topChat:'Chat', topItinerary:'Rencana', topMap:'Peta', topBudget:'Anggaran', topDiary:'Cerita',
     toolIntroTitle:'Ruang kerja perjalanan AI WanderMind', toolIntroBody:'Enam asisten spesialis menyusun rute Anda. Periksa kembali ketersediaan, harga, dan pemasok sebelum memesan.',
     mobileTrips:'Trip & asisten', mobileTools:'Alat perjalanan',
-    sideMyTrips:'Perjalanan Saya', sideNewTrip:'＋ Perjalanan Baru', sideAgents:'Tim Agen',
+    sideMyTrips:'Perjalanan Saya', sideNewTrip:'＋ Perjalanan Baru', sideAgents:'Peran perencana',
     tripEmpty:'Belum ada perjalanan<br>Klik di bawah untuk membuat',
     askAll:'Tanya Tim', modePrecise:'Presisi', modeFast:'Cepat',
     quickMultiverse:'Pratinjau Paralel', quickMap:'Jelajah Peta', quickBudgetCalc:'Kalkulator Anggaran',
@@ -410,7 +410,7 @@ const TOOL_I18N = {
     rateLbl:'Kurs', seasonLbl:'Musim',
     comingTitle:'Hadir di Fase 2',
     comingDesc:'Modul ini sedang dimigrasikan — fitur setara H5, gaya Studio.',
-    greetTitle:'Halo traveler 👋', greetSub:'Saya Perencana WanderMind. Beri tahu ke mana, kapan, dengan siapa — bersama 5 rekan AI saya, kami buat rencana lengkap.',
+    greetTitle:'Halo, traveler', greetSub:'Beri tahu tujuan, tanggal, anggaran, dan siapa yang ikut. Saya akan merapikan draf awal yang praktis dan dapat disesuaikan.',
     toastPhase2:'Fitur ini hadir di Fase 2',
     welcomeUnknown:'Pilih tujuan untuk mulai merencanakan.',
     sendErr:'Permintaan gagal. Periksa apakah backend online.', retrySend:'Kirim lagi',
@@ -694,7 +694,7 @@ function renderControlsAndQuick() {
   const shareLbl = $('#ws-share-label');
   if (shareLbl) shareLbl.textContent = t().shareBtn;
   const shareBtn = $('#ws-share-btn');
-  if (shareBtn) shareBtn.setAttribute('title', t().shareTip || t().shareBtn);
+  if (shareBtn) { shareBtn.setAttribute('title', t().shareTip || t().shareBtn); shareBtn.setAttribute('aria-label', t().shareTip || t().shareBtn); }
   if (typeof renderQuotaPill === 'function') renderQuotaPill();
 
   // Quick buttons (6 from the H5 quickBtns array)
@@ -716,6 +716,8 @@ function renderControlsAndQuick() {
   });
 
   $('#ws-input').placeholder = t().inputPh;
+  $('#ws-input').setAttribute('aria-label', t().inputPh);
+  $('#ws-send-btn').setAttribute('aria-label', currentLang === 'zh' ? '发送消息' : currentLang === 'ja' ? 'メッセージを送信' : currentLang === 'ko' ? '메시지 보내기' : currentLang === 'id' ? 'Kirim pesan' : 'Send message');
 }
 
 function handleQuick(action) {

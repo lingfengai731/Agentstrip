@@ -76,6 +76,7 @@
             <text wx:if="{{item.reviews}}" class="hotel-reviews">{{item.reviews}} {{copy.reviews}}</text>
           </view>
           <view class="hotel-price">{{item.price || copy.priceUnknown}} <text class="per-night">/ {{copy.night}}</text></view>
+          <view class="result-action">{{copy.copyBooking}}</view>
         </view>
       </view>
     </view>
@@ -163,6 +164,7 @@
           </view>
           <view class="flight-meta">{{item.airline}} · {{item.duration_label}}</view>
           <view class="flight-stops {{item.stops === 0 ? 'direct' : item.stops === 1 ? 'one-stop' : 'multi'}}">{{item.stops_label}}</view>
+          <view class="result-action">{{copy.copyBooking}}</view>
         </view>
         <view class="flight-price">{{item.price}}</view>
       </view>

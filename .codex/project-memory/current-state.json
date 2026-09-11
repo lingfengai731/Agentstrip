@@ -2,15 +2,15 @@
   "schema_version": 1,
   "project": "Agentstrip / WanderMind",
   "latest_task": {
-    "captured_at": "2026-09-11T06:27:22.949Z",
-    "scope": "Mini Program five-language interface, session privacy and native control repair only",
-    "branch": "codex/miniprogram-ui-languages-20260909",
-    "implementation_baseline": "7e663fcbec289a3c731f5dac59cdb9b819042fed",
-    "status": "locally_verified_pending_integration",
-    "evidence": ".codex/project-memory/evidence/2026/09/20260911-mini-native-localization.md",
-    "handoff": ".codex/project-memory/handoffs/2026/09/20260911-mini-native-localization.md",
-    "preview_bytes": 1662338,
-    "not_claimed": "No new Upload, review, public release, website deployment or physical-device acceptance; older whole-project snapshot remains historical"
+    "captured_at": "2026-09-11T08:07:00Z",
+    "scope": "Website and Mini Program Upload-preparation customer audit, copy clarity, destination integrity, touch and accessibility repair",
+    "branch": "codex/preupload-customer-audit-20260911",
+    "implementation_baseline": "9f9a8161a5e272a8b3586a8b361885962964bba0",
+    "status": "locally_verified_pending_integration_and_owner_preview",
+    "evidence": ".codex/project-memory/evidence/2026/09/20260911T080700Z-preupload-customer-audit-20260911.json",
+    "handoff": ".codex/project-memory/handoffs/2026/09/20260911T080700Z-preupload-customer-audit-20260911.md",
+    "preview_bytes": 1669318,
+    "not_claimed": "No new Mini Program Upload, review, public release, real payment, driver email, production write or website deployment is claimed before integration and exact Render verification"
   },
   "authority": {
     "repository": "https://github.com/lingfengai731/Agentstrip.git",

@@ -25,7 +25,16 @@ module.exports = {
     "loginCopy": "登录后可保存预览，并在网页与小程序间恢复路线。",
     "copied": "解锁链接已复制",
     "copyFailed": "复制失败，请重试",
-    "ok": "确定"
+    "ok": "确定",
+    "bali": "巴厘岛",
+    "kyoto": "京都",
+    "paris": "巴黎",
+    "santorini": "圣托里尼",
+    "otherDestination": "这个目的地",
+    "otherDestinationTitle": "专业路线目前先从巴厘岛开始",
+    "otherDestinationCopy": "仍可使用 AI 规划和机酒查询；这里不会用巴厘岛路线代替。",
+    "planDestination": "规划这个目的地",
+    "switchToBali": "查看巴厘岛路线"
   },
   "en": {
     "title": "Bali is spread out. Your route should flow.",
@@ -53,7 +62,16 @@ module.exports = {
     "loginCopy": "Sign in to save your preview and use it on web or Mini Program.",
     "copied": "Unlock link copied",
     "copyFailed": "Could not copy. Retry.",
-    "ok": "OK"
+    "ok": "OK",
+    "bali": "Bali",
+    "kyoto": "Kyoto",
+    "paris": "Paris",
+    "santorini": "Santorini",
+    "otherDestination": "This destination",
+    "otherDestinationTitle": "Professional routes currently start with Bali",
+    "otherDestinationCopy": " is still available in AI planning and travel search. We will not substitute a Bali route here.",
+    "planDestination": "Plan this destination",
+    "switchToBali": "View Bali routes"
   },
   "ja": {
     "title": "点在する名所を、無駄のないルートで",
@@ -81,7 +99,16 @@ module.exports = {
     "loginCopy": "ログインしてプレビューを保存し、Webとミニプログラムで続けられます。",
     "copied": "解除リンクをコピーしました",
     "copyFailed": "コピーできませんでした。再試行してください。",
-    "ok": "OK"
+    "ok": "OK",
+    "bali": "バリ島",
+    "kyoto": "京都",
+    "paris": "パリ",
+    "santorini": "サントリーニ",
+    "otherDestination": "この目的地",
+    "otherDestinationTitle": "専門ルートは現在バリ島から提供しています",
+    "otherDestinationCopy": "もAI相談と航空券・宿泊検索を利用できます。ここでバリ島ルートを代わりに表示することはありません。",
+    "planDestination": "この目的地を計画",
+    "switchToBali": "バリ島ルートを見る"
   },
   "ko": {
     "title": "흩어진 명소도 편한 동선으로",
@@ -109,7 +136,16 @@ module.exports = {
     "loginCopy": "로그인하면 미리보기를 저장하고 웹과 미니프로그램에서 이어갈 수 있습니다.",
     "copied": "잠금 해제 링크 복사됨",
     "copyFailed": "복사하지 못했습니다. 다시 시도하세요.",
-    "ok": "확인"
+    "ok": "확인",
+    "bali": "발리",
+    "kyoto": "교토",
+    "paris": "파리",
+    "santorini": "산토리니",
+    "otherDestination": "이 목적지",
+    "otherDestinationTitle": "전문 경로는 현재 발리부터 제공합니다",
+    "otherDestinationCopy": "도 AI 계획과 항공·숙소 검색을 이용할 수 있습니다. 이곳에 발리 경로를 대신 표시하지 않습니다.",
+    "planDestination": "이 목적지 계획하기",
+    "switchToBali": "발리 경로 보기"
   },
   "id": {
     "title": "Tempatnya tersebar, rutenya tetap searah",
@@ -137,6 +173,15 @@ module.exports = {
     "loginCopy": "Masuk untuk menyimpan pratinjau dan melanjutkan di web atau Mini Program.",
     "copied": "Tautan buka disalin",
     "copyFailed": "Gagal menyalin. Coba lagi.",
-    "ok": "OK"
+    "ok": "OK",
+    "bali": "Bali",
+    "kyoto": "Kyoto",
+    "paris": "Paris",
+    "santorini": "Santorini",
+    "otherDestination": "Destinasi ini",
+    "otherDestinationTitle": "Rute profesional saat ini dimulai dari Bali",
+    "otherDestinationCopy": " tetap tersedia di perencana AI dan pencarian perjalanan. Rute Bali tidak akan ditampilkan sebagai pengganti.",
+    "planDestination": "Rencanakan destinasi ini",
+    "switchToBali": "Lihat rute Bali"
   }
 };

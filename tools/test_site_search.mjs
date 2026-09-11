@@ -42,7 +42,7 @@ check(searchPage.includes('<input id="site-search-input" type="search" name="q"'
 check(searchPage.includes('id="site-search-status"'), 'search.html: live status is missing');
 check(searchPage.includes('id="site-search-results"'), 'search.html: results list is missing');
 check(searchPage.includes('assets/js/site-search.js?v=search1'), 'search.html: site-search.js is not loaded');
-check(searchPage.includes('assets/js/i18n.js?v=search1'), 'search.html: shared i18n is not cache-busted for search strings');
+check(searchPage.includes('assets/js/i18n.js?v=preupload20260911'), 'search.html: shared i18n is not cache-busted for current search strings');
 check(searchPage.includes('data-i18n="themeToggleLabel"'), 'search.html: theme toggle needs a localized label');
 
 const searchScript = read('wandermind-studio/frontend/assets/js/site-search.js');
