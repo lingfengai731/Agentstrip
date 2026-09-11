@@ -6,20 +6,20 @@
     <view class="dest-flag">{{destFlag}}</view>
     <view class="dest-info">
       <view class="dest-name">{{destName}}</view>
-      <view class="dest-hint">机票与住宿选择 · 跳转官方平台完成预订</view>
+      <view class="dest-hint">{{copy.hint}}</view>
     </view>
   </view>
 
   <view class="sub-tabs">
-    <view class="sub-tab {{tab === 'hotels' ? 'active' : ''}}" bindtap="switchTab" data-tab="hotels">酒店</view>
-    <view class="sub-tab {{tab === 'flights' ? 'active' : ''}}" bindtap="switchTab" data-tab="flights">机票</view>
+    <view class="sub-tab {{tab === 'hotels' ? 'active' : ''}}" bindtap="switchTab" data-tab="hotels">{{copy.hotels}}</view>
+    <view class="sub-tab {{tab === 'flights' ? 'active' : ''}}" bindtap="switchTab" data-tab="flights">{{copy.flights}}</view>
   </view>
 
   <!-- ═══════════ 酒店 panel ═══════════ -->
   <view wx:if="{{tab === 'hotels'}}" class="panel">
 
     <!-- 住宿区域 chips -->
-    <view class="form-section-label">住宿区域</view>
+    <view class="form-section-label">{{copy.area}}</view>
     <scroll-view scroll-x enable-flex class="chips-row" show-scrollbar="{{false}}">
       <view
         wx:for="{{areas}}"
@@ -33,13 +33,13 @@
     <!-- 日期 + 人数 -->
     <view class="form-row">
       <view class="field">
-        <view class="field-label">入住</view>
+        <view class="field-label">{{copy.checkIn}}</view>
         <picker mode="date" value="{{hotelCheckIn}}" start="{{today}}" bindchange="onCheckIn">
           <view class="picker-display">{{hotelCheckIn}}</view>
         </picker>
       </view>
       <view class="field">
-        <view class="field-label">退房</view>
+        <view class="field-label">{{copy.checkOut}}</view>
         <picker mode="date" value="{{hotelCheckOut}}" start="{{today}}" bindchange="onCheckOut">
           <view class="picker-display">{{hotelCheckOut}}</view>
         </picker>
@@ -47,15 +47,15 @@
     </view>
     <view class="form-row">
       <view class="field flex-1">
-        <view class="field-label">人数</view>
+        <view class="field-label">{{copy.people}}</view>
         <picker mode="selector" range="{{adultsRange}}" value="{{hotelAdultsIdx}}" bindchange="onHotelAdults">
-          <view class="picker-display">{{hotelAdultsIdx + 1}} 人</view>
+          <view class="picker-display">{{hotelAdultsIdx + 1}} {{copy.person}}</view>
         </picker>
       </view>
     </view>
 
     <button class="search-btn" bindtap="searchHotelsHandler" loading="{{hotelBusy}}" disabled="{{hotelBusy}}">
-      {{hotelBusy ? '正在查询…' : '查看酒店选择'}}
+      {{hotelBusy ? copy.searching : copy.searchHotels}}
     </button>
 
     <!-- 结果 -->
@@ -68,20 +68,20 @@
         data-link="{{item.link}}"
       >
         <image wx:if="{{item.thumbnail}}" src="{{item.thumbnail}}" class="hotel-thumb" mode="aspectFill" />
-        <view wx:else class="hotel-thumb-placeholder">住</view>
+        <view wx:else class="hotel-thumb-placeholder">H</view>
         <view class="hotel-info">
           <view class="hotel-name">{{item.name}}</view>
           <view class="hotel-meta">
             <text wx:if="{{item.rating}}" class="hotel-rating">⭐ {{item.rating}}</text>
-            <text wx:if="{{item.reviews}}" class="hotel-reviews">{{item.reviews}} 条评价</text>
+            <text wx:if="{{item.reviews}}" class="hotel-reviews">{{item.reviews}} {{copy.reviews}}</text>
           </view>
-          <view class="hotel-price">{{item.price || '价格待定'}} <text class="per-night">/ 晚</text></view>
+          <view class="hotel-price">{{item.price || copy.priceUnknown}} <text class="per-night">/ {{copy.night}}</text></view>
         </view>
       </view>
     </view>
     <view wx:elif="{{hotelSearched && !hotelBusy}}" class="empty">
-      <view class="empty-icon">暂无</view>
-      <view class="empty-text">暂无结果，请更换日期重试</view>
+      <view class="empty-icon">—</view>
+      <view class="empty-text">{{copy.emptyHotels}}</view>
     </view>
   </view>
 
@@ -90,12 +90,12 @@
 
     <!-- 单程 / 往返 -->
     <view class="trip-toggle">
-      <view class="trip-btn {{flightTripType === 'round' ? 'active' : ''}}" bindtap="setTripType" data-type="round">往返</view>
-      <view class="trip-btn {{flightTripType === 'oneway' ? 'active' : ''}}" bindtap="setTripType" data-type="oneway">单程</view>
+      <view class="trip-btn {{flightTripType === 'round' ? 'active' : ''}}" bindtap="setTripType" data-type="round">{{copy.round}}</view>
+      <view class="trip-btn {{flightTripType === 'oneway' ? 'active' : ''}}" bindtap="setTripType" data-type="oneway">{{copy.oneway}}</view>
     </view>
 
     <!-- 出发城市 -->
-    <view class="form-section-label">出发城市</view>
+    <view class="form-section-label">{{copy.origin}}</view>
     <scroll-view scroll-x enable-flex class="chips-row" show-scrollbar="{{false}}">
       <view
         wx:for="{{cities}}"
@@ -104,45 +104,45 @@
         bindtap="selectOrigin"
         data-iata="{{item.iata}}"
       >{{item.flag}} {{item.name}}</view>
-      <view class="chip {{flightOrigin === '__custom__' ? 'active' : ''}}" bindtap="customOrigin">其他城市</view>
+      <view class="chip {{flightOrigin === '__custom__' ? 'active' : ''}}" bindtap="customOrigin">{{copy.other}}</view>
     </scroll-view>
 
     <view wx:if="{{customOriginName}}" class="custom-origin-display">
-      已选：<text class="teal">{{customOriginName}}</text>
+      {{copy.selected}}<text class="teal">{{customOriginName}}</text>
     </view>
 
     <!-- 日期 + 人数 -->
     <view class="form-row">
       <view class="field">
-        <view class="field-label">起飞</view>
+        <view class="field-label">{{copy.depart}}</view>
         <picker mode="date" value="{{flightDepart}}" start="{{today}}" bindchange="onFlightDepart">
           <view class="picker-display">{{flightDepart}}</view>
         </picker>
       </view>
       <view wx:if="{{flightTripType === 'round'}}" class="field">
-        <view class="field-label">返回</view>
+        <view class="field-label">{{copy.returnDate}}</view>
         <picker mode="date" value="{{flightReturn}}" start="{{today}}" bindchange="onFlightReturn">
           <view class="picker-display">{{flightReturn}}</view>
         </picker>
       </view>
       <view wx:else class="field">
-        <view class="field-label">人数</view>
+        <view class="field-label">{{copy.people}}</view>
         <picker mode="selector" range="{{adultsRange}}" value="{{flightAdultsIdx}}" bindchange="onFlightAdults">
-          <view class="picker-display">{{flightAdultsIdx + 1}} 人</view>
+          <view class="picker-display">{{flightAdultsIdx + 1}} {{copy.person}}</view>
         </picker>
       </view>
     </view>
     <view wx:if="{{flightTripType === 'round'}}" class="form-row">
       <view class="field flex-1">
-        <view class="field-label">人数</view>
+        <view class="field-label">{{copy.people}}</view>
         <picker mode="selector" range="{{adultsRange}}" value="{{flightAdultsIdx}}" bindchange="onFlightAdults">
-          <view class="picker-display">{{flightAdultsIdx + 1}} 人</view>
+          <view class="picker-display">{{flightAdultsIdx + 1}} {{copy.person}}</view>
         </picker>
       </view>
     </view>
 
     <button class="search-btn" bindtap="searchFlightsHandler" loading="{{flightBusy}}" disabled="{{flightBusy}}">
-      {{flightBusy ? '正在查询…' : '查看机票选择'}}
+      {{flightBusy ? copy.searching : copy.searchFlights}}
     </button>
 
     <!-- 结果 -->
@@ -154,7 +154,7 @@
         bindtap="openFlightLink"
       >
         <image wx:if="{{item.airline_logo}}" src="{{item.airline_logo}}" class="flight-logo" mode="aspectFit" />
-        <view wx:else class="flight-logo-placeholder">航</view>
+        <view wx:else class="flight-logo-placeholder">↗</view>
         <view class="flight-info">
           <view class="flight-route">
             <text class="time">{{item.depart_time_short}}</text> {{item.depart_id}}
@@ -166,11 +166,11 @@
         </view>
         <view class="flight-price">{{item.price}}</view>
       </view>
-      <view class="flight-book-all" bindtap="openFlightLink">在 Google Flights 查看全部</view>
+      <view class="flight-book-all" bindtap="openFlightLink">{{copy.copyFlights}}</view>
     </view>
     <view wx:elif="{{flightSearched && !flightBusy}}" class="empty">
-      <view class="empty-icon">暂无</view>
-      <view class="empty-text">暂无航班，请更换日期或机场重试</view>
+      <view class="empty-icon">—</view>
+      <view class="empty-text">{{copy.emptyFlights}}</view>
     </view>
   </view>
 

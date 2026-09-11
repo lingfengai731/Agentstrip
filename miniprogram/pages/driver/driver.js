@@ -1,6 +1,17 @@
 const api = require('../../utils/api.js');
 const driverEstimate = require('../../utils/driver-estimate.js');
+const COPY = require('./copy.js');
 const app = getApp();
+
+function currentCopy() {
+  return COPY[app.globalData.currentLang] || COPY.zh;
+}
+
+function fill(template, values) {
+  return String(template || '').replace(/\{(\w+)\}/g, (_, key) => (
+    values[key] == null ? '' : String(values[key])
+  ));
+}
 
 function requestId() {
   return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, char => {
@@ -9,13 +20,13 @@ function requestId() {
   });
 }
 
-function routeSummary(payload) {
+function routeSummary(payload, copy = COPY.zh) {
   const route = payload && payload.route;
   if (!route) return { routeId: '', attractions: '', startDate: '', endDate: '', people: 2, days: 0, budget: '' };
   const profile = payload.profile || route.trip_profile || payload.trip_profile || {};
   const attractions = (route.days_plan || []).map(day => {
-    const names = (day.places || []).map(place => place.name).filter(Boolean).join('、');
-    return `第 ${day.day} 天：${names || day.theme || day.region_name || ''}`;
+    const names = (day.places || []).map(place => place.name).filter(Boolean).join(copy.routeSeparator);
+    return fill(copy.routeDay, { day: day.day }) + (names || day.theme || day.region_name || '');
   }).filter(Boolean).join('\n');
   return {
     routeId: route.route_id || '',
@@ -29,14 +40,18 @@ function routeSummary(payload) {
 }
 
 const SERVICES = [
-  { value: 'full_day', label: '全天包车' },
-  { value: 'half_day', label: '半天包车' },
-  { value: 'airport_transfer', label: '机场接送' },
-  { value: 'penida', label: '佩妮达行程' },
+  { value: 'full_day', copyKey: 'fullDayService' },
+  { value: 'half_day', copyKey: 'halfDayService' },
+  { value: 'airport_transfer', copyKey: 'airportTransferService' },
+  { value: 'penida', copyKey: 'penidaService' },
 ];
 
-const serviceOptions = values =>
-  SERVICES.map(item => ({ ...item, checked: (values || []).includes(item.value) }));
+const serviceOptions = (values, copy = COPY.zh) =>
+  SERVICES.map(item => ({
+    value: item.value,
+    label: copy[item.copyKey],
+    checked: (values || []).includes(item.value),
+  }));
 
 function dateLabel(timestamp) {
   const value = Number(timestamp || 0);
@@ -49,29 +64,33 @@ function dateLabel(timestamp) {
   return `${year}-${month}-${day}`;
 }
 
-function statusLabel(status) {
-  return ({
-    pending: '处理中',
-    sent: '已转交司机',
-    replied: '司机已回复',
-    failed: '等待重试',
-  })[status] || '处理中';
+function statusLabel(status, copy = COPY.zh) {
+  const key = ({
+    pending: 'statusPending',
+    sent: 'statusSent',
+    replied: 'statusReplied',
+    failed: 'statusFailed',
+  })[status] || 'statusPending';
+  return copy[key] || COPY.zh[key];
 }
 
-function viewRequest(item) {
+
+
+function viewRequest(item, copy = COPY.zh) {
   return {
     ...item,
-    statusLabel: statusLabel(item.status),
+    statusLabel: statusLabel(item.status, copy),
     dateLabel: dateLabel(item.created_at),
     replyDateLabel: item.reply ? dateLabel(item.reply.created_at) : '',
     tripLabel: item.start_date && item.end_date
       ? `${item.start_date} → ${item.end_date}`
-      : (item.num_days ? `${item.num_days} 天行程` : '行程日期待补充'),
+      : (item.num_days ? fill(copy.tripDays, { days: item.num_days }) : copy.missingTripDate),
   };
 }
 
 Page({
   data: {
+    copy: COPY.zh,
     driverId: 'dicky',
     firstName: '', lastName: '', email: '',
     startDate: '', endDate: '', people: 2, days: 0,
@@ -81,14 +100,16 @@ Page({
     estimate: driverEstimate.calculate(),
     pickup: '', budget: '', intro: '', attractions: '',
     services: ['full_day'], privacyConsent: false,
-    serviceOptions: serviceOptions(['full_day']),
+    serviceOptions: serviceOptions(['full_day'], COPY.zh),
     routeId: '', busy: false, error: '', sent: false,
     requests: [], loadingRequests: false, requestsError: '',
   },
 
   onLoad() {
-    const route = routeSummary(app.globalData.professionalRoute);
-    const saved = wx.getStorageSync('wm_driver_draft') || {};
+    this._sessionToken=app.globalData.token;
+    const copy = currentCopy();
+    const route = routeSummary(app.globalData.professionalRoute, copy);
+    const saved = wx.getStorageSync(app.privateStorageKey('wm_driver_draft')) || {};
     const user = app.globalData.user || {};
     const services = saved.services || ['full_day'];
     const fullDays = saved.fullDays == null
@@ -98,20 +119,33 @@ Page({
     const next = {
       ...route,
       ...saved,
+      copy,
       services,
-      serviceOptions: serviceOptions(services),
+      serviceOptions: serviceOptions(services, copy),
       firstName: saved.firstName || user.name || '',
       email: saved.email || user.email || '',
       fullDays,
       halfDays,
     };
-    next.estimate = driverEstimate.calculate(next);
+    next.estimate = driverEstimate.calculate(next, copy);
     next.fullDays = next.estimate.fullDays;
     next.halfDays = next.estimate.halfDays;
     this.setData(next);
   },
 
   onShow() {
+    if(this._sessionToken!==app.globalData.token) {
+      this.setData({firstName:'',lastName:'',email:'',startDate:'',endDate:'',pickup:'',budget:'',intro:'',attractions:'',routeId:'',requests:[],sent:false,busy:false,error:'',privacyConsent:false});
+      this.onLoad();
+    }
+    const copy = currentCopy();
+    this.setData({
+      copy,
+      serviceOptions: serviceOptions(this.data.services, copy),
+      estimate: driverEstimate.calculate(this.data, copy),
+      requests: this.data.requests.map(item => viewRequest(item, copy)),
+    });
+    wx.setNavigationBarTitle({ title: copy.title });
     this.loadRequests();
   },
 
@@ -126,7 +160,7 @@ Page({
   setHalfDays(e) { this.setData({ halfDays: Number(e.detail.value) }, () => this.refreshEstimate()); },
   setServices(e) {
     const services = e.detail.value;
-    this.setData({ services, serviceOptions: serviceOptions(services) }, () => this.refreshEstimate());
+    this.setData({ services, serviceOptions: serviceOptions(services, this.data.copy) }, () => this.refreshEstimate());
   },
   setConsent(e) { this.setData({ privacyConsent: e.detail.value.includes('yes'), error: '' }, () => this.saveDraft()); },
 
@@ -150,16 +184,17 @@ Page({
       privacyConsent: this.data.privacyConsent,
       routeId: this.data.routeId,
     };
-    wx.setStorageSync('wm_driver_draft', draft);
+    wx.setStorageSync(app.privateStorageKey('wm_driver_draft'), draft);
   },
 
   refreshEstimate() {
-    this.setData({ estimate: driverEstimate.calculate(this.data) }, () => this.saveDraft());
+    this.setData({ estimate: driverEstimate.calculate(this.data, this.data.copy) }, () => this.saveDraft());
   },
 
   back() { wx.navigateBack({ delta: 1 }); },
 
   async loadRequests() {
+    const token=app.globalData.token;
     if (!app.globalData.token) {
       this.setData({ requests: [], loadingRequests: false, requestsError: '' });
       return;
@@ -167,29 +202,33 @@ Page({
     this.setData({ loadingRequests: true, requestsError: '' });
     try {
       const result = await api.listDriverRequests();
+      if(app.globalData.token!==token) return;
       const requests = (result && Array.isArray(result.requests) ? result.requests : [])
-        .map(viewRequest);
+        .map(item => viewRequest(item, this.data.copy || COPY.zh));
       this.setData({ requests, loadingRequests: false });
     } catch (err) {
-      this.setData({ loadingRequests: false, requestsError: err.message || '暂时无法读取司机回复' });
+      if(app.globalData.token!==token) return;
+      this.setData({ loadingRequests: false, requestsError: err.message || this.data.copy.loadRequestsFailed });
     }
   },
 
   async submit() {
+    const token=app.globalData.token;
     if (this.data.busy) return;
+    const copy = this.data.copy || COPY.zh;
     const name = `${this.data.firstName} ${this.data.lastName}`.trim();
-    if (!name) { this.setData({ error: '请填写姓名' }); return; }
+    if (!name) { this.setData({ error: copy.nameRequired }); return; }
     const email = this.data.email.trim();
-    if (email && !/^\S+@\S+\.\S+$/.test(email)) { this.setData({ error: '请填写有效邮箱' }); return; }
+    if (email && !/^\S+@\S+\.\S+$/.test(email)) { this.setData({ error: copy.emailInvalid }); return; }
     if (!email && !app.globalData.token) {
-      this.setData({ error: '未登录时请填写联系邮箱；微信用户可以留空' });
+      this.setData({ error: copy.guestEmailRequired });
       return;
     }
     if (!this.data.startDate || !this.data.endDate || this.data.endDate < this.data.startDate) {
-      this.setData({ error: '请选择正确的旅行日期' }); return;
+      this.setData({ error: copy.dateInvalid }); return;
     }
-    if (!this.data.pickup.trim()) { this.setData({ error: '请填写接送地点或酒店区域' }); return; }
-    if (!this.data.privacyConsent) { this.setData({ error: '请确认由 WanderMind 转交申请' }); return; }
+    if (!this.data.pickup.trim()) { this.setData({ error: copy.pickupRequired }); return; }
+    if (!this.data.privacyConsent) { this.setData({ error: copy.consentRequired }); return; }
 
     const contentForSafetyCheck = [
       this.data.firstName,
@@ -202,16 +241,18 @@ Page({
     this.setData({ busy: true, error: '' });
     try {
       await api.checkUserContent(contentForSafetyCheck, 2);
+      if(app.globalData.token!==token) return;
     } catch (err) {
+      if(app.globalData.token!==token) return;
       this.saveDraft();
-      this.setData({ busy: false, error: err.message || '内容安全校验暂不可用，请稍后重试' });
+      this.setData({ busy: false, error: err.message || copy.safetyUnavailable });
       return;
     }
 
-    let stableId = wx.getStorageSync('wm_driver_request_id');
+    let stableId = wx.getStorageSync(app.privateStorageKey('wm_driver_request_id'));
     if (!stableId) {
       stableId = requestId();
-      wx.setStorageSync('wm_driver_request_id', stableId);
+      wx.setStorageSync(app.privateStorageKey('wm_driver_request_id'), stableId);
     }
     try {
       const requestedServices = this.data.services.slice();
@@ -238,15 +279,17 @@ Page({
         privacy_consent: true,
         website: '',
       });
-      wx.removeStorageSync('wm_driver_draft');
-      wx.removeStorageSync('wm_driver_request_id');
+      if(app.globalData.token!==token) return;
+      wx.removeStorageSync(app.privateStorageKey('wm_driver_draft'));
+      wx.removeStorageSync(app.privateStorageKey('wm_driver_request_id'));
       this.setData({ sent: true });
       this.loadRequests();
     } catch (err) {
+      if(app.globalData.token!==token) return;
       this.saveDraft();
-      this.setData({ error: err.message || '发送失败；内容已保留，请重试' });
+      this.setData({ error: err.message || copy.sendFailed });
     } finally {
-      this.setData({ busy: false });
+      if(app.globalData.token===token) this.setData({ busy: false });
     }
   },
 });

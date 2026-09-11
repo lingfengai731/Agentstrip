@@ -8,10 +8,12 @@ const FILTERS = [
   { id: 'experiences', label: '在地体验' },
 ];
 
-Page({
-  data: { loading: true, error: '', filter: 'all', filters: FILTERS, assets: [], visibleAssets: [], totalCount: 0, visibleCount: 0 },
+const COPY = require('../../utils/browse-copy.js');
 
-  onLoad() { this.loadGallery(); },
+Page({
+  data: { copy: COPY.zh, loading: true, error: '', filter: 'all', filters: FILTERS, assets: [], visibleAssets: [], totalCount: 0, visibleCount: 0 },
+
+  onLoad() { const copy = COPY[app.globalData.currentLang] || COPY.zh; this.setData({copy, filters: FILTERS.map(item => ({...item,label:copy[item.id]}))}); wx.setNavigationBarTitle({title:copy.galleryTitle}); this.loadGallery(); },
 
   onPullDownRefresh() {
     clearCache();
@@ -25,7 +27,7 @@ Page({
       this.setData({ assets: media.gallery, totalCount: media.gallery.length, loading: false });
       this.applyFilter(this.data.filter);
     } catch (error) {
-      this.setData({ loading: false, error: error.message || '作品集暂时无法加载' });
+      this.setData({ loading: false, error: error.message || this.data.copy.galleryFailed });
     }
   },
 

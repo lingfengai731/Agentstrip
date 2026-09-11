@@ -1,6 +1,7 @@
 // pages/itinerary/itinerary.js — Bali 路线中心
 const api = require('../../utils/api.js');
 const app = getApp();
+const COPY = require('./copy.js');
 
 function localized(value, lang, fallback = '') {
   if (!value) return fallback;
@@ -9,10 +10,13 @@ function localized(value, lang, fallback = '') {
 }
 
 Page({
-  data: { loading: true, error: '', routes: [], selected: null, professional: null, loggedIn: false },
+  data: { copy: COPY.zh, loading: true, error: '', routes: [], selected: null, professional: null, loggedIn: false },
 
   onShow() {
-    this.setData({ loggedIn: !!app.globalData.token });
+    const copy = COPY[app.globalData.currentLang] || COPY.zh;
+    this.setData({ copy, loggedIn: !!app.globalData.token });
+    wx.setNavigationBarTitle({ title: copy.match });
+    app.updateTabBarLanguage();
     this.loadRoutes();
     this.loadProfessionalRoute();
   },
@@ -46,7 +50,7 @@ Page({
       this.routesLang = lang;
       this.setData({ routes, selected: routes.find(route => route.id === selectedId) || routes[0] || null, loading: false });
     } catch (err) {
-      this.setData({ loading: false, error: err.message || '路线加载失败' });
+      this.setData({ loading: false, error: err.message || this.data.copy.failed });
     }
   },
 
@@ -74,8 +78,8 @@ Page({
     if (!app.globalData.token) {
       app.rememberCurrentRoute();
       wx.showModal({
-        title: '请先登录', content: '登录后可保存预览，并在网页与小程序间恢复路线。',
-        showCancel: false, success: () => wx.switchTab({ url: '/pages/index/index' }),
+        title: this.data.copy.login, content: this.data.copy.loginCopy,
+        confirmText: this.data.copy.ok, showCancel: false, success: () => wx.switchTab({ url: '/pages/index/index' }),
       });
       return;
     }
@@ -94,7 +98,8 @@ Page({
   copyUnlockLink() {
     wx.setClipboardData({
       data: 'https://wandermind.cc/bali.html#professional-planner',
-      success: () => wx.showToast({ title: '解锁链接已复制', icon: 'success' }),
+      success: () => wx.showToast({ title: this.data.copy.copied, icon: 'success' }),
+      fail: () => wx.showToast({ title: this.data.copy.copyFailed, icon: 'none' }),
     });
   },
   goChat() { wx.switchTab({ url: '/pages/chat/chat' }); },

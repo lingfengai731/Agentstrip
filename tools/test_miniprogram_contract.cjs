@@ -109,7 +109,7 @@ check(auth.includes('sendCode()') && auth.includes('verificationCode'), 'registr
 check(auth.includes('wechatLogin()') && auth.includes('wx.login') && auth.includes('api.wechatLogin'), 'WeChat one-click login UI is missing');
 check(auth.includes('linkWechat()') && auth.includes('api.linkWechat'), 'explicit WeChat link UI is missing');
 check(!/open-type=["']getPhoneNumber/.test(read('miniprogram/pages/index/index.wxml')), 'WeChat login must not request phone authorization');
-check(read('miniprogram/pages/index/index.wxml').includes('已有邮箱账号请先用邮箱登录'), 'WeChat login must warn existing email users to link explicitly');
+check(read('miniprogram/pages/index/index.wxml').includes('{{copy.linkHint}}') && require('../miniprogram/pages/index/copy.js').zh.linkHint.includes('已有邮箱账号请先用邮箱登录'), 'WeChat login must warn existing email users to link explicitly');
 check(auth.includes('api.checkUserContent(regName.trim(), 1)'), 'registration name must be checked before account creation');
 check(chat.includes('contentForSafetyCheck') && chat.includes('api.checkUserContent(contentForSafetyCheck, 2)'), 'AI user messages must be checked before sending');
 check(chat.includes('customDestination') && chat.includes('${customDestination}\\n${text}'), 'custom destinations must be included in AI content checks');
@@ -117,14 +117,14 @@ check(read('miniprogram/pages/prefs/prefs.js').includes('api.checkUserContent(pr
 check(driver.includes('contentForSafetyCheck') && driver.includes('api.checkUserContent(contentForSafetyCheck, 2)'), 'driver request text must be checked before handoff');
 check(api.includes('/api/driver-requests/mine') && api.includes('listDriverRequests'), 'driver request history API wrapper missing');
 check(driver.includes('api.listDriverRequests') && driver.includes('loadRequests'), 'driver request history UI is missing');
-check(driver.includes('未登录时请填写联系邮箱') && driver.includes('!app.globalData.token'), 'email-free driver handoff must fail clearly before anonymous submit');
-check(read('miniprogram/pages/driver/driver.wxml').includes('联系邮箱（可选）'), 'email field must be optional for authenticated WeChat accounts');
-check(read('miniprogram/pages/driver/driver.wxml').includes('必要联系信息'), 'driver consent copy must also cover email-free WeChat relay');
-check(read('miniprogram/pages/driver/driver.wxml').includes('我的司机请求'), 'driver request history surface is missing');
+check(driver.includes('copy.guestEmailRequired') && require('../miniprogram/pages/driver/copy.js').zh.guestEmailRequired.includes('未登录时请填写联系邮箱') && driver.includes('!app.globalData.token'), 'email-free driver handoff must fail clearly before anonymous submit');
+check(read('miniprogram/pages/driver/driver.wxml').includes('{{copy.email}}') && require('../miniprogram/pages/driver/copy.js').zh.email.includes('联系邮箱（可选）'), 'email field must be optional for authenticated WeChat accounts');
+check(read('miniprogram/pages/driver/driver.wxml').includes('{{copy.consent}}') && require('../miniprogram/pages/driver/copy.js').zh.consent.includes('必要联系信息'), 'driver consent copy must also cover email-free WeChat relay');
+check(read('miniprogram/pages/driver/driver.wxml').includes('{{copy.historyTitle}}') && require('../miniprogram/pages/driver/copy.js').zh.historyTitle.includes('我的司机请求'), 'driver request history surface is missing');
 const driverView = read('miniprogram/pages/driver/driver.wxml');
 check(driver.includes("require('../../utils/driver-estimate.js')"), 'driver estimate utility is not connected');
-check(driverView.includes('透明起步价') && driverView.includes('bindchange="setFullDays"') && driverView.includes('bindchange="setHalfDays"'), 'driver estimate controls are missing');
-check(driverView.includes('当地服务由司机或供应商直接收款'), 'foreign local-service direct-payment boundary is missing');
+check(driverView.includes('{{copy.estimateKicker}}') && driverView.includes('bindchange="setFullDays"') && driverView.includes('bindchange="setHalfDays"'), 'driver estimate controls are missing');
+check(driverView.includes('{{copy.estimateNote}}') && require('../miniprogram/pages/driver/copy.js').zh.estimateNote.includes('当地服务由司机或供应商直接收款'), 'foreign local-service direct-payment boundary is missing');
 check(driver.includes('Starting driver estimate: IDR') && driver.includes('requested_services: requestedServices'), 'driver handoff must include the visible starting estimate');
 const estimateFixture = driverEstimate.calculate({ fullDays: 2, halfDays: 1, people: 4, services: ['penida'] });
 check(estimateFixture.total === 1900000, 'driver base estimate must use IDR 700k full-day and IDR 500k half-day rates');
@@ -141,7 +141,7 @@ check(baliMedia.includes('EXISTING_WEBSITE_GALLERY'), 'Mini Program gallery must
 check(itinerary.includes('openPlace(e)') && itineraryView.includes('data-id="{{item.id}}"'), 'route places must open a real detail page by POI id');
 check(itinerary.includes('openGallery()') && homeView.includes('bindtap="openGallery"'), 'gallery must be reachable from Home and Trips');
 check(gallery.includes('loadBaliMedia') && gallery.includes('openAsset(e)'), 'gallery must load shared media and open a detail');
-check(read('miniprogram/pages/gallery/gallery.wxml').includes('长按图片可保存') && read('miniprogram/pages/gallery/gallery.wxml').includes('{{visibleCount}}'), 'gallery must explain saving and expose the visible image count');
+check(read('miniprogram/pages/gallery/gallery.wxml').includes('{{copy.saveHint}}') && require('../miniprogram/utils/browse-copy.js').zh.saveHint.includes('长按图片可保存') && read('miniprogram/pages/gallery/gallery.wxml').includes('{{visibleCount}}'), 'gallery must explain saving and expose the visible image count');
 check(place.includes('imagesByPoi') && place.includes('onSlide(e)'), 'place detail must expose the full multi-image set');
 check(read('miniprogram/pages/place/place.wxml').includes('<swiper'), 'place detail must use a native image swiper');
 check(gallery.includes('markImageFailed(e)') && place.includes('markImageFailed(e)'), 'remote image failures must have visible fallbacks');

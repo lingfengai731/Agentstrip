@@ -74,6 +74,16 @@ Create a handoff before changing accounts or ending incomplete work:
 
 ## Current integration boundary
 
+### 2026-09-11 Mini Program language and privacy delivery
+
+Latest verified task evidence: `.codex/project-memory/evidence/2026/09/20260911-mini-native-localization.md`.
+Continuation pointer: `.codex/project-memory/handoffs/2026/09/20260911-mini-native-localization.md` and `.codex/run-state/CURRENT.json`.
+This slice finishes interface localization, account-scoped drafts/preferences and measured native
+control repairs. Nine local suites pass (315 contract checks), a 50-row native matrix identified
+one remaining control defect, and 20 post-repair callback cases pass. Preview is 1,662,338 bytes.
+The records distinguish pending Git integration from Preview, Upload and public release; no
+website/backend deployment or physical-device acceptance is inferred from this result.
+
 ### 2026-09-05 Mini Program gallery and payment boundary
 
 PR #60 fixed head `c73f3f6c3cdebf2501960b190703ff31fe3b3389` passed Project memory

@@ -1,4 +1,5 @@
 const api = require('../../utils/api.js');
+const COPY = require('./copy.js');
 const app = getApp();
 
 function isoDate(offset) {
@@ -8,6 +9,7 @@ function isoDate(offset) {
 
 Page({
   data: {
+    copy: COPY.zh,
     routeId: '', audience: 'first', travellers: 2,
     departureDate: '', returnDate: '', days: 7,
     budgetOptions: ['6000-10000', '10000-20000', '20000-35000', '35000+'],
@@ -18,6 +20,12 @@ Page({
       { id: 'value', label: '控制预算', selected: false },
     ],
     goals: ['local', 'photo'], busy: false, error: '',
+  },
+
+  onShow() {
+    const copy = COPY[app.globalData.currentLang] || COPY.zh;
+    this.setData({ copy, error: '', goalOptions: this.data.goalOptions.map(item => ({ ...item, label: copy[item.id] })) });
+    wx.setNavigationBarTitle({ title: copy.submit });
   },
 
   onLoad(query) {
@@ -61,7 +69,7 @@ Page({
     const index = goals.indexOf(id);
     if (index >= 0) goals.splice(index, 1);
     else if (goals.length < 3) goals.push(id);
-    else { wx.showToast({ title: '最多选择 3 项', icon: 'none' }); return; }
+    else { wx.showToast({ title: this.data.copy.limit, icon: 'none' }); return; }
     this.setData({
       goals,
       goalOptions: this.data.goalOptions.map(item => ({ ...item, selected: goals.includes(item.id) })),
@@ -73,9 +81,9 @@ Page({
     if (this.data.busy) return;
     this.updateDays();
     if (!this.data.departureDate || !this.data.returnDate || this.data.days < 1) {
-      this.setData({ error: '请选择正确的出发与返程日期' }); return;
+      this.setData({ error: this.data.copy.invalidDates }); return;
     }
-    if (!this.data.goals.length) { this.setData({ error: '请至少选择一个关注点' }); return; }
+    if (!this.data.goals.length) { this.setData({ error: this.data.copy.noGoals }); return; }
     const profile = {
       audience: this.data.audience, travellers: this.data.travellers,
       departure_date: this.data.departureDate, return_date: this.data.returnDate,
@@ -86,9 +94,9 @@ Page({
     try {
       const payload = await api.createProfessionalRoute(profile, this.data.routeId, app.globalData.currentLang || 'zh');
       app.setProfessionalRoute(payload);
-      wx.showToast({ title: '路线已匹配', icon: 'success' });
+      wx.showToast({ title: this.data.copy.success, icon: 'success' });
       setTimeout(() => wx.navigateBack({ delta: 1 }), 500);
-    } catch (err) { this.setData({ error: err.message || '匹配失败，请重试' }); }
+    } catch (err) { this.setData({ error: err.message || this.data.copy.failed }); }
     finally { this.setData({ busy: false }); }
   },
 });

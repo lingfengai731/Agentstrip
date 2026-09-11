@@ -2,8 +2,12 @@
 // 所有请求统一走 Render 部署的 WanderMind 后端
 
 const app = getApp();
+const ERROR_COPY = require('./error-copy.js');
+const errors = () => ERROR_COPY[app.globalData.currentLang] || ERROR_COPY.zh;
 
 function _request({ url, method = 'GET', data, auth = true, timeout = 30000 }) {
+  const token = app.globalData.token;
+  const copy = errors();
   return new Promise((resolve, reject) => {
     const header = { 'Content-Type': 'application/json' };
     if (auth && app.globalData.token) {
@@ -16,12 +20,13 @@ function _request({ url, method = 'GET', data, auth = true, timeout = 30000 }) {
       header,
       timeout,
       success: (res) => {
-        if (res.statusCode === 401 && auth) {
+        if (auth && app.globalData.token !== token) { reject(new Error(copy.changed)); return; }
+        if (res.statusCode === 401 && auth && token) {
           app.rememberCurrentRoute();
           app.clearAuth();
-          wx.showToast({ title: '登录已过期', icon: 'none' });
+          wx.showToast({ title: copy.expired, icon: 'none' });
           wx.reLaunch({ url: '/pages/index/index' });
-          reject(new Error('Unauthorized'));
+          reject(new Error(copy.expired));
           return;
         }
         if (res.statusCode >= 200 && res.statusCode < 300) {
@@ -30,11 +35,11 @@ function _request({ url, method = 'GET', data, auth = true, timeout = 30000 }) {
           const detail = res.data && res.data.detail;
           const msg = typeof detail === 'string'
             ? detail
-            : (detail && (detail.message || detail.error)) || `请求失败 ${res.statusCode}`;
+            : (detail && (detail.message || detail.error)) || `${copy.failed} (${res.statusCode})`;
           reject(new Error(msg));
         }
       },
-      fail: (err) => reject(new Error(err.errMsg || '网络错误')),
+      fail: (err) => reject(new Error(copy.network)),
     });
   });
 }
@@ -79,7 +84,7 @@ const checkUserContent = (content, scene = 2) => new Promise((resolve, reject) =
     wx.login({
       success: (loginResult) => {
         if (!loginResult || !loginResult.code) {
-          reject(new Error('内容安全校验暂不可用，请稍后重试'));
+          reject(new Error(errors().safety));
           return;
         }
         _request({
@@ -93,10 +98,10 @@ const checkUserContent = (content, scene = 2) => new Promise((resolve, reject) =
             checkChunk(index + 1);
             return;
           }
-          reject(new Error((result && result.reason) || '这段内容暂时无法提交，请修改后重试'));
-        }, () => reject(new Error('内容安全校验暂不可用，请稍后重试')));
+          reject(new Error((result && result.reason) || errors().revise));
+        }, () => reject(new Error(errors().safety)));
       },
-      fail: () => reject(new Error('内容安全校验暂不可用，请稍后重试')),
+      fail: () => reject(new Error(errors().safety)),
     });
   };
   checkChunk(0);

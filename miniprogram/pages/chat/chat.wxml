@@ -6,11 +6,11 @@
     <view class="dest-bar-flag">{{destFlag}}</view>
     <view class="dest-bar-info">
       <view class="dest-bar-name">{{destName}}</view>
-      <view class="dest-bar-hint">旅行顾问 · {{modeLabel}}</view>
+      <view class="dest-bar-hint">{{copy.advisor}} · {{modeLabel}}</view>
     </view>
     <view class="mode-toggle">
-      <view class="mode-btn {{mode === 'fast' ? 'active' : ''}}" bindtap="setMode" data-mode="fast">快速</view>
-      <view class="mode-btn {{mode === 'pro' ? 'active' : ''}}" bindtap="setMode" data-mode="pro">深入</view>
+      <view class="mode-btn {{mode === 'fast' ? 'active' : ''}}" bindtap="setMode" data-mode="fast">{{copy.fast}}</view>
+      <view class="mode-btn {{mode === 'pro' ? 'active' : ''}}" bindtap="setMode" data-mode="pro">{{copy.deep}}</view>
     </view>
   </view>
 
@@ -25,8 +25,8 @@
     <!-- 欢迎语 -->
     <view wx:if="{{messages.length === 0}}" class="welcome">
       <view class="welcome-mark">{{destFlag}}</view>
-      <view class="welcome-title">从一个具体问题开始</view>
-      <view class="welcome-hint">询问 {{destName}} 的路线、交通、住宿或当地体验</view>
+      <view class="welcome-title">{{copy.welcome}}</view>
+      <view class="welcome-hint">{{destName}} · {{copy.hint}}</view>
       <view class="sugg-list">
         <view
           wx:for="{{suggestions}}"
@@ -46,7 +46,7 @@
       class="msg {{item.role}}"
     >
       <view class="msg-bubble">
-        <view wx:if="{{item.role === 'assistant' && item.searched}}" class="msg-search-badge">已核对在线信息</view>
+        <view wx:if="{{item.role === 'assistant' && item.searched}}" class="msg-search-badge">{{copy.searched}}</view>
         <block wx:if="{{item.role === 'assistant'}}">
           <view
             wx:for="{{item.renderBlocks}}"
@@ -59,7 +59,7 @@
           </view>
         </block>
         <text wx:else class="msg-text">{{item.content}}</text>
-        <view wx:if="{{item.role === 'assistant'}}" class="msg-mode-badge {{item.mode}}">{{item.mode === 'fast' ? '快' : '深'}}</view>
+        <view wx:if="{{item.role === 'assistant'}}" class="msg-mode-badge {{item.mode}}">{{item.mode === 'fast' ? copy.fast : copy.deep}}</view>
       </view>
     </view>
 
@@ -78,11 +78,11 @@
   <!-- 输入区 -->
   <view class="input-area">
     <view wx:if="{{saveError}}" class="save-notice">{{saveError}}</view>
-    <button wx:if="{{retryText}}" class="retry-btn" bindtap="retryLast">重试刚才的问题</button>
+    <button wx:if="{{retryText}}" class="retry-btn" bindtap="retryLast">{{copy.retry}}</button>
     <view class="composer">
     <textarea
       class="input-box"
-      placeholder="问任何关于 {{destName}} 的问题…"
+      placeholder="{{copy.input}}"
       placeholder-class="textarea-ph"
       placeholder-style="color:#B0A89D;font-size:28rpx;"
       value="{{inputText}}"
@@ -94,7 +94,7 @@
       show-confirm-bar="{{false}}"
     />
     <button class="send-btn" bindtap="sendMsg" disabled="{{busy || !canSend}}">
-      {{busy ? '…' : '发送'}}
+      {{busy ? '…' : copy.send}}
     </button>
     </view>
   </view>

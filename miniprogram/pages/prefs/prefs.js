@@ -1,158 +1,74 @@
-// pages/prefs/prefs.js — 旅行偏好编辑
 const api = require('../../utils/api.js');
+const COPY = require('./copy.js');
 const app = getApp();
-
-const BUDGET_OPTIONS = [
-  { value: 'budget',   label: '经济实惠' },
-  { value: 'midrange', label: '标准舒适' },
-  { value: 'luxury',   label: '豪华享受' },
-];
-const STYLE_OPTIONS = [
-  { value: 'culture',   label: '文化历史' },
-  { value: 'food',      label: '美食探索' },
-  { value: 'adventure', label: '冒险户外' },
-  { value: 'relax',     label: '悠闲放松' },
-  { value: 'nature',    label: '自然风光' },
-  { value: 'wellness',  label: '养生健康' },
-];
-const PARTY_OPTIONS = [
-  { value: 'solo',   label: '独自旅行' },
-  { value: 'couple', label: '情侣出行' },
-  { value: 'family', label: '家庭亲子' },
-  { value: 'group',  label: '朋友/团体' },
-];
-
-const selectedStyleOptions = (values = []) =>
-  STYLE_OPTIONS.map(item => ({ ...item, selected: values.includes(item.value) }));
-
+const options = (values, copy, selected = []) => values.map(value => ({ value, label: copy[value], selected: selected.includes(value) }));
 Page({
-  data: {
-    budgetOptions: BUDGET_OPTIONS,
-    styleOptions:  selectedStyleOptions(),
-    partyOptions:  PARTY_OPTIONS,
-    // 当前选中
-    budgetLevel: '',
-    styleList:   [],
-    party:       '',
-    notes:       '',
-    busy: false,
-    hasAny: false,
-  },
-
+  data: { copy: COPY.zh, budgetOptions: [], styleOptions: [], partyOptions: [], budgetLevel: '', styleList: [], party: '', notes: '', busy: false, hasAny: false },
   onLoad() {
-    // 先从本地恢复（即时反馈），再从后端拉一次（保证多端同步）
-    const cached = app.globalData.preferences || {};
-    const styleList = Array.isArray(cached.styleList) ? cached.styleList : [];
-    this.setData({
-      budgetLevel: cached.budgetLevel || '',
-      styleList,
-      styleOptions: selectedStyleOptions(styleList),
-      party:       cached.party || '',
-      notes:       cached.notes || '',
-      hasAny:      this._hasAny(cached),
-    });
+    this._edited = false;
+    this._apply(app.globalData.preferences || {});
     this._loadFromServer();
   },
-
+  onShow() {
+    const copy = COPY[app.globalData.currentLang] || COPY.zh;
+    this.setData({ copy, budgetOptions: options(['budget','midrange','luxury'],copy), partyOptions: options(['solo','couple','family','group'],copy), styleOptions: options(['culture','food','adventure','relax','nature','wellness'],copy,this.data.styleList) });
+    wx.setNavigationBarTitle({ title: copy.title });
+  },
+  _apply(p) {
+    const styleList = Array.isArray(p.styleList) ? p.styleList : [];
+    this.setData({ budgetLevel:p.budgetLevel || '', styleList, party:p.party || '', notes:p.notes || '', hasAny:this._hasAny(p), styleOptions:options(['culture','food','adventure','relax','nature','wellness'],this.data.copy,styleList) });
+  },
   async _loadFromServer() {
-    if (!app.globalData.token) return;
+    const token = app.globalData.token;
+    if (!token) return;
     try {
-      const p = await api.getPrefs();
-      app.setPrefs(p || {});
-      const styleList = Array.isArray(p.styleList) ? p.styleList : [];
-      this.setData({
-        budgetLevel: p.budgetLevel || '',
-        styleList,
-        styleOptions: selectedStyleOptions(styleList),
-        party:       p.party || '',
-        notes:       p.notes || '',
-        hasAny:      this._hasAny(p),
-      });
-    } catch (e) { /* 静默失败，本地版本还在用 */ }
+      const p = await api.getPrefs() || {};
+      if (app.globalData.token !== token || this._edited) return;
+      app.setPrefs(p);
+      this._apply(p);
+    } catch (_) { /* Keep the local version on read failure. */ }
   },
-
-  _hasAny(p) {
-    if (!p) return false;
-    return !!(p.budgetLevel || p.party || (p.notes && p.notes.trim())
-      || (Array.isArray(p.styleList) && p.styleList.length > 0));
-  },
-
-  // —— 单选：预算 ——
-  selectBudget(e) {
-    const v = e.currentTarget.dataset.value;
-    // 再点一次取消选中
-    this.setData({ budgetLevel: this.data.budgetLevel === v ? '' : v });
-  },
-
-  // —— 多选：风格 ——
+  _hasAny(p) { return !!(p.budgetLevel || p.party || (p.notes || '').trim() || (p.styleList || []).length); },
+  selectBudget(e) { if (this.data.busy) return; this._edited=true; const v=e.currentTarget.dataset.value; this.setData({budgetLevel:this.data.budgetLevel===v?'':v,hasAny:false}); },
+  selectParty(e) { if (this.data.busy) return; this._edited=true; const v=e.currentTarget.dataset.value; this.setData({party:this.data.party===v?'':v,hasAny:false}); },
   toggleStyle(e) {
-    const v = e.currentTarget.dataset.value;
-    const list = this.data.styleList.slice();
-    const idx = list.indexOf(v);
-    if (idx >= 0) list.splice(idx, 1);
-    else list.push(v);
-    this.setData({ styleList: list, styleOptions: selectedStyleOptions(list) });
+    if (this.data.busy) return;
+    this._edited=true;
+    const v=e.currentTarget.dataset.value, list=this.data.styleList.slice(), i=list.indexOf(v);
+    if(i>=0) list.splice(i,1); else list.push(v);
+    this.setData({styleList:list,styleOptions:options(['culture','food','adventure','relax','nature','wellness'],this.data.copy,list),hasAny:false});
   },
-
-  // —— 单选：同行 ——
-  selectParty(e) {
-    const v = e.currentTarget.dataset.value;
-    this.setData({ party: this.data.party === v ? '' : v });
-  },
-
-  // —— 备注 ——
-  onNotesChange(e) {
-    this.setData({ notes: e.detail.value });
-  },
-
-  // —— 保存 ——
+  onNotesChange(e) { if(this.data.busy) return; this._edited=true; this.setData({notes:e.detail.value,hasAny:false}); },
   async savePrefs() {
-    if (!app.globalData.token) {
-      wx.showModal({
-        title: '请先登录',
-        content: '需要登录后才能保存偏好',
-        showCancel: false,
-        success: () => wx.switchTab({ url: '/pages/index/index' }),
-      });
-      return;
-    }
-    const prefs = {
-      budgetLevel: this.data.budgetLevel,
-      styleList:   this.data.styleList,
-      party:       this.data.party,
-      notes:       (this.data.notes || '').trim(),
-    };
-    this.setData({ busy: true });
+    if(this.data.busy) return;
+    const token=app.globalData.token, copy=this.data.copy;
+    if(!token) { wx.showModal({title:copy.login,content:copy.loginHint,confirmText:copy.confirm,showCancel:false,success:()=>wx.switchTab({url:'/pages/index/index'})}); return; }
+    const prefs={budgetLevel:this.data.budgetLevel,styleList:this.data.styleList,party:this.data.party,notes:(this.data.notes||'').trim()};
+    this.setData({busy:true});
     try {
       await api.checkUserContent(prefs.notes, 2);
+      if(app.globalData.token!==token) return;
       await api.savePrefs(prefs);
-      app.setPrefs(prefs);
-      this.setData({ hasAny: this._hasAny(prefs) });
-      wx.showToast({ title: '已保存！AI 将更懂你', icon: 'success' });
-      // 短暂延迟后返回上一页
-      setTimeout(() => wx.navigateBack({ delta: 1 }), 1200);
-    } catch (err) {
-      wx.showModal({ title: '保存失败', content: err.message, showCancel: false });
-    } finally {
-      this.setData({ busy: false });
-    }
+      if(app.globalData.token!==token) return;
+      app.setPrefs(prefs); this._edited=false; this._apply(prefs);
+      wx.showToast({title:copy.saved,icon:'success'});
+    } catch(err) { if(app.globalData.token===token) wx.showModal({title:copy.failed,content:err.message||copy.failed,confirmText:copy.confirm,showCancel:false}); }
+    finally { if(app.globalData.token===token) this.setData({busy:false}); }
   },
-
   clearPrefs() {
-    wx.showModal({
-      title: '清除偏好',
-      content: '确定清除所有旅行偏好吗？AI 将回到通用模式。',
-      success: async (res) => {
-        if (!res.confirm) return;
-        const empty = { budgetLevel: '', styleList: [], party: '', notes: '' };
-        this.setData({ ...empty, styleOptions: selectedStyleOptions() });
-        try {
-          if (app.globalData.token) await api.savePrefs(empty);
-        } catch (e) { /* ignore */ }
-        app.setPrefs(empty);
-        this.setData({ hasAny: false });
-        wx.showToast({ title: '已清除', icon: 'none' });
-      }
-    });
-  },
+    if(this.data.busy) return;
+    const copy=this.data.copy, token=app.globalData.token;
+    wx.showModal({title:copy.clearTitle,content:copy.clearAsk,confirmText:copy.confirm,cancelText:copy.cancel,success:async res=>{
+      if(!res.confirm || this.data.busy || app.globalData.token!==token) return;
+      const empty={budgetLevel:'',styleList:[],party:'',notes:''};
+      this.setData({busy:true});
+      try {
+        if(token) await api.savePrefs(empty);
+        if(app.globalData.token!==token) return;
+        app.setPrefs(empty); this._edited=false; this._apply(empty);
+        wx.showToast({title:copy.cleared,icon:'none'});
+      } catch(err) { if(app.globalData.token===token) wx.showModal({title:copy.failed,content:err.message||copy.failed,confirmText:copy.confirm,showCancel:false}); }
+      finally { if(app.globalData.token===token) this.setData({busy:false}); }
+    }});
+  }
 });

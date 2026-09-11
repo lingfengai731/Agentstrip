@@ -41,7 +41,7 @@
 }
 .pref-chip {
   display: flex;
-  min-height: 68rpx;
+  min-height: 44px;
   padding: 0 24rpx;
   align-items: center;
   justify-content: center;

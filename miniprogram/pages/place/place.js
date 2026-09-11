@@ -1,12 +1,15 @@
 const { loadBaliMedia } = require('../../utils/bali-media.js');
 const app = getApp();
 
+const COPY = require('../../utils/browse-copy.js');
+
 Page({
-  data: { loading: true, error: '', place: null, images: [], current: 0, routeId: '' },
+  data: { copy: COPY.zh, loading: true, error: '', place: null, images: [], current: 0, routeId: '' },
 
   onLoad(options) {
+    this.setData({copy:COPY[app.globalData.currentLang] || COPY.zh});
     this.options = options || {};
-    this.setData({ routeId: options.routeId || '' });
+    this.setData({ routeId: this.options.routeId || '' });
     this.loadPlace();
   },
 
@@ -21,11 +24,11 @@ Page({
       let images = poi ? (media.imagesByPoi[id] || []) : [];
       if (selectedAsset && !images.some(image => image.key === selectedAsset.key)) images = [selectedAsset, ...images];
       if (!images.length && selectedAsset) images = [selectedAsset];
-      if (!poi && !selectedAsset) throw new Error('没有找到这个地点或照片');
+      if (!poi && !selectedAsset) throw new Error(this.data.copy.notFound);
       const current = selectedAsset ? Math.max(0, images.findIndex(image => image.key === selectedAsset.key)) : 0;
       const title = poi ? poi.displayName : selectedAsset.title;
       const description = poi
-        ? (selectedAsset && selectedAsset.description) || poi.notes || '这里是路线中的一个真实地点，出发前请再次确认开放时间与现场条件。'
+        ? (selectedAsset && selectedAsset.description) || poi.notes || this.data.copy.placeDefault
         : selectedAsset.description;
       this.setData({
         loading: false,
@@ -45,7 +48,7 @@ Page({
         current,
       });
     } catch (error) {
-      this.setData({ loading: false, error: error.message || '地点详情暂时无法加载' });
+      this.setData({ loading: false, error: error.message || this.data.copy.placeFailed });
     }
   },
 
@@ -61,7 +64,7 @@ Page({
   copyLink(e) {
     const value = e.currentTarget.dataset.value;
     if (!value) return;
-    wx.setClipboardData({ data: value, success: () => wx.showToast({ title: '链接已复制', icon: 'success' }) });
+    wx.setClipboardData({ data: value, success: () => wx.showToast({ title: this.data.copy.copied, icon: 'success' }), fail: () => wx.showToast({ title: this.data.copy.copyFailed, icon:'none' }) });
   },
 
   backToTrips() { wx.switchTab({ url: '/pages/itinerary/itinerary' }); },

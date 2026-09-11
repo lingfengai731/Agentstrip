@@ -10,7 +10,7 @@ function planner(storage, userId = 1) {
   const app = { globalData: { user: { id: userId }, currentLang: 'zh' }, setProfessionalRoute() {} };
   vm.runInNewContext(fs.readFileSync(path.join(root, 'miniprogram/pages/planner/planner.js'), 'utf8'), {
     Page(value) { page = value; }, getApp: () => app,
-    require: () => ({ async createProfessionalRoute() { calls++; throw new Error('offline'); } }),
+    require: name => name === './copy.js' ? require('../miniprogram/pages/planner/copy.js') : ({ async createProfessionalRoute() { calls++; throw new Error('offline'); } }),
     wx: { getStorageSync: key => storage[key], setStorageSync: (key, value) => { storage[key] = JSON.parse(JSON.stringify(value)); }, showToast() {} },
     setTimeout() {}, Date,
   });
@@ -61,7 +61,7 @@ function planner(storage, userId = 1) {
   const routeApp = { globalData: { token: '', currentLang: 'zh', professionalRoute: { private: true } }, setProfessionalRoute(value) { this.globalData.professionalRoute = value; } };
   vm.runInNewContext(fs.readFileSync(path.join(root, 'miniprogram/pages/itinerary/itinerary.js'), 'utf8'), {
     Page(value) { itinerary = value; }, getApp: () => routeApp,
-    require: () => ({
+    require: name => name === './copy.js' ? require('../miniprogram/pages/itinerary/copy.js') : ({
       baliRouteData: async () => ({ routes: ['R1', 'R2'].map(id => ({ id, name: { zh: `中文${id}`, en: `English ${id}` }, free_outline: [] })) }),
       recentUnlockedProfessionalRoute: () => new Promise(resolve => { resolveRoute = resolve; }),
     }),

@@ -345,3 +345,7 @@
   text-decoration: underline;
 }
 .logout-link::after { border: 0; }
+
+.page .auth-btn, .page .wechat-btn { width: 100%; min-height: 44px; height: auto; padding-top: 14rpx; padding-bottom: 14rpx; }
+.page .code-btn, .page .wechat-link-btn { min-height: 44px; height: auto; padding-top: 12rpx; padding-bottom: 12rpx; }
+.page .wechat-link-btn { max-width: 45%; overflow-wrap: break-word; }

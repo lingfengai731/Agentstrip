@@ -9,7 +9,11 @@
 .segmented, .cards, .chips { display: flex; gap: 12rpx; flex-wrap: wrap; }
 .choice { display: flex; min-height: 88rpx; flex: 1; min-width: 180rpx; padding: 0 20rpx; align-items: center; justify-content: center; border: 1rpx solid #DED7CA; border-radius: 18rpx; text-align: center; font-size: 25rpx; font-weight: 700; }
 .choice.active, .mini-card.active, .chip.active { border-color: #0E7C6B; background: #EAF5F1; color: #0C6859; }
-.three .choice { min-width: 100rpx; }
+.three .choice { min-width: 0; }
+.choice, .chip { box-sizing: border-box; min-height: 44px; padding-top: 10rpx; padding-bottom: 10rpx; overflow-wrap: break-word; }
+.choice { flex-basis: 0; }
+.choice-mark { flex: 0 0 28rpx; width: 28rpx; margin-right: 8rpx; }
+.mini-card-title { display: flex; align-items: center; }
 .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 18rpx; }
 .field, .stepper { display: flex; height: 88rpx; padding: 0 20rpx; align-items: center; border: 1rpx solid #DDD5C8; border-radius: 16rpx; background: #FBFAF7; box-sizing: border-box; font-size: 24rpx; }
 .stepper { justify-content: space-between; padding: 0; overflow: hidden; }
@@ -17,15 +21,24 @@
 .mini-card { display: flex; min-height: 118rpx; flex: 1; min-width: 170rpx; padding: 20rpx; flex-direction: column; justify-content: center; border: 1rpx solid #DED7CA; border-radius: 18rpx; box-sizing: border-box; }
 .mini-card-title { font-size: 25rpx; font-weight: 750; }
 .mini-card-copy { margin-top: 8rpx; color: #717A76; font-size: 20rpx; line-height: 1.4; }
-.chip { display: flex; min-height: 80rpx; padding: 0 22rpx; align-items: center; justify-content: center; border: 1rpx solid #DED7CA; border-radius: 18rpx; font-size: 23rpx; }
+.chip { display: flex; min-height: 44px; padding: 10rpx 22rpx; align-items: center; justify-content: center; border: 1rpx solid #DED7CA; border-radius: 18rpx; font-size: 23rpx; }
 .error { margin: 20rpx 12rpx; color: #B23C2B; font-size: 23rpx; }
 .sticky-action { position: fixed; left: 0; right: 0; bottom: 0; z-index: 10; padding: 16rpx 26rpx calc(16rpx + env(safe-area-inset-bottom)); background: rgba(250,250,247,.98); border-top: 1rpx solid #E5E2DA; }
 .summary { text-align: center; font-size: 21rpx; color: #6D7571; }
 .submit { display: flex; height: 92rpx; min-height: 92rpx; margin-top: 10rpx; align-items: center; justify-content: center; border-radius: 18rpx; background: #FCBF1E; color: #24322E; font-size: 28rpx; font-weight: 800; line-height: 1.2; }
 .benefit { margin-top: 8rpx; color: #6F756F; font-size: 20rpx; text-align: center; }
+.field, .stepper, .stepper button, .submit { min-height: 44px; }
+.stepper button { min-width: 44px; flex-shrink: 0; }
+.two-col > view { min-width: 0; }
+.field { height: auto; padding-top: 10rpx; padding-bottom: 10rpx; overflow-wrap: break-word; }
+.step-index { flex-shrink: 0; }
+.mini-card { min-width: 0; flex-basis: 0; overflow-wrap: break-word; }
+.submit { height: auto; padding-top: 20rpx; padding-bottom: 20rpx; }
 
 @media (max-width: 360px) {
   .two-col { grid-template-columns: 1fr; gap: 0; }
   .cards { flex-direction: column; }
   .mini-card { width: 100%; }
 }
+
+.planner-page .submit { width: 100%; }

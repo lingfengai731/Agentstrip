@@ -1,6 +1,13 @@
 const FULL_DAY_RATE = 700000;
 const HALF_DAY_RATE = 500000;
 const OVERTIME_RATE = 70000;
+const COPY = require('../pages/driver/copy.js');
+
+function fill(template, values) {
+  return String(template || '').replace(/\{(\w+)\}/g, (_, key) => (
+    values[key] == null ? '' : String(values[key])
+  ));
+}
 
 function wholeNumber(value, max = 14) {
   const number = Number(value);
@@ -12,27 +19,28 @@ function idr(value) {
   return `IDR ${Number(value || 0).toLocaleString('en-US')}`;
 }
 
-function calculate(input = {}) {
+function calculate(input = {}, labels = COPY.zh) {
+  const copy = { ...COPY.zh, ...(labels || {}) };
   const fullDays = wholeNumber(input.fullDays);
   const halfDays = wholeNumber(input.halfDays);
   const people = Math.max(1, wholeNumber(input.people, 12));
   const services = Array.isArray(input.services) ? input.services : [];
   const total = fullDays * FULL_DAY_RATE + halfDays * HALF_DAY_RATE;
   const breakdown = [];
-  if (fullDays) breakdown.push(`${fullDays} 个全天 × ${idr(FULL_DAY_RATE)}`);
-  if (halfDays) breakdown.push(`${halfDays} 个半天 × ${idr(HALF_DAY_RATE)}`);
+  if (fullDays) breakdown.push(fill(copy.estimateFullDay, { count: fullDays, price: idr(FULL_DAY_RATE) }));
+  if (halfDays) breakdown.push(fill(copy.estimateHalfDay, { count: halfDays, price: idr(HALF_DAY_RATE) }));
   const additions = [];
   if (services.includes('airport_transfer')) {
-    additions.push('机场接送按区域约 IDR 225,000–750,000，未计入上方合计');
+    additions.push(copy.estimateAirportTransfer);
   }
   if (services.includes('penida')) {
-    additions.push(`佩妮达往返船票约 ${idr(250000 * people)}（${people} 人）+ 岛上用车 IDR 650,000–700,000，未计入上方合计`);
+    additions.push(fill(copy.estimatePenida, { price: idr(250000 * people), people }));
   }
   return {
     fullDays,
     halfDays,
     total,
-    totalLabel: total ? idr(total) : '请选择全天或半天天数',
+    totalLabel: total ? idr(total) : copy.estimateNoDays,
     breakdown,
     additions,
   };

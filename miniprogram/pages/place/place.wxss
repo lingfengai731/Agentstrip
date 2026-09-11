@@ -24,3 +24,6 @@
 .state-card.error { color: #943B2C; background: #FFF8F5; }
 .retry { min-height: 80rpx; margin-top: 18rpx; padding: 0 28rpx; border: 1rpx solid #D2CABD; border-radius: 999rpx; background: #FFFFFF; color: #0E7362; }
 @media (max-width: 360px) { .photo-swiper, .place-image, .photo-empty { height: 600rpx; } .place-title { font-size: 39rpx; } }
+
+.place-page .retry, .place-page .link-btn { width: auto; max-width: 100%; min-height: 44px; height: auto; white-space: normal; box-sizing: border-box; }
+.place-page .action { width: 100%; min-height: 44px; height: auto; padding: 10px 12px; white-space: normal; box-sizing: border-box; }

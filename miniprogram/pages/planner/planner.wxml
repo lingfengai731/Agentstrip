@@ -1,52 +1,52 @@
 <view class="planner-page">
   <view class="intro">
-    <view class="title">告诉我们时间和偏好，先排出一条顺路的 Bali 行程</view>
-    <view class="subtitle">路线会从 G1–G7 区域与 R1–R6 主题中匹配；生成后仍可继续调整。</view>
+    <view class="title">{{copy.title}}</view>
+    <view class="subtitle">{{copy.subtitle}}</view>
   </view>
 
   <view class="section">
-    <view class="section-title"><text class="step-index">1</text><text>基本行程</text></view>
-    <view class="label">是否第一次去 Bali *</view>
+    <view class="section-title"><text class="step-index">1</text><text>{{copy.basic}}</text></view>
+    <view class="label">{{copy.audience}} *</view>
     <view class="segmented">
-      <view class="choice {{audience === 'first' ? 'active' : ''}}" bindtap="setChoice" data-field="audience" data-value="first">第一次去</view>
-      <view class="choice {{audience === 'returning' ? 'active' : ''}}" bindtap="setChoice" data-field="audience" data-value="returning">去过 Bali</view>
+      <view class="choice {{audience === 'first' ? 'active' : ''}}" bindtap="setChoice" data-field="audience" data-value="first"><text class="choice-mark">{{audience === 'first' ? '✓' : '○'}}</text>{{copy.first}}</view>
+      <view class="choice {{audience === 'returning' ? 'active' : ''}}" bindtap="setChoice" data-field="audience" data-value="returning"><text class="choice-mark">{{audience === 'returning' ? '✓' : '○'}}</text>{{copy.returning}}</view>
     </view>
     <view class="two-col">
-      <view><view class="label">出发日期 *</view><picker mode="date" value="{{departureDate}}" bindchange="onDeparture"><view class="field">{{departureDate}}</view></picker></view>
-      <view><view class="label">返程日期 *</view><picker mode="date" value="{{returnDate}}" bindchange="onReturn"><view class="field">{{returnDate}}</view></picker></view>
+      <view><view class="label">{{copy.departure}} *</view><picker mode="date" value="{{departureDate}}" bindchange="onDeparture"><view class="field">{{departureDate}}</view></picker></view>
+      <view><view class="label">{{copy.returnDate}} *</view><picker mode="date" value="{{returnDate}}" bindchange="onReturn"><view class="field">{{returnDate}}</view></picker></view>
     </view>
     <view class="two-col">
-      <view><view class="label">同行人数 *</view><view class="stepper"><button data-delta="-1" bindtap="changePeople">−</button><text>{{travellers}}</text><button data-delta="1" bindtap="changePeople">＋</button></view></view>
-      <view><view class="label">预算档位 *</view><picker mode="selector" range="{{budgetOptions}}" value="{{budgetIndex}}" bindchange="onBudget"><view class="field">CNY {{budgetOptions[budgetIndex]}}</view></picker></view>
+      <view><view class="label">{{copy.people}} *</view><view class="stepper"><button data-delta="-1" bindtap="changePeople">−</button><text>{{travellers}}</text><button data-delta="1" bindtap="changePeople">＋</button></view></view>
+      <view><view class="label">{{copy.budget}} *</view><picker mode="selector" range="{{budgetOptions}}" value="{{budgetIndex}}" bindchange="onBudget"><view class="field">CNY {{budgetOptions[budgetIndex]}}</view></picker></view>
     </view>
   </view>
 
   <view class="section">
-    <view class="section-title"><text class="step-index">2</text><text>旅行方式</text></view>
-    <view class="label">行程风格 *</view>
+    <view class="section-title"><text class="step-index">2</text><text>{{copy.way}}</text></view>
+    <view class="label">{{copy.style}} *</view>
     <view class="cards">
-      <view class="mini-card {{travelStyle === 'comfort' ? 'active' : ''}}" bindtap="setChoice" data-field="travelStyle" data-value="comfort"><view class="mini-card-title">舒适平衡</view><view class="mini-card-copy">经典与松弛兼顾</view></view>
-      <view class="mini-card {{travelStyle === 'deep' ? 'active' : ''}}" bindtap="setChoice" data-field="travelStyle" data-value="deep"><view class="mini-card-title">深度探索</view><view class="mini-card-copy">更多文化与在地体验</view></view>
-      <view class="mini-card {{travelStyle === 'resort' ? 'active' : ''}}" bindtap="setChoice" data-field="travelStyle" data-value="resort"><view class="mini-card-title">度假放松</view><view class="mini-card-copy">少换酒店、留足空白</view></view>
+      <view class="mini-card {{travelStyle === 'comfort' ? 'active' : ''}}" bindtap="setChoice" data-field="travelStyle" data-value="comfort"><view class="mini-card-title">{{copy.comfort}}</view><view class="mini-card-copy">{{copy.comfortCopy}}</view></view>
+      <view class="mini-card {{travelStyle === 'deep' ? 'active' : ''}}" bindtap="setChoice" data-field="travelStyle" data-value="deep"><view class="mini-card-title">{{copy.deep}}</view><view class="mini-card-copy">{{copy.deepCopy}}</view></view>
+      <view class="mini-card {{travelStyle === 'resort' ? 'active' : ''}}" bindtap="setChoice" data-field="travelStyle" data-value="resort"><view class="mini-card-title">{{copy.resort}}</view><view class="mini-card-copy">{{copy.resortCopy}}</view></view>
     </view>
-    <view class="label">每天希望安排多少内容 *</view>
+    <view class="label">{{copy.pace}} *</view>
     <view class="segmented three">
-      <view class="choice {{pace === 'relaxed' ? 'active' : ''}}" bindtap="setChoice" data-field="pace" data-value="relaxed">少一些</view>
-      <view class="choice {{pace === 'balanced' ? 'active' : ''}}" bindtap="setChoice" data-field="pace" data-value="balanced">刚刚好</view>
-      <view class="choice {{pace === 'active' ? 'active' : ''}}" bindtap="setChoice" data-field="pace" data-value="active">多一些</view>
+      <view class="choice {{pace === 'relaxed' ? 'active' : ''}}" bindtap="setChoice" data-field="pace" data-value="relaxed"><text class="choice-mark">{{pace === 'relaxed' ? '✓' : '○'}}</text>{{copy.relaxed}}</view>
+      <view class="choice {{pace === 'balanced' ? 'active' : ''}}" bindtap="setChoice" data-field="pace" data-value="balanced"><text class="choice-mark">{{pace === 'balanced' ? '✓' : '○'}}</text>{{copy.balanced}}</view>
+      <view class="choice {{pace === 'active' ? 'active' : ''}}" bindtap="setChoice" data-field="pace" data-value="active"><text class="choice-mark">{{pace === 'active' ? '✓' : '○'}}</text>{{copy.active}}</view>
     </view>
   </view>
 
   <view class="section">
-    <view class="section-title"><text class="step-index">3</text><text>最关注什么</text></view>
-    <view class="label">最多选择 3 项 *</view>
+    <view class="section-title"><text class="step-index">3</text><text>{{copy.goals}}</text></view>
+    <view class="label">{{copy.limit}} *</view>
     <view class="chips"><view wx:for="{{goalOptions}}" wx:key="id" class="chip {{item.selected ? 'active' : ''}}" bindtap="toggleGoal" data-id="{{item.id}}">{{item.selected ? '✓ ' : ''}}{{item.label}}</view></view>
   </view>
 
   <view wx:if="{{error}}" class="error">{{error}}</view>
   <view class="sticky-action">
-    <view class="summary">{{days}} 天 · {{travellers}} 人 · 已选 {{goals.length}} 项</view>
-    <button class="submit" bindtap="submit" loading="{{busy}}" disabled="{{busy}}">{{busy ? '正在匹配适合你的路线…' : '生成我的 Bali 路线'}}</button>
-    <view class="benefit">先看完整路线框架；执行细节解锁后可调整 3 次</view>
+    <view class="summary">{{days}} {{copy.days}} · {{travellers}} {{copy.guests}} · {{goals.length}} {{copy.selected}}</view>
+    <button class="submit" bindtap="submit" loading="{{busy}}" disabled="{{busy}}">{{busy ? copy.busy : copy.submit}}</button>
+    <view class="benefit">{{copy.benefit}}</view>
   </view>
 </view>

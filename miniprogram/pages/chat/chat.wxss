@@ -16,7 +16,7 @@
   border-bottom: 1rpx solid #E5E2DA;
 }
 .dest-bar-flag { font-size: 38rpx; }
-.dest-bar-info { flex: 1; }
+.dest-bar-info { flex: 1; min-width: 0; overflow-wrap: break-word; }
 .dest-bar-name { font-size: 28rpx; font-weight: 700; color: #2A2723; }
 .dest-bar-hint { font-size: 20rpx; color: #8A857F; margin-top: 2rpx; }
 
@@ -30,7 +30,7 @@
 .mode-btn {
   display: flex;
   min-width: 76rpx;
-  min-height: 80rpx;
+  min-height: 44px;
   padding: 0 14rpx;
   align-items: center;
   justify-content: center;
@@ -237,3 +237,7 @@
 }
 .send-btn[disabled] { background: #C0C0C0 !important; color: #fff !important; }
 .send-btn::after { border: none; }
+
+.chat-page .send-btn { width: auto; flex: 0 0 auto; min-height: 44px; max-width: 40%; white-space: normal; overflow-wrap: break-word; }
+.chat-page .input-box { min-width: 0; }
+.chat-page .retry-btn { width: auto; min-height: 44px; }

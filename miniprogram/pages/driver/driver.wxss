@@ -72,3 +72,9 @@
   .estimate-total { align-items:flex-start; flex-direction:column; }
   .estimate-value { text-align:left; }
 }
+
+.driver-page .refresh-btn { width: auto; min-height: 44px; }
+.driver-page .submit { width: 100%; min-height: 44px; height: auto; padding-top: 16rpx; padding-bottom: 16rpx; }
+.driver-card > view { min-width: 0; }
+.driver-role { overflow-wrap: break-word; }
+.avatar { flex-shrink: 0; }
