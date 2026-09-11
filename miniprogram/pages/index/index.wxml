@@ -5,48 +5,48 @@
   <view wx:if="{{!loggedIn}}" class="auth-section">
     <view class="hero">
       <view class="hero-logo"><image src="/assets/logo-mark.png" mode="aspectFit" /></view>
-      <view class="hero-title">WanderMind 智旅</view>
-      <view class="hero-subtitle">把路线、机酒与当地司机接到同一段旅程</view>
+      <view class="hero-title">WanderMind</view>
+      <view class="hero-subtitle">{{copy.hero}}</view>
     </view>
 
     <view class="card auth-card">
       <view class="auth-tabs">
-        <view class="auth-tab {{authMode === 'login' ? 'active' : ''}}" bindtap="switchAuth" data-mode="login">登录</view>
-        <view class="auth-tab {{authMode === 'register' ? 'active' : ''}}" bindtap="switchAuth" data-mode="register">注册</view>
+        <view class="auth-tab {{authMode === 'login' ? 'active' : ''}}" bindtap="switchAuth" data-mode="login">{{copy.login}}</view>
+        <view class="auth-tab {{authMode === 'register' ? 'active' : ''}}" bindtap="switchAuth" data-mode="register">{{copy.register}}</view>
       </view>
 
       <view wx:if="{{authMode === 'register'}}" class="form-row">
-        <view class="field-label">昵称</view>
-        <input class="input-base" placeholder-class="input-ph" placeholder="例如：小峰" value="{{regName}}" bindinput="onInput" data-field="regName" />
+        <view class="field-label">{{copy.name}}</view>
+        <input class="input-base" placeholder-class="input-ph" placeholder="{{copy.nameHint}}" value="{{regName}}" bindinput="onInput" data-field="regName" />
       </view>
       <view class="form-row">
-        <view class="field-label">邮箱</view>
+        <view class="field-label">{{copy.email}}</view>
         <input class="input-base" placeholder-class="input-ph" placeholder="name@example.com" type="text" value="{{email}}" bindinput="onInput" data-field="email" />
       </view>
       <view wx:if="{{authMode === 'register'}}" class="form-row code-row">
         <view class="code-field">
-          <view class="field-label">邮箱验证码</view>
-          <input class="input-base code-input" placeholder-class="input-ph" placeholder="6 位数字" type="number" maxlength="6" value="{{verificationCode}}" bindinput="onInput" data-field="verificationCode" />
+          <view class="field-label">{{copy.code}}</view>
+          <input class="input-base code-input" placeholder-class="input-ph" placeholder="{{copy.codeHint}}" type="number" maxlength="6" value="{{verificationCode}}" bindinput="onInput" data-field="verificationCode" />
         </view>
-        <button class="code-btn" bindtap="sendCode" loading="{{codeBusy}}" disabled="{{codeBusy || codeCooldown > 0}}">{{codeCooldown > 0 ? codeCooldown + ' 秒' : '发送验证码'}}</button>
+        <button class="code-btn" bindtap="sendCode" loading="{{codeBusy}}" disabled="{{codeBusy || codeCooldown > 0}}">{{codeCooldown > 0 ? codeCooldown + ' s' : copy.sendCode}}</button>
       </view>
       <view class="form-row">
-        <view class="field-label">密码</view>
-        <input class="input-base" placeholder-class="input-ph" placeholder="至少 6 位" password value="{{password}}" bindinput="onInput" data-field="password" />
+        <view class="field-label">{{copy.password}}</view>
+        <input class="input-base" placeholder-class="input-ph" placeholder="{{copy.passwordHint}}" password value="{{password}}" bindinput="onInput" data-field="password" />
       </view>
 
       <button class="btn auth-btn" bindtap="doAuth" loading="{{authBusy}}" disabled="{{authBusy}}">
-        {{authMode === 'login' ? '登录' : '注册'}}
+        {{authMode === 'login' ? copy.login : copy.register}}
       </button>
 
-      <view class="auth-divider"><view></view><text>或</text><view></view></view>
+      <view class="auth-divider"><view></view><text>{{copy.or}}</text><view></view></view>
       <button class="wechat-btn" bindtap="wechatLogin" loading="{{wechatBusy}}" disabled="{{wechatBusy || authBusy}}">
-        <text class="wechat-mark">微</text>
-        {{wechatBusy ? '正在连接微信…' : '微信一键登录'}}
+        <text class="wechat-mark">W</text>
+        {{wechatBusy ? copy.wechatBusy : copy.wechatLogin}}
       </button>
-      <view class="wechat-login-hint">已有邮箱账号请先用邮箱登录，再在首页绑定微信，避免形成两个独立账号。</view>
+      <view class="wechat-login-hint">{{copy.linkHint}}</view>
 
-      <view wx:if="{{authMode === 'register'}}" class="code-hint">验证码 10 分钟内有效；60 秒后可重新发送。</view>
+      <view wx:if="{{authMode === 'register'}}" class="code-hint">{{copy.expiry}}</view>
 
       <view wx:if="{{authError}}" class="auth-error">{{authError}}</view>
     </view>
@@ -55,8 +55,8 @@
   <!-- 已登录：显示目的地选择 + 快速入口 -->
   <view wx:if="{{loggedIn}}" class="dest-section">
     <view class="welcome">
-      <view class="welcome-greeting">你好，{{user.name}}</view>
-      <view class="welcome-sub">想去哪里旅行？</view>
+      <view class="welcome-greeting">{{copy.hello}}{{user.name}}</view>
+      <view class="welcome-sub">{{copy.where}}</view>
     </view>
 
     <view class="dest-grid">
@@ -78,49 +78,49 @@
 
     <view class="card custom-dest-card" bindtap="customDest">
       <view class="custom-icon">＋</view>
-      <view class="custom-text">输入其他目的地…</view>
+      <view class="custom-text">{{copy.other}}</view>
       <view class="custom-arrow">›</view>
     </view>
 
     <view wx:if="{{!wechatLinked}}" class="card wechat-link-card">
       <view class="wechat-link-copy">
-        <view class="wechat-link-title">绑定微信账号</view>
-        <view class="wechat-link-subtitle">下次可直接使用微信登录，不会合并其他账号</view>
+        <view class="wechat-link-title">{{copy.linkTitle}}</view>
+        <view class="wechat-link-subtitle">{{copy.linkCopy}}</view>
       </view>
-      <button class="wechat-link-btn" bindtap="linkWechat" loading="{{wechatBusy}}" disabled="{{wechatBusy}}">绑定</button>
+      <button class="wechat-link-btn" bindtap="linkWechat" loading="{{wechatBusy}}" disabled="{{wechatBusy}}">{{copy.link}}</button>
     </view>
-    <view wx:if="{{wechatLinked}}" class="wechat-linked-note">微信账号已绑定</view>
+    <view wx:if="{{wechatLinked}}" class="wechat-linked-note">{{copy.linked}}</view>
 
     <view class="quick-actions">
-      <view class="qa-title">从这里开始</view>
+      <view class="qa-title">{{copy.start}}</view>
       <view class="qa-grid">
         <view class="qa-item" bindtap="goChat">
-          <view class="qa-icon">问</view>
-          <view class="qa-copy"><view class="qa-label">问旅行问题</view><view class="qa-note">获得具体建议</view></view>
+          <view class="qa-icon">?</view>
+          <view class="qa-copy"><view class="qa-label">{{copy.ask}}</view><view class="qa-note">{{copy.advice}}</view></view>
         </view>
         <view class="qa-item" bindtap="goCompare">
-          <view class="qa-icon">价</view>
-          <view class="qa-copy"><view class="qa-label">机酒比价</view><view class="qa-note">查看实时选择</view></view>
+          <view class="qa-icon">↔</view>
+          <view class="qa-copy"><view class="qa-label">{{copy.compare}}</view><view class="qa-note">{{copy.options}}</view></view>
         </view>
         <view class="qa-item" bindtap="goItinerary">
-          <view class="qa-icon">程</view>
-          <view class="qa-copy"><view class="qa-label">我的行程</view><view class="qa-note">继续路线安排</view></view>
+          <view class="qa-icon">≡</view>
+          <view class="qa-copy"><view class="qa-label">{{copy.trips}}</view><view class="qa-note">{{copy.continue}}</view></view>
         </view>
         <view class="qa-item" bindtap="goMe">
-          <view class="qa-icon">我</view>
-          <view class="qa-copy"><view class="qa-label">旅行偏好</view><view class="qa-note">记下你的习惯</view></view>
+          <view class="qa-icon">◇</view>
+          <view class="qa-copy"><view class="qa-label">{{copy.prefs}}</view><view class="qa-note">{{copy.habits}}</view></view>
         </view>
       </view>
     </view>
 
     <view class="portfolio-card" bindtap="openGallery" hover-class="portfolio-pressed" hover-stay-time="90">
       <view class="portfolio-kicker">BALI PORTFOLIO</view>
-      <view class="portfolio-title">岛屿上的真实瞬间</view>
-      <view class="portfolio-copy">浏览已授权作品，点开地点可看不同景色与旅行提示。</view>
-      <view class="portfolio-action">进入作品集 <text>→</text></view>
+      <view class="portfolio-title">{{copy.moments}}</view>
+      <view class="portfolio-copy">{{copy.galleryCopy}}</view>
+      <view class="portfolio-action">{{copy.gallery}} <text>→</text></view>
     </view>
 
-    <view class="logout-row"><button class="logout-link" bindtap="doLogout">退出登录</button></view>
+    <view class="logout-row"><button class="logout-link" bindtap="doLogout">{{copy.logout}}</button></view>
   </view>
 
 </view>

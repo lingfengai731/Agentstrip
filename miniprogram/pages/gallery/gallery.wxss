@@ -23,3 +23,6 @@
 .gallery-meta { margin-top: 12rpx; color: #6D7773; font-size: 20rpx; line-height: 1.4; }
 .gallery-count { margin:24rpx 8rpx 0; color:#737B77; font-size:20rpx; line-height:1.55; text-align:center; }
 @media (max-width: 360px) { .gallery-grid { grid-template-columns: 1fr; } .gallery-image { height: 380rpx; } }
+
+.gallery-page .filter-chip { width: auto; flex: 0 0 auto; min-height: 44px; }
+.gallery-page .retry { min-height: 44px; }

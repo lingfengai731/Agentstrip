@@ -26,7 +26,7 @@ App({
     const user  = wx.getStorageSync('wm_user');
     const dest  = wx.getStorageSync('wm_dest');
     const lang  = wx.getStorageSync('wm_lang');
-    const prefs = wx.getStorageSync('wm_prefs');
+    const prefs = wx.getStorageSync('wm_prefs_' + (user && user.id != null ? user.id : 'guest'));
     if (token) this.globalData.token = token;
     if (user)  this.globalData.user = user;
     if (dest)  this.globalData.currentDest = dest;
@@ -58,11 +58,13 @@ App({
 
   // 设置 token 并持久化
   setToken(token, user) {
-    if (!this.globalData.user || !user || this.globalData.user.id !== user.id) {
+    const changed = !this.globalData.user || !user || this.globalData.user.id !== user.id;
+    if (changed) {
       this.setProfessionalRoute(null);
     }
     this.globalData.token = token;
     this.globalData.user = user;
+    if (changed) this.globalData.preferences = wx.getStorageSync(this.privateStorageKey('wm_prefs')) || {};
     wx.setStorageSync('wm_token', token);
     wx.setStorageSync('wm_user', user);
     this.globalData.sessionChecked = true;
@@ -73,9 +75,15 @@ App({
     this.setProfessionalRoute(null);
     this.globalData.token = '';
     this.globalData.user = null;
+    this.globalData.preferences = {};
     wx.removeStorageSync('wm_token');
     wx.removeStorageSync('wm_user');
     this.globalData.sessionChecked = false;
+  },
+
+  privateStorageKey(name) {
+    const user = this.globalData.user;
+    return name + '_' + (user && user.id != null ? user.id : 'guest');
   },
 
   // 切换目的地
@@ -143,7 +151,7 @@ App({
   // 保存偏好（本地 + 上报后端在调用方做）
   setPrefs(prefs) {
     this.globalData.preferences = prefs || {};
-    wx.setStorageSync('wm_prefs', this.globalData.preferences);
+    wx.setStorageSync(this.privateStorageKey('wm_prefs'), this.globalData.preferences);
   },
 
   // 构建 system prompt 的偏好片段（chat 时调用，注入到 AI 上下文）

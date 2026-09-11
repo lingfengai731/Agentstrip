@@ -4,6 +4,8 @@ const { DESTINATIONS } = require('../../utils/const.js');
 const { HOTEL_AREAS, DEPARTURE_CITIES } = require('../../utils/areas.js');
 
 const app = getApp();
+const COPY = require('./copy.js');
+const DEST_COPY = require('../index/copy.js');
 
 // 格式化日期 YYYY-MM-DD
 function _fmtDate(d) {
@@ -29,6 +31,7 @@ function _fmtTime(t) {
 
 Page({
   data: {
+    copy: COPY.zh,
     destFlag: '🌺',
     destName: '巴厘岛',
     tab: 'hotels',
@@ -69,20 +72,29 @@ Page({
   },
 
   _syncDestFromGlobal() {
+    const lang=app.globalData.currentLang || 'zh', copy=COPY[lang] || COPY.zh;
+    const changed=this._lastDest !== app.globalData.currentDest || this._lastLang !== lang;
     const destId = app.globalData.currentDest;
-    let flag = '🌍', name = '自定义';
+    const destCopy=DEST_COPY[lang] || DEST_COPY.zh;
+    this.setData({copy});
+    wx.setNavigationBarTitle({title:copy.title});
+    if(app.updateTabBarLanguage) app.updateTabBarLanguage();
+    let flag = '🌍', name = this.data.copy.custom;
     if (destId === 'custom') {
-      name = app.globalData.customDestName || '自定义';
+      name = app.globalData.customDestName || this.data.copy.custom;
     } else {
       const d = DESTINATIONS.find(x => x.id === destId);
-      if (d) { flag = d.flag; name = d.name; }
+      if (d) { flag = d.flag; name = destCopy[d.id] || d.name; }
     }
     this.setData({
       destFlag: flag,
       destName: name,
-      areas: HOTEL_AREAS[destId] || HOTEL_AREAS.custom,
-      currentArea: 'all',
+      areas: (HOTEL_AREAS[destId] || HOTEL_AREAS.custom).map(a=>({...a,name:a.key==='all'?copy.all:lang==='zh'?a.name:a.q})),
+      cities: DEPARTURE_CITIES.map(c=>({...c,name:lang==='zh'?c.name:({PVG:'Shanghai',PEK:'Beijing',CAN:'Guangzhou',SZX:'Shenzhen',CTU:'Chengdu',HKG:'Hong Kong',HGH:'Hangzhou',XIY:'Xi’an'})[c.iata]})),
+      adultsRange:[1,2,3,4].map(n=>n+' '+copy.person),
+      ...(changed?{currentArea:'all',hotelResults:[],flightResults:[],flightBookingUrl:'',hotelSearched:false,flightSearched:false}:{}),
     });
+    this._lastDest=destId; this._lastLang=lang;
   },
 
   _initDates() {
@@ -122,9 +134,9 @@ Page({
   },
   customOrigin() {
     wx.showModal({
-      title: '其他出发城市',
-      placeholderText: '输入城市名或 IATA 代码',
-      editable: true,
+      title: this.data.copy.customTitle,
+      placeholderText: this.data.copy.customHint,
+      editable: true, confirmText:this.data.copy.confirm, cancelText:this.data.copy.cancel,
       success: (res) => {
         if (res.confirm && res.content) {
           const v = res.content.trim();
@@ -147,14 +159,15 @@ Page({
 
   // —— 搜索酒店 ——
   async searchHotelsHandler() {
+    if(this.data.hotelBusy) return;
     if (!app.globalData.token) return this._needLogin();
 
     const { hotelCheckIn, hotelCheckOut, hotelAdultsIdx, currentArea, areas, destName } = this.data;
     if (!hotelCheckIn || !hotelCheckOut) {
-      return wx.showToast({ title: '请选择日期', icon: 'none' });
+      return wx.showToast({ title: this.data.copy.datesRequired, icon: 'none' });
     }
     if (hotelCheckOut <= hotelCheckIn) {
-      return wx.showToast({ title: '退房日期必须晚于入住', icon: 'none' });
+      return wx.showToast({ title: this.data.copy.checkoutInvalid, icon: 'none' });
     }
 
     // 拼接区域关键词
@@ -163,13 +176,13 @@ Page({
 
     this.setData({ hotelBusy: true });
     try {
-      const data = await api.searchHotels(dest, hotelCheckIn, hotelCheckOut, hotelAdultsIdx + 1, 'zh');
+      const data = await api.searchHotels(dest, hotelCheckIn, hotelCheckOut, hotelAdultsIdx + 1, app.globalData.currentLang || 'zh');
       this.setData({
         hotelResults: data.hotels || [],
         hotelSearched: true,
       });
     } catch (err) {
-      wx.showModal({ title: '搜索失败', content: err.message, showCancel: false });
+      wx.showModal({ title: this.data.copy.failed, content: err.message, showCancel: false });
     } finally {
       this.setData({ hotelBusy: false });
     }
@@ -177,38 +190,38 @@ Page({
 
   openHotelLink(e) {
     const link = e.currentTarget.dataset.link;
-    if (!link) return;
+    if (!link) return wx.showToast({title:this.data.copy.missingLink,icon:'none'});
     wx.setClipboardData({
       data: link,
-      success: () => wx.showToast({ title: '链接已复制，去浏览器打开', icon: 'none', duration: 2500 }),
+      fail:()=>wx.showToast({title:this.data.copy.copyFailed,icon:'none'}),
+      success: () => wx.showToast({ title: this.data.copy.copied, icon: 'none', duration: 2500 }),
     });
   },
 
   // —— 搜索机票 ——
   async searchFlightsHandler() {
+    if(this.data.flightBusy) return;
     if (!app.globalData.token) return this._needLogin();
 
     const { flightTripType, flightDepart, flightReturn, flightAdultsIdx, flightOrigin, customOriginName, destName } = this.data;
     const origin = flightOrigin === '__custom__' ? customOriginName : flightOrigin;
-    if (!origin) return wx.showToast({ title: '请选择出发城市', icon: 'none' });
-    if (!flightDepart) return wx.showToast({ title: '请选择起飞日期', icon: 'none' });
+    if (!origin) return wx.showToast({ title: this.data.copy.originRequired, icon: 'none' });
+    if (!flightDepart) return wx.showToast({ title: this.data.copy.departRequired, icon: 'none' });
     const ret = flightTripType === 'round' ? flightReturn : '';
-    if (ret && ret <= flightDepart) {
-      return wx.showToast({ title: '返回日期必须晚于起飞', icon: 'none' });
+    if (flightTripType === 'round' && (!ret || ret <= flightDepart)) {
+      return wx.showToast({ title: this.data.copy.returnInvalid, icon: 'none' });
     }
 
     this.setData({ flightBusy: true });
     try {
-      const data = await api.searchFlights(origin, destName, flightDepart, ret, flightAdultsIdx + 1, 'zh');
+      const data = await api.searchFlights(origin, destName, flightDepart, ret, flightAdultsIdx + 1, app.globalData.currentLang || 'zh');
       // 格式化返回字段
       const enriched = (data.flights || []).map(f => ({
         ...f,
         depart_time_short: _fmtTime(f.depart_time),
         arrive_time_short: _fmtTime(f.arrive_time),
         duration_label:    _fmtDuration(f.duration_min),
-        stops_label: f.stops === 0 ? '✅ 直飞'
-                    : f.stops === 1 ? `1 次中转${f.layover_codes && f.layover_codes[0] ? ' · ' + f.layover_codes[0] : ''}`
-                    : `${f.stops} 次中转`,
+        stops_label: f.stops === 0 ? this.data.copy.direct : `${f.stops} ${this.data.copy.stops}`,
       }));
       this.setData({
         flightResults: enriched,
@@ -216,7 +229,7 @@ Page({
         flightBookingUrl: data.booking_url || '',
       });
     } catch (err) {
-      wx.showModal({ title: '搜索失败', content: err.message, showCancel: false });
+      wx.showModal({ title: this.data.copy.failed, content: err.message, showCancel: false });
     } finally {
       this.setData({ flightBusy: false });
     }
@@ -224,18 +237,19 @@ Page({
 
   openFlightLink() {
     const url = this.data.flightBookingUrl;
-    if (!url) return;
+    if (!url) return wx.showToast({title:this.data.copy.missingLink,icon:'none'});
     wx.setClipboardData({
       data: url,
-      success: () => wx.showToast({ title: '链接已复制，去浏览器打开', icon: 'none', duration: 2500 }),
+      fail:()=>wx.showToast({title:this.data.copy.copyFailed,icon:'none'}),
+      success: () => wx.showToast({ title: this.data.copy.copied, icon: 'none', duration: 2500 }),
     });
   },
 
   _needLogin() {
     wx.showModal({
-      title: '请先登录',
-      content: '需要登录后才能使用比价功能',
-      showCancel: false,
+      title: this.data.copy.login,
+      content: this.data.copy.loginHint,
+      showCancel: false, confirmText:this.data.copy.confirm,
       success: () => wx.switchTab({ url: '/pages/index/index' }),
     });
   },

@@ -623,3 +623,10 @@
 - GitHub callback: PR #67 fixed head `8a0d014` passed its `validate` check and squash merged as `main@f362626`; the branch and merge represent instruction/evidence changes only.
 - Render callback: no new deployment was required or observed. Existing deploy `dep-daf1vupt0dsc73c75ej0` remains Live on application commit `183a0d2`; fresh health, home and Bali probes are 200 and the retired personal-bank endpoint is 404.
 - Cross-account callback: the Astra project rules are now on `origin/main`. The machine-global AGENTS and Skill adapters remain local host configuration, with backups and hashes recorded in the prior evidence.
+
+## 2026-09-11 Mini localization and native acceptance callback
+
+- Owner: current main task; scope retained on codex/miniprogram-ui-languages-20260909, not the dirty original checkout.
+- Formal Luna worker 01a08a20-2133-7bd0-9d4d-5dedbd0f1d78 used an isolated mini-driver-language-20260910 worktree and errored at quota. Its partial driver/copy/estimate files were reviewed, repaired and integrated by the parent; no independent Luna approval is claimed and the partial worktree is preserved.
+- Acceptance: nine Mini suites pass, including 315 contracts; frozen 50-row native matrix found one 41px retry control, repaired and followed by 20 passing native callback cases. Twelve screenshots captured; Preview 1662338 bytes. Parent retained integration and release judgment.
+- Boundary: guest/public native checks only; no driver request, payment order, production mutation, Mini Upload/review/public release. Git integration follows the exact-head PR callback, not this pre-commit statement.

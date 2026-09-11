@@ -1,0 +1,33 @@
+name: Mini Program checks
+
+on:
+  pull_request:
+    paths:
+      - miniprogram/**
+      - tools/test_miniprogram_*.cjs
+      - .github/workflows/miniprogram-checks.yml
+  push:
+    branches: [main]
+    paths:
+      - miniprogram/**
+      - tools/test_miniprogram_*.cjs
+      - .github/workflows/miniprogram-checks.yml
+
+permissions:
+  contents: read
+
+jobs:
+  contracts-and-recovery:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Check Mini Program contracts and callbacks
+        shell: bash
+        run: |
+          for test in tools/test_miniprogram_*.cjs; do
+            node "$test" || exit 1
+          done

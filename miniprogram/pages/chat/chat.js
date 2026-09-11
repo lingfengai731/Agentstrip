@@ -4,6 +4,8 @@ const { DESTINATIONS } = require('../../utils/const.js');
 const { formatAssistantMessage } = require('../../utils/message-format.js');
 
 const app = getApp();
+const COPY=require('./copy.js');
+const DEST_COPY=require('../index/copy.js');
 
 const BASE_SYSTEM = `你是 WanderMind 智旅的旅行规划助手。
 - 提供具体地点、价格参考（当地货币/人民币双标注）
@@ -23,22 +25,17 @@ const LANG_PROMPT = {
   id: 'Jawab dalam bahasa Indonesia yang alami dan ringkas.',
 };
 
-const SUGG_BY_DEST = {
-  bali:      ['推荐适合住三晚的乌布民宿', '第一次冲浪应该选哪个海滩', '整理一份巴厘岛在地餐厅清单', '规划两个人七天的大致预算'],
-  kyoto:     ['安排一条京都五日深度路线', '樱花季怎么避开人潮', '推荐值得提前预约的餐厅', '安排一条顺路的岚山一日路线'],
-  paris:     ['安排一条巴黎四日经典路线', '推荐本地人常去的面包店和咖啡馆', '第一次去卢浮宫怎么安排', '推荐适合纪念日晚餐的街区'],
-  santorini: ['伊亚日落应该提前多久到', '推荐可以参观的当地酒庄', '怎么安排一天跳岛行程', '蜜月住在哪个区域更安静'],
-};
 
 let _msgIdCounter = 0;
 const _nextId = () => 'm' + (++_msgIdCounter);
 
 Page({
   data: {
+    copy: COPY.zh,
     destFlag: '🌺',
     destName: '巴厘岛',
     mode: 'fast',
-    modeLabel: '快速回答',
+    modeLabel: COPY.zh.fastLabel,
     messages: [],
     inputText: '',
     canSend: false,
@@ -51,15 +48,17 @@ Page({
   },
 
   onLoad() {
+    this._sessionToken=app.globalData.token;
     this._syncDestFromGlobal();
     const mode = wx.getStorageSync('wm_chat_mode') || 'fast';
-    const saved = wx.getStorageSync('wm_chat_state') || {};
+    const saved = wx.getStorageSync(app.privateStorageKey('wm_chat_state')) || {};
     const currentDest = this._destKey();
+    this._activeDest=currentDest;
     const sameDest = saved.destKey === currentDest;
     const pendingText = sameDest ? (saved.pendingText || '') : '';
     this.setData({
       mode,
-      modeLabel: mode === 'fast' ? '快速回答' : '深入规划',
+      modeLabel: mode === 'fast' ? this.data.copy.fastLabel : this.data.copy.deepLabel,
       messages: sameDest ? this._normalizeMessages(saved.messages || []) : [],
       inputText: pendingText || (sameDest ? (saved.inputText || '') : ''),
       canSend: !!(pendingText || (sameDest && saved.inputText)),
@@ -69,11 +68,12 @@ Page({
   },
 
   async onShow() {
+    if(this._sessionToken!==app.globalData.token || this._activeDest!==this._destKey()) { this.setData({messages:[],inputText:'',convId:'',busy:false,retryText:'',saveError:''}); this.onLoad(); }
     // 切换目的地后回来要同步
     this._syncDestFromGlobal();
-    const openId = wx.getStorageSync('wm_open_conversation');
+    const openId = wx.getStorageSync(app.privateStorageKey('wm_open_conversation'));
     if (openId && !this._loadingConversation) {
-      wx.removeStorageSync('wm_open_conversation');
+      wx.removeStorageSync(app.privateStorageKey('wm_open_conversation'));
       await this._openConversation(openId);
     }
   },
@@ -93,7 +93,7 @@ Page({
   },
 
   _persistState(overrides = {}) {
-    wx.setStorageSync('wm_chat_state', {
+    wx.setStorageSync(app.privateStorageKey('wm_chat_state'), {
       destKey: this._destKey(),
       messages: this.data.messages,
       inputText: this.data.inputText,
@@ -104,10 +104,12 @@ Page({
   },
 
   async _openConversation(id) {
+    const token=app.globalData.token;
     this._loadingConversation = true;
     this.setData({ busy: true, saveError: '', retryText: '' });
     try {
       const conversation = await api.getConversation(id);
+      if(app.globalData.token!==token) return;
       const messages = this._normalizeMessages(conversation.messages || []);
       this.setData({
         convId: conversation.id || id,
@@ -120,37 +122,42 @@ Page({
       });
       this._persistState();
     } catch (err) {
-      this.setData({ busy: false, saveError: err.message || '对话恢复失败' });
+      if(app.globalData.token===token) this.setData({ busy: false, saveError: err.message || this.data.copy.restoreFailed });
     } finally {
       this._loadingConversation = false;
     }
   },
 
   _syncDestFromGlobal() {
+    const lang=app.globalData.currentLang || 'zh', copy=COPY[lang] || COPY.zh;
+    this.setData({copy,modeLabel:this.data.mode==='fast'?copy.fastLabel:copy.deepLabel});
+    wx.setNavigationBarTitle({title:copy.advisor});
+    if(app.updateTabBarLanguage) app.updateTabBarLanguage();
     const destId = app.globalData.currentDest;
-    let flag = '🌍', name = '自定义';
+    let flag = '🌍', name = this.data.copy.custom;
     if (destId === 'custom') {
-      name = app.globalData.customDestName || '自定义';
+      name = app.globalData.customDestName || this.data.copy.custom;
     } else {
       const d = DESTINATIONS.find(x => x.id === destId);
-      if (d) { flag = d.flag; name = d.name; }
+      if (d) { flag = d.flag; name = (DEST_COPY[lang] || DEST_COPY.zh)[d.id] || d.name; }
     }
     this.setData({
       destFlag: flag,
       destName: name,
-      suggestions: SUGG_BY_DEST[destId] || SUGG_BY_DEST.bali,
+      suggestions: [copy.stay,copy.route,copy.food,copy.budget],
     });
   },
 
   setMode(e) {
+    if(this.data.busy) return;
     const mode = e.currentTarget.dataset.mode;
     this.setData({
       mode,
-      modeLabel: mode === 'fast' ? '快速回答' : '深入规划',
+      modeLabel: mode === 'fast' ? this.data.copy.fastLabel : this.data.copy.deepLabel,
     });
     wx.setStorageSync('wm_chat_mode', mode);
     wx.showToast({
-      title: mode === 'fast' ? '已切换到快速回答' : '已切换到深入规划',
+      title: mode === 'fast' ? this.data.copy.fastToast : this.data.copy.deepToast,
       icon: 'none',
     });
   },
@@ -166,14 +173,15 @@ Page({
   },
 
   async sendMsg() {
+    const token=app.globalData.token;
     const text = this.data.inputText.trim();
     if (!text || this.data.busy) return;
 
     if (!app.globalData.token) {
       wx.showModal({
-        title: '请先登录',
-        content: '需要先登录后才能开始对话',
-        showCancel: false,
+        title: this.data.copy.login,
+        content: this.data.copy.loginHint,
+        showCancel: false, confirmText:this.data.copy.confirm,
         success: () => wx.switchTab({ url: '/pages/index/index' }),
       });
       return;
@@ -191,18 +199,20 @@ Page({
     this.setData({ busy: true, saveError: '', retryText: '' });
     try {
       await api.checkUserContent(contentForSafetyCheck, 2);
+      if(app.globalData.token!==token) return;
     } catch (err) {
+      if(app.globalData.token!==token) return;
       this.setData({
         busy: false,
         inputText: text,
         canSend: true,
         retryText: text,
-        saveError: err.message || '内容安全校验暂不可用，请稍后重试',
+        saveError: err.message || this.data.copy.safety,
       });
       wx.showModal({
-        title: '暂时无法发送',
-        content: err.message || '内容安全校验暂不可用，请稍后重试',
-        showCancel: false,
+        title: this.data.copy.sendFailed,
+        content: err.message || this.data.copy.safety,
+        showCancel: false, confirmText:this.data.copy.confirm,
       });
       return;
     }
@@ -230,12 +240,13 @@ Page({
       // 把所有历史发给后端（角色+内容）
       const history = messages.map(m => ({ role: m.role, content: m.content }));
       const res = await api.chatOnce(history, system, dest, this.data.mode);
+      if(app.globalData.token!==token) return;
 
       const assistantMsg = {
         id: _nextId(),
         role: 'assistant',
-        content: res.text || '（AI 没有返回内容，请重试）',
-        renderBlocks: formatAssistantMessage(res.text || '（AI 没有返回内容，请重试）'),
+        content: res.text || this.data.copy.noReply,
+        renderBlocks: formatAssistantMessage(res.text || this.data.copy.noReply),
         mode: res.mode || this.data.mode,
         searched: !!res.searched,
       };
@@ -247,19 +258,22 @@ Page({
       });
       this._persistState({ messages: completedMessages, pendingText: '' });
       try {
-        const title = text.replace(/\s+/g, ' ').slice(0, 32) || `${dest} 行程`;
+        const title = text.replace(/\s+/g, ' ').slice(0, 32) || dest;
         const saved = await api.saveConversation({
           conv_id: this.data.convId || null,
           dest,
           title,
           messages: completedMessages.map(item => ({ role: item.role, content: item.content })),
         });
+        if(app.globalData.token!==token) return;
         this.setData({ convId: saved.id || this.data.convId });
         this._persistState({ convId: saved.id || this.data.convId, messages: completedMessages });
       } catch (saveErr) {
-        this.setData({ saveError: '回复已保存在本机；云端同步失败，可继续使用。' });
+        if(app.globalData.token!==token) return;
+        this.setData({ saveError: this.data.copy.syncFailed });
       }
     } catch (err) {
+      if(app.globalData.token!==token) return;
       this.setData({
         messages: previousMessages,
         inputText: text,
@@ -269,9 +283,9 @@ Page({
       });
       this._persistState({ messages: previousMessages, inputText: text, pendingText: '' });
       wx.showModal({
-        title: '出了点问题 🌊',
-        content: `${err.message || '请稍后重试'}\n\n输入内容已保留。`,
-        showCancel: false,
+        title: this.data.copy.error,
+        content: `${err.message || this.data.copy.tryAgain}\n\n${this.data.copy.kept}`,
+        showCancel: false, confirmText:this.data.copy.confirm,
       });
     }
   },

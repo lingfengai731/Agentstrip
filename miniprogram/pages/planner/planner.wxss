@@ -21,7 +21,7 @@
 .mini-card { display: flex; min-height: 118rpx; flex: 1; min-width: 170rpx; padding: 20rpx; flex-direction: column; justify-content: center; border: 1rpx solid #DED7CA; border-radius: 18rpx; box-sizing: border-box; }
 .mini-card-title { font-size: 25rpx; font-weight: 750; }
 .mini-card-copy { margin-top: 8rpx; color: #717A76; font-size: 20rpx; line-height: 1.4; }
-.chip { display: flex; min-height: 80rpx; padding: 0 22rpx; align-items: center; justify-content: center; border: 1rpx solid #DED7CA; border-radius: 18rpx; font-size: 23rpx; }
+.chip { display: flex; min-height: 44px; padding: 10rpx 22rpx; align-items: center; justify-content: center; border: 1rpx solid #DED7CA; border-radius: 18rpx; font-size: 23rpx; }
 .error { margin: 20rpx 12rpx; color: #B23C2B; font-size: 23rpx; }
 .sticky-action { position: fixed; left: 0; right: 0; bottom: 0; z-index: 10; padding: 16rpx 26rpx calc(16rpx + env(safe-area-inset-bottom)); background: rgba(250,250,247,.98); border-top: 1rpx solid #E5E2DA; }
 .summary { text-align: center; font-size: 21rpx; color: #6D7571; }
@@ -40,3 +40,5 @@
   .cards { flex-direction: column; }
   .mini-card { width: 100%; }
 }
+
+.planner-page .submit { width: 100%; }

@@ -1,75 +1,75 @@
 <view class="driver-page">
   <view wx:if="{{sent}}" class="success-card">
     <view class="success-mark">✓</view>
-    <view class="success-title">申请已发送</view>
-    <view class="success-copy">WanderMind 会通过邮箱确认档期并转交给你选择的司机。司机私人联系方式不会公开。</view>
-    <button class="btn" bindtap="back">返回路线</button>
+    <view class="success-title">{{copy.successTitle}}</view>
+    <view class="success-copy">{{copy.successCopy}}</view>
+    <button class="btn" bindtap="back">{{copy.back}}</button>
   </view>
 
   <block wx:else>
     <view class="driver-hero">
-      <view class="hero-title">让当地司机协助路线落地</view>
-      <view class="hero-copy">选择司机并填写关键行程信息。所有联系统一经 WanderMind 邮箱转交。</view>
+      <view class="hero-title">{{copy.heroTitle}}</view>
+      <view class="hero-copy">{{copy.heroCopy}}</view>
     </view>
 
     <view class="section">
-      <view class="section-title">选择司机</view>
+      <view class="section-title">{{copy.chooseDriver}}</view>
       <view class="driver-grid">
-        <view class="driver-card {{driverId === 'dicky' ? 'active' : ''}}" bindtap="selectDriver" data-id="dicky"><view class="avatar">D</view><view><text class="driver-name">Dicky</text><text class="driver-role">Bali 本地司机</text></view></view>
-        <view class="driver-card {{driverId === 'gede' ? 'active' : ''}}" bindtap="selectDriver" data-id="gede"><view class="avatar">G</view><view><text class="driver-name">Gede Nico</text><text class="driver-role">Bali 本地司机</text></view></view>
+        <view class="driver-card {{driverId === 'dicky' ? 'active' : ''}}" bindtap="selectDriver" data-id="dicky"><view class="avatar">D</view><view><text class="driver-name">Dicky</text><text class="driver-role">{{copy.driverRole}}</text></view></view>
+        <view class="driver-card {{driverId === 'gede' ? 'active' : ''}}" bindtap="selectDriver" data-id="gede"><view class="avatar">G</view><view><text class="driver-name">Gede Nico</text><text class="driver-role">{{copy.driverRole}}</text></view></view>
       </view>
     </view>
 
     <view class="section estimate-section">
-      <view class="section-kicker">透明起步价</view>
-      <view class="section-title">先看大概用车费用</view>
-      <view class="estimate-copy">Dicky 已确认这套起步规则同样适用于 Dicky 与 Gede Nico；没有按人数加价。</view>
+      <view class="section-kicker">{{copy.estimateKicker}}</view>
+      <view class="section-title">{{copy.estimateTitle}}</view>
+      <view class="estimate-copy">{{copy.estimateCopy}}</view>
       <view class="two-col estimate-fields">
-        <view class="field-group"><view class="field-label">全天包车 · 10 小时</view><picker mode="selector" range="{{dayOptions}}" value="{{fullDays}}" bindchange="setFullDays"><view class="field picker">{{fullDays}} 天</view></picker></view>
-        <view class="field-group"><view class="field-label">半天包车 · 6 小时</view><picker mode="selector" range="{{dayOptions}}" value="{{halfDays}}" bindchange="setHalfDays"><view class="field picker">{{halfDays}} 天</view></picker></view>
+        <view class="field-group"><view class="field-label">{{copy.fullDayField}}</view><picker mode="selector" range="{{dayOptions}}" value="{{fullDays}}" bindchange="setFullDays"><view class="field picker">{{fullDays}} {{copy.days}}</view></picker></view>
+        <view class="field-group"><view class="field-label">{{copy.halfDayField}}</view><picker mode="selector" range="{{dayOptions}}" value="{{halfDays}}" bindchange="setHalfDays"><view class="field picker">{{halfDays}} {{copy.days}}</view></picker></view>
       </view>
-      <view class="estimate-total"><view class="estimate-label">起步估价</view><view class="estimate-value">{{estimate.totalLabel}}</view></view>
+      <view class="estimate-total"><view class="estimate-label">{{copy.estimateTotal}}</view><view class="estimate-value">{{estimate.totalLabel}}</view></view>
       <view class="estimate-lines"><view wx:for="{{estimate.breakdown}}" wx:key="*this">{{item}}</view><view wx:for="{{estimate.additions}}" wx:key="*this" class="estimate-addition">{{item}}</view></view>
-      <view class="estimate-note">含车辆、燃油、司机向导、矿泉水、停车和过路费。超时 IDR 70,000/小时，超过 30 分钟按 1 小时；特殊路线、机场、佩妮达、儿童座椅及最终金额以所选司机回复为准。当地服务由司机或供应商直接收款，WanderMind 不代收。</view>
+      <view class="estimate-note">{{copy.estimateNote}}</view>
     </view>
 
     <view class="section">
-      <view class="section-title">你的行程</view>
-      <view wx:if="{{routeId}}" class="route-badge">已带入专业路线 {{routeId}}</view>
+      <view class="section-title">{{copy.tripSection}}</view>
+      <view wx:if="{{routeId}}" class="route-badge">{{copy.routePrefill}} {{routeId}}</view>
       <view class="two-col">
-        <view class="field-group"><view class="field-label">名字 *</view><input class="field" placeholder="你的名字" value="{{firstName}}" bindinput="onInput" data-field="firstName" /></view>
-        <view class="field-group"><view class="field-label">姓氏</view><input class="field" placeholder="可选" value="{{lastName}}" bindinput="onInput" data-field="lastName" /></view>
+        <view class="field-group"><view class="field-label">{{copy.firstName}}</view><input class="field" placeholder="{{copy.firstNamePlaceholder}}" value="{{firstName}}" bindinput="onInput" data-field="firstName" /></view>
+        <view class="field-group"><view class="field-label">{{copy.lastName}}</view><input class="field" placeholder="{{copy.optional}}" value="{{lastName}}" bindinput="onInput" data-field="lastName" /></view>
       </view>
-      <view class="field-group"><view class="field-label">联系邮箱（可选）</view><input class="field" placeholder="微信登录用户可不填" value="{{email}}" bindinput="onInput" data-field="email" /></view>
-      <view class="field-hint">已有邮箱可直接接收司机回复；微信账号不填写邮箱时，司机会通过 WanderMind 安全链接回复。</view>
+      <view class="field-group"><view class="field-label">{{copy.email}}</view><input class="field" placeholder="{{copy.emailPlaceholder}}" value="{{email}}" bindinput="onInput" data-field="email" /></view>
+      <view class="field-hint">{{copy.emailHint}}</view>
       <view class="two-col">
-        <view class="field-group"><view class="field-label">开始日期 *</view><picker mode="date" value="{{startDate}}" bindchange="setStart"><view class="field picker">{{startDate || '请选择'}}</view></picker></view>
-        <view class="field-group"><view class="field-label">结束日期 *</view><picker mode="date" value="{{endDate}}" bindchange="setEnd"><view class="field picker">{{endDate || '请选择'}}</view></picker></view>
+        <view class="field-group"><view class="field-label">{{copy.startDate}}</view><picker mode="date" value="{{startDate}}" bindchange="setStart"><view class="field picker">{{startDate || copy.chooseDate}}</view></picker></view>
+        <view class="field-group"><view class="field-label">{{copy.endDate}}</view><picker mode="date" value="{{endDate}}" bindchange="setEnd"><view class="field picker">{{endDate || copy.chooseDate}}</view></picker></view>
       </view>
-      <view class="field-group"><view class="field-label">同行人数 *</view><picker mode="selector" range="{{peopleOptions}}" value="{{people - 1}}" bindchange="setPeople"><view class="field picker">{{people}} 位游客</view></picker></view>
-      <view class="field-group"><view class="field-label">接送地点或酒店区域 *</view><input class="field" placeholder="例如：Ubud 酒店" value="{{pickup}}" bindinput="onInput" data-field="pickup" /></view>
-      <view class="field-group"><view class="field-label">预算范围</view><input class="field" placeholder="可选" value="{{budget}}" bindinput="onInput" data-field="budget" /></view>
-      <view class="field-group"><view class="field-label">想去的地点或每日路线</view><textarea class="textarea" placeholder="可以直接粘贴行程" value="{{attractions}}" bindinput="onInput" data-field="attractions" maxlength="2000" /></view>
-      <view class="field-group"><view class="field-label">补充说明</view><textarea class="textarea compact" placeholder="行李、航班或其他需要司机知道的信息" value="{{intro}}" bindinput="onInput" data-field="intro" maxlength="800" /></view>
+      <view class="field-group"><view class="field-label">{{copy.people}}</view><picker mode="selector" range="{{peopleOptions}}" value="{{people - 1}}" bindchange="setPeople"><view class="field picker">{{people}} {{copy.peopleUnit}}</view></picker></view>
+      <view class="field-group"><view class="field-label">{{copy.pickup}}</view><input class="field" placeholder="{{copy.pickupPlaceholder}}" value="{{pickup}}" bindinput="onInput" data-field="pickup" /></view>
+      <view class="field-group"><view class="field-label">{{copy.budget}}</view><input class="field" placeholder="{{copy.optional}}" value="{{budget}}" bindinput="onInput" data-field="budget" /></view>
+      <view class="field-group"><view class="field-label">{{copy.attractions}}</view><textarea class="textarea" placeholder="{{copy.attractionsPlaceholder}}" value="{{attractions}}" bindinput="onInput" data-field="attractions" maxlength="2000" /></view>
+      <view class="field-group"><view class="field-label">{{copy.intro}}</view><textarea class="textarea compact" placeholder="{{copy.introPlaceholder}}" value="{{intro}}" bindinput="onInput" data-field="intro" maxlength="800" /></view>
     </view>
 
     <view class="section">
-      <view class="section-title">需要什么服务</view>
+      <view class="section-title">{{copy.services}}</view>
       <checkbox-group class="services" bindchange="setServices">
         <label wx:for="{{serviceOptions}}" wx:key="value"><checkbox value="{{item.value}}" checked="{{item.checked}}" color="#0E7C6B" />{{item.label}}</label>
       </checkbox-group>
-      <checkbox-group bindchange="setConsent"><label class="consent"><checkbox value="yes" checked="{{privacyConsent}}" color="#0E7C6B" />我同意 WanderMind 将本申请及必要联系信息转交给所选司机，仅用于确认本次行程。</label></checkbox-group>
+      <checkbox-group bindchange="setConsent"><label class="consent"><checkbox value="yes" checked="{{privacyConsent}}" color="#0E7C6B" />{{copy.consent}}</label></checkbox-group>
     </view>
 
     <view wx:if="{{error}}" class="error">{{error}}</view>
-    <view class="sticky-action"><button class="submit" bindtap="submit" loading="{{busy}}" disabled="{{busy}}">{{busy ? '正在安全转交…' : '发送司机申请'}}</button><view class="privacy-note">不会展示司机私人电话、社交账号或个人邮箱。</view></view>
+    <view class="sticky-action"><button class="submit" bindtap="submit" loading="{{busy}}" disabled="{{busy}}">{{busy ? copy.submitBusy : copy.submit}}</button><view class="privacy-note">{{copy.privacy}}</view></view>
   </block>
 
   <view class="history-section">
-    <view class="history-title-row"><view class="section-title">我的司机请求</view><button class="refresh-btn" bindtap="loadRequests" loading="{{loadingRequests}}" disabled="{{loadingRequests}}">刷新</button></view>
+    <view class="history-title-row"><view class="section-title">{{copy.historyTitle}}</view><button class="refresh-btn" bindtap="loadRequests" loading="{{loadingRequests}}" disabled="{{loadingRequests}}">{{copy.refresh}}</button></view>
     <view wx:if="{{requestsError}}" class="history-error">{{requestsError}}</view>
-    <view wx:if="{{loadingRequests && !requests.length}}" class="history-empty">正在读取回复…</view>
-    <view wx:elif="{{!requests.length}}" class="history-empty">登录后提交的司机申请和回复会显示在这里。</view>
+    <view wx:if="{{loadingRequests && !requests.length}}" class="history-empty">{{copy.loadingReplies}}</view>
+    <view wx:elif="{{!requests.length}}" class="history-empty">{{copy.historyEmpty}}</view>
     <view wx:else class="history-list">
       <view class="history-card" wx:for="{{requests}}" wx:key="request_id">
         <view class="history-card-head">
@@ -77,12 +77,12 @@
           <view class="status-chip status-{{item.status}}">{{item.statusLabel}}</view>
         </view>
         <view class="history-meta" wx:if="{{item.tripLabel}}">{{item.tripLabel}}</view>
-        <view class="history-meta" wx:if="{{item.route_id}}">路线 {{item.route_id}}</view>
+        <view class="history-meta" wx:if="{{item.route_id}}">{{copy.routeLabel}} {{item.route_id}}</view>
         <view class="history-reply" wx:if="{{item.reply}}">
-          <view class="history-reply-label">司机回复 · {{item.replyDateLabel}}</view>
+          <view class="history-reply-label">{{copy.replyLabel}} · {{item.replyDateLabel}}</view>
           <view class="history-reply-text">{{item.reply.message}}</view>
         </view>
-        <view class="history-note" wx:elif="{{item.reply_available}}">司机可以通过邮件中的安全链接回复一次；链接有效期 30 天。</view>
+        <view class="history-note" wx:elif="{{item.reply_available}}">{{copy.replyAvailable}}</view>
       </view>
     </view>
   </view>

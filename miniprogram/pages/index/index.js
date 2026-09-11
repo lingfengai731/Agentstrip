@@ -3,9 +3,11 @@ const api = require('../../utils/api.js');
 const { DESTINATIONS } = require('../../utils/const.js');
 
 const app = getApp();
+const COPY = require('./copy.js');
 
 Page({
   data: {
+    copy: COPY.zh,
     loggedIn: false,
     user: null,
     // 认证表单
@@ -41,9 +43,13 @@ Page({
   },
 
   _refreshAuthState() {
+    const copy = COPY[app.globalData.currentLang] || COPY.zh;
+    const regions = { bali: 'indonesia', kyoto: 'japan', paris: 'france', santorini: 'greece' };
     const token = app.globalData.token;
     const user  = app.globalData.user;
     this.setData({
+      copy,
+      destinations: DESTINATIONS.map(item => ({ ...item, name: copy[item.id], region: copy[regions[item.id]] })),
       loggedIn: !!token,
       user: user || null,
       wechatLinked: !!(user && user.wechat_linked),
@@ -58,6 +64,7 @@ Page({
   },
 
   switchAuth(e) {
+    if (this.data.authBusy || this.data.wechatBusy) return;
     const mode = e.currentTarget.dataset.mode;
     this.setData({ authMode: mode, authError: '' });
   },
@@ -65,9 +72,11 @@ Page({
   async _validateSession() {
     if (!app.globalData.token || app.globalData.sessionChecked || this._checkingSession) return;
     this._checkingSession = true;
+    const token = app.globalData.token;
     try {
       const user = await api.me();
-      app.setToken(app.globalData.token, user);
+      if (app.globalData.token !== token) return;
+      app.setToken(token, user);
       this.setData({ loggedIn: true, user, wechatLinked: !!(user && user.wechat_linked) });
     } catch (err) {
       // 401 由统一请求层清理并回到登录页；普通网络错误保留本地会话供稍后重试。
@@ -113,7 +122,7 @@ Page({
   async sendCode() {
     const email = this.data.email.trim();
     if (!email || !/^\S+@\S+\.\S+$/.test(email)) {
-      this.setData({ authError: '请先填写有效邮箱' });
+      this.setData({ authError: this.data.copy.validEmail });
       return;
     }
     if (this.data.codeBusy || this.data.codeCooldown > 0) return;
@@ -121,9 +130,9 @@ Page({
     try {
       const res = await api.sendVerificationCode(email, app.globalData.currentLang);
       this._startCodeCooldown(Number(res.resend_in) || 60);
-      wx.showToast({ title: '验证码已发送', icon: 'success' });
+      wx.showToast({ title: this.data.copy.codeSent, icon: 'success' });
     } catch (err) {
-      this.setData({ authError: err.message || '验证码发送失败，请重试' });
+      this.setData({ authError: err.message || this.data.copy.codeFailed });
     } finally {
       this.setData({ codeBusy: false });
     }
@@ -131,21 +140,22 @@ Page({
 
   // —— 登录 / 注册 ——
   async doAuth() {
+    if (this.data.authBusy || this.data.wechatBusy) return;
     const { authMode, email, password, regName, verificationCode } = this.data;
     if (!email || !password) {
-      this.setData({ authError: '请填写邮箱和密码' });
+      this.setData({ authError: this.data.copy.required });
       return;
     }
     if (password.length < 6) {
-      this.setData({ authError: '密码至少 6 位' });
+      this.setData({ authError: this.data.copy.passwordShort });
       return;
     }
     if (authMode === 'register' && !regName) {
-      this.setData({ authError: '请填写昵称' });
+      this.setData({ authError: this.data.copy.nameRequired });
       return;
     }
     if (authMode === 'register' && !/^\d{6}$/.test(verificationCode.trim())) {
-      this.setData({ authError: '请输入邮件中的 6 位验证码' });
+      this.setData({ authError: this.data.copy.codeRequired });
       return;
     }
     this.setData({ authBusy: true, authError: '' });
@@ -158,9 +168,9 @@ Page({
         : await api.register(
           email.trim(), password, regName.trim(), verificationCode.trim(), app.globalData.currentLang
         );
-      await this._finishAuth(res, authMode === 'login' ? '欢迎回来' : '注册成功');
+      await this._finishAuth(res, authMode === 'login' ? this.data.copy.welcome : this.data.copy.registered);
     } catch (err) {
-      this.setData({ authError: err.message || '操作失败' });
+      this.setData({ authError: err.message || this.data.copy.failed });
     } finally {
       this.setData({ authBusy: false });
     }
@@ -174,17 +184,17 @@ Page({
       timeout: 10000,
       success: async (loginResult) => {
         try {
-          if (!loginResult || !loginResult.code) throw new Error('微信登录暂不可用，请稍后重试');
+          if (!loginResult || !loginResult.code) throw new Error(this.data.copy.wechatError);
           const res = await api.wechatLogin(loginResult.code, app.globalData.currentLang);
-          await this._finishAuth(res, '微信登录成功');
+          await this._finishAuth(res, this.data.copy.wechatSuccess);
         } catch (err) {
-          this.setData({ authError: err.message || '微信登录暂不可用，请稍后重试' });
+          this.setData({ authError: err.message || this.data.copy.wechatError });
         } finally {
           this.setData({ wechatBusy: false });
         }
       },
       fail: () => {
-        this.setData({ wechatBusy: false, authError: '微信登录暂不可用，请稍后重试' });
+        this.setData({ wechatBusy: false, authError: this.data.copy.wechatError });
       },
     });
   },
@@ -197,21 +207,21 @@ Page({
       timeout: 10000,
       success: async (loginResult) => {
         try {
-          if (!loginResult || !loginResult.code) throw new Error('微信绑定暂不可用，请稍后重试');
+          if (!loginResult || !loginResult.code) throw new Error(this.data.copy.linkError);
           await api.linkWechat(loginResult.code);
           const user = { ...(this.data.user || {}), wechat_linked: true };
           app.globalData.user = user;
           wx.setStorageSync('wm_user', user);
           this.setData({ user, wechatLinked: true });
-          wx.showToast({ title: '微信账号已绑定', icon: 'success' });
+          wx.showToast({ title: this.data.copy.linked, icon: 'success' });
         } catch (err) {
-          this.setData({ authError: err.message || '微信绑定暂不可用，请稍后重试' });
+          this.setData({ authError: err.message || this.data.copy.linkError });
         } finally {
           this.setData({ wechatBusy: false });
         }
       },
       fail: () => {
-        this.setData({ wechatBusy: false, authError: '微信绑定暂不可用，请稍后重试' });
+        this.setData({ wechatBusy: false, authError: this.data.copy.linkError });
       },
     });
   },
@@ -219,8 +229,9 @@ Page({
   // —— 退出 ——
   doLogout() {
     wx.showModal({
-      title: '退出登录',
-      content: '确定要退出当前账号吗？',
+      title: this.data.copy.logout,
+      confirmText: this.data.copy.confirm, cancelText: this.data.copy.cancel,
+      content: this.data.copy.logoutAsk,
       success: (res) => {
         if (res.confirm) {
           app.clearAuth();
@@ -235,13 +246,14 @@ Page({
     const id = e.currentTarget.dataset.id;
     app.setDest(id);
     this.setData({ currentDest: id });
-    wx.showToast({ title: `已切换到 ${DESTINATIONS.find(d => d.id === id)?.name}`, icon: 'none' });
+    wx.showToast({ title: `${this.data.copy.selected}${this.data.destinations.find(d => d.id === id)?.name || ''}`, icon: 'none' });
   },
 
   customDest() {
     wx.showModal({
-      title: '输入目的地',
-      placeholderText: '如：东京、纽约、首尔…',
+      title: this.data.copy.destination,
+      confirmText: this.data.copy.confirm, cancelText: this.data.copy.cancel,
+      placeholderText: this.data.copy.destinationHint,
       editable: true,
       success: (res) => {
         if (res.confirm && res.content) {
@@ -250,7 +262,7 @@ Page({
             // 把"custom" 注册为当前目的地，名字保存在 globalData
             app.setCustomDest(city);
             this.setData({ currentDest: 'custom' });
-            wx.showToast({ title: `已设为 ${city}`, icon: 'none' });
+            wx.showToast({ title: `${this.data.copy.selected}${city}`, icon: 'none' });
           }
         }
       }

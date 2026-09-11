@@ -2,13 +2,13 @@
 <view class="prefs-page">
 
   <view class="hero">
-    <view class="hero-title">记下你的旅行偏好</view>
-    <view class="hero-desc">预算、同行方式与特殊需求会用于后续建议，你可以随时修改</view>
+    <view class="hero-title">{{copy.intro}}</view>
+    <view class="hero-desc">{{copy.hint}}</view>
   </view>
 
-  <!-- 预算档次（单选） -->
+  <!-- {{copy.budgetTitle}}（单选） -->
   <view class="section">
-    <view class="section-title">预算档次</view>
+    <view class="section-title">{{copy.budgetTitle}}</view>
     <view class="chip-row">
       <view
         wx:for="{{budgetOptions}}"
@@ -20,9 +20,9 @@
     </view>
   </view>
 
-  <!-- 旅行风格（多选） -->
+  <!-- {{copy.styleTitle}}（多选） -->
   <view class="section">
-    <view class="section-title">旅行风格 <text class="multi-hint">可多选</text></view>
+    <view class="section-title">{{copy.styleTitle}} <text class="multi-hint">{{copy.multi}}</text></view>
     <view class="chip-row">
       <view
         wx:for="{{styleOptions}}"
@@ -34,9 +34,9 @@
     </view>
   </view>
 
-  <!-- 同行方式（单选） -->
+  <!-- {{copy.partyTitle}}（单选） -->
   <view class="section">
-    <view class="section-title">同行方式</view>
+    <view class="section-title">{{copy.partyTitle}}</view>
     <view class="chip-row">
       <view
         wx:for="{{partyOptions}}"
@@ -50,13 +50,13 @@
 
   <!-- 特殊偏好（备注） -->
   <view class="section">
-    <view class="section-title">特殊偏好与备注</view>
+    <view class="section-title">{{copy.notesTitle}}</view>
     <textarea
       class="notes-input"
-      placeholder="如：素食、不喜欢太商业化、需要无障碍设施、对海鲜过敏…"
+      placeholder="{{copy.notesHint}}"
       placeholder-class="textarea-ph"
       placeholder-style="color:#B0A89D;font-size:26rpx;"
-      value="{{notes}}"
+      value="{{notes}}" disabled="{{busy}}"
       bindinput="onNotesChange"
       maxlength="200"
       auto-height
@@ -66,14 +66,14 @@
 
   <!-- 保存按钮 -->
   <view class="action-bar">
-    <button class="btn-ghost" bindtap="clearPrefs">清除全部</button>
+    <button class="btn-ghost" bindtap="clearPrefs" disabled="{{busy}}">{{copy.clear}}</button>
     <button class="btn save-btn" bindtap="savePrefs" loading="{{busy}}" disabled="{{busy}}">
-      {{busy ? '正在保存…' : '保存旅行偏好'}}
+      {{busy ? copy.saving : copy.save}}
     </button>
   </view>
 
   <view wx:if="{{hasAny}}" class="saved-tip">
-    已保存。后续规划会参考这些偏好。
+    {{copy.savedHint}}
   </view>
 
 </view>

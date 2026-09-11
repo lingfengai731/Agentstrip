@@ -1,50 +1,50 @@
 <view class="route-page">
   <view class="route-hero">
     <view class="route-stamp">BALI</view>
-    <view class="route-title">景点很分散，路线不该绕</view>
-    <view class="route-sub">先完整浏览 6 条公共路线，再按日期、节奏与预算匹配你的专业路线。</view>
+    <view class="route-title">{{copy.title}}</view>
+    <view class="route-sub">{{copy.subtitle}}</view>
     <view class="hero-actions">
-      <button class="btn primary" bindtap="openPlanner">匹配我的路线</button>
-      <button class="btn ghost" bindtap="goChat">自己调整路线</button>
+      <button class="btn primary" bindtap="openPlanner">{{copy.match}}</button>
+      <button class="btn ghost" bindtap="goChat">{{copy.diy}}</button>
     </view>
   </view>
 
   <view wx:if="{{professional}}" class="pro-card">
     <view class="pro-top">
-      <view class="pro-heading"><view class="pro-label">个性化专业路线</view><view class="pro-title">{{professional.route.route_id}} · {{professional.route.route_name}}</view></view>
-      <view class="status {{professional.route.unlocked ? 'open' : ''}}">{{professional.route.unlocked ? '已解锁' : '约 70% 预览'}}</view>
+      <view class="pro-heading"><view class="pro-label">{{copy.personal}}</view><view class="pro-title">{{professional.route.route_id}} · {{professional.route.route_name}}</view></view>
+      <view class="status {{professional.route.unlocked ? 'open' : ''}}">{{professional.route.unlocked ? copy.unlocked : copy.preview}}</view>
     </view>
     <view class="pro-reason">{{professional.route.recommendation_reason}}</view>
     <view class="day-list">
       <view wx:for="{{professional.route.days_plan}}" wx:key="day" class="pro-day {{item.locked ? 'locked' : ''}}">
         <view class="day-number">{{item.day}}</view>
         <view class="day-body">
-          <view class="day-title">第 {{item.day}} 天 · {{item.region_name}}</view>
+          <view class="day-title">{{copy.day}} {{item.day}} · {{item.region_name}}</view>
           <view class="day-theme">{{item.theme}}</view>
-          <view wx:if="{{!item.locked}}" class="places place-links"><button wx:for="{{item.places}}" wx:key="id" class="place-link" data-id="{{item.id}}" data-route="{{professional.route.route_id}}" bindtap="openPlace">{{item.name}}<text>看景色</text></button></view>
+          <view wx:if="{{!item.locked}}" class="places place-links"><button wx:for="{{item.places}}" wx:key="id" class="place-link" data-id="{{item.id}}" data-route="{{professional.route.route_id}}" bindtap="openPlace">{{item.name}}<text>{{copy.photos}}</text></button></view>
           <view wx:else class="lock-copy">{{item.lock_reason}}</view>
         </view>
       </view>
     </view>
     <view class="pro-actions">
-      <button wx:if="{{!professional.route.unlocked}}" class="btn primary" bindtap="copyUnlockLink">到网页解锁完整路线</button>
-      <button wx:if="{{professional.route.unlocked}}" class="btn primary" bindtap="openDriver">联系当地司机</button>
-      <view class="allowance">{{professional.route.unlocked ? '同一行程还可调整 ' + professional.professional_adjustments_remaining + ' 次' : '¥9.9 或 30 积分解锁，含 3 次同行程调整'}}</view>
+      <button wx:if="{{!professional.route.unlocked}}" class="btn primary" bindtap="copyUnlockLink">{{copy.unlock}}</button>
+      <button wx:if="{{professional.route.unlocked}}" class="btn primary" bindtap="openDriver">{{copy.driver}}</button>
+      <view class="allowance">{{professional.route.unlocked ? copy.remaining + professional.professional_adjustments_remaining : copy.price}}</view>
     </view>
   </view>
 
   <view class="section-head">
-    <view><view class="section-title">6 条公共路线 · 全部免费</view><button class="gallery-link" bindtap="openGallery">看岛屿作品集</button></view>
-    <view class="section-note">点开景点名称，可查看不同景色与介绍</view>
+    <view><view class="section-title">{{copy.free}}</view><button class="gallery-link" bindtap="openGallery">{{copy.gallery}}</button></view>
+    <view class="section-note">{{copy.hint}}</view>
   </view>
-  <view wx:if="{{loading}}" class="state-card">正在读取路线…</view>
-  <view wx:if="{{error}}" class="state-card error"><view>{{error}}</view><button class="text-btn" bindtap="retry">重试</button></view>
+  <view wx:if="{{loading}}" class="state-card">{{copy.loading}}</view>
+  <view wx:if="{{error}}" class="state-card error"><view>{{error}}</view><button class="text-btn" bindtap="retry">{{copy.retry}}</button></view>
   <scroll-view wx:if="{{routes.length}}" class="route-tabs" scroll-x enhanced show-scrollbar="{{false}}"><view class="route-tabs-inner"><view wx:for="{{routes}}" wx:key="id" class="route-tab {{selected.id === item.id ? 'active' : ''}}" bindtap="selectRoute" data-id="{{item.id}}"><text>{{item.id}}</text><text>{{item.name}}</text></view></view></scroll-view>
   <view wx:if="{{selected}}" class="public-card">
     <view class="public-title">{{selected.id}} · {{selected.name}}</view>
     <view class="public-promise">{{selected.promise}}</view>
-    <view class="route-facts"><text>推荐 {{selected.idealDays}} 天</text><text>{{selected.regionPath}}</text></view>
-    <view class="day-list public-days"><view wx:for="{{selected.days}}" wx:key="day" class="public-day"><view class="day-number">{{item.day}}</view><view class="day-body"><view class="day-title">{{item.regionId}} · {{item.theme}}</view><view class="places place-links"><button wx:for="{{item.places}}" wx:key="id" class="place-link" data-id="{{item.id}}" data-route="{{selected.id}}" bindtap="openPlace">{{item.name}}<text>看景色</text></button></view></view></view></view>
-    <button class="btn primary full" bindtap="openPlanner">按这条路线匹配我的行程</button>
+    <view class="route-facts"><text>{{copy.recommended}}{{selected.idealDays}}</text><text>{{selected.regionPath}}</text></view>
+    <view class="day-list public-days"><view wx:for="{{selected.days}}" wx:key="day" class="public-day"><view class="day-number">{{item.day}}</view><view class="day-body"><view class="day-title">{{item.regionId}} · {{item.theme}}</view><view class="places place-links"><button wx:for="{{item.places}}" wx:key="id" class="place-link" data-id="{{item.id}}" data-route="{{selected.id}}" bindtap="openPlace">{{item.name}}<text>{{copy.photos}}</text></button></view></view></view></view>
+    <button class="btn primary full" bindtap="openPlanner">{{copy.use}}</button>
   </view>
 </view>

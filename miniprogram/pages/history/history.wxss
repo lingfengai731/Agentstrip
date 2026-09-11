@@ -13,3 +13,5 @@
 .item-title { display: -webkit-box; overflow: hidden; font-size: 27rpx; font-weight: 750; line-height: 1.45; -webkit-box-orient: vertical; -webkit-line-clamp: 2; }
 .item-meta { margin-top: 8rpx; color: #747B77; font-size: 21rpx; }
 .delete { min-height: 80rpx; margin: 0; padding: 0 18rpx; background: #FFF5F3; color: #A94B3B; font-size: 20rpx; }
+
+.history-page .delete { width: auto; min-height: 44px; }

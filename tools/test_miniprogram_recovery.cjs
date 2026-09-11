@@ -61,7 +61,7 @@ function planner(storage, userId = 1) {
   const routeApp = { globalData: { token: '', currentLang: 'zh', professionalRoute: { private: true } }, setProfessionalRoute(value) { this.globalData.professionalRoute = value; } };
   vm.runInNewContext(fs.readFileSync(path.join(root, 'miniprogram/pages/itinerary/itinerary.js'), 'utf8'), {
     Page(value) { itinerary = value; }, getApp: () => routeApp,
-    require: () => ({
+    require: name => name === './copy.js' ? require('../miniprogram/pages/itinerary/copy.js') : ({
       baliRouteData: async () => ({ routes: ['R1', 'R2'].map(id => ({ id, name: { zh: `中文${id}`, en: `English ${id}` }, free_outline: [] })) }),
       recentUnlockedProfessionalRoute: () => new Promise(resolve => { resolveRoute = resolve; }),
     }),
