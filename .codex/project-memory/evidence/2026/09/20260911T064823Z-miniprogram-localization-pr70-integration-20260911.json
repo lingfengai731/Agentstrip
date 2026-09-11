@@ -1,0 +1,22 @@
+{
+  "schema_version": 1,
+  "evidence_id": "ev-20260911T064823Z-miniprogram-localization-pr70-integration-20260911",
+  "task_ref": "miniprogram-localization-pr70-integration-20260911",
+  "owner": "account1-main",
+  "captured_at": "2026-09-11T06:48:23Z",
+  "status": "verified",
+  "claim": "PR #70 fixed head 007c406 passed Mini Program checks and Project memory validation, then squash merged as main 865e374. Fixed head and merge Git trees are identical. A fresh official WeChat DevTools Preview compiled from the merge-equivalent tree at 1662338 bytes and produced preview-pr70.jpg. This is Preview only.",
+  "source": {
+    "kind": "git",
+    "repository": "https://github.com/lingfengai731/Agentstrip.git",
+    "commit": "915719ff0cfaca6ec4c669f6f10e8563a8b7e2ac",
+    "branch": "codex/miniprogram-ui-languages-evidence-20260911",
+    "worktree": "E:\\Agentstrip-worktrees\\active\\account1\\miniprogram-ui-languages-evidence-20260911",
+    "dirty": false
+  },
+  "verification": {
+    "command": "GitHub fixed-head workflows; git tree comparison; official WeChat DevTools CLI preview",
+    "result": "Both CI checks succeeded; tree hashes both 2d91c1fa48f92f5da8ff9fdf8bf296191d7ecc3f; Preview succeeded at 1662338 bytes."
+  },
+  "notes": "No website/backend edits, Render deployment, Upload, review submission, public release, live payment, driver email or administrator data change occurred."
+}
