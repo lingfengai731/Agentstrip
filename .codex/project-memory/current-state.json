@@ -2,15 +2,19 @@
   "schema_version": 1,
   "project": "Agentstrip / WanderMind",
   "latest_task": {
-    "captured_at": "2026-09-11T12:51:37Z",
-    "scope": "Bali-only Mini Program launch surface and R5 media/route audit",
-    "branch": "codex/bali-focus-media-audit-20260911",
-    "implementation_baseline": "8409dac17a127a537b1a366b749aa6e5301103f1",
-    "status": "local_verified_pending_pr_preview_and_deploy",
-    "evidence": ".codex/project-memory/evidence/2026/09/20260911T125137Z-bali-focus-media-audit-20260911.json",
-    "handoff": ".codex/project-memory/handoffs/2026/09/20260911T125137Z-bali-focus-media-audit-20260911.md",
+    "captured_at": "2026-09-11T13:04:53Z",
+    "scope": "Bali-only Mini Program launch surface and R5 media/route production integration",
+    "branch": "main",
+    "implementation_baseline": "f81d6120967b32f95f35a70b2d213464740c27ed",
+    "status": "merged_deployed_verified_preview_pending",
+    "pull_request": 76,
+    "fixed_head": "480cd328d3053f97cd49c70d7d2a4d5c5e2ce195",
+    "merge_commit": "f81d6120967b32f95f35a70b2d213464740c27ed",
+    "render_deploy": "dep-dahvn2oae00c73dsa7t0",
+    "evidence": ".codex/project-memory/evidence/2026/09/20260911T130453Z-bali-focus-media-production-20260911.json",
+    "handoff": ".codex/project-memory/handoffs/2026/09/20260911T130453Z-bali-focus-media-production-20260911.md",
     "preview_bytes": 1671016,
-    "not_claimed": "The latest Preview predates the final media-scope/dedupe correction. No Mini Program Upload, review submission, public release, production deployment, payment, driver email or production data mutation is claimed"
+    "not_claimed": "The latest Preview predates the final media-scope/dedupe correction. No final Mini Program Preview acceptance, Upload, review submission, public release, payment, driver email or production data mutation is claimed"
   },
   "authority": {
     "repository": "https://github.com/lingfengai731/Agentstrip.git",
