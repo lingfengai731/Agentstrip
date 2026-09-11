@@ -2,7 +2,7 @@
   "schema_version": 1,
   "project": "Agentstrip / WanderMind",
   "latest_task": {
-    "captured_at": "2026-09-11T13:04:53Z",
+    "captured_at": "2026-09-11T13:10:14Z",
     "scope": "Bali-only Mini Program launch surface and R5 media/route production integration",
     "branch": "main",
     "implementation_baseline": "f81d6120967b32f95f35a70b2d213464740c27ed",
@@ -11,10 +11,10 @@
     "fixed_head": "480cd328d3053f97cd49c70d7d2a4d5c5e2ce195",
     "merge_commit": "f81d6120967b32f95f35a70b2d213464740c27ed",
     "render_deploy": "dep-dahvn2oae00c73dsa7t0",
-    "evidence": ".codex/project-memory/evidence/2026/09/20260911T130453Z-bali-focus-media-production-20260911.json",
-    "handoff": ".codex/project-memory/handoffs/2026/09/20260911T130453Z-bali-focus-media-production-20260911.md",
+    "evidence": ".codex/project-memory/evidence/2026/09/20260911T131014Z-bali-preview-gate-correction-20260911.json",
+    "handoff": ".codex/project-memory/handoffs/2026/09/20260911T131014Z-bali-preview-gate-correction-20260911.md",
     "preview_bytes": 1671016,
-    "not_claimed": "The latest Preview predates the final media-scope/dedupe correction. No final Mini Program Preview acceptance, Upload, review submission, public release, payment, driver email or production data mutation is claimed"
+    "not_claimed": "The latest Preview predates the final media-scope/dedupe correction. The installed DevTools CLI is present, but its service port is disabled. No final Mini Program Preview acceptance, Upload, review submission, public release, payment, driver email or production data mutation is claimed"
   },
   "authority": {
     "repository": "https://github.com/lingfengai731/Agentstrip.git",

@@ -581,3 +581,11 @@ The Mini Program source is merged, but its latest official Preview predates the 
 deduplication correction. A fresh Preview could not be generated because the previously verified local
 DevTools CLI path is no longer present. No Upload, review submission, public Mini Program release,
 payment, driver message or production data mutation is claimed.
+
+### Preview gate correction
+
+The WeChat DevTools executable and CLI are present at the desktop shortcut target. The final Preview did
+not fail because the path is missing: after launching DevTools, the official CLI reached the installation
+and reported that **Settings > Security Settings > Service Port** is disabled. The current tool runtime
+cannot toggle that desktop setting. Enable it once, then rerun Preview; Upload, review and release remain
+separate gates.
