@@ -79,7 +79,7 @@
   async function loadApprovalManifest() {
     if (state.manifestLoaded || state.manifestError) return;
     try {
-      var response = await fetch('../assets/data/image-publish-manifest.json?v=20260911p1', { cache:'no-store' });
+      var response = await fetch('../assets/data/image-publish-manifest.json?v=20260911p2', { cache:'no-store' });
       if (!response.ok) throw new Error('manifest');
       var payload = await response.json();
       (payload.images || []).forEach(function (item) {

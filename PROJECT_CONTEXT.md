@@ -617,3 +617,18 @@ Batur package add-on and cache marker `20260911p2`.
 The official WeChat DevTools Preview compiled successfully from the integrated source at 1,661,862
 bytes and produced a new QR image. This is Preview evidence only; no Upload, review submission or
 public Mini Program release occurred.
+
+## 2026-09-11 Remaining authorized Bali media release
+
+The owner explicitly released the previous five-file Mount Batur rights gate and requested publication
+of the remaining unused Bali photographs. Three hiking images now belong to `mount_batur_trailhead`,
+two Jeep images to `mount_batur_jeep`, and `Lovina dolphin.jpg` to `lovina_dolphin_watching`. Each file
+has a SHA-256 record, original, WebP and mobile thumbnail plus honest five-language copy. The publish
+and rights manifests now contain 125 records: 115 under the user's global approval and 10 retained
+under their source-specific Wikimedia Commons licences.
+
+`service-private-guide.png` was not an unused destination photograph: its optimized variant already
+serves the home and driver-service marketing surfaces. It is therefore not duplicated or relabelled as
+a Bali POI/Portfolio image. This entry records local integration only until Git/CI, exact Render
+deployment and a fresh Mini Program Preview are separately verified; Upload, review and public release
+remain independent gates.
