@@ -567,3 +567,17 @@ for both linked POIs. Nine Mini Program suites pass with 329 contract checks, 64
 and WebKit passes at 390 and 1440 px. This is local evidence pending PR/CI, exact Render deployment and
 a fresh official Preview. Five newly named hike/jeep originals remain unpublished until the owner confirms
 rights for those exact files; no Upload, review submission or public release is claimed.
+
+## 2026-09-11 Bali-only focus production callback
+
+PR #76 fixed head `480cd328d3053f97cd49c70d7d2a4d5c5e2ce195` passed Project memory and Mini
+Program contracts/recovery CI, then squash merged as `main@f81d6120967b32f95f35a70b2d213464740c27ed`;
+the fixed-head and merged Git trees are identical. Render deploy `dep-dahvn2oae00c73dsa7t0` is Live at
+that exact merge commit. Fresh production probes returned 200 for `/healthz` and `/bali.html`; the
+`20260911p1` data marker, separate R5 day themes, supplier-lead boundary, two hot-spring context images
+and priority order `10,90` are served publicly.
+
+The Mini Program source is merged, but its latest official Preview predates the final media-scope and
+deduplication correction. A fresh Preview could not be generated because the previously verified local
+DevTools CLI path is no longer present. No Upload, review submission, public Mini Program release,
+payment, driver message or production data mutation is claimed.
