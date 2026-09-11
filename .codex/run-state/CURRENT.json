@@ -1,11 +1,11 @@
 {
   "schema_version": 1,
-  "checkpoint_revision": 22,
+  "checkpoint_revision": 23,
   "previous_checkpoint_sha256": "C7DFDFAA1F117DCC1C31EECFF429A470FD56A67472AE11629AB4A3D8AD2DAE15",
   "run_id": "20260911-preupload-customer-audit",
   "objective": "Audit and repair website and Mini Program customer journeys before the next Mini Program Upload",
   "status": "active",
-  "phase": "locally_verified_pending_integration",
+  "phase": "merged_deployed_pending_owner_preview",
   "baseline": {
     "cwd": "E:\\Agentstrip-worktrees\\active\\account1\\preupload-customer-audit-20260911",
     "worktree": "E:\\Agentstrip-worktrees\\active\\account1\\preupload-customer-audit-20260911",
@@ -20,9 +20,12 @@
     "Recovered origin/main into a clean isolated worktree and passed the role preflight with the installed plugin registry",
     "Formal Luna read-only audit completed and Sol integrated the accepted findings",
     "Nine Mini Program suites pass with 322 contracts; five website suites and a 33-case responsive customer matrix pass",
-    "Official Upload-preparation Preview compiled to 1669318 bytes"
+    "Official Upload-preparation Preview compiled to 1669318 bytes",
+    "PR72 fixed head a3680f9 passed both required checks and squash merged as main@4cee9bf with an identical Git tree",
+    "Render deploy dep-dahrgu8ae00c73do3a90 is Live at exact commit 4cee9bf",
+    "Fresh production health probes and all five customer-flow suites pass"
   ],
-  "current_step": "Create a fixed-head PR, pass CI, merge, and verify the exact website commit on Render",
+  "current_step": "Obtain owner physical-device acceptance of the final Preview before any separately authorized Upload",
   "workers": [
     {
       "agent_id": null,
@@ -45,7 +48,6 @@
   "unverified": [
     "Automatic Mini Program language selection on a fresh device remains uncertain from owner wording",
     "Owner physical-device acceptance of the newly compiled Upload-preparation Preview",
-    "GitHub CI, merge and exact Render production deployment for the current website changes",
     "Mini Program next Upload, review submission, and public release"
   ],
   "do_not_repeat": [
@@ -61,11 +63,11 @@
     }
   ],
   "next_action": {
-    "action_id": "integrate-preupload-customer-audit",
-    "description": "Commit and push the verified branch, pass fixed-head CI, merge it, deploy the exact website commit, then obtain owner Preview acceptance before Upload",
-    "external_effect": true,
-    "effect_key": "github-pr-render-deploy",
+    "action_id": "owner-accept-preupload-preview",
+    "description": "Owner scans the final Preview and verifies the five changed customer-facing behaviors before a separately authorized Upload",
+    "external_effect": false,
+    "effect_key": "miniprogram-preview-acceptance",
     "authority_confirmed": true
   },
-  "updated_at_utc": "2026-09-11T08:07:00Z"
+  "updated_at_utc": "2026-09-11T08:21:16Z"
 }

@@ -645,3 +645,9 @@
 - UI callback: cream/teal/gold remains unchanged; traveller-facing copy now uses specific tasks and places-per-day choices, non-Bali content is honest, route context persists, internal IDs are hidden, and key touch/form controls are safer.
 - QA callback: nine Mini Program suites pass with 322 contracts; five website suites pass; 33 responsive customer cases have zero page errors, broken anchors, duplicate IDs, missing alt text, unsafe blank targets or semantic field-label failures. Official Preview compiled at 1,669,318 bytes.
 - Boundary: no Mini Program Upload, review submission, public release, real payment, driver email or production write. The fresh Preview still needs owner physical-device acceptance.
+
+## 2026-09-11 Upload-preparation integration callback
+
+- PR #72 fixed head `a3680f9` passed both required checks and squash merged as `main@4cee9bf`; Git trees are identical.
+- Exact Render deploy `dep-dahrgu8ae00c73do3a90` is Live and five fresh production customer-flow suites pass.
+- The 1,669,318-byte Mini Program Preview remains Preview-only and needs owner physical-device acceptance before any separately authorized Upload.
