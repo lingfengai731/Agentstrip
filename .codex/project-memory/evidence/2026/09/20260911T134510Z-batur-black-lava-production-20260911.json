@@ -1,0 +1,18 @@
+{
+  "schema_version": 1,
+  "evidence_id": "ev-20260911T134510Z-batur-black-lava-production-20260911",
+  "task_ref": "batur-black-lava-production-20260911",
+  "owner": "codex-sol",
+  "captured_at": "2026-09-11T13:45:10Z",
+  "status": "verified",
+  "claim": "The Black Lava integration is merged, deployed on the exact Render commit, publicly readable and included in a fresh official Mini Program Preview.",
+  "source": {
+    "kind": "mixed",
+    "reference": "GitHub PR 79, Render deploy dep-dai0a41srm7s73dc80pg, fresh wandermind.cc probes and WeChat DevTools CLI Preview"
+  },
+  "verification": {
+    "command": "verify fixed PR head and successful checks; squash merge with fixed SHA; compare Git trees; query Render deploys; probe health, Bali HTML/data/image/package resources; run WeChat DevTools cli preview",
+    "result": "PR 79 merged to d895775030fb91f32d1f824c5c75a2dec615b4de with identical Git tree. Render deploy dep-dai0a41srm7s73dc80pg is Live at that commit. Health, Bali page and Black Lava WebP returned 200; production data contains batur_black_lava, the R5 day-2 linkage and package add-on. Official Preview completed at 1661862 bytes."
+  },
+  "notes": "Preview QR is stored outside the repository at E:/Agentstrip-artifacts/2026-09-11/batur-black-lava-preview/preview.png. No Mini Program Upload, review submission, public release, payment, booking or driver message occurred."
+}
