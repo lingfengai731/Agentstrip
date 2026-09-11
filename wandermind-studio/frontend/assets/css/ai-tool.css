@@ -720,6 +720,11 @@ body.dark .ws-share-btn:hover {
 .ws-send-btn:hover { background: var(--ws-teal); transform: translateY(-1px); }
 .ws-send-btn:disabled { opacity: .4; cursor: not-allowed; transform: none; }
 
+@media (max-width: 991.98px) {
+  .ws-dest-chip, .ws-quick-btn, .ws-askall-btn, .ws-mode-toggle, .ws-share-btn, .ws-mobile-btn { min-height: 44px; }
+  .ws-send-btn { min-width: 44px; min-height: 44px; }
+}
+
 /* ─────────────────── RIGHT PANEL ─────────────────── */
 .ws-rightpanel {
   background: var(--ws-paper);

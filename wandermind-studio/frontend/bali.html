@@ -20,7 +20,7 @@
   <link rel="apple-touch-icon" href="assets/images/logo-mark-256.png">
     <link rel="preload" as="image" href="assets/images/thumbs/353e3b2879150547.webp" media="(max-width: 575px)" fetchpriority="high">
     <link rel="preload" as="image" href="assets/images/web/353e3b2879150547.webp" media="(min-width: 576px)" fetchpriority="high">
-    <link rel="stylesheet" href="assets/css/style-starter.css?v=search1">
+    <link rel="stylesheet" href="assets/css/style-starter.css?v=preupload20260911">
     <link rel="preconnect" href="https://unpkg.com" crossorigin>
     <link rel="preconnect" href="https://tile.openstreetmap.org" crossorigin>
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="">
@@ -229,12 +229,12 @@
       .bali-day-row { display:grid; grid-template-columns:minmax(0,1fr) auto; gap:8px 10px; align-items:start; padding:11px 12px; border-radius:12px; background:#fff; border:1px solid #ded8ca; transition:border-color .18s ease-out,background .18s ease-out,box-shadow .18s ease-out; }
       .bali-day-row.active { border-color:#0e7c6b; background:#f7fcfa; box-shadow:0 5px 16px rgba(14,124,107,.08); }
       .bali-day-row:not(.active) .bali-day-places, .bali-day-row:not(.active) .bali-day-add, .bali-day-row:not(.active) .bali-day-feedback { display:none; }
-      .bali-day-main { display:grid; grid-template-columns:58px minmax(0,1fr); gap:10px; align-items:center; min-width:0; padding:2px 0; border:0; background:transparent; color:var(--bali-ink); text-align:left; cursor:pointer; }
+      .bali-day-main { display:grid; grid-template-columns:58px minmax(0,1fr); gap:10px; align-items:center; min-width:0; min-height:44px; padding:8px 0; border:0; background:transparent; color:var(--bali-ink); text-align:left; cursor:pointer; }
       .bali-day-main:focus-visible { outline:2px solid #0e7c6b; outline-offset:3px; border-radius:6px; }
       .bali-day-main strong { color:#0e7c6b; font-size:12px; letter-spacing:.06em; }
       .bali-day-main span { color:#34443f; font-size:13px; line-height:1.45; }
       .bali-day-actions { display:flex; gap:5px; }
-      .bali-day-icon-btn { width:30px; height:30px; display:inline-grid; place-items:center; border:1px solid #d7d2c7; border-radius:8px; background:#f8faf9; color:#475569; cursor:pointer; }
+      .bali-day-icon-btn { width:44px; height:44px; display:inline-grid; place-items:center; border:1px solid #d7d2c7; border-radius:10px; background:#f8faf9; color:#475569; cursor:pointer; }
       .bali-day-icon-btn:hover, .bali-day-icon-btn:focus-visible { border-color:#0e7c6b; background:#e8f2ef; color:#0f6258; outline:none; }
       .bali-day-icon-btn:disabled { opacity:.3; cursor:not-allowed; }
       .bali-day-places, .bali-day-add { grid-column:1/-1; display:flex; flex-wrap:wrap; gap:7px; align-items:center; }
@@ -242,13 +242,13 @@
       .bali-day-place-name { min-width:0; overflow-wrap:anywhere; }
       .bali-poi-status { flex:0 0 auto; padding:2px 6px; border:1px solid #e0bd58; border-radius:9px; background:#fff7dc; color:#765b10; font-size:9.5px; font-weight:700; line-height:1.35; }
       .bali-poi-status[data-status="needs_supplier_confirmation"] { border-color:#fdba74; background:#fff7ed; color:#9a3412; }
-      .bali-day-place button { flex:0 0 20px; width:20px; height:20px; padding:0; border:0; border-radius:50%; background:rgba(14,124,107,.12); color:#0f6258; cursor:pointer; }
+      .bali-day-place button { flex:0 0 36px; width:36px; height:36px; padding:0; border:0; border-radius:50%; background:rgba(14,124,107,.12); color:#0f6258; cursor:pointer; }
       .bali-day-place button:hover, .bali-day-place button:focus-visible { background:#b91c1c; outline:none; }
       .bali-day-empty { color:#64748b; font-size:11px; }
       .bali-day-select { min-width:0; flex:1 1 190px; height:34px; border:1px solid #cfc9bc; border-radius:9px; padding:0 9px; background:#fff; color:#1e293b; font-size:11px; }
       .bali-day-select option { background:#fff; color:#1e293b; }
       .bali-day-select[aria-invalid="true"] { border-color:#fb923c; box-shadow:0 0 0 2px rgba(251,146,60,.2); }
-      .bali-day-add-btn, .bali-day-reset { min-height:34px; border:1px solid #0e7c6b; border-radius:9px; padding:6px 11px; background:#fff; color:#0f6258; font-size:11px; font-weight:700; cursor:pointer; }
+      .bali-day-add-btn, .bali-day-reset { min-height:44px; border:1px solid #0e7c6b; border-radius:10px; padding:8px 12px; background:#fff; color:#0f6258; font-size:11px; font-weight:700; cursor:pointer; }
       .bali-day-add-btn:hover, .bali-day-add-btn:focus-visible, .bali-day-reset:hover, .bali-day-reset:focus-visible { background:#e8f2ef; outline:none; }
       .bali-day-feedback { grid-column:1/-1; margin:0; color:#0f6258; font-size:10.5px; font-weight:700; line-height:1.45; }
       .bali-day-feedback:empty { display:none; }
@@ -270,7 +270,7 @@
       body.dark .bali-day-row.active { border-color:#5eead4; background:#1f302b; }
       body.dark .bali-day-icon-btn, body.dark .bali-day-select, body.dark .bali-day-add-btn, body.dark .bali-day-reset, body.dark .bali-route-secondary { border-color:#4b766d; background:#202724; color:#ccfbf1; }
       @media(max-width:991px){ .bali-route-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.bali-route-detail-grid{grid-template-columns:1fr} }
-      @media(max-width:575px){ .bali-route-grid{display:flex;width:100%;max-width:100%;min-width:0;overflow-x:auto;overscroll-behavior-x:contain;scroll-snap-type:x mandatory;margin-right:0;padding:0 0 12px}.bali-route-card{flex:0 0 min(calc(100vw - 30px),330px);scroll-snap-align:start}.bali-route-detail{padding:22px 18px}.bali-route-value{grid-template-columns:1fr}.bali-route-card p{min-height:0}.bali-route-map{padding:13px}.bali-route-map-head{align-items:center}.bali-route-map-canvas{height:280px}.bali-day-main{grid-template-columns:48px minmax(0,1fr)}.bali-day-actions{gap:3px}.bali-day-icon-btn{width:28px;height:28px}.bali-day-select{flex-basis:150px} }
+      @media(max-width:575px){ .bali-route-grid{display:flex;width:100%;max-width:100%;min-width:0;overflow-x:auto;overscroll-behavior-x:contain;scroll-snap-type:x mandatory;margin-right:0;padding:0 0 12px}.bali-route-card{flex:0 0 min(calc(100vw - 30px),330px);scroll-snap-align:start}.bali-route-detail{padding:22px 18px}.bali-route-value{grid-template-columns:1fr}.bali-route-card p{min-height:0}.bali-route-map{padding:13px}.bali-route-map-head{align-items:center}.bali-route-map-canvas{height:280px}.bali-day-main{grid-template-columns:48px minmax(0,1fr)}.bali-day-actions{gap:6px}.bali-day-icon-btn{width:44px;height:44px}.bali-day-select{flex-basis:150px} }
       @media(max-width:360px){ .bali-route-map-head{display:block}.bali-route-map-head span{display:block;margin-top:3px;text-align:left}.bali-route-detail-actions{display:grid}.bali-route-detail-actions .bali-btn{width:100%;text-align:center} }
       .bali-mobile-section-toggle, .bali-route-mobile-toolbar, .bali-mobile-journey-nav { display:none; }
       .bali-mobile-section-body { display:contents; }
@@ -1031,7 +1031,7 @@
 <script>
   function topFunction() { document.body.scrollTop = 0; document.documentElement.scrollTop = 0; }
 </script>
-<script src="assets/js/i18n.js?v=geo1"></script>
+<script src="assets/js/i18n.js?v=preupload20260911"></script>
 <script src="assets/js/bali-packages.js?v=20260901p5"></script>
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
 <script>
@@ -1284,7 +1284,7 @@
     var context = activePickerContext;
     var region = regions[context.plan.days[context.dayIndex].region_id] || {};
     document.getElementById('bali-route-picker-title').textContent = copy.title(context.dayIndex + 1);
-    document.getElementById('bali-route-picker-subtitle').textContent = (text(region.name) || context.plan.days[context.dayIndex].region_id) + ' · ' + context.route.id;
+    document.getElementById('bali-route-picker-subtitle').textContent = text(region.name) || context.plan.days[context.dayIndex].region_id;
     document.getElementById('bali-route-picker-hint').textContent = copy.hint;
     routePicker.querySelectorAll('[data-route-picker-close]').forEach(function (button) { button.setAttribute('aria-label', copy.close); });
     routePicker.querySelector('[data-route-picker-back]').setAttribute('aria-label', copy.back);
@@ -1388,6 +1388,17 @@
     return Object.prototype.hasOwnProperty.call(selected, lang) ? selected[lang] : selected.en;
   }
 
+  function routeOrdinal(index) {
+    var labels = {
+      en:function (number) { return 'Route ' + number; },
+      zh:function (number) { return '路线 ' + number; },
+      ja:function (number) { return 'ルート ' + number; },
+      ko:function (number) { return '경로 ' + number; },
+      id:function (number) { return 'Rute ' + number; }
+    };
+    return (labels[language()] || labels.en)(index + 1);
+  }
+
   function syncRouteMobileToolbar() {
     var status = document.getElementById('bali-route-mobile-status');
     var index = routes.findIndex(function (route) { return route.id === activeId; });
@@ -1399,12 +1410,12 @@
   }
 
   function renderCards() {
-    grid.innerHTML = routes.map(function (route) {
+    grid.innerHTML = routes.map(function (route, index) {
       var meta = routeMeta(route);
       var routeId = escapeHtml(route.id);
       var statusLabel = routeStatus(route);
       return '<button class="bali-route-card ' + (route.id === activeId ? 'active' : '') + '" type="button" data-route-id="' + routeId + '" aria-pressed="' + (route.id === activeId) + '">' +
-        '<span class="bali-route-id"><span translate="no">' + routeId + '</span>' + (statusLabel ? '<span class="bali-route-status">' + escapeHtml(statusLabel) + '</span>' : '') + '</span>' +
+        '<span class="bali-route-id"><span>' + escapeHtml(routeOrdinal(index)) + '</span>' + (statusLabel ? '<span class="bali-route-status">' + escapeHtml(statusLabel) + '</span>' : '') + '</span>' +
         '<h3>' + escapeHtml(text(route.name)) + '</h3>' +
         '<p>' + escapeHtml(text(route.promise)) + '</p>' +
         '<span class="bali-route-meta">' + meta.map(function (item) { return '<span>' + escapeHtml(item) + '</span>'; }).join('') + '</span>' +
@@ -1787,7 +1798,7 @@
       return '<div class="bali-day-row ' + (index === activeDayIndex ? 'active' : '') + '" data-day-index="' + index + '">' +
         '<button class="bali-day-main" type="button" data-select-day="' + index + '" aria-pressed="' + (index === activeDayIndex) + '" aria-expanded="' + (index === activeDayIndex) + '">' +
           '<strong>' + labels.day(index + 1) + '</strong>' +
-          '<span>' + escapeHtml(day.region_id) + ' · ' + escapeHtml(text(day.theme)) + '</span>' +
+          '<span>' + escapeHtml(text(day.theme)) + '</span>' +
         '</button>' +
         '<div class="bali-day-actions">' +
           '<button class="bali-day-icon-btn" type="button" data-move-day="-1" data-day-index="' + index + '" aria-label="' + labels.up + '"' + (index === 0 ? ' disabled' : '') + '><span class="fa fa-arrow-up"></span></button>' +
@@ -1894,7 +1905,7 @@
     var path = routePath.map(function (id) {
       var region = regions[id];
       var regionName = region ? text(region.name) : id;
-      return '<span class="bali-region-node" title="' + escapeHtml(regionName) + '"><span translate="no">' + escapeHtml(id) + '</span> · ' + escapeHtml(regionName) + '</span>';
+      return '<span class="bali-region-node" title="' + escapeHtml(regionName) + '">' + escapeHtml(regionName) + '</span>';
     }).join('<span class="fa fa-long-arrow-right bali-region-arrow" aria-hidden="true"></span>');
     var outline = renderDayOutline(route, plan);
     var ui = routeUiCopy();
@@ -1902,7 +1913,7 @@
     destroyLeafletMap();
     detail.innerHTML =
       '<div class="bali-route-detail-grid">' +
-        '<div><div class="bali-sec-eyebrow" style="color:#fcbf1e"><span translate="no">' + escapeHtml(route.id) + '</span> · ' + words.layer + '</div>' +
+        '<div><div class="bali-sec-eyebrow" style="color:#fcbf1e">' + words.layer + '</div>' +
           '<h3>' + escapeHtml(text(route.name)) + '</h3><p>' + escapeHtml(text(route.promise)) + '</p>' +
           '<div class="bali-region-path" aria-label="' + escapeHtml(words.path) + '">' + path + '</div>' +
           '<div class="bali-poi-notice" role="note"><span class="fa fa-info-circle" aria-hidden="true"></span><span>' + ui.poiNotice + '</span></div>' +
@@ -2452,7 +2463,7 @@
   document.addEventListener('wm:language-change', function(){ if (activeShot) renderModal(); });
 })();
 </script>
-<script src="assets/js/bali-professional.js?v=20260907p67"></script>
+<script src="assets/js/bali-professional.js?v=preupload20260911"></script>
 <script src="assets/js/marketing-events.js?v=20260831p3"></script>
 <script src="assets/js/global-auth.js?v=p53"></script>
 </body>

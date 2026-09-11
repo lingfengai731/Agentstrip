@@ -24,6 +24,7 @@ const LANG_PROMPT = {
   ko: '자연스럽고 간결한 한국어로 답변해 주세요.',
   id: 'Jawab dalam bahasa Indonesia yang alami dan ringkas.',
 };
+const DESTINATION_PROMPT = { zh: '当前目的地', en: 'Current destination', ja: '現在の目的地', ko: '현재 목적지', id: 'Destinasi saat ini' };
 
 
 let _msgIdCounter = 0;
@@ -236,7 +237,7 @@ Page({
       // 注入旅行偏好（如果用户在"我的-旅行偏好"里设置过）
       const memoryPrompt = app.buildMemoryPrompt();
       const lang = app.globalData.currentLang || 'zh';
-      const system = BASE_SYSTEM + `\n${LANG_PROMPT[lang] || LANG_PROMPT.zh}` + memoryPrompt + `\n\n当前目的地: ${dest}`;
+      const system = BASE_SYSTEM + `\n${LANG_PROMPT[lang] || LANG_PROMPT.zh}` + memoryPrompt + `\n\n${DESTINATION_PROMPT[lang] || DESTINATION_PROMPT.zh}: ${dest}`;
       // 把所有历史发给后端（角色+内容）
       const history = messages.map(m => ({ role: m.role, content: m.content }));
       const res = await api.chatOnce(history, system, dest, this.data.mode);

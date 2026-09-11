@@ -87,8 +87,12 @@ function parity(file,pages){
  vm.runInNewContext(fs.readFileSync(path.join(root,'miniprogram/app.js'),'utf8'),{App:v=>application=v,wx:{getStorageSync:k=>cache[k],setStorageSync:(k,v)=>cache[k]=v,removeStorageSync:k=>delete cache[k]}});
  application.setToken('first',{id:1});assert.equal(application.globalData.preferences.notes,'one');
  application.setToken('second',{id:2});assert.equal(application.globalData.preferences.notes,'two');
- application.clearAuth();assert.equal(Object.keys(application.globalData.preferences).length,0);
- assert.equal(cache.wm_prefs.notes,'legacy unowned','unowned legacy cache is retained, not reassigned');
+  application.clearAuth();assert.equal(Object.keys(application.globalData.preferences).length,0);
+  assert.equal(cache.wm_prefs.notes,'legacy unowned','unowned legacy cache is retained, not reassigned');
+  application.globalData.currentLang='en';application.globalData.preferences={budgetLevel:'midrange',styleList:['culture'],party:'couple',notes:'no peanuts'};
+  const englishMemory=application.buildMemoryPrompt();
+  assert.ok(englishMemory.includes('Traveller preferences') && englishMemory.includes('no peanuts'));
+  assert.ok(!/[\u4e00-\u9fff]/.test(englishMemory),'non-Chinese AI context must not inject Chinese preference labels');
  for(const action of ['save','clear']){
   let rejectSave;
   const stale=page('prefs','en',{checkUserContent:async()=>{},savePrefs:()=>new Promise((_,r)=>rejectSave=r)});

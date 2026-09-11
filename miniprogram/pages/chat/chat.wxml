@@ -94,7 +94,7 @@
       show-confirm-bar="{{false}}"
     />
     <button class="send-btn" bindtap="sendMsg" disabled="{{busy || !canSend}}">
-      {{busy ? '…' : copy.send}}
+      {{busy ? copy.sending : copy.send}}
     </button>
     </view>
   </view>

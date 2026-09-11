@@ -13103,3 +13103,16 @@ h3.color-white {
 }
 
 /*# sourceMappingURL=style-freedom.css.map */
+
+/* Shared interaction floor: visible focus and phone-sized controls. */
+::selection { background: rgba(252, 191, 30, .34); color: #17373a; }
+a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visible, select:focus-visible, [role="button"]:focus-visible {
+  outline: 3px solid rgba(252, 191, 30, .88);
+  outline-offset: 3px;
+}
+@media (max-width: 991.98px) {
+  .w3l-header-4 .navbar-toggler { min-width: 44px; min-height: 44px; }
+  .w3l-header-4 .navbar-nav .nav-link { min-height: 44px; display: flex; align-items: center; }
+  #theme-button { min-width: 44px; min-height: 44px; display: inline-flex; align-items: center; justify-content: center; }
+  .main-social-footer-29 a { min-width: 44px; min-height: 44px; display: inline-flex; align-items: center; justify-content: center; }
+}

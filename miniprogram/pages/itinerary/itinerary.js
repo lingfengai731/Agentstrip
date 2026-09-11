@@ -10,13 +10,22 @@ function localized(value, lang, fallback = '') {
 }
 
 Page({
-  data: { copy: COPY.zh, loading: true, error: '', routes: [], selected: null, professional: null, loggedIn: false },
+  data: { copy: COPY.zh, loading: true, error: '', routes: [], selected: null, professional: null, loggedIn: false, isBali: true, destinationName: '' },
 
   onShow() {
     const copy = COPY[app.globalData.currentLang] || COPY.zh;
-    this.setData({ copy, loggedIn: !!app.globalData.token });
+    const destination = app.globalData.currentDest || 'bali';
+    const destinationName = destination === 'custom'
+      ? (app.globalData.customDestName || copy.otherDestination)
+      : (copy[destination] || destination);
+    const isBali = destination === 'bali';
+    this.setData({ copy, loggedIn: !!app.globalData.token, isBali, destinationName });
     wx.setNavigationBarTitle({ title: copy.match });
     app.updateTabBarLanguage();
+    if (!isBali) {
+      this.setData({ loading: false, error: '', routes: [], selected: null, professional: null });
+      return;
+    }
     this.loadRoutes();
     this.loadProfessionalRoute();
   },
@@ -96,11 +105,18 @@ Page({
     wx.navigateTo({ url: `/pages/place/place?id=${encodeURIComponent(id)}&routeId=${encodeURIComponent(routeId)}` });
   },
   copyUnlockLink() {
+    const routeId = (this.data.professional && this.data.professional.route && this.data.professional.route.route_id)
+      || (this.data.selected && this.data.selected.id) || '';
+    const query = `route=${encodeURIComponent(routeId)}&lang=${encodeURIComponent(app.globalData.currentLang || 'zh')}&source=miniprogram`;
     wx.setClipboardData({
-      data: 'https://wandermind.cc/bali.html#professional-planner',
+      data: `https://wandermind.cc/bali.html?${query}#professional-planner`,
       success: () => wx.showToast({ title: this.data.copy.copied, icon: 'success' }),
       fail: () => wx.showToast({ title: this.data.copy.copyFailed, icon: 'none' }),
     });
+  },
+  chooseBali() {
+    app.setDest('bali');
+    this.onShow();
   },
   goChat() { wx.switchTab({ url: '/pages/chat/chat' }); },
   retry() { this.setData({ routes: [], error: '' }); this.loadRoutes(); },

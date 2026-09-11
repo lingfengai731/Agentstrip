@@ -1,0 +1,18 @@
+{
+  "schema_version": 1,
+  "evidence_id": "ev-20260911T080700Z-preupload-customer-audit-20260911",
+  "task_ref": "preupload-customer-audit-20260911",
+  "owner": "account1-main",
+  "captured_at": "2026-09-11T08:07:00Z",
+  "status": "verified",
+  "claim": "The website and Mini Program pre-Upload customer audit is locally verified. Thirty-three website page and viewport cases have zero page errors, broken anchors, duplicate IDs, missing image alt text, unsafe blank targets or semantically unlabeled fields. Nine Mini Program suites pass with 322 contracts, and an official 1669318-byte Preview was compiled. This does not claim Upload, review submission, public release or production deployment.",
+  "source": {
+    "kind": "test",
+    "reference": "codex/preupload-customer-audit-20260911; E:/Agentstrip-artifacts/2026-09-11/preupload-audit/local-customer-audit-final.json; E:/Agentstrip-artifacts/2026-09-11/preupload-audit/preview/preupload-final-preview.json"
+  },
+  "verification": {
+    "command": "Nine Mini Program suites; five website suites; customer-audit.cjs; WeChat DevTools CLI preview; Impeccable detect",
+    "result": "All deterministic product suites passed. Browser matrix: 33 cases, 1020 controls, zero page errors and zero semantic field-label failures. Official Preview: 1669318 bytes. Impeccable surfaced legacy advisories for future bounded cleanup; no P0 functional blocker was accepted from them."
+  },
+  "notes": "Owner previously accepted the PR70 physical Preview behavior. This newly compiled Preview contains the final customer-audit changes and still requires a fresh owner scan before any new Upload. No real payment, driver email, production write, Upload, review submission or public release occurred."
+}

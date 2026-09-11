@@ -17,7 +17,7 @@
     </view>
     <view class="two-col">
       <view><view class="label">{{copy.people}} *</view><view class="stepper"><button data-delta="-1" bindtap="changePeople">−</button><text>{{travellers}}</text><button data-delta="1" bindtap="changePeople">＋</button></view></view>
-      <view><view class="label">{{copy.budget}} *</view><picker mode="selector" range="{{budgetOptions}}" value="{{budgetIndex}}" bindchange="onBudget"><view class="field">CNY {{budgetOptions[budgetIndex]}}</view></picker></view>
+      <view><view class="label">{{copy.budget}} *</view><picker mode="selector" range="{{budgetOptions}}" value="{{budgetIndex}}" bindchange="onBudget"><view class="field">¥ {{budgetOptions[budgetIndex]}}</view></picker></view>
     </view>
   </view>
 

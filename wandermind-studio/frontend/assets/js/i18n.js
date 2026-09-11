@@ -1332,6 +1332,13 @@ Object.assign(LANGS.ja, { aboutPrimaryCta:'バリ島プロルートを提案', a
 Object.assign(LANGS.ko, { aboutPrimaryCta:'발리 전문 경로 매칭', aboutSecondaryCta:'무료 발리 경로 보기', contactFormSub:'작성 후 이메일 앱이 열립니다. 내용을 확인한 뒤 보내 주세요.', contactFormBtn:'이메일에서 확인' });
 Object.assign(LANGS.id, { aboutPrimaryCta:'Cocokkan rute profesional Bali', aboutSecondaryCta:'Lihat rute Bali gratis', contactFormSub:'Setelah diisi, aplikasi email akan terbuka. Tinjau lalu kirim pesan Anda.', contactFormBtn:'Tinjau di email' });
 
+/* Keep the About page grounded in the trip, not in the implementation. */
+Object.assign(LANGS.en, { aboutStoryTitle:'A clearer plan before you leave.', aboutStoryP1:'Travel research is easy to collect and hard to turn into a trip. WanderMind starts with your dates, budget, companions and interests, then organises them into a route you can review.', aboutStoryP2:'Bali has our deepest route library, real place photography and a private driver-request path. Other destinations remain available through the editable planner. Prices, opening hours and availability should always be confirmed before booking.', aboutStatsTitle:'One place to plan, check and continue.', aboutStatsDesc:'Use the public routes without an account. Sign in only when you want to save a plan, compare travel options or continue on another device.', aboutAgentsTitle:'How the planning work is divided', aboutAgentsSub:'Specialist tools handle route order, stays, food, activities, budget and current web information. You see one plan and keep the final say.' });
+Object.assign(LANGS.zh, { aboutStoryTitle:'出发前，先把行程想清楚。', aboutStoryP1:'旅行资料很容易越存越多，真正难的是把日期、预算、同行人和兴趣排成一条能走的路线。WanderMind 先替你理清这些条件，再给出一份可以检查和调整的计划。', aboutStoryP2:'目前巴厘岛拥有最完整的路线库、真实地点照片和私密司机询价入口；其他目的地仍可使用可编辑的规划工具。价格、营业时间和档期，出发前都应再次确认。', aboutStatsTitle:'规划、核对和继续调整，都放在一处。', aboutStatsDesc:'公共路线无需登录即可浏览。需要保存路线、比较机酒或换设备继续时，再登录账号。', aboutAgentsTitle:'这些规划工作如何分工', aboutAgentsSub:'路线顺序、住宿、美食、体验、预算和联网资料分别处理；你看到的是一份计划，最后决定始终由你来做。' });
+Object.assign(LANGS.ja, { aboutStoryTitle:'出発前に、旅の流れを整える。', aboutStoryP1:'旅行情報は集めやすくても、日程・予算・同行者・興味を実行できるルートにまとめるのは大変です。WanderMindは条件を整理し、確認・調整できる計画を作ります。', aboutStoryP2:'現在はバリ島のルート、現地写真、非公開のドライバー相談が最も充実しています。他の目的地も編集可能なプランナーで利用できます。料金・営業時間・空き状況は予約前に再確認してください。', aboutStatsTitle:'計画、確認、調整を一か所で。', aboutStatsDesc:'公開ルートはログイン不要です。保存、比較、別端末での続行が必要なときだけログインしてください。', aboutAgentsTitle:'計画作業の分担', aboutAgentsSub:'ルート、宿泊、食事、体験、予算、最新情報を分けて整理し、一つの計画として提示します。最終判断はあなたが行います。' });
+Object.assign(LANGS.ko, { aboutStoryTitle:'출발 전에 여행의 흐름부터 정리하세요.', aboutStoryP1:'여행 정보는 쉽게 모이지만 날짜·예산·동행·관심사를 실제로 움직일 수 있는 경로로 만드는 일은 어렵습니다. WanderMind가 조건을 정리해 확인하고 수정할 수 있는 계획으로 보여드립니다.', aboutStoryP2:'현재 발리는 경로 자료, 실제 장소 사진, 비공개 기사 문의가 가장 자세합니다. 다른 목적지도 편집 가능한 플래너에서 이용할 수 있습니다. 가격·영업시간·예약 가능 여부는 출발 전에 다시 확인하세요.', aboutStatsTitle:'계획하고 확인하고 이어서 수정하는 한곳.', aboutStatsDesc:'공개 경로는 로그인 없이 볼 수 있습니다. 저장, 비교, 다른 기기에서 이어갈 때만 로그인하세요.', aboutAgentsTitle:'여행 계획을 나누어 처리하는 방식', aboutAgentsSub:'경로, 숙소, 음식, 체험, 예산, 최신 웹 정보를 나누어 정리합니다. 사용자는 하나의 계획을 보고 최종 결정을 내립니다.' });
+Object.assign(LANGS.id, { aboutStoryTitle:'Susun perjalanan dengan jelas sebelum berangkat.', aboutStoryP1:'Informasi perjalanan mudah dikumpulkan, tetapi sulit diubah menjadi rute yang sesuai dengan tanggal, anggaran, teman perjalanan, dan minat Anda. WanderMind merapikannya menjadi rencana yang dapat diperiksa dan disesuaikan.', aboutStoryP2:'Bali memiliki pustaka rute, foto tempat, dan jalur permintaan driver privat paling lengkap. Destinasi lain tetap tersedia lewat perencana yang dapat diedit. Periksa kembali harga, jam buka, dan ketersediaan sebelum memesan.', aboutStatsTitle:'Rencanakan, periksa, dan lanjutkan di satu tempat.', aboutStatsDesc:'Rute publik dapat dilihat tanpa akun. Masuk hanya saat Anda ingin menyimpan rencana, membandingkan pilihan, atau melanjutkan di perangkat lain.', aboutAgentsTitle:'Cara pekerjaan perencanaan dibagi', aboutAgentsSub:'Urutan rute, penginapan, makanan, aktivitas, anggaran, dan informasi web ditangani terpisah lalu disatukan menjadi satu rencana. Keputusan akhir tetap di tangan Anda.' });
+
 /* Bali mobile journey navigation. */
 Object.assign(LANGS.en, { baliMobileNavLabel:'Bali journey sections', baliMobileNavRoutes:'Routes', baliMobileNavProfessional:'My route', baliMobileNavGallery:'Photos', baliMobileNavJourney:'Journey', baliMobileRoutePickerLabel:'Choose a public route', baliMobileRoutePrevious:'Previous route', baliMobileRouteNext:'Next route' });
 Object.assign(LANGS.zh, { baliMobileNavLabel:'巴厘岛行程分区', baliMobileNavRoutes:'路线', baliMobileNavProfessional:'我的路线', baliMobileNavGallery:'照片', baliMobileNavJourney:'行程', baliMobileRoutePickerLabel:'选择公共路线', baliMobileRoutePrevious:'上一条路线', baliMobileRouteNext:'下一条路线' });
@@ -1396,6 +1403,13 @@ Object.assign(LANGS.id, {
   privacyBack:'Kembali ke WanderMind'
 });
 
+// Public labels use traveller language; route IDs remain searchable metadata and URL parameters.
+Object.assign(LANGS.en, { searchIntro:'Search public pages, Bali routes and curated places.', searchInputPlaceholder:'Try “Ubud”, “temple” or “Tirta Empul”', searchPrompt:'Start with a page, route theme or place name.', baliRouteSectionEyebrow:'Bali route library', baliRouteSectionSub:'Compare all six complete routes for free. For a route shaped around your dates, places per day and budget, preview about 70% before unlocking every place and execution detail.' });
+Object.assign(LANGS.zh, { searchIntro:'搜索公开页面、巴厘岛路线和精选地点。', searchInputPlaceholder:'试试“乌布”“寺庙”或“Tirta Empul”', searchPrompt:'输入页面、路线主题或地点名称。', baliRouteSectionEyebrow:'巴厘岛路线库', baliRouteSectionSub:'6 条完整路线均可免费比较。需要贴合自己的日期、每天地点数和预算时，再生成个性化路线；先预览约 70%，解锁后查看全部地点与执行细节。' });
+Object.assign(LANGS.ja, { searchIntro:'公開ページ、バリ島ルート、厳選スポットを検索できます。', searchInputPlaceholder:'「Ubud」「寺院」「Tirta Empul」など', searchPrompt:'ページ、ルートのテーマ、スポット名から検索してください。', baliRouteSectionEyebrow:'バリ島ルート集', baliRouteSectionSub:'6つの完全ルートを無料で比較できます。日程、1日の訪問数、予算に合わせた個別ルートは約70%を先に表示し、解除後に全スポットと実行詳細を確認できます。' });
+Object.assign(LANGS.ko, { searchIntro:'공개 페이지, 발리 경로와 엄선한 장소를 검색하세요.', searchInputPlaceholder:'“Ubud”, “사원” 또는 “Tirta Empul” 검색', searchPrompt:'페이지, 경로 테마 또는 장소 이름으로 시작하세요.', baliRouteSectionEyebrow:'발리 경로 라이브러리', baliRouteSectionSub:'완성된 6개 경로를 무료로 비교하세요. 날짜, 하루 방문 장소 수와 예산에 맞춘 개인 경로는 약 70%를 먼저 보여 주며, 잠금 해제 후 모든 장소와 실행 정보를 확인할 수 있습니다.' });
+Object.assign(LANGS.id, { searchIntro:'Cari halaman publik, rute Bali, dan tempat pilihan.', searchInputPlaceholder:'Coba “Ubud”, “pura”, atau “Tirta Empul”', searchPrompt:'Mulai dari halaman, tema rute, atau nama tempat.', baliRouteSectionEyebrow:'Koleksi rute Bali', baliRouteSectionSub:'Bandingkan enam rute lengkap secara gratis. Untuk rute yang mengikuti tanggal, jumlah tempat per hari, dan anggaran Anda, lihat sekitar 70% lebih dulu lalu buka semua tempat serta detail pelaksanaan.' });
+
 /* ──────────────────────────────────────────────────────
    apply / persist / wire up the picker
    ────────────────────────────────────────────────────── */
@@ -1424,6 +1438,17 @@ function applyLang(lang) {
       el.innerHTML = dict[key];
     }
   });
+  const a11y = {
+    en: { gallery: 'Explore destination photo', email: 'Email WanderMind' },
+    zh: { gallery: '查看目的地照片', email: '给 WanderMind 发邮件' },
+    ja: { gallery: '目的地の写真を見る', email: 'WanderMindにメール' },
+    ko: { gallery: '여행지 사진 보기', email: 'WanderMind에 이메일 보내기' },
+    id: { gallery: 'Lihat foto destinasi', email: 'Email WanderMind' }
+  }[lang] || { gallery: 'Explore destination photo', email: 'Email WanderMind' };
+  document.querySelectorAll('.w3l-footer-29-main .images-col a').forEach((link, index) => {
+    if (!link.getAttribute('aria-label')) link.setAttribute('aria-label', `${a11y.gallery} ${index + 1}`);
+  });
+  document.querySelectorAll('.main-social-footer-29 a[href^="mailto:"]').forEach(link => link.setAttribute('aria-label', a11y.email));
   // set <html lang="..."> for accessibility + search engines
   document.documentElement.setAttribute('lang', lang);
   // persist selection

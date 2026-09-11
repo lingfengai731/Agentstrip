@@ -230,6 +230,7 @@
   font-weight: normal;
   color: #8A857F;
 }
+.result-action { margin-top: 10rpx; color: #8A6517; font-size: 21rpx; font-weight: 700; line-height: 1.35; }
 
 /* —— 航班卡片 —— */
 .flight-card {

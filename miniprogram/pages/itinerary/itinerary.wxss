@@ -43,6 +43,12 @@
 .status { flex: 0 0 auto; align-self: flex-start; padding: 8rpx 14rpx; border-radius: 99rpx; background: #FFF2D5; color: #8B5C08; font-size: 20rpx; font-weight: 800; }
 .status.open { background: #E2F4EC; color: #0E6C5C; }
 .allowance { width: 100%; font-size: 21rpx; color: #767C77; line-height: 1.5; }
+.destination-notice { margin-top: 28rpx; padding: 34rpx; border: 1rpx solid #DED7CA; border-radius: 24rpx; background: #FFFFFF; box-shadow: 0 8rpx 24rpx rgba(56,45,28,.05); }
+.destination-notice-title { color: #173E37; font-size: 36rpx; font-weight: 800; line-height: 1.35; }
+.destination-notice-copy { margin-top: 14rpx; color: #65716D; font-size: 25rpx; line-height: 1.65; }
+.destination-notice-actions { display: flex; gap: 16rpx; flex-wrap: wrap; margin-top: 28rpx; }
+.destination-notice .btn.primary { background: #0E7C6B; color: #FFFFFF; }
+.destination-notice .btn.secondary { border: 1rpx solid #D8C68F; background: #FFF9E9; color: #725513; }
 
 @media (max-width: 360px) {
   .section-head { align-items: flex-start; flex-direction: column; gap: 8rpx; }

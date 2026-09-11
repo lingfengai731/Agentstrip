@@ -1,4 +1,14 @@
 <view class="route-page">
+  <view wx:if="{{!isBali}}" class="destination-notice">
+    <view class="destination-notice-title">{{copy.otherDestinationTitle}}</view>
+    <view class="destination-notice-copy">{{destinationName}}{{copy.otherDestinationCopy}}</view>
+    <view class="destination-notice-actions">
+      <button class="btn primary" bindtap="goChat">{{copy.planDestination}}</button>
+      <button class="btn secondary" bindtap="chooseBali">{{copy.switchToBali}}</button>
+    </view>
+  </view>
+
+  <block wx:else>
   <view class="route-hero">
     <view class="route-stamp">BALI</view>
     <view class="route-title">{{copy.title}}</view>
@@ -11,7 +21,7 @@
 
   <view wx:if="{{professional}}" class="pro-card">
     <view class="pro-top">
-      <view class="pro-heading"><view class="pro-label">{{copy.personal}}</view><view class="pro-title">{{professional.route.route_id}} · {{professional.route.route_name}}</view></view>
+      <view class="pro-heading"><view class="pro-label">{{copy.personal}}</view><view class="pro-title">{{professional.route.route_name}}</view></view>
       <view class="status {{professional.route.unlocked ? 'open' : ''}}">{{professional.route.unlocked ? copy.unlocked : copy.preview}}</view>
     </view>
     <view class="pro-reason">{{professional.route.recommendation_reason}}</view>
@@ -39,12 +49,13 @@
   </view>
   <view wx:if="{{loading}}" class="state-card">{{copy.loading}}</view>
   <view wx:if="{{error}}" class="state-card error"><view>{{error}}</view><button class="text-btn" bindtap="retry">{{copy.retry}}</button></view>
-  <scroll-view wx:if="{{routes.length}}" class="route-tabs" scroll-x enhanced show-scrollbar="{{false}}"><view class="route-tabs-inner"><view wx:for="{{routes}}" wx:key="id" class="route-tab {{selected.id === item.id ? 'active' : ''}}" bindtap="selectRoute" data-id="{{item.id}}"><text>{{item.id}}</text><text>{{item.name}}</text></view></view></scroll-view>
+  <scroll-view wx:if="{{routes.length}}" class="route-tabs" scroll-x enhanced show-scrollbar="{{false}}"><view class="route-tabs-inner"><view wx:for="{{routes}}" wx:key="id" class="route-tab {{selected.id === item.id ? 'active' : ''}}" bindtap="selectRoute" data-id="{{item.id}}" role="button" aria-label="{{item.name}}"><text>{{item.name}}</text></view></view></scroll-view>
   <view wx:if="{{selected}}" class="public-card">
-    <view class="public-title">{{selected.id}} · {{selected.name}}</view>
+    <view class="public-title">{{selected.name}}</view>
     <view class="public-promise">{{selected.promise}}</view>
     <view class="route-facts"><text>{{copy.recommended}}{{selected.idealDays}}</text><text>{{selected.regionPath}}</text></view>
-    <view class="day-list public-days"><view wx:for="{{selected.days}}" wx:key="day" class="public-day"><view class="day-number">{{item.day}}</view><view class="day-body"><view class="day-title">{{item.regionId}} · {{item.theme}}</view><view class="places place-links"><button wx:for="{{item.places}}" wx:key="id" class="place-link" data-id="{{item.id}}" data-route="{{selected.id}}" bindtap="openPlace">{{item.name}}<text>{{copy.photos}}</text></button></view></view></view></view>
+    <view class="day-list public-days"><view wx:for="{{selected.days}}" wx:key="day" class="public-day"><view class="day-number">{{item.day}}</view><view class="day-body"><view class="day-title">{{item.theme}}</view><view class="places place-links"><button wx:for="{{item.places}}" wx:key="id" class="place-link" data-id="{{item.id}}" data-route="{{selected.id}}" bindtap="openPlace">{{item.name}}<text>{{copy.photos}}</text></button></view></view></view></view>
     <button class="btn primary full" bindtap="openPlanner">{{copy.use}}</button>
   </view>
+  </block>
 </view>

@@ -1,79 +1,71 @@
 {
   "schema_version": 1,
-  "checkpoint_revision": 21,
-  "previous_checkpoint_sha256": "C4B11871779FA1B1A5ABB9BBB31326F783B53BE69CCFDD076AEC20DC659EDA29",
-  "run_id": "20260910-mini-ui-continuation",
-  "objective": "Verify and preserve Mini Program UI and language-page changes",
+  "checkpoint_revision": 22,
+  "previous_checkpoint_sha256": "C7DFDFAA1F117DCC1C31EECFF429A470FD56A67472AE11629AB4A3D8AD2DAE15",
+  "run_id": "20260911-preupload-customer-audit",
+  "objective": "Audit and repair website and Mini Program customer journeys before the next Mini Program Upload",
   "status": "active",
-  "phase": "merged_pending_physical_preview",
+  "phase": "locally_verified_pending_integration",
   "baseline": {
-    "cwd": "E:\\Agentstrip-worktrees\\active\\account1\\miniprogram-ui-languages-20260909",
-    "worktree": "E:\\Agentstrip-worktrees\\active\\account1\\miniprogram-ui-languages-20260909",
-    "branch": "codex/miniprogram-ui-languages-20260909",
-    "head": "007c406a8b72b9199142f561857f9771851ca03b",
+    "cwd": "E:\\Agentstrip-worktrees\\active\\account1\\preupload-customer-audit-20260911",
+    "worktree": "E:\\Agentstrip-worktrees\\active\\account1\\preupload-customer-audit-20260911",
+    "branch": "codex/preupload-customer-audit-20260911",
+    "head": "9f9a8161a5e272a8b3586a8b361885962964bba0",
     "dirty_allowlist": []
   },
   "completed": [
-    "Recovered exact six-file cutoff; PR69 already merged",
-    "Five-language page behavior tests passed; Preview 1580830 bytes",
-    "Planner fully localized in five languages with behavioral tests; Preview1587030",
-    "Owner accepted prior Preview; auto-language tests and local browser matrix passed",
-    "Parent integrated and repaired Luna partial driver localization; nine Mini Program test suites pass including 315 contracts",
-    "Account-scoped drafts/preferences and stale response guards validated",
-    "First native pass detected small/default-width buttons; CSS corrected; first matrix invalid due hot reload",
-    "Frozen native matrix: 50 rows, 180 buttons, zero exceptions; place 41px retry repaired",
-    "20 native callback/repair cases passed; 12 screenshots captured and inspected; final Preview 1662338 bytes",
-    "Final three stale-session busy/error callback tests added; nine suites pass after repair",
-    "PR70 fixed head 007c406 passed Mini Program and project-memory CI and squash merged as main 865e374 with identical Git tree"
+    "PR70 fixed head passed both CI checks and was squash merged with identical Git tree",
+    "Official PR70 Preview compiled to 1662338 bytes",
+    "Owner confirmed normal launch, manual five-language switching, visible controls, and likely account isolation; automatic language remains owner-observed but uncertain",
+    "Recovered origin/main into a clean isolated worktree and passed the role preflight with the installed plugin registry",
+    "Formal Luna read-only audit completed and Sol integrated the accepted findings",
+    "Nine Mini Program suites pass with 322 contracts; five website suites and a 33-case responsive customer matrix pass",
+    "Official Upload-preparation Preview compiled to 1669318 bytes"
   ],
-  "current_step": "Generate a fresh official Preview from the PR70 merge-equivalent tree for owner physical-device acceptance",
+  "current_step": "Create a fixed-head PR, pass CI, merge, and verify the exact website commit on Render",
   "workers": [
     {
-      "agent_id": "01a08a20-2133-7bd0-9d4d-5dedbd0f1d78",
+      "agent_id": null,
       "agent_name": "luna_worker",
       "model": "gpt-5.6-luna",
       "reasoning_effort": "max",
-      "goal": "Driver page five-language localization in isolated mini-driver-language-20260910 worktree",
-      "status": "errored",
-      "started_at_utc": null,
-      "last_observed_at_utc": "2026-09-11T06:45:33.2308538Z",
-      "evidence": null
+      "goal": "Read-only Mini Program pre-upload customer journey audit",
+      "status": "completed",
+      "started_at_utc": "2026-09-11T07:15:00Z",
+      "last_observed_at_utc": "2026-09-11T08:07:00Z",
+      "evidence": ".codex/project-memory/evidence/2026/09/20260911T080700Z-preupload-customer-audit-20260911.json"
     }
   ],
   "accepted_evidence": [
-    ".codex/project-memory/evidence/2026/09/20260910T011200Z-mini-ui.md",
-    ".codex/project-memory/handoffs/2026/09/20260910T012200Z-planner-languages.md",
-    ".codex/project-memory/handoffs/2026/09/20260910-auto-language-audit.md",
     ".codex/project-memory/evidence/2026/09/20260911-mini-native-localization.md",
-    "github:pull/70#007c406a8b72b9199142f561857f9771851ca03b"
+    "github:pull/70#007c406a8b72b9199142f561857f9771851ca03b",
+    ".codex/project-memory/evidence/2026/09/20260911T064823Z-miniprogram-localization-pr70-integration-20260911.json",
+    ".codex/project-memory/evidence/2026/09/20260911T080700Z-preupload-customer-audit-20260911.json"
   ],
   "unverified": [
-    "Physical iOS/Android acceptance of the PR70 Preview",
-    "Mini Program Upload/review/public release"
+    "Automatic Mini Program language selection on a fresh device remains uncertain from owner wording",
+    "Owner physical-device acceptance of the newly compiled Upload-preparation Preview",
+    "GitHub CI, merge and exact Render production deployment for the current website changes",
+    "Mini Program next Upload, review submission, and public release"
   ],
   "do_not_repeat": [
     {
-      "action_id": "integrate-mini-recovery-20260909",
-      "reason": "PR69 merged as baseline0cc8582",
-      "evidence": ".codex/project-memory/handoffs/2026/09/20260910T011200Z-mini-ui.md"
+      "action_id": "merge-pr70-fixed-head",
+      "reason": "PR70 already passed CI and was merged with identical Git tree",
+      "evidence": ".codex/project-memory/evidence/2026/09/20260911-mini-native-localization.md"
     },
     {
       "action_id": "duplicate-upload-miniprogram-1.0.0",
-      "reason": "Existing development upload; Preview only this slice",
-      "evidence": ".codex/project-memory/handoffs/2026/09/20260910T011200Z-mini-ui.md"
-    },
-    {
-      "action_id": "merge-pr70-fixed-head",
-      "reason": "PR70 fixed head passed both CI checks and was squash merged with identical Git tree",
-      "evidence": ".codex/project-memory/evidence/2026/09/20260911-mini-native-localization.md"
+      "reason": "The prior development Upload already exists; this task is a pre-upload audit only",
+      "evidence": "PROJECT_CONTEXT.md"
     }
   ],
   "next_action": {
-    "action_id": "preview-pr70-physical-acceptance",
-    "description": "Generate a fresh official WeChat DevTools Preview QR from the merge-equivalent Mini Program tree",
-    "external_effect": false,
-    "effect_key": null,
-    "authority_confirmed": false
+    "action_id": "integrate-preupload-customer-audit",
+    "description": "Commit and push the verified branch, pass fixed-head CI, merge it, deploy the exact website commit, then obtain owner Preview acceptance before Upload",
+    "external_effect": true,
+    "effect_key": "github-pr-render-deploy",
+    "authority_confirmed": true
   },
-  "updated_at_utc": "2026-09-11T06:46:13.0406822Z"
+  "updated_at_utc": "2026-09-11T08:07:00Z"
 }

@@ -637,3 +637,11 @@
 - Preview callback: the official DevTools CLI generated a fresh 1,662,338-byte Preview from the merge-equivalent tree. Owner physical-device acceptance remains pending.
 - Worker callback: the previous Luna worker remains `errored`; its accepted partial output was repaired and independently validated by the parent before PR70. It was not redispatched.
 - Release boundary: no website/backend change, Render deployment, Mini Program Upload, review submission, public release, live payment or driver message occurred.
+
+## 2026-09-11 Upload-preparation customer-audit callback
+
+- Route: large / L2. Sol retained product decisions, cross-surface integration, tests, Git and release judgment.
+- Worker: formal `luna_worker` `/root/mini_preupload_audit` completed one bounded read-only Mini Program customer audit. It changed no business files. Sol independently reviewed and implemented the accepted findings.
+- UI callback: cream/teal/gold remains unchanged; traveller-facing copy now uses specific tasks and places-per-day choices, non-Bali content is honest, route context persists, internal IDs are hidden, and key touch/form controls are safer.
+- QA callback: nine Mini Program suites pass with 322 contracts; five website suites pass; 33 responsive customer cases have zero page errors, broken anchors, duplicate IDs, missing alt text, unsafe blank targets or semantic field-label failures. Official Preview compiled at 1,669,318 bytes.
+- Boundary: no Mini Program Upload, review submission, public release, real payment, driver email or production write. The fresh Preview still needs owner physical-device acceptance.

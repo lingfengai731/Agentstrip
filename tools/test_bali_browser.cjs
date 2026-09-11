@@ -182,11 +182,11 @@ function check(condition, message) {
     await freshPreviewContext.close();
 
     const languageExpectations = {
-      en:{ section:'Trip basics', route:'Visual island life', budget:'$900–1,800', geo:'Bali is spread out', area:'Kintamani highlands' },
-      zh:{ section:'基本行程', route:'视觉与岛屿生活', budget:'¥6,000–12,000', geo:'景点很分散', area:'金塔马尼高地' },
-      ja:{ section:'基本情報', route:'写真と島の暮らし', budget:'¥140,000–280,000', geo:'バリは広い', area:'キンタマーニ高原' },
-      ko:{ section:'기본 일정', route:'사진과 섬 라이프스타일', budget:'₩1,200,000–2,400,000', geo:'발리는 넓습니다', area:'킨타마니 고원' },
-      id:{ section:'Dasar perjalanan', route:'Visual dan gaya hidup pulau', budget:'IDR 14–28 juta', geo:'Bali tersebar luas', area:'Dataran tinggi Kintamani' }
+      en:{ section:'Trip basics', route:'Scenery and island life', budget:'$900–1,800', geo:'Bali is spread out', area:'Kintamani highlands' },
+      zh:{ section:'基本行程', route:'风景与岛屿生活', budget:'¥6,000–12,000', geo:'景点很分散', area:'金塔马尼高地' },
+      ja:{ section:'基本情報', route:'景色と島の暮らし', budget:'¥140,000–280,000', geo:'バリは広い', area:'キンタマーニ高原' },
+      ko:{ section:'기본 일정', route:'풍경과 섬 생활', budget:'₩1,200,000–2,400,000', geo:'발리는 넓습니다', area:'킨타마니 고원' },
+      id:{ section:'Dasar perjalanan', route:'Pemandangan dan kehidupan pulau', budget:'IDR 14–28 juta', geo:'Bali tersebar luas', area:'Dataran tinggi Kintamani' }
     };
     for (const [language, expected] of Object.entries(languageExpectations)) {
       const languageContext = await browser.newContext({ viewport:{ width: language === 'zh' ? 1440 : 390, height:900 }, serviceWorkers:'block' });
