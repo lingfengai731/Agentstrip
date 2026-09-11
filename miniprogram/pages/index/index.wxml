@@ -76,7 +76,7 @@
       </view>
     </view>
 
-    <view class="card custom-dest-card" bindtap="customDest">
+    <view wx:if="{{showFutureDestinations}}" class="card custom-dest-card" bindtap="customDest">
       <view class="custom-icon">＋</view>
       <view class="custom-text">{{copy.other}}</view>
       <view class="custom-arrow">›</view>

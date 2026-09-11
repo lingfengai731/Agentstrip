@@ -1218,7 +1218,10 @@
     (manifests || []).forEach(function (manifest) {
       ((manifest || {}).images || []).forEach(function (image) {
         (image.poi_ids || []).forEach(function (poiId) {
-          if (!poiMedia[poiId]) poiMedia[poiId] = image;
+          var previous = poiMedia[poiId];
+          var priority = Number.isFinite(Number(image.display_priority)) ? Number(image.display_priority) : 100;
+          var previousPriority = previous && Number.isFinite(Number(previous.display_priority)) ? Number(previous.display_priority) : 100;
+          if (!previous || priority < previousPriority) poiMedia[poiId] = image;
         });
       });
     });
@@ -1252,7 +1255,8 @@
     var reason = media ? (text(media.description) || copy.fit) : copy.genericFit(poiTypeLabel(poi.type));
     if (media && media.media_scope && media.media_scope !== 'exact_place') reason += ' ' + (media.media_scope === 'terrain_context' ? copy.terrain : copy.context);
     if (!media) reason += ' ' + (poiMediaState === 'failed' ? copy.mediaErrorBody : copy.fit);
-    var booking = poi.booking_url ? '<div class="bali-route-picker-booking"><a href="' + escapeHtml(poi.booking_url) + '" target="_blank" rel="noopener noreferrer">' + escapeHtml(copy.officialBooking) + '</a><small>' + escapeHtml(copy.bookingDisclaimer) + '</small></div>' : '';
+    var supplierNote = text(poi.supplier_note);
+    var booking = poi.booking_url ? '<div class="bali-route-picker-booking"><a href="' + escapeHtml(poi.booking_url) + '" target="_blank" rel="noopener noreferrer">' + escapeHtml(copy.officialBooking) + '</a>' + (supplierNote ? '<small>' + escapeHtml(supplierNote) + '</small>' : '') + '<small>' + escapeHtml(copy.bookingDisclaimer) + '</small></div>' : '';
     preview.innerHTML = '<div class="bali-route-picker-media">' + pickerMediaMarkup(media, poi, copy, 'preview') + pickerAttributionMarkup(media, copy) + '</div>' +
       '<h4 id="bali-route-picker-preview-title" tabindex="-1">' + escapeHtml(poiDisplayName(poi)) + '</h4>' +
       '<p class="bali-route-picker-meta">' + escapeHtml(meta) + '</p>' +
@@ -2009,9 +2013,9 @@
   }
 
   Promise.all([
-    fetch('assets/data/bali-travel-data.json?v=20260831p4').then(function (response) { if (!response.ok) throw new Error('HTTP ' + response.status); return response.json(); }),
+    fetch('assets/data/bali-travel-data.json?v=20260911p1').then(function (response) { if (!response.ok) throw new Error('HTTP ' + response.status); return response.json(); }),
     fetch('assets/data/image-publish-manifest.json?v=20260825p3').then(function (response) { if (!response.ok) throw new Error('HTTP ' + response.status); return response.json(); }).catch(function () { poiMediaState = 'failed'; return {images:[]}; }),
-    fetch('assets/data/poi-media-catalog.json?v=20260901p1').then(function (response) { if (!response.ok) throw new Error('HTTP ' + response.status); return response.json(); }).catch(function () { poiMediaState = 'failed'; return {images:[]}; })
+    fetch('assets/data/poi-media-catalog.json?v=20260911p1').then(function (response) { if (!response.ok) throw new Error('HTTP ' + response.status); return response.json(); }).catch(function () { poiMediaState = 'failed'; return {images:[]}; })
   ])
     .then(function (result) { buildPoiMedia([result[1], result[2]]); if (poiMediaState !== 'failed') poiMediaState = 'ready'; useData(result[0]); })
     .catch(function () {
@@ -2196,7 +2200,7 @@
     applyGalleryFilters();
   }
   Promise.all([
-    fetch('assets/data/bali-travel-data.json?v=20260831p4').then(function(response) { if (!response.ok) throw new Error('HTTP ' + response.status); return response.json(); }),
+    fetch('assets/data/bali-travel-data.json?v=20260911p1').then(function(response) { if (!response.ok) throw new Error('HTTP ' + response.status); return response.json(); }),
     fetch('assets/data/image-publish-manifest.json?v=20260825p3').then(function(response) { if (!response.ok) throw new Error('HTTP ' + response.status); return response.json(); })
   ])
     .then(function(result) {

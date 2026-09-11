@@ -148,6 +148,7 @@
     {
       "image_url": "assets/images/poi/commons/batur-hot-springs.webp",
       "thumbnail_url": "assets/images/poi/commons/batur-hot-springs-thumb.webp",
+      "display_priority": 90,
       "rights": {
         "status": "licensed",
         "creator": "Wikimedia Commons contributor",
@@ -159,13 +160,13 @@
       "poi_ids": [
         "batur_hot_springs"
       ],
-      "media_scope": "exact_place",
+      "media_scope": "area_context",
       "alt_text": {
-        "en": "Batur Natural Hot Spring visual reference",
-        "zh": "Batur Natural Hot Spring 视觉参考",
-        "ja": "Batur Natural Hot Spring のビジュアル参考",
-        "ko": "Batur Natural Hot Spring 시각 참고",
-        "id": "Referensi visual Batur Natural Hot Spring"
+        "en": "The pools and volcanic landscape at Batur Natural Hot Spring",
+        "zh": "巴杜尔天然温泉的池区与火山环境",
+        "ja": "バトゥール天然温泉のプールと火山の景観",
+        "ko": "바투르 천연 온천의 풀과 화산 풍경",
+        "id": "Kolam dan lanskap gunung api di Batur Natural Hot Spring"
       },
       "source_sha256": "4fc9fdff1c0491a55278928d732de00fdac70085ec017714339242e14d90537d"
     },
@@ -428,8 +429,46 @@
       "source_sha256": "06de9c96cd2ef8e4af0531615e8a8ddb56166b639b6b822e7b36cd5eb2bbd6f2"
     },
     {
+      "image_url": "assets/images/web/4f8f83b5fce5b55f.webp",
+      "thumbnail_url": "assets/images/thumbs/4f8f83b5fce5b55f.webp",
+      "display_priority": 10,
+      "rights": {
+        "status": "user_provided_with_consent",
+        "creator": "WanderMind Studio",
+        "license_name": "WanderMind project use",
+        "license_url": "",
+        "source_url": ""
+      },
+      "poi_ids": [
+        "mount_batur_trailhead"
+      ],
+      "media_scope": "area_context",
+      "title": {
+        "en": "Mount Batur at dawn",
+        "zh": "巴杜尔火山日出",
+        "ja": "夜明けのバトゥール山",
+        "ko": "새벽의 바투르산",
+        "id": "Gunung Batur saat fajar"
+      },
+      "description": {
+        "en": "An area-level dawn view for planning the Mount Batur hike. The exact gate, guide, weather and volcanic conditions still need a live check.",
+        "zh": "用于了解巴杜尔火山日出环境的区域参考图；具体登山口、向导、天气与火山状况仍需出发前确认。",
+        "ja": "バトゥール山の日の出登山を検討するためのエリア参考写真です。登山口、ガイド、天候、火山状況は出発前に確認してください。",
+        "ko": "바투르산 일출 산행을 계획하기 위한 지역 참고 사진입니다. 출발 지점, 가이드, 날씨와 화산 상황은 출발 전에 확인해야 합니다.",
+        "id": "Foto konteks kawasan untuk merencanakan pendakian fajar Gunung Batur. Titik masuk, pemandu, cuaca, dan kondisi gunung api harus dikonfirmasi sebelum berangkat."
+      },
+      "alt_text": {
+        "en": "Mount Batur dawn landscape reference",
+        "zh": "巴杜尔火山日出环境参考",
+        "ja": "バトゥール山の日の出風景",
+        "ko": "바투르산 일출 풍경 참고",
+        "id": "Referensi lanskap fajar Gunung Batur"
+      }
+    },
+    {
       "image_url": "assets/images/web/15c41f6a0fe7fec3.webp",
       "thumbnail_url": "assets/images/web/15c41f6a0fe7fec3.webp",
+      "display_priority": 10,
       "rights": {
         "status": "user_provided_with_consent",
         "creator": "WanderMind Studio",
@@ -441,34 +480,100 @@
         "mount_batur_jeep"
       ],
       "media_scope": "area_context",
+      "title": {
+        "en": "Mount Batur jeep sunrise",
+        "zh": "巴杜尔火山吉普日出",
+        "ja": "バトゥール山ジープで見る日の出",
+        "ko": "바투르산 지프 일출",
+        "id": "Matahari terbit dengan jip di Gunung Batur"
+      },
+      "description": {
+        "en": "An early-morning jeep gathering in the Mount Batur area. Confirm the operator, route, pickup, weather policy, insurance and final price before booking.",
+        "zh": "巴杜尔火山区域的清晨吉普集合现场；预订前请确认运营方、路线、接送、天气政策、保险与最终价格。",
+        "ja": "バトゥール山エリアの早朝ジープ集合風景です。予約前に事業者、ルート、送迎、天候方針、保険、最終料金をご確認ください。",
+        "ko": "바투르산 지역의 이른 아침 지프 집결 풍경입니다. 예약 전에 운영사, 경로, 픽업, 날씨 정책, 보험과 최종 요금을 확인하세요.",
+        "id": "Suasana kumpul jip pagi hari di kawasan Gunung Batur. Pastikan operator, rute, penjemputan, kebijakan cuaca, asuransi, dan harga akhir sebelum memesan."
+      },
       "alt_text": {
-        "en": "Mount Batur Jeep Sunrise Area visual reference",
-        "zh": "Mount Batur Jeep Sunrise Area 视觉参考",
-        "ja": "Mount Batur Jeep Sunrise Area のビジュアル参考",
-        "ko": "Mount Batur Jeep Sunrise Area 시각 참고",
-        "id": "Referensi visual Mount Batur Jeep Sunrise Area"
+        "en": "Early-morning jeeps in the Mount Batur area",
+        "zh": "巴杜尔火山区域的清晨吉普车",
+        "ja": "バトゥール山エリアの早朝ジープ",
+        "ko": "바투르산 지역의 이른 아침 지프",
+        "id": "Jip pagi hari di kawasan Gunung Batur"
       }
     },
     {
-      "image_url": "assets/images/web/8955be34cbcf96c6.webp",
-      "thumbnail_url": "assets/images/web/8955be34cbcf96c6.webp",
+      "image_url": "assets/images/web/c0298c79fcf3616a.webp",
+      "thumbnail_url": "assets/images/thumbs/c0298c79fcf3616a.webp",
+      "display_priority": 20,
       "rights": {
         "status": "user_provided_with_consent",
         "creator": "WanderMind Studio",
         "license_name": "WanderMind project use",
         "license_url": "",
-        "source_url": "https://disparda.baliprov.go.id/en/batur-mountain/2020/04/"
+        "source_url": ""
       },
       "poi_ids": [
-        "mount_batur_trailhead"
+        "mount_batur_jeep"
+      ],
+      "media_scope": "area_context",
+      "title": {
+        "en": "Batur jeep ride",
+        "zh": "巴杜尔火山吉普体验",
+        "ja": "バトゥール山ジープ体験",
+        "ko": "바투르 지프 체험",
+        "id": "Pengalaman jip Batur"
+      },
+      "description": {
+        "en": "A passenger-eye view of the rough volcanic track. Confirm the operator, route, vehicle, insurance and final price before booking.",
+        "zh": "从游客座位看到的火山路况；预订前仍需确认运营方、路线、车辆、保险与最终价格。",
+        "ja": "乗客目線で見る火山地帯の未舗装路です。予約前に事業者、ルート、車両、保険、最終料金をご確認ください。",
+        "ko": "승객 시선으로 본 화산 비포장 도로입니다. 예약 전에 운영사, 경로, 차량, 보험과 최종 요금을 확인하세요.",
+        "id": "Jalur vulkanik dari sudut pandang penumpang. Pastikan operator, rute, kendaraan, asuransi, dan harga akhir sebelum memesan."
+      },
+      "alt_text": {
+        "en": "Passenger view on a Mount Batur jeep route",
+        "zh": "巴杜尔火山吉普路线的游客视角",
+        "ja": "バトゥール山ジープルートの乗客目線",
+        "ko": "바투르산 지프 경로의 승객 시점",
+        "id": "Sudut pandang penumpang di rute jip Gunung Batur"
+      }
+    },
+    {
+      "image_url": "assets/images/web/8955be34cbcf96c6.webp",
+      "thumbnail_url": "assets/images/web/8955be34cbcf96c6.webp",
+      "display_priority": 10,
+      "rights": {
+        "status": "user_provided_with_consent",
+        "creator": "WanderMind Studio",
+        "license_name": "WanderMind project use",
+        "license_url": "",
+        "source_url": ""
+      },
+      "poi_ids": [
+        "batur_hot_springs"
       ],
       "media_scope": "area_context",
       "alt_text": {
-        "en": "Mount Batur Hiking Area visual reference",
-        "zh": "Mount Batur Hiking Area 视觉参考",
-        "ja": "Mount Batur Hiking Area のビジュアル参考",
-        "ko": "Mount Batur Hiking Area 시각 참고",
-        "id": "Referensi visual Mount Batur Hiking Area"
+        "en": "Kintamani hot-spring stay and volcano-view reference",
+        "zh": "金塔马尼温泉住宿与火山景观参考",
+        "ja": "キンタマーニの温泉宿と火山景観の参考",
+        "ko": "킨타마니 온천 숙소와 화산 전망 참고",
+        "id": "Referensi penginapan air panas dan pemandangan gunung api Kintamani"
+      },
+      "title": {
+        "en": "Kintamani hot-spring stay",
+        "zh": "金塔马尼温泉山景住宿",
+        "ja": "キンタマーニの温泉山景ステイ",
+        "ko": "킨타마니 온천 산 전망 숙소",
+        "id": "Penginapan air panas Kintamani"
+      },
+      "description": {
+        "en": "A comfortable recovery-day setting near the Batur volcano area. This is an accommodation reference, not a photo of every public hot-spring venue; confirm the exact property and booking conditions.",
+        "zh": "适合作为巴杜尔火山行程后的恢复日住宿参考。这是温泉住宿环境图，不代表所有公共温泉场地；具体酒店与预订条件请再次确认。",
+        "ja": "バトゥール火山エリアでの回復日に向く宿泊イメージです。すべての公共温泉施設を示す写真ではないため、宿泊先と予約条件をご確認ください。",
+        "ko": "바투르 화산 일정 뒤 회복일에 참고할 수 있는 숙소 환경입니다. 모든 공공 온천 시설의 사진은 아니므로 숙소와 예약 조건을 확인하세요.",
+        "id": "Referensi penginapan untuk hari pemulihan di kawasan Gunung Batur. Foto ini bukan gambaran setiap pemandian umum; pastikan properti dan syarat pemesanannya."
       }
     },
     {

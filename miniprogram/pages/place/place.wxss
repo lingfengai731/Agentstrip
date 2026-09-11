@@ -12,6 +12,8 @@
 .facts { display: flex; gap: 12rpx; flex-wrap: wrap; margin-top: 20rpx; }
 .facts text { padding: 9rpx 15rpx; border-radius: 999rpx; background: #EDF4F1; color: #255F52; font-size: 20rpx; }
 .live-note { margin-top: 22rpx; padding: 18rpx 20rpx; border-left: 5rpx solid #D8A41F; background: #FBF5E8; color: #6B624D; font-size: 22rpx; line-height: 1.6; }
+.supplier-note { margin-top: 18rpx; padding: 20rpx; border-radius: 18rpx; background: #EDF4F1; color: #36544B; font-size: 22rpx; line-height: 1.6; }
+.supplier-note-title { margin-bottom: 6rpx; color: #164C41; font-size: 23rpx; font-weight: 800; }
 .credits-title { font-size: 27rpx; font-weight: 800; }
 .credits-name { margin-top: 12rpx; font-size: 24rpx; line-height: 1.5; }
 .credits-scope, .credits-line { margin-top: 8rpx; color: #737A76; font-size: 21rpx; line-height: 1.5; }

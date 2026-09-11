@@ -135,6 +135,7 @@ check(api.includes('/assets/data/poi-media-catalog.json') && api.includes('baliM
 check(api.includes('/assets/data/image-publish-manifest.json') && api.includes('imagePublishManifest'), 'shared approved-image manifest wrapper missing');
 check(api.includes('/api/portfolio?destination=') && api.includes('publicPortfolio'), 'published portfolio API wrapper missing');
 check(baliMedia.includes('imagesByPoi') && baliMedia.includes('poiIds.includes(poi.id)'), 'POI media utility must preserve multiple images per place');
+check(baliMedia.includes('allImageCandidates.filter') && !baliMedia.includes('uniqueImages(allImages.filter'), 'POI media lookup must filter before global dedupe so a shared asset can serve more than one POI');
 check(baliMedia.includes("SITE_ORIGIN = 'https://wandermind.cc/'"), 'relative media must resolve through the approved Mini Program domain');
 check(baliMedia.includes("GALLERY_VERIFICATION = new Set(['route-linked', 'bali-named'])"), 'gallery must only use approved static Bali imagery');
 check(baliMedia.includes('EXISTING_WEBSITE_GALLERY'), 'Mini Program gallery must preserve the website gallery selection');

@@ -1,6 +1,10 @@
 // utils/const.js — 常量
 const DESTINATIONS = [
   { id: 'bali',      flag: '🌺', name: '巴厘岛',   region: '印度尼西亚', accent: '#E07A12' },
+];
+
+// Retain future destination definitions without presenting unresearched products to customers.
+const FUTURE_DESTINATIONS = [
   { id: 'kyoto',     flag: '🌸', name: '京都',     region: '日本',       accent: '#C47BAB' },
   { id: 'paris',     flag: '🗼', name: '巴黎',     region: '法国',       accent: '#6B9FD4' },
   { id: 'santorini', flag: '🏝️', name: '圣托里尼', region: '希腊',       accent: '#5BA4B8' },
@@ -23,4 +27,4 @@ const LANGS = [
   { id: 'id', flag: '🇮🇩', label: 'Bahasa Indonesia' },
 ];
 
-module.exports = { DESTINATIONS, AGENTS, LANGS };
+module.exports = { DESTINATIONS, FUTURE_DESTINATIONS, AGENTS, LANGS };

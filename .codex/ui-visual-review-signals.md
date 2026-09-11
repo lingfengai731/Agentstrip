@@ -222,3 +222,16 @@ rejected aspects: 不接受中文界面中的地点介绍继续显示英文核�
 reason in reviewer words: 地点与景色中文背景下点开 R1、R2、R3 等路线里的看景色，仍然是英文介绍
 scope: this project
 recorded at: 2026-09-11
+
+workflow: ui-implementation-workflow-v2
+status: raw
+task: 小程序巴厘岛单目的地聚焦与火山路线影像纠错
+page/surface: WanderMind 智旅小程序首页、公共路线与地点景色详情
+screenshot or artifact: 2026-09-11 用户首页截图与 Batur、R5、Besakih 图片反馈
+reviewer: 用户
+decision: mixed
+accepted aspects: 当前巴厘岛路线、币种、表单和已修正的客户可见逻辑继续保留
+rejected aspects: 不接受未实地调研且没有当地司机承接的京都、巴黎和圣托里尼入口；不接受重要景点只有一张图、Batur 温泉图片失真、R5 三天重复用图、Besakih 缺席东北及东部高地语境；现有底栏首页、聊天、比价、行程、我的不够精确
+reason in reviewer words: 不然别人很难建立信任，会觉得你就是用 AI 弄的；对于没有什么耐心的快节奏时代来说，这几个词表达不够精确
+scope: this project
+recorded at: 2026-09-11

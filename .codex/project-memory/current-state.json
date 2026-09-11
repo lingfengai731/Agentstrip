@@ -2,15 +2,15 @@
   "schema_version": 1,
   "project": "Agentstrip / WanderMind",
   "latest_task": {
-    "captured_at": "2026-09-11T08:39:17Z",
-    "scope": "Mini Program public-route place-detail language fallback repair",
-    "branch": "main",
-    "implementation_baseline": "cb2e9390944c890ae1e09653d6bc322d6988162e",
-    "status": "merged_pending_owner_preview",
-    "evidence": ".codex/project-memory/evidence/2026/09/20260911T083917Z-mini-place-i18n-integration-20260911.json",
-    "handoff": ".codex/project-memory/handoffs/2026/09/20260911T083917Z-mini-place-i18n-integration-20260911.md",
-    "preview_bytes": 1669670,
-    "not_claimed": "No Mini Program Upload, review submission, public release, website/backend deployment, payment, driver email or production data mutation is claimed; owner Preview acceptance is pending"
+    "captured_at": "2026-09-11T12:51:37Z",
+    "scope": "Bali-only Mini Program launch surface and R5 media/route audit",
+    "branch": "codex/bali-focus-media-audit-20260911",
+    "implementation_baseline": "8409dac17a127a537b1a366b749aa6e5301103f1",
+    "status": "local_verified_pending_pr_preview_and_deploy",
+    "evidence": ".codex/project-memory/evidence/2026/09/20260911T125137Z-bali-focus-media-audit-20260911.json",
+    "handoff": ".codex/project-memory/handoffs/2026/09/20260911T125137Z-bali-focus-media-audit-20260911.md",
+    "preview_bytes": 1671016,
+    "not_claimed": "The latest Preview predates the final media-scope/dedupe correction. No Mini Program Upload, review submission, public release, production deployment, payment, driver email or production data mutation is claimed"
   },
   "authority": {
     "repository": "https://github.com/lingfengai731/Agentstrip.git",

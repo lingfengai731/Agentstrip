@@ -36,7 +36,10 @@ App({
     const prefs = wx.getStorageSync('wm_prefs_' + (user && user.id != null ? user.id : 'guest'));
     if (token) this.globalData.token = token;
     if (user)  this.globalData.user = user;
-    if (dest)  this.globalData.currentDest = dest;
+    // Bali is the only public destination until another destination has first-hand research
+    // and local delivery support. Older Preview selections are safely reset.
+    if (dest === 'bali') this.globalData.currentDest = dest;
+    else if (dest) wx.setStorageSync('wm_dest', 'bali');
     const supported = ['zh', 'en', 'ja', 'ko', 'id'];
     if (supported.includes(lang)) {
       this.globalData.currentLang = lang;
@@ -95,14 +98,15 @@ App({
 
   // 切换目的地
   setDest(dest) {
-    this.globalData.currentDest = dest;
-    wx.setStorageSync('wm_dest', dest);
+    const publicDest = dest === 'bali' ? dest : 'bali';
+    this.globalData.currentDest = publicDest;
+    wx.setStorageSync('wm_dest', publicDest);
   },
 
   setCustomDest(name) {
     this.globalData.customDestName = name || '';
     wx.setStorageSync('wm_custom_dest', this.globalData.customDestName);
-    this.setDest('custom');
+    this.setDest('bali');
   },
 
   // 切换语言

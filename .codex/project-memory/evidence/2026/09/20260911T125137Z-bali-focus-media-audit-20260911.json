@@ -1,0 +1,18 @@
+{
+  "schema_version": 1,
+  "evidence_id": "ev-20260911T125137Z-bali-focus-media-audit-20260911",
+  "task_ref": "bali-focus-media-audit-20260911",
+  "owner": "codex-sol",
+  "captured_at": "2026-09-11T12:51:37Z",
+  "status": "verified",
+  "claim": "The isolated branch locally limits the Mini Program launch surface to Bali, separates the R5 Besakih, Batur hike or jeep, and hot-spring contexts, preserves licensed media boundaries, and passes the affected Mini Program and WebKit checks.",
+  "source": {
+    "kind": "test",
+    "reference": "branch codex/bali-focus-media-audit-20260911 at pre-commit working tree based on origin/main@8409dac17a127a537b1a366b749aa6e5301103f1"
+  },
+  "verification": {
+    "command": "node tools/test_miniprogram_entry_languages.cjs; node tools/test_miniprogram_auto_language.cjs; node tools/test_miniprogram_contract.cjs; node tools/test_miniprogram_language_page.cjs; node tools/test_miniprogram_me.cjs; node tools/test_miniprogram_planner_languages.cjs; node tools/test_miniprogram_recovery.cjs; node tools/test_miniprogram_support_languages.cjs; node tools/test_miniprogram_api_sessions.cjs; python tools/test_bali_media_packages.py; node tools/test_bali_media_webkit.cjs; git diff --check",
+    "result": "All nine Mini Program suites passed, including 329 contracts. Bali media reported 64/64 POIs covered, 28 exact licensed photos, 12 labelled contextual visuals and 9 packages. WebKit passed at 390 and 1440 pixels; diff check passed."
+  },
+  "notes": "The latest official Preview before the final data-scope/dedupe correction compiled to 1671016 bytes at E:/Agentstrip-artifacts/2026-09-11/bali-focus-media-audit/preview.jpg. A single final Preview retry was attempted after the complete test pass, but the previously verified E:/微信web开发者工具/cli.bat path was no longer present; the final source therefore still needs a fresh Preview and owner scan after the local DevTools runtime is restored. Five newly named hike/jeep originals are not published because their hashes are absent from the rights and publish manifests. No Upload, review submission, public release, payment, driver message, production data mutation or deployment is claimed."
+}
