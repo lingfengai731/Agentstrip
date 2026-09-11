@@ -1,0 +1,18 @@
+{
+  "schema_version": 1,
+  "evidence_id": "ev-20260911T133914Z-batur-black-lava-20260911",
+  "task_ref": "batur-black-lava-20260911",
+  "owner": "codex-sol",
+  "captured_at": "2026-09-11T13:39:14Z",
+  "status": "verified",
+  "claim": "Mount Batur Black Lava is integrated locally as one area-level Bali POI with approved media, R5 and package linkage, five-language presentation and responsive browser coverage.",
+  "source": {
+    "kind": "mixed",
+    "reference": "user-provided lava stone plant.jpg plus Ministry of Tourism Indonesia, Bangli Regency RDTR and UNESCO Batur Geopark references"
+  },
+  "verification": {
+    "command": "nine tools/test_miniprogram_*.cjs suites; python tools/test_bali_media_packages.py; node tools/test_bali_browser.cjs with installed Chrome; node tools/test_bali_media_webkit.cjs with WebKit at 390/1440; git diff --check; tools/project-memory.ps1 validate",
+    "result": "Nine Mini Program suites passed with 329 contracts; 65/65 POIs have media; nine packages validate; Chrome regression passed; WebKit explicitly removed/re-added Black Lava and decoded a7b2b7c21989ddc7.webp at 390 and 1440; diff check passed; project memory passed with the expected pre-commit snapshot warning."
+  },
+  "notes": "This is local integration evidence. GitHub PR/CI, Render deployment and a fresh official Mini Program Preview are separate states. No Upload, review submission, public Mini Program release, booking, payment or driver message occurred."
+}

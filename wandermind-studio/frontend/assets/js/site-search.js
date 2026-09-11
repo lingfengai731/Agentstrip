@@ -2,7 +2,7 @@
   'use strict';
 
   var LANGUAGES = ['zh', 'en', 'ja', 'ko', 'id'];
-  var DATA_URL = 'assets/data/bali-travel-data.json?v=20260825p3';
+  var DATA_URL = 'assets/data/bali-travel-data.json?v=20260911p2';
   var PAGE_ENTRIES = [
     { href: 'index.html', titleKey: 'navHome', summaryKey: 'hero1Sub', aliases: ['home', 'index'] },
     { href: 'about.html', titleKey: 'navAbout', summaryKey: 'aboutStoryP1', aliases: ['about', 'story'] },

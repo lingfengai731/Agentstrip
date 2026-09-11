@@ -1032,7 +1032,7 @@
   function topFunction() { document.body.scrollTop = 0; document.documentElement.scrollTop = 0; }
 </script>
 <script src="assets/js/i18n.js?v=preupload20260911"></script>
-<script src="assets/js/bali-packages.js?v=20260901p5"></script>
+<script src="assets/js/bali-packages.js?v=20260911p1"></script>
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
 <script>
 (function () {
@@ -2013,8 +2013,8 @@
   }
 
   Promise.all([
-    fetch('assets/data/bali-travel-data.json?v=20260911p1').then(function (response) { if (!response.ok) throw new Error('HTTP ' + response.status); return response.json(); }),
-    fetch('assets/data/image-publish-manifest.json?v=20260825p3').then(function (response) { if (!response.ok) throw new Error('HTTP ' + response.status); return response.json(); }).catch(function () { poiMediaState = 'failed'; return {images:[]}; }),
+    fetch('assets/data/bali-travel-data.json?v=20260911p2').then(function (response) { if (!response.ok) throw new Error('HTTP ' + response.status); return response.json(); }),
+    fetch('assets/data/image-publish-manifest.json?v=20260911p1').then(function (response) { if (!response.ok) throw new Error('HTTP ' + response.status); return response.json(); }).catch(function () { poiMediaState = 'failed'; return {images:[]}; }),
     fetch('assets/data/poi-media-catalog.json?v=20260911p1').then(function (response) { if (!response.ok) throw new Error('HTTP ' + response.status); return response.json(); }).catch(function () { poiMediaState = 'failed'; return {images:[]}; })
   ])
     .then(function (result) { buildPoiMedia([result[1], result[2]]); if (poiMediaState !== 'failed') poiMediaState = 'ready'; useData(result[0]); })
@@ -2200,8 +2200,8 @@
     applyGalleryFilters();
   }
   Promise.all([
-    fetch('assets/data/bali-travel-data.json?v=20260911p1').then(function(response) { if (!response.ok) throw new Error('HTTP ' + response.status); return response.json(); }),
-    fetch('assets/data/image-publish-manifest.json?v=20260825p3').then(function(response) { if (!response.ok) throw new Error('HTTP ' + response.status); return response.json(); })
+    fetch('assets/data/bali-travel-data.json?v=20260911p2').then(function(response) { if (!response.ok) throw new Error('HTTP ' + response.status); return response.json(); }),
+    fetch('assets/data/image-publish-manifest.json?v=20260911p1').then(function(response) { if (!response.ok) throw new Error('HTTP ' + response.status); return response.json(); })
   ])
     .then(function(result) {
       var data = result[0];

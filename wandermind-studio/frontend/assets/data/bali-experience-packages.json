@@ -28,10 +28,10 @@
       "region_ids": ["G6"],
       "area": {"zh":"金塔马尼高地","en":"Kintamani highlands","ja":"キンタマーニ高原","ko":"킨타마니 고원","id":"Dataran tinggi Kintamani"},
       "title": {"zh":"巴图尔日出二选一","en":"Batur Dawn Choice","ja":"バトゥール夜明けの選択","ko":"바투르 일출 선택","id":"Pilihan Fajar Batur"},
-      "summary": {"zh":"徒步看日出或吉普火山地貌二选一，再按体力加入温泉或高地咖啡。","en":"Choose a sunrise hike or a volcano Jeep route, then add a hot spring or highland coffee stop to match your energy.","ja":"日の出登山または火山ジープを選び、体力に合わせて温泉か高原コーヒーを追加。","ko":"일출 하이킹 또는 화산 지프 중 하나를 고르고 온천이나 고지대 커피를 더하세요.","id":"Pilih pendakian matahari terbit atau Jeep vulkanik, lalu tambah pemandian air panas atau kopi dataran tinggi."},
+      "summary": {"zh":"徒步看日出或吉普火山地貌二选一；选择吉普可衔接黑色熔岩原，再按当天状态加入温泉。","en":"Choose a sunrise hike or volcano Jeep route. The Jeep option can continue to the Black Lava field, with a hot spring added to suit the day.","ja":"日の出登山または火山ジープを選択。ジープならブラックラバ地帯へ続け、当日の状態に合わせて温泉を追加できます。","ko":"일출 하이킹 또는 화산 지프 중 하나를 선택합니다. 지프 코스는 블랙 라바 지대로 이어지고, 당일 상태에 따라 온천을 더할 수 있습니다.","id":"Pilih pendakian matahari terbit atau jip vulkanik. Rute jip dapat dilanjutkan ke hamparan Black Lava, lalu tambahkan pemandian air panas sesuai kondisi hari itu."},
       "core": ["mount_batur_trailhead", "mount_batur_jeep"],
       "choice_mode": "one_of",
-      "add_ons": ["batur_hot_springs"],
+      "add_ons": ["batur_black_lava", "batur_hot_springs"],
       "live_checks": ["trailhead_or_operator", "guide_or_driver", "weather_and_volcano", "insurance", "final_price"]
     },
     {

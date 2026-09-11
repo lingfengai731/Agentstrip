@@ -589,3 +589,18 @@ not fail because the path is missing: after launching DevTools, the official CLI
 and reported that **Settings > Security Settings > Service Port** is disabled. The current tool runtime
 cannot toggle that desktop setting. Enable it once, then rerun Preview; Upload, review and release remain
 separate gates.
+
+## 2026-09-11 Mount Batur Black Lava route integration
+
+The isolated `codex/batur-black-lava-20260911` branch adds one canonical area-level
+`batur_black_lava` POI instead of presenting “BLACK LAVA GUNUNG BATUR” and “Black Lava” as duplicate
+bookable venues. R5 day 2 and the Batur Dawn Choice package now make the Black Lava field an optional
+continuation of the Jeep route. Exact access point, road and terrain, weather and volcanic notices,
+operator, local rules and final price remain live checks.
+
+The user-provided `lava stone plant.jpg` is recorded under the existing global image approval policy,
+with SHA-256, original, WebP and mobile thumbnail paths plus five-language title, description and alt
+text. The website, Mini Program, search and Portfolio administrator use refreshed data-manifest cache
+keys. This entry raises the current catalog to 65 non-retired POIs with 65/65 media coverage and 119
+publish-manifest images. These are local integration facts until Git/CI, Render and a fresh Mini Program
+Preview are separately verified.
