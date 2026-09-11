@@ -3,6 +3,12 @@ const app = getApp();
 
 const COPY = require('../../utils/browse-copy.js');
 
+function localizedPoiField(value, lang) {
+  if (!value) return '';
+  if (typeof value === 'string') return value;
+  return value[lang] || value.en || value.zh || '';
+}
+
 Page({
   data: { copy: COPY.zh, loading: true, error: '', place: null, images: [], current: 0, routeId: '' },
 
@@ -51,6 +57,7 @@ Page({
           officialUrl: (poi && poi.official_url) || '',
           bookingUrl: (poi && poi.booking_url) || '',
           verificationStatus: (poi && poi.verification_status) || (selectedAsset && selectedAsset.verificationStatus) || '',
+          supplierNote: poi ? localizedPoiField(poi.supplier_note, lang) : '',
         },
         images,
         current,

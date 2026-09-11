@@ -24,13 +24,39 @@ def main() -> None:
 
     active_pois = {poi["id"] for poi in travel["pois"] if poi.get("verification_status") != "retired"}
     media_by_poi: dict[str, dict] = {}
+    media_count_by_poi: dict[str, int] = {}
     for manifest in (published, supplemental):
         for image in manifest.get("images", []):
             for poi_id in image.get("poi_ids", []):
                 media_by_poi.setdefault(poi_id, image)
+                media_count_by_poi[poi_id] = media_count_by_poi.get(poi_id, 0) + 1
 
     missing = sorted(active_pois - media_by_poi.keys())
     assert not missing, f"POIs without media: {missing}"
+    assert media_count_by_poi.get("mount_batur_jeep", 0) >= 2
+    assert media_count_by_poi.get("batur_hot_springs", 0) >= 2
+    assert media_count_by_poi.get("besakih_temple", 0) >= 4
+    assert media_count_by_poi.get("celuk_silver_class", 0) >= 1
+    assert media_count_by_poi.get("celuk_village", 0) >= 1
+
+    hot_spring_media = [
+        image
+        for image in supplemental.get("images", [])
+        if "batur_hot_springs" in image.get("poi_ids", [])
+    ]
+    hot_spring_media.sort(key=lambda image: image.get("display_priority", 100))
+    assert hot_spring_media[0]["image_url"].endswith("8955be34cbcf96c6.webp")
+    assert all(image.get("media_scope") == "area_context" for image in hot_spring_media)
+
+    r5 = next(route for route in travel["routes"] if route["id"] == "R5")
+    assert r5["free_outline"][0]["suggested_poi_ids"] == ["besakih_temple"]
+    assert r5["free_outline"][1]["suggested_poi_ids"] == ["mount_batur_trailhead", "mount_batur_jeep"]
+    assert r5["free_outline"][2]["suggested_poi_ids"][0] == "batur_hot_springs"
+    assert len({day["suggested_poi_ids"][0] for day in r5["free_outline"][:3]}) == 3
+
+    jeep = next(poi for poi in travel["pois"] if poi["id"] == "mount_batur_jeep")
+    assert jeep["booking_url"] == "https://mountbaturjeeptour.com/"
+    assert set(jeep["supplier_note"]) == {"zh", "en", "ja", "ko", "id"}
 
     allowed_licenses = {"CC0", "CC BY 2.0", "CC BY 3.0", "CC BY 4.0", "CC BY-SA 2.0", "CC BY-SA 3.0", "CC BY-SA 4.0", "Public domain"}
     exact_count = 0
@@ -93,7 +119,8 @@ def main() -> None:
 
     assert len(package_ids) >= 8, "Expected the initial eight-package catalog"
     assert "poi-media-catalog.json" in bali_html
-    assert "poi-media-catalog.json?v=20260901p1" in bali_html
+    assert "poi-media-catalog.json?v=20260911p1" in bali_html
+    assert "bali-travel-data.json?v=20260911p1" in bali_html
     assert "assets/js/bali-packages.js" in bali_html
     assert "bali-packages.js?v=20260901p5" in bali_html
     assert "bali-experience-packages.json" in package_script

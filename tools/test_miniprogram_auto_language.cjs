@@ -3,9 +3,9 @@ const fs = require('node:fs');
 const vm = require('node:vm');
 const path = require('node:path');
 const source = fs.readFileSync(path.join(__dirname, '../miniprogram/app.js'), 'utf8');
-function launch(locale, saved, legacy = false, fail = false) {
+function launch(locale, saved, legacy = false, fail = false, extraStorage = {}) {
   let app;
-  const storage = saved ? { wm_lang: saved } : {};
+  const storage = { ...(saved ? { wm_lang: saved } : {}), ...extraStorage };
   const wx = {
     getStorageSync: key => storage[key], setStorageSync: (key, value) => { storage[key] = value; },
     getAppBaseInfo() { if (legacy || fail) throw Error('unavailable'); return { language: locale }; },
@@ -31,4 +31,10 @@ assert.equal(chosen.storage.wm_lang, 'ja');
 chosen.app.setLang('invalid');
 assert.equal(chosen.storage.wm_lang, 'ja');
 assert.equal(launch('ko', chosen.storage.wm_lang).app.globalData.currentLang, 'ja');
+const staleDestination = launch('zh', undefined, false, false, { wm_dest: 'paris' });
+assert.equal(staleDestination.app.globalData.currentDest, 'bali');
+assert.equal(staleDestination.storage.wm_dest, 'bali');
+staleDestination.app.setDest('kyoto');
+assert.equal(staleDestination.app.globalData.currentDest, 'bali');
+assert.equal(staleDestination.storage.wm_dest, 'bali');
 console.log('Auto language: locale mapping, manual precedence, persistence, legacy fallback and errors passed');

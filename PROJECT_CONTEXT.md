@@ -550,3 +550,20 @@ PR #74 fixed head `b7624a13374790410c68ec386e6bd6d00348ad70` passed both require
 squash merged as `main@56196ff25df2b138d385ccd12da02c844106f503`; the Git trees are identical.
 This is a Mini Program-only repair and requires no Render deployment. The 1,669,670-byte Preview still
 needs owner physical-device acceptance before Upload; no review submission or public release occurred.
+
+## 2026-09-11 Bali-only launch focus and R5 media audit
+
+An isolated branch now limits the Mini Program's public launch surface to Bali while retaining future
+destination definitions for later field-researched products. Stale non-Bali device state is reset to Bali.
+R5 distinctly presents Besakih/Mount Agung highlands, a Mount Batur hike-or-jeep sunrise choice and a
+hot-spring recovery day. Besakih remains in G6 with four approved exact-place images. Batur hiking,
+jeep and hot-spring images no longer make one venue claim for three different contexts; the older
+Toyabungkah image is labelled area context and the Kintamani hot-spring stay is the first reference.
+
+Dicky's CV Bali Jeep Batur/Pak Nanok recommendation is a supplier lead, not a verified partnership.
+Supplier, route, pickup, vehicle, insurance, weather/cancellation and final-price checks remain open.
+POI-level filtering now happens before media deduplication, preserving the shared silver-workshop visual
+for both linked POIs. Nine Mini Program suites pass with 329 contract checks, 64/64 POIs have media,
+and WebKit passes at 390 and 1440 px. This is local evidence pending PR/CI, exact Render deployment and
+a fresh official Preview. Five newly named hike/jeep originals remain unpublished until the owner confirms
+rights for those exact files; no Upload, review submission or public release is claimed.

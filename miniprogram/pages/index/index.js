@@ -25,6 +25,7 @@ Page({
     // 目的地
     destinations: DESTINATIONS,
     currentDest: 'bali',
+    showFutureDestinations: false,
   },
 
   onLoad() {
@@ -44,7 +45,7 @@ Page({
 
   _refreshAuthState() {
     const copy = COPY[app.globalData.currentLang] || COPY.zh;
-    const regions = { bali: 'indonesia', kyoto: 'japan', paris: 'france', santorini: 'greece' };
+    const regions = { bali: 'indonesia' };
     const token = app.globalData.token;
     const user  = app.globalData.user;
     this.setData({
@@ -250,6 +251,7 @@ Page({
   },
 
   customDest() {
+    if (!this.data.showFutureDestinations) return;
     wx.showModal({
       title: this.data.copy.destination,
       confirmText: this.data.copy.confirm, cancelText: this.data.copy.cancel,

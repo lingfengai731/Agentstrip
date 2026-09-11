@@ -23,6 +23,10 @@
         <text wx:if="{{place.routesText}}">{{copy.route}} {{place.routesText}}</text>
       </view>
       <view class="live-note">{{copy.liveNote}}</view>
+      <view wx:if="{{place.supplierNote}}" class="supplier-note">
+        <view class="supplier-note-title">{{copy.localOperator}}</view>
+        <view>{{place.supplierNote}}</view>
+      </view>
     </view>
 
     <view wx:if="{{images.length}}" class="credits-card">

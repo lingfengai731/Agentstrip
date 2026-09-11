@@ -25,7 +25,9 @@ function pageFor(name, lang, api = {}) {
       for (const [,key] of template.matchAll(/copy\.(\w+)/g)) assert.ok(copy[lang][key],`${name}/${lang}/${key}`);
       if (name === 'index') {
         page._refreshAuthState();
+        assert.equal(page.data.destinations.length,1,'only Bali may be public before local research is ready');
         assert.equal(page.data.destinations[0].name,copy[lang].bali);
+        assert.equal(page.data.showFutureDestinations,false);
         page.data.email=''; await page.doAuth(); assert.equal(page.data.authError,copy[lang].required);
         page.data.email='not-email'; await page.sendCode(); assert.equal(page.data.authError,copy[lang].validEmail);
         assert.ok(copy[lang].linkHint.length>30);

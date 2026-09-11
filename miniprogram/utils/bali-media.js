@@ -74,6 +74,7 @@ function normalizeStaticImage(item, source, lang) {
     thumbUrl: absoluteUrl(item.thumbnail_url || item.thumbnail_path || item.web_optimized_path || item.image_url),
     scope: item.media_scope || (array(item.poi_ids).length ? 'exact_place' : 'destination_context'),
     verificationStatus: item.verification_status || item.location_status || '',
+    displayPriority: Number.isFinite(Number(item.display_priority)) ? Number(item.display_priority) : 100,
     rights: normalizeRights(item.rights),
   };
 }
@@ -96,6 +97,7 @@ function normalizePortfolioImage(item, lang) {
     thumbUrl: absoluteUrl(item.thumbnail_url || item.web_url),
     scope: array(item.poi_ids).length ? 'exact_place' : 'destination_context',
     verificationStatus: item.verification_status || '',
+    displayPriority: Number.isFinite(Number(item.display_priority)) ? Number(item.display_priority) : 100,
     rights: { status: 'published', credit: 'WanderMind Portfolio', sourceUrl: '', licenseUrl: '' },
   };
 }
@@ -144,12 +146,13 @@ async function loadBaliMedia(lang = 'zh', refresh = false) {
   const catalogImages = array(catalog.images).map(item => normalizeStaticImage(item, 'catalog', lang));
   const manifestImages = array(manifest.images).map(item => normalizeStaticImage(item, 'manifest', lang));
   const portfolioImages = array(portfolio.assets).map(item => normalizePortfolioImage(item, lang));
-  const allImages = uniqueImages([...catalogImages, ...manifestImages, ...portfolioImages]);
+  const allImageCandidates = [...catalogImages, ...manifestImages, ...portfolioImages];
+  const allImages = uniqueImages(allImageCandidates);
   const imagesByPoi = {};
   pois.forEach(poi => {
-    imagesByPoi[poi.id] = uniqueImages(allImages.filter(image =>
+    imagesByPoi[poi.id] = uniqueImages(allImageCandidates.filter(image =>
       image.poiIds.includes(poi.id) || matchesPoiByName(image, poi)
-    ));
+    )).sort((a, b) => a.displayPriority - b.displayPriority);
   });
 
   const gallery = uniqueImages([
