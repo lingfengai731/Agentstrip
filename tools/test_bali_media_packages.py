@@ -17,6 +17,7 @@ def load_json(relative_path: str) -> dict:
 def main() -> None:
     travel = load_json("assets/data/bali-travel-data.json")
     published = load_json("assets/data/image-publish-manifest.json")
+    rights = load_json("assets/data/image-rights-manifest.json")
     supplemental = load_json("assets/data/poi-media-catalog.json")
     packages = load_json("assets/data/bali-experience-packages.json")
     bali_html = (FRONTEND / "bali.html").read_text(encoding="utf-8")
@@ -33,12 +34,37 @@ def main() -> None:
 
     missing = sorted(active_pois - media_by_poi.keys())
     assert not missing, f"POIs without media: {missing}"
-    assert media_count_by_poi.get("mount_batur_jeep", 0) >= 2
+    assert media_count_by_poi.get("mount_batur_trailhead", 0) >= 4
+    assert media_count_by_poi.get("mount_batur_jeep", 0) >= 4
+    assert media_count_by_poi.get("lovina_dolphin_watching", 0) >= 2
     assert media_count_by_poi.get("batur_hot_springs", 0) >= 2
     assert media_count_by_poi.get("besakih_temple", 0) >= 4
     assert media_count_by_poi.get("celuk_silver_class", 0) >= 1
     assert media_count_by_poi.get("celuk_village", 0) >= 1
     assert media_count_by_poi.get("batur_black_lava", 0) >= 1
+
+    expected_new_hashes = {
+        "97be9dc87a3c259ab620824b397cda5aa2c1463c128c2bc7962ff859f1bb1664",
+        "155eb6c2ac337f9e443c49f8a2f95f825c9171b3bcab30e6a1c7cc7f62c14983",
+        "8ca5792038ec2b661c31637e1bccd6492f29c8be3ee7ef57a6d19bf8ad213ea5",
+        "963b872ed7537877fcf6faf4606d39a75ad89788ef3267d688f3299dbc55591c",
+        "eeef769ff13c994f9e758181aff5587cc1e86b96b320abc503d3f0ccc290ab92",
+        "94b2803f91a8d2d29e505f2ac62c848bda6b1e64ac1835ade08306e8a14b73f2",
+    }
+    published_by_hash = {image.get("sha256"): image for image in published.get("images", [])}
+    rights_by_hash = {asset.get("sha256"): asset for asset in rights.get("assets", [])}
+    assert len(published.get("images", [])) == 125
+    assert len(rights.get("assets", [])) == 125
+    assert expected_new_hashes <= published_by_hash.keys()
+    assert expected_new_hashes <= rights_by_hash.keys()
+    for image_hash in expected_new_hashes:
+        image = published_by_hash[image_hash]
+        asset = rights_by_hash[image_hash]
+        assert image["rights"]["status"] == "user_provided_with_consent"
+        assert asset["publishable"] is True
+        assert set(image["title"]) == {"zh", "en", "ja", "ko", "id"}
+        for image_path in (image["relative_path"], image["web_optimized_path"], image["thumbnail_path"]):
+            assert (FRONTEND / image_path).is_file(), f"Missing approved visual: {image_path}"
 
     hot_spring_media = [
         image
@@ -137,7 +163,7 @@ def main() -> None:
     assert "poi-media-catalog.json" in bali_html
     assert "poi-media-catalog.json?v=20260911p1" in bali_html
     assert "bali-travel-data.json?v=20260911p2" in bali_html
-    assert "image-publish-manifest.json?v=20260911p1" in bali_html
+    assert "image-publish-manifest.json?v=20260911p2" in bali_html
     assert "assets/js/bali-packages.js" in bali_html
     assert "bali-packages.js?v=20260911p1" in bali_html
     assert "bali-experience-packages.json?v=20260911p1" in package_script

@@ -143,7 +143,7 @@ const baliRouteData = () =>
 const baliMediaCatalog = () =>
   _request({ url: '/assets/data/poi-media-catalog.json?v=20260901p1', auth: false });
 const imagePublishManifest = () =>
-  _request({ url: '/assets/data/image-publish-manifest.json?v=20260911p1', auth: false });
+  _request({ url: '/assets/data/image-publish-manifest.json?v=20260911p2', auth: false });
 const publicPortfolio = (destination = 'bali') =>
   _request({ url: `/api/portfolio?destination=${encodeURIComponent(destination)}`, auth: false });
 const createProfessionalRoute = (tripProfile, routeId = '', lang = 'zh', tripId = '') =>

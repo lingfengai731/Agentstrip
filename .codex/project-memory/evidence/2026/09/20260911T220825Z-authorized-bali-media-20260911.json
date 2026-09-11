@@ -1,0 +1,18 @@
+{
+  "schema_version": 1,
+  "evidence_id": "ev-20260911T220825Z-authorized-bali-media-20260911",
+  "task_ref": "authorized-bali-media-20260911",
+  "owner": "codex-sol",
+  "captured_at": "2026-09-11T22:08:25Z",
+  "status": "verified",
+  "claim": "The owner-authorized Mount Batur and Lovina media batch is integrated locally with auditable rights, exact POI linkage, five-language copy, responsive rendering and Mini Program consumption.",
+  "source": {
+    "kind": "mixed",
+    "reference": "Owner authorization on 2026-09-11 plus six local original files and their SHA-256 records"
+  },
+  "verification": {
+    "command": "nine tools/test_miniprogram_*.cjs suites; python tools/test_bali_media_packages.py; node tools/test_bali_browser.cjs with installed Chrome at 320/390/768/1440; node tools/test_bali_media_webkit.cjs at 390/1440; git diff --check; pwsh tools/project-memory.ps1 validate",
+    "result": "Nine Mini Program suites passed with 329 contracts; both manifests contain 125 records, including all six expected hashes and complete original/WebP/thumbnail files; 65/65 POIs remain covered and nine packages validate; Chrome and WebKit responsive suites passed; project memory passed with the expected stale-snapshot warning."
+  },
+  "notes": "Three hiking photos link to mount_batur_trailhead, two Jeep photos to mount_batur_jeep and Lovina dolphin.jpg to lovina_dolphin_watching. service-private-guide.png was already used as a service marketing visual and is not duplicated as a POI image. GitHub, Render and a fresh Mini Program Preview remain separate release states; no Upload, review submission or public release is claimed."
+}

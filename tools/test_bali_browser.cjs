@@ -339,10 +339,9 @@ function check(condition, message) {
       localStorage.setItem('wm_studio_trip_profile', JSON.stringify({ audience:'first', goals:['photo'], travel_style:'comfort', travellers:2, departure_date:'2026-10-01', return_date:'2026-10-08', days:7, currency:'CNY', budget_range:15000, pace:'balanced' }));
     });
     await unlocked.route('**/api/paypal/config', route => route.fulfill({ json:{ enabled:false } }));
-    await unlocked.route('**/api/auth/me', async route => {
-      await new Promise(resolve => setTimeout(resolve, 1500));
-      await route.fulfill({ status:401, json:{ detail:'test token' } });
-    });
+    await unlocked.route('**/api/auth/me', route => route.fulfill({
+      json:{ id:'browser-user', email:'browser@example.test', name:'Browser test' }
+    }));
     const unlockedPayload = {
       ok:true, trip_id:'browser-trip', professional_route_entitlement:true,
       professional_adjustments_remaining:3,
@@ -350,10 +349,11 @@ function check(condition, message) {
       route:{ route_id:'R1', route_name:'First Bali', route_promise:'A clear first trip', recommendation_reason:'Matched to the trip.', days:7, preview_days:7, locked_days:0, unlocked:true,
         days_plan:Array.from({ length:7 }, (_, index) => ({ day:index+1, region_name:'Bali', theme:`Theme ${index+1}`, locked:false, places:[{ name:`Place ${index+1}` }] })) }
     };
-    await unlocked.route('**/api/bali/professional-route**', route => {
-      if (route.request().url().includes('/recent-unlocked')) return route.fulfill({ json:unlockedPayload });
-      return route.fulfill({ status:409, json:{ detail:{ error:'professional_route_adjustment_required' } } });
-    });
+    await unlocked.route(/\/api\/bali\/professional-route\/recent-unlocked(?:\?.*)?$/, route => route.fulfill({ json:unlockedPayload }));
+    await unlocked.route(/\/api\/bali\/professional-route$/, route => route.fulfill({
+      status:409,
+      json:{ detail:{ error:'professional_route_adjustment_required' } }
+    }));
     await unlocked.goto(base + '/bali.html?route=R2#professional-planner', { waitUntil:'domcontentloaded' });
     await unlocked.locator('#bali-professional-edit').waitFor();
     const unlockedCopy = await unlocked.locator('#bali-professional-app').innerText();
