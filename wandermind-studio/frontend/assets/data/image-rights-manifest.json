@@ -2269,6 +2269,26 @@
       "rights_status": "licensed",
       "publishable": true,
       "adaptation_notice": "Resized and compressed to WebP and thumbnail by WanderMind; adaptations are distributed under CC BY-SA 3.0."
+    },
+    {
+      "filename": "lava stone plant.jpg",
+      "original_asset": "assets/images/lava stone plant.jpg",
+      "derived_web_asset": "assets/images/web/a7b2b7c21989ddc7.webp",
+      "derived_thumbnail_asset": "assets/images/thumbs/a7b2b7c21989ddc7.webp",
+      "sha256": "a7b2b7c21989ddc7a49c6017c6cae902a7d8d37b2f0c6191197c3340b462208b",
+      "category": "landscapes",
+      "tags": ["bali", "volcanic-geology", "black-lava", "kintamani"],
+      "poi_ids": ["batur_black_lava"],
+      "source": "user_global_confirmation",
+      "approval_source": "user_global_confirmation",
+      "approval_date": "2026-09-11",
+      "portrait_consent": "not_applicable_no_identifiable_subjects",
+      "usage_permission": "approved",
+      "manual_review": "approved",
+      "rights_status": "user_provided_with_consent",
+      "publishable": true,
+      "notes": "User supplied this exact file and explicitly requested route publication on 2026-09-11 under the existing project image approval policy.",
+      "adaptation_notice": "Resized and compressed to WebP and thumbnail by WanderMind; no other changes."
     }
   ]
 }

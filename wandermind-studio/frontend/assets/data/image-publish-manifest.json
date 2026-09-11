@@ -4698,6 +4698,61 @@
         "attribution_text": "Bair175 · CC BY-SA 3.0 · Wikimedia Commons",
         "adaptation_notice": "Resized and compressed to WebP and thumbnail by WanderMind; adaptations are distributed under CC BY-SA 3.0."
       }
+    },
+    {
+      "relative_path": "assets/images/lava stone plant.jpg",
+      "web_optimized_path": "assets/images/web/a7b2b7c21989ddc7.webp",
+      "thumbnail_path": "assets/images/thumbs/a7b2b7c21989ddc7.webp",
+      "sha256": "a7b2b7c21989ddc7a49c6017c6cae902a7d8d37b2f0c6191197c3340b462208b",
+      "category": "landscapes",
+      "sub_category": "volcanic-geology",
+      "tags": ["black-lava", "volcanic-rock", "geology", "kintamani"],
+      "location_status": "bali_named",
+      "region_ids": ["G6"],
+      "route_ids": ["R5"],
+      "poi_ids": ["batur_black_lava"],
+      "intended_use": "Batur route and batur_black_lava place picker",
+      "destination": "bali",
+      "primary_theme": "landscapes",
+      "region": "G6",
+      "area": "Kintamani",
+      "place_name": "Mount Batur Black Lava Field",
+      "place_type": "volcanic_geosite",
+      "prominence": "signature",
+      "extension_ids": [],
+      "mood": "elemental",
+      "photography_style": "close-up geological documentary",
+      "verification_status": "route-linked",
+      "title": {
+        "zh": "巴杜尔黑色熔岩原",
+        "en": "Mount Batur Black Lava Field",
+        "ja": "バトゥール山ブラックラバ地帯",
+        "ko": "바투르산 블랙 라바 지대",
+        "id": "Hamparan Black Lava Gunung Batur"
+      },
+      "description": {
+        "zh": "黑色火山岩与新生植物形成强烈对比；具体入口、路况、天气与火山提示由司机或运营方当天确认。",
+        "en": "Dark volcanic rock and new plant growth meet in one frame; confirm the access point, road, weather and volcanic notices with the driver or operator that day.",
+        "ja": "黒い火山岩と芽吹く植物が対照をなす場所です。入口、道路状況、天候、火山情報は当日にドライバーまたは運行会社へ確認してください。",
+        "ko": "검은 화산암과 새로 자란 식물이 선명한 대비를 이룹니다. 정확한 진입로, 도로 상태, 날씨, 화산 안내는 당일 기사나 운영사에 확인하세요.",
+        "id": "Batuan vulkanik hitam dan tumbuhan baru membentuk kontras yang kuat; pastikan titik akses, kondisi jalan, cuaca, dan pemberitahuan gunung api kepada pengemudi atau operator pada hari kunjungan."
+      },
+      "alt_text": {
+        "zh": "巴杜尔黑色熔岩原的火山岩与植物近景",
+        "en": "Close view of volcanic rock and plant growth in the Mount Batur Black Lava field",
+        "ja": "バトゥール山ブラックラバ地帯の火山岩と植物の近景",
+        "ko": "바투르산 블랙 라바 지대의 화산암과 식물 근접 모습",
+        "id": "Tampak dekat batuan vulkanik dan tumbuhan di hamparan Black Lava Gunung Batur"
+      },
+      "rights": {
+        "status": "user_provided_with_consent",
+        "source_url": "",
+        "license_or_owner": "WanderMind user global confirmation",
+        "approval_source": "user_global_confirmation",
+        "approval_date": "2026-09-11",
+        "attribution_text": "",
+        "adaptation_notice": "Resized and compressed to WebP and thumbnail by WanderMind; no other changes."
+      }
     }
   ]
 }

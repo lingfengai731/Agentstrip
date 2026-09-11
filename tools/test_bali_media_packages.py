@@ -38,6 +38,7 @@ def main() -> None:
     assert media_count_by_poi.get("besakih_temple", 0) >= 4
     assert media_count_by_poi.get("celuk_silver_class", 0) >= 1
     assert media_count_by_poi.get("celuk_village", 0) >= 1
+    assert media_count_by_poi.get("batur_black_lava", 0) >= 1
 
     hot_spring_media = [
         image
@@ -50,13 +51,26 @@ def main() -> None:
 
     r5 = next(route for route in travel["routes"] if route["id"] == "R5")
     assert r5["free_outline"][0]["suggested_poi_ids"] == ["besakih_temple"]
-    assert r5["free_outline"][1]["suggested_poi_ids"] == ["mount_batur_trailhead", "mount_batur_jeep"]
+    assert r5["free_outline"][1]["suggested_poi_ids"] == ["mount_batur_trailhead", "mount_batur_jeep", "batur_black_lava"]
     assert r5["free_outline"][2]["suggested_poi_ids"][0] == "batur_hot_springs"
     assert len({day["suggested_poi_ids"][0] for day in r5["free_outline"][:3]}) == 3
 
     jeep = next(poi for poi in travel["pois"] if poi["id"] == "mount_batur_jeep")
     assert jeep["booking_url"] == "https://mountbaturjeeptour.com/"
     assert set(jeep["supplier_note"]) == {"zh", "en", "ja", "ko", "id"}
+
+    black_lava = next(poi for poi in travel["pois"] if poi["id"] == "batur_black_lava")
+    assert black_lava["verification_status"] == "verified"
+    assert set(black_lava["name_i18n"]) == {"zh", "en", "ja", "ko", "id"}
+    black_lava_image = next(
+        image for image in published["images"]
+        if "batur_black_lava" in image.get("poi_ids", [])
+    )
+    assert black_lava_image["sha256"] == "a7b2b7c21989ddc7a49c6017c6cae902a7d8d37b2f0c6191197c3340b462208b"
+    assert black_lava_image["rights"]["status"] == "user_provided_with_consent"
+    assert set(black_lava_image["title"]) == {"zh", "en", "ja", "ko", "id"}
+    for image_path in (black_lava_image["web_optimized_path"], black_lava_image["thumbnail_path"]):
+        assert (FRONTEND / image_path).is_file(), f"Missing Black Lava visual: {image_path}"
 
     allowed_licenses = {"CC0", "CC BY 2.0", "CC BY 3.0", "CC BY 4.0", "CC BY-SA 2.0", "CC BY-SA 3.0", "CC BY-SA 4.0", "Public domain"}
     exact_count = 0
@@ -116,13 +130,17 @@ def main() -> None:
     assert all(not item.get("published_price") for item in penida_packages if item["id"] != "penida-west-one-day")
     assert "north-bali-lovina-overnight" in package_ids
     assert {"lovina_beach", "lovina_dolphin_watching"} <= active_pois
+    batur_package = next(item for item in packages["packages"] if item["id"] == "batur-dawn-choice")
+    assert "batur_black_lava" in batur_package["add_ons"]
 
     assert len(package_ids) >= 8, "Expected the initial eight-package catalog"
     assert "poi-media-catalog.json" in bali_html
     assert "poi-media-catalog.json?v=20260911p1" in bali_html
-    assert "bali-travel-data.json?v=20260911p1" in bali_html
+    assert "bali-travel-data.json?v=20260911p2" in bali_html
+    assert "image-publish-manifest.json?v=20260911p1" in bali_html
     assert "assets/js/bali-packages.js" in bali_html
-    assert "bali-packages.js?v=20260901p5" in bali_html
+    assert "bali-packages.js?v=20260911p1" in bali_html
+    assert "bali-experience-packages.json?v=20260911p1" in package_script
     assert "bali-experience-packages.json" in package_script
     assert "renderSchedule(item, c)" in package_script
     assert "该地点照片尚未接入" not in bali_html
