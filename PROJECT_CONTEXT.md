@@ -543,3 +543,10 @@ or alt text the traveller-facing fallback for zh, ja, ko and id; raw English not
 All 37 public-route POIs have five-language media copy, nine Mini suites pass with 328 contract checks,
 and the official DevTools CLI compiled a 1,669,670-byte Preview. Integration and owner physical acceptance
 remain pending; no Upload, review submission, public release or production mutation is claimed.
+
+## 2026-09-11 Mini Program place-detail language integration
+
+PR #74 fixed head `b7624a13374790410c68ec386e6bd6d00348ad70` passed both required checks and
+squash merged as `main@56196ff25df2b138d385ccd12da02c844106f503`; the Git trees are identical.
+This is a Mini Program-only repair and requires no Render deployment. The 1,669,670-byte Preview still
+needs owner physical-device acceptance before Upload; no review submission or public release occurred.

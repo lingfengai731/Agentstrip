@@ -1,11 +1,11 @@
 {
   "schema_version": 1,
-  "checkpoint_revision": 24,
+  "checkpoint_revision": 25,
   "previous_checkpoint_sha256": "C7DFDFAA1F117DCC1C31EECFF429A470FD56A67472AE11629AB4A3D8AD2DAE15",
   "run_id": "20260911-preupload-customer-audit",
   "objective": "Audit and repair website and Mini Program customer journeys before the next Mini Program Upload",
   "status": "active",
-  "phase": "place_i18n_locally_verified_pending_integration",
+  "phase": "place_i18n_merged_pending_owner_preview",
   "baseline": {
     "cwd": "E:\\Agentstrip-worktrees\\active\\account1\\preupload-customer-audit-20260911",
     "worktree": "E:\\Agentstrip-worktrees\\active\\account1\\preupload-customer-audit-20260911",
@@ -26,9 +26,10 @@
     "Fresh production health probes and all five customer-flow suites pass",
     "Chinese, Japanese, Korean and Indonesian place details no longer expose English-only POI verification notes",
     "All 37 R1-R6 public-route POIs have five-language media copy; nine Mini suites pass with 328 contracts",
-    "Official place-language repair Preview compiled to 1669670 bytes"
+    "Official place-language repair Preview compiled to 1669670 bytes",
+    "PR74 fixed head b7624a1 passed both required checks and squash merged as main@56196ff with an identical Git tree"
   ],
-  "current_step": "Integrate the fixed place-language branch, then obtain owner physical-device acceptance before any separately authorized Upload",
+  "current_step": "Obtain owner physical-device acceptance of localized place details before any separately authorized Upload",
   "workers": [
     {
       "agent_id": null,
@@ -50,7 +51,6 @@
   ],
   "unverified": [
     "Automatic Mini Program language selection on a fresh device remains uncertain from owner wording",
-    "GitHub CI and merge for the place-detail language repair",
     "Owner physical-device acceptance of the newly compiled place-language Preview",
     "Mini Program next Upload, review submission, and public release"
   ],
@@ -67,11 +67,11 @@
     }
   ],
   "next_action": {
-    "action_id": "integrate-mini-place-i18n",
-    "description": "Commit and push the verified place-language repair, pass fixed-head CI, merge it, then obtain owner Preview acceptance before Upload",
-    "external_effect": true,
-    "effect_key": "github-pr-mini-place-i18n",
+    "action_id": "owner-accept-mini-place-i18n-preview",
+    "description": "Owner checks Chinese descriptions for Ubud Palace and one additional R1-R6 place in the integrated Preview before Upload",
+    "external_effect": false,
+    "effect_key": "miniprogram-place-i18n-preview-acceptance",
     "authority_confirmed": true
   },
-  "updated_at_utc": "2026-09-11T08:35:33Z"
+  "updated_at_utc": "2026-09-11T08:39:17Z"
 }
