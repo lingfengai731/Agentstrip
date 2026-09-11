@@ -604,3 +604,16 @@ text. The website, Mini Program, search and Portfolio administrator use refreshe
 keys. This entry raises the current catalog to 65 non-retired POIs with 65/65 media coverage and 119
 publish-manifest images. These are local integration facts until Git/CI, Render and a fresh Mini Program
 Preview are separately verified.
+
+### Black Lava production callback
+
+PR #79 fixed head `879c2b246bcc05f66f2d0cbfdcec8ad7606202c0` passed Project memory and Mini
+Program CI, then squash merged as `main@d895775030fb91f32d1f824c5c75a2dec615b4de`; the fixed-head
+and merged Git trees are identical. Render deploy `dep-dai0a41srm7s73dc80pg` is Live at that exact
+merge commit. Fresh production probes returned 200 for `/healthz`, `/bali.html` and the controlled
+Black Lava WebP. Production data contains the verified `batur_black_lava` POI, R5 day-2 linkage,
+Batur package add-on and cache marker `20260911p2`.
+
+The official WeChat DevTools Preview compiled successfully from the integrated source at 1,661,862
+bytes and produced a new QR image. This is Preview evidence only; no Upload, review submission or
+public Mini Program release occurred.
