@@ -495,3 +495,16 @@ diff checks and an official 1,578,889-byte Preview passed. Full-page localizatio
 mobile visual acceptance remain open; Computer Use could not initialize its runtime dependency.
 This changes Mini Program JavaScript only, with no backend deployment requirement. Preview is
 not development Upload, review submission or public release. See the 20260909T123126Z handoff.
+
+## 2026-09-11 Mini Program localization integration
+
+PR #70 fixed head `007c406a8b72b9199142f561857f9771851ca03b` passed both Mini Program
+checks and project-memory validation, then squash merged as
+`main@865e374d389d17e6f923ccda21a4558c1a482682`. Both Git trees equal
+`2d91c1fa48f92f5da8ff9fdf8bf296191d7ecc3f`.
+
+Five-language interface behavior, automatic/manual language handling, account-private drafts and
+preferences, stale-session guards, measured touch targets and narrow-phone layouts are integrated.
+The official DevTools CLI rebuilt a fresh Preview at 1,662,338 bytes. Physical-device acceptance is
+still pending; Preview is not Upload, review submission or public release. This slice contains no
+website/backend change and requires no Render deployment.

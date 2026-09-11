@@ -630,3 +630,10 @@
 - Formal Luna worker 01a08a20-2133-7bd0-9d4d-5dedbd0f1d78 used an isolated mini-driver-language-20260910 worktree and errored at quota. Its partial driver/copy/estimate files were reviewed, repaired and integrated by the parent; no independent Luna approval is claimed and the partial worktree is preserved.
 - Acceptance: nine Mini suites pass, including 315 contracts; frozen 50-row native matrix found one 41px retry control, repaired and followed by 20 passing native callback cases. Twelve screenshots captured; Preview 1662338 bytes. Parent retained integration and release judgment.
 - Boundary: guest/public native checks only; no driver request, payment order, production mutation, Mini Upload/review/public release. Git integration follows the exact-head PR callback, not this pre-commit statement.
+
+## 2026-09-11 Mini localization PR70 integration callback
+
+- GitHub callback: PR #70 fixed head `007c406` passed Mini Program checks and project-memory validation, then squash merged as `main@865e374`; both Git trees equal `2d91c1f`.
+- Preview callback: the official DevTools CLI generated a fresh 1,662,338-byte Preview from the merge-equivalent tree. Owner physical-device acceptance remains pending.
+- Worker callback: the previous Luna worker remains `errored`; its accepted partial output was repaired and independently validated by the parent before PR70. It was not redispatched.
+- Release boundary: no website/backend change, Render deployment, Mini Program Upload, review submission, public release, live payment or driver message occurred.
