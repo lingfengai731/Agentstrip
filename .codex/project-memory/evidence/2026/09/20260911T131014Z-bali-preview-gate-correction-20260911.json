@@ -1,0 +1,18 @@
+{
+  "schema_version": 1,
+  "evidence_id": "ev-20260911T131014Z-bali-preview-gate-correction-20260911",
+  "task_ref": "bali-preview-gate-correction-20260911",
+  "owner": "codex-sol",
+  "captured_at": "2026-09-11T13:10:14Z",
+  "status": "verified",
+  "claim": "The final Mini Program Preview gate is the disabled WeChat DevTools service port, not a missing installation or source failure.",
+  "source": {
+    "kind": "tool",
+    "reference": "desktop shortcut target E:/微信web开发者工具/微信开发者工具.exe and official wechatidecli.cmd output"
+  },
+  "verification": {
+    "command": "resolve the desktop shortcut; launch DevTools with the project; run wechatidecli.cmd preview",
+    "result": "The executable, cli.bat and wechatidecli.cmd exist and DevTools processes launched. The CLI then reported IDE service port disabled and instructed enabling Settings > Security Settings > Service Port."
+  },
+  "notes": "This corrects the earlier path-missing diagnosis. Source tests, CI, merge and website production deployment remain verified. No final Preview, Upload, review submission or public Mini Program release is claimed."
+}
