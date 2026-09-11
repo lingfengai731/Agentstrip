@@ -1,68 +1,17 @@
 {
   "schema_version": 1,
-  "checkpoint_revision": 20,
-  "previous_checkpoint_sha256": "7C975B425D874C57730B14D4C47DC93D702AD021BB97D9DFDF0E9564378473CD",
+  "checkpoint_revision": 21,
+  "previous_checkpoint_sha256": "C4B11871779FA1B1A5ABB9BBB31326F783B53BE69CCFDD076AEC20DC659EDA29",
   "run_id": "20260910-mini-ui-continuation",
   "objective": "Verify and preserve Mini Program UI and language-page changes",
   "status": "active",
-  "phase": "verified_commit_and_pr",
+  "phase": "merged_pending_physical_preview",
   "baseline": {
     "cwd": "E:\\Agentstrip-worktrees\\active\\account1\\miniprogram-ui-languages-20260909",
     "worktree": "E:\\Agentstrip-worktrees\\active\\account1\\miniprogram-ui-languages-20260909",
     "branch": "codex/miniprogram-ui-languages-20260909",
-    "head": "7e663fcbec289a3c731f5dac59cdb9b819042fed",
-    "dirty_allowlist": [
-      ".codex/project-memory/evidence/2026/09/20260911-mini-native-localization.md",
-      ".codex/project-memory/handoffs/2026/09/20260911-mini-native-localization.md",
-      ".github/workflows/miniprogram-checks.yml",
-      "miniprogram/pages/chat/copy.js",
-      "miniprogram/pages/compare/copy.js",
-      "miniprogram/pages/driver/copy.js",
-      "miniprogram/pages/index/copy.js",
-      "miniprogram/pages/itinerary/copy.js",
-      "miniprogram/pages/prefs/copy.js",
-      "miniprogram/utils/browse-copy.js",
-      "miniprogram/utils/error-copy.js",
-      "tools/test_miniprogram_api_sessions.cjs",
-      "tools/test_miniprogram_entry_languages.cjs",
-      "tools/test_miniprogram_support_languages.cjs",
-      ".codex/project-memory/current-state.json",
-      ".codex/role-windows.md",
-      ".codex/run-state/CURRENT.json",
-      "PROJECT_CONTEXT.md",
-      "miniprogram/app.js",
-      "miniprogram/pages/chat/chat.js",
-      "miniprogram/pages/chat/chat.wxml",
-      "miniprogram/pages/chat/chat.wxss",
-      "miniprogram/pages/compare/compare.js",
-      "miniprogram/pages/compare/compare.wxml",
-      "miniprogram/pages/driver/driver.js",
-      "miniprogram/pages/driver/driver.wxml",
-      "miniprogram/pages/driver/driver.wxss",
-      "miniprogram/pages/gallery/gallery.js",
-      "miniprogram/pages/gallery/gallery.wxml",
-      "miniprogram/pages/gallery/gallery.wxss",
-      "miniprogram/pages/history/history.js",
-      "miniprogram/pages/history/history.wxml",
-      "miniprogram/pages/history/history.wxss",
-      "miniprogram/pages/index/index.js",
-      "miniprogram/pages/index/index.wxml",
-      "miniprogram/pages/index/index.wxss",
-      "miniprogram/pages/itinerary/itinerary.js",
-      "miniprogram/pages/itinerary/itinerary.wxml",
-      "miniprogram/pages/itinerary/itinerary.wxss",
-      "miniprogram/pages/place/place.js",
-      "miniprogram/pages/place/place.wxml",
-      "miniprogram/pages/place/place.wxss",
-      "miniprogram/pages/planner/planner.wxss",
-      "miniprogram/pages/prefs/prefs.js",
-      "miniprogram/pages/prefs/prefs.wxml",
-      "miniprogram/pages/prefs/prefs.wxss",
-      "miniprogram/utils/api.js",
-      "miniprogram/utils/driver-estimate.js",
-      "tools/test_miniprogram_contract.cjs",
-      "tools/test_miniprogram_recovery.cjs"
-    ]
+    "head": "007c406a8b72b9199142f561857f9771851ca03b",
+    "dirty_allowlist": []
   },
   "completed": [
     "Recovered exact six-file cutoff; PR69 already merged",
@@ -74,9 +23,10 @@
     "First native pass detected small/default-width buttons; CSS corrected; first matrix invalid due hot reload",
     "Frozen native matrix: 50 rows, 180 buttons, zero exceptions; place 41px retry repaired",
     "20 native callback/repair cases passed; 12 screenshots captured and inspected; final Preview 1662338 bytes",
-    "Final three stale-session busy/error callback tests added; nine suites pass after repair"
+    "Final three stale-session busy/error callback tests added; nine suites pass after repair",
+    "PR70 fixed head 007c406 passed Mini Program and project-memory CI and squash merged as main 865e374 with identical Git tree"
   ],
-  "current_step": "Commit the verified Mini-only batch and project evidence; then push/open PR",
+  "current_step": "Generate a fresh official Preview from the PR70 merge-equivalent tree for owner physical-device acceptance",
   "workers": [
     {
       "agent_id": "01a08a20-2133-7bd0-9d4d-5dedbd0f1d78",
@@ -85,6 +35,8 @@
       "reasoning_effort": "max",
       "goal": "Driver page five-language localization in isolated mini-driver-language-20260910 worktree",
       "status": "errored",
+      "started_at_utc": null,
+      "last_observed_at_utc": "2026-09-11T06:45:33.2308538Z",
       "evidence": null
     }
   ],
@@ -92,11 +44,11 @@
     ".codex/project-memory/evidence/2026/09/20260910T011200Z-mini-ui.md",
     ".codex/project-memory/handoffs/2026/09/20260910T012200Z-planner-languages.md",
     ".codex/project-memory/handoffs/2026/09/20260910-auto-language-audit.md",
-    ".codex/project-memory/evidence/2026/09/20260911-mini-native-localization.md"
+    ".codex/project-memory/evidence/2026/09/20260911-mini-native-localization.md",
+    "github:pull/70#007c406a8b72b9199142f561857f9771851ca03b"
   ],
   "unverified": [
-    "Git commit/push/PR integration",
-    "Physical iOS/Android acceptance",
+    "Physical iOS/Android acceptance of the PR70 Preview",
     "Mini Program Upload/review/public release"
   ],
   "do_not_repeat": [
@@ -109,14 +61,19 @@
       "action_id": "duplicate-upload-miniprogram-1.0.0",
       "reason": "Existing development upload; Preview only this slice",
       "evidence": ".codex/project-memory/handoffs/2026/09/20260910T011200Z-mini-ui.md"
+    },
+    {
+      "action_id": "merge-pr70-fixed-head",
+      "reason": "PR70 fixed head passed both CI checks and was squash merged with identical Git tree",
+      "evidence": ".codex/project-memory/evidence/2026/09/20260911-mini-native-localization.md"
     }
   ],
   "next_action": {
-    "action_id": "commit-mini-native-20260911",
-    "description": "Stage only the exact verified allowlist and commit the Mini Program code, CI and evidence",
+    "action_id": "preview-pr70-physical-acceptance",
+    "description": "Generate a fresh official WeChat DevTools Preview QR from the merge-equivalent Mini Program tree",
     "external_effect": false,
     "effect_key": null,
     "authority_confirmed": false
   },
-  "updated_at_utc": "2026-09-11T06:31:07.4552881Z"
+  "updated_at_utc": "2026-09-11T06:46:13.0406822Z"
 }
