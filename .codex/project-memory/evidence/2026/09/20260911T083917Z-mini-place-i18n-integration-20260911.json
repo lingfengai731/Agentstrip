@@ -1,0 +1,18 @@
+{
+  "schema_version": 1,
+  "evidence_id": "ev-20260911T083917Z-mini-place-i18n-integration-20260911",
+  "task_ref": "mini-place-i18n-20260911",
+  "owner": "account1-main",
+  "captured_at": "2026-09-11T08:39:17Z",
+  "status": "verified",
+  "claim": "PR #74 fixed head b7624a1 passed both required checks and squash merged as main@56196ff with an identical Git tree. The Mini Program place-language repair is integrated; the 1669670-byte Preview still requires owner physical-device acceptance before Upload.",
+  "source": {
+    "kind": "git",
+    "reference": "github:pull/74#b7624a13374790410c68ec386e6bd6d00348ad70; github:commit/56196ff25df2b138d385ccd12da02c844106f503"
+  },
+  "verification": {
+    "command": "GitHub check-runs for fixed head; git tree comparison",
+    "result": "validate=success; contracts-and-recovery=success; fixed-head tree equals squash-merge tree"
+  },
+  "notes": "Mini Program-only integration. Render deployment is not required. No Upload, review submission, public release, payment, driver email or production data mutation occurred."
+}

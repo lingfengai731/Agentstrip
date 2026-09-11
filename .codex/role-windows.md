@@ -658,3 +658,8 @@
 - Root cause: English-only POI verification notes were used as the universal traveller description fallback.
 - Repair and QA: non-English pages now prefer approved localized media copy; all 37 R1–R6 POIs have five-language coverage; nine suites pass with 328 contracts; Preview is 1,669,670 bytes.
 - Boundary: no Upload, review submission, public release, website/backend deployment, payment, driver email or production data mutation.
+
+## 2026-09-11 Place-detail language integration callback
+
+- PR #74 fixed head `b7624a1` passed both required checks and squash merged as `main@56196ff`; Git trees are identical.
+- Mini Program-only integration requires no Render deployment. The 1,669,670-byte Preview remains pending owner acceptance before Upload.
