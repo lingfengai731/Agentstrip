@@ -146,6 +146,7 @@ check(itinerary.includes('openGallery()') && homeView.includes('bindtap="openGal
 check(gallery.includes('loadBaliMedia') && gallery.includes('openAsset(e)'), 'gallery must load shared media and open a detail');
 check(read('miniprogram/pages/gallery/gallery.wxml').includes('{{copy.saveHint}}') && require('../miniprogram/utils/browse-copy.js').zh.saveHint.includes('长按图片可保存') && read('miniprogram/pages/gallery/gallery.wxml').includes('{{visibleCount}}'), 'gallery must explain saving and expose the visible image count');
 check(place.includes('imagesByPoi') && place.includes('onSlide(e)'), 'place detail must expose the full multi-image set');
+check(place.includes("lang === 'en' && poi ? poi.notes : ''") && place.includes('primaryImage.description || primaryImage.alt'), 'place detail must not leak English verification notes into non-English UI');
 check(read('miniprogram/pages/place/place.wxml').includes('<swiper'), 'place detail must use a native image swiper');
 check(gallery.includes('markImageFailed(e)') && place.includes('markImageFailed(e)'), 'remote image failures must have visible fallbacks');
 const publicRoutePoiIds = new Set(
@@ -159,6 +160,17 @@ check(
   [...publicRoutePoiIds].every(poiId => staticMediaPoiIds.has(poiId)),
   'every POI used by a public Bali route must have static media before dynamic Portfolio is loaded'
 );
+for (const lang of ['zh', 'en', 'ja', 'ko', 'id']) {
+  check(
+    [...publicRoutePoiIds].every(poiId =>
+      [...(poiMediaCatalog.images || []), ...(imagePublishManifest.images || [])].some(image =>
+        (image.poi_ids || []).includes(poiId) &&
+        ((image.description && image.description[lang]) || (image.alt_text && image.alt_text[lang]))
+      )
+    ),
+    `every public-route POI must have ${lang} media copy for the place detail fallback`
+  );
+}
 const websiteGalleryBlock = baliMedia.match(/EXISTING_WEBSITE_GALLERY\s*=\s*new Set\(\[([\s\S]*?)\]\)/);
 const websiteGalleryHashes = websiteGalleryBlock ? [...websiteGalleryBlock[1].matchAll(/'([0-9a-f]{16})'/g)].map(match => match[1]) : [];
 const manifestHashPrefixes = new Set((imagePublishManifest.images || []).map(image => String(image.sha256 || '').slice(0, 16)));

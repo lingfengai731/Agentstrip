@@ -534,3 +534,12 @@ health, home, Bali, AI Tool and Contact probes returned 200, and all five custom
 The final Mini Program Preview remains 1,669,318 bytes and still requires owner physical-device
 acceptance. No new Upload, review submission, public release, real payment, driver email or production
 data mutation occurred.
+
+## 2026-09-11 Mini Program place-detail language repair
+
+The physical Preview exposed one remaining localization defect: Chinese place details could display the
+English-only POI verification notes. The isolated repair makes approved localized media title, description
+or alt text the traveller-facing fallback for zh, ja, ko and id; raw English notes remain English-only.
+All 37 public-route POIs have five-language media copy, nine Mini suites pass with 328 contract checks,
+and the official DevTools CLI compiled a 1,669,670-byte Preview. Integration and owner physical acceptance
+remain pending; no Upload, review submission, public release or production mutation is claimed.

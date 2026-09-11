@@ -2,15 +2,15 @@
   "schema_version": 1,
   "project": "Agentstrip / WanderMind",
   "latest_task": {
-    "captured_at": "2026-09-11T08:21:16Z",
-    "scope": "Website and Mini Program Upload-preparation customer audit, copy clarity, destination integrity, touch and accessibility repair",
-    "branch": "main",
-    "implementation_baseline": "9f9a8161a5e272a8b3586a8b361885962964bba0",
-    "status": "merged_and_website_deployed_pending_owner_preview",
-    "evidence": ".codex/project-memory/evidence/2026/09/20260911T082116Z-preupload-customer-audit-production-20260911.json",
-    "handoff": ".codex/project-memory/handoffs/2026/09/20260911T082116Z-preupload-customer-audit-production-20260911.md",
-    "preview_bytes": 1669318,
-    "not_claimed": "No new Mini Program Upload, review, public release, real payment, driver email or production data mutation is claimed; owner physical-device Preview acceptance is pending"
+    "captured_at": "2026-09-11T08:35:33Z",
+    "scope": "Mini Program public-route place-detail language fallback repair",
+    "branch": "codex/mini-place-i18n-20260911",
+    "implementation_baseline": "cb2e9390944c890ae1e09653d6bc322d6988162e",
+    "status": "locally_verified_pending_integration_and_owner_preview",
+    "evidence": ".codex/project-memory/evidence/2026/09/20260911T083533Z-mini-place-i18n-20260911.json",
+    "handoff": ".codex/project-memory/handoffs/2026/09/20260911T083533Z-mini-place-i18n-20260911.md",
+    "preview_bytes": 1669670,
+    "not_claimed": "No integration, Mini Program Upload, review submission, public release, website/backend deployment, payment, driver email or production data mutation is claimed"
   },
   "authority": {
     "repository": "https://github.com/lingfengai731/Agentstrip.git",

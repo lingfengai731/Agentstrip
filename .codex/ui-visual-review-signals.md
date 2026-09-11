@@ -209,3 +209,16 @@ rejected aspects: 未提出
 reason in reviewer words: 我看了预览，完成的还是可以的 很简洁
 scope: this surface
 recorded at: 2026-09-10
+
+workflow: ui-implementation-workflow-v2
+status: raw
+task: 小程序地点与景色详情语言一致性
+page/surface: WanderMind 智旅小程序公共路线地点详情
+screenshot or artifact: 2026-09-11 用户真机 Preview 中的 Ubud Palace 详情
+reviewer: 用户
+decision: rejected
+accepted aspects: 中文界面下路线与景色详情能够正常打开
+rejected aspects: 不接受中文界面中的地点介绍继续显示英文核验说明
+reason in reviewer words: 地点与景色中文背景下点开 R1、R2、R3 等路线里的看景色，仍然是英文介绍
+scope: this project
+recorded at: 2026-09-11

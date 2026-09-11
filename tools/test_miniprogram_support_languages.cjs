@@ -64,6 +64,15 @@ function parity(file,pages){
  const place=page('place','ja',{loadBaliMedia:async()=>({allImages:[],poiById:{}})});
  place.p.onLoad();await place.p.loadPlace();assert.equal(place.p.data.error,place.p.data.copy.notFound);
  place.p.copyLink({currentTarget:{dataset:{value:'https://example.com'}}});assert.equal(place.toasts.at(-1).title,place.p.data.copy.copyFailed);
+ const localizedPlace=page('place','zh',{loadBaliMedia:async()=>({
+  allImages:[{key:'ubud-photo',title:'乌布皇宫',description:'乌布中心的传统宫殿建筑，开放区域和演出时间请实时确认。',alt:'乌布皇宫传统建筑'}],
+  poiById:{ubud_palace:{id:'ubud_palace',displayName:'Ubud Palace',notes:'English verification notes must not leak into Chinese.',route_ids:['R1']}},
+  imagesByPoi:{ubud_palace:[{key:'ubud-photo',title:'乌布皇宫',description:'乌布中心的传统宫殿建筑，开放区域和演出时间请实时确认。',alt:'乌布皇宫传统建筑'}]},
+ })});
+ localizedPlace.p.onLoad({id:'ubud_palace',routeId:'R1'});await localizedPlace.p.loadPlace();
+ assert.equal(localizedPlace.p.data.place.title,'乌布皇宫');
+ assert.equal(localizedPlace.p.data.place.description,'乌布中心的传统宫殿建筑，开放区域和演出时间请实时确认。');
+ assert.ok(!localizedPlace.p.data.place.description.includes('English verification notes'));
  let resolvePrefs;
  const prefs=page('prefs','id',{getPrefs:()=>new Promise(r=>resolvePrefs=r),savePrefs:async()=>{throw new Error('offline');}});
  prefs.p.onLoad();prefs.p.onShow();prefs.p.onNotesChange({detail:{value:'new input'}});
