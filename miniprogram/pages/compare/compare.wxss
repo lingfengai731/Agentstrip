@@ -111,6 +111,9 @@
   letter-spacing: .5rpx;
 }
 .picker-display {
+  display: flex;
+  min-height: 44px;
+  align-items: center;
   font-size: 28rpx;
   color: #2A2723;
   font-weight: 600;

@@ -49,7 +49,7 @@
       <view class="field flex-1">
         <view class="field-label">{{copy.people}}</view>
         <picker mode="selector" range="{{adultsRange}}" value="{{hotelAdultsIdx}}" bindchange="onHotelAdults">
-          <view class="picker-display">{{hotelAdultsIdx + 1}} {{copy.person}}</view>
+          <view class="picker-display">{{hotelAdultsIdx + 1}} {{hotelAdultsIdx === 0 ? copy.personOne : copy.person}}</view>
         </picker>
       </view>
     </view>
@@ -129,7 +129,7 @@
       <view wx:else class="field">
         <view class="field-label">{{copy.people}}</view>
         <picker mode="selector" range="{{adultsRange}}" value="{{flightAdultsIdx}}" bindchange="onFlightAdults">
-          <view class="picker-display">{{flightAdultsIdx + 1}} {{copy.person}}</view>
+          <view class="picker-display">{{flightAdultsIdx + 1}} {{flightAdultsIdx === 0 ? copy.personOne : copy.person}}</view>
         </picker>
       </view>
     </view>
@@ -137,7 +137,7 @@
       <view class="field flex-1">
         <view class="field-label">{{copy.people}}</view>
         <picker mode="selector" range="{{adultsRange}}" value="{{flightAdultsIdx}}" bindchange="onFlightAdults">
-          <view class="picker-display">{{flightAdultsIdx + 1}} {{copy.person}}</view>
+          <view class="picker-display">{{flightAdultsIdx + 1}} {{flightAdultsIdx === 0 ? copy.personOne : copy.person}}</view>
         </picker>
       </view>
     </view>

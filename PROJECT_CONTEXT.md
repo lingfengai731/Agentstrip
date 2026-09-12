@@ -659,3 +659,15 @@ This Mini Program-only source change does not require a backend release. The Ren
 on the last application-affecting exact Live commit `b3c7504`. DevTools service port 9420 is open, but the
 account session requires a fresh user scan before native screenshots and official Preview compilation. No
 Upload, review submission or public Mini Program release is claimed.
+
+## 2026-09-12 Native navigation acceptance callback
+
+The DevTools login gate is cleared: official islogin returned true and automation connected
+through HTTP9420 / WebSocket9421. PR82/83 navigation and original icons were accepted in a
+390px native five-language matrix (20 screenshots, 200 controls, zero runtime exceptions).
+One real defect was repaired: price-page date/people pickers measured21px and now expose44px.
+English singular traveller labels were also corrected and rechecked separately.
+Nine offline suites /356 contracts pass. A fresh official Preview compiled at1,678,176 bytes.
+This is local acceptance and Preview evidence; integration is recorded by the following handoff,
+not assumed here. No Upload, review submission or public Mini Program release occurred.
+Evidence: `.codex/project-memory/evidence/2026/09/20260912T061700Z-mini-native-acceptance.json`.

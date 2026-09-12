@@ -1,77 +1,47 @@
 {
   "schema_version": 1,
-  "checkpoint_revision": 25,
-  "previous_checkpoint_sha256": "C7DFDFAA1F117DCC1C31EECFF429A470FD56A67472AE11629AB4A3D8AD2DAE15",
-  "run_id": "20260911-preupload-customer-audit",
-  "objective": "Audit and repair website and Mini Program customer journeys before the next Mini Program Upload",
+  "checkpoint_revision": 27,
+  "previous_checkpoint_sha256": "60D445609B2635AF066679DA7E25C45C411601EF18880A4DA7FE9E48B81D6E78",
+  "run_id": "20260912-mini-native-acceptance",
+  "objective": "Accept merged PR82 navigation/icons in WeChat native rendering and generate Preview; reconcile stale continuation pointer.",
   "status": "active",
-  "phase": "place_i18n_merged_pending_owner_preview",
+  "phase": "native_passed_preview_generated_pending_integration",
   "baseline": {
-    "cwd": "E:\\Agentstrip-worktrees\\active\\account1\\preupload-customer-audit-20260911",
-    "worktree": "E:\\Agentstrip-worktrees\\active\\account1\\preupload-customer-audit-20260911",
-    "branch": "codex/preupload-customer-audit-20260911",
-    "head": "9f9a8161a5e272a8b3586a8b361885962964bba0",
+    "cwd": "E:\\Agentstrip-worktrees\\active\\account1\\bali-focus-media-audit-20260911",
+    "worktree": "E:\\Agentstrip-worktrees\\active\\account1\\bali-focus-media-audit-20260911",
+    "branch": "codex/mini-native-acceptance-20260912",
+    "head": "f0286f3f6b19b878590e28b0c8724d632fb4b9b3",
     "dirty_allowlist": []
   },
   "completed": [
-    "PR70 fixed head passed both CI checks and was squash merged with identical Git tree",
-    "Official PR70 Preview compiled to 1662338 bytes",
-    "Owner confirmed normal launch, manual five-language switching, visible controls, and likely account isolation; automatic language remains owner-observed but uncertain",
-    "Recovered origin/main into a clean isolated worktree and passed the role preflight with the installed plugin registry",
-    "Formal Luna read-only audit completed and Sol integrated the accepted findings",
-    "Nine Mini Program suites pass with 322 contracts; five website suites and a 33-case responsive customer matrix pass",
-    "Official Upload-preparation Preview compiled to 1669318 bytes",
-    "PR72 fixed head a3680f9 passed both required checks and squash merged as main@4cee9bf with an identical Git tree",
-    "Render deploy dep-dahrgu8ae00c73do3a90 is Live at exact commit 4cee9bf",
-    "Fresh production health probes and all five customer-flow suites pass",
-    "Chinese, Japanese, Korean and Indonesian place details no longer expose English-only POI verification notes",
-    "All 37 R1-R6 public-route POIs have five-language media copy; nine Mini suites pass with 328 contracts",
-    "Official place-language repair Preview compiled to 1669670 bytes",
-    "PR74 fixed head b7624a1 passed both required checks and squash merged as main@56196ff with an identical Git tree"
+    "Reconciled PR82 and PR83 against fetched origin/main; clean content matches.",
+    "Official DevTools islogin reports true; auto enabled on WS9421 via HTTP9420.",
+    "Native five-language matrix:20screenshots,200targets>=44px; English follow-up passed.",
+    "Nine offline suites356contracts; official Preview1678176bytes."
   ],
-  "current_step": "Obtain owner physical-device acceptance of localized place details before any separately authorized Upload",
-  "workers": [
-    {
-      "agent_id": null,
-      "agent_name": "luna_worker",
-      "model": "gpt-5.6-luna",
-      "reasoning_effort": "max",
-      "goal": "Read-only Mini Program pre-upload customer journey audit",
-      "status": "completed",
-      "started_at_utc": "2026-09-11T07:15:00Z",
-      "last_observed_at_utc": "2026-09-11T08:07:00Z",
-      "evidence": ".codex/project-memory/evidence/2026/09/20260911T080700Z-preupload-customer-audit-20260911.json"
-    }
-  ],
+  "current_step": "Commit/push fixed source and facts; await CI then merge.",
+  "workers": [],
   "accepted_evidence": [
-    ".codex/project-memory/evidence/2026/09/20260911-mini-native-localization.md",
-    "github:pull/70#007c406a8b72b9199142f561857f9771851ca03b",
-    ".codex/project-memory/evidence/2026/09/20260911T064823Z-miniprogram-localization-pr70-integration-20260911.json",
-    ".codex/project-memory/evidence/2026/09/20260911T080700Z-preupload-customer-audit-20260911.json"
+    ".codex/project-memory/evidence/2026/09/20260912T020817Z-miniprogram-navigation-integration-20260912.json",
+    ".codex/project-memory/evidence/2026/09/20260912T061700Z-mini-native-acceptance.json"
   ],
   "unverified": [
-    "Automatic Mini Program language selection on a fresh device remains uncertain from owner wording",
-    "Owner physical-device acceptance of the newly compiled place-language Preview",
-    "Mini Program next Upload, review submission, and public release"
+    "Current price-picker correction not merged yet.",
+    "Owner real-phone Preview acceptance pending; no Upload/review/public release."
   ],
   "do_not_repeat": [
     {
-      "action_id": "merge-pr70-fixed-head",
-      "reason": "PR70 already passed CI and was merged with identical Git tree",
-      "evidence": ".codex/project-memory/evidence/2026/09/20260911-mini-native-localization.md"
-    },
-    {
-      "action_id": "duplicate-upload-miniprogram-1.0.0",
-      "reason": "The prior development Upload already exists; this task is a pre-upload audit only",
-      "evidence": "PROJECT_CONTEXT.md"
+      "action_id": "merge-pr82-pr83",
+      "reason": "Already integrated in fetched main.",
+      "evidence": ".codex/project-memory/handoffs/2026/09/20260912T020817Z-miniprogram-navigation-integration-20260912.md"
     }
   ],
   "next_action": {
-    "action_id": "owner-accept-mini-place-i18n-preview",
-    "description": "Owner checks Chinese descriptions for Ubud Palace and one additional R1-R6 place in the integrated Preview before Upload",
-    "external_effect": false,
-    "effect_key": "miniprogram-place-i18n-preview-acceptance",
+    "action_id": "integrate-native-price-correction",
+    "description": "Create fixed-head PR, await required CI, merge reviewed correction and compare trees.",
+    "external_effect": true,
+    "effect_key": "Agentstrip/mini-native-acceptance-20260912",
     "authority_confirmed": true
   },
-  "updated_at_utc": "2026-09-11T08:39:17Z"
+  "updated_at_utc": "2026-09-12T06:17:27.5862002Z"
 }
