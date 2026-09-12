@@ -632,3 +632,30 @@ serves the home and driver-service marketing surfaces. It is therefore not dupli
 a Bali POI/Portfolio image. This entry records local integration only until Git/CI, exact Render
 deployment and a fresh Mini Program Preview are separately verified; Upload, review and public release
 remain independent gates.
+
+### Authorized Bali media production callback
+
+PR #81 fixed head `66c8eb175e833634c5abf4a203b4aa30612282c3` passed its required checks and
+was squash merged as `main@b3c7504cf4e3f6060ba7418b17815d98009004ec`; the fixed-head and merged
+Git trees are identical. Render deploy `dep-dai0ok8jo6nc73dq5v5g` is exact Live. Fresh probes returned
+HTTP 200 for health, the Bali page and all six newly authorized manifest-derived optimized image paths;
+the public manifest contains 125 records. A fresh Mini Program Preview remains separate.
+
+## 2026-09-12 Mini Program task navigation and icon integration
+
+PR #82 fixed head `86a4a08729d75f8287d40f7190cf89d36bf6c19d` passed Project memory and Mini
+Program contracts/recovery CI, then squash merged as
+`main@4a4a3c5b0efbc5fa17b338a30983d3b0b90c753b`; both Git trees equal
+`857ef16076b09992c07eac217c9b652ee7994094`.
+
+The five-language tab bar now uses task-oriented Discover/Ask/Prices/Trips/Me equivalents, with Chinese
+defaults `发现 / 问行程 / 查价格 / 行程 / 我的`. Twelve original WanderMind line icons replace decorative
+destination flags and emoji across the tab bar, home quick actions, chat and price discovery. The assistant
+display removes decorative pictographs without changing stored source messages or user input. Rating and
+departure context are explicit text, and affected mobile controls retain at least 88rpx touch height.
+
+Nine local Mini Program suites pass with 355 contracts; icon dimensions/sizes and project memory validate.
+This Mini Program-only source change does not require a backend release. The Render service therefore remains
+on the last application-affecting exact Live commit `b3c7504`. DevTools service port 9420 is open, but the
+account session requires a fresh user scan before native screenshots and official Preview compilation. No
+Upload, review submission or public Mini Program release is claimed.
