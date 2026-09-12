@@ -244,6 +244,7 @@ check(/onShow\(\)\s*\{\s*app\.updateTabBarLanguage\(\)/.test(auth), 'Home must r
 check(/success:\s*\(\)\s*=>\s*setTimeout\(\(\)\s*=>\s*app\.updateTabBarLanguage\(\)/.test(language), 'language page must refresh tab labels after returning');
 
 const bundledPhotos = walk(path.join(mini, 'assets'), '').filter(file => /\.(?:jpe?g|webp|avif)$/i.test(file));
+check(/\.picker-display\s*\{[^}]*min-height:\s*44px/.test(read('miniprogram/pages/compare/compare.wxss')), 'price date and people pickers must expose a 44px touch target');
 check(bundledPhotos.length === 0, 'destination photos must stay remote so the Mini Program package remains below 2 MB');
 
 if (failures.length) {

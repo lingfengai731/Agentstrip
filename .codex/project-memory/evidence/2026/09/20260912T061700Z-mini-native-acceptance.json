@@ -1,0 +1,27 @@
+{
+  "schema_version": 1,
+  "evidence_id": "ev-20260912T061700Z-mini-native-acceptance",
+  "task_ref": "mini-native-acceptance-20260912",
+  "owner": "codex-main",
+  "captured_at": "2026-09-12T06:16:46.264Z",
+  "status": "verified",
+  "claim": "Merged PR82 navigation/icons accepted in native DevTools; measured price picker defect corrected and a fresh Preview generated. Git integration of this correction is pending.",
+  "source": {
+    "kind": "mixed",
+    "reference": "origin/main@f0286f3; trusted existing worktree; official DevTools HTTP9420 and automation WS9421"
+  },
+  "verification": {
+    "command": "cli islogin; cli auto; tools/test_miniprogram_*.cjs; opt-in test_miniprogram_native_navigation.cjs; cli preview; git diff --check",
+    "result": "islogin=true; nine offline suites and 356 contracts pass. Native 390x844 five-language/four-page matrix: 20 screenshots, 200 control measurements >=44px, 10 grouped switching callbacks, zero runtime exceptions. English singular/plural follow-up: four fresh screenshots and 1 person / 2 people assertions pass. Official Preview: 1678176 bytes."
+  },
+  "notes": "First native attempt correctly failed at a 21px price picker. Fixed by 44px min-height, retained existing tokens/icons. EN singular labels fixed after screenshot inspection. Runtime guest data uses an isolated temporary namespace; original app state and chat mode restored. No searches, messages, orders, driver submissions, Upload, review or public release. Native simulator != real iPhone/Android acceptance.",
+  "artifacts": {
+    "root": "E:/Agentstrip-artifacts/2026-09-12/mini-navigation-polish",
+    "matrix": "native-fixed/report.json",
+    "matrix_sha256": "7FBA3B8757486D85666E5057553CBEA854FDCDE91AD44CA6ACBFF12C6EAEC726",
+    "english_followup": "native-final-en/report.json",
+    "english_sha256": "46BB0F45A19F3229C461DFB7C65D1815B2C0802586D22202F35C0699B2529EEC",
+    "preview": "preview-current.jpg",
+    "preview_sha256": "EEB178BAE7018A874DC534108FD9AA93E7B42F4E6032DF29210B823909A06C70"
+  }
+}
