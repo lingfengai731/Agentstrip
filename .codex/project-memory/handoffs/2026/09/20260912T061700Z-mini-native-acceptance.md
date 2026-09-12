@@ -34,4 +34,3 @@ Commit/push this reviewed slice, create one fixed-head PR, await project-memory 
 No need for a Render deploy for these Mini-only source changes. PR81 media was previously independently deployed; do not conflate it with Preview.
 After integration: user scans the new Preview for real-phone acceptance. Upload/review/public Mini release require their own explicit boundary and platform checks.
 Do not resubmit PayPal tests, driver requests, approved admin E2E, or previously merged PR82/83.
-
