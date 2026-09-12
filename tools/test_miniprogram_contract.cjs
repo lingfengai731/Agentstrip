@@ -29,6 +29,18 @@ check(appConfig.pages.length >= 12, 'app.json should declare the v1 feature page
 check(appConfig.pages.includes('pages/gallery/gallery'), 'gallery page must be declared');
 check(appConfig.pages.includes('pages/place/place'), 'place detail page must be declared');
 check(appConfig.window.navigationBarTitleText === 'WanderMind 智旅', 'mini-program navigation must use the confirmed public name');
+const expectedTabLabels = ['发现', '问行程', '查价格', '行程', '我的'];
+check(
+  appConfig.tabBar.list.map(item => item.text).join('|') === expectedTabLabels.join('|'),
+  'default tab labels must describe the traveller task clearly'
+);
+for (const item of appConfig.tabBar.list) {
+  for (const key of ['iconPath', 'selectedIconPath']) {
+    const iconFile = path.join(mini, item[key] || '');
+    check(Boolean(item[key]) && fs.existsSync(iconFile), `tab item ${item.text} must provide ${key}`);
+    if (fs.existsSync(iconFile)) check(fs.statSync(iconFile).size < 40 * 1024, `${item[key]} must stay below 40 KB`);
+  }
+}
 check(
   privateConfig.projectname === 'WanderMind%20%E6%99%BA%E6%97%85%E5%B0%8F%E7%A8%8B%E5%BA%8F',
   'WeChat DevTools project title must exactly use WanderMind 智旅小程序'
@@ -193,7 +205,7 @@ const formattedReply = formatAssistantMessage([
   '**先去市场**，再参观王宫。',
   '- 营业时间请实时确认',
   '价格约 IDR 100,000',
-  '（约 CNY 45）。',
+  '（约 CNY 45）。🌴✨',
 ].join('\n'));
 check(
   formattedReply.some(block => block.type === 'heading' && block.text === '上午：乌布文化散步'),
@@ -208,12 +220,26 @@ check(
   'AI formatter must not expose common Markdown control markers'
 );
 check(
+  formattedReply.every(block => !/[\u{1F1E6}-\u{1F1FF}\u{1F300}-\u{1FAFF}\u2600-\u27BF]/u.test(block.text)),
+  'AI formatter must remove decorative emoji from assistant display blocks'
+);
+check(
   formattedReply.some(block => block.text.includes('IDR 100,000（约 CNY 45）。')),
   'AI formatter must join wrapped price units without splitting the sentence'
 );
 check(app.includes('rememberCurrentRoute') && app.includes('resumePendingRoute'), 'login recovery route contract missing');
 check(!/(?:whatsapp|wechat|Nicho\.otir|gmail\.com|\+62)/i.test(driver), 'driver page must not expose private contact channels');
 check(/wx\.setTabBarItem/.test(app), 'five-language tab labels are not wired');
+check(app.includes("zh: ['发现', '问行程', '查价格', '行程', '我的']"), 'runtime Chinese tab labels must match app.json');
+check(!read('miniprogram/pages/me/me.js').includes('lang.flag'), 'account language label must use the new typographic language mark');
+const polishedViews = [
+  read('miniprogram/pages/index/index.wxml'),
+  read('miniprogram/pages/chat/chat.wxml'),
+  read('miniprogram/pages/compare/compare.wxml'),
+  read('miniprogram/pages/language/language.wxml'),
+].join('\n');
+check(!/[\u{1F1E6}-\u{1F1FF}\u{1F300}-\u{1FAFF}]/u.test(polishedViews), 'core Mini Program navigation surfaces must not use decorative emoji');
+check(!/[↔≡◇]/.test(read('miniprogram/pages/index/index.wxml')), 'home quick actions must use the shared icon system instead of abstract glyphs');
 check(/onShow\(\)\s*\{\s*app\.updateTabBarLanguage\(\)/.test(auth), 'Home must refresh translated tab labels when shown');
 check(/success:\s*\(\)\s*=>\s*setTimeout\(\(\)\s*=>\s*app\.updateTabBarLanguage\(\)/.test(language), 'language page must refresh tab labels after returning');
 

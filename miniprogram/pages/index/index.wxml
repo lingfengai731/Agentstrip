@@ -67,7 +67,7 @@
         bindtap="selectDest"
         data-id="{{item.id}}"
       >
-        <view class="dest-flag">{{item.flag}}</view>
+        <view class="dest-symbol"><image src="/assets/nav/discover-active.png" mode="aspectFit" aria-hidden="true" /></view>
         <view class="dest-info">
           <view class="dest-name">{{item.name}}</view>
           <view class="dest-region">{{item.region}}</view>
@@ -95,19 +95,19 @@
       <view class="qa-title">{{copy.start}}</view>
       <view class="qa-grid">
         <view class="qa-item" bindtap="goChat">
-          <view class="qa-icon">?</view>
+          <view class="qa-icon"><image src="/assets/nav/ask-active.png" mode="aspectFit" aria-hidden="true" /></view>
           <view class="qa-copy"><view class="qa-label">{{copy.ask}}</view><view class="qa-note">{{copy.advice}}</view></view>
         </view>
         <view class="qa-item" bindtap="goCompare">
-          <view class="qa-icon">↔</view>
+          <view class="qa-icon"><image src="/assets/nav/prices-active.png" mode="aspectFit" aria-hidden="true" /></view>
           <view class="qa-copy"><view class="qa-label">{{copy.compare}}</view><view class="qa-note">{{copy.options}}</view></view>
         </view>
         <view class="qa-item" bindtap="goItinerary">
-          <view class="qa-icon">≡</view>
+          <view class="qa-icon"><image src="/assets/nav/trips-active.png" mode="aspectFit" aria-hidden="true" /></view>
           <view class="qa-copy"><view class="qa-label">{{copy.trips}}</view><view class="qa-note">{{copy.continue}}</view></view>
         </view>
         <view class="qa-item" bindtap="goMe">
-          <view class="qa-icon">◇</view>
+          <view class="qa-icon"><image src="/assets/nav/me-active.png" mode="aspectFit" aria-hidden="true" /></view>
           <view class="qa-copy"><view class="qa-label">{{copy.prefs}}</view><view class="qa-note">{{copy.habits}}</view></view>
         </view>
       </view>

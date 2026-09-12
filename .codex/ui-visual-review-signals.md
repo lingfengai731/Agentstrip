@@ -235,3 +235,16 @@ rejected aspects: 不接受未实地调研且没有当地司机承接的京都�
 reason in reviewer words: 不然别人很难建立信任，会觉得你就是用 AI 弄的；对于没有什么耐心的快节奏时代来说，这几个词表达不够精确
 scope: this project
 recorded at: 2026-09-11
+
+workflow: ui-implementation-workflow-v2
+status: raw
+task: 小程序聊天、比价与底部导航去 AI 感精修
+page/surface: WanderMind 智旅小程序聊天页、比价页与全局底栏
+screenshot or artifact: 2026-09-12 用户提供的巴厘岛分割门线描方向图及当前小程序 Preview
+reviewer: 用户
+decision: mixed
+accepted aspects: 确认采用推荐导航；确认服务端口已开启；确认所提供视觉参考拥有使用权
+rejected aspects: 不接受聊天和比价界面继续使用大量颜文字或装饰性 emoji；不接受由此产生的明显 AI 模板感
+reason in reviewer words: 许多颜表情符号还是相当之 AI 的；设计一些好看的图标或者网上学习一下成熟的旅游网站是怎么做的替换掉
+scope: this project
+recorded at: 2026-09-12

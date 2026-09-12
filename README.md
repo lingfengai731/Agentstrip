@@ -97,6 +97,16 @@
 
 > 站长已于 2026-09-11 明确放开 `hiking-view1/2/3.jpg`、`batur-jeep-sunrise.jpg`、`batur-jeep.jpg` 与剩余 `Lovina dolphin.jpg` 的公开使用门禁，六张照片均已生成 WebP/移动端缩略图并关联准确地点。`service-private-guide.png` 早已作为首页和找司机页的服务插图使用，不重复放入景点作品集。小程序 Upload、提审与公开发布仍是独立门禁。
 
+### 2026-09-12 小程序导航与图标精修（Preview 前）
+
+| 项目 | 状态 | 完成效果 |
+|------|------|----------|
+| 底部导航 | ✅ 本地完成 | 中文入口由“首页 / 聊天 / 比价 / 行程 / 我的”改为“发现 / 问行程 / 查价格 / 行程 / 我的”，并补齐英语、日语、韩语和印尼语等价短标签 |
+| 图标系统 | ✅ 本地完成 | 自绘 5 组暖灰/深青线性导航图标及酒店、航班辅助图标；不复制用户提供的带水印参考图，也不依赖第三方图标版权 |
+| 聊天与查价去 AI 感 | ✅ 本地完成 | 移除花朵、国旗、星星等装饰性 emoji；AI 回复仅在展示层过滤模型偶发装饰符号，原始对话和用户输入保持不变 |
+| 手机交互 | ✅ 自动测试通过 | 关键选择与复制入口统一到至少 88rpx 触控高度，按压反馈保持 140ms；9 组小程序回归共 355 项契约通过 |
+| 发布边界 | ⏳ 待官方 Preview | 微信开发者工具登录会话需要重新扫码，原生截图与新 Preview 尚未生成；本状态不代表 Upload、提审或公开发布 |
+
 详细执行台账见 [`.codex/plans/wandermind-master-roadmap-2026-08-02.md`](.codex/plans/wandermind-master-roadmap-2026-08-02.md)。
 
 首发传播文案、图片顺序、隐私边界和 14 天复盘流程见 [`wandermind-studio/MARKETING_LAUNCH_PLAYBOOK.md`](wandermind-studio/MARKETING_LAUNCH_PLAYBOOK.md)。

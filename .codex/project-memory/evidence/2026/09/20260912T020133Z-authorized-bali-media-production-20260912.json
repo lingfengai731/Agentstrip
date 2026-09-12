@@ -1,0 +1,18 @@
+{
+  "schema_version": 1,
+  "evidence_id": "ev-20260912T020133Z-authorized-bali-media-production-20260912",
+  "task_ref": "authorized-bali-media-production-20260912",
+  "owner": "codex-sol",
+  "captured_at": "2026-09-12T02:01:33Z",
+  "status": "verified",
+  "claim": "The owner-authorized Mount Batur and Lovina media batch passed fixed-head integration and is Live on the exact Render production commit.",
+  "source": {
+    "kind": "mixed",
+    "reference": "PR #81 fixed head 66c8eb175e833634c5abf4a203b4aa30612282c3, squash merge b3c7504cf4e3f6060ba7418b17815d98009004ec and Render deploy dep-dai0ok8jo6nc73dq5v5g"
+  },
+  "verification": {
+    "command": "GitHub fixed-head checks and squash merge; git show -s --format=%T tree comparison; Render deploy list; production /healthz, /bali.html, image-publish-manifest.json and six manifest-derived web_optimized_path probes",
+    "result": "PR #81 merged; fixed-head and merge trees both equal f10ec98333eb9c105993841ec96b50da5e94bf60; Render deploy dep-dai0ok8jo6nc73dq5v5g is Live at b3c7504; health and Bali page returned 200; the 125-record manifest and all six newly authorized production image paths returned 200."
+  },
+  "notes": "This verifies website production media only. A fresh Mini Program Preview containing this media remains a separate state. No Mini Program Upload, review submission or public release occurred."
+}

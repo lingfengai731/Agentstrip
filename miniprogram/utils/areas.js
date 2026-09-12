@@ -45,14 +45,14 @@ const HOTEL_AREAS = {
 };
 
 const DEPARTURE_CITIES = [
-  { iata: 'PVG', name: '上海', flag: '🇨🇳' },
-  { iata: 'PEK', name: '北京', flag: '🇨🇳' },
-  { iata: 'CAN', name: '广州', flag: '🇨🇳' },
-  { iata: 'SZX', name: '深圳', flag: '🇨🇳' },
-  { iata: 'CTU', name: '成都', flag: '🇨🇳' },
-  { iata: 'HKG', name: '香港', flag: '🇭🇰' },
-  { iata: 'HGH', name: '杭州', flag: '🇨🇳' },
-  { iata: 'XIY', name: '西安', flag: '🇨🇳' },
+  { iata: 'PVG', name: '上海' },
+  { iata: 'PEK', name: '北京' },
+  { iata: 'CAN', name: '广州' },
+  { iata: 'SZX', name: '深圳' },
+  { iata: 'CTU', name: '成都' },
+  { iata: 'HKG', name: '香港' },
+  { iata: 'HGH', name: '杭州' },
+  { iata: 'XIY', name: '西安' },
 ];
 
 module.exports = { HOTEL_AREAS, DEPARTURE_CITIES };

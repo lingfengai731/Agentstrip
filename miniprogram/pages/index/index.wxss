@@ -208,9 +208,16 @@
   background: #E3F5F1;
 }
 .dest-card:active, .custom-dest-card:active, .qa-item:active { transform: scale(.985); }
-.dest-flag {
-  font-size: 56rpx;
+.dest-symbol {
+  display: flex;
+  width: 64rpx;
+  height: 64rpx;
+  align-items: center;
+  justify-content: center;
+  border-radius: 18rpx;
+  background: #FFFFFF;
 }
+.dest-symbol image { width: 42rpx; height: 42rpx; }
 .dest-info {
   flex: 1;
 }
@@ -313,11 +320,10 @@
   align-items: center;
   justify-content: center;
   border-radius: 15rpx;
-  background: #173E37;
-  color: #FCBF1E;
-  font-size: 22rpx;
-  font-weight: 800;
+  background: #F2F7F4;
+  border: 1rpx solid #D8E8E3;
 }
+.qa-icon image { width: 34rpx; height: 34rpx; }
 .qa-copy { min-width: 0; }
 .qa-label {
   font-size: 26rpx;

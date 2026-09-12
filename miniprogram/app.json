@@ -28,23 +28,33 @@
     "list": [
       {
         "pagePath": "pages/index/index",
-        "text": "首页"
+        "text": "发现",
+        "iconPath": "assets/nav/discover.png",
+        "selectedIconPath": "assets/nav/discover-active.png"
       },
       {
         "pagePath": "pages/chat/chat",
-        "text": "聊天"
+        "text": "问行程",
+        "iconPath": "assets/nav/ask.png",
+        "selectedIconPath": "assets/nav/ask-active.png"
       },
       {
         "pagePath": "pages/compare/compare",
-        "text": "比价"
+        "text": "查价格",
+        "iconPath": "assets/nav/prices.png",
+        "selectedIconPath": "assets/nav/prices-active.png"
       },
       {
         "pagePath": "pages/itinerary/itinerary",
-        "text": "行程"
+        "text": "行程",
+        "iconPath": "assets/nav/trips.png",
+        "selectedIconPath": "assets/nav/trips-active.png"
       },
       {
         "pagePath": "pages/me/me",
-        "text": "我的"
+        "text": "我的",
+        "iconPath": "assets/nav/me.png",
+        "selectedIconPath": "assets/nav/me-active.png"
       }
     ]
   },

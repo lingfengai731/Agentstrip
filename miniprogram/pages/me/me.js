@@ -31,7 +31,7 @@ Page({
       loggedIn,
       user,
       userInitial: user?.name ? user.name.charAt(0) : 'WM',
-      currentLangLabel: lang.flag + ' ' + lang.label,
+      currentLangLabel: lang.mark + ' · ' + lang.label,
       hasPrefs: _hasAny(app.globalData.preferences),
     });
   },

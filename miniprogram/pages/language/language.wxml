@@ -5,7 +5,7 @@
   </view>
   <view class="language-list">
     <view wx:for="{{languages}}" wx:key="id" class="language {{current === item.id ? 'active' : ''}}" bindtap="choose" data-id="{{item.id}}">
-      <view class="flag">{{item.flag}}</view>
+      <view class="language-mark">{{item.mark}}</view>
       <view class="label">{{item.label}}</view>
       <view class="check">{{current === item.id ? '✓' : ''}}</view>
     </view>
