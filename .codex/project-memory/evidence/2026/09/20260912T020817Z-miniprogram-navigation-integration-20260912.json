@@ -1,0 +1,18 @@
+{
+  "schema_version": 1,
+  "evidence_id": "ev-20260912T020817Z-miniprogram-navigation-integration-20260912",
+  "task_ref": "miniprogram-navigation-integration-20260912",
+  "owner": "codex-sol",
+  "captured_at": "2026-09-12T02:08:17Z",
+  "status": "verified",
+  "claim": "The task-oriented Mini Program navigation and original icon system passed fixed-head CI and is integrated into main without tree drift.",
+  "source": {
+    "kind": "mixed",
+    "reference": "PR #82 fixed head 86a4a08729d75f8287d40f7190cf89d36bf6c19d and squash merge 4a4a3c5b0efbc5fa17b338a30983d3b0b90c753b"
+  },
+  "verification": {
+    "command": "GitHub check-runs for the fixed head; squash merge with fixed SHA; git show -s --format=%T tree comparison; Render deploy list",
+    "result": "Project memory validate and Mini Program contracts-and-recovery checks succeeded; PR #82 merged; fixed and merged trees both equal 857ef16076b09992c07eac217c9b652ee7994094. Render remains Live on application-affecting media commit b3c7504 because this slice is Mini Program-only."
+  },
+  "notes": "DevTools service port 9420 is open. Two fresh DevTools login QR sessions expired without a scan, so native screenshots and an official Preview remain pending user login. No Mini Program Upload, review submission or public release occurred."
+}
