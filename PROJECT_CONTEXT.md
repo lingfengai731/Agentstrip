@@ -671,3 +671,9 @@ Nine offline suites /356 contracts pass. A fresh official Preview compiled at1,6
 This is local acceptance and Preview evidence; integration is recorded by the following handoff,
 not assumed here. No Upload, review submission or public Mini Program release occurred.
 Evidence: `.codex/project-memory/evidence/2026/09/20260912T061700Z-mini-native-acceptance.json`.
+
+PR84 integration is now verified: fixed head `14f10315` passed both checks and merged as
+`3229812e0dc368b411304cc3da3f3809b95cee86`; whole Git trees match. The Mini subtree
+`1a4c8490ffae3f1f0da7266f09167be9f87a12b4` also matches the generated Preview.
+The next action is owner physical-phone Preview acceptance, not another login repair or PR82 replay.
+Final evidence/handoff: `20260912T062000Z-mini-native-integrated` under project-memory.

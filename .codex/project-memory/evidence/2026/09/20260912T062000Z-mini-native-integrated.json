@@ -1,0 +1,18 @@
+{
+  "schema_version": 1,
+  "evidence_id": "ev-20260912T062000Z-mini-native-integrated",
+  "task_ref": "mini-native-acceptance-20260912",
+  "owner": "codex-main",
+  "captured_at": "2026-09-12T06:20:35.870Z",
+  "status": "verified",
+  "claim": "PR84 passed both CI checks and merged without tree drift. Native-accepted Mini code and generated Preview match integrated source.",
+  "source": {
+    "kind": "mixed",
+    "reference": "https://github.com/lingfengai731/Agentstrip/pull/84"
+  },
+  "verification": {
+    "command": "GitHub check-runs and fixed-SHA squash merge; git show -s --format=%T; git rev-parse HEAD:miniprogram",
+    "result": "Fixed head14f10315fa2224021d9f1108a63130aae69278f9; merge3229812e0dc368b411304cc3da3f3809b95cee86. validate and contracts-and-recovery success. Both Git trees52a66a968504bdf641640ffa4a9c504d8355a90c; Mini subtree1a4c8490ffae3f1f0da7266f09167be9f87a12b4, matching Preview source."
+  },
+  "notes": "Native20-screen matrix and final English four-screen follow-up in 20260912T061700Z evidence. Preview1678176bytes; not Upload/review/public release. This final evidence handoff is not itself merged until its own PR succeeds. Render unaffected by Mini-only changes; PR81 prior deployment evidence remains separate."
+}

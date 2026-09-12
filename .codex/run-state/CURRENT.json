@@ -1,47 +1,55 @@
 {
   "schema_version": 1,
-  "checkpoint_revision": 27,
-  "previous_checkpoint_sha256": "60D445609B2635AF066679DA7E25C45C411601EF18880A4DA7FE9E48B81D6E78",
+  "checkpoint_revision": 28,
+  "previous_checkpoint_sha256": "C4095BC69AEF81D75BDD678B28CB1B8CCDFABA29EF673C5144F9B49807FD3B49",
   "run_id": "20260912-mini-native-acceptance",
   "objective": "Accept merged PR82 navigation/icons in WeChat native rendering and generate Preview; reconcile stale continuation pointer.",
   "status": "active",
-  "phase": "native_passed_preview_generated_pending_integration",
+  "phase": "integrated_preview_pending_owner_acceptance",
   "baseline": {
     "cwd": "E:\\Agentstrip-worktrees\\active\\account1\\bali-focus-media-audit-20260911",
     "worktree": "E:\\Agentstrip-worktrees\\active\\account1\\bali-focus-media-audit-20260911",
-    "branch": "codex/mini-native-acceptance-20260912",
-    "head": "f0286f3f6b19b878590e28b0c8724d632fb4b9b3",
+    "branch": "codex/mini-native-handoff-20260912",
+    "head": "3229812e0dc368b411304cc3da3f3809b95cee86",
     "dirty_allowlist": []
   },
   "completed": [
     "Reconciled PR82 and PR83 against fetched origin/main; clean content matches.",
     "Official DevTools islogin reports true; auto enabled on WS9421 via HTTP9420.",
     "Native five-language matrix:20screenshots,200targets>=44px; English follow-up passed.",
-    "Nine offline suites356contracts; official Preview1678176bytes."
+    "Nine offline suites356contracts; official Preview1678176bytes.",
+    "PR84 merged after validate and contracts-and-recovery passed; fixed and merged trees identical."
   ],
-  "current_step": "Commit/push fixed source and facts; await CI then merge.",
+  "current_step": "Synchronize final evidence, then owner physical Preview acceptance.",
   "workers": [],
   "accepted_evidence": [
     ".codex/project-memory/evidence/2026/09/20260912T020817Z-miniprogram-navigation-integration-20260912.json",
-    ".codex/project-memory/evidence/2026/09/20260912T061700Z-mini-native-acceptance.json"
+    ".codex/project-memory/evidence/2026/09/20260912T061700Z-mini-native-acceptance.json",
+    ".codex/project-memory/evidence/2026/09/20260912T062000Z-mini-native-integrated.json"
   ],
   "unverified": [
-    "Current price-picker correction not merged yet.",
-    "Owner real-phone Preview acceptance pending; no Upload/review/public release."
+    "Owner physical Preview acceptance pending.",
+    "No Mini Upload/review/public release.",
+    "Final evidence branch synchronization must be checked remotely on recovery."
   ],
   "do_not_repeat": [
     {
       "action_id": "merge-pr82-pr83",
       "reason": "Already integrated in fetched main.",
       "evidence": ".codex/project-memory/handoffs/2026/09/20260912T020817Z-miniprogram-navigation-integration-20260912.md"
+    },
+    {
+      "action_id": "integrate-native-price-correction",
+      "reason": "PR84 already merged and tree compared.",
+      "evidence": ".codex/project-memory/evidence/2026/09/20260912T062000Z-mini-native-integrated.json"
     }
   ],
   "next_action": {
-    "action_id": "integrate-native-price-correction",
-    "description": "Create fixed-head PR, await required CI, merge reviewed correction and compare trees.",
-    "external_effect": true,
-    "effect_key": "Agentstrip/mini-native-acceptance-20260912",
-    "authority_confirmed": true
+    "action_id": "owner-native-preview-acceptance",
+    "description": "Owner scans fresh Preview to confirm native navigation/icons and price controls; regenerate only if expired.",
+    "external_effect": false,
+    "effect_key": null,
+    "authority_confirmed": false
   },
-  "updated_at_utc": "2026-09-12T06:17:27.5862002Z"
+  "updated_at_utc": "2026-09-12T06:20:40.0607958Z"
 }
