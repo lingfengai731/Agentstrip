@@ -33,7 +33,6 @@ const _nextId = () => 'm' + (++_msgIdCounter);
 Page({
   data: {
     copy: COPY.zh,
-    destFlag: '🌺',
     destName: '巴厘岛',
     mode: 'fast',
     modeLabel: COPY.zh.fastLabel,
@@ -135,15 +134,14 @@ Page({
     wx.setNavigationBarTitle({title:copy.advisor});
     if(app.updateTabBarLanguage) app.updateTabBarLanguage();
     const destId = app.globalData.currentDest;
-    let flag = '🌍', name = this.data.copy.custom;
+    let name = this.data.copy.custom;
     if (destId === 'custom') {
       name = app.globalData.customDestName || this.data.copy.custom;
     } else {
       const d = DESTINATIONS.find(x => x.id === destId);
-      if (d) { flag = d.flag; name = (DEST_COPY[lang] || DEST_COPY.zh)[d.id] || d.name; }
+      if (d) name = (DEST_COPY[lang] || DEST_COPY.zh)[d.id] || d.name;
     }
     this.setData({
-      destFlag: flag,
       destName: name,
       suggestions: [copy.stay,copy.route,copy.food,copy.budget],
     });

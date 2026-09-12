@@ -9,6 +9,10 @@ function cleanInline(value) {
     .replace(/(`{1,3}|\*\*|__|~~)/g, '')
     .replace(/(^|\s)[*_](?=\S)/g, '$1')
     .replace(/([^\s])[*_](?=\s|$)/g, '$1')
+    // Keep the source message intact, but remove decorative pictographs from
+    // the native assistant display so the advice reads like editorial copy.
+    .replace(/[\u{1F1E6}-\u{1F1FF}\u{1F300}-\u{1FAFF}]/gu, '')
+    .replace(/[\u2600-\u27BF\uFE0F]/g, '')
     .replace(/\s+/g, ' ')
     .trim();
 }

@@ -14,7 +14,8 @@
   background: #FAFAF7;
   border-bottom: 1rpx solid #E5E2DA;
 }
-.dest-flag { font-size: 56rpx; }
+.dest-icon { display:flex; width:64rpx; height:64rpx; align-items:center; justify-content:center; border:1rpx solid #D8E8E3; border-radius:18rpx; background:#FFFFFF; flex-shrink:0; }
+.dest-icon image { width:42rpx; height:42rpx; }
 .dest-info { flex: 1; }
 .dest-name { font-size: 32rpx; font-weight: 700; color: #2A2723; }
 .dest-hint { font-size: 22rpx; color: #8A857F; margin-top: 4rpx; }
@@ -38,7 +39,12 @@
   font-weight: 700;
   color: #8A857F;
   border-radius: 12rpx;
+  gap: 10rpx;
+  transition: transform 140ms var(--ease-out), color 140ms ease, background-color 140ms ease;
 }
+.sub-tab image { width:34rpx; height:34rpx; opacity:.56; }
+.sub-tab.active image { opacity:1; }
+.sub-tab:active { transform:scale(.98); }
 .sub-tab.active {
   background: #fff;
   color: #0E7C6B;
@@ -65,7 +71,7 @@
 }
 .chip {
   display: inline-flex;
-  min-height: 80rpx;
+  min-height: 88rpx;
   padding: 0 22rpx;
   align-items: center;
   justify-content: center;
@@ -76,12 +82,14 @@
   font-size: 24rpx;
   font-weight: 600;
   margin-right: 12rpx;
+  transition: transform 140ms var(--ease-out), color 140ms ease, background-color 140ms ease, border-color 140ms ease;
 }
 .chip.active {
   background: #0E7C6B;
   color: #fff;
   border-color: #0E7C6B;
 }
+.chip:active { transform:scale(.98); }
 
 /* —— 表单行 —— */
 .form-row {
@@ -138,7 +146,7 @@
 }
 .trip-btn {
   display: flex;
-  min-height: 80rpx;
+  min-height: 88rpx;
   align-items: center;
   justify-content: center;
   flex: 1;
@@ -148,12 +156,14 @@
   font-weight: 700;
   color: #8A857F;
   border-radius: 10rpx;
+  transition: transform 140ms var(--ease-out), color 140ms ease, background-color 140ms ease;
 }
 .trip-btn.active {
   background: #fff;
   color: #0E7C6B;
   box-shadow: 0 1rpx 4rpx rgba(0,0,0,.06);
 }
+.trip-btn:active { transform:scale(.98); }
 
 .custom-origin-display {
   font-size: 24rpx;
@@ -176,7 +186,9 @@
   gap: 16rpx;
   border: 1rpx solid #E8E3DA;
   box-shadow: 0 3rpx 12rpx rgba(42,39,35,.03);
+  transition: transform 140ms var(--ease-out), border-color 140ms ease;
 }
+.hotel-card:active { transform:scale(.988); border-color:#B6D9D1; }
 .hotel-thumb {
   width: 140rpx; height: 140rpx;
   border-radius: 12rpx;
@@ -191,10 +203,9 @@
   border-radius: 12rpx;
   background: #F0EDE6;
   color: #0E6658;
-  font-size: 28rpx;
-  font-weight: 800;
   flex-shrink: 0;
 }
+.hotel-thumb-placeholder image { width:54rpx; height:54rpx; opacity:.72; }
 .hotel-info {
   flex: 1;
   min-width: 0;
@@ -243,7 +254,9 @@
   gap: 16rpx;
   border: 1rpx solid #E8E3DA;
   box-shadow: 0 3rpx 12rpx rgba(42,39,35,.03);
+  transition: transform 140ms var(--ease-out), border-color 140ms ease;
 }
+.flight-card:active { transform:scale(.988); border-color:#B6D9D1; }
 .flight-logo {
   width: 60rpx; height: 60rpx;
   border-radius: 12rpx;
@@ -258,10 +271,9 @@
   border-radius: 12rpx;
   background: #F0EDE6;
   color: #0E6658;
-  font-size: 22rpx;
-  font-weight: 800;
   flex-shrink: 0;
 }
+.flight-logo-placeholder image { width:36rpx; height:36rpx; opacity:.72; }
 .flight-info { flex: 1; min-width: 0; }
 .flight-route {
   font-size: 26rpx;
@@ -291,7 +303,7 @@
 }
 .flight-book-all {
   display: flex;
-  min-height: 76rpx;
+  min-height: 88rpx;
   align-items: center;
   justify-content: center;
   padding: 0 18rpx;
@@ -302,7 +314,9 @@
   font-size: 24rpx;
   font-weight: 700;
   margin-top: 8rpx;
+  transition: transform 140ms var(--ease-out), background-color 140ms ease;
 }
+.flight-book-all:active { transform:scale(.985); background:#EDF7F3; }
 
 /* —— 空状态 —— */
 .empty {

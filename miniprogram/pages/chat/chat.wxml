@@ -3,7 +3,7 @@
 
   <!-- 顶部目的地标签 -->
   <view class="dest-bar">
-    <view class="dest-bar-flag">{{destFlag}}</view>
+    <view class="dest-bar-icon"><image src="/assets/nav/ask-active.png" mode="aspectFit" aria-hidden="true" /></view>
     <view class="dest-bar-info">
       <view class="dest-bar-name">{{destName}}</view>
       <view class="dest-bar-hint">{{copy.advisor}} · {{modeLabel}}</view>
@@ -24,7 +24,7 @@
   >
     <!-- 欢迎语 -->
     <view wx:if="{{messages.length === 0}}" class="welcome">
-      <view class="welcome-mark">{{destFlag}}</view>
+      <view class="welcome-mark"><image src="/assets/nav/ask-active.png" mode="aspectFit" aria-hidden="true" /></view>
       <view class="welcome-title">{{copy.welcome}}</view>
       <view class="welcome-hint">{{destName}} · {{copy.hint}}</view>
       <view class="sugg-list">
@@ -59,7 +59,9 @@
           </view>
         </block>
         <text wx:else class="msg-text">{{item.content}}</text>
-        <view wx:if="{{item.role === 'assistant'}}" class="msg-mode-badge {{item.mode}}">{{item.mode === 'fast' ? copy.fast : copy.deep}}</view>
+        <view wx:if="{{item.role === 'assistant'}}" class="msg-meta">
+          <view class="msg-mode-badge {{item.mode}}">{{item.mode === 'fast' ? copy.fast : copy.deep}}</view>
+        </view>
       </view>
     </view>
 

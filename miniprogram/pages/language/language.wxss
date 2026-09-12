@@ -5,7 +5,8 @@
 .language-list { display: flex; flex-direction: column; gap: 14rpx; }
 .language { display: flex; min-height: 92rpx; align-items: center; gap: 18rpx; padding: 14rpx 24rpx; border: 1rpx solid #E4DDD1; border-radius: 20rpx; background: #FFFFFF; box-sizing: border-box; }
 .language.active { border-color: #0E7C6B; background: #EDF7F3; }
-.flag { font-size: 38rpx; flex-shrink: 0; }
+.language-mark { display:flex; flex:0 0 52rpx; width:52rpx; height:52rpx; align-items:center; justify-content:center; border-radius:14rpx; background:#F3F1EA; color:#0E6658; font-size:21rpx; font-weight:800; letter-spacing:.02em; }
+.language.active .language-mark { background:#FFFFFF; }
 .label { min-width: 0; flex: 1; font-size: 28rpx; font-weight: 700; }
 .check { flex: 0 0 36rpx; color: #0E7C6B; font-size: 30rpx; font-weight: 800; text-align: center; }
 .language { min-height: 44px; }

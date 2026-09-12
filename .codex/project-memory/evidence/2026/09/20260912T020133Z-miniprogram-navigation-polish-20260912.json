@@ -1,0 +1,18 @@
+{
+  "schema_version": 1,
+  "evidence_id": "ev-20260912T020133Z-miniprogram-navigation-polish-20260912",
+  "task_ref": "miniprogram-navigation-polish-20260912",
+  "owner": "codex-sol",
+  "captured_at": "2026-09-12T02:01:33Z",
+  "status": "verified",
+  "claim": "The Mini Program navigation, chat and price-discovery surfaces are locally polished with clear task labels, custom line icons, reduced decorative emoji and mobile touch-target guards.",
+  "source": {
+    "kind": "repository",
+    "reference": "Branch codex/miniprogram-nav-icons-20260912 based on main b3c7504"
+  },
+  "verification": {
+    "command": "nine tools/test_miniprogram_*.cjs suites; PNG dimension and file-size audit; targeted stale-field and decorative-emoji searches; git diff --check",
+    "result": "Nine suites passed, including 355 Mini Program contracts; all 12 custom PNG assets are 64x64 and 482-1318 bytes; stale flag bindings and abstract quick-action glyphs were removed from runtime surfaces; diff check passed with line-ending warnings only."
+  },
+  "notes": "The UI uses original generated line icons and does not reproduce the watermarked reference image. WeChat DevTools automation is listening on port 9420, but the account session requires a fresh login before native screenshots and an official Preview can be generated. No Upload, review submission or public release is claimed."
+}

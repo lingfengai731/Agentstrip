@@ -15,7 +15,8 @@
   background: #FAFAF7;
   border-bottom: 1rpx solid #E5E2DA;
 }
-.dest-bar-flag { font-size: 38rpx; }
+.dest-bar-icon { display:flex; width:58rpx; height:58rpx; align-items:center; justify-content:center; border:1rpx solid #D8E8E3; border-radius:16rpx; background:#FFFFFF; flex-shrink:0; }
+.dest-bar-icon image { width:36rpx; height:36rpx; }
 .dest-bar-info { flex: 1; min-width: 0; overflow-wrap: break-word; }
 .dest-bar-name { font-size: 28rpx; font-weight: 700; color: #2A2723; }
 .dest-bar-hint { font-size: 20rpx; color: #8A857F; margin-top: 2rpx; }
@@ -38,8 +39,10 @@
   font-weight: 700;
   color: #8A857F;
   border-radius: 11rpx;
+  transition: transform 140ms var(--ease-out), color 140ms ease, background-color 140ms ease;
 }
 .mode-btn.active { background: #FFFFFF; color: #075E52; box-shadow: 0 2rpx 6rpx rgba(42,39,35,.05); }
+.mode-btn:active { transform: scale(.97); }
 
 /* —— 消息流 —— */
 .messages {
@@ -53,7 +56,8 @@
 .welcome {
   padding: 54rpx 8rpx 32rpx;
 }
-.welcome-mark { display:flex; width:68rpx; height:68rpx; align-items:center; justify-content:center; margin-bottom:20rpx; border:1rpx solid #E5E2DA; border-radius:18rpx; background:#FFFFFF; font-size:38rpx; }
+.welcome-mark { display:flex; width:68rpx; height:68rpx; align-items:center; justify-content:center; margin-bottom:20rpx; border:1rpx solid #D8E8E3; border-radius:18rpx; background:#FFFFFF; }
+.welcome-mark image { width:42rpx; height:42rpx; }
 .welcome-title { font-size: 34rpx; font-weight: 750; color: #2A2723; margin-bottom: 8rpx; }
 .welcome-hint { max-width: 580rpx; font-size: 24rpx; line-height: 1.6; color: #6F6962; margin-bottom: 34rpx; }
 .sugg-list { display: flex; flex-direction: column; gap: 16rpx; }
@@ -68,7 +72,9 @@
   font-size: 26rpx;
   color: #2A2723;
   text-align: left;
+  transition: transform 140ms var(--ease-out), border-color 140ms ease;
 }
+.sugg-chip:active { transform: scale(.985); border-color:#B6D9D1; }
 
 /* —— 单条消息 —— */
 .msg {
@@ -152,20 +158,17 @@
   margin-bottom: 10rpx;
 }
 .msg-mode-badge {
-  position: absolute;
-  top: -10rpx;
-  right: -10rpx;
-  display: flex;
+  display: inline-flex;
   align-items: center;
-  justify-content: center;
-  background: #fff;
-  border: 1rpx solid #E1DCD3;
-  border-radius: 10rpx;
-  width: 38rpx;
-  height: 34rpx;
+  min-height: 34rpx;
+  padding: 0 10rpx;
+  border-radius: 999rpx;
+  background: #F3F1EA;
   font-size: 18rpx;
-  line-height: 1;
+  font-weight: 700;
+  line-height: 1.2;
 }
+.msg-meta { display:flex; justify-content:flex-end; margin-top:12rpx; }
 .msg-mode-badge.fast { color: #E07A12; }
 .msg-mode-badge.pro  { color: #0E7C6B; }
 

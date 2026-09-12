@@ -32,7 +32,6 @@ function _fmtTime(t) {
 Page({
   data: {
     copy: COPY.zh,
-    destFlag: '🌺',
     destName: '巴厘岛',
     tab: 'hotels',
     today: '',
@@ -79,15 +78,14 @@ Page({
     this.setData({copy});
     wx.setNavigationBarTitle({title:copy.title});
     if(app.updateTabBarLanguage) app.updateTabBarLanguage();
-    let flag = '🌍', name = this.data.copy.custom;
+    let name = this.data.copy.custom;
     if (destId === 'custom') {
       name = app.globalData.customDestName || this.data.copy.custom;
     } else {
       const d = DESTINATIONS.find(x => x.id === destId);
-      if (d) { flag = d.flag; name = destCopy[d.id] || d.name; }
+      if (d) name = destCopy[d.id] || d.name;
     }
     this.setData({
-      destFlag: flag,
       destName: name,
       areas: (HOTEL_AREAS[destId] || HOTEL_AREAS.custom).map(a=>({...a,name:a.key==='all'?copy.all:lang==='zh'?a.name:a.q})),
       cities: DEPARTURE_CITIES.map(c=>({...c,name:lang==='zh'?c.name:({PVG:'Shanghai',PEK:'Beijing',CAN:'Guangzhou',SZX:'Shenzhen',CTU:'Chengdu',HKG:'Hong Kong',HGH:'Hangzhou',XIY:'Xi’an'})[c.iata]})),

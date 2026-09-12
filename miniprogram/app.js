@@ -119,12 +119,12 @@ App({
 
   updateTabBarLanguage() {
     const labels = {
-      zh: ['首页', '聊天', '比价', '行程', '我的'],
-      en: ['Home', 'AI Chat', 'Compare', 'Trips', 'Me'],
-      ja: ['ホーム', 'AI相談', '比較', '旅程', 'マイ'],
-      ko: ['홈', 'AI 채팅', '비교', '일정', '내 정보'],
-      id: ['Beranda', 'Chat AI', 'Bandingkan', 'Rute', 'Saya'],
-    }[this.globalData.currentLang] || ['首页', '聊天', '比价', '行程', '我的'];
+      zh: ['发现', '问行程', '查价格', '行程', '我的'],
+      en: ['Discover', 'Ask', 'Prices', 'Trips', 'Me'],
+      ja: ['見つける', '相談', '料金', '旅程', 'マイ'],
+      ko: ['발견', '상담', '가격', '일정', '내 정보'],
+      id: ['Jelajah', 'Tanya', 'Harga', 'Rute', 'Saya'],
+    }[this.globalData.currentLang] || ['发现', '问行程', '查价格', '行程', '我的'];
     labels.forEach((text, index) => {
       try { wx.setTabBarItem({ index, text }); } catch (e) { /* tab bar not ready */ }
     });

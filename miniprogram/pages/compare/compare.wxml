@@ -3,7 +3,7 @@
 
   <!-- 顶部：目的地 + 子 tab -->
   <view class="dest-bar">
-    <view class="dest-flag">{{destFlag}}</view>
+    <view class="dest-icon"><image src="/assets/nav/prices-active.png" mode="aspectFit" aria-hidden="true" /></view>
     <view class="dest-info">
       <view class="dest-name">{{destName}}</view>
       <view class="dest-hint">{{copy.hint}}</view>
@@ -11,8 +11,8 @@
   </view>
 
   <view class="sub-tabs">
-    <view class="sub-tab {{tab === 'hotels' ? 'active' : ''}}" bindtap="switchTab" data-tab="hotels">{{copy.hotels}}</view>
-    <view class="sub-tab {{tab === 'flights' ? 'active' : ''}}" bindtap="switchTab" data-tab="flights">{{copy.flights}}</view>
+    <view class="sub-tab {{tab === 'hotels' ? 'active' : ''}}" bindtap="switchTab" data-tab="hotels"><image src="/assets/nav/hotel.png" mode="aspectFit" aria-hidden="true" />{{copy.hotels}}</view>
+    <view class="sub-tab {{tab === 'flights' ? 'active' : ''}}" bindtap="switchTab" data-tab="flights"><image src="/assets/nav/flight.png" mode="aspectFit" aria-hidden="true" />{{copy.flights}}</view>
   </view>
 
   <!-- ═══════════ 酒店 panel ═══════════ -->
@@ -68,11 +68,11 @@
         data-link="{{item.link}}"
       >
         <image wx:if="{{item.thumbnail}}" src="{{item.thumbnail}}" class="hotel-thumb" mode="aspectFill" />
-        <view wx:else class="hotel-thumb-placeholder">H</view>
+        <view wx:else class="hotel-thumb-placeholder"><image src="/assets/nav/hotel.png" mode="aspectFit" aria-hidden="true" /></view>
         <view class="hotel-info">
           <view class="hotel-name">{{item.name}}</view>
           <view class="hotel-meta">
-            <text wx:if="{{item.rating}}" class="hotel-rating">⭐ {{item.rating}}</text>
+            <text wx:if="{{item.rating}}" class="hotel-rating">{{copy.rating}} {{item.rating}}</text>
             <text wx:if="{{item.reviews}}" class="hotel-reviews">{{item.reviews}} {{copy.reviews}}</text>
           </view>
           <view class="hotel-price">{{item.price || copy.priceUnknown}} <text class="per-night">/ {{copy.night}}</text></view>
@@ -104,7 +104,7 @@
         class="chip {{flightOrigin === item.iata ? 'active' : ''}}"
         bindtap="selectOrigin"
         data-iata="{{item.iata}}"
-      >{{item.flag}} {{item.name}}</view>
+      >{{item.name}} · {{item.iata}}</view>
       <view class="chip {{flightOrigin === '__custom__' ? 'active' : ''}}" bindtap="customOrigin">{{copy.other}}</view>
     </scroll-view>
 
@@ -155,7 +155,7 @@
         bindtap="openFlightLink"
       >
         <image wx:if="{{item.airline_logo}}" src="{{item.airline_logo}}" class="flight-logo" mode="aspectFit" />
-        <view wx:else class="flight-logo-placeholder">↗</view>
+        <view wx:else class="flight-logo-placeholder"><image src="/assets/nav/flight.png" mode="aspectFit" aria-hidden="true" /></view>
         <view class="flight-info">
           <view class="flight-route">
             <text class="time">{{item.depart_time_short}}</text> {{item.depart_id}}
