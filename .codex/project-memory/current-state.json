@@ -4,14 +4,15 @@
   "latest_task": {
     "captured_at": "2026-09-12T06:17:00Z",
     "scope": "PR82/83 native navigation/icon acceptance and price-picker touch correction",
-    "branch": "codex/mini-native-acceptance-20260912",
-    "implementation_baseline": "f0286f3f6b19b878590e28b0c8724d632fb4b9b3",
-    "status": "native_verified_preview_generated_pending_integration",
+    "branch": "codex/mini-native-handoff-20260912",
+    "implementation_baseline": "3229812e0dc368b411304cc3da3f3809b95cee86",
+    "status": "merged_native_verified_preview_generated_owner_acceptance_pending",
+    "pull_request": 84,
     "prior_merged_pull_requests": [81, 82, 83],
-    "evidence": ".codex/project-memory/evidence/2026/09/20260912T061700Z-mini-native-acceptance.json",
-    "handoff": ".codex/project-memory/handoffs/2026/09/20260912T061700Z-mini-native-acceptance.md",
+    "evidence": ".codex/project-memory/evidence/2026/09/20260912T062000Z-mini-native-integrated.json",
+    "handoff": ".codex/project-memory/handoffs/2026/09/20260912T062000Z-mini-native-integrated.md",
     "preview_bytes": 1678176,
-    "not_claimed": "The native simulator matrix and official Preview are verified. This correction is not yet merged. No physical-phone acceptance, Upload, review submission, public Mini release, payment, driver email or production data mutation is claimed. Historical snapshot below is dated and not the active pointer."
+    "not_claimed": "The native simulator matrix, official Preview and PR84 merge are verified. No physical-phone acceptance, Upload, review submission, public Mini release, payment, driver email or production data mutation is claimed. Historical snapshot below is dated and not the active pointer."
   },
   "authority": {
     "repository": "https://github.com/lingfengai731/Agentstrip.git",
