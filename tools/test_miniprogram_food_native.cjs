@@ -25,7 +25,7 @@ const limit=(promise,label)=>Promise.race([promise,new Promise((_,reject)=>setTi
       };
     },catalogs);
     const sys=await mini.systemInfo();report.width=sys.windowWidth;
-    for(const lang of ['zh','en','ja','ko','id']){
+    for(const lang of (process.env.WM_FOOD_NATIVE_RECEIVERS_ONLY ? [] : ['zh','en','ja','ko','id'])){
       await mini.evaluate(function(language){getApp().globalData.currentLang=language;},lang);
       const page=await limit(mini.reLaunch('/pages/food/food?routeId=R1&day=0'),'launch '+lang);
       await page.waitFor(600);
@@ -54,17 +54,25 @@ const limit=(promise,label)=>Promise.race([promise,new Promise((_,reject)=>setTi
     route=await mini.reLaunch('/pages/itinerary/itinerary');await route.waitFor(600);
     const after=await route.data('selected'),stop=after.days[8].food[0];
     if(!stop || stop.id!==islandItems[0].id)throw Error('Native dining storage/route receiver failed');
+    report.receivers={modules:3,days:11,diningDay:9,restaurant:stop.name,storageRestoredOnFinish:false,aiDraft:false,autoSend:false};
     await mini.pageScrollTo(0);await route.waitFor(100);
     await (await route.$('.hero-actions .ghost')).tap();await new Promise(resolve=>setTimeout(resolve,500));
-    const chat=await mini.currentPage(),input=await chat.data('inputText');
+    let chat,input='';
+    for(let attempt=0;attempt<20;attempt++){
+      chat=await mini.currentPage();
+      if(chat.path==='pages/chat/chat'){input=await chat.data('inputText');if(input.includes(stop.name))break;}
+      await new Promise(resolve=>setTimeout(resolve,200));
+    }
+    report.aiProbe={path:chat.path,inputLength:input.length,hasRestaurant:input.includes(stop.name),hasIsland:input.includes('Penida')};
     if(chat.path!=='pages/chat/chat' || !input.includes(stop.name) || !input.includes('Penida'))throw Error('Native editable AI context receiver failed');
     if(await chat.data('busy'))throw Error('AI draft must not auto send');
     await mini.screenshot({path:path.join(output,'chat-dining-draft.png')});
     report.receivers={modules:3,days:11,diningDay:9,restaurant:stop.name,storageRestoredOnFinish:true,aiDraft:true,autoSend:false};
-  } finally {
+  } catch(error) { report.failure=error.message;throw error; } finally {
     await mini.evaluate(function(){const app=getApp();if(app.__foodQAStorage){app.__foodQAStorage.forEach(item=>{if(item.exists)wx.setStorageSync(item.key,item.value);else wx.removeStorageSync(item.key);});delete app.__foodQAStorage;}if(app.__foodQARequest){wx.request=app.__foodQARequest;delete app.__foodQARequest;}if(app.__foodQASnapshot){app.globalData=app.__foodQASnapshot;delete app.__foodQASnapshot;}}).catch(error=>report.errors.push(error.message));
+    report.storageRestoreFailed=report.errors.length>0;
     fs.writeFileSync(path.join(output,'native-food.json'),JSON.stringify(report,null,2));mini.disconnect();
   }
   if(report.errors.length)throw Error(report.errors.join('\n'));
-  console.log('Native Food: five languages, local catalogs,44px controls, no measured button overflow passed');
+  console.log(process.env.WM_FOOD_NATIVE_RECEIVERS_ONLY ? 'Native receivers: separate extension days, saved dining and editable AI draft passed; language matrix not rerun in this focused lane' : 'Native Food: five languages, local catalogs,44px controls, no measured button overflow and receivers passed');
 })().catch(error=>{console.error(error);process.exitCode=1;});
