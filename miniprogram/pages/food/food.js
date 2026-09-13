@@ -17,7 +17,7 @@ Page({
       this.travel = travel; this.catalog = catalog; this.food = food.restaurants; this.owner = owner;
       this.plans = wx.getStorageSync(owner) || {};
       const route = travel.routes.find(item => item.id === this.routeId);
-      this.route = route;
+      this.routeFamily = route;
       this.plan = route ? this.plans[route.id] || {route_id:route.id,days:route.free_outline.map(day=>({region_id:day.region_id,theme:day.theme,place_ids:(day.suggested_poi_ids || []).slice()}))} : null;
       const regions = [{id:'',label:copy.all}].concat(travel.regions.map(item=>({id:item.id,label:localized(item.name,lang)})));
       const labels = ids => [{id:'',label:copy.all}].concat(ids.map(id=>({id,label:copy[id]})));
@@ -45,7 +45,7 @@ Page({
     if (!this.plan) { this.chooseRoute((item.routeIds || []).find(id=>this.travel.routes.some(route=>route.id===id))); return; }
     try {
       const plan = engine.addFood(this.plan,this.data.dayIndex,item,this.data.meals[this.data.mealIndex].id || (item.suitableDayparts.includes('lunch') ? 'lunch' : item.suitableDayparts[0]));
-      const plans = {...this.plans,[this.route.id]:plan};
+      const plans = {...this.plans,[this.routeFamily.id]:plan};
       wx.setStorageSync(this.owner,plans); this.plan=plan; this.plans=plans;
       wx.showToast({title:this.data.copy.saved,icon:'none'});
     } catch (_) { wx.showToast({title:this.data.copy.failed,icon:'none'}); }

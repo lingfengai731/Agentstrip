@@ -14,7 +14,9 @@ const limit=(promise,label)=>Promise.race([promise,new Promise((_,reject)=>setTi
   mini.on('exception',error=>report.errors.push(String(error.message || error)));
   try {
     await mini.evaluate(function(catalogs){
-      const app=getApp();app.__foodQASnapshot={...app.globalData};app.globalData.token='';app.globalData.user=null;app.globalData.professionalRoute=null;
+      const app=getApp();app.__foodQASnapshot={...app.globalData};app.globalData.token='';app.globalData.user=null;app.globalData.professionalRoute=null;app.globalData.currentDest='bali';
+      app.__foodQAStorage=['wm_public_route_plans','wm_bali_route_selection','wm_itinerary_context','wm_chat_state','wm_open_conversation'].map(name=>{const key=app.privateStorageKey(name);return {key,exists:wx.getStorageInfoSync().keys.includes(key),value:wx.getStorageSync(key)};});
+      app.__foodQAStorage.forEach(item=>wx.removeStorageSync(item.key));
       app.__foodQARequest=wx.request;
       wx.request=function(options){
         const name=Object.keys(catalogs).find(key=>options.url.indexOf('/'+key+'.json')>=0);
@@ -35,8 +37,32 @@ const limit=(promise,label)=>Promise.race([promise,new Promise((_,reject)=>setTi
       await mini.screenshot({path:path.join(output,'food-'+lang+'.png')});
       report.matrix.push({lang,width:sys.windowWidth,candidates:items.length,buttons:buttons.length,minHeight:Math.min(...sizes.map(size=>size.height))});
     }
+    await mini.evaluate(function(){getApp().globalData.currentLang='en';});
+    let route=await limit(mini.reLaunch('/pages/itinerary/itinerary'),'route receiver');await route.waitFor(600);
+    for(const id of ['penida-west','penida-east','penida-snorkeling']){
+      const button=await route.$('.extension-card button[data-id="'+id+'"]');
+      if(!button)throw Error('Missing native extension '+id);
+      await button.tap();await route.waitFor(350);
+    }
+    const selected=await route.data('selected');
+    if(selected.days.length!==11 || selected.modules.filter(item=>item.selected).length!==3)throw Error('Native extension day separation failed');
+    await mini.screenshot({path:path.join(output,'itinerary-extensions.png')});
+    let dining=await mini.reLaunch('/pages/food/food?routeId=R1&day=8');await dining.waitFor(600);
+    const islandItems=await dining.data('items');if(!islandItems.length)throw Error('No west lunch candidates');
+    await mini.pageScrollTo(500);await dining.waitFor(150);
+    await (await dining.$('.food-card .add')).tap();await dining.waitFor(150);
+    route=await mini.reLaunch('/pages/itinerary/itinerary');await route.waitFor(600);
+    const after=await route.data('selected'),stop=after.days[8].food[0];
+    if(!stop || stop.id!==islandItems[0].id)throw Error('Native dining storage/route receiver failed');
+    await mini.pageScrollTo(0);await route.waitFor(100);
+    await (await route.$('.hero-actions .ghost')).tap();await new Promise(resolve=>setTimeout(resolve,500));
+    const chat=await mini.currentPage(),input=await chat.data('inputText');
+    if(chat.path!=='pages/chat/chat' || !input.includes(stop.name) || !input.includes('Penida'))throw Error('Native editable AI context receiver failed');
+    if(await chat.data('busy'))throw Error('AI draft must not auto send');
+    await mini.screenshot({path:path.join(output,'chat-dining-draft.png')});
+    report.receivers={modules:3,days:11,diningDay:9,restaurant:stop.name,storageRestoredOnFinish:true,aiDraft:true,autoSend:false};
   } finally {
-    await mini.evaluate(function(){const app=getApp();if(app.__foodQARequest){wx.request=app.__foodQARequest;delete app.__foodQARequest;}if(app.__foodQASnapshot){app.globalData=app.__foodQASnapshot;delete app.__foodQASnapshot;}}).catch(error=>report.errors.push(error.message));
+    await mini.evaluate(function(){const app=getApp();if(app.__foodQAStorage){app.__foodQAStorage.forEach(item=>{if(item.exists)wx.setStorageSync(item.key,item.value);else wx.removeStorageSync(item.key);});delete app.__foodQAStorage;}if(app.__foodQARequest){wx.request=app.__foodQARequest;delete app.__foodQARequest;}if(app.__foodQASnapshot){app.globalData=app.__foodQASnapshot;delete app.__foodQASnapshot;}}).catch(error=>report.errors.push(error.message));
     fs.writeFileSync(path.join(output,'native-food.json'),JSON.stringify(report,null,2));mini.disconnect();
   }
   if(report.errors.length)throw Error(report.errors.join('\n'));

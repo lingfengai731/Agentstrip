@@ -31,9 +31,11 @@
         <view class="day-body">
           <view class="day-title">{{copy.day}} {{item.day}} · {{item.region_name}}</view>
           <view class="day-theme">{{item.theme}}</view>
-          <view wx:if="{{!item.locked}}" class="places place-links"><button wx:for="{{item.places}}" wx:key="id" class="place-link" data-id="{{item.id}}" data-route="{{professional.route.route_id}}" bindtap="openPlace">{{item.name}}<text>{{copy.photos}}</text></button></view>
-          <view wx:if="{{!item.locked}}" wx:for="{{item.restaurants}}" wx:for-item="restaurant" wx:key="id" class="day-theme">{{restaurant.name}}</view>
-          <view wx:else class="lock-copy">{{item.lock_reason}}</view>
+          <block wx:if="{{!item.locked}}">
+            <view class="places place-links"><button wx:for="{{item.places}}" wx:key="id" class="place-link" data-id="{{item.id}}" data-route="{{professional.route.route_id}}" bindtap="openPlace">{{item.name}}<text>{{copy.photos}}</text></button></view>
+            <view wx:for="{{item.restaurants}}" wx:for-item="restaurant" wx:key="id" class="day-theme">{{restaurant.name}}</view>
+          </block>
+          <view wx:else="" class="lock-copy">{{item.lock_reason}}</view>
         </view>
       </view>
     </view>
