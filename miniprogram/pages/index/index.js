@@ -4,6 +4,7 @@ const { DESTINATIONS } = require('../../utils/const.js');
 
 const app = getApp();
 const COPY = require('./copy.js');
+const FOOD_COPY = require('../../utils/bali-food-copy.js');
 
 Page({
   data: {
@@ -35,6 +36,7 @@ Page({
 
   onShow() {
     app.updateTabBarLanguage();
+    this.setData({foodCopy: FOOD_COPY[app.globalData.currentLang] || FOOD_COPY.zh});
     this._refreshAuthState();
     this._validateSession();
   },
@@ -277,4 +279,5 @@ Page({
   goItinerary() { wx.switchTab({ url: '/pages/itinerary/itinerary' }); },
   goMe()        { wx.switchTab({ url: '/pages/me/me' }); },
   openGallery() { wx.navigateTo({ url: '/pages/gallery/gallery' }); },
+  openFood() { wx.navigateTo({ url: '/pages/food/food' }); },
 });

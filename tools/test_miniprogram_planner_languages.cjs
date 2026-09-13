@@ -10,11 +10,11 @@ const template = fs.readFileSync(path.join(__dirname, '../miniprogram/pages/plan
     assert.deepEqual(Object.keys(copy[lang]).sort(), Object.keys(copy.zh).sort());
     for (const [, key] of template.matchAll(/copy\.(\w+)/g)) assert.ok(copy[lang][key], `${lang}.${key}`);
     let page, sent;
-    const app = { globalData: { currentLang: lang }, setProfessionalRoute() {} };
+    const app = { globalData: { currentLang: lang }, privateStorageKey: name => name + '_guest', setProfessionalRoute() {} };
     vm.runInNewContext(source, {
       Page(value) { page = value; }, getApp: () => app, Date, setTimeout() {},
       require: name => name === './copy.js' ? copy : { async createProfessionalRoute(profile, route, language) { sent = { profile, language }; return {}; } },
-      wx: { setNavigationBarTitle() {}, showToast() {} },
+      wx: { getStorageSync() { return {}; }, setNavigationBarTitle() {}, showToast() {} },
     });
     page.setData = update => Object.assign(page.data, update);
     page.onShow();

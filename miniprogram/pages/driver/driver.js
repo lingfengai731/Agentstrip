@@ -25,7 +25,7 @@ function routeSummary(payload, copy = COPY.zh) {
   if (!route) return { routeId: '', attractions: '', startDate: '', endDate: '', people: 2, days: 0, budget: '' };
   const profile = payload.profile || route.trip_profile || payload.trip_profile || {};
   const attractions = (route.days_plan || []).map(day => {
-    const names = (day.places || []).map(place => place.name).filter(Boolean).join(copy.routeSeparator);
+    const names = (day.places || []).concat(day.restaurants || []).map(place => place.name).filter(Boolean).join(copy.routeSeparator);
     return fill(copy.routeDay, { day: day.day }) + (names || day.theme || day.region_name || '');
   }).filter(Boolean).join('\n');
   return {

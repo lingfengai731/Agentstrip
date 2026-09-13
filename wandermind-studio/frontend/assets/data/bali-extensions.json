@@ -1,0 +1,395 @@
+{
+  "schemaVersion": 1,
+  "destination": "bali",
+  "lastVerified": "2026-09-13",
+  "extensions": [
+    {
+      "id": "penida-west",
+      "map_reference":{"lat":-8.750878,"lng":115.474183,"kind":"viewpoint_reference_not_port","placeName":"Kelingking viewpoint","source":"https://commons.wikimedia.org/wiki/File:Kelingking_Beach,_Nusa_Penida.jpg","lastVerified":"2026-09-13"},
+      "name": {
+        "zh": "佩妮达西线",
+        "en": "Penida West",
+        "ja": "ペニダ西部",
+        "ko": "페니다 서부",
+        "id": "Penida Barat"
+      },
+      "node_id": "nusa_penida_west",
+      "poi_ids": [
+        "broken_beach",
+        "angels_billabong",
+        "kelingking_beach",
+        "crystal_bay"
+      ],
+      "physical_level": "moderate",
+      "source": [
+        {
+          "url": "https://axestonefastcruise.com/west-nusa-penida-tour/",
+          "kind": "operator_example",
+          "accessedAt": "2026-09-13",
+          "verifiedFields": [
+            "identity",
+            "representative_places"
+          ]
+        }
+      ],
+      "summary": {
+        "zh": "西岸观景，单独留一天；不默认下到海滩。",
+        "en": "A separate day for west-coast viewpoints; beach descents are not included.",
+        "ja": "西海岸の展望に1日。ビーチへの下りは含めません。",
+        "ko": "서해안 전망에 하루를 배정하며 해변 하산은 포함하지 않습니다.",
+        "id": "Sediakan satu hari untuk panorama barat; turun ke pantai tidak termasuk."
+      },
+      "region_id": "G3",
+      "route_ids": [
+        "R1",
+        "R3",
+        "R6"
+      ],
+      "duration_days": 1,
+      "departure_port": "Sanur",
+      "arrival_port": null,
+      "lastVerified": "2026-09-13",
+      "verificationStatus": "source_checked",
+      "bookingStatus": "requires_confirmation",
+      "mapRouteType": "schematic_not_navigation"
+    },
+    {
+      "id": "penida-east",
+      "map_reference":{"lat":-8.775561,"lng":115.619461,"kind":"viewpoint_reference_not_port","placeName":"Diamond Beach viewpoint","source":"https://commons.wikimedia.org/wiki/File:Diamond_Beach_Nusa_Penida.jpg","lastVerified":"2026-09-13"},
+      "name": {
+        "zh": "佩妮达东线",
+        "en": "Penida East",
+        "ja": "ペニダ東部",
+        "ko": "페니다 동부",
+        "id": "Penida Timur"
+      },
+      "node_id": "nusa_penida_east",
+      "poi_ids": [
+        "rumah_pohon_molenteng",
+        "diamond_beach",
+        "atuh_beach"
+      ],
+      "physical_level": "moderate_to_high",
+      "source": [
+        {
+          "url": "https://axestonefastcruise.com/east-nusa-penida-tour/",
+          "kind": "operator_example",
+          "accessedAt": "2026-09-13",
+          "verifiedFields": [
+            "identity",
+            "representative_places"
+          ]
+        }
+      ],
+      "summary": {
+        "zh": "东岸悬崖与海湾，单独留一天；阶梯路段按体力选择。",
+        "en": "A separate day for eastern cliffs and bays; choose stair descents to suit your fitness.",
+        "ja": "東部の崖と湾に1日。階段は体力に合わせて選択。",
+        "ko": "동부 절벽과 만에 하루를 배정하고 계단은 체력에 맞게 선택하세요.",
+        "id": "Satu hari untuk tebing dan teluk timur; pilih tangga sesuai kebugaran."
+      },
+      "region_id": "G3",
+      "route_ids": [
+        "R1",
+        "R3",
+        "R6"
+      ],
+      "duration_days": 1,
+      "departure_port": "Sanur",
+      "arrival_port": null,
+      "lastVerified": "2026-09-13",
+      "verificationStatus": "source_checked",
+      "bookingStatus": "requires_confirmation",
+      "mapRouteType": "schematic_not_navigation"
+    },
+    {
+      "id": "penida-snorkeling",
+      "name": {
+        "zh": "佩妮达浮潜",
+        "en": "Penida snorkeling",
+        "ja": "ペニダ・シュノーケリング",
+        "ko": "페니다 스노클링",
+        "id": "Snorkeling Penida"
+      },
+      "node_id": "nusa_penida_marine",
+      "poi_ids": [
+        "penida_snorkeling_session"
+      ],
+      "candidate_poi_ids": [
+        "manta_bay",
+        "gamat_bay",
+        "toyapakeh_wall",
+        "crystal_bay"
+      ],
+      "physical_level": "water_activity",
+      "source": [
+        {
+          "url": "https://axestonefastcruise.com/snorkeling-package/",
+          "kind": "operator_example",
+          "accessedAt": "2026-09-13",
+          "verifiedFields": [
+            "identity",
+            "representative_places"
+          ]
+        }
+      ],
+      "summary": {
+        "zh": "单独安排海上体验；点位由合格运营方按海况确认，不保证看到蝠鲼。",
+        "en": "Reserve a separate sea-experience day. A qualified operator confirms sites for the conditions; manta sightings are not guaranteed.",
+        "ja": "海の体験は別日に。海況に応じ事業者が場所を確認。マンタ遭遇は保証されません。",
+        "ko": "해상 체험은 별도 날짜에 배정하세요. 해황에 따라 업체가 지점을 확인하며 만타 관찰은 보장되지 않습니다.",
+        "id": "Jadwalkan pengalaman laut pada hari tersendiri. Operator menentukan lokasi sesuai kondisi; pari manta tidak dijamin."
+      },
+      "region_id": "G3",
+      "route_ids": [
+        "R1",
+        "R3",
+        "R6"
+      ],
+      "duration_days": 1,
+      "departure_port": "Sanur",
+      "arrival_port": null,
+      "lastVerified": "2026-09-13",
+      "verificationStatus": "source_checked",
+      "bookingStatus": "requires_confirmation",
+      "mapRouteType": "schematic_not_navigation"
+    }
+  ],
+  "pois": [
+    {
+      "id": "penida_snorkeling_session",
+      "name": "Penida snorkeling session",
+      "name_i18n": {
+        "zh": "佩妮达浮潜活动",
+        "en": "Penida snorkeling session",
+        "ja": "ペニダ・シュノーケリング",
+        "ko": "페니다 스노클링",
+        "id": "Sesi snorkeling Penida"
+      },
+      "region_id": "G3",
+      "node_id": "nusa_penida_marine",
+      "type": "marine_activity",
+      "tags": [
+        "snorkelling",
+        "operator_required"
+      ],
+      "route_ids": [
+        "R1",
+        "R3",
+        "R6"
+      ],
+      "extension_ids": [
+        "penida-snorkeling"
+      ],
+      "coordinates": null,
+      "verification_status": "needs_supplier_confirmation",
+      "official_url": "https://axestonefastcruise.com/snorkeling-package/",
+      "verification": {
+        "reviewed_at": "2026-09-13",
+        "verified_scope": [
+          "operator_listed_identity"
+        ],
+        "live_checks": [
+          "sea_state",
+          "weather",
+          "qualified_guide",
+          "equipment",
+          "swimming_ability",
+          "departure_and_arrival_ports"
+        ],
+        "sources": [
+          {
+            "url": "https://axestonefastcruise.com/snorkeling-package/",
+            "kind": "operator_example",
+            "accessedAt": "2026-09-13",
+            "verifiedFields": [
+              "identity",
+              "representative_places"
+            ]
+          }
+        ]
+      },
+      "notes": "An operator-listed marine experience, not a self-guided swim stop or guaranteed itinerary. Manta Bay and Manta Point are different sites."
+    },
+    {
+      "id": "manta_bay",
+      "name": "Manta Bay",
+      "name_i18n": {
+        "zh": "蝠鲼湾",
+        "en": "Manta Bay",
+        "ja": "マンタ・ベイ",
+        "ko": "만타 베이",
+        "id": "Manta Bay"
+      },
+      "region_id": "G3",
+      "node_id": "nusa_penida_marine",
+      "type": "marine_site",
+      "tags": [
+        "snorkelling",
+        "operator_required"
+      ],
+      "route_ids": [
+        "R1",
+        "R3",
+        "R6"
+      ],
+      "extension_ids": [
+        "penida-snorkeling"
+      ],
+      "coordinates": null,
+      "verification_status": "needs_supplier_confirmation",
+      "official_url": "https://axestonefastcruise.com/snorkeling-package/",
+      "verification": {
+        "reviewed_at": "2026-09-13",
+        "verified_scope": [
+          "operator_listed_identity"
+        ],
+        "live_checks": [
+          "sea_state",
+          "weather",
+          "qualified_guide",
+          "equipment",
+          "swimming_ability",
+          "departure_and_arrival_ports"
+        ],
+        "sources": [
+          {
+            "url": "https://axestonefastcruise.com/snorkeling-package/",
+            "kind": "operator_example",
+            "accessedAt": "2026-09-13",
+            "verifiedFields": [
+              "identity",
+              "representative_places"
+            ]
+          }
+        ]
+      },
+      "notes": "An operator-listed marine experience, not a self-guided swim stop or guaranteed itinerary. Manta Bay and Manta Point are different sites."
+    },
+    {
+      "id": "gamat_bay",
+      "name": "Gamat Bay",
+      "name_i18n": {
+        "zh": "加马特湾",
+        "en": "Gamat Bay",
+        "ja": "ガマット湾",
+        "ko": "가맛 베이",
+        "id": "Teluk Gamat"
+      },
+      "region_id": "G3",
+      "node_id": "nusa_penida_marine",
+      "type": "marine_site",
+      "tags": [
+        "snorkelling",
+        "operator_required"
+      ],
+      "route_ids": [
+        "R1",
+        "R3",
+        "R6"
+      ],
+      "extension_ids": [
+        "penida-snorkeling"
+      ],
+      "coordinates": null,
+      "verification_status": "needs_supplier_confirmation",
+      "official_url": "https://axestonefastcruise.com/snorkeling-package/",
+      "verification": {
+        "reviewed_at": "2026-09-13",
+        "verified_scope": [
+          "operator_listed_identity"
+        ],
+        "live_checks": [
+          "sea_state",
+          "weather",
+          "qualified_guide",
+          "equipment",
+          "swimming_ability",
+          "departure_and_arrival_ports"
+        ],
+        "sources": [
+          {
+            "url": "https://axestonefastcruise.com/snorkeling-package/",
+            "kind": "operator_example",
+            "accessedAt": "2026-09-13",
+            "verifiedFields": [
+              "identity",
+              "representative_places"
+            ]
+          }
+        ]
+      },
+      "notes": "An operator-listed marine experience, not a self-guided swim stop or guaranteed itinerary. Manta Bay and Manta Point are different sites."
+    },
+    {
+      "id": "toyapakeh_wall",
+      "name": "Toyapakeh Wall",
+      "name_i18n": {
+        "zh": "托亚帕克礁壁",
+        "en": "Toyapakeh Wall",
+        "ja": "トヤパケ・ウォール",
+        "ko": "토야파케 월",
+        "id": "Dinding Toyapakeh"
+      },
+      "region_id": "G3",
+      "node_id": "nusa_penida_marine",
+      "type": "marine_site",
+      "tags": [
+        "snorkelling",
+        "operator_required"
+      ],
+      "route_ids": [
+        "R1",
+        "R3",
+        "R6"
+      ],
+      "extension_ids": [
+        "penida-snorkeling"
+      ],
+      "coordinates": null,
+      "verification_status": "needs_supplier_confirmation",
+      "official_url": "https://axestonefastcruise.com/snorkeling-package/",
+      "verification": {
+        "reviewed_at": "2026-09-13",
+        "verified_scope": [
+          "operator_listed_identity"
+        ],
+        "live_checks": [
+          "sea_state",
+          "weather",
+          "qualified_guide",
+          "equipment",
+          "swimming_ability",
+          "departure_and_arrival_ports"
+        ],
+        "sources": [
+          {
+            "url": "https://axestonefastcruise.com/snorkeling-package/",
+            "kind": "operator_example",
+            "accessedAt": "2026-09-13",
+            "verifiedFields": [
+              "identity",
+              "representative_places"
+            ]
+          }
+        ]
+      },
+      "notes": "An operator-listed marine experience, not a self-guided swim stop or guaranteed itinerary. Manta Bay and Manta Point are different sites."
+    }
+  ],
+  "policy": {
+    "primaryThemes": [
+      "Landscapes",
+      "Culture",
+      "Experiences"
+    ],
+    "futureCollections": [
+      "Food & Dining",
+      "Shopping"
+    ],
+    "departurePort": "Sanur",
+    "arrivalPort": "Confirm on ticket; do not assume all operators arrive at the same port.",
+    "dayPolicy": "One module per dedicated itinerary day. No automatic west+east+snorkeling combination.",
+    "facts": "Identity and representative cluster checked; weather, availability and operation require reconfirmation."
+  }
+}

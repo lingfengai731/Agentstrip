@@ -32,6 +32,7 @@
           <view class="day-title">{{copy.day}} {{item.day}} · {{item.region_name}}</view>
           <view class="day-theme">{{item.theme}}</view>
           <view wx:if="{{!item.locked}}" class="places place-links"><button wx:for="{{item.places}}" wx:key="id" class="place-link" data-id="{{item.id}}" data-route="{{professional.route.route_id}}" bindtap="openPlace">{{item.name}}<text>{{copy.photos}}</text></button></view>
+          <view wx:if="{{!item.locked}}" wx:for="{{item.restaurants}}" wx:for-item="restaurant" wx:key="id" class="day-theme">{{restaurant.name}}</view>
           <view wx:else class="lock-copy">{{item.lock_reason}}</view>
         </view>
       </view>
@@ -54,7 +55,16 @@
     <view class="public-title">{{selected.name}}</view>
     <view class="public-promise">{{selected.promise}}</view>
     <view class="route-facts"><text>{{copy.recommended}}{{selected.idealDays}}</text><text>{{selected.regionPath}}</text></view>
-    <view class="day-list public-days"><view wx:for="{{selected.days}}" wx:key="day" class="public-day"><view class="day-number">{{item.day}}</view><view class="day-body"><view class="day-title">{{item.theme}}</view><view class="places place-links"><button wx:for="{{item.places}}" wx:key="id" class="place-link" data-id="{{item.id}}" data-route="{{selected.id}}" bindtap="openPlace">{{item.name}}<text>{{copy.photos}}</text></button></view></view></view></view>
+    <view wx:for="{{selected.modules}}" wx:key="id" class="extension-card"><button class="btn secondary" data-id="{{item.id}}" bindtap="toggleExtension">{{item.selected ? '−' : '+'}} {{item.name}}</button><view class="section-note">{{item.summary}}</view></view>
+    <view class="day-list public-days">
+      <view wx:for="{{selected.days}}" wx:for-item="day" wx:key="day" class="public-day">
+        <view class="day-number">{{day.day}}</view><view class="day-body"><view class="day-title">{{day.theme}}</view>
+          <view class="places place-links"><button wx:for="{{day.places}}" wx:key="id" class="place-link" data-id="{{item.id}}" data-route="{{selected.id}}" bindtap="openPlace">{{item.name}}<text>{{copy.photos}}</text></button></view>
+          <view wx:for="{{day.food}}" wx:key="id" class="day-theme">{{item.meal}} · {{item.name}}</view>
+          <button class="btn secondary full" bindtap="openFood" data-day="{{day.index}}">{{foodCopy.add}}</button>
+        </view>
+      </view>
+    </view>
     <button class="btn primary full" bindtap="openPlanner">{{copy.use}}</button>
   </view>
   </block>

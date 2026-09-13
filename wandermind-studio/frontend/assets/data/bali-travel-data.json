@@ -399,6 +399,16 @@
   ],
   "pois": [
     {
+      "id": "pererenan_beach",
+      "name": "Pererenan Beach",
+      "name_i18n": {"zh":"佩勒勒南海滩","en":"Pererenan Beach","ja":"プルレナン・ビーチ","ko":"페레레난 비치","id":"Pantai Pererenan"},
+      "region_id":"G1", "node_id":"canggu", "type":"beach",
+      "tags":["beach","sunset","surf"], "route_ids":["R1","R6"],
+      "official_url":"https://sita.badungkab.go.id/en/destinations/pererenan-beach-is-a-tourism-destination-with-quiet-natural-charm-in-badung",
+      "verification_status":"verified",
+      "verification":{"reviewed_at":"2026-09-13","verified_scope":["identity","canggu_coast","black_sand_beach"],"live_checks":["tide","surf_conditions","swimming_conditions","access","traffic"],"sources":[{"publisher":"Badung Regency Tourism Office","kind":"government_tourism","url":"https://sita.badungkab.go.id/en/destinations/pererenan-beach-is-a-tourism-destination-with-quiet-natural-charm-in-badung"}]}
+    },
+    {
       "id": "tirta_empul",
       "name": "Tirta Empul",
       "region_id": "G4",

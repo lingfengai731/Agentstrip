@@ -7,7 +7,7 @@ const root = path.resolve(__dirname, '..');
 function planner(storage, userId = 1) {
   let page;
   let calls = 0;
-  const app = { globalData: { user: { id: userId }, currentLang: 'zh' }, setProfessionalRoute() {} };
+  const app = { globalData: { user: { id: userId }, currentLang: 'zh' }, privateStorageKey:name=>name+'_'+userId, setProfessionalRoute() {} };
   vm.runInNewContext(fs.readFileSync(path.join(root, 'miniprogram/pages/planner/planner.js'), 'utf8'), {
     Page(value) { page = value; }, getApp: () => app,
     require: name => name === './copy.js' ? require('../miniprogram/pages/planner/copy.js') : ({ async createProfessionalRoute() { calls++; throw new Error('offline'); } }),
@@ -58,11 +58,14 @@ function planner(storage, userId = 1) {
   assert.equal(planner(storage, 2).page.data.travellers, 2, 'another account must not inherit the draft');
   let itinerary;
   let resolveRoute;
-  const routeApp = { globalData: { token: '', currentLang: 'zh', professionalRoute: { private: true } }, setProfessionalRoute(value) { this.globalData.professionalRoute = value; } };
+  const routeApp = { globalData: { token: '', currentLang: 'zh', professionalRoute: { private: true } }, privateStorageKey:name=>name+'_guest', setProfessionalRoute(value) { this.globalData.professionalRoute = value; } };
   vm.runInNewContext(fs.readFileSync(path.join(root, 'miniprogram/pages/itinerary/itinerary.js'), 'utf8'), {
     Page(value) { itinerary = value; }, getApp: () => routeApp,
-    require: name => name === './copy.js' ? require('../miniprogram/pages/itinerary/copy.js') : ({
+    wx: {getStorageSync:()=>({})},
+    require: name => name === './copy.js' ? require('../miniprogram/pages/itinerary/copy.js') : name.includes('bali-itinerary') ? require('../miniprogram/utils/bali-itinerary.js') : name.includes('bali-food-copy') ? require('../miniprogram/utils/bali-food-copy.js') : ({
       baliRouteData: async () => ({ routes: ['R1', 'R2'].map(id => ({ id, name: { zh: `中文${id}`, en: `English ${id}` }, free_outline: [] })) }),
+      baliExtensions: async()=>({extensions:[],pois:[]}),
+      baliFood: async()=>({restaurants:[]}),
       recentUnlockedProfessionalRoute: () => new Promise(resolve => { resolveRoute = resolve; }),
     }),
   });

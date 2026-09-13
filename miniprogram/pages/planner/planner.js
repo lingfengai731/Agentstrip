@@ -1,6 +1,7 @@
 const api = require('../../utils/api.js');
 const COPY = require('./copy.js');
 const app = getApp();
+const itinerary = require('../../utils/bali-itinerary.js');
 
 function isoDate(offset) {
   const date = new Date(Date.now() + offset * 86400000);
@@ -90,6 +91,12 @@ Page({
       days: this.data.days, budget_range: this.data.budgetOptions[this.data.budgetIndex],
       travel_style: this.data.travelStyle, pace: this.data.pace, goals: this.data.goals,
     };
+    const plans = wx.getStorageSync(app.privateStorageKey('wm_public_route_plans')) || {};
+    const routePlan = plans[this.data.routeId];
+    if (routePlan) {
+      profile.extension_ids = routePlan.extension_ids || [];
+      profile.dining_stops = itinerary.diningStops(routePlan);
+    }
     this.setData({ busy: true, error: '' });
     try {
       const payload = await api.createProfessionalRoute(profile, this.data.routeId, app.globalData.currentLang || 'zh');

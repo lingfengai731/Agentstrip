@@ -1,0 +1,21 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Bali Food & Dining · WanderMind</title>
+  <meta name="description" content="Discover Bali restaurants by area, meal and budget. Add a dining stop to your WanderMind itinerary.">
+  <link rel="stylesheet" href="assets/css/bali-food.css?v=20260913p1">
+</head>
+<body>
+  <header class="food-header"><a href="index.html" class="food-brand">WanderMind</a><nav><a id="route-link" href="bali.html#route-families">Bali</a><label><span class="sr-only">Language</span><select id="food-language"><option value="zh">中文</option><option value="en">English</option><option value="ja">日本語</option><option value="ko">한국어</option><option value="id">Bahasa Indonesia</option></select></label></nav></header>
+  <main>
+    <section class="food-hero"><p id="food-eyebrow">Food & Dining</p><h1 id="food-heading"></h1><p id="food-intro"></p></section>
+    <section class="food-trip" aria-labelledby="food-trip-title"><h2 id="food-trip-title"></h2><p id="food-trip-note"></p><label><span id="day-label"></span><select id="food-day"></select></label><label><span id="meal-label"></span><select id="food-meal"></select></label><a id="food-browse" href="bali.html#route-families"></a><a id="food-diy" href="ai-tool.html?mode=diy" hidden></a></section>
+    <section class="food-filters" aria-label="Filters"><label><span id="region-label"></span><select id="food-region"></select></label><label><span id="category-label"></span><select id="food-category"></select></label><label><span id="budget-label"></span><select id="food-budget"></select></label></section>
+    <p id="food-status" role="status" aria-live="polite"></p><button id="food-retry" type="button" hidden></button>
+    <section id="food-results" class="food-grid" aria-label="Restaurants"></section>
+  </main>
+  <footer>WanderMind · Bali</footer>
+  <script src="assets/js/bali-itinerary.js?v=20260913p1"></script><script src="assets/js/bali-food-copy.js?v=20260913p1"></script><script src="assets/js/bali-food.js?v=20260913p1"></script>
+</body>
+</html>

@@ -140,6 +140,8 @@ const chatOnce = (messages, system, destination, mode = 'fast') =>
 // ─── Bali 公共路线与专业路线（与网站共用同一事实源） ───
 const baliRouteData = () =>
   _request({ url: '/assets/data/bali-travel-data.json?v=20260911p2', auth: false });
+const baliExtensions = () => _request({ url: '/assets/data/bali-extensions.json?v=20260913p1', auth: false });
+const baliFood = () => _request({ url: '/assets/data/bali-food.json?v=20260913p1', auth: false });
 const baliMediaCatalog = () =>
   _request({ url: '/assets/data/poi-media-catalog.json?v=20260901p1', auth: false });
 const imagePublishManifest = () =>
@@ -190,7 +192,7 @@ module.exports = {
   sendVerificationCode, register, login, wechatLogin, linkWechat, me,
   checkUserContent,
   chatOnce,
-  baliRouteData, baliMediaCatalog, imagePublishManifest, publicPortfolio,
+  baliRouteData, baliExtensions, baliFood, baliMediaCatalog, imagePublishManifest, publicPortfolio,
   createProfessionalRoute, recentUnlockedProfessionalRoute,
   sendDriverRequest, listDriverRequests,
   destInfo,

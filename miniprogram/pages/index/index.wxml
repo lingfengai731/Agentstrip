@@ -122,5 +122,10 @@
 
     <view class="logout-row"><button class="logout-link" bindtap="doLogout">{{copy.logout}}</button></view>
   </view>
-
+  <view class="portfolio-card" bindtap="openFood" role="button" aria-label="{{foodCopy.title}}">
+    <view class="portfolio-kicker">FOOD &amp; DINING</view>
+    <view class="portfolio-title">{{foodCopy.title}}</view>
+    <view class="portfolio-copy">{{foodCopy.intro}}</view>
+    <view class="portfolio-action">{{foodCopy.title}} <text>→</text></view>
+  </view>
 </view>

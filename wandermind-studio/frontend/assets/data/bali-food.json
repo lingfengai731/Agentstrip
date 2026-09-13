@@ -1,0 +1,3767 @@
+{
+  "schemaVersion": 1,
+  "destination": "bali",
+  "researchDate": "2026-09-13",
+  "policy": {
+    "facts": "Restaurant identity, community opinion, editorial route association and live booking information are separate.",
+    "coordinates": "Candidate coordinates are not used as exact map positions or driving estimates.",
+    "prices": "Reference spending is community/editorial guidance, not a guaranteed menu price.",
+    "geography": "Canonical WanderMind G1-G7 overrides supplied report mappings.",
+    "images": "Only licensed or owner-approved real venue photographs may populate storefrontImage."
+  },
+  "restaurants": [
+    {
+      "id": "twist-ubud",
+      "name": "Twist Ubud",
+      "region": "G4",
+      "area": "Ubud",
+      "node_id": "ubud",
+      "address": "Jalan Raya Pengosekan, Ubud, Gianyar",
+      "category": "local",
+      "cuisine": [
+        "local"
+      ],
+      "priceLevel": "mid",
+      "referenceSpend": 250000,
+      "priceSource": "小红书近期消费记录",
+      "priceConfirmed": false,
+      "mealType": [
+        "lunch",
+        "dinner"
+      ],
+      "scene": [
+        "local"
+      ],
+      "localSpecialty": {
+        "zh": "烤猪排/炸五花/虾炒饭"
+      },
+      "vegetarian": "unknown",
+      "halalFriendly": "unknown",
+      "reservation": "confirm_with_venue",
+      "openingHours": null,
+      "coordinates": null,
+      "candidateCoordinates": {
+        "lat": -8.5212184,
+        "lng": 115.2628647,
+        "confidence": "high",
+        "source": "OSM Nominatim"
+      },
+      "nearbyPOIs": [
+        "yoga_barn",
+        "pyramids_of_chi",
+        "heart_space_bali",
+        "intuitive_flow",
+        "tegalalang_rice_terrace",
+        "ubud_monkey_forest"
+      ],
+      "routeIds": [
+        "R1",
+        "R2",
+        "R4"
+      ],
+      "extensionIds": [],
+      "suitableDayparts": [
+        "lunch",
+        "dinner"
+      ],
+      "source": [
+        {
+          "url": "https://www.tripadvisor.com/Restaurant_Review-g297701-d15009688-Reviews-Twist_Ubud-Ubud_Gianyar_Regency_Bali.html",
+          "kind": "review_or_directory",
+          "accessedAt": null,
+          "verifiedFields": []
+        },
+        {
+          "url": "https://www.xiaohongshu.com/explore/6a0370520000000036032432",
+          "kind": "provided_community_reference",
+          "accessedAt": null,
+          "verifiedFields": []
+        }
+      ],
+      "lastVerified": null,
+      "researchDate": "2026-09-13",
+      "verificationStatus": "editorial_candidate",
+      "published": true,
+      "editorialNotes": {
+        "zh": "乌布烤猪排多篇样本正面评价较一致，虾炒饭被评论反复提及"
+      },
+      "sourceClaim": "strong",
+      "storefrontImage": null,
+      "nearbyBasis": "same_named_area_not_verified_travel_time"
+    },
+    {
+      "id": "warung-pondok-madu",
+      "name": "Warung Pondok Madu",
+      "region": "G4",
+      "area": "Ubud",
+      "node_id": "ubud",
+      "address": "Jalan Jatayu, Ubud, Peliatan, Gianyar",
+      "category": "local",
+      "cuisine": [
+        "local"
+      ],
+      "priceLevel": "mid",
+      "referenceSpend": 150000,
+      "priceSource": "小红书近期消费记录",
+      "priceConfirmed": false,
+      "mealType": [
+        "lunch",
+        "dinner"
+      ],
+      "scene": [
+        "local"
+      ],
+      "localSpecialty": {
+        "zh": "碳烤猪排/虾炒饭"
+      },
+      "vegetarian": "unknown",
+      "halalFriendly": "unknown",
+      "reservation": "confirm_with_venue",
+      "openingHours": null,
+      "coordinates": null,
+      "candidateCoordinates": {
+        "lat": -8.5165016,
+        "lng": 115.2662517,
+        "confidence": "high",
+        "source": "OSM Nominatim"
+      },
+      "nearbyPOIs": [
+        "yoga_barn",
+        "pyramids_of_chi",
+        "heart_space_bali",
+        "intuitive_flow",
+        "tegalalang_rice_terrace",
+        "ubud_monkey_forest"
+      ],
+      "routeIds": [
+        "R1",
+        "R2",
+        "R4"
+      ],
+      "extensionIds": [],
+      "suitableDayparts": [
+        "lunch",
+        "dinner"
+      ],
+      "source": [
+        {
+          "url": "https://warungpondokmadu.com/",
+          "kind": "provided_official_reference",
+          "accessedAt": null,
+          "verifiedFields": []
+        },
+        {
+          "url": "https://www.xiaohongshu.com/explore/6a0370520000000036032432",
+          "kind": "provided_community_reference",
+          "accessedAt": null,
+          "verifiedFields": []
+        },
+        {
+          "url": "https://www.xiaohongshu.com/explore/6aa0e77a000000002a024d55",
+          "kind": "provided_community_reference",
+          "accessedAt": null,
+          "verifiedFields": []
+        }
+      ],
+      "lastVerified": null,
+      "researchDate": "2026-09-13",
+      "verificationStatus": "editorial_candidate",
+      "published": true,
+      "editorialNotes": {
+        "zh": "碳烤猪排偏甜契合江浙沪口味，虾炒饭多篇样本正面评价"
+      },
+      "sourceClaim": "strong",
+      "storefrontImage": null,
+      "nearbyBasis": "same_named_area_not_verified_travel_time"
+    },
+    {
+      "id": "warung-chef-bagus-kuta",
+      "name": "Warung Chef Bagus",
+      "region": "G1",
+      "area": "Kuta",
+      "node_id": "kuta",
+      "address": "Jalan Bakung Sari No. 43, Kuta, Badung, Bali",
+      "category": "local",
+      "cuisine": [
+        "local"
+      ],
+      "priceLevel": "mid",
+      "referenceSpend": 270000,
+      "priceSource": "小红书菜单小票（352k含税/人135rmb）",
+      "priceConfirmed": false,
+      "mealType": [
+        "lunch",
+        "dinner"
+      ],
+      "scene": [
+        "local"
+      ],
+      "localSpecialty": {
+        "zh": "烤猪排/印尼炒饭/沙爹"
+      },
+      "vegetarian": "unknown",
+      "halalFriendly": "unknown",
+      "reservation": "confirm_with_venue",
+      "openingHours": null,
+      "coordinates": null,
+      "candidateCoordinates": {
+        "lat": -8.7246149,
+        "lng": 115.1741761,
+        "confidence": "high",
+        "source": "OSM Nominatim"
+      },
+      "nearbyPOIs": [],
+      "routeIds": [
+        "R1",
+        "R6"
+      ],
+      "extensionIds": [],
+      "suitableDayparts": [
+        "lunch",
+        "dinner"
+      ],
+      "source": [
+        {
+          "url": "https://warungchefbagus.com/",
+          "kind": "provided_official_reference",
+          "accessedAt": null,
+          "verifiedFields": []
+        },
+        {
+          "url": "https://www.xiaohongshu.com/explore/6a0bf1f50000000036033f67",
+          "kind": "provided_community_reference",
+          "accessedAt": null,
+          "verifiedFields": []
+        },
+        {
+          "url": "https://www.xiaohongshu.com/explore/6a8eb3cc0000000020030f84",
+          "kind": "provided_community_reference",
+          "accessedAt": null,
+          "verifiedFields": []
+        }
+      ],
+      "lastVerified": null,
+      "researchDate": "2026-09-13",
+      "verificationStatus": "editorial_candidate",
+      "published": true,
+      "editorialNotes": {
+        "zh": "库塔烤猪排多篇样本高频推荐，离机场近，可支付宝"
+      },
+      "sourceClaim": "strong",
+      "storefrontImage": null,
+      "nearbyBasis": "same_named_area_not_verified_travel_time"
+    },
+    {
+      "id": "sun-sun-warung",
+      "name": "Sun Sun Warung",
+      "region": "G4",
+      "area": "Ubud",
+      "node_id": "ubud",
+      "address": "Jalan Jembawan, Ubud, Gianyar",
+      "category": "local",
+      "cuisine": [
+        "local"
+      ],
+      "priceLevel": "low",
+      "referenceSpend": 100000,
+      "priceSource": "小红书近期消费记录",
+      "priceConfirmed": false,
+      "mealType": [
+        "lunch",
+        "dinner"
+      ],
+      "scene": [
+        "local"
+      ],
+      "localSpecialty": {
+        "zh": "脏鸭饭/巴厘本地拼盘"
+      },
+      "vegetarian": "unknown",
+      "halalFriendly": "unknown",
+      "reservation": "confirm_with_venue",
+      "openingHours": null,
+      "coordinates": null,
+      "candidateCoordinates": {
+        "lat": -8.5092278,
+        "lng": 115.2668661,
+        "confidence": "high",
+        "source": "OSM Nominatim"
+      },
+      "nearbyPOIs": [
+        "yoga_barn",
+        "pyramids_of_chi",
+        "heart_space_bali",
+        "intuitive_flow",
+        "tegalalang_rice_terrace",
+        "ubud_monkey_forest"
+      ],
+      "routeIds": [
+        "R1",
+        "R2",
+        "R4"
+      ],
+      "extensionIds": [],
+      "suitableDayparts": [
+        "lunch",
+        "dinner"
+      ],
+      "source": [
+        {
+          "url": "https://sunsunwarung.com/",
+          "kind": "provided_official_reference",
+          "accessedAt": null,
+          "verifiedFields": []
+        },
+        {
+          "url": "https://www.tripadvisor.com/Restaurant_Review-g297701-d15296872-Reviews-Sun_Sun_Warung-Ubud_Gianyar_Regency_Bali.html",
+          "kind": "provided_community_reference",
+          "accessedAt": null,
+          "verifiedFields": []
+        }
+      ],
+      "lastVerified": null,
+      "researchDate": "2026-09-13",
+      "verificationStatus": "editorial_candidate",
+      "published": true,
+      "editorialNotes": {
+        "zh": "本轮样本中高频推荐的脏鸭饭，庭院本地风"
+      },
+      "sourceClaim": "medium",
+      "storefrontImage": null,
+      "nearbyBasis": "same_named_area_not_verified_travel_time"
+    },
+    {
+      "id": "warung-mak-beng-sanur",
+      "name": "Warung Mak Beng",
+      "region": "G3",
+      "area": "Sanur",
+      "node_id": "sanur",
+      "address": "Jalan Hang Tuah No. 45, Sanur Kaja, Denpasar",
+      "category": "local",
+      "cuisine": [
+        "local"
+      ],
+      "priceLevel": "low",
+      "referenceSpend": 55000,
+      "priceSource": "小红书（55k一份）",
+      "priceConfirmed": false,
+      "mealType": [
+        "lunch",
+        "dinner"
+      ],
+      "scene": [
+        "local"
+      ],
+      "localSpecialty": {
+        "zh": "炸鱼+鱼头汤+米饭（单套餐）"
+      },
+      "vegetarian": "unknown",
+      "halalFriendly": "unknown",
+      "reservation": "confirm_with_venue",
+      "openingHours": null,
+      "coordinates": null,
+      "candidateCoordinates": {
+        "lat": -8.6737273,
+        "lng": 115.2630457,
+        "confidence": "high",
+        "source": "OSM Nominatim"
+      },
+      "nearbyPOIs": [
+        "sanur_beach",
+        "mertasari_beach",
+        "bali_fire_shooting_club"
+      ],
+      "routeIds": [
+        "R1",
+        "R3",
+        "R6"
+      ],
+      "extensionIds": [],
+      "suitableDayparts": [
+        "lunch",
+        "dinner"
+      ],
+      "source": [
+        {
+          "url": "https://warungmakbeng.id/",
+          "kind": "provided_official_reference",
+          "accessedAt": null,
+          "verifiedFields": []
+        },
+        {
+          "url": "https://www.xiaohongshu.com/explore/699d0297000000001a027d63",
+          "kind": "provided_community_reference",
+          "accessedAt": null,
+          "verifiedFields": []
+        }
+      ],
+      "lastVerified": null,
+      "researchDate": "2026-09-13",
+      "verificationStatus": "editorial_candidate",
+      "published": true,
+      "editorialNotes": {
+        "zh": "1941年老店，鱼头汤泡饭，Taste Atlas世界传奇第三"
+      },
+      "sourceClaim": "medium",
+      "storefrontImage": null,
+      "nearbyBasis": "same_named_area_not_verified_travel_time"
+    },
+    {
+      "id": "naughty-nuris-seminyak",
+      "name": "Naughty Nuri's Warung",
+      "region": "G1",
+      "area": "Seminyak",
+      "node_id": "kuta",
+      "address": "Jalan Mertanadi No. 62, Kerobokan Kelod, Kuta Utara",
+      "category": "local",
+      "cuisine": [
+        "local"
+      ],
+      "priceLevel": "mid",
+      "referenceSpend": 200000,
+      "priceSource": "小红书近期消费记录",
+      "priceConfirmed": false,
+      "mealType": [
+        "lunch",
+        "dinner"
+      ],
+      "scene": [
+        "local"
+      ],
+      "localSpecialty": {
+        "zh": "烤猪排/烤虾"
+      },
+      "vegetarian": "unknown",
+      "halalFriendly": "unknown",
+      "reservation": "confirm_with_venue",
+      "openingHours": null,
+      "coordinates": null,
+      "candidateCoordinates": {
+        "lat": -8.6775131,
+        "lng": 115.1677089,
+        "confidence": "high",
+        "source": "OSM Nominatim"
+      },
+      "nearbyPOIs": [],
+      "routeIds": [
+        "R1",
+        "R6"
+      ],
+      "extensionIds": [],
+      "suitableDayparts": [
+        "lunch",
+        "dinner"
+      ],
+      "source": [
+        {
+          "url": "https://naughtynuris.com/",
+          "kind": "provided_official_reference",
+          "accessedAt": null,
+          "verifiedFields": []
+        },
+        {
+          "url": "https://www.xiaohongshu.com/explore/6a556f61000000000f005ec6",
+          "kind": "provided_community_reference",
+          "accessedAt": null,
+          "verifiedFields": []
+        }
+      ],
+      "lastVerified": null,
+      "researchDate": "2026-09-13",
+      "verificationStatus": "editorial_candidate",
+      "published": true,
+      "editorialNotes": {
+        "zh": "老牌烤猪排，糖醋味较契合中国口味"
+      },
+      "sourceClaim": "strong",
+      "storefrontImage": null,
+      "nearbyBasis": "same_named_area_not_verified_travel_time"
+    },
+    {
+      "id": "warung-happy-gen",
+      "name": "Warung Happy Gen",
+      "region": "G1",
+      "area": "Kuta/Tuban",
+      "node_id": "kuta",
+      "address": "Jalan Pantai Kelan, Tuban, Kuta, Badung",
+      "category": "seafood",
+      "cuisine": [
+        "seafood"
+      ],
+      "priceLevel": "mid",
+      "referenceSpend": 350000,
+      "priceSource": "小红书（人均150-200rmb）+ 评论区",
+      "priceConfirmed": false,
+      "mealType": [
+        "lunch",
+        "dinner"
+      ],
+      "scene": [
+        "seafood"
+      ],
+      "localSpecialty": {
+        "zh": "黑胡椒蟹/龙虾/东星斑"
+      },
+      "vegetarian": "unknown",
+      "halalFriendly": "unknown",
+      "reservation": "confirm_with_venue",
+      "openingHours": null,
+      "coordinates": null,
+      "candidateCoordinates": {
+        "lat": -8.7528962,
+        "lng": 115.1640211,
+        "confidence": "high",
+        "source": "Google Maps"
+      },
+      "nearbyPOIs": [],
+      "routeIds": [
+        "R1",
+        "R6"
+      ],
+      "extensionIds": [],
+      "suitableDayparts": [
+        "lunch",
+        "dinner"
+      ],
+      "source": [
+        {
+          "url": "https://www.tripadvisor.com/Restaurant_Review-g562690-d15674490-Reviews-Warung_Happy_Gen-Tuban_Kuta_Kuta_District_Badung_Regency_Bali.html",
+          "kind": "review_or_directory",
+          "accessedAt": null,
+          "verifiedFields": []
+        },
+        {
+          "url": "https://www.xiaohongshu.com/explore/6a8eb3cc0000000020030f84",
+          "kind": "provided_community_reference",
+          "accessedAt": null,
+          "verifiedFields": []
+        },
+        {
+          "url": "https://www.xiaohongshu.com/explore/6a0370520000000036032432",
+          "kind": "provided_community_reference",
+          "accessedAt": null,
+          "verifiedFields": []
+        }
+      ],
+      "lastVerified": null,
+      "researchDate": "2026-09-13",
+      "verificationStatus": "editorial_candidate",
+      "published": true,
+      "editorialNotes": {
+        "zh": "多篇样本正面评价集中于海鲜性价比，边吃边看飞机降落"
+      },
+      "sourceClaim": "strong",
+      "storefrontImage": null,
+      "nearbyBasis": "same_named_area_not_verified_travel_time"
+    },
+    {
+      "id": "wr-mang-ayu",
+      "name": "Wr Mang Ayu (ex Waroenk Djadoel)",
+      "region": "G2",
+      "area": "Jimbaran",
+      "node_id": "jimbaran",
+      "address": "Jalan Pemelisan Agung, Jimbaran, Kuta Selatan",
+      "category": "seafood",
+      "cuisine": [
+        "seafood"
+      ],
+      "priceLevel": "low",
+      "referenceSpend": 120000,
+      "priceSource": "小红书（人均46rmb）",
+      "priceConfirmed": false,
+      "mealType": [
+        "lunch",
+        "dinner"
+      ],
+      "scene": [
+        "seafood"
+      ],
+      "localSpecialty": {
+        "zh": "平价海鲜拼盘"
+      },
+      "vegetarian": "unknown",
+      "halalFriendly": "unknown",
+      "reservation": "confirm_with_venue",
+      "openingHours": null,
+      "coordinates": null,
+      "candidateCoordinates": {
+        "lat": -8.7702415,
+        "lng": 115.1708464,
+        "confidence": "medium",
+        "source": "OSM Nominatim"
+      },
+      "nearbyPOIs": [
+        "gwk",
+        "jimbaran_bay"
+      ],
+      "routeIds": [
+        "R1",
+        "R3",
+        "R6"
+      ],
+      "extensionIds": [],
+      "suitableDayparts": [
+        "lunch",
+        "dinner"
+      ],
+      "source": [
+        {
+          "url": "https://lokasibali.com/lokasi/wr-mang-ayu-ex-waroenk-djadoel",
+          "kind": "review_or_directory",
+          "accessedAt": null,
+          "verifiedFields": []
+        }
+      ],
+      "lastVerified": null,
+      "researchDate": "2026-09-13",
+      "verificationStatus": "editorial_candidate",
+      "published": true,
+      "editorialNotes": {
+        "zh": "平价海鲜+沙滩日落，社区评分较高（4.8★）"
+      },
+      "sourceClaim": "medium",
+      "storefrontImage": null,
+      "nearbyBasis": "same_named_area_not_verified_travel_time"
+    },
+    {
+      "id": "bali-sentosa-seafood",
+      "name": "Bali Sentosa Seafood",
+      "region": "G1",
+      "area": "Kuta",
+      "node_id": "kuta",
+      "address": "Kuta, Badung（Sentosa Seafood Kuta）",
+      "category": "seafood",
+      "cuisine": [
+        "seafood"
+      ],
+      "priceLevel": "mid",
+      "referenceSpend": 300000,
+      "priceSource": "小红书单篇",
+      "priceConfirmed": false,
+      "mealType": [
+        "lunch",
+        "dinner"
+      ],
+      "scene": [
+        "seafood"
+      ],
+      "localSpecialty": {
+        "zh": "海鲜（偏中国口味做法）"
+      },
+      "vegetarian": "unknown",
+      "halalFriendly": "unknown",
+      "reservation": "confirm_with_venue",
+      "openingHours": null,
+      "coordinates": null,
+      "candidateCoordinates": {
+        "lat": -8.7282019,
+        "lng": 115.1772439,
+        "confidence": "high",
+        "source": "Google Maps"
+      },
+      "nearbyPOIs": [],
+      "routeIds": [
+        "R1",
+        "R6"
+      ],
+      "extensionIds": [],
+      "suitableDayparts": [
+        "lunch",
+        "dinner"
+      ],
+      "source": [
+        {
+          "url": "https://www.xiaohongshu.com/explore/6a373f7e000000000702a801",
+          "kind": "provided_community_reference",
+          "accessedAt": null,
+          "verifiedFields": []
+        }
+      ],
+      "lastVerified": null,
+      "researchDate": "2026-09-13",
+      "verificationStatus": "needs_source",
+      "published": false,
+      "editorialNotes": {
+        "zh": "海鲜偏中国口味做法，单篇强信号"
+      },
+      "sourceClaim": "medium",
+      "storefrontImage": null,
+      "nearbyBasis": "same_named_area_not_verified_travel_time"
+    },
+    {
+      "id": "mevui-canggu",
+      "name": "HoiAn by MeVui (MeVui Vietnam Kitchen)",
+      "region": "G1",
+      "area": "Canggu",
+      "node_id": "canggu",
+      "address": "Jalan Padang Linjong, Canggu, Kuta Utara",
+      "category": "asian",
+      "cuisine": [
+        "asian"
+      ],
+      "priceLevel": "low",
+      "referenceSpend": 100000,
+      "priceSource": "小红书（special牛肉河粉75k）",
+      "priceConfirmed": false,
+      "mealType": [
+        "lunch",
+        "dinner"
+      ],
+      "scene": [
+        "asian"
+      ],
+      "localSpecialty": {
+        "zh": "越南牛肉河粉/春卷"
+      },
+      "vegetarian": "unknown",
+      "halalFriendly": "unknown",
+      "reservation": "confirm_with_venue",
+      "openingHours": null,
+      "coordinates": null,
+      "candidateCoordinates": {
+        "lat": -8.638009,
+        "lng": 115.1411598,
+        "confidence": "high",
+        "source": "OSM Nominatim"
+      },
+      "nearbyPOIs": [
+        "pererenan_beach",
+        "tanah_lot",
+        "batu_bolong_beach",
+        "echo_beach"
+      ],
+      "routeIds": [
+        "R1",
+        "R6"
+      ],
+      "extensionIds": [],
+      "suitableDayparts": [
+        "lunch",
+        "dinner"
+      ],
+      "source": [
+        {
+          "url": "https://mevuifamily.com/",
+          "kind": "provided_official_reference",
+          "accessedAt": null,
+          "verifiedFields": []
+        },
+        {
+          "url": "https://www.xiaohongshu.com/explore/6a8eb3cc0000000020030f84",
+          "kind": "provided_community_reference",
+          "accessedAt": null,
+          "verifiedFields": []
+        }
+      ],
+      "lastVerified": null,
+      "researchDate": "2026-09-13",
+      "verificationStatus": "editorial_candidate",
+      "published": true,
+      "editorialNotes": {
+        "zh": "越南河粉多篇样本正面评价，性价比高"
+      },
+      "sourceClaim": "strong",
+      "storefrontImage": null,
+      "nearbyBasis": "same_named_area_not_verified_travel_time"
+    },
+    {
+      "id": "bo-and-bun-seminyak",
+      "name": "Bo & Bun",
+      "region": "G1",
+      "area": "Seminyak",
+      "node_id": "seminyak",
+      "address": "Jalan Raya Basangkasa No. 26, Seminyak",
+      "category": "asian",
+      "cuisine": [
+        "asian"
+      ],
+      "priceLevel": "mid",
+      "referenceSpend": 180000,
+      "priceSource": "小红书近期消费记录",
+      "priceConfirmed": false,
+      "mealType": [
+        "lunch",
+        "dinner"
+      ],
+      "scene": [
+        "asian"
+      ],
+      "localSpecialty": {
+        "zh": "12小时牛肉Pho/打抛饭"
+      },
+      "vegetarian": "unknown",
+      "halalFriendly": "unknown",
+      "reservation": "confirm_with_venue",
+      "openingHours": null,
+      "coordinates": null,
+      "candidateCoordinates": {
+        "lat": -8.6871053,
+        "lng": 115.167242,
+        "confidence": "medium",
+        "source": "OSM Nominatim"
+      },
+      "nearbyPOIs": [
+        "seminyak_beach",
+        "petitenget_temple"
+      ],
+      "routeIds": [
+        "R1",
+        "R6"
+      ],
+      "extensionIds": [],
+      "suitableDayparts": [
+        "lunch",
+        "dinner"
+      ],
+      "source": [
+        {
+          "url": "https://www.tripadvisor.com/Restaurant_Review-g469404-d7097638-Reviews-Bo_Bun-Seminyak_Kuta_District_Badung_Regency_Bali.html",
+          "kind": "review_or_directory",
+          "accessedAt": null,
+          "verifiedFields": []
+        },
+        {
+          "url": "https://www.xiaohongshu.com/explore/6a373f7e000000000702a801",
+          "kind": "provided_community_reference",
+          "accessedAt": null,
+          "verifiedFields": []
+        },
+        {
+          "url": "https://www.xiaohongshu.com/explore/69ec76e80000000035030933",
+          "kind": "provided_community_reference",
+          "accessedAt": null,
+          "verifiedFields": []
+        }
+      ],
+      "lastVerified": null,
+      "researchDate": "2026-09-13",
+      "verificationStatus": "editorial_candidate",
+      "published": true,
+      "editorialNotes": {
+        "zh": "越南菜多篇样本给予正面评价，社区评分较高（4.7★）"
+      },
+      "sourceClaim": "strong",
+      "storefrontImage": null,
+      "nearbyBasis": "same_named_area_not_verified_travel_time"
+    },
+    {
+      "id": "khao-canggu",
+      "name": "Khao",
+      "region": "G1",
+      "area": "Canggu",
+      "node_id": "canggu",
+      "address": "Jalan Pantai Batu Bolong, Canggu",
+      "category": "asian",
+      "cuisine": [
+        "asian"
+      ],
+      "priceLevel": "mid",
+      "referenceSpend": 150000,
+      "priceSource": "小红书近期消费记录",
+      "priceConfirmed": false,
+      "mealType": [
+        "lunch",
+        "dinner"
+      ],
+      "scene": [
+        "asian"
+      ],
+      "localSpecialty": {
+        "zh": "泰餐（打抛饭/船面/滑蛋）"
+      },
+      "vegetarian": "unknown",
+      "halalFriendly": "unknown",
+      "reservation": "confirm_with_venue",
+      "openingHours": null,
+      "coordinates": null,
+      "candidateCoordinates": {
+        "lat": -8.6447125,
+        "lng": 115.1414972,
+        "confidence": "medium",
+        "source": "OSM Nominatim"
+      },
+      "nearbyPOIs": [
+        "pererenan_beach",
+        "tanah_lot",
+        "batu_bolong_beach",
+        "echo_beach"
+      ],
+      "routeIds": [
+        "R1",
+        "R6"
+      ],
+      "extensionIds": [],
+      "suitableDayparts": [
+        "lunch",
+        "dinner"
+      ],
+      "source": [
+        {
+          "url": "https://www.xiaohongshu.com/explore/6a8e803f000000002a03af93",
+          "kind": "provided_community_reference",
+          "accessedAt": null,
+          "verifiedFields": []
+        },
+        {
+          "url": "https://www.xiaohongshu.com/explore/69bd5076000000001a035f91",
+          "kind": "provided_community_reference",
+          "accessedAt": null,
+          "verifiedFields": []
+        }
+      ],
+      "lastVerified": null,
+      "researchDate": "2026-09-13",
+      "verificationStatus": "needs_source",
+      "published": false,
+      "editorialNotes": {
+        "zh": "泰餐本轮样本中高频推荐，出片与口味兼顾"
+      },
+      "sourceClaim": "strong",
+      "storefrontImage": null,
+      "nearbyBasis": "same_named_area_not_verified_travel_time"
+    },
+    {
+      "id": "papa-lees-taiwan-noodle-seminyak",
+      "name": "Papa Lee's Taiwan noodle & dumplings Taiwan Noodle House",
+      "region": "G1",
+      "area": "Seminyak",
+      "node_id": "kuta",
+      "address": "Jl. Raya Seminyak No.14, Seminyak, Kec. Kuta, Badung",
+      "category": "asian",
+      "cuisine": [
+        "asian"
+      ],
+      "priceLevel": "mid",
+      "referenceSpend": 300000,
+      "priceSource": "小红书（人均约150rmb，面食馆口径偏高，待菜单复核）",
+      "priceConfirmed": false,
+      "mealType": [
+        "lunch",
+        "dinner"
+      ],
+      "scene": [
+        "asian"
+      ],
+      "localSpecialty": {
+        "zh": "小笼包/牛肉面/辣虾猪肉馄饨/炸酱面/卤肉饭"
+      },
+      "vegetarian": "unknown",
+      "halalFriendly": "unknown",
+      "reservation": "confirm_with_venue",
+      "openingHours": null,
+      "coordinates": null,
+      "candidateCoordinates": {
+        "lat": -8.6954563,
+        "lng": 115.1684966,
+        "confidence": "high",
+        "source": "Google Maps"
+      },
+      "nearbyPOIs": [],
+      "routeIds": [
+        "R1",
+        "R6"
+      ],
+      "extensionIds": [],
+      "suitableDayparts": [
+        "lunch",
+        "dinner"
+      ],
+      "source": [
+        {
+          "url": "https://papaleebali.com/",
+          "kind": "provided_official_reference",
+          "accessedAt": null,
+          "verifiedFields": []
+        },
+        {
+          "url": "https://www.xiaohongshu.com/explore/69bd5076000000001a035f91",
+          "kind": "provided_community_reference",
+          "accessedAt": null,
+          "verifiedFields": []
+        },
+        {
+          "url": "https://www.xiaohongshu.com/explore/6a99728e000000002b01e594",
+          "kind": "provided_community_reference",
+          "accessedAt": null,
+          "verifiedFields": []
+        }
+      ],
+      "lastVerified": null,
+      "researchDate": "2026-09-13",
+      "verificationStatus": "editorial_candidate",
+      "published": true,
+      "editorialNotes": {
+        "zh": "台湾人开的麵食馆，小笼包/牛肉面多篇样本正面评价"
+      },
+      "sourceClaim": "strong",
+      "storefrontImage": null,
+      "nearbyBasis": "same_named_area_not_verified_travel_time"
+    },
+    {
+      "id": "warung-dedalu-seminyak",
+      "name": "Warung Dedalu",
+      "region": "G1",
+      "area": "Seminyak",
+      "node_id": "seminyak",
+      "address": "Seminyak, Badung",
+      "category": "asian",
+      "cuisine": [
+        "asian"
+      ],
+      "priceLevel": "low",
+      "referenceSpend": 145000,
+      "priceSource": "小红书（两人290k）",
+      "priceConfirmed": false,
+      "mealType": [
+        "lunch",
+        "dinner"
+      ],
+      "scene": [
+        "asian"
+      ],
+      "localSpecialty": {
+        "zh": "印尼炒饭/辣椒牛肉"
+      },
+      "vegetarian": "unknown",
+      "halalFriendly": "unknown",
+      "reservation": "confirm_with_venue",
+      "openingHours": null,
+      "coordinates": null,
+      "candidateCoordinates": {
+        "lat": -8.6803085,
+        "lng": 115.1535554,
+        "confidence": "high",
+        "source": "Google Maps"
+      },
+      "nearbyPOIs": [
+        "seminyak_beach",
+        "petitenget_temple"
+      ],
+      "routeIds": [
+        "R1",
+        "R6"
+      ],
+      "extensionIds": [],
+      "suitableDayparts": [
+        "lunch",
+        "dinner"
+      ],
+      "source": [
+        {
+          "url": "https://www.xiaohongshu.com/explore/6a741b390000000005033614",
+          "kind": "provided_community_reference",
+          "accessedAt": null,
+          "verifiedFields": []
+        }
+      ],
+      "lastVerified": null,
+      "researchDate": "2026-09-13",
+      "verificationStatus": "needs_source",
+      "published": false,
+      "editorialNotes": {
+        "zh": "印尼菜但口味较契合中国胃，性价比高"
+      },
+      "sourceClaim": "medium",
+      "storefrontImage": null,
+      "nearbyBasis": "same_named_area_not_verified_travel_time"
+    },
+    {
+      "id": "milk-and-madu-canggu",
+      "name": "Milk & Madu",
+      "region": "G1",
+      "area": "Canggu",
+      "node_id": "canggu",
+      "address": "Jalan Pantai Batu Bolong No. 92, Canggu",
+      "category": "cafe",
+      "cuisine": [
+        "cafe"
+      ],
+      "priceLevel": "mid",
+      "referenceSpend": 150000,
+      "priceSource": "小红书近期消费记录",
+      "priceConfirmed": false,
+      "mealType": [
+        "breakfast",
+        "lunch"
+      ],
+      "scene": [
+        "cafe"
+      ],
+      "localSpecialty": {
+        "zh": "Brunch/Poke Bowl"
+      },
+      "vegetarian": "unknown",
+      "halalFriendly": "unknown",
+      "reservation": "confirm_with_venue",
+      "openingHours": null,
+      "coordinates": null,
+      "candidateCoordinates": {
+        "lat": -8.6553215,
+        "lng": 115.1319665,
+        "confidence": "high",
+        "source": "OSM Nominatim"
+      },
+      "nearbyPOIs": [
+        "pererenan_beach",
+        "tanah_lot",
+        "batu_bolong_beach",
+        "echo_beach"
+      ],
+      "routeIds": [
+        "R1",
+        "R6"
+      ],
+      "extensionIds": [],
+      "suitableDayparts": [
+        "breakfast",
+        "lunch"
+      ],
+      "source": [
+        {
+          "url": "https://milkandmadu.com/",
+          "kind": "provided_official_reference",
+          "accessedAt": null,
+          "verifiedFields": []
+        },
+        {
+          "url": "https://www.xiaohongshu.com/explore/69bd5076000000001a035f91",
+          "kind": "provided_community_reference",
+          "accessedAt": null,
+          "verifiedFields": []
+        }
+      ],
+      "lastVerified": null,
+      "researchDate": "2026-09-13",
+      "verificationStatus": "editorial_candidate",
+      "published": true,
+      "editorialNotes": {
+        "zh": "Brunch/Poke Bowl 多篇样本正面，健身轻食"
+      },
+      "sourceClaim": "strong",
+      "storefrontImage": null,
+      "nearbyBasis": "same_named_area_not_verified_travel_time"
+    },
+    {
+      "id": "penny-lane-canggu",
+      "name": "Penny Lane",
+      "region": "G5",
+      "area": "Canggu",
+      "node_id": "munduk",
+      "address": "Jalan Munduk Catu No. 9, Canggu",
+      "category": "cafe",
+      "cuisine": [
+        "cafe"
+      ],
+      "priceLevel": "mid",
+      "referenceSpend": 180000,
+      "priceSource": "小红书近期消费记录",
+      "priceConfirmed": false,
+      "mealType": [
+        "breakfast",
+        "lunch"
+      ],
+      "scene": [
+        "cafe"
+      ],
+      "localSpecialty": {
+        "zh": "花园Brunch/鸡尾酒"
+      },
+      "vegetarian": "unknown",
+      "halalFriendly": "unknown",
+      "reservation": "confirm_with_venue",
+      "openingHours": null,
+      "coordinates": null,
+      "candidateCoordinates": {
+        "lat": -8.6535404,
+        "lng": 115.1305822,
+        "confidence": "high",
+        "source": "OSM Nominatim"
+      },
+      "nearbyPOIs": [
+        "banyumala_waterfall",
+        "munduk_waterfall",
+        "gitgit_waterfall",
+        "tamblingan_lake"
+      ],
+      "routeIds": [
+        "R2",
+        "R5"
+      ],
+      "extensionIds": [],
+      "suitableDayparts": [
+        "breakfast",
+        "lunch"
+      ],
+      "source": [
+        {
+          "url": "https://pennylanebali.com/",
+          "kind": "provided_official_reference",
+          "accessedAt": null,
+          "verifiedFields": []
+        },
+        {
+          "url": "https://www.xiaohongshu.com/explore/69bd5076000000001a035f91",
+          "kind": "provided_community_reference",
+          "accessedAt": null,
+          "verifiedFields": []
+        }
+      ],
+      "lastVerified": null,
+      "researchDate": "2026-09-13",
+      "verificationStatus": "editorial_candidate",
+      "published": true,
+      "editorialNotes": {
+        "zh": "花园环境出片，西班牙风"
+      },
+      "sourceClaim": "strong",
+      "storefrontImage": null,
+      "nearbyBasis": "same_named_area_not_verified_travel_time"
+    },
+    {
+      "id": "tukies-coconut",
+      "name": "Tukies Coconut Shop",
+      "region": "G4",
+      "area": "Ubud",
+      "node_id": "ubud",
+      "address": "Jalan Raya Ubud, Ubud, Gianyar",
+      "category": "cafe",
+      "cuisine": [
+        "cafe"
+      ],
+      "priceLevel": "low",
+      "referenceSpend": 40000,
+      "priceSource": "小红书（人均20rmb）",
+      "priceConfirmed": false,
+      "mealType": [
+        "breakfast",
+        "lunch"
+      ],
+      "scene": [
+        "cafe"
+      ],
+      "localSpecialty": {
+        "zh": "椰子冰淇淋"
+      },
+      "vegetarian": "unknown",
+      "halalFriendly": "unknown",
+      "reservation": "confirm_with_venue",
+      "openingHours": null,
+      "coordinates": null,
+      "candidateCoordinates": {
+        "lat": -8.5075448,
+        "lng": 115.2640792,
+        "confidence": "high",
+        "source": "OSM Nominatim"
+      },
+      "nearbyPOIs": [
+        "yoga_barn",
+        "pyramids_of_chi",
+        "heart_space_bali",
+        "intuitive_flow",
+        "tegalalang_rice_terrace",
+        "ubud_monkey_forest"
+      ],
+      "routeIds": [
+        "R1",
+        "R2",
+        "R4"
+      ],
+      "extensionIds": [],
+      "suitableDayparts": [
+        "breakfast",
+        "lunch"
+      ],
+      "source": [
+        {
+          "url": "https://www.xiaohongshu.com/explore/6a8eb3cc0000000020030f84",
+          "kind": "provided_community_reference",
+          "accessedAt": null,
+          "verifiedFields": []
+        },
+        {
+          "url": "https://www.xiaohongshu.com/explore/6a6d8156000000003301e495",
+          "kind": "provided_community_reference",
+          "accessedAt": null,
+          "verifiedFields": []
+        }
+      ],
+      "lastVerified": null,
+      "researchDate": "2026-09-13",
+      "verificationStatus": "needs_source",
+      "published": false,
+      "editorialNotes": {
+        "zh": "椰香浓郁，连锁方便随处买"
+      },
+      "sourceClaim": "strong",
+      "storefrontImage": null,
+      "nearbyBasis": "same_named_area_not_verified_travel_time"
+    },
+    {
+      "id": "seniman-coffee-ubud",
+      "name": "Seniman Coffee",
+      "region": "G4",
+      "area": "Ubud",
+      "node_id": "ubud",
+      "address": "Jalan Sri Wedari No. 5, Ubud",
+      "category": "cafe",
+      "cuisine": [
+        "cafe"
+      ],
+      "priceLevel": "low",
+      "referenceSpend": 80000,
+      "priceSource": "公开源",
+      "priceConfirmed": false,
+      "mealType": [
+        "breakfast",
+        "lunch"
+      ],
+      "scene": [
+        "cafe"
+      ],
+      "localSpecialty": {
+        "zh": "精品咖啡"
+      },
+      "vegetarian": "unknown",
+      "halalFriendly": "unknown",
+      "reservation": "confirm_with_venue",
+      "openingHours": null,
+      "coordinates": null,
+      "candidateCoordinates": {
+        "lat": -8.5067323,
+        "lng": 115.2651985,
+        "confidence": "high",
+        "source": "OSM Nominatim"
+      },
+      "nearbyPOIs": [
+        "yoga_barn",
+        "pyramids_of_chi",
+        "heart_space_bali",
+        "intuitive_flow",
+        "tegalalang_rice_terrace",
+        "ubud_monkey_forest"
+      ],
+      "routeIds": [
+        "R1",
+        "R2",
+        "R4"
+      ],
+      "extensionIds": [],
+      "suitableDayparts": [
+        "breakfast",
+        "lunch"
+      ],
+      "source": [],
+      "lastVerified": null,
+      "researchDate": "2026-09-13",
+      "verificationStatus": "needs_source",
+      "published": false,
+      "editorialNotes": {
+        "zh": "亚洲前12咖啡店（公开源），摇摇椅"
+      },
+      "sourceClaim": "medium",
+      "storefrontImage": null,
+      "nearbyBasis": "same_named_area_not_verified_travel_time"
+    },
+    {
+      "id": "pison-ubud",
+      "name": "Pison",
+      "region": "G4",
+      "area": "Ubud",
+      "node_id": "ubud",
+      "address": "Jalan Raya Pengosekan, Ubud, Gianyar",
+      "category": "cafe",
+      "cuisine": [
+        "cafe"
+      ],
+      "priceLevel": "mid",
+      "referenceSpend": 200000,
+      "priceSource": "小红书（人均100rmb）",
+      "priceConfirmed": false,
+      "mealType": [
+        "breakfast",
+        "lunch"
+      ],
+      "scene": [
+        "cafe"
+      ],
+      "localSpecialty": {
+        "zh": "融合菜/牛舌饭/咖啡"
+      },
+      "vegetarian": "unknown",
+      "halalFriendly": "unknown",
+      "reservation": "confirm_with_venue",
+      "openingHours": null,
+      "coordinates": null,
+      "candidateCoordinates": {
+        "lat": -8.5182937,
+        "lng": 115.2635556,
+        "confidence": "high",
+        "source": "OSM Nominatim"
+      },
+      "nearbyPOIs": [
+        "yoga_barn",
+        "pyramids_of_chi",
+        "heart_space_bali",
+        "intuitive_flow",
+        "tegalalang_rice_terrace",
+        "ubud_monkey_forest"
+      ],
+      "routeIds": [
+        "R1",
+        "R2",
+        "R4"
+      ],
+      "extensionIds": [],
+      "suitableDayparts": [
+        "breakfast",
+        "lunch"
+      ],
+      "source": [
+        {
+          "url": "https://pisonindonesia.com/",
+          "kind": "provided_official_reference",
+          "accessedAt": null,
+          "verifiedFields": []
+        },
+        {
+          "url": "https://www.xiaohongshu.com/explore/6aa0e77a000000002a024d55",
+          "kind": "provided_community_reference",
+          "accessedAt": null,
+          "verifiedFields": []
+        },
+        {
+          "url": "https://www.xiaohongshu.com/explore/69edfb06000000003703601c",
+          "kind": "provided_community_reference",
+          "accessedAt": null,
+          "verifiedFields": []
+        }
+      ],
+      "lastVerified": null,
+      "researchDate": "2026-09-13",
+      "verificationStatus": "editorial_candidate",
+      "published": true,
+      "editorialNotes": {
+        "zh": "牛舌饭较符合中国胃，环境好（牛油果咖啡口味两极）"
+      },
+      "sourceClaim": "strong",
+      "storefrontImage": null,
+      "nearbyBasis": "same_named_area_not_verified_travel_time"
+    },
+    {
+      "id": "single-fin-uluwatu",
+      "name": "Single Fin",
+      "region": "G2",
+      "area": "Uluwatu/Pecatu",
+      "node_id": "uluwatu",
+      "address": "Jalan Labuansait, Pecatu, Kuta Selatan (Pantai Suluban)",
+      "category": "atmosphere",
+      "cuisine": [
+        "atmosphere"
+      ],
+      "priceLevel": "mid",
+      "referenceSpend": 150000,
+      "priceSource": "小红书（果汁44k起，无低消）",
+      "priceConfirmed": false,
+      "mealType": [
+        "lunch",
+        "dinner"
+      ],
+      "scene": [
+        "atmosphere"
+      ],
+      "localSpecialty": {
+        "zh": "悬崖酒吧/简餐"
+      },
+      "vegetarian": "unknown",
+      "halalFriendly": "unknown",
+      "reservation": "confirm_with_venue",
+      "openingHours": null,
+      "coordinates": null,
+      "candidateCoordinates": {
+        "lat": -8.8148568,
+        "lng": 115.0888711,
+        "confidence": "high",
+        "source": "Google Maps"
+      },
+      "nearbyPOIs": [
+        "uluwatu_temple",
+        "padang_padang_beach",
+        "bingin_beach",
+        "suluban_beach"
+      ],
+      "routeIds": [
+        "R1",
+        "R3",
+        "R6"
+      ],
+      "extensionIds": [],
+      "suitableDayparts": [
+        "lunch",
+        "dinner"
+      ],
+      "source": [
+        {
+          "url": "https://www.xiaohongshu.com/explore/6a859a210000000026036902",
+          "kind": "provided_community_reference",
+          "accessedAt": null,
+          "verifiedFields": []
+        },
+        {
+          "url": "https://www.xiaohongshu.com/explore/69d26b50000000001a02abf1",
+          "kind": "provided_community_reference",
+          "accessedAt": null,
+          "verifiedFields": []
+        }
+      ],
+      "lastVerified": null,
+      "researchDate": "2026-09-13",
+      "verificationStatus": "needs_source",
+      "published": false,
+      "editorialNotes": {
+        "zh": "无低消无需预约，看冲浪氛围好，三层海景"
+      },
+      "sourceClaim": "strong",
+      "storefrontImage": null,
+      "nearbyBasis": "same_named_area_not_verified_travel_time"
+    },
+    {
+      "id": "malini-uluwatu",
+      "name": "Malini",
+      "region": "G2",
+      "area": "Uluwatu/Pecatu",
+      "node_id": "uluwatu",
+      "address": "Jalan Batu Lesung, Pecatu, Kuta Selatan",
+      "category": "atmosphere",
+      "cuisine": [
+        "atmosphere"
+      ],
+      "priceLevel": "mid",
+      "referenceSpend": 300000,
+      "priceSource": "小红书（海景位低消30万，代约费另计）",
+      "priceConfirmed": false,
+      "mealType": [
+        "lunch",
+        "dinner"
+      ],
+      "scene": [
+        "atmosphere"
+      ],
+      "localSpecialty": {
+        "zh": "悬崖印尼餐"
+      },
+      "vegetarian": "unknown",
+      "halalFriendly": "unknown",
+      "reservation": "confirm_with_venue",
+      "openingHours": null,
+      "coordinates": null,
+      "candidateCoordinates": {
+        "lat": -8.832337,
+        "lng": 115.0872298,
+        "confidence": "high",
+        "source": "OSM Nominatim"
+      },
+      "nearbyPOIs": [
+        "uluwatu_temple",
+        "padang_padang_beach",
+        "bingin_beach",
+        "suluban_beach"
+      ],
+      "routeIds": [
+        "R1",
+        "R3",
+        "R6"
+      ],
+      "extensionIds": [],
+      "suitableDayparts": [
+        "lunch",
+        "dinner"
+      ],
+      "source": [
+        {
+          "url": "https://www.xiaohongshu.com/explore/6a859a210000000026036902",
+          "kind": "provided_community_reference",
+          "accessedAt": null,
+          "verifiedFields": []
+        },
+        {
+          "url": "https://www.xiaohongshu.com/explore/6a94d0b4000000002501b03d",
+          "kind": "provided_community_reference",
+          "accessedAt": null,
+          "verifiedFields": []
+        }
+      ],
+      "lastVerified": null,
+      "researchDate": "2026-09-13",
+      "verificationStatus": "needs_source",
+      "published": false,
+      "editorialNotes": {
+        "zh": "悬崖海景突出，绝美日落拍照点（食物口碑分化）"
+      },
+      "sourceClaim": "strong",
+      "storefrontImage": null,
+      "nearbyBasis": "same_named_area_not_verified_travel_time"
+    },
+    {
+      "id": "akasa-jumeirah",
+      "name": "Akasa (Jumeirah Bali)",
+      "region": "G2",
+      "area": "Uluwatu/Pecatu",
+      "node_id": "uluwatu",
+      "address": "Jumeirah Bali, Jalan Klapa Raya, Pecatu, Kuta Selatan",
+      "category": "atmosphere",
+      "cuisine": [
+        "atmosphere"
+      ],
+      "priceLevel": "high",
+      "referenceSpend": 1000000,
+      "priceSource": "小红书代订笔记（低消200万-600万+21%税费，人均500rmb）",
+      "priceConfirmed": false,
+      "mealType": [
+        "lunch",
+        "dinner"
+      ],
+      "scene": [
+        "atmosphere"
+      ],
+      "localSpecialty": {
+        "zh": "和牛/龙虾/海鲜"
+      },
+      "vegetarian": "unknown",
+      "halalFriendly": "unknown",
+      "reservation": "confirm_with_venue",
+      "openingHours": null,
+      "coordinates": null,
+      "candidateCoordinates": {
+        "lat": -8.7977381,
+        "lng": 115.1199152,
+        "confidence": "high",
+        "source": "OSM Nominatim"
+      },
+      "nearbyPOIs": [
+        "uluwatu_temple",
+        "padang_padang_beach",
+        "bingin_beach",
+        "suluban_beach"
+      ],
+      "routeIds": [
+        "R1",
+        "R3",
+        "R6"
+      ],
+      "extensionIds": [],
+      "suitableDayparts": [
+        "lunch",
+        "dinner"
+      ],
+      "source": [],
+      "lastVerified": null,
+      "researchDate": "2026-09-13",
+      "verificationStatus": "needs_source",
+      "published": false,
+      "editorialNotes": {
+        "zh": "悬崖高档海景，和牛+龙虾（低消较高）"
+      },
+      "sourceClaim": "medium",
+      "storefrontImage": null,
+      "nearbyBasis": "same_named_area_not_verified_travel_time"
+    },
+    {
+      "id": "merah-putih-seminyak",
+      "name": "Merah Putih",
+      "region": "G1",
+      "area": "Seminyak",
+      "node_id": "seminyak",
+      "address": "Jalan Petitenget, Seminyak",
+      "category": "atmosphere",
+      "cuisine": [
+        "atmosphere"
+      ],
+      "priceLevel": "high",
+      "referenceSpend": 400000,
+      "priceSource": "小红书（人均200多rmb）",
+      "priceConfirmed": false,
+      "mealType": [
+        "lunch",
+        "dinner"
+      ],
+      "scene": [
+        "atmosphere"
+      ],
+      "localSpecialty": {
+        "zh": "印尼精致料理/龙虾面"
+      },
+      "vegetarian": "unknown",
+      "halalFriendly": "unknown",
+      "reservation": "confirm_with_venue",
+      "openingHours": null,
+      "coordinates": null,
+      "candidateCoordinates": {
+        "lat": -8.6767071,
+        "lng": 115.1545607,
+        "confidence": "high",
+        "source": "Google Maps"
+      },
+      "nearbyPOIs": [
+        "seminyak_beach",
+        "petitenget_temple"
+      ],
+      "routeIds": [
+        "R1",
+        "R6"
+      ],
+      "extensionIds": [],
+      "suitableDayparts": [
+        "lunch",
+        "dinner"
+      ],
+      "source": [
+        {
+          "url": "https://merahputihbali.com/",
+          "kind": "official_site",
+          "accessedAt": "2026-09-13",
+          "verifiedFields": [
+            "identity",
+            "venue_context"
+          ]
+        },
+        {
+          "url": "https://merahputihbali.com/",
+          "kind": "provided_official_reference",
+          "accessedAt": null,
+          "verifiedFields": []
+        },
+        {
+          "url": "https://www.xiaohongshu.com/explore/69bd5076000000001a035f91",
+          "kind": "provided_community_reference",
+          "accessedAt": null,
+          "verifiedFields": []
+        }
+      ],
+      "lastVerified": "2026-09-13",
+      "researchDate": "2026-09-13",
+      "verificationStatus": "identity_checked",
+      "published": true,
+      "editorialNotes": {
+        "zh": "印尼精致料理，龙虾面受好评，环境出片"
+      },
+      "sourceClaim": "strong",
+      "storefrontImage": null,
+      "nearbyBasis": "same_named_area_not_verified_travel_time"
+    },
+    {
+      "id": "nusa-by-suka",
+      "name": "Nusa by Suka",
+      "region": "G2",
+      "area": "Nusa Dua",
+      "node_id": "nusa_dua",
+      "address": "Bali Collection, Nusa Dua, Benoa, Kuta Selatan",
+      "category": "atmosphere",
+      "cuisine": [
+        "atmosphere"
+      ],
+      "priceLevel": "mid",
+      "referenceSpend": 250000,
+      "priceSource": "小红书近期消费记录",
+      "priceConfirmed": false,
+      "mealType": [
+        "lunch",
+        "dinner"
+      ],
+      "scene": [
+        "atmosphere"
+      ],
+      "localSpecialty": {
+        "zh": "窑炉Pizza/布拉塔/提拉米苏"
+      },
+      "vegetarian": "unknown",
+      "halalFriendly": "unknown",
+      "reservation": "confirm_with_venue",
+      "openingHours": null,
+      "coordinates": null,
+      "candidateCoordinates": {
+        "lat": -8.7971956,
+        "lng": 115.2308137,
+        "confidence": "low",
+        "source": "OSM Nominatim"
+      },
+      "nearbyPOIs": [
+        "nusa_dua_beach"
+      ],
+      "routeIds": [
+        "R1",
+        "R3",
+        "R6"
+      ],
+      "extensionIds": [],
+      "suitableDayparts": [
+        "lunch",
+        "dinner"
+      ],
+      "source": [
+        {
+          "url": "https://www.xiaohongshu.com/explore/69eabac40000000019025c00",
+          "kind": "provided_community_reference",
+          "accessedAt": null,
+          "verifiedFields": []
+        },
+        {
+          "url": "https://www.xiaohongshu.com/explore/6a43b2df000000000e021800",
+          "kind": "provided_community_reference",
+          "accessedAt": null,
+          "verifiedFields": []
+        }
+      ],
+      "lastVerified": null,
+      "researchDate": "2026-09-13",
+      "verificationStatus": "needs_source",
+      "published": false,
+      "editorialNotes": {
+        "zh": "Nusa Dua 区域社区口碑较强，窑炉Pizza+布拉塔"
+      },
+      "sourceClaim": "strong",
+      "storefrontImage": null,
+      "nearbyBasis": "same_named_area_not_verified_travel_time"
+    },
+    {
+      "id": "yuki-canggu",
+      "name": "YUKI",
+      "region": "G1",
+      "area": "Canggu",
+      "node_id": "canggu",
+      "address": "Jl. Pura Dalem, Canggu, Kec. Kuta Utara, Badung",
+      "category": "asian",
+      "cuisine": [
+        "asian"
+      ],
+      "priceLevel": "low",
+      "referenceSpend": null,
+      "priceSource": "未获取官方菜单价（菜单为图片），需 Codex 核验",
+      "priceConfirmed": false,
+      "mealType": [
+        "lunch",
+        "dinner"
+      ],
+      "scene": [
+        "asian"
+      ],
+      "localSpecialty": {
+        "zh": "现代日式居酒屋（寿司/炭火烧鸟/和牛三明治）"
+      },
+      "vegetarian": "unknown",
+      "halalFriendly": "unknown",
+      "reservation": "confirm_with_venue",
+      "openingHours": null,
+      "coordinates": null,
+      "candidateCoordinates": {
+        "lat": -8.6579185,
+        "lng": 115.1292907,
+        "confidence": "high",
+        "source": "Google Maps"
+      },
+      "nearbyPOIs": [
+        "pererenan_beach",
+        "tanah_lot",
+        "batu_bolong_beach",
+        "echo_beach"
+      ],
+      "routeIds": [
+        "R1",
+        "R6"
+      ],
+      "extensionIds": [],
+      "suitableDayparts": [
+        "lunch",
+        "dinner"
+      ],
+      "source": [
+        {
+          "url": "https://www.yuki-bali.com/canggu",
+          "kind": "provided_official_reference",
+          "accessedAt": null,
+          "verifiedFields": []
+        }
+      ],
+      "lastVerified": null,
+      "researchDate": "2026-09-13",
+      "verificationStatus": "temporarily_closed",
+      "published": false,
+      "editorialNotes": {
+        "zh": "现代日式居酒屋，和牛三明治/炭火烧鸟/寿司，可持续设计感强（用户指定加入）"
+      },
+      "sourceClaim": "medium",
+      "storefrontImage": null,
+      "nearbyBasis": "same_named_area_not_verified_travel_time"
+    },
+    {
+      "id": "yuki-uluwatu",
+      "name": "YUKI",
+      "region": "G2",
+      "area": "Uluwatu/Pecatu",
+      "node_id": "uluwatu",
+      "address": "Jl. Labuansait, Pecatu, Kec. Kuta Selatan, Badung",
+      "category": "asian",
+      "cuisine": [
+        "asian"
+      ],
+      "priceLevel": "low",
+      "referenceSpend": null,
+      "priceSource": "未获取官方菜单价，需 Codex 核验",
+      "priceConfirmed": false,
+      "mealType": [
+        "lunch",
+        "dinner"
+      ],
+      "scene": [
+        "asian"
+      ],
+      "localSpecialty": {
+        "zh": "现代日式居酒屋（炭火烧鸟/寿司/清酒）"
+      },
+      "vegetarian": "unknown",
+      "halalFriendly": "unknown",
+      "reservation": "confirm_with_venue",
+      "openingHours": null,
+      "coordinates": null,
+      "candidateCoordinates": {
+        "lat": -8.817091,
+        "lng": 115.0939776,
+        "confidence": "high",
+        "source": "Google Maps"
+      },
+      "nearbyPOIs": [
+        "uluwatu_temple",
+        "padang_padang_beach",
+        "bingin_beach",
+        "suluban_beach"
+      ],
+      "routeIds": [
+        "R1",
+        "R3",
+        "R6"
+      ],
+      "extensionIds": [],
+      "suitableDayparts": [
+        "lunch",
+        "dinner"
+      ],
+      "source": [
+        {
+          "url": "https://www.yuki-bali.com/uluwatu",
+          "kind": "official_site",
+          "accessedAt": "2026-09-13",
+          "verifiedFields": [
+            "identity",
+            "venue_context"
+          ]
+        },
+        {
+          "url": "https://www.yuki-bali.com/",
+          "kind": "provided_official_reference",
+          "accessedAt": null,
+          "verifiedFields": []
+        }
+      ],
+      "lastVerified": "2026-09-13",
+      "researchDate": "2026-09-13",
+      "verificationStatus": "identity_checked",
+      "published": true,
+      "editorialNotes": {
+        "zh": "悬崖日式居酒屋，冲浪文化结合日式炭火，海景氛围（用户指定加入）"
+      },
+      "sourceClaim": "medium",
+      "storefrontImage": null,
+      "nearbyBasis": "same_named_area_not_verified_travel_time"
+    },
+    {
+      "id": "papa-lees-taiwan-teppanyaki",
+      "name": "Papa Lee's Taiwan Teppanyaki Steak House",
+      "region": "G1",
+      "area": "Seminyak/Petitenget",
+      "node_id": "kuta",
+      "address": "Jl. Petitenget No.100, Kerobokan Kelod, Kec. Kuta Utara, Badung",
+      "category": "asian",
+      "cuisine": [
+        "asian"
+      ],
+      "priceLevel": "high",
+      "referenceSpend": 475000,
+      "priceSource": "Chope 平台标注 $$$$（Rp 400k-550k）",
+      "priceConfirmed": false,
+      "mealType": [
+        "lunch",
+        "dinner"
+      ],
+      "scene": [
+        "asian"
+      ],
+      "localSpecialty": {
+        "zh": "台式铁板烧（和牛肋眼/西冷/蒜香炒饭/松露小笼包/红烧牛肉面）"
+      },
+      "vegetarian": "unknown",
+      "halalFriendly": "unknown",
+      "reservation": "confirm_with_venue",
+      "openingHours": null,
+      "coordinates": null,
+      "candidateCoordinates": {
+        "lat": -8.6763379,
+        "lng": 115.156043,
+        "confidence": "high",
+        "source": "Google Maps"
+      },
+      "nearbyPOIs": [],
+      "routeIds": [
+        "R1",
+        "R6"
+      ],
+      "extensionIds": [],
+      "suitableDayparts": [
+        "lunch",
+        "dinner"
+      ],
+      "source": [
+        {
+          "url": "https://papaleeteppanyaki.com/",
+          "kind": "provided_official_reference",
+          "accessedAt": null,
+          "verifiedFields": []
+        }
+      ],
+      "lastVerified": null,
+      "researchDate": "2026-09-13",
+      "verificationStatus": "editorial_candidate",
+      "published": true,
+      "editorialNotes": {
+        "zh": "台式铁板烧，主厨 A-Yuan（前台湾王品牛排行政主厨），现做有表演性（用户指定加入）"
+      },
+      "sourceClaim": "medium",
+      "storefrontImage": null,
+      "nearbyBasis": "same_named_area_not_verified_travel_time"
+    },
+    {
+      "id": "bali-food-mama-san",
+      "name": "Mama San",
+      "region": "G1",
+      "area": "Seminyak / Kerobokan",
+      "cuisine": [
+        "Southeast Asian",
+        "Indonesian"
+      ],
+      "priceLevel": "high",
+      "mealType": [
+        "lunch",
+        "dinner"
+      ],
+      "scene": [
+        "modern dining room",
+        "cocktail bar"
+      ],
+      "localSpecialty": [
+        "regional Southeast Asian flavours"
+      ],
+      "vegetarian": "unknown",
+      "halalFriendly": "unknown",
+      "reservation": "available",
+      "openingHours": null,
+      "coordinates": null,
+      "nearbyPOIs": [
+        "seminyak_beach",
+        "petitenget_temple"
+      ],
+      "routeIds": [
+        "R1",
+        "R6"
+      ],
+      "extensionIds": [],
+      "suitableDayparts": [
+        "lunch",
+        "dinner"
+      ],
+      "source": [
+        {
+          "url": "https://mamasanbali.com/",
+          "publisher": "Mama San",
+          "kind": "official-site",
+          "accessedAt": "2026-09-13",
+          "verifiedFields": [
+            "name",
+            "area",
+            "cuisine",
+            "openingHours",
+            "reservation"
+          ]
+        }
+      ],
+      "lastVerified": null,
+      "verificationStatus": "editorial_candidate",
+      "editorialNotes": null,
+      "node_id": "seminyak",
+      "category": "asian",
+      "referenceSpend": null,
+      "priceConfirmed": false,
+      "candidateCoordinates": null,
+      "researchDate": "2026-09-13",
+      "published": true,
+      "storefrontImage": null,
+      "nearbyBasis": "same_named_area_not_verified_travel_time"
+    },
+    {
+      "id": "bali-food-barbacoa",
+      "name": "Barbacoa",
+      "region": "G1",
+      "area": "Seminyak",
+      "cuisine": [
+        "Latin American",
+        "Argentinian",
+        "Mexican"
+      ],
+      "priceLevel": "high",
+      "mealType": [
+        "dinner"
+      ],
+      "scene": [
+        "wood-fired",
+        "warehouse-style dining room"
+      ],
+      "localSpecialty": [
+        "asado",
+        "charcoal and smoke cooking"
+      ],
+      "vegetarian": "unknown",
+      "halalFriendly": "unknown",
+      "reservation": "available",
+      "openingHours": null,
+      "coordinates": null,
+      "nearbyPOIs": [
+        "seminyak_beach",
+        "petitenget_temple"
+      ],
+      "routeIds": [
+        "R1",
+        "R6"
+      ],
+      "extensionIds": [],
+      "suitableDayparts": [
+        "dinner"
+      ],
+      "source": [
+        {
+          "url": "https://barbacoa-bali.com/",
+          "publisher": "Barbacoa Bali",
+          "kind": "official-site",
+          "accessedAt": "2026-09-13",
+          "verifiedFields": [
+            "name",
+            "area",
+            "cuisine",
+            "openingHours",
+            "reservation",
+            "scene",
+            "localSpecialty"
+          ]
+        }
+      ],
+      "lastVerified": null,
+      "verificationStatus": "editorial_candidate",
+      "editorialNotes": null,
+      "node_id": "seminyak",
+      "category": "atmosphere",
+      "referenceSpend": null,
+      "priceConfirmed": false,
+      "candidateCoordinates": null,
+      "researchDate": "2026-09-13",
+      "published": true,
+      "storefrontImage": null,
+      "nearbyBasis": "same_named_area_not_verified_travel_time"
+    },
+    {
+      "id": "bali-food-bambu",
+      "name": "Bambu",
+      "region": "G1",
+      "area": "Petitenget / Seminyak",
+      "cuisine": [
+        "Indonesian"
+      ],
+      "priceLevel": "high",
+      "mealType": [
+        "dinner"
+      ],
+      "scene": [
+        "Indonesian design",
+        "evening dining"
+      ],
+      "localSpecialty": [
+        "archipelago Indonesian cuisine"
+      ],
+      "vegetarian": "unknown",
+      "halalFriendly": "unknown",
+      "reservation": "available",
+      "openingHours": null,
+      "coordinates": null,
+      "nearbyPOIs": [
+        "seminyak_beach",
+        "petitenget_temple"
+      ],
+      "routeIds": [
+        "R1",
+        "R6"
+      ],
+      "extensionIds": [],
+      "suitableDayparts": [
+        "dinner"
+      ],
+      "source": [
+        {
+          "url": "https://bambubali.com/",
+          "publisher": "Bambu",
+          "kind": "official-site",
+          "accessedAt": "2026-09-13",
+          "verifiedFields": [
+            "name",
+            "area",
+            "cuisine",
+            "openingHours",
+            "reservation"
+          ]
+        }
+      ],
+      "lastVerified": null,
+      "verificationStatus": "editorial_candidate",
+      "editorialNotes": null,
+      "node_id": "seminyak",
+      "category": "local",
+      "referenceSpend": null,
+      "priceConfirmed": false,
+      "candidateCoordinates": null,
+      "researchDate": "2026-09-13",
+      "published": true,
+      "storefrontImage": null,
+      "nearbyBasis": "same_named_area_not_verified_travel_time"
+    },
+    {
+      "id": "bali-food-sangsaka",
+      "name": "Sangsaka",
+      "region": "G1",
+      "area": "Kerobokan / Seminyak",
+      "cuisine": [
+        "Modern Indonesian"
+      ],
+      "priceLevel": "high",
+      "mealType": [
+        "dinner"
+      ],
+      "scene": [
+        "terrace",
+        "rooftop bar",
+        "wood-fired cooking"
+      ],
+      "localSpecialty": [
+        "regional Indonesian dishes",
+        "wood-fired cooking"
+      ],
+      "vegetarian": "unknown",
+      "halalFriendly": "unknown",
+      "reservation": "available",
+      "openingHours": null,
+      "coordinates": null,
+      "nearbyPOIs": [
+        "seminyak_beach",
+        "petitenget_temple"
+      ],
+      "routeIds": [
+        "R1",
+        "R6"
+      ],
+      "extensionIds": [],
+      "suitableDayparts": [
+        "dinner"
+      ],
+      "source": [
+        {
+          "url": "https://www.sangsakabali.com/",
+          "publisher": "Sangsaka",
+          "kind": "official-site",
+          "accessedAt": "2026-09-13",
+          "verifiedFields": [
+            "name",
+            "area",
+            "cuisine",
+            "openingHours",
+            "reservation",
+            "scene",
+            "localSpecialty"
+          ]
+        }
+      ],
+      "lastVerified": null,
+      "verificationStatus": "editorial_candidate",
+      "editorialNotes": null,
+      "node_id": "seminyak",
+      "category": "local",
+      "referenceSpend": null,
+      "priceConfirmed": false,
+      "candidateCoordinates": null,
+      "researchDate": "2026-09-13",
+      "published": true,
+      "storefrontImage": null,
+      "nearbyBasis": "same_named_area_not_verified_travel_time"
+    },
+    {
+      "id": "bali-food-kaum",
+      "name": "Kaum",
+      "region": "G1",
+      "area": "Seminyak / Petitenget",
+      "cuisine": [
+        "Indonesian",
+        "regional archipelago"
+      ],
+      "priceLevel": "high",
+      "mealType": [
+        "lunch",
+        "dinner"
+      ],
+      "scene": [
+        "archipelago-focused dining",
+        "beach-club setting"
+      ],
+      "localSpecialty": [
+        "regional Indonesian recipes",
+        "plant-based Indonesian dishes"
+      ],
+      "vegetarian": "unknown",
+      "halalFriendly": "unknown",
+      "reservation": "available",
+      "openingHours": null,
+      "coordinates": null,
+      "nearbyPOIs": [
+        "seminyak_beach",
+        "petitenget_temple"
+      ],
+      "routeIds": [
+        "R1",
+        "R6"
+      ],
+      "extensionIds": [],
+      "suitableDayparts": [
+        "lunch",
+        "dinner"
+      ],
+      "source": [
+        {
+          "url": "https://seminyak.potatohead.co/feast/kaum",
+          "publisher": "Desa Potato Head / Kaum",
+          "kind": "official-site",
+          "accessedAt": "2026-09-13",
+          "verifiedFields": [
+            "name",
+            "area",
+            "cuisine",
+            "openingHours",
+            "reservation",
+            "localSpecialty"
+          ]
+        }
+      ],
+      "lastVerified": null,
+      "verificationStatus": "editorial_candidate",
+      "editorialNotes": null,
+      "node_id": "seminyak",
+      "category": "local",
+      "referenceSpend": null,
+      "priceConfirmed": false,
+      "candidateCoordinates": null,
+      "researchDate": "2026-09-13",
+      "published": true,
+      "storefrontImage": null,
+      "nearbyBasis": "same_named_area_not_verified_travel_time"
+    },
+    {
+      "id": "bali-food-masonry-canggu",
+      "name": "MASONRY. Canggu",
+      "region": "G1",
+      "area": "Canggu",
+      "cuisine": [
+        "Mediterranean"
+      ],
+      "priceLevel": "high",
+      "mealType": [
+        "lunch",
+        "dinner"
+      ],
+      "scene": [
+        "courtyard",
+        "open kitchen",
+        "wood-fired cooking"
+      ],
+      "localSpecialty": [
+        "wood-fired cooking",
+        "house-made charcuterie"
+      ],
+      "vegetarian": "unknown",
+      "halalFriendly": "unknown",
+      "reservation": "available",
+      "openingHours": null,
+      "coordinates": null,
+      "nearbyPOIs": [
+        "pererenan_beach",
+        "tanah_lot",
+        "batu_bolong_beach",
+        "echo_beach"
+      ],
+      "routeIds": [
+        "R1",
+        "R6"
+      ],
+      "extensionIds": [],
+      "suitableDayparts": [
+        "lunch",
+        "dinner"
+      ],
+      "source": [
+        {
+          "url": "https://masonrybali.com/masonry",
+          "publisher": "MASONRY.",
+          "kind": "official-site",
+          "accessedAt": "2026-09-13",
+          "verifiedFields": [
+            "name",
+            "area",
+            "cuisine",
+            "scene",
+            "localSpecialty",
+            "reservation"
+          ]
+        },
+        {
+          "url": "https://masonrybali.com/canggu",
+          "publisher": "MASONRY.",
+          "kind": "official-site",
+          "accessedAt": "2026-09-13",
+          "verifiedFields": [
+            "openingHours",
+            "area",
+            "reservation"
+          ]
+        }
+      ],
+      "lastVerified": null,
+      "verificationStatus": "editorial_candidate",
+      "editorialNotes": null,
+      "node_id": "canggu",
+      "category": "local",
+      "referenceSpend": null,
+      "priceConfirmed": false,
+      "candidateCoordinates": null,
+      "researchDate": "2026-09-13",
+      "published": true,
+      "storefrontImage": null,
+      "nearbyBasis": "same_named_area_not_verified_travel_time"
+    },
+    {
+      "id": "bali-food-cuca",
+      "name": "Cuca",
+      "region": "G2",
+      "area": "Jimbaran",
+      "cuisine": [
+        "Locally sourced tapas",
+        "international"
+      ],
+      "priceLevel": "high",
+      "mealType": [
+        "lunch",
+        "dinner"
+      ],
+      "scene": [
+        "tasting-menu",
+        "cocktail bar"
+      ],
+      "localSpecialty": [
+        "locally sourced tapas",
+        "dessert tasting"
+      ],
+      "vegetarian": true,
+      "halalFriendly": "unknown",
+      "reservation": "available",
+      "openingHours": null,
+      "coordinates": null,
+      "nearbyPOIs": [
+        "gwk",
+        "jimbaran_bay"
+      ],
+      "routeIds": [
+        "R1",
+        "R3",
+        "R6"
+      ],
+      "extensionIds": [],
+      "suitableDayparts": [
+        "lunch",
+        "dinner"
+      ],
+      "source": [
+        {
+          "url": "https://www.cucabali.com/",
+          "kind": "official_site",
+          "accessedAt": "2026-09-13",
+          "verifiedFields": [
+            "identity",
+            "venue_context"
+          ]
+        },
+        {
+          "url": "https://www.cucabali.com/",
+          "publisher": "Cuca",
+          "kind": "official-site",
+          "accessedAt": "2026-09-13",
+          "verifiedFields": [
+            "name",
+            "area",
+            "cuisine",
+            "openingHours",
+            "reservation",
+            "vegetarian",
+            "scene",
+            "localSpecialty"
+          ]
+        }
+      ],
+      "lastVerified": "2026-09-13",
+      "verificationStatus": "identity_checked",
+      "editorialNotes": null,
+      "node_id": "jimbaran",
+      "category": "local",
+      "referenceSpend": null,
+      "priceConfirmed": false,
+      "candidateCoordinates": null,
+      "researchDate": "2026-09-13",
+      "published": true,
+      "storefrontImage": null,
+      "nearbyBasis": "same_named_area_not_verified_travel_time"
+    },
+    {
+      "id": "bali-food-sundara",
+      "name": "Sundara",
+      "region": "G2",
+      "area": "Jimbaran",
+      "cuisine": [
+        "Indonesian",
+        "seafood",
+        "modern coastal"
+      ],
+      "priceLevel": "high",
+      "mealType": [
+        "lunch",
+        "dinner",
+        "brunch"
+      ],
+      "scene": [
+        "beachfront",
+        "sunset",
+        "poolside"
+      ],
+      "localSpecialty": [
+        "Jimbaran seafood",
+        "fire-driven dishes"
+      ],
+      "vegetarian": "unknown",
+      "halalFriendly": "unknown",
+      "reservation": "available",
+      "openingHours": null,
+      "coordinates": null,
+      "nearbyPOIs": [
+        "gwk",
+        "jimbaran_bay"
+      ],
+      "routeIds": [
+        "R1",
+        "R3",
+        "R6"
+      ],
+      "extensionIds": [],
+      "suitableDayparts": [
+        "lunch",
+        "dinner",
+        "brunch"
+      ],
+      "source": [
+        {
+          "url": "https://www.sundarabali.com/location/sundara/",
+          "publisher": "Sundara Bali",
+          "kind": "official-site",
+          "accessedAt": "2026-09-13",
+          "verifiedFields": [
+            "name",
+            "area",
+            "openingHours",
+            "reservation",
+            "scene"
+          ]
+        },
+        {
+          "url": "https://www.sundarabali.com/restaurant/",
+          "publisher": "Sundara Bali",
+          "kind": "official-site",
+          "accessedAt": "2026-09-13",
+          "verifiedFields": [
+            "cuisine",
+            "localSpecialty"
+          ]
+        }
+      ],
+      "lastVerified": null,
+      "verificationStatus": "editorial_candidate",
+      "editorialNotes": null,
+      "node_id": "jimbaran",
+      "category": "seafood",
+      "referenceSpend": null,
+      "priceConfirmed": false,
+      "candidateCoordinates": null,
+      "researchDate": "2026-09-13",
+      "published": true,
+      "storefrontImage": null,
+      "nearbyBasis": "same_named_area_not_verified_travel_time"
+    },
+    {
+      "id": "bali-food-kisik",
+      "name": "KISIK Seafood & Grill",
+      "region": "G2",
+      "area": "Jimbaran / AYANA Resort",
+      "cuisine": [
+        "Indonesian",
+        "seafood"
+      ],
+      "priceLevel": "high",
+      "mealType": [
+        "dinner"
+      ],
+      "scene": [
+        "sandy beach",
+        "sunset",
+        "open-air grill"
+      ],
+      "localSpecialty": [
+        "Jimbaran-style seafood barbecue"
+      ],
+      "vegetarian": "unknown",
+      "halalFriendly": "unknown",
+      "reservation": "available",
+      "openingHours": null,
+      "coordinates": null,
+      "nearbyPOIs": [
+        "gwk",
+        "jimbaran_bay"
+      ],
+      "routeIds": [
+        "R1",
+        "R3",
+        "R6"
+      ],
+      "extensionIds": [],
+      "suitableDayparts": [
+        "dinner"
+      ],
+      "source": [
+        {
+          "url": "https://www.ayana.com/bali/dining/kisik/",
+          "publisher": "AYANA Bali",
+          "kind": "official-hotel",
+          "accessedAt": "2026-09-13",
+          "verifiedFields": [
+            "name",
+            "area",
+            "cuisine",
+            "openingHours",
+            "reservation",
+            "scene",
+            "localSpecialty"
+          ]
+        }
+      ],
+      "lastVerified": null,
+      "verificationStatus": "editorial_candidate",
+      "editorialNotes": null,
+      "node_id": "jimbaran",
+      "category": "seafood",
+      "referenceSpend": null,
+      "priceConfirmed": false,
+      "candidateCoordinates": null,
+      "researchDate": "2026-09-13",
+      "published": true,
+      "storefrontImage": null,
+      "nearbyBasis": "same_named_area_not_verified_travel_time"
+    },
+    {
+      "id": "bali-food-kayuputi",
+      "name": "Kayuputi",
+      "region": "G2",
+      "area": "Nusa Dua / The St. Regis Bali",
+      "cuisine": [
+        "Pan-Asian",
+        "haute cuisine"
+      ],
+      "priceLevel": "high",
+      "mealType": [
+        "lunch",
+        "dinner"
+      ],
+      "scene": [
+        "oceanfront",
+        "private cabanas",
+        "open kitchen"
+      ],
+      "localSpecialty": [
+        "Pan-Asian fine dining"
+      ],
+      "vegetarian": "unknown",
+      "halalFriendly": "unknown",
+      "reservation": "recommended",
+      "openingHours": null,
+      "coordinates": null,
+      "nearbyPOIs": [
+        "nusa_dua_beach"
+      ],
+      "routeIds": [
+        "R1",
+        "R3",
+        "R6"
+      ],
+      "extensionIds": [],
+      "suitableDayparts": [
+        "lunch",
+        "dinner"
+      ],
+      "source": [
+        {
+          "url": "https://www.kayuputibali.com/contact-location",
+          "publisher": "Kayuputi",
+          "kind": "official-hotel",
+          "accessedAt": "2026-09-13",
+          "verifiedFields": [
+            "name",
+            "area",
+            "openingHours",
+            "reservation",
+            "scene"
+          ]
+        },
+        {
+          "url": "https://www.kayuputibali.com/",
+          "publisher": "Kayuputi",
+          "kind": "official-hotel",
+          "accessedAt": "2026-09-13",
+          "verifiedFields": [
+            "cuisine"
+          ]
+        }
+      ],
+      "lastVerified": null,
+      "verificationStatus": "editorial_candidate",
+      "editorialNotes": null,
+      "node_id": "nusa_dua",
+      "category": "asian",
+      "referenceSpend": null,
+      "priceConfirmed": false,
+      "candidateCoordinates": null,
+      "researchDate": "2026-09-13",
+      "published": true,
+      "storefrontImage": null,
+      "nearbyBasis": "same_named_area_not_verified_travel_time"
+    },
+    {
+      "id": "bali-food-bejana",
+      "name": "Bejana by Petty Elliott",
+      "region": "G2",
+      "area": "Nusa Dua / The Ritz-Carlton Bali",
+      "cuisine": [
+        "Indonesian",
+        "Balinese"
+      ],
+      "priceLevel": "high",
+      "mealType": [
+        "dinner"
+      ],
+      "scene": [
+        "fine dining",
+        "resort dining room"
+      ],
+      "localSpecialty": [
+        "Archipelago Rijsttafel",
+        "Nusantara regional dishes"
+      ],
+      "vegetarian": "unknown",
+      "halalFriendly": "unknown",
+      "reservation": "available",
+      "openingHours": null,
+      "coordinates": null,
+      "nearbyPOIs": [
+        "nusa_dua_beach"
+      ],
+      "routeIds": [
+        "R1",
+        "R3",
+        "R6"
+      ],
+      "extensionIds": [],
+      "suitableDayparts": [
+        "dinner"
+      ],
+      "source": [
+        {
+          "url": "https://www.bejanaindonesianrestaurant.com/",
+          "publisher": "Bejana / The Ritz-Carlton Bali",
+          "kind": "official-hotel",
+          "accessedAt": "2026-09-13",
+          "verifiedFields": [
+            "name",
+            "area",
+            "cuisine",
+            "openingHours",
+            "reservation",
+            "localSpecialty"
+          ]
+        }
+      ],
+      "lastVerified": null,
+      "verificationStatus": "editorial_candidate",
+      "editorialNotes": null,
+      "node_id": "nusa_dua",
+      "category": "local",
+      "referenceSpend": null,
+      "priceConfirmed": false,
+      "candidateCoordinates": null,
+      "researchDate": "2026-09-13",
+      "published": true,
+      "storefrontImage": null,
+      "nearbyBasis": "same_named_area_not_verified_travel_time"
+    },
+    {
+      "id": "bali-food-massimo",
+      "name": "Massimo Italian Restaurant",
+      "region": "G3",
+      "area": "Sanur",
+      "cuisine": [
+        "Italian",
+        "Southern Italian"
+      ],
+      "priceLevel": "mid",
+      "mealType": [
+        "breakfast",
+        "lunch",
+        "dinner",
+        "dessert"
+      ],
+      "scene": [
+        "all-day restaurant",
+        "gelateria"
+      ],
+      "localSpecialty": [
+        "gelato",
+        "pizza",
+        "fresh pasta"
+      ],
+      "vegetarian": "unknown",
+      "halalFriendly": "unknown",
+      "reservation": "available",
+      "openingHours": null,
+      "coordinates": null,
+      "nearbyPOIs": [
+        "sanur_beach",
+        "mertasari_beach",
+        "bali_fire_shooting_club"
+      ],
+      "routeIds": [
+        "R1",
+        "R3",
+        "R6"
+      ],
+      "extensionIds": [],
+      "suitableDayparts": [
+        "breakfast",
+        "lunch",
+        "dinner"
+      ],
+      "source": [
+        {
+          "url": "https://www.massimobali.com/press/",
+          "publisher": "Massimo Italian Restaurant",
+          "kind": "official-site",
+          "accessedAt": "2026-09-13",
+          "verifiedFields": [
+            "name",
+            "area",
+            "openingHours",
+            "reservation"
+          ]
+        },
+        {
+          "url": "https://www.tripadvisor.com/Restaurant_Review-g297700-d1140897-Reviews-Massimo_Italian_Restaurant-Sanur_Denpasar_Bali.html",
+          "publisher": "Tripadvisor",
+          "kind": "secondary-directory",
+          "accessedAt": "2026-09-13",
+          "verifiedFields": [
+            "cuisine",
+            "localSpecialty"
+          ]
+        }
+      ],
+      "lastVerified": null,
+      "verificationStatus": "editorial_candidate",
+      "editorialNotes": null,
+      "node_id": "sanur",
+      "category": "asian",
+      "referenceSpend": null,
+      "priceConfirmed": false,
+      "candidateCoordinates": null,
+      "researchDate": "2026-09-13",
+      "published": true,
+      "storefrontImage": null,
+      "nearbyBasis": "same_named_area_not_verified_travel_time"
+    },
+    {
+      "id": "bali-food-three-monkeys-sanur",
+      "name": "Three Monkeys Sanur",
+      "region": "G3",
+      "area": "Sanur",
+      "cuisine": [
+        "Modern Indonesian",
+        "Mediterranean",
+        "Middle Eastern"
+      ],
+      "priceLevel": "mid",
+      "mealType": [
+        "lunch",
+        "dinner"
+      ],
+      "scene": [
+        "shaded terrace",
+        "jazz"
+      ],
+      "localSpecialty": [
+        "modern Indonesian and Mediterranean dishes"
+      ],
+      "vegetarian": "unknown",
+      "halalFriendly": "unknown",
+      "reservation": "available",
+      "openingHours": null,
+      "coordinates": null,
+      "nearbyPOIs": [
+        "sanur_beach",
+        "mertasari_beach",
+        "bali_fire_shooting_club"
+      ],
+      "routeIds": [
+        "R1",
+        "R3",
+        "R6"
+      ],
+      "extensionIds": [],
+      "suitableDayparts": [
+        "lunch",
+        "dinner"
+      ],
+      "source": [
+        {
+          "url": "https://threemonkeysbali.com/",
+          "publisher": "Three Monkeys",
+          "kind": "official-site",
+          "accessedAt": "2026-09-13",
+          "verifiedFields": [
+            "name",
+            "area"
+          ]
+        },
+        {
+          "url": "https://www.asiadreams.com/three-monkeys/",
+          "publisher": "Asia Dreams",
+          "kind": "secondary-culinary-guide",
+          "accessedAt": "2026-09-13",
+          "verifiedFields": [
+            "cuisine",
+            "openingHours",
+            "reservation",
+            "scene",
+            "localSpecialty"
+          ]
+        }
+      ],
+      "lastVerified": null,
+      "verificationStatus": "editorial_candidate",
+      "editorialNotes": null,
+      "node_id": "sanur",
+      "category": "local",
+      "referenceSpend": null,
+      "priceConfirmed": false,
+      "candidateCoordinates": null,
+      "researchDate": "2026-09-13",
+      "published": true,
+      "storefrontImage": null,
+      "nearbyBasis": "same_named_area_not_verified_travel_time"
+    },
+    {
+      "id": "bali-food-kuu-izakaya",
+      "name": "Kuu Izakaya at Maya Sanur",
+      "region": "G3",
+      "area": "Sanur",
+      "cuisine": [
+        "Japanese",
+        "Izakaya",
+        "fusion"
+      ],
+      "priceLevel": "mid",
+      "mealType": [
+        "lunch",
+        "dinner"
+      ],
+      "scene": [
+        "street-side",
+        "casual dining"
+      ],
+      "localSpecialty": [
+        "sushi",
+        "sashimi",
+        "yakitori"
+      ],
+      "vegetarian": "unknown",
+      "halalFriendly": "unknown",
+      "reservation": "available",
+      "openingHours": null,
+      "coordinates": null,
+      "nearbyPOIs": [
+        "sanur_beach",
+        "mertasari_beach",
+        "bali_fire_shooting_club"
+      ],
+      "routeIds": [
+        "R1",
+        "R3",
+        "R6"
+      ],
+      "extensionIds": [],
+      "suitableDayparts": [
+        "lunch",
+        "dinner"
+      ],
+      "source": [
+        {
+          "url": "https://mayaresorts.com/sanur/restaurant",
+          "publisher": "Maya Sanur",
+          "kind": "official-hotel",
+          "accessedAt": "2026-09-13",
+          "verifiedFields": [
+            "name",
+            "area",
+            "cuisine",
+            "openingHours",
+            "reservation",
+            "scene",
+            "localSpecialty"
+          ]
+        }
+      ],
+      "lastVerified": null,
+      "verificationStatus": "editorial_candidate",
+      "editorialNotes": null,
+      "node_id": "sanur",
+      "category": "asian",
+      "referenceSpend": null,
+      "priceConfirmed": false,
+      "candidateCoordinates": null,
+      "researchDate": "2026-09-13",
+      "published": true,
+      "storefrontImage": null,
+      "nearbyBasis": "same_named_area_not_verified_travel_time"
+    },
+    {
+      "id": "bali-food-penida-colada",
+      "name": "Penida Colada",
+      "region": "G3",
+      "area": "Ped, Nusa Penida",
+      "cuisine": [
+        "Modern Australian",
+        "International",
+        "Indonesian"
+      ],
+      "priceLevel": "mid",
+      "mealType": [
+        "breakfast",
+        "lunch",
+        "dinner"
+      ],
+      "scene": [
+        "beachfront",
+        "sunset",
+        "live music"
+      ],
+      "localSpecialty": [
+        "local fishermen and farmers produce",
+        "local sea salt"
+      ],
+      "vegetarian": "unknown",
+      "halalFriendly": "unknown",
+      "reservation": "available",
+      "openingHours": null,
+      "coordinates": null,
+      "nearbyPOIs": [],
+      "routeIds": [
+        "R1",
+        "R3",
+        "R6"
+      ],
+      "extensionIds": [
+        "penida-west",
+        "penida-east",
+        "penida-snorkeling"
+      ],
+      "suitableDayparts": [
+        "breakfast",
+        "lunch",
+        "dinner"
+      ],
+      "source": [
+        {
+          "url": "https://penidacolada.com/about-penida-colada-beach-bar-nusa-penida/",
+          "publisher": "Penida Colada",
+          "kind": "official-site",
+          "accessedAt": "2026-09-13",
+          "verifiedFields": [
+            "name",
+            "area",
+            "cuisine",
+            "openingHours",
+            "reservation",
+            "scene",
+            "localSpecialty"
+          ]
+        }
+      ],
+      "lastVerified": null,
+      "verificationStatus": "editorial_candidate",
+      "editorialNotes": null,
+      "node_id": "nusa_penida_north",
+      "category": "local",
+      "referenceSpend": null,
+      "priceConfirmed": false,
+      "candidateCoordinates": null,
+      "researchDate": "2026-09-13",
+      "published": true,
+      "storefrontImage": null,
+      "nearbyBasis": "same_named_area_not_verified_travel_time"
+    },
+    {
+      "id": "bali-food-locavore-nxt",
+      "name": "Locavore NXT",
+      "region": "G4",
+      "area": "Lodtunduh / Ubud",
+      "cuisine": [
+        "Indonesian",
+        "hyper-local"
+      ],
+      "priceLevel": "high",
+      "mealType": [
+        "lunch",
+        "dinner"
+      ],
+      "scene": [
+        "tasting-menu",
+        "experimental"
+      ],
+      "localSpecialty": [
+        "local ingredients",
+        "Indonesian tasting menu"
+      ],
+      "vegetarian": "unknown",
+      "halalFriendly": "unknown",
+      "reservation": "recommended",
+      "openingHours": null,
+      "coordinates": null,
+      "nearbyPOIs": [
+        "yoga_barn",
+        "pyramids_of_chi",
+        "heart_space_bali",
+        "intuitive_flow",
+        "tegalalang_rice_terrace",
+        "ubud_monkey_forest"
+      ],
+      "routeIds": [
+        "R1",
+        "R2",
+        "R4"
+      ],
+      "extensionIds": [],
+      "suitableDayparts": [
+        "lunch",
+        "dinner"
+      ],
+      "source": [
+        {
+          "url": "https://locavorenxt.com/family/locavorenxt",
+          "publisher": "Locavore NXT",
+          "kind": "official-site",
+          "accessedAt": "2026-09-13",
+          "verifiedFields": [
+            "name",
+            "area",
+            "cuisine",
+            "openingHours",
+            "reservation",
+            "scene",
+            "localSpecialty"
+          ]
+        }
+      ],
+      "lastVerified": null,
+      "verificationStatus": "editorial_candidate",
+      "editorialNotes": null,
+      "node_id": "ubud",
+      "category": "local",
+      "referenceSpend": null,
+      "priceConfirmed": false,
+      "candidateCoordinates": null,
+      "researchDate": "2026-09-13",
+      "published": true,
+      "storefrontImage": null,
+      "nearbyBasis": "same_named_area_not_verified_travel_time"
+    },
+    {
+      "id": "bali-food-room4dessert",
+      "name": "Room4Dessert",
+      "region": "G4",
+      "area": "Kedewatan / Ubud",
+      "cuisine": [
+        "Dessert",
+        "contemporary"
+      ],
+      "priceLevel": "high",
+      "mealType": [
+        "dessert",
+        "dinner"
+      ],
+      "scene": [
+        "tasting-menu",
+        "garden/terrace"
+      ],
+      "localSpecialty": [
+        "21-course dessert tasting",
+        "medicinal herbs"
+      ],
+      "vegetarian": "unknown",
+      "halalFriendly": "unknown",
+      "reservation": "available",
+      "openingHours": null,
+      "coordinates": null,
+      "nearbyPOIs": [
+        "yoga_barn",
+        "pyramids_of_chi",
+        "heart_space_bali",
+        "intuitive_flow",
+        "tegalalang_rice_terrace",
+        "ubud_monkey_forest"
+      ],
+      "routeIds": [
+        "R1",
+        "R2",
+        "R4"
+      ],
+      "extensionIds": [],
+      "suitableDayparts": [
+        "dessert",
+        "dinner"
+      ],
+      "source": [
+        {
+          "url": "https://www.room4dessert.com/the-restaurant/",
+          "publisher": "Room4Dessert",
+          "kind": "official-site",
+          "accessedAt": "2026-09-13",
+          "verifiedFields": [
+            "name",
+            "area",
+            "cuisine",
+            "openingHours",
+            "reservation",
+            "scene",
+            "localSpecialty"
+          ]
+        }
+      ],
+      "lastVerified": null,
+      "verificationStatus": "editorial_candidate",
+      "editorialNotes": null,
+      "node_id": "ubud",
+      "category": "local",
+      "referenceSpend": null,
+      "priceConfirmed": false,
+      "candidateCoordinates": null,
+      "researchDate": "2026-09-13",
+      "published": true,
+      "storefrontImage": null,
+      "nearbyBasis": "same_named_area_not_verified_travel_time"
+    },
+    {
+      "id": "bali-food-mozaic",
+      "name": "Mozaic",
+      "region": "G4",
+      "area": "Sanggingan / Ubud",
+      "cuisine": [
+        "French",
+        "Balinese-influenced"
+      ],
+      "priceLevel": "high",
+      "mealType": [
+        "dinner"
+      ],
+      "scene": [
+        "fine dining",
+        "garden dining"
+      ],
+      "localSpecialty": [
+        "seasonal Indonesian ingredients",
+        "French techniques"
+      ],
+      "vegetarian": "unknown",
+      "halalFriendly": "unknown",
+      "reservation": "available",
+      "openingHours": null,
+      "coordinates": null,
+      "nearbyPOIs": [
+        "yoga_barn",
+        "pyramids_of_chi",
+        "heart_space_bali",
+        "intuitive_flow",
+        "tegalalang_rice_terrace",
+        "ubud_monkey_forest"
+      ],
+      "routeIds": [
+        "R1",
+        "R2",
+        "R4"
+      ],
+      "extensionIds": [],
+      "suitableDayparts": [
+        "dinner"
+      ],
+      "source": [
+        {
+          "url": "https://mozaic-bali.com/mozaic-gastronomic-restaurant-bali-reservations",
+          "publisher": "Mozaic",
+          "kind": "official-site",
+          "accessedAt": "2026-09-13",
+          "verifiedFields": [
+            "name",
+            "area",
+            "openingHours",
+            "reservation",
+            "scene"
+          ]
+        },
+        {
+          "url": "https://www.mozaic-bali.com/",
+          "publisher": "Mozaic",
+          "kind": "official-site",
+          "accessedAt": "2026-09-13",
+          "verifiedFields": [
+            "cuisine",
+            "localSpecialty"
+          ]
+        }
+      ],
+      "lastVerified": null,
+      "verificationStatus": "editorial_candidate",
+      "editorialNotes": null,
+      "node_id": "ubud",
+      "category": "local",
+      "referenceSpend": null,
+      "priceConfirmed": false,
+      "candidateCoordinates": null,
+      "researchDate": "2026-09-13",
+      "published": true,
+      "storefrontImage": null,
+      "nearbyBasis": "same_named_area_not_verified_travel_time"
+    },
+    {
+      "id": "bali-food-hujan-locale",
+      "name": "Hujan Locale",
+      "region": "G4",
+      "area": "Central Ubud",
+      "cuisine": [
+        "Modern Indonesian",
+        "Southeast Asian"
+      ],
+      "priceLevel": "high",
+      "mealType": [
+        "lunch",
+        "dinner"
+      ],
+      "scene": [
+        "family-style",
+        "refined casual"
+      ],
+      "localSpecialty": [
+        "street-food interpretations",
+        "regional Indonesian flavours"
+      ],
+      "vegetarian": true,
+      "halalFriendly": "unknown",
+      "reservation": "recommended",
+      "openingHours": null,
+      "coordinates": null,
+      "nearbyPOIs": [
+        "yoga_barn",
+        "pyramids_of_chi",
+        "heart_space_bali",
+        "intuitive_flow",
+        "tegalalang_rice_terrace",
+        "ubud_monkey_forest"
+      ],
+      "routeIds": [
+        "R1",
+        "R2",
+        "R4"
+      ],
+      "extensionIds": [],
+      "suitableDayparts": [
+        "lunch",
+        "dinner"
+      ],
+      "source": [
+        {
+          "url": "https://hujanlocale.com/",
+          "publisher": "Hujan Locale",
+          "kind": "official-site",
+          "accessedAt": "2026-09-13",
+          "verifiedFields": [
+            "name",
+            "area",
+            "cuisine",
+            "openingHours",
+            "reservation",
+            "scene",
+            "localSpecialty",
+            "vegetarian"
+          ]
+        }
+      ],
+      "lastVerified": null,
+      "verificationStatus": "editorial_candidate",
+      "editorialNotes": null,
+      "node_id": "ubud",
+      "category": "asian",
+      "referenceSpend": null,
+      "priceConfirmed": false,
+      "candidateCoordinates": null,
+      "researchDate": "2026-09-13",
+      "published": true,
+      "storefrontImage": null,
+      "nearbyBasis": "same_named_area_not_verified_travel_time"
+    },
+    {
+      "id": "bali-food-nusantara-locavore",
+      "name": "Nusantara by Locavore",
+      "region": "G4",
+      "area": "Central Ubud",
+      "cuisine": [
+        "Indonesian",
+        "regional Indonesian"
+      ],
+      "priceLevel": "mid",
+      "mealType": [
+        "lunch",
+        "dinner"
+      ],
+      "scene": [
+        "sharing",
+        "contemporary"
+      ],
+      "localSpecialty": [
+        "lesser-known regional recipes",
+        "Indonesian ingredients"
+      ],
+      "vegetarian": "unknown",
+      "halalFriendly": "unknown",
+      "reservation": "available",
+      "openingHours": null,
+      "coordinates": null,
+      "nearbyPOIs": [
+        "yoga_barn",
+        "pyramids_of_chi",
+        "heart_space_bali",
+        "intuitive_flow",
+        "tegalalang_rice_terrace",
+        "ubud_monkey_forest"
+      ],
+      "routeIds": [
+        "R1",
+        "R2",
+        "R4"
+      ],
+      "extensionIds": [],
+      "suitableDayparts": [
+        "lunch",
+        "dinner"
+      ],
+      "source": [
+        {
+          "url": "https://locavorenxt.com/family/nusantara",
+          "publisher": "Nusantara by Locavore",
+          "kind": "official-site",
+          "accessedAt": "2026-09-13",
+          "verifiedFields": [
+            "name",
+            "area",
+            "cuisine",
+            "openingHours",
+            "reservation",
+            "scene",
+            "localSpecialty"
+          ]
+        }
+      ],
+      "lastVerified": null,
+      "verificationStatus": "editorial_candidate",
+      "editorialNotes": null,
+      "node_id": "ubud",
+      "category": "local",
+      "referenceSpend": null,
+      "priceConfirmed": false,
+      "candidateCoordinates": null,
+      "researchDate": "2026-09-13",
+      "published": true,
+      "storefrontImage": null,
+      "nearbyBasis": "same_named_area_not_verified_travel_time"
+    },
+    {
+      "id": "bali-food-aperitif",
+      "name": "Apéritif",
+      "region": "G4",
+      "area": "Petulu / Ubud",
+      "cuisine": [
+        "Modern European",
+        "Indonesian-inspired"
+      ],
+      "priceLevel": "high",
+      "mealType": [
+        "lunch",
+        "dinner"
+      ],
+      "scene": [
+        "fine dining",
+        "bar"
+      ],
+      "localSpecialty": [
+        "degustation menu",
+        "Spice Islands influences"
+      ],
+      "vegetarian": "unknown",
+      "halalFriendly": "unknown",
+      "reservation": "required_24h",
+      "openingHours": null,
+      "coordinates": null,
+      "nearbyPOIs": [
+        "yoga_barn",
+        "pyramids_of_chi",
+        "heart_space_bali",
+        "intuitive_flow",
+        "tegalalang_rice_terrace",
+        "ubud_monkey_forest"
+      ],
+      "routeIds": [
+        "R1",
+        "R2",
+        "R4"
+      ],
+      "extensionIds": [],
+      "suitableDayparts": [
+        "lunch",
+        "dinner"
+      ],
+      "source": [
+        {
+          "url": "https://www.aperitif.com/contact/",
+          "publisher": "Apéritif",
+          "kind": "official-site",
+          "accessedAt": "2026-09-13",
+          "verifiedFields": [
+            "name",
+            "area",
+            "openingHours",
+            "reservation",
+            "scene"
+          ]
+        },
+        {
+          "url": "https://www.aperitif.com/",
+          "publisher": "Apéritif",
+          "kind": "official-site",
+          "accessedAt": "2026-09-13",
+          "verifiedFields": [
+            "cuisine",
+            "localSpecialty"
+          ]
+        }
+      ],
+      "lastVerified": null,
+      "verificationStatus": "editorial_candidate",
+      "editorialNotes": null,
+      "node_id": "ubud",
+      "category": "local",
+      "referenceSpend": null,
+      "priceConfirmed": false,
+      "candidateCoordinates": null,
+      "researchDate": "2026-09-13",
+      "published": true,
+      "storefrontImage": null,
+      "nearbyBasis": "same_named_area_not_verified_travel_time"
+    },
+    {
+      "id": "bali-food-bali-asli",
+      "name": "Bali Asli",
+      "region": "G7",
+      "area": "Gelumpang / Karangasem",
+      "cuisine": [
+        "Balinese",
+        "Indonesian"
+      ],
+      "priceLevel": "high",
+      "mealType": [
+        "lunch"
+      ],
+      "scene": [
+        "rice-field",
+        "cooking school"
+      ],
+      "localSpecialty": [
+        "traditional Balinese cooking",
+        "megibung",
+        "wood-fired mud-brick stove"
+      ],
+      "vegetarian": "unknown",
+      "halalFriendly": "unknown",
+      "reservation": "recommended",
+      "openingHours": null,
+      "coordinates": null,
+      "nearbyPOIs": [],
+      "routeIds": [
+        "R4",
+        "R5"
+      ],
+      "extensionIds": [],
+      "suitableDayparts": [
+        "lunch"
+      ],
+      "source": [
+        {
+          "url": "https://baliasli.com.au/contact/",
+          "publisher": "Bali Asli",
+          "kind": "official-site",
+          "accessedAt": "2026-09-13",
+          "verifiedFields": [
+            "name",
+            "area",
+            "openingHours",
+            "reservation",
+            "scene"
+          ]
+        },
+        {
+          "url": "https://www.tripadvisor.com/Restaurant_Review-g608484-d2232083-Reviews-Bali_Asli_Restaurant-Karangasem_Bali.html",
+          "publisher": "Tripadvisor",
+          "kind": "secondary-directory",
+          "accessedAt": "2026-09-13",
+          "verifiedFields": [
+            "cuisine",
+            "localSpecialty"
+          ]
+        }
+      ],
+      "lastVerified": null,
+      "verificationStatus": "editorial_candidate",
+      "editorialNotes": null,
+      "node_id": "candidasa",
+      "category": "local",
+      "referenceSpend": null,
+      "priceConfirmed": false,
+      "candidateCoordinates": null,
+      "researchDate": "2026-09-13",
+      "published": true,
+      "storefrontImage": null,
+      "nearbyBasis": "same_named_area_not_verified_travel_time"
+    },
+    {
+      "id": "bali-food-seasalt-manggis",
+      "name": "SeaSalt Manggis",
+      "region": "G7",
+      "area": "Buitan / Manggis, east Bali",
+      "cuisine": [
+        "Balinese",
+        "Indonesian",
+        "International"
+      ],
+      "priceLevel": "high",
+      "mealType": [
+        "lunch",
+        "dinner"
+      ],
+      "scene": [
+        "oceanfront",
+        "pavilion"
+      ],
+      "localSpecialty": [
+        "Megibung",
+        "East Bali sea salt"
+      ],
+      "vegetarian": "unknown",
+      "halalFriendly": "unknown",
+      "reservation": "recommended",
+      "openingHours": null,
+      "coordinates": null,
+      "nearbyPOIs": [],
+      "routeIds": [
+        "R4",
+        "R5"
+      ],
+      "extensionIds": [],
+      "suitableDayparts": [
+        "lunch",
+        "dinner"
+      ],
+      "source": [
+        {
+          "url": "https://www.hyatt.com/alila-hotels-and-resorts/en-US/dpsak-alila-manggis/dining/seasalt",
+          "publisher": "Alila Manggis / Hyatt",
+          "kind": "official-hotel",
+          "accessedAt": "2026-09-13",
+          "verifiedFields": [
+            "name",
+            "area",
+            "cuisine",
+            "openingHours",
+            "reservation",
+            "localSpecialty"
+          ]
+        },
+        {
+          "url": "https://www.alilahotels.com/manggis/dining/seasalt/",
+          "publisher": "Alila Manggis",
+          "kind": "official-hotel",
+          "accessedAt": "2026-09-13",
+          "verifiedFields": [
+            "cuisine",
+            "scene",
+            "localSpecialty"
+          ]
+        }
+      ],
+      "lastVerified": null,
+      "verificationStatus": "editorial_candidate",
+      "editorialNotes": null,
+      "node_id": "candidasa",
+      "category": "local",
+      "referenceSpend": null,
+      "priceConfirmed": false,
+      "candidateCoordinates": null,
+      "researchDate": "2026-09-13",
+      "published": true,
+      "storefrontImage": null,
+      "nearbyBasis": "same_named_area_not_verified_travel_time"
+    }
+  ]
+}

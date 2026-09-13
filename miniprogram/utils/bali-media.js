@@ -130,10 +130,11 @@ async function loadBaliMedia(lang = 'zh', refresh = false) {
       safeLoad(api.baliMediaCatalog, { images: [] }),
       safeLoad(api.imagePublishManifest, { images: [] }),
       safeLoad(() => api.publicPortfolio('bali'), { assets: [] }),
+      safeLoad(api.baliExtensions, {pois:[]}),
     ]);
   }
-  const [travel, catalog, manifest, portfolio] = await cachedPromise;
-  const pois = array(travel.pois);
+  const [travel, catalog, manifest, portfolio, extensions] = await cachedPromise;
+  const pois = array(travel.pois).concat(array(extensions.pois));
   const routes = array(travel.routes);
   const poiById = {};
   pois.forEach(poi => {

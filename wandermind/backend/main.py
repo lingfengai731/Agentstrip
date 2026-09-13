@@ -2352,6 +2352,20 @@ def _bali_data() -> dict:
     return _BALI_DATA_CACHE
 
 
+def _bali_extensions() -> dict:
+    try:
+        return json.loads(_BALI_DATA_PATH.with_name("bali-extensions.json").read_text(encoding="utf-8"))
+    except (OSError, ValueError):
+        return {"extensions": [], "pois": []}
+
+
+def _bali_food() -> dict:
+    try:
+        return json.loads(_BALI_DATA_PATH.with_name("bali-food.json").read_text(encoding="utf-8"))
+    except (OSError, ValueError):
+        return {"restaurants": []}
+
+
 def _normalise_trip_profile(profile: dict) -> dict:
     source = profile if isinstance(profile, dict) else {}
     goals = source.get("goals") or source.get("goal") or []
@@ -2368,7 +2382,38 @@ def _normalise_trip_profile(profile: dict) -> dict:
             days = max(1, (datetime.fromisoformat(end) - datetime.fromisoformat(start)).days)
         except (TypeError, ValueError):
             days = 5
+    requested_extensions = source.get("extension_ids") or []
+    if not isinstance(requested_extensions, list):
+        raise HTTPException(422, "extension_ids must be a list")
+    known_extensions = {item["id"] for item in _bali_extensions().get("extensions", [])}
+    if any(not isinstance(item, str) or item not in known_extensions for item in requested_extensions):
+        raise HTTPException(422, "Unknown Bali extension")
+    dining = source.get("dining_stops") or []
+    if not isinstance(dining, list) or len(dining) > 63:
+        raise HTTPException(422, "Invalid dining_stops")
+    restaurants = {item["id"]: item for item in _bali_food().get("restaurants", []) if item.get("published")}
+    clean_dining = []
+    seen_stops = set()
+    for stop in dining:
+        if not isinstance(stop, dict) or type(stop.get("day")) is not int:
+            raise HTTPException(422, "Restaurant stop requires an integer day")
+        day = stop["day"]
+        restaurant_id = stop.get("restaurant_id")
+        meal = stop.get("meal")
+        if not isinstance(restaurant_id, str) or restaurant_id not in restaurants or not 1 <= day <= min(21, max(1, days)):
+            raise HTTPException(422, "Unknown restaurant or day")
+        if meal not in {"breakfast", "lunch", "dinner", "brunch", "dessert"} or meal not in restaurants[restaurant_id].get("suitableDayparts", []):
+            raise HTTPException(422, "Restaurant does not fit this meal")
+        key = (day, restaurant_id)
+        if key in seen_stops:
+            raise HTTPException(422, "Duplicate restaurant stop")
+        seen_stops.add(key)
+        if sum(item["day"] == day for item in clean_dining) >= 3:
+            raise HTTPException(422, "Up to three restaurant stops per day")
+        clean_dining.append({"day": day, "restaurant_id": restaurant_id, "meal": meal})
     return {
+        "dining_stops": clean_dining,
+        "extension_ids": list(dict.fromkeys(requested_extensions))[:3],
         "audience": str(source.get("audience") or "first"),
         "goals": [str(goal) for goal in goals if str(goal).strip()],
         "travel_style": str(source.get("travel_style") or source.get("style") or "comfort"),
@@ -2456,23 +2501,38 @@ def _professional_route_document(profile: dict, route_id: str = "", lang: str = 
     data = _bali_data()
     routes = data.get("routes") or []
     regions = {item.get("id"): item for item in data.get("regions") or []}
-    pois = data.get("pois") or []
+    catalog = _bali_extensions()
+    pois = list(data.get("pois") or []) + list(catalog.get("pois") or [])
     route = next((item for item in routes if item.get("id") == route_id), None)
     if route is None:
         route = max(routes, key=lambda item: _route_score(item, profile), default={})
     if not route:
         raise HTTPException(503, "Bali route data is unavailable")
     days = int(profile.get("days") or 5)
+    selected_extensions = [
+        item for extension_id in profile.get("extension_ids", [])
+        for item in catalog.get("extensions", []) if item["id"] == extension_id
+    ]
+    if any(route["id"] not in item["route_ids"] for item in selected_extensions):
+        raise HTTPException(422, "This extension does not fit the selected route family")
+    if selected_extensions and days <= len(selected_extensions):
+        raise HTTPException(422, "Allow a separate day per island module and at least one mainland day")
     preview_days = days if days <= 1 else min(days - 1, max(1, math.ceil(days * 0.7)))
     outline = route.get("free_outline") or []
     region_ids = list(route.get("base_regions") or []) + list(route.get("optional_regions") or [])
     if not region_ids:
         region_ids = list(regions)
     full_days = []
+    restaurant_index = {item["id"]: item for item in _bali_food().get("restaurants", []) if item.get("published")}
     region_visits = {}
     previous_region_id = ""
     for index in range(days):
         outline_item = outline[index] if index < len(outline) else {}
+        extension_index = index - (days - len(selected_extensions))
+        extension = selected_extensions[extension_index] if extension_index >= 0 else None
+        if extension:
+            outline_item = {"region_id": extension["region_id"], "theme": extension["name"],
+                            "suggested_poi_ids": extension["poi_ids"]}
         region_id = outline_item.get("region_id") or region_ids[index % len(region_ids)]
         region = regions.get(region_id, {})
         region_name = _localized(region.get("name"), lang, region_id)
@@ -2485,7 +2545,10 @@ def _professional_route_document(profile: dict, route_id: str = "", lang: str = 
             if poi.get("region_id") == region_id
             and route.get("id") in (poi.get("route_ids") or [])
             and poi.get("verification_status") == "verified"
+            and (region_id != "G3" or poi.get("node_id") == "sanur")
         ]
+        if extension:
+            eligible_pois = [poi for poi in pois if poi.get("id") in extension["poi_ids"]]
         visit_index = region_visits.get(region_id, 0)
         region_visits[region_id] = visit_index + 1
         suggested_ids = list(outline_item.get("suggested_poi_ids") or [])
@@ -2503,11 +2566,35 @@ def _professional_route_document(profile: dict, route_id: str = "", lang: str = 
                 if len(route_pois) >= min(3, len(eligible_pois)):
                     break
         transfer_estimate = _transfer_estimate(previous_region_id, region_id, lang)
+        if extension:
+            # A mainland regional driving estimate cannot describe a sea crossing.
+            transfer_estimate = None
         previous_region_id = region_id
+        dining = []
+        for stop in profile.get("dining_stops", []):
+            if stop["day"] != index + 1:
+                continue
+            restaurant = restaurant_index.get(stop["restaurant_id"])
+            if not restaurant or restaurant["region"] != region_id:
+                raise HTTPException(422, "Restaurant is outside the planned day region; choose that day again")
+            if extension:
+                if extension["id"] not in restaurant.get("extensionIds", []):
+                    raise HTTPException(422, "Restaurant does not fit this island module")
+            elif str(restaurant.get("node_id", "")).startswith("nusa_penida"):
+                raise HTTPException(422, "Island restaurant requires an island day")
+            dining.append({"id": restaurant["id"], "name": restaurant["name"], "meal": stop["meal"],
+                           "area": restaurant["area"], "source": restaurant["source"],
+                           "verification_status": restaurant["verificationStatus"],
+                           "last_verified": restaurant.get("lastVerified"),
+                           "maps_url": "https://www.google.com/maps/search/?api=1&query=" + quote(restaurant["name"] + ", " + restaurant["area"] + ", Bali")})
         full_days.append({
+            "restaurants": dining,
             "day": index + 1,
             "region_id": region_id,
             "region_name": region_name,
+            "extension_id": extension["id"] if extension else "",
+            "departure_port": "Sanur" if extension else "",
+            "operator_confirmation_required": bool(extension),
             "theme": theme,
             "places": [
                 {
@@ -2523,7 +2610,7 @@ def _professional_route_document(profile: dict, route_id: str = "", lang: str = 
             ],
             "experience_tags": list(route.get("secondary_tags") or [])[:4],
             "transfer_estimate": transfer_estimate,
-            "route_note": {
+            "route_note": _localized(extension["summary"], lang) if extension else {
                 "zh": "开放时间、道路、天气与供应商状态需在出发前实时核对。",
                 "en": "Check current opening, roads, weather and supplier availability before departure.",
                 "ja": "出発前に営業時間、道路、天候、事業者の状況を確認してください。",
