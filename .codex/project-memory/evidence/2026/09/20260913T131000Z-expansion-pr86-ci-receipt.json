@@ -1,0 +1,47 @@
+{
+  "schema_version": 1,
+  "evidence_id": "ev-20260913T131000Z-expansion-pr86-ci-receipt",
+  "task_ref": "bali-extensions-food-20260913",
+  "owner": "codex-main",
+  "captured_at": "2026-09-13T13:10:00Z",
+  "status": "verified",
+  "claim": "Draft PR86 fixed head d94d3cc passed all3 cloud checks; not merged/deployed; app code68ff437 and test repair ea6863c remain unchanged.",
+  "source": {
+    "kind": "github_connector",
+    "reference": "https://github.com/lingfengai731/Agentstrip/pull/86"
+  },
+  "pr": 86,
+  "url": "https://github.com/lingfengai731/Agentstrip/pull/86",
+  "draft": true,
+  "head": "d94d3cc99a7140c581ddf097df7e8561bbff8f84",
+  "base": "88fc0256868d6491683299a2bf4011331c63c568",
+  "merged": false,
+  "production_verified": false,
+  "new_preview_verified": false,
+  "checks": [
+    {
+      "name": "Mini Program checks",
+      "run_id": 34759024920,
+      "status": "completed",
+      "conclusion": "success",
+      "url": "https://github.com/lingfengai731/Agentstrip/actions/runs/34759024920"
+    },
+    {
+      "name": "Project memory validation",
+      "run_id": 34759024954,
+      "status": "completed",
+      "conclusion": "success",
+      "url": "https://github.com/lingfengai731/Agentstrip/actions/runs/34759024954"
+    },
+    {
+      "name": "PostgreSQL integration",
+      "run_id": 34759024917,
+      "status": "completed",
+      "conclusion": "success",
+      "url": "https://github.com/lingfengai731/Agentstrip/actions/runs/34759024917"
+    }
+  ],
+  "previous_evidence": ".codex/project-memory/evidence/2026/09/20260913T130613Z-bali-food-media-callbacks.json",
+  "next_action": "native-food-final-acceptance",
+  "receipt_boundary": "Following commit only changes project facts and historical-brief labels; cloud checks above belong to d94d3cc. Verify app/test subtree equality before reusing them; do not claim final receipt head CI until observed."
+}
