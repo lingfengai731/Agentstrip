@@ -4,6 +4,8 @@
   <view class="filters">
     <view><view class="label">{{copy.region}}</view><picker range="{{regions}}" range-key="label" value="{{regionIndex}}" bindchange="change" data-key="regionIndex"><view class="control">{{regions[regionIndex].label}} <text>⌄</text></view></picker></view>
     <view><view class="label">{{copy.category}}</view><picker range="{{categories}}" range-key="label" value="{{categoryIndex}}" bindchange="change" data-key="categoryIndex"><view class="control">{{categories[categoryIndex].label}} <text>⌄</text></view></picker></view>
+    <view><view class="label">{{copy.cuisine}}</view><picker range="{{cuisines}}" range-key="label" value="{{cuisineIndex}}" bindchange="change" data-key="cuisineIndex"><view class="control">{{cuisines[cuisineIndex].label}} <text>⌄</text></view></picker></view>
+    <view><view class="label">{{copy.scene}}</view><picker range="{{scenes}}" range-key="label" value="{{sceneIndex}}" bindchange="change" data-key="sceneIndex"><view class="control">{{scenes[sceneIndex].label}} <text>⌄</text></view></picker></view>
     <view><view class="label">{{copy.budget}}</view><picker range="{{budgets}}" range-key="label" value="{{budgetIndex}}" bindchange="change" data-key="budgetIndex"><view class="control">{{budgets[budgetIndex].label}} <text>⌄</text></view></picker></view>
     <view><view class="label">{{copy.meal}}</view><picker range="{{meals}}" range-key="label" value="{{mealIndex}}" bindchange="change" data-key="mealIndex"><view class="control">{{meals[mealIndex].label}} <text>⌄</text></view></picker></view>
   </view>

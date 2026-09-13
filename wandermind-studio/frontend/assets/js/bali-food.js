@@ -4,25 +4,43 @@
   var params = new URLSearchParams(location.search);
   var lang = params.get('lang') || localStorage.getItem('wm_studio_lang') || 'en';
   if (!window.WMBaliFoodCopy[lang]) lang = 'en';
-  var data, catalog, foods = [], plan, route, plans = {}, selectedDay = Number(params.get('day') || 0);
+  var data, catalog, foods = [], plan, route, plans = {}, taxonomy, taxonomyPromise, selectedDay = Number(params.get('day') || 0);
   var engine = window.WMBaliItinerary;
   var copy = function () { return window.WMBaliFoodCopy[lang]; };
   function localized(value) { return typeof value === 'string' ? value : (value || {})[lang] || (value || {}).en || ''; }
   function element(tag, text, className) { var node = document.createElement(tag); if (text) node.textContent = text; if (className) node.className = className; return node; }
   function options(id, items, value) {
+    if (!$(id)) return;
     $(id).replaceChildren();
-    items.forEach(function (item) { var node = element('option', item[1]); node.value = item[0]; $(id).appendChild(node); });
+    items.forEach(function (item) { var node = element('option', item.label || item[1]); node.value = item.id == null ? item[0] : item.id; $(id).appendChild(node); });
     $(id).value = value || '';
   }
+  function ensureFineControls() {
+    var filter = document.querySelector('.food-filters');
+    if (!filter) return;
+    [['cuisine','cuisine-label'],['scene','scene-label']].forEach(function (item) {
+      if ($('food-' + item[0])) return;
+      var label = element('label');
+      var span = element('span','',item[1]); span.id = item[1]; label.appendChild(span);
+      var select = element('select'); select.id = 'food-' + item[0]; label.appendChild(select);
+      filter.appendChild(label);
+    });
+  }
+  function dayLabel(c, index, theme) { return c.day + ' ' + (index + 1) + (c.daySuffix || '') + ' · ' + localized(theme); }
   function setCopy() {
+    ensureFineControls();
     var c = copy(); document.documentElement.lang = lang; $('food-language').value = lang;
-    [['food-eyebrow','title'],['food-heading','headline'],['food-intro','intro'],['food-trip-title','trip'],['day-label','day'],['meal-label','meal'],['region-label','region'],['category-label','category'],['budget-label','budget'],['food-browse','browse'],['food-diy','diy'],['food-retry','retry']].forEach(function (pair) { $(pair[0]).textContent = c[pair[1]]; });
-    options('food-meal', [['',''+c.all]].concat(['breakfast','lunch','dinner','brunch','dessert'].map(function(id){return [id,c[id]];})), $('food-meal').value || 'lunch');
-    options('food-category', [['',c.all]].concat(['local','seafood','asian','cafe','atmosphere'].map(function (id) { return [id,c[id]]; })), $('food-category').value);
-    options('food-budget', [['',c.all]].concat(['low','mid','high'].map(function (id) { return [id,c[id]]; })), $('food-budget').value);
+    [['food-eyebrow','title'],['food-heading','headline'],['food-intro','intro'],['food-trip-title','trip'],['day-label','day'],['meal-label','meal'],['region-label','region'],['category-label','category'],['budget-label','budget'],['cuisine-label','cuisine'],['scene-label','scene'],['food-browse','browse'],['food-diy','diy'],['food-retry','retry']].forEach(function (pair) { if ($(pair[0])) $(pair[0]).textContent = c[pair[1]]; });
+    options('food-meal', [['',''+c.all]].concat(['breakfast','lunch','dinner','brunch','dessert'].map(function(id){return [id,c[id]];})), $('food-meal') && $('food-meal').value || 'lunch');
+    options('food-category', [['',c.all]].concat(['local','seafood','asian','cafe','atmosphere'].map(function (id) { return [id,c[id]]; })), $('food-category') && $('food-category').value);
+    options('food-budget', [['',c.all]].concat(['low','mid','high'].map(function (id) { return [id,c[id]]; })), $('food-budget') && $('food-budget').value);
     if (data) {
-      options('food-region', [['',c.all]].concat(data.regions.map(function (item) { return [item.id,localized(item.name)]; })), $('food-region').value);
-      options('food-day', plan ? plan.days.map(function (day,index) { return [String(index),c.day + ' ' + (index + 1) + ' · ' + localized(day.theme)]; }) : [['',c.noPlan]], String(selectedDay));
+      options('food-region', [['',c.all]].concat(data.regions.map(function (item) { return [item.id,localized(item.name)]; })), $('food-region') && $('food-region').value);
+      options('food-day', plan ? plan.days.map(function (day,index) { return [String(index),dayLabel(c,index,day.theme)]; }) : [['',c.noPlan]], String(selectedDay));
+      if (taxonomy) {
+        options('food-cuisine', taxonomy.collectOptions(foods,'cuisine',lang,c.all), $('food-cuisine') && $('food-cuisine').value);
+        options('food-scene', taxonomy.collectOptions(foods,'scene',lang,c.all), $('food-scene') && $('food-scene').value);
+      }
     }
     $('food-trip-note').textContent = plan ? c.handoff : c.noPlan;
     $('food-diy').hidden = !plan;
@@ -36,15 +54,17 @@
     var text = localized(route.name) + ' (' + route.id + ')\n' + plan.days.map(function (day,index) {
       var names = (day.place_ids || []).map(function (id) { var item = pois.find(function (poi) { return poi.id === id; }); return item && item.name; }).filter(Boolean);
       (day.food_stops || []).forEach(function (stop) { var food = foods.find(function (item) { return item.id === stop.restaurant_id; }); if (food) names.push(copy()[stop.meal] + ': ' + food.name); });
-      return copy().day + ' ' + (index + 1) + ' · ' + localized(day.theme) + ' · ' + names.join(' → ');
+      return dayLabel(copy(),index,day.theme) + ' · ' + names.join(' → ');
     }).join('\n');
     localStorage.setItem('wm_studio_lastPlan',JSON.stringify({text:text,source:'bali-route-editor',route_id:route.id}));
   }
   function link(text, url) { var node = element('a',text); node.href = url; node.target = '_blank'; node.rel = 'noopener noreferrer'; return node; }
   function render() {
-    if (!data) return;
-    var c = copy(), filters = {category:$('food-category').value,price:$('food-budget').value,meal:$('food-meal').value};
-    var list = plan ? engine.foodCandidates(plan.days[selectedDay],foods,filters) : foods.filter(function (item) { return item.published && (!filters.category || item.category === filters.category) && (!filters.price || item.priceLevel === filters.price) && (!filters.meal || item.suitableDayparts.indexOf(filters.meal) >= 0); });
+    if (!data || !taxonomy) return;
+    var c = copy(), filters = {category:$('food-category').value,cuisine:$('food-cuisine').value,scene:$('food-scene').value,price:$('food-budget').value,meal:$('food-meal').value};
+    var baseFilters = {category:filters.category,price:filters.price,meal:filters.meal};
+    var list = plan ? engine.foodCandidates(plan.days[selectedDay],foods,baseFilters) : foods.filter(function (item) { return item.published && (!baseFilters.price || item.priceLevel === baseFilters.price) && (!baseFilters.meal || item.suitableDayparts.indexOf(baseFilters.meal) >= 0); });
+    list = taxonomy.filter(list, {category:filters.category,cuisine:filters.cuisine,scene:filters.scene});
     if ($('food-region').value) list = list.filter(function (item) { return item.region === $('food-region').value; });
     $('food-results').replaceChildren();
     $('food-status').textContent = list.length ? c.title + ' · ' + list.length : c.empty;
@@ -80,9 +100,22 @@
       card.appendChild(button); $('food-results').appendChild(card);
     });
   }
+  function loadTaxonomy() {
+    if (taxonomy) return Promise.resolve(taxonomy);
+    if (window.WMBaliFoodTaxonomy) { taxonomy = window.WMBaliFoodTaxonomy; return Promise.resolve(taxonomy); }
+    if (taxonomyPromise) return taxonomyPromise;
+    taxonomyPromise = new Promise(function (resolve, reject) {
+      var script = document.createElement('script'); script.src = 'assets/js/bali-food-taxonomy.js?v=20260913p1';
+      script.onload = function () { if (window.WMBaliFoodTaxonomy) { taxonomy = window.WMBaliFoodTaxonomy; resolve(taxonomy); } else { taxonomyPromise = null; reject(new Error('Food taxonomy unavailable')); } };
+      script.onerror = function () { taxonomyPromise = null; reject(new Error('Food taxonomy failed to load')); };
+      document.head.appendChild(script);
+    });
+    return taxonomyPromise;
+  }
   async function load() {
     $('food-retry').hidden = true;
     try {
+      await loadTaxonomy();
       var result = await Promise.all(['bali-travel-data','bali-extensions','bali-food'].map(async function (name) { var response = await fetch('assets/data/' + name + '.json?v=20260913p1'); if (!response.ok) throw new Error('HTTP ' + response.status); return response.json(); }));
       data = result[0]; catalog = result[1]; foods = result[2].restaurants;
       try { plans = JSON.parse(localStorage.getItem('wm_bali_route_plans_v1') || '{}'); } catch (_) { plans = {}; }
@@ -96,8 +129,9 @@
       setCopy();
     } catch (_) { $('food-status').textContent = copy().failed; $('food-retry').hidden = false; }
   }
+  ensureFineControls();
   $('food-language').addEventListener('change',function () { lang = this.value; localStorage.setItem('wm_studio_lang',lang); setCopy(); });
-  ['food-region','food-category','food-budget','food-meal'].forEach(function (id) { $(id).addEventListener('change',render); });
+  ['food-region','food-category','food-budget','food-meal','food-cuisine','food-scene'].forEach(function (id) { if ($(id)) $(id).addEventListener('change',render); });
   $('food-day').addEventListener('change',function () { selectedDay = Number(this.value); render(); });
   $('food-retry').addEventListener('click',load); setCopy(); load();
 })();
