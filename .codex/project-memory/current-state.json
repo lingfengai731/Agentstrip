@@ -2,17 +2,17 @@
   "schema_version": 1,
   "project": "Agentstrip / WanderMind",
   "latest_task": {
-    "captured_at": "2026-09-12T06:17:00Z",
-    "scope": "PR82/83 native navigation/icon acceptance and price-picker touch correction",
-    "branch": "codex/mini-native-handoff-20260912",
-    "implementation_baseline": "3229812e0dc368b411304cc3da3f3809b95cee86",
-    "status": "merged_native_verified_preview_generated_owner_acceptance_pending",
-    "pull_request": 84,
-    "prior_merged_pull_requests": [81, 82, 83],
-    "evidence": ".codex/project-memory/evidence/2026/09/20260912T062000Z-mini-native-integrated.json",
-    "handoff": ".codex/project-memory/handoffs/2026/09/20260912T062000Z-mini-native-integrated.md",
-    "preview_bytes": 1678176,
-    "not_claimed": "The native simulator matrix, official Preview and PR84 merge are verified. No physical-phone acceptance, Upload, review submission, public Mini release, payment, driver email or production data mutation is claimed. Historical snapshot below is dated and not the active pointer."
+    "captured_at": "2026-09-13T08:02:27Z",
+    "scope": "Penida extensions and sourced Food draft integration",
+    "branch": "codex/bali-extensions-food-20260913",
+    "implementation_commit": "739be02517b900116dcba5a4f9111f5071b5fad2",
+    "implementation_push_verified": true,
+    "status": "partial_draft_not_merged_not_deployed",
+    "evidence": ".codex/project-memory/evidence/2026/09/20260913T080227Z-bali-extensions-food-draft.json",
+    "handoff": ".codex/project-memory/handoffs/2026/09/20260913T080227Z-bali-extensions-food-draft.md",
+    "accepted_previous_preview": "Owner visually accepted existing Preview on2026-09-13; existing release candidate remains separate",
+    "next_action": "native-food-itinerary-callbacks",
+    "not_claimed": "No expansion merge/Render Live/new Preview/Upload/review/public Mini release; native SDK timed out and no native matrix accepted; new photos=0;50 food records are not50 verified venues."
   },
   "authority": {
     "repository": "https://github.com/lingfengai731/Agentstrip.git",
@@ -55,7 +55,12 @@
       "verified_pois": 57,
       "pending_review_pois": 2,
       "supplier_gated_pois": 3,
-      "verified_route_families": ["R2", "R3", "R4", "R6"],
+      "verified_route_families": [
+        "R2",
+        "R3",
+        "R4",
+        "R6"
+      ],
       "notes": [
         "PR #22 and Render now serve 62/62 route-picker POI visuals, five-language global search, eight editable one-to-two-day experience packages and explicit Dicky initial-price wording. Production Chromium 320/390/768/1440 smoke passed.",
         "R2, R3, R4 and R6 free-outline stable facts are verified; Batur Natural Hot Spring now has Bangli government identity and broad-location evidence while all live access, price, hygiene, safety, weather and volcanic checks remain dynamic.",
@@ -92,8 +97,7 @@
         "workflow_run": 32578042100,
         "job": 97043180412
       },
-      "remaining_gates": []
-      ,
+      "remaining_gates": [],
       "email_retry_idempotency": "deployed and verified by source marker and CI; no real delivery was repeated"
     },
     "professional_route_entitlements": {

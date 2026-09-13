@@ -1,55 +1,73 @@
 {
   "schema_version": 1,
-  "checkpoint_revision": 28,
-  "previous_checkpoint_sha256": "C4095BC69AEF81D75BDD678B28CB1B8CCDFABA29EF673C5144F9B49807FD3B49",
-  "run_id": "20260912-mini-native-acceptance",
-  "objective": "Accept merged PR82 navigation/icons in WeChat native rendering and generate Preview; reconcile stale continuation pointer.",
+  "checkpoint_revision": 31,
+  "previous_checkpoint_sha256": "AD999B9AC2E883BACCB606A96AEC359E306FB162C1C26BF9F946EC4927BA658C",
+  "run_id": "20260913-bali-extensions-food",
+  "objective": "Preserve accepted Mini release candidate; research and implement Penida extension/food/portfolio shared itinerary integration without unverified publishing.",
   "status": "active",
-  "phase": "integrated_preview_pending_owner_acceptance",
+  "phase": "native_acceptance",
   "baseline": {
-    "cwd": "E:\\Agentstrip-worktrees\\active\\account1\\bali-focus-media-audit-20260911",
-    "worktree": "E:\\Agentstrip-worktrees\\active\\account1\\bali-focus-media-audit-20260911",
-    "branch": "codex/mini-native-handoff-20260912",
-    "head": "3229812e0dc368b411304cc3da3f3809b95cee86",
-    "dirty_allowlist": []
+    "cwd": "E:\\Agentstrip-worktrees\\active\\account1\\bali-extensions-food-20260913",
+    "worktree": "E:\\Agentstrip-worktrees\\active\\account1\\bali-extensions-food-20260913",
+    "branch": "codex/bali-extensions-food-20260913",
+    "head": "739be02517b900116dcba5a4f9111f5071b5fad2",
+    "dirty_allowlist": [
+      ".codex/role-windows.md",
+      ".codex/run-state/CURRENT.json",
+      ".codex/project-memory/current-state.json",
+      "PROJECT_CONTEXT.md",
+      ".codex/project-memory/evidence/2026/09/20260913T080227Z-bali-extensions-food-draft.json",
+      ".codex/project-memory/handoffs/2026/09/20260913T080227Z-bali-extensions-food-draft.md",
+      "wandermind-studio/operations/BALI_EXTENSIONS_FOOD_2026-09-13.md"
+    ]
   },
   "completed": [
-    "Reconciled PR82 and PR83 against fetched origin/main; clean content matches.",
-    "Official DevTools islogin reports true; auto enabled on WS9421 via HTTP9420.",
-    "Native five-language matrix:20screenshots,200targets>=44px; English follow-up passed.",
-    "Nine offline suites356contracts; official Preview1678176bytes.",
-    "PR84 merged after validate and contracts-and-recovery passed; fixed and merged trees identical."
+    "User accepted existing Mini Preview on2026-09-13.",
+    "Fresh origin/main88fc025; original dirty E:/Agentstrip and accepted Preview worktree preserved.",
+    "Legacy ledger role/status enum normalization passes role-loop validator; registry resolved from installed source.",
+    "Existing65POIs include west/east Penida nodes but no top-level extensions.",
+    "Food50/40/10 normalization, regional selectors and strict dining receivers;379 offline Mini contracts,3new backend tests,24 deterministic Browser cases passed; code739be02pushed taskbranch"
   ],
-  "current_step": "Synchronize final evidence, then owner physical Preview acceptance.",
-  "workers": [],
+  "current_step": "Close native Food/itinerary callback matrix; CLI auto succeeded but SDK response timeout leaves native UI unverified",
+  "workers": [
+    {
+      "agent_id": "01a09881-7139-7922-9a82-e1dd60b4ee9f",
+      "agent_name": "luna_worker",
+      "model": "gpt-5.6-luna",
+      "reasoning_effort": "max",
+      "goal": "30source-backed Bali restaurant candidates only",
+      "status": "errored",
+      "started_at_utc": "2026-09-13T02:04:36.245Z",
+      "evidence": "E:/Agentstrip-worktrees/active/account1/bali-food-research-20260913/research/bali-food-candidates-20260913.json"
+    }
+  ],
   "accepted_evidence": [
-    ".codex/project-memory/evidence/2026/09/20260912T020817Z-miniprogram-navigation-integration-20260912.json",
-    ".codex/project-memory/evidence/2026/09/20260912T061700Z-mini-native-acceptance.json",
-    ".codex/project-memory/evidence/2026/09/20260912T062000Z-mini-native-integrated.json"
+    ".codex/project-memory/evidence/2026/09/20260912T062000Z-mini-native-integrated.json",
+    ".codex/project-memory/evidence/2026/09/20260913T080227Z-bali-extensions-food-draft.json"
   ],
   "unverified": [
-    "Owner physical Preview acceptance pending.",
-    "No Mini Upload/review/public release.",
-    "Final evidence branch synchronization must be checked remotely on recovery."
+    "Expansion PR/CI/merge/Render Live",
+    "Fresh production Browser audit",
+    "New Mini Preview/Upload/review/public release",
+    "Licensed new image batch/Food album",
+    "Full native AI/driver callback parity",
+    "All50 restaurant operational fields verified",
+    "Native SDK QA report empty/failed; no native visual acceptance",
+    "Expansion code is taskbranch only; no production deploy"
   ],
   "do_not_repeat": [
     {
-      "action_id": "merge-pr82-pr83",
-      "reason": "Already integrated in fetched main.",
-      "evidence": ".codex/project-memory/handoffs/2026/09/20260912T020817Z-miniprogram-navigation-integration-20260912.md"
-    },
-    {
-      "action_id": "integrate-native-price-correction",
-      "reason": "PR84 already merged and tree compared.",
-      "evidence": ".codex/project-memory/evidence/2026/09/20260912T062000Z-mini-native-integrated.json"
+      "action_id": "old-native-preview",
+      "reason": "Owner explicitly accepted; do not let next-version food block existing release preparation.",
+      "evidence": ".codex/project-memory/handoffs/2026/09/20260912T062000Z-mini-native-integrated.md"
     }
   ],
   "next_action": {
-    "action_id": "owner-native-preview-acceptance",
-    "description": "Owner scans fresh Preview to confirm native navigation/icons and price controls; regenerate only if expired.",
+    "action_id": "native-food-itinerary-callbacks",
+    "description": "Bound SDK connection/evaluate diagnosis; native Food and itinerary five-language screenshots and day/add/restore/Planner/driver callbacks",
     "external_effect": false,
     "effect_key": null,
-    "authority_confirmed": false
+    "authority_confirmed": true
   },
-  "updated_at_utc": "2026-09-12T06:20:40.0607958Z"
+  "updated_at_utc": "2026-09-13T08:04:04.8175424Z"
 }

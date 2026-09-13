@@ -3,6 +3,10 @@
 This file is the account-independent entry point for work on Agentstrip and WanderMind.
 It stores verifiable project facts, not hidden chain-of-thought or complete chat transcripts.
 
+## Active expansion pointer — 2026-09-13
+
+Code `739be02517b900116dcba5a4f9111f5071b5fad2` is pushed on `codex/bali-extensions-food-20260913`, NOT merged or deployed. Main last verified `88fc025` remains the owner-accepted previous Mini candidate. Next exact action: native-food-itinerary-callbacks; DevTools CLI auto succeeded but SDK timed out, empty native matrix is not accepted evidence. New data: 3 Penida modules, 1 new canonical POI (Pererenan), 4 marine/activity POIs, 50 Food records (40 eligible editorial / 10 draft); only 3 restaurant branch identities directly checked. New images=0. Follow `.codex/project-memory/handoffs/2026/09/20260913T080227Z-bali-extensions-food-draft.md` and linked evidence for remaining work; dated sections below are historical, not proof of this expansion's production release.
+
 ## Authority order
 
 When sources disagree, use this order:

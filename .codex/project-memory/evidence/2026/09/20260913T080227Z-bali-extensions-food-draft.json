@@ -1,0 +1,293 @@
+{
+  "schema_version": 1,
+  "evidence_id": "ev-20260913T080227Z-bali-extensions-food-draft",
+  "task_ref": "bali-extensions-food-20260913",
+  "claim": "Draft implementation739be02 is pushed to taskbranch; local Food contracts,3 new dining tests,379 Mini contracts and24 deterministic Chromium cases passed. No expansion production or native-visual acceptance is claimed.",
+  "source": {"kind":"mixed","reference":"git:739be02517b900116dcba5a4f9111f5071b5fad2; tools/test_bali_food_browser.cjs; tools/test_bali_food.cjs; wandermind/backend/tests/test_bali_dining.py"},
+  "captured_at": "2026-09-13T08:02:27Z",
+  "owner": "codex-main",
+  "implementation_commit": "739be02517b900116dcba5a4f9111f5071b5fad2",
+  "implementation_push_verified": true,
+  "branch": "codex/bali-extensions-food-20260913",
+  "main_verified": "88fc0256868d6491683299a2bf4011331c63c568",
+  "status": "verified",
+  "release_state": "partial_draft_not_merged_not_deployed",
+  "counts": {
+    "canonical_pois": 66,
+    "new_canonical_pois": 1,
+    "new_extension_activity_pois": 4,
+    "extensions": 3,
+    "food_records": 50,
+    "eligible_editorial_records": 40,
+    "drafts": 10,
+    "directly_checked_branch_identities": 3,
+    "new_images": 0,
+    "new_images_approved": 0,
+    "new_images_verified": 0,
+    "new_images_published": 0,
+    "food_nearby_area_associations": 41
+  },
+  "source_inputs": [
+    {
+      "file": "WanderMind_bali_food_FINAL.json",
+      "sha256": "7599CBC07226930260C9D1746CC888F535DE6AB2C3181FBCDC0DF3A6E35B8148"
+    },
+    {
+      "file": "WanderMind_巴厘岛美食调研报告_FINAL.md",
+      "sha256": "2B33E22539DF1D5BFF72324714C003DB6395E2EB65B673136E10380A0100FA86"
+    }
+  ],
+  "checks": [
+    {
+      "command": "node tools/test_bali_extensions.cjs",
+      "result": "passed"
+    },
+    {
+      "command": "node tools/test_bali_food.cjs",
+      "result": "passed source/draft/localization/geography/persistence and cross-platform engine parity"
+    },
+    {
+      "command": "python -m unittest wandermind.backend.tests.test_bali_dining",
+      "result": "3 passed; regional mismatch rejected; island day validation; locked preview does not leak restaurant details"
+    },
+    {
+      "command": "Get-ChildItem tools -Filter test_miniprogram_*.cjs | ForEach-Object { node $_.FullName }",
+      "result": "offline suites passed,379 contract assertions; native navigation explicitly skipped"
+    },
+    {
+      "command": "node tools/test_bali_food_browser.cjs",
+      "result": "20 Food plus4 Bali cases passed deterministic Chromium; no Native Browser/Render-admin evidence",
+      "matrix": [
+        {
+          "width": 320,
+          "lang": "zh",
+          "count": 12,
+          "overflow": 0,
+          "minControl": 44,
+          "pageErrors": 0
+        },
+        {
+          "width": 320,
+          "lang": "en",
+          "count": 12,
+          "overflow": 0,
+          "minControl": 44,
+          "pageErrors": 0
+        },
+        {
+          "width": 320,
+          "lang": "ja",
+          "count": 12,
+          "overflow": 0,
+          "minControl": 44,
+          "pageErrors": 0
+        },
+        {
+          "width": 320,
+          "lang": "ko",
+          "count": 12,
+          "overflow": 0,
+          "minControl": 44,
+          "pageErrors": 0
+        },
+        {
+          "width": 320,
+          "lang": "id",
+          "count": 12,
+          "overflow": 0,
+          "minControl": 44,
+          "pageErrors": 0
+        },
+        {
+          "width": 390,
+          "lang": "zh",
+          "count": 12,
+          "overflow": 0,
+          "minControl": 44,
+          "pageErrors": 0
+        },
+        {
+          "width": 390,
+          "lang": "en",
+          "count": 12,
+          "overflow": 0,
+          "minControl": 44,
+          "pageErrors": 0
+        },
+        {
+          "width": 390,
+          "lang": "ja",
+          "count": 12,
+          "overflow": 0,
+          "minControl": 44,
+          "pageErrors": 0
+        },
+        {
+          "width": 390,
+          "lang": "ko",
+          "count": 12,
+          "overflow": 0,
+          "minControl": 44,
+          "pageErrors": 0
+        },
+        {
+          "width": 390,
+          "lang": "id",
+          "count": 12,
+          "overflow": 0,
+          "minControl": 44,
+          "pageErrors": 0
+        },
+        {
+          "width": 768,
+          "lang": "zh",
+          "count": 12,
+          "overflow": 0,
+          "minControl": 44,
+          "pageErrors": 0
+        },
+        {
+          "width": 768,
+          "lang": "en",
+          "count": 12,
+          "overflow": 0,
+          "minControl": 44,
+          "pageErrors": 0
+        },
+        {
+          "width": 768,
+          "lang": "ja",
+          "count": 12,
+          "overflow": 0,
+          "minControl": 44,
+          "pageErrors": 0
+        },
+        {
+          "width": 768,
+          "lang": "ko",
+          "count": 12,
+          "overflow": 0,
+          "minControl": 44,
+          "pageErrors": 0
+        },
+        {
+          "width": 768,
+          "lang": "id",
+          "count": 12,
+          "overflow": 0,
+          "minControl": 44,
+          "pageErrors": 0
+        },
+        {
+          "width": 1440,
+          "lang": "zh",
+          "count": 12,
+          "overflow": 0,
+          "minControl": 44,
+          "pageErrors": 0
+        },
+        {
+          "width": 1440,
+          "lang": "en",
+          "count": 12,
+          "overflow": 0,
+          "minControl": 44,
+          "pageErrors": 0
+        },
+        {
+          "width": 1440,
+          "lang": "ja",
+          "count": 12,
+          "overflow": 0,
+          "minControl": 44,
+          "pageErrors": 0
+        },
+        {
+          "width": 1440,
+          "lang": "ko",
+          "count": 12,
+          "overflow": 0,
+          "minControl": 44,
+          "pageErrors": 0
+        },
+        {
+          "width": 1440,
+          "lang": "id",
+          "count": 12,
+          "overflow": 0,
+          "minControl": 44,
+          "pageErrors": 0
+        },
+        {
+          "page": "bali.html",
+          "width": 320,
+          "modules": [
+            "penida-west",
+            "penida-east"
+          ],
+          "days": 10,
+          "overflow": 0,
+          "pageErrors": 0
+        },
+        {
+          "page": "bali.html",
+          "width": 390,
+          "modules": [
+            "penida-west",
+            "penida-east"
+          ],
+          "days": 10,
+          "overflow": 0,
+          "pageErrors": 0
+        },
+        {
+          "page": "bali.html",
+          "width": 768,
+          "modules": [
+            "penida-west",
+            "penida-east"
+          ],
+          "days": 10,
+          "overflow": 0,
+          "pageErrors": 0
+        },
+        {
+          "page": "bali.html",
+          "width": 1440,
+          "modules": [
+            "penida-west",
+            "penida-east"
+          ],
+          "days": 10,
+          "overflow": 0,
+          "pageErrors": 0
+        }
+      ]
+    },
+    {
+      "command": "python -m unittest wandermind.backend.tests.test_product_access",
+      "result": "120 tests,17 stale static failures,0errors; identical 17 baseline failures also reproduced on clean main88fc025 before Food slice; not rerun/claimed clean after entire dining slice"
+    },
+    {
+      "command": "DevTools cli auto --auto-port 9421 --port 9420",
+      "result": "exit0 auto success"
+    },
+    {
+      "command": "node tools/test_miniprogram_food_native.cjs",
+      "result": "FAILED: timeout waiting for automator response; native-food.json empty matrix; no native screenshots accepted"
+    }
+  ],
+  "local_artifacts": {
+    "screenshots": "output/playwright/bali-food (ignored local files; not synchronized)",
+    "native_report": "E:/Agentstrip-artifacts/2026-09-13/bali-food-native/native-food.json"
+  },
+  "not_claimed": [
+    "Expansion PR/CI/merge/Render Live",
+    "Fresh production Browser audit",
+    "New Mini Preview/Upload/review/public release",
+    "Licensed new image batch/Food album",
+    "Full native AI/driver callback parity",
+    "All50 restaurant operational fields verified"
+  ],
+  "next_action": "native-food-itinerary-callbacks"
+}
