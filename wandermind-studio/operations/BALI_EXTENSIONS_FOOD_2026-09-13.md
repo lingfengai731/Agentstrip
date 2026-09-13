@@ -68,3 +68,22 @@ Research output, implementation, tests and production publication are separate a
 | P1 | Fixed-head PR/CI, merge and deploy this expansion only after gates | Exact commit/tree, production public Browser evidence and regression; no Render-admin impersonation |
 | P2 | Update stale product static tests without weakening behavior coverage | Separate repair of 17 baseline assertions; validated current media/cache contracts |
 | P2 | Mini first release using already accepted candidate | Keep next-version food branch separate; official Upload/review status recorded independently |
+
+## 2026-09-13 13:06 UTC acceptance callback — supersedes draft counters above
+
+Code68ff437 and test repair ea6863c are pushed; local31 deterministic Chromium cases,380 Mini contracts/offline callbacks and123 backend tests pass. Neither native rendering nor production publication is accepted. One bounded fresh native SDK attempt returned response timeout and an empty matrix.
+
+| Role / Skill | Finding | Accepted | Not accepted / boundary |
+|---|---|---|---|
+| Nuwa Steve Jobs framework: product,UX,commercial coherence | Public-to-professional reload dropped module selection;Food should enhance the accepted release rather than block it | In-page transition;5 tabs retained;Food first-level discovery entry;explicit dining-day review | No brand rename,no new route-family numbering,no fabricated guarantee |
+| Nuwa Karpathy framework: data architecture,engineering,QA | Official identity is not live operational verification;context photo is not exact restaurant identity;late requests can cross accounts | Field-level sources,18 checked identities;shared fitting engine;account-scoped handoffs;source/date/licence labels | Masonry Chop House inference rejected;no price/hour/halal/availability guarantee |
+| Formal Luna Boyle source reviewer |15 immutable official listing checks;Masonry and Mozaic ambiguity | Parent reread4 critical sources;accepted narrower identity/area/listing signal only | No UI/production writes,no claimed full design QA |
+| UI implementation workflow + Playwright routing | Mobile sections and custom radio labels require real visible clicks;optional Portfolio failure erased static fallback | Actual section-toggle/label clicks,photo decode+credit,day9→7,cancel0requests,retry2requests;4 widths+5 languages | Deterministic local lane is not native Browser or Render admin evidence |
+| Ponytail | Existing image resize and shared route engine can serve both clients | Reused WebP helper/copy/catalog/engine;no new runtime dependency | No unrelated refactor |
+| Cross-account + quota-safe | Previous pointer lacked local implementation paths and new worker result | Exact dirty paths reconciled;new unique decision/evidence/handoff;selective commits,push verified | No user original files or secrets uploaded |
+
+New media:2 licensed real historical-context photos,approved2/contextually-verified2/production-published0;Food&Dining album under Experiences,not a fourth theme.2 bad candidates recoverably quarantined in local output and excluded. Licensed storefront photos remain0;regional links do not establish live detour duration.
+
+Test debt closed: dated cache strings replaced with required versioned references without removing behavior assertions;batch tests reconcile approvals/canonical duplicates/rights;new POIs explicitly listed;Batur triple exception only R5 day2;local supplier lead remains gated. Audit retains old raw hero inventory as superseded;no image overwritten/deleted and PR81 current homepage derivative remains unchanged.
+
+Next: native-food-final-acceptance after owner trusts/runs isolated project;fixed-head draft PR/CI;merge/deploy only after release gates. Richer cuisine/scene filters,remaining32 direct identity checks,storefront images and expanded West/East licensed batch are explicitly open. Shopping/Hotels still future models,not published placeholders.

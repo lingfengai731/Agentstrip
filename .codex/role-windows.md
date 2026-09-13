@@ -663,3 +663,10 @@
 
 - PR #74 fixed head `b7624a1` passed both required checks and squash merged as `main@56196ff`; Git trees are identical.
 - Mini Program-only integration requires no Render deployment. The 1,669,670-byte Preview remains pending owner acceptance before Upload.
+
+## 2026-09-13 Penida/Food source and callback acceptance
+
+- Owner: current main task, isolated codex/bali-extensions-food-20260913; original E:/Agentstrip unchanged.
+- Formal Luna Boyle `01a09a92-62af-7e03-adb7-5f5b0e082078`: completed immutable15-restaurant official-page checks. Parent accepted identity/area/listing fields and re-read4 critical sources; Masonry independent Chop House was not applied as the main restaurant cuisine. No worker UI writes or publication.
+- Main callback:31 deterministic Chromium cases,380 Mini contracts/offline callbacks and123 backend tests accepted;2 licensed contextual photos locally integrated. Native retry matrix remains empty after SDK timeout; no native visual/production acceptance.
+- Release: code68ff437 and test repair ea6863c pushed to task branch; no merge/Render Live/new Mini Preview/Upload/review/public release claimed. New handoff20260913T130613Z-bali-food-media-callbacks supersedes earlier draft counts.

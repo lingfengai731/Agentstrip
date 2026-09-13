@@ -2,17 +2,19 @@
   "schema_version": 1,
   "project": "Agentstrip / WanderMind",
   "latest_task": {
-    "captured_at": "2026-09-13T08:02:27Z",
-    "scope": "Penida extensions and sourced Food draft integration",
+    "captured_at": "2026-09-13T13:06:13Z",
+    "scope": "Penida/Food media and explicit dining callback acceptance",
     "branch": "codex/bali-extensions-food-20260913",
-    "implementation_commit": "739be02517b900116dcba5a4f9111f5071b5fad2",
+    "implementation_commit": "68ff437b3ada7a36982d21d3a70c26281d7d6a58",
+    "test_repair_commit": "ea6863c4b9ab42648d673e2346d7310d039bf9d0",
     "implementation_push_verified": true,
     "status": "partial_draft_not_merged_not_deployed",
-    "evidence": ".codex/project-memory/evidence/2026/09/20260913T080227Z-bali-extensions-food-draft.json",
-    "handoff": ".codex/project-memory/handoffs/2026/09/20260913T080227Z-bali-extensions-food-draft.md",
+    "evidence": ".codex/project-memory/evidence/2026/09/20260913T130613Z-bali-food-media-callbacks.json",
+    "handoff": ".codex/project-memory/handoffs/2026/09/20260913T130613Z-bali-food-media-callbacks.md",
     "accepted_previous_preview": "Owner visually accepted existing Preview on2026-09-13; existing release candidate remains separate",
-    "next_action": "native-food-itinerary-callbacks",
-    "not_claimed": "No expansion merge/Render Live/new Preview/Upload/review/public Mini release; native SDK timed out and no native matrix accepted; new photos=0;50 food records are not50 verified venues."
+    "next_action": "native-food-final-acceptance",
+    "accepted": "31 deterministic Chromium callbacks;380 Mini contracts/offline suites;123 backend tests;18 restaurant identities;2 approved/context-verified photos",
+    "not_claimed": "No expansion merge/Render Live/new Preview/Upload/review/public Mini release; native SDK timed out and no native matrix accepted;2 photos locally integrated,production-published0;50 food records are not50 operationally verified venues."
   },
   "authority": {
     "repository": "https://github.com/lingfengai731/Agentstrip.git",

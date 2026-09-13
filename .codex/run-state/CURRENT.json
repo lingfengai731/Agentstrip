@@ -1,24 +1,36 @@
 {
   "schema_version": 1,
-  "checkpoint_revision": 31,
-  "previous_checkpoint_sha256": "AD999B9AC2E883BACCB606A96AEC359E306FB162C1C26BF9F946EC4927BA658C",
+  "checkpoint_revision": 34,
+  "previous_checkpoint_sha256": "73E0F71BBA1637C59E5390B43F5A989171F6FAB4E951E3562D0C3AAE8F9E90E9",
   "run_id": "20260913-bali-extensions-food",
   "objective": "Preserve accepted Mini release candidate; research and implement Penida extension/food/portfolio shared itinerary integration without unverified publishing.",
   "status": "active",
-  "phase": "native_acceptance",
+  "phase": "fixed_head_draft_pr",
   "baseline": {
     "cwd": "E:\\Agentstrip-worktrees\\active\\account1\\bali-extensions-food-20260913",
     "worktree": "E:\\Agentstrip-worktrees\\active\\account1\\bali-extensions-food-20260913",
     "branch": "codex/bali-extensions-food-20260913",
-    "head": "739be02517b900116dcba5a4f9111f5071b5fad2",
+    "head": "ea6863c4b9ab42648d673e2346d7310d039bf9d0",
     "dirty_allowlist": [
+      ".codex/project-memory/current-state.json",
       ".codex/role-windows.md",
       ".codex/run-state/CURRENT.json",
-      ".codex/project-memory/current-state.json",
       "PROJECT_CONTEXT.md",
-      ".codex/project-memory/evidence/2026/09/20260913T080227Z-bali-extensions-food-draft.json",
-      ".codex/project-memory/handoffs/2026/09/20260913T080227Z-bali-extensions-food-draft.md",
-      "wandermind-studio/operations/BALI_EXTENSIONS_FOOD_2026-09-13.md"
+      "wandermind-studio/operations/BALI_EXTENSIONS_FOOD_2026-09-13.md",
+      ".codex/project-memory/decisions/ADR-20260913-dining-review-context-media.md",
+      ".codex/project-memory/evidence/2026/09/20260913T130613Z-bali-food-media-callbacks.json",
+      ".codex/project-memory/handoffs/2026/09/20260913T130613Z-bali-food-media-callbacks.md",
+      "output/checkpoint32.json",
+      "output/checkpoint33.json",
+      "output/food-source-worker-prompt.md",
+      "output/native-food-final/native-food.json",
+      "output/rejected-media/bali-dining-thumb.webp",
+      "output/rejected-media/bali-dining.jpg",
+      "output/rejected-media/bali-dining.webp",
+      "output/rejected-media/penida-marine-thumb.webp",
+      "output/rejected-media/penida-marine.jpg",
+      "output/rejected-media/penida-marine.webp",
+      "output/checkpoint34.json"
     ]
   },
   "completed": [
@@ -26,9 +38,17 @@
     "Fresh origin/main88fc025; original dirty E:/Agentstrip and accepted Preview worktree preserved.",
     "Legacy ledger role/status enum normalization passes role-loop validator; registry resolved from installed source.",
     "Existing65POIs include west/east Penida nodes but no top-level extensions.",
-    "Food50/40/10 normalization, regional selectors and strict dining receivers;379 offline Mini contracts,3new backend tests,24 deterministic Browser cases passed; code739be02pushed taskbranch"
+    "Food50/40/10 normalization, regional selectors and strict dining receivers;379 offline Mini contracts,3new backend tests,24 deterministic Browser cases passed; code739be02pushed taskbranch",
+    "380 Mini contracts and all offline Mini suites passed; optional native suites explicitly skipped, not visual evidence",
+    "15 additional official restaurant identities independently accepted;18 total, no operational blanket verification",
+    "Two licensed real contextual photos decoded, hashes/licenses recorded;2 approved,0 production-published",
+    "Native dining review day9 to7/cancel/account isolation and AI editable transfer accepted",
+    "31 local browser cases passed; fixed professional page reload module loss; cancel0 requests and retry2 requests",
+    "123 backend tests passed including repaired17 baseline static assertions",
+    "Native Food to R2 selection once-only and stale account/language error tests accepted",
+    "68ff437 code and ea6863c test repair pushed; ls-remote matches"
   ],
-  "current_step": "Close native Food/itinerary callback matrix; CLI auto succeeded but SDK response timeout leaves native UI unverified",
+  "current_step": "Implementation/test commits pushed; record unique accepted evidence and create draft PR; native visual gate remains",
   "workers": [
     {
       "agent_id": "01a09881-7139-7922-9a82-e1dd60b4ee9f",
@@ -39,35 +59,53 @@
       "status": "errored",
       "started_at_utc": "2026-09-13T02:04:36.245Z",
       "evidence": "E:/Agentstrip-worktrees/active/account1/bali-food-research-20260913/research/bali-food-candidates-20260913.json"
+    },
+    {
+      "agent_id": "01a09a92-62af-7e03-adb7-5f5b0e082078",
+      "agent_name": "luna_worker",
+      "model": "gpt-5.6-luna",
+      "reasoning_effort": "max",
+      "goal": "15 immutable restaurant official source checks",
+      "status": "completed",
+      "evidence": "research/bali-food-worker-official-checks-20260913.md"
     }
   ],
   "accepted_evidence": [
     ".codex/project-memory/evidence/2026/09/20260912T062000Z-mini-native-integrated.json",
-    ".codex/project-memory/evidence/2026/09/20260913T080227Z-bali-extensions-food-draft.json"
+    ".codex/project-memory/evidence/2026/09/20260913T080227Z-bali-extensions-food-draft.json",
+    ".codex/project-memory/evidence/2026/09/20260913T130613Z-bali-food-media-callbacks.json"
   ],
   "unverified": [
     "Expansion PR/CI/merge/Render Live",
-    "Fresh production Browser audit",
-    "New Mini Preview/Upload/review/public release",
-    "Licensed new image batch/Food album",
-    "Full native AI/driver callback parity",
-    "All50 restaurant operational fields verified",
-    "Native SDK QA report empty/failed; no native visual acceptance",
-    "Expansion code is taskbranch only; no production deploy"
+    "Fresh production native Browser audit",
+    "New Mini native rendering/Preview/Upload/review/public release",
+    "All50 restaurant operational fields",
+    "Native retry on listening WS9421 again timed out with empty matrix; unchanged retry forbidden",
+    "Richer cuisine/scene filters; licensed storefront/expanded west-east images;Shopping/Hotels models"
   ],
   "do_not_repeat": [
     {
       "action_id": "old-native-preview",
       "reason": "Owner explicitly accepted; do not let next-version food block existing release preparation.",
       "evidence": ".codex/project-memory/handoffs/2026/09/20260912T062000Z-mini-native-integrated.md"
+    },
+    {
+      "action_id": "native-ai-context-receiver",
+      "reason": "Implemented and verified offline; native screenshots remain separately gated",
+      "evidence": "tools/test_miniprogram_itinerary_handoff.cjs"
+    },
+    {
+      "action_id": "web-professional-dining-cancel-retry",
+      "reason": "31 matrix accepted against frozen frontend; repeat only after new frontend change",
+      "evidence": ".codex/project-memory/evidence/2026/09/20260913T130613Z-bali-food-media-callbacks.json"
     }
   ],
   "next_action": {
-    "action_id": "native-food-itinerary-callbacks",
-    "description": "Bound SDK connection/evaluate diagnosis; native Food and itinerary five-language screenshots and day/add/restore/Planner/driver callbacks",
-    "external_effect": false,
-    "effect_key": null,
+    "action_id": "create-expansion-draft-pr",
+    "description": "Create fixed task branch draft PR via authenticated GitHub connector; no auto merge before native release gate",
+    "external_effect": true,
+    "effect_key": "github:lingfengai731/Agentstrip:codex/bali-extensions-food-20260913:draft",
     "authority_confirmed": true
   },
-  "updated_at_utc": "2026-09-13T08:04:04.8175424Z"
+  "updated_at_utc": "2026-09-13T13:08:36.5541167Z"
 }
