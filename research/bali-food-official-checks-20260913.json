@@ -1,0 +1,25 @@
+{
+  "checkedAt":"2026-09-13",
+  "input":"ea16d4f:wandermind-studio/frontend/assets/data/bali-food.json",
+  "worker":"01a09a92-62af-7e03-adb7-5f5b0e082078",
+  "commonCheckedFields":["name","area","official_listing_signal"],
+  "notCheckedFields":["prices","distance","halal","coordinates","normalized_hours","live_availability"],
+  "acceptance":"Sol independently re-read the four critical official sources for Masonry, Mozaic, Aperitif and Penida Colada. Official listing signals are not phone confirmation or a guarantee of current availability.",
+  "checks":[
+    {"id":"bali-food-sangsaka","url":"https://www.sangsakabali.com/","area":"Kerobokan / Seminyak","cuisineStatement":"Modern Indonesian"},
+    {"id":"bali-food-kaum","url":"https://seminyak.potatohead.co/feast/kaum","area":"Seminyak","cuisineStatement":"Indonesian"},
+    {"id":"bali-food-masonry-canggu","url":"https://masonrybali.com/canggu","area":"Canggu","cuisineStatement":null,"uncertain":"83C versus39a official addresses; Chop House behind Masonry courtyard is a separate concept, not proof that the main Masonry menu became a steak house."},
+    {"id":"bali-food-sundara","url":"https://www.sundarabali.com/restaurant/","area":"Jimbaran","cuisineStatement":"Seafood / Balinese-flavoured coastal"},
+    {"id":"bali-food-kisik","url":"https://www.ayana.com/bali/dining/kisik/","area":"Jimbaran","cuisineStatement":"Indonesian / seafood barbecue"},
+    {"id":"bali-food-kayuputi","url":"https://www.kayuputibali.com/contact-location","area":"Nusa Dua","cuisineStatement":"Pan-Asian haute cuisine"},
+    {"id":"bali-food-bejana","url":"https://www.bejanaindonesianrestaurant.com/","area":"Nusa Dua / Sawangan","cuisineStatement":"Indonesian / Balinese"},
+    {"id":"bali-food-kuu-izakaya","url":"https://mayaresorts.com/sanur/restaurant","area":"Sanur","cuisineStatement":"Japanese / izakaya / fusion"},
+    {"id":"bali-food-penida-colada","url":"https://penidacolada.com/about-penida-colada-beach-bar-nusa-penida/","area":"Ped, Nusa Penida","cuisineStatement":"Modern Australian / International / Indonesian"},
+    {"id":"bali-food-room4dessert","url":"https://www.room4dessert.com/the-restaurant/","area":"Kedewatan, Ubud","cuisineStatement":"Dessert-led tasting menu"},
+    {"id":"bali-food-mozaic","url":"https://mozaic-bali.com/mozaic-gastronomic-restaurant-bali-reservations","area":"Sanggingan, Ubud","cuisineStatement":null,"uncertain":"French/Balinese labels are editorial; Tipple Room hours conflict within official page. Do not normalize conflicting hours."},
+    {"id":"bali-food-hujan-locale","url":"https://hujanlocale.com/","area":"Central Ubud","cuisineStatement":"Modern Indonesian"},
+    {"id":"bali-food-nusantara-locavore","url":"https://locavorenxt.com/family/nusantara","area":"Central Ubud","cuisineStatement":"Regional Indonesian","uncertain":"Official branch title is Nusantara, not proof of a separate by-Locavore restaurant."},
+    {"id":"bali-food-aperitif","url":"https://www.aperitif.com/contact/","area":"Petulu / Ubud","cuisineStatement":null,"uncertain":"Only address, name and listing signal accepted; European/Indonesian description remains editorial."},
+    {"id":"bali-food-bali-asli","url":"https://baliasli.com.au/contact/","area":"Gelumpang, Karangasem","cuisineStatement":"Traditional Balinese"}
+  ]
+}

@@ -6,6 +6,7 @@ const FILTERS = [
   { id: 'landscapes', label: '自然风景' },
   { id: 'culture', label: '文化与寺庙' },
   { id: 'experiences', label: '在地体验' },
+  { id: 'foodDining', label: '美食专辑' },
 ];
 
 const COPY = require('../../utils/browse-copy.js');
@@ -34,7 +35,7 @@ Page({
   applyFilter(filter) {
     const visibleAssets = filter === 'all'
       ? this.data.assets
-      : this.data.assets.filter(item => item.theme === filter);
+      : this.data.assets.filter(item => filter === 'foodDining' ? item.album === 'Food & Dining' : item.theme === filter);
     this.setData({ filter, visibleAssets, visibleCount: visibleAssets.length });
   },
 

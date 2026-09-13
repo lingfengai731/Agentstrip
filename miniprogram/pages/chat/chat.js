@@ -71,6 +71,17 @@ Page({
     if(this._sessionToken!==app.globalData.token || this._activeDest!==this._destKey()) { this.setData({messages:[],inputText:'',convId:'',busy:false,retryText:'',saveError:''}); this.onLoad(); }
     // 切换目的地后回来要同步
     this._syncDestFromGlobal();
+    // Explicit route handoff is a user-editable draft, never an automatic AI request.
+    const contextKey=app.privateStorageKey('wm_itinerary_context');
+    const context=wx.getStorageSync(contextKey);
+    if (!this.data.busy && this._destKey()==='bali' && context && context.destination==='bali' && typeof context.text==='string') {
+      const text=[this.data.inputText,context.text].filter(Boolean).join('\n\n');
+      try {
+        this._persistState({inputText:text,pendingText:''});
+        this.setData({inputText:text,canSend:!!text});
+        wx.removeStorageSync(contextKey);
+      } catch (_) { this.setData({saveError:this.data.copy.syncFailed}); }
+    }
     const openId = wx.getStorageSync(app.privateStorageKey('wm_open_conversation'));
     if (openId && !this._loadingConversation) {
       wx.removeStorageSync(app.privateStorageKey('wm_open_conversation'));

@@ -66,10 +66,15 @@ Page({
         })),
       }; });
       if ((app.globalData.currentLang || 'zh') !== lang) return;
-      const selectedId = this.data.selected && this.data.selected.id;
+      const selectionKey=app.privateStorageKey('wm_bali_route_selection');
+      const requestedId=wx.getStorageSync(selectionKey);
+      const requestedRoute=routes.find(route=>route.id===requestedId);
+      const selectedId = requestedRoute ? requestedRoute.id : this.data.selected && this.data.selected.id;
       this.routesLang = lang;
       this.setData({ routes, selected: routes.find(route => route.id === selectedId) || routes[0] || null, loading: false, foodCopy:FOOD_COPY[lang] || FOOD_COPY.zh });
+      if (requestedRoute) wx.removeStorageSync(selectionKey);
     } catch (err) {
+      if (owner !== app.privateStorageKey('wm_public_route_plans') || lang !== (app.globalData.currentLang || 'zh')) return;
       this.setData({ loading: false, error: err.message || this.data.copy.failed });
     }
   },
@@ -138,6 +143,17 @@ Page({
     app.setDest('bali');
     this.onShow();
   },
-  goChat() { wx.switchTab({ url: '/pages/chat/chat' }); },
+  goChat() {
+    if (this.data.selected && this.owner === app.privateStorageKey('wm_public_route_plans')) {
+      const route=this.data.selected;
+      const text=route.id+' · '+route.name+'\n'+route.days.map(day=>
+        this.data.foodCopy.day+' '+day.day+' · '+day.theme+'\n'+day.places.map(place=>place.name).join(' → ')+
+        (day.food.length ? '\n'+day.food.map(stop=>stop.meal+' · '+stop.name).join('\n') : '')
+      ).join('\n\n');
+      try { wx.setStorageSync(app.privateStorageKey('wm_itinerary_context'),{destination:'bali',text}); }
+      catch (_) { wx.showToast({title:this.data.foodCopy.failed,icon:'none'}); return; }
+    }
+    wx.switchTab({ url: '/pages/chat/chat' });
+  },
   retry() { this.setData({ routes: [], error: '' }); this.loadRoutes(); },
 });

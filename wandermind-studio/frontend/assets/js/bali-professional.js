@@ -151,7 +151,7 @@
     var draft = {};
     try { draft = JSON.parse(localStorage.getItem('wm_bali_route_draft') || '{}'); } catch (_) {}
     return {
-      dining_stops: draft.route_id === state.pendingRouteId ? (draft.dining_stops || []) : ((state.profile && state.profile.dining_stops) || []),
+      dining_stops: draft.route_id === (state.pendingRouteId || state.routeId) ? (draft.dining_stops || []) : ((state.profile && state.profile.dining_stops) || []),
       extension_ids: state.pendingExtensions || (state.profile && state.profile.extension_ids) || [],
       audience: form.querySelector('[name="audience"]:checked').value,
       goals: Array.from(form.querySelectorAll('[name="goal"]:checked')).map(function (item) { return item.value; }),
@@ -330,13 +330,33 @@
       var submitHtml = submit.innerHTML;
       submit.disabled = true; submit.innerHTML = '<span class="fa fa-circle-o-notch fa-spin"></span> ' + esc(l.loading); setStatus(l.loading, false, 'bali-professional-form-status');
       try {
+        var draftPlan={};
+        try { draftPlan=JSON.parse(localStorage.getItem('wm_bali_route_draft') || '{}'); } catch (_) {}
+        if (profile.dining_stops.length && draftPlan.route_id === (state.pendingRouteId || state.routeId) && Array.isArray(draftPlan.days)) {
+          var catalogs=await Promise.all(['bali-travel-data','bali-extensions','bali-food'].map(async function(name) {
+            var result=await fetch('assets/data/'+name+'.json?v=20260913p1');
+            if (!result.ok) throw new Error(l.error);
+            return result.json();
+          }));
+          var draftRoute=catalogs[0].routes.find(function(route){return route.id===draftPlan.route_id;});
+          var fitted=window.WMBaliItinerary.fitDining(Object.assign({},draftPlan,{extension_ids:profile.extension_ids}),draftRoute,catalogs[1],profile.days);
+          var diningCopy=window.WMBaliFoodCopy[currentLang()] || window.WMBaliFoodCopy.en;
+          if (fitted.unplaced.length) { setStatus(diningCopy.unplacedDining,true,'bali-professional-form-status'); return; }
+          if (fitted.moved.length && !window.confirm(diningCopy.reviewDining+'\n'+fitted.moved.map(function(item) {
+            var restaurant=catalogs[2].restaurants.find(function(value){return value.id===item.restaurant_id;});
+            return (restaurant ? restaurant.name : item.restaurant_id)+': '+item.from+' → '+item.to;
+          }).join('\n'))) return;
+          profile.dining_stops=fitted.stops;
+        }
         if (adjusting) await adjustRoute(profile);
         else {
           state.userMatchPending = true;
           trackMatch('bali_professional_route_match_submit', state.routeId || 'auto');
           state.editing = false;
-          await loadRoute(profile, state.routeId);
+          await loadRoute(profile, state.pendingRouteId || state.routeId);
         }
+      } catch (error) {
+        setStatus(error.message || l.error,true,'bali-professional-form-status');
       } finally {
         if (submit.isConnected) { submit.disabled = false; submit.innerHTML = submitHtml; }
       }
@@ -644,7 +664,7 @@
       state.pendingExtensions = Array.isArray(event.detail.extensionIds) ? event.detail.extensionIds.slice(0,3) : [];
       state.pendingRouteId = event.detail.routeId;
       // Selection is a draft. Never mutate an unlocked entitlement or spend an adjustment here.
-      if (!state.response) renderEmpty();
+      if (!state.response) { state.routeId = event.detail.routeId; renderEmpty(); }
       else { state.editing = true; renderResult(); }
     });
     window.addEventListener('wm:bali-route-selected', function (event) {

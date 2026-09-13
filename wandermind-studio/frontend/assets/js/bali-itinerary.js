@@ -46,6 +46,32 @@
       }));
     }, []);
   }
+  function fitDining(plan, route, catalog, days) {
+    if (!Number.isInteger(days) || days < 1 || days > 21) throw new Error('Invalid trip duration');
+    var modules = selected(catalog, route.id, plan.extension_ids || []);
+    if (modules.length && days <= modules.length) throw new Error('Allow one mainland day plus each island day');
+    var regionIds = (route.base_regions || []).concat(route.optional_regions || []);
+    var outline = route.free_outline || [];
+    var targetDays = Array.from({length:days}, function (_, index) {
+      var moduleIndex = index - (days - modules.length), item = moduleIndex >= 0 ? modules[moduleIndex] : null;
+      return item ? extensionDay(item) : {region_id:(outline[index] || {}).region_id || regionIds[index % regionIds.length]};
+    });
+    var stops = [], moved = [], unplaced = [];
+    plan.days.forEach(function (day, index) {
+      (day.food_stops || []).forEach(function (stop) {
+        var fits = function (target, targetIndex) {
+          return target.region_id === day.region_id && (target.extension_id || '') === (day.extension_id || '') &&
+            stops.filter(function (value) { return value.day === targetIndex + 1; }).length < 3 &&
+            !stops.some(function (value) { return value.day === targetIndex + 1 && value.restaurant_id === stop.restaurant_id; });
+        };
+        var destination = targetDays[index] && fits(targetDays[index], index) ? index : targetDays.findIndex(fits);
+        if (destination < 0) { unplaced.push(stop.restaurant_id); return; }
+        stops.push({day:destination+1,restaurant_id:stop.restaurant_id,meal:stop.meal});
+        if (destination !== index) moved.push({restaurant_id:stop.restaurant_id,from:index+1,to:destination+1});
+      });
+    });
+    return {stops:stops,moved:moved,unplaced:unplaced};
+  }
   function candidates(day, pois, used, catalog) {
     var module = (catalog.extensions || []).find(function (item) { return item.id === day.extension_id; });
     var allowed = module ? module.poi_ids.concat(module.candidate_poi_ids || []) : null;
@@ -76,5 +102,5 @@
       days:plan.days.filter(function (day) { return day.extension_id !== id; }) };
   }
   return { extensions:extensions, selected:selected, extensionDay:extensionDay, candidates:candidates, append:append, remove:remove,
-    foodCandidates:foodCandidates, addFood:addFood, diningStops:diningStops };
+    foodCandidates:foodCandidates, addFood:addFood, diningStops:diningStops, fitDining:fitDining };
 });

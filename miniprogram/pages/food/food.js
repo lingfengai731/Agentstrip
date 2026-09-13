@@ -24,7 +24,10 @@ Page({
       const days = this.plan ? this.plan.days.map((day,index)=>({id:index,label:copy.day+' '+(index+1)+' · '+localized(day.theme,lang)})) : [];
       this.setData({regions,categories:labels(['local','seafood','asian','cafe','atmosphere']),budgets:labels(['low','mid','high']),meals:labels(['breakfast','lunch','dinner','brunch','dessert']),days,dayIndex:Math.max(0,Math.min(Number.isInteger(this.initialDay)?this.initialDay:0,days.length-1)),hasPlan:!!this.plan,loading:false});
       this.filter();
-    } catch (err) { this.setData({loading:false,error:copy.failed}); }
+    } catch (err) {
+      if (owner !== app.privateStorageKey('wm_public_route_plans') || lang !== (app.globalData.currentLang || 'zh')) return;
+      this.setData({loading:false,error:copy.failed});
+    }
   },
   change(e) { const key = e.currentTarget.dataset.key; if (!['regionIndex','categoryIndex','budgetIndex','mealIndex','dayIndex'].includes(key)) return; this.setData({[key]:Number(e.detail.value)}); this.filter(); },
   filter() {
@@ -39,7 +42,7 @@ Page({
     if (this.owner !== app.privateStorageKey('wm_public_route_plans')) { this.load(); return; }
     const item = this.food.find(food=>food.id===e.currentTarget.dataset.id);
     if (!item) return;
-    if (!this.plan) { wx.switchTab({url:'/pages/itinerary/itinerary'}); return; }
+    if (!this.plan) { this.chooseRoute((item.routeIds || []).find(id=>this.travel.routes.some(route=>route.id===id))); return; }
     try {
       const plan = engine.addFood(this.plan,this.data.dayIndex,item,this.data.meals[this.data.mealIndex].id || (item.suitableDayparts.includes('lunch') ? 'lunch' : item.suitableDayparts[0]));
       const plans = {...this.plans,[this.route.id]:plan};
@@ -53,6 +56,12 @@ Page({
     const url = e.currentTarget.dataset.kind==='map' ? 'https://www.google.com/maps/search/?api=1&query='+encodeURIComponent(item.name+', '+item.area+', Bali') : item.source[0].url;
     wx.setClipboardData({data:url});
   },
-  browse() { wx.switchTab({url:'/pages/itinerary/itinerary'}); },
+  chooseRoute(routeId) {
+    try {
+      if (routeId) wx.setStorageSync(app.privateStorageKey('wm_bali_route_selection'),routeId);
+      wx.switchTab({url:'/pages/itinerary/itinerary'});
+    } catch (_) { wx.showToast({title:this.data.copy.failed,icon:'none'}); }
+  },
+  browse() { this.chooseRoute(this.routeId); },
   retry() { this.load(); },
 });

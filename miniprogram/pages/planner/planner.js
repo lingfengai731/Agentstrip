@@ -2,6 +2,7 @@ const api = require('../../utils/api.js');
 const COPY = require('./copy.js');
 const app = getApp();
 const itinerary = require('../../utils/bali-itinerary.js');
+const FOOD_COPY = require('../../utils/bali-food-copy.js');
 
 function isoDate(offset) {
   const date = new Date(Date.now() + offset * 86400000);
@@ -80,6 +81,8 @@ Page({
 
   async submit() {
     if (this.data.busy) return;
+    const owner = app.privateStorageKey('wm_public_route_plans');
+    const isCurrent = () => owner === app.privateStorageKey('wm_public_route_plans');
     this.updateDays();
     if (!this.data.departureDate || !this.data.returnDate || this.data.days < 1) {
       this.setData({ error: this.data.copy.invalidDates }); return;
@@ -99,11 +102,28 @@ Page({
     }
     this.setData({ busy: true, error: '' });
     try {
+      if (routePlan && profile.dining_stops.length) {
+        const [travel,catalog,food]=await Promise.all([api.baliRouteData(),api.baliExtensions(),api.baliFood()]);
+        if (!isCurrent()) return;
+        const route=travel.routes.find(item=>item.id===this.data.routeId);
+        const fitted=itinerary.fitDining(routePlan,route,catalog,profile.days);
+        const copy=FOOD_COPY[app.globalData.currentLang] || FOOD_COPY.zh;
+        if (fitted.unplaced.length) { this.setData({error:copy.unplacedDining}); return; }
+        if (fitted.moved.length) {
+          const approved=await new Promise(resolve=>wx.showModal({title:this.data.copy.title,content:copy.reviewDining+'\n'+fitted.moved.map(item=>{
+            const restaurant=food.restaurants.find(entry=>entry.id===item.restaurant_id);
+            return (restaurant ? restaurant.name : copy.title)+': '+item.from+' → '+item.to;
+          }).join('\n'),success:result=>resolve(result.confirm),fail:()=>resolve(false)}));
+          if (!approved || !isCurrent()) return;
+        }
+        profile.dining_stops=fitted.stops;
+      }
       const payload = await api.createProfessionalRoute(profile, this.data.routeId, app.globalData.currentLang || 'zh');
+      if (!isCurrent()) return;
       app.setProfessionalRoute(payload);
       wx.showToast({ title: this.data.copy.success, icon: 'success' });
-      setTimeout(() => wx.navigateBack({ delta: 1 }), 500);
-    } catch (err) { this.setData({ error: err.message || this.data.copy.failed }); }
-    finally { this.setData({ busy: false }); }
+      setTimeout(() => { if (isCurrent()) wx.navigateBack({ delta: 1 }); }, 500);
+    } catch (err) { if (isCurrent()) this.setData({ error: err.message || this.data.copy.failed }); }
+    finally { if (isCurrent()) this.setData({ busy: false }); }
   },
 });

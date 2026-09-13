@@ -1,5 +1,6 @@
 module.exports = {
   "zh": {
+    "foodDining":"美食专辑",
     "historyTitle": "继续上次的旅行讨论",
     "historySub": "对话保存在同一 WanderMind 账号中。",
     "loading": "正在读取…",
@@ -48,6 +49,7 @@ module.exports = {
     "copyFailed": "复制失败，请重试"
   },
   "en": {
+    "foodDining":"Food & Dining",
     "historyTitle": "Continue your travel conversation",
     "historySub": "Your conversations stay with your WanderMind account.",
     "loading": "Loading…",
@@ -96,6 +98,7 @@ module.exports = {
     "copyFailed": "Could not copy. Retry."
   },
   "ja": {
+    "foodDining":"食のアルバム",
     "historyTitle": "前回の旅の相談を続ける",
     "historySub": "会話はWanderMindアカウントに保存されます。",
     "loading": "読み込み中…",
@@ -144,6 +147,7 @@ module.exports = {
     "copyFailed": "コピーできませんでした。再試行してください。"
   },
   "ko": {
+    "foodDining":"맛집 앨범",
     "historyTitle": "지난 여행 대화 이어가기",
     "historySub": "대화는 WanderMind 계정에 저장됩니다.",
     "loading": "불러오는 중…",
@@ -192,6 +196,7 @@ module.exports = {
     "copyFailed": "복사하지 못했습니다. 다시 시도하세요."
   },
   "id": {
+    "foodDining":"Album kuliner",
     "historyTitle": "Lanjutkan percakapan perjalanan",
     "historySub": "Percakapan tersimpan di akun WanderMind Anda.",
     "loading": "Memuat…",

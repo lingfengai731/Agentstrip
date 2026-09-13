@@ -35,6 +35,7 @@
       <view class="credits-scope">{{images[current].scope === 'exact_place' ? copy.exact : copy.reference}}</view>
       <view class="credits-line">{{images[current].rights.credit}}</view>
       <button wx:if="{{images[current].rights.sourceUrl}}" class="link-btn" data-value="{{images[current].rights.sourceUrl}}" bindtap="copyLink">{{copy.source}}</button>
+      <button wx:if="{{images[current].rights.licenseUrl}}" class="link-btn" data-value="{{images[current].rights.licenseUrl}}" bindtap="copyLink">{{images[current].rights.credit}}</button>
     </view>
 
     <view class="actions-card">

@@ -864,6 +864,7 @@
             <button class="bali-filter" type="button" data-filter-kind="tag" data-filter="golden-hour" aria-pressed="false" data-i18n="baliTagGoldenHour">Golden hour</button>
             <button class="bali-filter" type="button" data-filter-kind="tag" data-filter="adventure" aria-pressed="false" data-i18n="baliTagAdventure">Adventure</button>
             <button class="bali-filter" type="button" data-filter-kind="tag" data-filter="documentary" aria-pressed="false" data-i18n="baliTagDocumentary">Documentary</button>
+            <button class="bali-filter" type="button" data-filter-kind="tag" data-filter="food-dining" aria-pressed="false" data-food-album-label>Food & Dining</button>
           </div>
         </div>
         <div class="bali-filter-sheet-actions">
@@ -1126,8 +1127,8 @@
   applyResponsiveState(false);
 })();
 </script>
-<script src="assets/js/bali-itinerary.js?v=20260913p1"></script>
-<script src="assets/js/bali-food-copy.js?v=20260913p1"></script>
+<script src="assets/js/bali-itinerary.js?v=20260913p2"></script>
+<script src="assets/js/bali-food-copy.js?v=20260913p2"></script>
 <script>
 (function () {
   var grid = document.getElementById('bali-route-grid');
@@ -2024,7 +2025,7 @@
             '<button class="bali-day-reset" type="button" data-reset-route>' + words.reset + '</button></div>' +
           '<div class="bali-route-detail-actions">' +
             '<a class="bali-btn bali-btn-primary" data-route-handoff href="ai-tool.html?' + params.toString() + '">' + words.adjust + '</a>' +
-             '<a class="bali-btn bali-route-secondary" href="bali.html?route=' + encodeURIComponent(route.id) + '#professional-planner" data-professional-route="' + escapeHtml(route.id) + '">' + words.professional + '</a>' +
+             '<a class="bali-btn bali-route-secondary" href="#professional-planner" data-professional-route="' + escapeHtml(route.id) + '">' + words.professional + '</a>' +
             '<a class="bali-btn bali-route-secondary" data-route-handoff href="find-driver.html?route=' + encodeURIComponent(route.id) + '">' + words.driver + '</a>' +
           '</div>' +
         '</div>' +
@@ -2301,7 +2302,7 @@
   }
   Promise.all([
     fetch('assets/data/bali-travel-data.json?v=20260911p2').then(function(response) { if (!response.ok) throw new Error('HTTP ' + response.status); return response.json(); }),
-    fetch('assets/data/image-publish-manifest.json?v=20260911p2').then(function(response) { if (!response.ok) throw new Error('HTTP ' + response.status); return response.json(); })
+    fetch('assets/data/image-publish-manifest.json?v=20260913p2').then(function(response) { if (!response.ok) throw new Error('HTTP ' + response.status); return response.json(); })
   ])
     .then(function(result) {
       var data = result[0];
@@ -2327,6 +2328,8 @@
   };
   function galleryFilterCopy() { return GALLERY_FILTER_COPY[lang()] || GALLERY_FILTER_COPY.en; }
   function updateGalleryFilterSheetCopy() {
+    var albumLabels={zh:'美食专辑',en:'Food & Dining',ja:'食のアルバム',ko:'맛집 앨범',id:'Album kuliner'};
+    document.querySelectorAll('[data-food-album-label]').forEach(function(button){button.textContent=albumLabels[lang()] || albumLabels.en;});
     var copy = galleryFilterCopy();
     var count = galleryFilters.tag === 'all' ? 0 : 1;
     var openLabel = document.querySelector('[data-gallery-filter-open-label]');
@@ -2482,6 +2485,11 @@
     ko:{'nature-walk':'자연 산책','ocean-beach':'해안과 해변','rice-terrace-countryside':'계단식 논과 전원','market-craft':'시장과 공예','heritage-architecture':'문화유산과 건축'},
     id:{'nature-walk':'Jalan alam','ocean-beach':'Pesisir & pantai','rice-terrace-countryside':'Sawah terasering','market-craft':'Pasar & kerajinan','heritage-architecture':'Warisan & arsitektur'}
   };
+  Object.keys(PORTFOLIO_SUBCATEGORY_LABELS).forEach(function(language){
+    var copy={zh:['海上体验','美食'],en:['Marine experience','Food & Dining'],ja:['海上体験','食'],ko:['해양 체험','음식'],id:['Pengalaman laut','Kuliner']}[language];
+    PORTFOLIO_SUBCATEGORY_LABELS[language]['marine-experience']=copy[0];
+    PORTFOLIO_SUBCATEGORY_LABELS[language]['food-dining']=copy[1];
+  });
   function localizedPortfolioValue(value) {
     value = value || {};
     return value[lang()] || value.en || value.zh || Object.keys(value).map(function(key){return value[key];})[0] || '';
@@ -2556,7 +2564,7 @@
       document.getElementById('bali-gallery-grid').prepend(fragment);
       applyGalleryFilters();
     })
-    .catch(function(){ dynamicGalleryCopy = {}; dynamicGalleryShots = []; });
+    .catch(function(){ /* Keep the approved static library when the optional live Portfolio API fails. */ });
   document.addEventListener('wm:language-change', function() {
     dynamicGalleryShots.forEach(refreshDynamicGalleryShot);
     applyGalleryFilters();
@@ -2567,7 +2575,7 @@
   document.addEventListener('wm:language-change', function(){ if (activeShot) renderModal(); });
 })();
 </script>
-<script src="assets/js/bali-professional.js?v=preupload20260911"></script>
+<script src="assets/js/bali-professional.js?v=20260913p2"></script>
 <script src="assets/js/marketing-events.js?v=20260831p3"></script>
 <script src="assets/js/global-auth.js?v=p53"></script>
 </body>

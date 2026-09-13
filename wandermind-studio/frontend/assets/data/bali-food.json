@@ -2278,22 +2278,17 @@
       "source": [
         {
           "url": "https://www.sangsakabali.com/",
-          "publisher": "Sangsaka",
-          "kind": "official-site",
+          "kind": "official",
           "accessedAt": "2026-09-13",
           "verifiedFields": [
             "name",
             "area",
-            "cuisine",
-            "openingHours",
-            "reservation",
-            "scene",
-            "localSpecialty"
+            "official_listing_signal"
           ]
         }
       ],
-      "lastVerified": null,
-      "verificationStatus": "editorial_candidate",
+      "lastVerified": "2026-09-13",
+      "verificationStatus": "official_identity_checked",
       "editorialNotes": null,
       "node_id": "seminyak",
       "category": "local",
@@ -2303,7 +2298,9 @@
       "researchDate": "2026-09-13",
       "published": true,
       "storefrontImage": null,
-      "nearbyBasis": "same_named_area_not_verified_travel_time"
+      "nearbyBasis": "same_named_area_not_verified_travel_time",
+      "officialCuisineStatement": "Modern Indonesian",
+      "verificationNotes": "Official listing checked; live availability, prices, coordinates, dietary requirements and opening hours need confirmation."
     },
     {
       "id": "bali-food-kaum",
@@ -2348,21 +2345,17 @@
       "source": [
         {
           "url": "https://seminyak.potatohead.co/feast/kaum",
-          "publisher": "Desa Potato Head / Kaum",
-          "kind": "official-site",
+          "kind": "official",
           "accessedAt": "2026-09-13",
           "verifiedFields": [
             "name",
             "area",
-            "cuisine",
-            "openingHours",
-            "reservation",
-            "localSpecialty"
+            "official_listing_signal"
           ]
         }
       ],
-      "lastVerified": null,
-      "verificationStatus": "editorial_candidate",
+      "lastVerified": "2026-09-13",
+      "verificationStatus": "official_identity_checked",
       "editorialNotes": null,
       "node_id": "seminyak",
       "category": "local",
@@ -2372,7 +2365,9 @@
       "researchDate": "2026-09-13",
       "published": true,
       "storefrontImage": null,
-      "nearbyBasis": "same_named_area_not_verified_travel_time"
+      "nearbyBasis": "same_named_area_not_verified_travel_time",
+      "officialCuisineStatement": "Indonesian",
+      "verificationNotes": "Official listing checked; live availability, prices, coordinates, dietary requirements and opening hours need confirmation."
     },
     {
       "id": "bali-food-masonry-canggu",
@@ -2418,6 +2413,16 @@
       ],
       "source": [
         {
+          "url": "https://masonrybali.com/canggu",
+          "kind": "official",
+          "accessedAt": "2026-09-13",
+          "verifiedFields": [
+            "name",
+            "area",
+            "official_listing_signal"
+          ]
+        },
+        {
           "url": "https://masonrybali.com/masonry",
           "publisher": "MASONRY.",
           "kind": "official-site",
@@ -2430,21 +2435,10 @@
             "localSpecialty",
             "reservation"
           ]
-        },
-        {
-          "url": "https://masonrybali.com/canggu",
-          "publisher": "MASONRY.",
-          "kind": "official-site",
-          "accessedAt": "2026-09-13",
-          "verifiedFields": [
-            "openingHours",
-            "area",
-            "reservation"
-          ]
         }
       ],
-      "lastVerified": null,
-      "verificationStatus": "editorial_candidate",
+      "lastVerified": "2026-09-13",
+      "verificationStatus": "official_identity_checked",
       "editorialNotes": null,
       "node_id": "canggu",
       "category": "local",
@@ -2454,7 +2448,9 @@
       "researchDate": "2026-09-13",
       "published": true,
       "storefrontImage": null,
-      "nearbyBasis": "same_named_area_not_verified_travel_time"
+      "nearbyBasis": "same_named_area_not_verified_travel_time",
+      "officialCuisineStatement": null,
+      "verificationNotes": "83C versus39a official addresses; Chop House behind Masonry courtyard is a separate concept, not proof that the main Masonry menu became a steak house."
     },
     {
       "id": "bali-food-cuca",
@@ -2584,6 +2580,16 @@
       ],
       "source": [
         {
+          "url": "https://www.sundarabali.com/restaurant/",
+          "kind": "official",
+          "accessedAt": "2026-09-13",
+          "verifiedFields": [
+            "name",
+            "area",
+            "official_listing_signal"
+          ]
+        },
+        {
           "url": "https://www.sundarabali.com/location/sundara/",
           "publisher": "Sundara Bali",
           "kind": "official-site",
@@ -2595,20 +2601,10 @@
             "reservation",
             "scene"
           ]
-        },
-        {
-          "url": "https://www.sundarabali.com/restaurant/",
-          "publisher": "Sundara Bali",
-          "kind": "official-site",
-          "accessedAt": "2026-09-13",
-          "verifiedFields": [
-            "cuisine",
-            "localSpecialty"
-          ]
         }
       ],
-      "lastVerified": null,
-      "verificationStatus": "editorial_candidate",
+      "lastVerified": "2026-09-13",
+      "verificationStatus": "official_identity_checked",
       "editorialNotes": null,
       "node_id": "jimbaran",
       "category": "seafood",
@@ -2618,7 +2614,9 @@
       "researchDate": "2026-09-13",
       "published": true,
       "storefrontImage": null,
-      "nearbyBasis": "same_named_area_not_verified_travel_time"
+      "nearbyBasis": "same_named_area_not_verified_travel_time",
+      "officialCuisineStatement": "Seafood / Balinese-flavoured coastal",
+      "verificationNotes": "Official listing checked; live availability, prices, coordinates, dietary requirements and opening hours need confirmation."
     },
     {
       "id": "bali-food-kisik",
@@ -2662,22 +2660,17 @@
       "source": [
         {
           "url": "https://www.ayana.com/bali/dining/kisik/",
-          "publisher": "AYANA Bali",
-          "kind": "official-hotel",
+          "kind": "official",
           "accessedAt": "2026-09-13",
           "verifiedFields": [
             "name",
             "area",
-            "cuisine",
-            "openingHours",
-            "reservation",
-            "scene",
-            "localSpecialty"
+            "official_listing_signal"
           ]
         }
       ],
-      "lastVerified": null,
-      "verificationStatus": "editorial_candidate",
+      "lastVerified": "2026-09-13",
+      "verificationStatus": "official_identity_checked",
       "editorialNotes": null,
       "node_id": "jimbaran",
       "category": "seafood",
@@ -2687,7 +2680,9 @@
       "researchDate": "2026-09-13",
       "published": true,
       "storefrontImage": null,
-      "nearbyBasis": "same_named_area_not_verified_travel_time"
+      "nearbyBasis": "same_named_area_not_verified_travel_time",
+      "officialCuisineStatement": "Indonesian / seafood barbecue",
+      "verificationNotes": "Official listing checked; live availability, prices, coordinates, dietary requirements and opening hours need confirmation."
     },
     {
       "id": "bali-food-kayuputi",
@@ -2732,15 +2727,12 @@
       "source": [
         {
           "url": "https://www.kayuputibali.com/contact-location",
-          "publisher": "Kayuputi",
-          "kind": "official-hotel",
+          "kind": "official",
           "accessedAt": "2026-09-13",
           "verifiedFields": [
             "name",
             "area",
-            "openingHours",
-            "reservation",
-            "scene"
+            "official_listing_signal"
           ]
         },
         {
@@ -2753,8 +2745,8 @@
           ]
         }
       ],
-      "lastVerified": null,
-      "verificationStatus": "editorial_candidate",
+      "lastVerified": "2026-09-13",
+      "verificationStatus": "official_identity_checked",
       "editorialNotes": null,
       "node_id": "nusa_dua",
       "category": "asian",
@@ -2764,7 +2756,9 @@
       "researchDate": "2026-09-13",
       "published": true,
       "storefrontImage": null,
-      "nearbyBasis": "same_named_area_not_verified_travel_time"
+      "nearbyBasis": "same_named_area_not_verified_travel_time",
+      "officialCuisineStatement": "Pan-Asian haute cuisine",
+      "verificationNotes": "Official listing checked; live availability, prices, coordinates, dietary requirements and opening hours need confirmation."
     },
     {
       "id": "bali-food-bejana",
@@ -2807,21 +2801,17 @@
       "source": [
         {
           "url": "https://www.bejanaindonesianrestaurant.com/",
-          "publisher": "Bejana / The Ritz-Carlton Bali",
-          "kind": "official-hotel",
+          "kind": "official",
           "accessedAt": "2026-09-13",
           "verifiedFields": [
             "name",
             "area",
-            "cuisine",
-            "openingHours",
-            "reservation",
-            "localSpecialty"
+            "official_listing_signal"
           ]
         }
       ],
-      "lastVerified": null,
-      "verificationStatus": "editorial_candidate",
+      "lastVerified": "2026-09-13",
+      "verificationStatus": "official_identity_checked",
       "editorialNotes": null,
       "node_id": "nusa_dua",
       "category": "local",
@@ -2831,7 +2821,9 @@
       "researchDate": "2026-09-13",
       "published": true,
       "storefrontImage": null,
-      "nearbyBasis": "same_named_area_not_verified_travel_time"
+      "nearbyBasis": "same_named_area_not_verified_travel_time",
+      "officialCuisineStatement": "Indonesian / Balinese",
+      "verificationNotes": "Official listing checked; live availability, prices, coordinates, dietary requirements and opening hours need confirmation."
     },
     {
       "id": "bali-food-massimo",
@@ -3043,22 +3035,17 @@
       "source": [
         {
           "url": "https://mayaresorts.com/sanur/restaurant",
-          "publisher": "Maya Sanur",
-          "kind": "official-hotel",
+          "kind": "official",
           "accessedAt": "2026-09-13",
           "verifiedFields": [
             "name",
             "area",
-            "cuisine",
-            "openingHours",
-            "reservation",
-            "scene",
-            "localSpecialty"
+            "official_listing_signal"
           ]
         }
       ],
-      "lastVerified": null,
-      "verificationStatus": "editorial_candidate",
+      "lastVerified": "2026-09-13",
+      "verificationStatus": "official_identity_checked",
       "editorialNotes": null,
       "node_id": "sanur",
       "category": "asian",
@@ -3068,7 +3055,9 @@
       "researchDate": "2026-09-13",
       "published": true,
       "storefrontImage": null,
-      "nearbyBasis": "same_named_area_not_verified_travel_time"
+      "nearbyBasis": "same_named_area_not_verified_travel_time",
+      "officialCuisineStatement": "Japanese / izakaya / fusion",
+      "verificationNotes": "Official listing checked; live availability, prices, coordinates, dietary requirements and opening hours need confirmation."
     },
     {
       "id": "bali-food-penida-colada",
@@ -3119,22 +3108,17 @@
       "source": [
         {
           "url": "https://penidacolada.com/about-penida-colada-beach-bar-nusa-penida/",
-          "publisher": "Penida Colada",
-          "kind": "official-site",
+          "kind": "official",
           "accessedAt": "2026-09-13",
           "verifiedFields": [
             "name",
             "area",
-            "cuisine",
-            "openingHours",
-            "reservation",
-            "scene",
-            "localSpecialty"
+            "official_listing_signal"
           ]
         }
       ],
-      "lastVerified": null,
-      "verificationStatus": "editorial_candidate",
+      "lastVerified": "2026-09-13",
+      "verificationStatus": "official_identity_checked",
       "editorialNotes": null,
       "node_id": "nusa_penida_north",
       "category": "local",
@@ -3144,7 +3128,9 @@
       "researchDate": "2026-09-13",
       "published": true,
       "storefrontImage": null,
-      "nearbyBasis": "same_named_area_not_verified_travel_time"
+      "nearbyBasis": "same_named_area_not_verified_travel_time",
+      "officialCuisineStatement": "Modern Australian / International / Indonesian",
+      "verificationNotes": "Official listing checked; live availability, prices, coordinates, dietary requirements and opening hours need confirmation."
     },
     {
       "id": "bali-food-locavore-nxt",
@@ -3269,22 +3255,17 @@
       "source": [
         {
           "url": "https://www.room4dessert.com/the-restaurant/",
-          "publisher": "Room4Dessert",
-          "kind": "official-site",
+          "kind": "official",
           "accessedAt": "2026-09-13",
           "verifiedFields": [
             "name",
             "area",
-            "cuisine",
-            "openingHours",
-            "reservation",
-            "scene",
-            "localSpecialty"
+            "official_listing_signal"
           ]
         }
       ],
-      "lastVerified": null,
-      "verificationStatus": "editorial_candidate",
+      "lastVerified": "2026-09-13",
+      "verificationStatus": "official_identity_checked",
       "editorialNotes": null,
       "node_id": "ubud",
       "category": "local",
@@ -3294,7 +3275,9 @@
       "researchDate": "2026-09-13",
       "published": true,
       "storefrontImage": null,
-      "nearbyBasis": "same_named_area_not_verified_travel_time"
+      "nearbyBasis": "same_named_area_not_verified_travel_time",
+      "officialCuisineStatement": "Dessert-led tasting menu",
+      "verificationNotes": "Official listing checked; live availability, prices, coordinates, dietary requirements and opening hours need confirmation."
     },
     {
       "id": "bali-food-mozaic",
@@ -3342,15 +3325,12 @@
       "source": [
         {
           "url": "https://mozaic-bali.com/mozaic-gastronomic-restaurant-bali-reservations",
-          "publisher": "Mozaic",
-          "kind": "official-site",
+          "kind": "official",
           "accessedAt": "2026-09-13",
           "verifiedFields": [
             "name",
             "area",
-            "openingHours",
-            "reservation",
-            "scene"
+            "official_listing_signal"
           ]
         },
         {
@@ -3364,8 +3344,8 @@
           ]
         }
       ],
-      "lastVerified": null,
-      "verificationStatus": "editorial_candidate",
+      "lastVerified": "2026-09-13",
+      "verificationStatus": "official_identity_checked",
       "editorialNotes": null,
       "node_id": "ubud",
       "category": "local",
@@ -3375,7 +3355,9 @@
       "researchDate": "2026-09-13",
       "published": true,
       "storefrontImage": null,
-      "nearbyBasis": "same_named_area_not_verified_travel_time"
+      "nearbyBasis": "same_named_area_not_verified_travel_time",
+      "officialCuisineStatement": null,
+      "verificationNotes": "French/Balinese labels are editorial; Tipple Room hours conflict within official page. Do not normalize conflicting hours."
     },
     {
       "id": "bali-food-hujan-locale",
@@ -3425,23 +3407,17 @@
       "source": [
         {
           "url": "https://hujanlocale.com/",
-          "publisher": "Hujan Locale",
-          "kind": "official-site",
+          "kind": "official",
           "accessedAt": "2026-09-13",
           "verifiedFields": [
             "name",
             "area",
-            "cuisine",
-            "openingHours",
-            "reservation",
-            "scene",
-            "localSpecialty",
-            "vegetarian"
+            "official_listing_signal"
           ]
         }
       ],
-      "lastVerified": null,
-      "verificationStatus": "editorial_candidate",
+      "lastVerified": "2026-09-13",
+      "verificationStatus": "official_identity_checked",
       "editorialNotes": null,
       "node_id": "ubud",
       "category": "asian",
@@ -3451,7 +3427,9 @@
       "researchDate": "2026-09-13",
       "published": true,
       "storefrontImage": null,
-      "nearbyBasis": "same_named_area_not_verified_travel_time"
+      "nearbyBasis": "same_named_area_not_verified_travel_time",
+      "officialCuisineStatement": "Modern Indonesian",
+      "verificationNotes": "Official listing checked; live availability, prices, coordinates, dietary requirements and opening hours need confirmation."
     },
     {
       "id": "bali-food-nusantara-locavore",
@@ -3501,22 +3479,17 @@
       "source": [
         {
           "url": "https://locavorenxt.com/family/nusantara",
-          "publisher": "Nusantara by Locavore",
-          "kind": "official-site",
+          "kind": "official",
           "accessedAt": "2026-09-13",
           "verifiedFields": [
             "name",
             "area",
-            "cuisine",
-            "openingHours",
-            "reservation",
-            "scene",
-            "localSpecialty"
+            "official_listing_signal"
           ]
         }
       ],
-      "lastVerified": null,
-      "verificationStatus": "editorial_candidate",
+      "lastVerified": "2026-09-13",
+      "verificationStatus": "official_identity_checked",
       "editorialNotes": null,
       "node_id": "ubud",
       "category": "local",
@@ -3526,7 +3499,9 @@
       "researchDate": "2026-09-13",
       "published": true,
       "storefrontImage": null,
-      "nearbyBasis": "same_named_area_not_verified_travel_time"
+      "nearbyBasis": "same_named_area_not_verified_travel_time",
+      "officialCuisineStatement": "Regional Indonesian",
+      "verificationNotes": "Official branch title is Nusantara, not proof of a separate by-Locavore restaurant."
     },
     {
       "id": "bali-food-aperitif",
@@ -3576,15 +3551,12 @@
       "source": [
         {
           "url": "https://www.aperitif.com/contact/",
-          "publisher": "Apéritif",
-          "kind": "official-site",
+          "kind": "official",
           "accessedAt": "2026-09-13",
           "verifiedFields": [
             "name",
             "area",
-            "openingHours",
-            "reservation",
-            "scene"
+            "official_listing_signal"
           ]
         },
         {
@@ -3598,8 +3570,8 @@
           ]
         }
       ],
-      "lastVerified": null,
-      "verificationStatus": "editorial_candidate",
+      "lastVerified": "2026-09-13",
+      "verificationStatus": "official_identity_checked",
       "editorialNotes": null,
       "node_id": "ubud",
       "category": "local",
@@ -3609,7 +3581,9 @@
       "researchDate": "2026-09-13",
       "published": true,
       "storefrontImage": null,
-      "nearbyBasis": "same_named_area_not_verified_travel_time"
+      "nearbyBasis": "same_named_area_not_verified_travel_time",
+      "officialCuisineStatement": null,
+      "verificationNotes": "Only address, name and listing signal accepted; European/Indonesian description remains editorial."
     },
     {
       "id": "bali-food-bali-asli",
@@ -3650,15 +3624,12 @@
       "source": [
         {
           "url": "https://baliasli.com.au/contact/",
-          "publisher": "Bali Asli",
-          "kind": "official-site",
+          "kind": "official",
           "accessedAt": "2026-09-13",
           "verifiedFields": [
             "name",
             "area",
-            "openingHours",
-            "reservation",
-            "scene"
+            "official_listing_signal"
           ]
         },
         {
@@ -3672,8 +3643,8 @@
           ]
         }
       ],
-      "lastVerified": null,
-      "verificationStatus": "editorial_candidate",
+      "lastVerified": "2026-09-13",
+      "verificationStatus": "official_identity_checked",
       "editorialNotes": null,
       "node_id": "candidasa",
       "category": "local",
@@ -3683,7 +3654,9 @@
       "researchDate": "2026-09-13",
       "published": true,
       "storefrontImage": null,
-      "nearbyBasis": "same_named_area_not_verified_travel_time"
+      "nearbyBasis": "same_named_area_not_verified_travel_time",
+      "officialCuisineStatement": "Traditional Balinese",
+      "verificationNotes": "Official listing checked; live availability, prices, coordinates, dietary requirements and opening hours need confirmation."
     },
     {
       "id": "bali-food-seasalt-manggis",

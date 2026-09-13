@@ -1,9 +1,9 @@
 // Local catalog injection only: native rendering evidence, not production API evidence.
 const fs=require('node:fs');
 const path=require('node:path');
-const automator=require(process.env.WM_MINI_AUTOMATOR || 'miniprogram-automator');
 const output=process.env.WM_FOOD_NATIVE_OUTPUT;
 if(!output){console.log('Food native QA skipped: set WM_FOOD_NATIVE_OUTPUT and connect DevTools.');process.exit(0);}
+const automator=require(process.env.WM_MINI_AUTOMATOR || 'miniprogram-automator');
 const root=path.resolve(__dirname,'../wandermind-studio/frontend/assets/data');
 const catalogs={};for(const name of ['bali-travel-data','bali-extensions','bali-food'])catalogs[name]=JSON.parse(fs.readFileSync(path.join(root,name+'.json'),'utf8'));
 const limit=(promise,label)=>Promise.race([promise,new Promise((_,reject)=>setTimeout(()=>reject(Error(label+' timeout')),15000))]);
