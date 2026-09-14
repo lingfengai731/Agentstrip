@@ -1,0 +1,71 @@
+{
+  "schema_version": 1,
+  "evidence_id": "ev-20260914T063307Z-mini-match-recovery",
+  "task_ref": "mini-match-recovery-20260914",
+  "captured_at": "2026-09-14T06:33:07.006Z",
+  "owner": "codex-main",
+  "status": "verified",
+  "claim": "Scoped Mini source repair and all offline tests accepted, official Preview1722186bytes. Native UI callback/live-network script failed before matching; no native matching success, buyer root-cause closure, new Upload/review/publicrelease claimed.",
+  "source": {
+    "kind": "git_offline_regression_official_preview_and_anonymous_production_diagnostic",
+    "reference": "commit:b45e8f75c3d9121d22d8a00360aeae01f9bb2db4; tools/test_miniprogram_match_recovery.cjs; output/match-recovery-preview-info.json"
+  },
+  "implementation_commit": "b45e8f75c3d9121d22d8a00360aeae01f9bb2db4",
+  "mini_tree": "6435d0365c7f3e9f9724322bc2c6a1623075b0a5",
+  "preview": {
+    "bytes": 1722186,
+    "info_sha256": "26CEBA58DBEFAA9A7E9FDD8DB928A6B2E30E78A024C3588CAA94E94EA30C0BD2",
+    "result": "Official CLI exit0 and preview success. Local QR excluded from shared Git."
+  },
+  "accepted": {
+    "contracts": 387,
+    "offline_mini_suites": "All tools/test_miniprogram_*.cjs exit0; opt-in native tests skip explicitly and are not counted as native passes",
+    "binding_declarations": {
+      "pages": 13,
+      "bindings": 135,
+      "meaning": "Handlers exist; not every button clicked"
+    },
+    "negative_paths": [
+      "Forced JS deadline and abort",
+      "Ignore late401 after timeout",
+      "Reject changed account response",
+      "Fresh preview not replaced by old paid trip",
+      "Same-trip paid refresh allowed",
+      "Failed public catalog evicted; successful cache/coalescing",
+      "Five-language planner result navigation and onShow error preservation"
+    ],
+    "me_rendering": "Chinese screenshot shows dining above logout; native tap/event failed. Not full5lang/physical-touch acceptance."
+  },
+  "production_diagnostic": {
+    "kind": "Anonymous API diagnostic, NOT Browser/Render admin",
+    "endpoint": "/api/bali/professional-route",
+    "status": 200,
+    "milliseconds": 2925,
+    "trip_id": "7618f8c6-f071-49bf-a3e7-351dde80e921",
+    "days": 7,
+    "open_days": 5,
+    "locked_days": 2,
+    "mutations": "One disposable anonymous trip created. No payment/order/adjustment/driver mail/real buyer identity used.",
+    "health": {
+      "path": "/healthz",
+      "status": 200,
+      "milliseconds": 1483
+    }
+  },
+  "native_not_accepted": {
+    "raw_reports": [
+      "output/match-recovery-native-event/match-native.json",
+      "output/match-recovery-native-diagnostic/match-native.json"
+    ],
+    "result": "Event run remained on Me; diagnostic run timed out at initialization. No matching POST was reached in these native runs.",
+    "phone_pending": true
+  },
+  "boundaries": [
+    "Original dirty E:/Agentstrip untouched",
+    "output and restaurant-media remain untracked and preserved",
+    "No backend/website/Render environment edit or deploy",
+    "New source Preview only; previous0.1.0developerUpload remains historical",
+    "No Review/PublicRelease"
+  ],
+  "next_action": "owner-phone-fresh-match-preview"
+}

@@ -1,171 +1,64 @@
 {
   "schema_version": 1,
-  "checkpoint_revision": 45,
-  "previous_checkpoint_sha256": "8A21099F6E6CBAA688512895C5732532AE52751A090487D3F406AF25E25D1BDD",
-  "run_id": "20260914-mini-food-filter-release",
-  "objective": "Repair six unresponsive Mini dining filters, audit supplied media, deliver verified release candidate without unlicensed imagery or premature review claims.",
+  "checkpoint_revision": 47,
+  "previous_checkpoint_sha256": "00408A15AE053202DA6BE714D4FF72F38FE34CA2C2EC794841B633B9709A26C0",
+  "run_id": "20260914-mini-match-recovery",
+  "objective": "Deliver scoped matching recovery and Me dining entry; authenticated buyer latency and native/phone interaction remain gated.",
   "status": "paused",
-  "phase": "wechat_review_readiness_handoff",
+  "phase": "phone_preview_acceptance_required",
   "baseline": {
     "cwd": "E:\\Agentstrip-worktrees\\active\\account1\\bali-extensions-food-20260913",
     "worktree": "E:\\Agentstrip-worktrees\\active\\account1\\bali-extensions-food-20260913",
-    "branch": "codex/mini-food-upload-receipt-20260914",
-    "head": "2ec5319784f079a4249514f25752dfbe61b07184",
+    "branch": "codex/mini-match-recovery-20260914",
+    "head": "b45e8f75c3d9121d22d8a00360aeae01f9bb2db4",
     "dirty_allowlist": [
       "output/",
       "restaurant-media/",
       ".codex/run-state/CURRENT.json",
       "PROJECT_CONTEXT.md",
-      ".codex/role-windows.md",
       ".codex/project-memory/current-state.json",
-      ".codex/project-memory/evidence/2026/09/20260914T035410Z-mini-upload-media-audit.json",
-      ".codex/project-memory/handoffs/2026/09/20260914T035410Z-mini-upload-media-audit.md",
-      ".codex/project-memory/decisions/ADR-20260914-mini-filter-release-before-images.md"
+      ".codex/ui-visual-review-signals.md",
+      ".codex/project-memory/evidence/2026/09/20260914T063307Z-mini-match-recovery.json",
+      ".codex/project-memory/handoffs/2026/09/20260914T063307Z-mini-match-recovery.md"
     ]
   },
   "completed": [
-    "User accepted existing Mini Preview on2026-09-13.",
-    "Fresh origin/main88fc025; original dirty E:/Agentstrip and accepted Preview worktree preserved.",
-    "Legacy ledger role/status enum normalization passes role-loop validator; registry resolved from installed source.",
-    "Existing65POIs include west/east Penida nodes but no top-level extensions.",
-    "Food50/40/10 normalization, regional selectors and strict dining receivers;379 offline Mini contracts,3new backend tests,24 deterministic Browser cases passed; code739be02pushed taskbranch",
-    "380 Mini contracts and all offline Mini suites passed; optional native suites explicitly skipped, not visual evidence",
-    "15 additional official restaurant identities independently accepted;18 total, no operational blanket verification",
-    "Two licensed real contextual photos decoded, hashes/licenses recorded;2 approved,0 production-published",
-    "Native dining review day9 to7/cancel/account isolation and AI editable transfer accepted",
-    "31 local browser cases passed; fixed professional page reload module loss; cancel0 requests and retry2 requests",
-    "123 backend tests passed including repaired17 baseline static assertions",
-    "Native Food to R2 selection once-only and stale account/language error tests accepted",
-    "68ff437 code and ea6863c test repair pushed; ls-remote matches",
-    "PR86 created as draft;cloud Mini,Project memory,PostgreSQL all success at d94d3cc",
-    "Fresh Computer Use native Food renders; DevTools zero compilation problems; documented SDK systemInfo390/currentPage responsive after reserved route field fix",
-    "Native5locale390px/min44px matrix accepted; module11days,diningday9,AI963char editable receiver,gueststorage restored; cloud3checks success03e672f",
-    "Luna taxonomy commit60f8b6f reviewed;9scoped files integrated8de85a9;Food taxonomy/recovery383 contracts passed.",
-    "Native professional cancel/503/retry/5+2/dining7 and Dicky/Gede private draft callbacks passed;0live requests;not physical-phone touch.",
-    "Fresh post-taxonomy nativeFood5locale390px/44px and11daymodules/dining9/AI963char passed;zero exceptions; screenshots localonly.",
-    "3required cloudCI success83d7e9e.",
-    "PR86fixed ab0a22d cloud3CI success34796417429/34796417439/34796417449;mergedbce613b,wholeGit tree324e449 identical.",
-    "OfficialMiniPreview1716399bytes generated;noUpload/review/publicrelease.",
-    "Production anonymousdeterministic20Foodcases5locales4widths passed;shareddata/taxonomy parity;2newcreditedPortfolio photos decoded/displayed;0forwardedwrites;NOT Render/nativeEdge.",
-    "FreshGit PR87main3248f2b and task checkpoint2bc push verified;onlyCURRENT differs;newuserdelivered restaurant-media accepted untracked preserved.",
-    "30native6filter5localeactualtapcallbacks44px/0exceptions;separate36optionlast35/backdropcancelpassed;officialPreview1719880bytes",
-    "PR88fixedc4a388f MiniandProjectmemoryCI success;merge2ec5319 wholeGit tree8cedd17 equal;Mini sourcefrozen c087c61",
-    "Luna finalsupplied68 originals/68 web inventoryhashesaccepted;parentcanonical+hashsample+permissionindexreviewandCommonsSeminyak correction;63authorizationunproven,4license/source-supportedcandidates,1exactbranchpending;0publication",
-    "OfficialWeChatCLIdeveloperUpload0.1.0exit0/√upload1719880bytes;infohashd78d457;PreviewsameMini c087c61;notreview/publicrelease"
+    "Scoped11file source commit b45e8f7; Mini tree6435d036",
+    "AllofflineMini suites387contracts/135declarations accepted; timeout/abort/late401/account/preview/cache/five-language result/error recovery",
+    "OfficialCLI Preview1722186bytes; newUpload/review/publicrelease not performed",
+    "Warm anonymous production matching200/2925ms/7days5+2; health200/1483ms; not authenticated buyer/nativeBrowser"
   ],
-  "current_step": "OfficialdeveloperUpload0.1.0wx26bfe1e0c37a54b6 succeeded1719880bytes onPR88mergedtreec087c61;review/publicrelease andconsolefacts unverified;prepare/push scopedreceiptfacts only.",
-  "workers": [
-    {
-      "agent_id": "01a09881-7139-7922-9a82-e1dd60b4ee9f",
-      "agent_name": "luna_worker",
-      "model": "gpt-5.6-luna",
-      "reasoning_effort": "max",
-      "goal": "30source-backed Bali restaurant candidates only",
-      "status": "errored",
-      "started_at_utc": "2026-09-13T02:04:36.245Z",
-      "evidence": "E:/Agentstrip-worktrees/active/account1/bali-food-research-20260913/research/bali-food-candidates-20260913.json"
-    },
-    {
-      "agent_id": "01a09a92-62af-7e03-adb7-5f5b0e082078",
-      "agent_name": "luna_worker",
-      "model": "gpt-5.6-luna",
-      "reasoning_effort": "max",
-      "goal": "15 immutable restaurant official source checks",
-      "status": "completed",
-      "evidence": "research/bali-food-worker-official-checks-20260913.md"
-    },
-    {
-      "agent_id": "01a09b03-38ee-7011-87d0-4f8b6ef22bfd",
-      "agent_name": "luna_worker",
-      "model": "gpt-5.6-luna",
-      "reasoning_effort": "max",
-      "goal": "Shared explicit cuisine/scene filters",
-      "status": "completed",
-      "evidence": "60f8b6f99b0567a67ca42132133b9aa2a9ce499f"
-    },
-    {
-      "agent_id": "01a09e01-bfb1-7062-87e7-eeeab1c8910e",
-      "agent_name": "luna_worker",
-      "model": "gpt-5.6-luna",
-      "reasoning_effort": "max",
-      "goal": "Read-only supplied restaurant-media hashes, identity and permission audit",
-      "status": "completed",
-      "started_at_utc": "2026-09-14T03:44:22.585Z",
-      "evidence": "output/restaurant-media-audit.json",
-      "last_observed_at_utc": "2026-09-14T03:52:34.221Z"
-    }
-  ],
+  "current_step": "Preserve failed native runs truthfully and publish scoped facts/source; owner phone newPreview is next acceptance gate. Pre-push capture must not be described as synchronized until actual push verified.",
+  "workers": [],
   "accepted_evidence": [
-    ".codex/project-memory/evidence/2026/09/20260912T062000Z-mini-native-integrated.json",
-    ".codex/project-memory/evidence/2026/09/20260913T080227Z-bali-extensions-food-draft.json",
-    ".codex/project-memory/evidence/2026/09/20260913T130613Z-bali-food-media-callbacks.json",
-    ".codex/project-memory/evidence/2026/09/20260913T131000Z-expansion-pr86-ci-receipt.json",
-    ".codex/project-memory/evidence/2026/09/20260913T132400Z-native-food-receivers.json",
-    ".codex/project-memory/evidence/2026/09/20260914T013402Z-food-taxonomy-native-release.json",
-    ".codex/project-memory/evidence/2026/09/20260914T014307Z-pr86-merge-preview-public.json",
-    ".codex/project-memory/evidence/2026/09/20260914T034930Z-mini-food-filter-release.json",
-    ".codex/project-memory/evidence/2026/09/20260914T035410Z-mini-upload-media-audit.json"
+    ".codex/project-memory/evidence/2026/09/20260914T063307Z-mini-match-recovery.json",
+    "tools/test_miniprogram_match_recovery.cjs",
+    "tools/test_miniprogram_button_bindings.cjs"
   ],
   "unverified": [
-    "Ownerphysical-phone newPreview6filtercallbacks",
-    "WeChatconsoleuploaded0.1.0/category/privacy/requestdomain/testaccess actualstate andReview/PublicRelease",
-    "63thirdpartyofficialpermissionproof/1exactSeminyakidentity;4licensedcandidatesnotpublished;inputpackrawoutputlocalonly",
-    "32remainingrestaurantofficialoperatingfieldchecks,licensedfullWestEastbatch,futureShoppingHotel",
-    "ExactRendermetadata/nativeBrowser unchanged;websitebusinessnotchangedbyMini patch"
+    "Native SDK tap/event did not navigate Me; diagnostic timeout at init; no live matching attempt reached",
+    "Actual authenticated buyer long wait root cause unknown; phone/newPreview callback needed",
+    "This receipt and source publication/CI/merge must be checked live; captured before push",
+    "New source notdeveloperUploaded/reviewed/released; noRenderbackend change"
   ],
   "do_not_repeat": [
     {
-      "action_id": "old-native-preview",
-      "reason": "Owner explicitly accepted; do not let next-version food block existing release preparation.",
-      "evidence": ".codex/project-memory/handoffs/2026/09/20260912T062000Z-mini-native-integrated.md"
-    },
-    {
-      "action_id": "native-ai-context-receiver",
-      "reason": "Implemented and verified offline; native screenshots remain separately gated",
-      "evidence": "tools/test_miniprogram_itinerary_handoff.cjs"
-    },
-    {
-      "action_id": "web-professional-dining-cancel-retry",
-      "reason": "31 matrix accepted against frozen frontend; repeat only after new frontend change",
-      "evidence": ".codex/project-memory/evidence/2026/09/20260913T130613Z-bali-food-media-callbacks.json"
-    },
-    {
-      "action_id": "create-expansion-draft-pr",
-      "reason": "PR86 exists;do not duplicate",
-      "evidence": ".codex/project-memory/evidence/2026/09/20260913T131000Z-expansion-pr86-ci-receipt.json"
-    },
-    {
-      "action_id": "native-food-final-acceptance",
-      "reason": "Food5locale and public module/dining/AI receivers accepted against unchanged app tree; no repetition without sourcechange/newgap",
-      "evidence": ".codex/project-memory/evidence/2026/09/20260913T132400Z-native-food-receivers.json"
-    },
-    {
-      "action_id": "pr86-merge",
-      "reason": "Fixedab0a22d required3CI success;mergedbce613b,trees identical;no duplicate merge.",
-      "evidence": ".codex/project-memory/evidence/2026/09/20260914T014307Z-pr86-merge-preview-public.json"
-    },
-    {
-      "action_id": "public-deploy-content-parity",
-      "reason": "20Foodcases+2crediteddecodedphoto lane accepted;repeatonlynewsource/drift/relevantfailure",
-      "evidence": ".codex/project-memory/evidence/2026/09/20260914T014307Z-pr86-merge-preview-public.json"
-    },
-    {
-      "action_id": "native-six-filter-tap-acceptance",
-      "reason": "30actualnativeSDKtapcallbacks andseparatelonglist passed onfrozenMini source;repeatonlynewrelevantchange/failure",
-      "evidence": ".codex/project-memory/evidence/2026/09/20260914T034930Z-mini-food-filter-release.json"
-    },
-    {
       "action_id": "mini-food-filter-developer-upload-0.1.0",
-      "reason": "OfficialCLIuploadexit0/√upload atMini c087c61;do notreplaydeveloperUploadexceptnewsource oractualneed",
+      "reason": "Prior source already uploaded; do not replay oldUpload while verifying new source",
       "evidence": ".codex/project-memory/evidence/2026/09/20260914T035410Z-mini-upload-media-audit.json"
+    },
+    {
+      "action_id": "repeated-native-sdk-me-diagnostic",
+      "reason": "Repeated runtime/event failures recorded. Do not repeat unchanged setup or claim touch passed; owner actual newPreview is next.",
+      "evidence": ".codex/project-memory/evidence/2026/09/20260914T063307Z-mini-match-recovery.json"
     }
   ],
   "next_action": {
-    "action_id": "wechat-console-review-readiness",
-    "description": "VerifycorrectWeChatAppIDconsoledeveloper0.1.0,category/privacy/requestdomain/testaccess andownerphonefiltercallback before review;nativeplugin onlyifcapabilityavailable,otherwiseownerprovidesnonsecret screenshots;no imageexpansiondelay or repeatedUpload.",
+    "action_id": "owner-phone-fresh-match-preview",
+    "description": "Owner ordinary non-admin buyer scans latestPreview; Me Dining→route planner7days→match5open2locked; measure latency and check explicit timeout/input recovery. Provide nonsecret failure screenshot/network/elapsed if still hanging. No newUpload/review before callback gates.",
     "external_effect": false,
     "effect_key": null,
     "authority_confirmed": true
   },
-  "updated_at_utc": "2026-09-14T03:55:54.5544409Z"
+  "updated_at_utc": "2026-09-14T06:34:09.2384229Z"
 }

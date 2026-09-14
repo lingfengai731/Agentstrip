@@ -9,37 +9,50 @@ function _request({ url, method = 'GET', data, auth = true, timeout = 30000 }) {
   const token = app.globalData.token;
   const copy = errors();
   return new Promise((resolve, reject) => {
+    let finished = false, task, timer;
+    const settle = (error, value) => {
+      if (finished) return;
+      finished = true;
+      if (timer != null) clearTimeout(timer);
+      if (error) reject(error); else resolve(value);
+    };
+    // Settle even if a platform callback is lost; never automatically retry POST.
+    if (typeof setTimeout === 'function') timer = setTimeout(() => {
+      settle(new Error(copy.timeout));
+      if (task && task.abort) task.abort();
+    }, timeout);
     const header = { 'Content-Type': 'application/json' };
     if (auth && app.globalData.token) {
       header['Authorization'] = 'Bearer ' + app.globalData.token;
     }
-    wx.request({
+    task = wx.request({
       url: app.globalData.apiBase + url,
       method,
       data,
       header,
       timeout,
       success: (res) => {
-        if (auth && app.globalData.token !== token) { reject(new Error(copy.changed)); return; }
+        if (finished) return;
+        if (auth && app.globalData.token !== token) { settle(new Error(copy.changed)); return; }
         if (res.statusCode === 401 && auth && token) {
           app.rememberCurrentRoute();
           app.clearAuth();
           wx.showToast({ title: copy.expired, icon: 'none' });
           wx.reLaunch({ url: '/pages/index/index' });
-          reject(new Error(copy.expired));
+          settle(new Error(copy.expired));
           return;
         }
         if (res.statusCode >= 200 && res.statusCode < 300) {
-          resolve(res.data);
+          settle(null, res.data);
         } else {
           const detail = res.data && res.data.detail;
           const msg = typeof detail === 'string'
             ? detail
             : (detail && (detail.message || detail.error)) || `${copy.failed} (${res.statusCode})`;
-          reject(new Error(msg));
+          settle(new Error(msg));
         }
       },
-      fail: (err) => reject(new Error(copy.network)),
+      fail: (err) => settle(new Error(/timeout/i.test(err && err.errMsg || '') ? copy.timeout : copy.network)),
     });
   });
 }
@@ -137,11 +150,29 @@ const chatOnce = (messages, system, destination, mode = 'fast') =>
     timeout: 130000,
     data: { messages, system, agent: 'planner', destination, mode, search: true } });
 
+// Public static catalogs only: coalesce simultaneous requests and reuse for five
+// minutes across pages. Never cache account, entitlement or order responses.
+const catalogCache = new Map();
+function publicCatalog(url) {
+  const cached = catalogCache.get(url);
+  if (cached && (cached.pending || Date.now() < cached.expires)) return cached.promise;
+  const entry = { pending: true, expires: 0 };
+  entry.promise = _request({ url, auth: false }).then(data => {
+    entry.pending = false; entry.expires = Date.now() + 300000;
+    return data;
+  }, error => {
+    if (catalogCache.get(url) === entry) catalogCache.delete(url);
+    throw error;
+  });
+  catalogCache.set(url, entry);
+  return entry.promise;
+}
+
 // ─── Bali 公共路线与专业路线（与网站共用同一事实源） ───
 const baliRouteData = () =>
-  _request({ url: '/assets/data/bali-travel-data.json?v=20260911p2', auth: false });
-const baliExtensions = () => _request({ url: '/assets/data/bali-extensions.json?v=20260913p1', auth: false });
-const baliFood = () => _request({ url: '/assets/data/bali-food.json?v=20260913p1', auth: false });
+  publicCatalog('/assets/data/bali-travel-data.json?v=20260911p2');
+const baliExtensions = () => publicCatalog('/assets/data/bali-extensions.json?v=20260913p1');
+const baliFood = () => publicCatalog('/assets/data/bali-food.json?v=20260913p1');
 const baliMediaCatalog = () =>
   _request({ url: '/assets/data/poi-media-catalog.json?v=20260901p1', auth: false });
 const imagePublishManifest = () =>
@@ -149,7 +180,7 @@ const imagePublishManifest = () =>
 const publicPortfolio = (destination = 'bali') =>
   _request({ url: `/api/portfolio?destination=${encodeURIComponent(destination)}`, auth: false });
 const createProfessionalRoute = (tripProfile, routeId = '', lang = 'zh', tripId = '') =>
-  _request({ url: '/api/bali/professional-route', method: 'POST',
+  _request({ url: '/api/bali/professional-route', method: 'POST', timeout: 15000,
     data: { trip_profile: tripProfile, route_id: routeId, lang, trip_id: tripId } });
 const recentUnlockedProfessionalRoute = (lang = 'zh') =>
   _request({ url: `/api/bali/professional-route/recent-unlocked?lang=${encodeURIComponent(lang)}` });

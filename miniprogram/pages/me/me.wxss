@@ -82,6 +82,12 @@
   margin-top: 20rpx;
 }
 .me-row:active { background:#F8F6F1; }
+.food-row { width:100%; margin:0; min-height:44px; box-sizing:border-box; border-radius:0; background:transparent; line-height:normal; text-align:left; }
+.food-row::after { border:0; }
+.dining-icon { position:relative; width:30rpx; height:30rpx; }
+.dining-plate { position:absolute; right:0; top:2rpx; width:20rpx; height:20rpx; border:2rpx solid currentColor; border-radius:50%; }
+.dining-fork { position:absolute; left:0; top:0; width:3rpx; height:30rpx; background:currentColor; }
+.dining-fork::before { content:''; position:absolute; top:0; left:-3rpx; width:7rpx; height:9rpx; border:2rpx solid currentColor; border-top:0; }
 .me-footer {
   text-align: center;
   font-size: 22rpx;
