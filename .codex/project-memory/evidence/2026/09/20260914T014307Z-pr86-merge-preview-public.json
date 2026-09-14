@@ -1,0 +1,339 @@
+{
+  "schema_version": 1,
+  "evidence_id": "ev-20260914T014307Z-pr86-merge-preview-public",
+  "task_ref": "bali-extensions-food-20260913",
+  "captured_at": "2026-09-14T01:43:07.247Z",
+  "owner": "codex-main",
+  "status": "verified",
+  "claim": "PR86 fixedheadCI/merge/tree equality,officialPreview and public deterministic Food/Portfolio delivery verified;no nativeEdge/Render administrative or MiniUpload claim.",
+  "source": {
+    "kind": "github_local_native_and_public_deterministic",
+    "reference": "https://github.com/lingfengai731/Agentstrip/pull/86; git:bce613be4969a9529dbe178c4525b5cab01077dc; https://wandermind.cc/dining.html"
+  },
+  "fixed_head": "ab0a22d400ea2b25bb1448863ea10a632654c60c",
+  "merge_commit": "bce613be4969a9529dbe178c4525b5cab01077dc",
+  "fixed_head_tree": "324e449f11d35d49ab3fe957702e20d8394ade51",
+  "merged_tree": "324e449f11d35d49ab3fe957702e20d8394ade51",
+  "ci": {
+    "required": [
+      {
+        "id": 34796417429,
+        "name": "Mini Program checks",
+        "conclusion": "success"
+      },
+      {
+        "id": 34796417439,
+        "name": "Project memory validation",
+        "conclusion": "success"
+      },
+      {
+        "id": 34796417449,
+        "name": "PostgreSQL integration",
+        "conclusion": "success"
+      }
+    ]
+  },
+  "preview": {
+    "command": "DevTools cli preview --project activeWorktree/miniprogram --port9420",
+    "exit": 0,
+    "bytes": 1716399,
+    "mini_tree": "ed78970e1c54702a7379e5e808659e4363e15815",
+    "qr": "output/food-preview.jpg",
+    "info": "output/food-preview-info.json",
+    "public_release": false,
+    "upload": false,
+    "review": false
+  },
+  "production": {
+    "surface": "Anonymous deterministic Playwright;not userEdge or nativeBrowser,not Render admin",
+    "food_matrix": {
+      "capturedAt": "2026-09-14T01:38:51.164Z",
+      "surface": "Anonymous deterministic Playwright; NOT native Browser/Render admin",
+      "matrix": [
+        {
+          "page": "dining",
+          "width": 320,
+          "lang": "zh",
+          "overflow": 0,
+          "cuisineOptions": 36,
+          "sceneOptions": 47
+        },
+        {
+          "page": "dining",
+          "width": 320,
+          "lang": "en",
+          "overflow": 0,
+          "cuisineOptions": 36,
+          "sceneOptions": 47
+        },
+        {
+          "page": "dining",
+          "width": 320,
+          "lang": "ja",
+          "overflow": 0,
+          "cuisineOptions": 36,
+          "sceneOptions": 47
+        },
+        {
+          "page": "dining",
+          "width": 320,
+          "lang": "ko",
+          "overflow": 0,
+          "cuisineOptions": 36,
+          "sceneOptions": 47
+        },
+        {
+          "page": "dining",
+          "width": 320,
+          "lang": "id",
+          "overflow": 0,
+          "cuisineOptions": 36,
+          "sceneOptions": 47
+        },
+        {
+          "page": "dining",
+          "width": 390,
+          "lang": "zh",
+          "overflow": 0,
+          "cuisineOptions": 36,
+          "sceneOptions": 47
+        },
+        {
+          "page": "dining",
+          "width": 390,
+          "lang": "en",
+          "overflow": 0,
+          "cuisineOptions": 36,
+          "sceneOptions": 47
+        },
+        {
+          "page": "dining",
+          "width": 390,
+          "lang": "ja",
+          "overflow": 0,
+          "cuisineOptions": 36,
+          "sceneOptions": 47
+        },
+        {
+          "page": "dining",
+          "width": 390,
+          "lang": "ko",
+          "overflow": 0,
+          "cuisineOptions": 36,
+          "sceneOptions": 47
+        },
+        {
+          "page": "dining",
+          "width": 390,
+          "lang": "id",
+          "overflow": 0,
+          "cuisineOptions": 36,
+          "sceneOptions": 47
+        },
+        {
+          "page": "dining",
+          "width": 768,
+          "lang": "zh",
+          "overflow": 0,
+          "cuisineOptions": 36,
+          "sceneOptions": 47
+        },
+        {
+          "page": "dining",
+          "width": 768,
+          "lang": "en",
+          "overflow": 0,
+          "cuisineOptions": 36,
+          "sceneOptions": 47
+        },
+        {
+          "page": "dining",
+          "width": 768,
+          "lang": "ja",
+          "overflow": 0,
+          "cuisineOptions": 36,
+          "sceneOptions": 47
+        },
+        {
+          "page": "dining",
+          "width": 768,
+          "lang": "ko",
+          "overflow": 0,
+          "cuisineOptions": 36,
+          "sceneOptions": 47
+        },
+        {
+          "page": "dining",
+          "width": 768,
+          "lang": "id",
+          "overflow": 0,
+          "cuisineOptions": 36,
+          "sceneOptions": 47
+        },
+        {
+          "page": "dining",
+          "width": 1440,
+          "lang": "zh",
+          "overflow": 0,
+          "cuisineOptions": 36,
+          "sceneOptions": 47
+        },
+        {
+          "page": "dining",
+          "width": 1440,
+          "lang": "en",
+          "overflow": 0,
+          "cuisineOptions": 36,
+          "sceneOptions": 47
+        },
+        {
+          "page": "dining",
+          "width": 1440,
+          "lang": "ja",
+          "overflow": 0,
+          "cuisineOptions": 36,
+          "sceneOptions": 47
+        },
+        {
+          "page": "dining",
+          "width": 1440,
+          "lang": "ko",
+          "overflow": 0,
+          "cuisineOptions": 36,
+          "sceneOptions": 47
+        },
+        {
+          "page": "dining",
+          "width": 1440,
+          "lang": "id",
+          "overflow": 0,
+          "cuisineOptions": 36,
+          "sceneOptions": 47
+        }
+      ],
+      "assets": [
+        {
+          "path": "assets/data/bali-extensions.json",
+          "status": 200,
+          "sha256": "c4349180caa307115a74de057d3d8f4d8f7699d70aaae8e4718b119513405c06",
+          "match": "LF-normalized source parity"
+        },
+        {
+          "path": "assets/data/bali-food.json",
+          "status": 200,
+          "sha256": "2bebd692c0b852fd070b678c4d63afcc11a23cf789866ca449d60854b6fd8be8",
+          "match": "LF-normalized source parity"
+        },
+        {
+          "path": "assets/js/bali-food-taxonomy.js",
+          "status": 200,
+          "sha256": "bb80f6a93e0346ad4be6fafbbc5618357c2135e64f38bbd3795dabc4333da723",
+          "match": "LF-normalized source parity"
+        },
+        {
+          "path": "assets/images/web/penida-snorkeling-coast.webp",
+          "status": 200,
+          "sha256": "c15cc72013fe6448fce051735a1bea4bdb4fa4c9e9e140405cdf7f1e0ae7a724",
+          "match": "exact binary parity"
+        },
+        {
+          "path": "assets/images/web/bali-nasi-campur.webp",
+          "status": 200,
+          "sha256": "807eed076091927f1caf58446e31d3ad5ad70d3939b15144e70aa0c76226b83d",
+          "match": "exact binary parity"
+        }
+      ],
+      "writes": 0,
+      "pageErrors": 0,
+      "result": "passed public served-byte parity and20responsiveFoodcases"
+    },
+    "gallery_lane": {
+      "capturedAt": "2026-09-14T01:41:30.290Z",
+      "surface": "Anonymous deterministic Playwright; NOT native Browser/Render admin",
+      "matrix": [],
+      "assets": [
+        {
+          "path": "assets/data/bali-extensions.json",
+          "status": 200,
+          "sha256": "c4349180caa307115a74de057d3d8f4d8f7699d70aaae8e4718b119513405c06",
+          "match": "LF-normalized source parity"
+        },
+        {
+          "path": "assets/data/bali-food.json",
+          "status": 200,
+          "sha256": "2bebd692c0b852fd070b678c4d63afcc11a23cf789866ca449d60854b6fd8be8",
+          "match": "LF-normalized source parity"
+        },
+        {
+          "path": "assets/js/bali-food-taxonomy.js",
+          "status": 200,
+          "sha256": "bb80f6a93e0346ad4be6fafbbc5618357c2135e64f38bbd3795dabc4333da723",
+          "match": "LF-normalized source parity"
+        },
+        {
+          "path": "assets/images/web/penida-snorkeling-coast.webp",
+          "status": 200,
+          "sha256": "c15cc72013fe6448fce051735a1bea4bdb4fa4c9e9e140405cdf7f1e0ae7a724",
+          "match": "exact binary parity"
+        },
+        {
+          "path": "assets/images/web/bali-nasi-campur.webp",
+          "status": 200,
+          "sha256": "807eed076091927f1caf58446e31d3ad5ad70d3939b15144e70aa0c76226b83d",
+          "match": "exact binary parity"
+        }
+      ],
+      "writes": 0,
+      "blockedNonGet": [
+        {
+          "method": "POST",
+          "origin": "https://wandermind.cc",
+          "path": "/api/marketing/events"
+        }
+      ],
+      "gallery": {
+        "publishedPhotos": 2,
+        "foodCredit": "CC BY-SA 3.0",
+        "marineCredit": "CC BY 2.0",
+        "decode": true,
+        "routeExtensions": 3
+      },
+      "pageErrors": 0,
+      "result": "passed public parity,0Foodcases and two credited Portfolio photos"
+    },
+    "full_uninterrupted_combined_lane": false,
+    "render_deployment_id": "unverified",
+    "render_exact_commit": "unverified",
+    "content_state": "New public extensions/Food/taxonomy delivery matches merged files;images exact binary parity;20responsiveFood cases plus separate2crediteddecodedPortfolio photo cases passed",
+    "initial_observation": "New extensions404 immediatelyaftermerge;normalautodeploylaterdelivered200. JSrawchecksum mismatchresolvedbyCRLF/LF normalization,not contentdrift."
+  },
+  "counts": {
+    "canonical_pois": 66,
+    "new_canonical_pois": 1,
+    "extension_activity_pois": 4,
+    "extensions": 3,
+    "restaurants": 50,
+    "editorial_eligible": 40,
+    "draft": 10,
+    "identity_directly_checked": 18,
+    "new_approved_images": 2,
+    "new_context_verified_images": 2,
+    "new_publicly_displayed_images": 2,
+    "new_storefront_images": 0
+  },
+  "restrictions": {
+    "live_orders": 0,
+    "driver_requests": 0,
+    "payments": 0,
+    "production_database_changes": 0,
+    "environment_variable_changes": 0,
+    "original_user_checkout_changes": 0
+  },
+  "remaining": [
+    "Edge MCP browser-client bootstrap blocked: node:process import prohibited;no extra security/profile/toolchain workaround",
+    "Planner physical-phone touch/owner latest Preview acceptance pending;official SDK eventcallbacks/native390pxFood screenshots accepted",
+    "Render exact deployment metadata/native Browser administrative and production acceptance pending",
+    "32restaurantdirectidentity rechecks/liveoperatingfields confirmation-bound;licensedactualstorefronts and expandedWest/Eastbatch pending;Shopping/Hotelmodels future",
+    "Twoimage manifest publication_status remains pending_deploy;fresh public display/credit/decode receipt supersedes that older marker,not silently rewritten"
+  ]
+}
