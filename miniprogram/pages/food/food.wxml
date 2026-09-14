@@ -1,0 +1,18 @@
+<view class="food-page">
+  <view class="food-hero"><view class="eyebrow">BALI · {{copy.title}}</view><view class="title">{{copy.headline}}</view><view class="intro">{{copy.intro}}</view></view>
+  <view class="trip-card"><view class="subtitle">{{copy.trip}}</view><view class="intro">{{hasPlan ? copy.handoff : copy.noPlan}}</view><picker wx:if="{{hasPlan}}" range="{{days}}" range-key="label" value="{{dayIndex}}" bindchange="change" data-key="dayIndex"><view class="control">{{days[dayIndex].label}} <text>⌄</text></view></picker><button bindtap="browse">{{copy.browse}}</button></view>
+  <view class="filters">
+    <view><view class="label">{{copy.region}}</view><picker range="{{regions}}" range-key="label" value="{{regionIndex}}" bindchange="change" data-key="regionIndex"><view class="control">{{regions[regionIndex].label}} <text>⌄</text></view></picker></view>
+    <view><view class="label">{{copy.category}}</view><picker range="{{categories}}" range-key="label" value="{{categoryIndex}}" bindchange="change" data-key="categoryIndex"><view class="control">{{categories[categoryIndex].label}} <text>⌄</text></view></picker></view>
+    <view><view class="label">{{copy.cuisine}}</view><picker range="{{cuisines}}" range-key="label" value="{{cuisineIndex}}" bindchange="change" data-key="cuisineIndex"><view class="control">{{cuisines[cuisineIndex].label}} <text>⌄</text></view></picker></view>
+    <view><view class="label">{{copy.scene}}</view><picker range="{{scenes}}" range-key="label" value="{{sceneIndex}}" bindchange="change" data-key="sceneIndex"><view class="control">{{scenes[sceneIndex].label}} <text>⌄</text></view></picker></view>
+    <view><view class="label">{{copy.budget}}</view><picker range="{{budgets}}" range-key="label" value="{{budgetIndex}}" bindchange="change" data-key="budgetIndex"><view class="control">{{budgets[budgetIndex].label}} <text>⌄</text></view></picker></view>
+    <view><view class="label">{{copy.meal}}</view><picker range="{{meals}}" range-key="label" value="{{mealIndex}}" bindchange="change" data-key="mealIndex"><view class="control">{{meals[mealIndex].label}} <text>⌄</text></view></picker></view>
+  </view>
+  <view wx:if="{{error}}" class="state">{{error}}<button bindtap="retry">{{copy.retry}}</button></view>
+  <view wx:if="{{!loading && !error && !items.length}}" class="state">{{copy.empty}}</view>
+  <view wx:for="{{items}}" wx:key="id" class="food-card">
+    <view class="eyebrow">{{item.area}} · {{item.categoryLabel}}</view><view class="name">{{item.name}}</view><view class="intro">{{item.address || item.area}}</view><view class="intro">{{item.budgetLabel}} · {{item.mealLabel}}</view><view wx:if="{{item.spend}}" class="intro">{{copy.reference}}: {{item.spend}}</view><view class="date">{{item.dateLabel}}</view>
+    <view class="links"><button bindtap="source" data-id="{{item.id}}" data-kind="map">{{copy.map}}</button><button bindtap="source" data-id="{{item.id}}" data-kind="source">{{copy.source}}</button></view><button class="add" bindtap="add" data-id="{{item.id}}">{{hasPlan ? copy.add : copy.choose}}</button>
+  </view>
+</view>

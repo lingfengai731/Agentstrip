@@ -1,0 +1,142 @@
+{
+  "schema_version": 1,
+  "evidence_id": "ev-20260913T132400Z-native-food-receivers",
+  "task_ref": "bali-extensions-food-20260913",
+  "captured_at": "2026-09-13T13:24:37.068Z",
+  "owner": "codex-main",
+  "status": "verified",
+  "claim": "Native Food five-language rendering and extension/dining/AI editable-draft callbacks accepted on fixed application tree; no promotion/deployment claim.",
+  "source": {
+    "kind": "local_native_and_github",
+    "reference": "git:a10ce25350dd7d1c292e8cabd22bae599d4c866b; git:03e672fc8689ae51ef9ade95cc837dbb15a1a47b; https://github.com/lingfengai731/Agentstrip/pull/86"
+  },
+  "implementation_commit": "a10ce25350dd7d1c292e8cabd22bae599d4c866b",
+  "native_test_commit": "03e672fc8689ae51ef9ade95cc837dbb15a1a47b",
+  "push_verified": true,
+  "pr": 86,
+  "draft": true,
+  "merged": false,
+  "production_verified": false,
+  "new_preview": false,
+  "previous_evidence": ".codex/project-memory/evidence/2026/09/20260913T130613Z-bali-food-media-callbacks.json",
+  "native": {
+    "device": "iPhone12/13Pro simulator",
+    "width": 390,
+    "http_port": 9420,
+    "automation_port": 9421,
+    "scope": "Local catalogs, guest-only simulator, no payment/order/message or production write. Guest draft cache and app state restored.",
+    "render_matrix": [
+      {
+        "lang": "zh",
+        "width": 390,
+        "candidates": 12,
+        "buttons": 37,
+        "minHeight": 44
+      },
+      {
+        "lang": "en",
+        "width": 390,
+        "candidates": 12,
+        "buttons": 37,
+        "minHeight": 44
+      },
+      {
+        "lang": "ja",
+        "width": 390,
+        "candidates": 12,
+        "buttons": 37,
+        "minHeight": 44
+      },
+      {
+        "lang": "ko",
+        "width": 390,
+        "candidates": 12,
+        "buttons": 37,
+        "minHeight": 44
+      },
+      {
+        "lang": "id",
+        "width": 390,
+        "candidates": 12,
+        "buttons": 37,
+        "minHeight": 44
+      }
+    ],
+    "exceptions": [],
+    "measured_button_overflow": false,
+    "receivers": {
+      "extension_ids": [
+        "penida-west",
+        "penida-east",
+        "penida-snorkeling"
+      ],
+      "separate_days": 11,
+      "dining_day": 9,
+      "restaurant": "Penida Colada",
+      "saved_and_read_back": true,
+      "ai_page": "pages/chat/chat",
+      "ai_draft_characters": 963,
+      "has_restaurant": true,
+      "has_island": true,
+      "auto_send": false,
+      "storage_restore_failed": false
+    },
+    "artifacts_local_only": [
+      "output/native-food-receivers/food-zh.png",
+      "output/native-food-receivers/food-en.png",
+      "output/native-food-receivers/food-ja.png",
+      "output/native-food-receivers/food-ko.png",
+      "output/native-food-receivers/food-id.png",
+      "output/native-food-receiver-focus/itinerary-extensions.png",
+      "output/native-food-receiver-focus/chat-dining-draft.png"
+    ],
+    "fixes": [
+      "Encoded logical operators caused fatal WXML; native operators restored.",
+      "Conditional locked/unlocked days grouped explicitly.",
+      "Food business route renamed routeFamily; framework Page.route preserved as path string.",
+      "Literal amp entity stamp replaced with localized title.",
+      "Native test waits for actual draft receiver; prior fixed500ms false-negative preserved, not counted as product defect."
+    ],
+    "boundary": "First full run accepted5render rows and dining storage then failed early AI assertion. Focused receiver run matrix empty by design, did not rerun languages, accepted actual receiver after state polling. Combining distinct scoped evidence is not claiming one uninterrupted full-suite pass."
+  },
+  "offline": {
+    "contracts": 380,
+    "all_offline_suites": "passed",
+    "web_callbacks_previously_accepted": 31,
+    "backend_tests_previously_accepted": 123,
+    "rerun_boundary": "No web/backend code changed in this native slice, so those frozen results not repeated.",
+    "git_diff_check": "passed"
+  },
+  "ci": {
+    "checked_head": "a10ce25350dd7d1c292e8cabd22bae599d4c866b",
+    "checks": [
+      {
+        "name": "Project memory validation",
+        "run_id": 34759605019,
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "name": "Mini Program checks",
+        "run_id": 34759605097,
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "name": "PostgreSQL integration",
+        "run_id": 34759605020,
+        "status": "completed",
+        "conclusion": "success"
+      }
+    ],
+    "later_native_test_head": "03e672fc8689ae51ef9ade95cc837dbb15a1a47b",
+    "later_head_ci": "All3 completed/success observed at03e672f: Mini34759722835,ProjectMemory34759722844,PostgreSQL34759722858"
+  },
+  "unresolved": [
+    "Native professional Planner and private driver handoff end-to-end acceptance beyond offline/contract coverage.",
+    "Expansion PRpromotion/merge/deploy and fresh production Browser verification.",
+    "32 restaurant identities not directly rechecked; all dynamic operating facts require confirmation.",
+    "Licensed storefronts and expanded West/East imagery; richer cuisine/scene filters; future Shopping/Hotel models."
+  ],
+  "safety": "Original E:/Agentstrip untouched; no real financial/driver/database/env/auth/privacy action; no Mini Upload/review/release."
+}

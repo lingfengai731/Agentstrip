@@ -3,6 +3,10 @@
 This file is the account-independent entry point for work on Agentstrip and WanderMind.
 It stores verifiable project facts, not hidden chain-of-thought or complete chat transcripts.
 
+## Active expansion pointer — 2026-09-14
+
+PR86 fixed code `83d7e9e` now passes all3required cloud checks. Luna shared cuisine/scene selectors were reviewed/integrated `8de85a9`; dining cache version repaired. Fresh web31cases/383offlineMini contracts and native Food5locales390px/min44px pass;3modules make11days,dining day9 and963char editableAI draft persist. Native mocked professional cancel/503/retry/7day5+2 and Dicky/Gede draft callbacks pass with zero live requests. Planner uses SDK WXML event dispatch,NOT physical-phone touch; no new paid unlock was performed. Next: final fact-only commit/fixed-headCI then merge existing PR86 and separately verify deployment. Edge runtime rejects browser bootstrap; no fresh Render metadata/nativeBrowser acceptance claimed. Main last verified `88fc025` is the separate accepted Mini candidate. Data66canonicalPOIs/4activityPOIs/3extensions;50Food(40editorial/10draft),18directidentitychecks,no operating guarantees;2licensedcontextphotos approved/context-verified,production-published0,newstorefront0. Read `.codex/project-memory/handoffs/2026/09/20260914T013402Z-food-taxonomy-native-release.md` and linked evidence. Dated sections below are historical; no new Preview/Upload/review/publicrelease claimed.
+
 ## Authority order
 
 When sources disagree, use this order:

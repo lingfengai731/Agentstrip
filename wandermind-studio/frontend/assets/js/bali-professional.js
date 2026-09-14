@@ -148,7 +148,11 @@
     var tier = form.querySelector('[name="budget_tier"]:checked');
     var config = budgetConfig();
     var tierData = config.tiers.find(function (item) { return item[0] === (tier && tier.value); }) || config.tiers[1];
+    var draft = {};
+    try { draft = JSON.parse(localStorage.getItem('wm_bali_route_draft') || '{}'); } catch (_) {}
     return {
+      dining_stops: draft.route_id === (state.pendingRouteId || state.routeId) ? (draft.dining_stops || []) : ((state.profile && state.profile.dining_stops) || []),
+      extension_ids: state.pendingExtensions || (state.profile && state.profile.extension_ids) || [],
       audience: form.querySelector('[name="audience"]:checked').value,
       goals: Array.from(form.querySelectorAll('[name="goal"]:checked')).map(function (item) { return item.value; }),
       travel_style: form.querySelector('[name="style"]:checked').value,
@@ -220,7 +224,16 @@
     var isAdjustment = !!(state.response && state.response.professional_route_entitlement);
     var draftProfile = { audience:p.audience || 'first', goals:goals, travel_style:style, travellers:people, departure_date:start, return_date:end, days:days, currency:budget.currency, budget_range:'', budget_tier:budgetTier, pace:pace, hotel_area:hotelArea };
     var complete = [p.audience || 'first', people, days > 0, budgetTier, style, pace, goals.length].filter(Boolean).length;
+    var extensions = state.pendingExtensions || p.extension_ids || [];
+    var extensionHint = {
+      zh:'已选离岛模块：' + extensions.length + ' 个，将安排在所填天数内，每个模块独占一天。需改选时返回公共路线。',
+      en:extensions.length + ' island modules selected, each using one of your trip days. Change them in the public route.',
+      ja:'選択した離島プラン：' + extensions.length + '。指定日数内で各1日を使用。変更は公開ルートへ。',
+      ko:'선택한 섬 모듈 ' + extensions.length + '개는 입력한 여행 기간에서 각각 하루를 사용합니다. 변경은 공개 경로에서 하세요.',
+      id:extensions.length + ' modul pulau dipilih, masing-masing memakai satu hari perjalanan. Ubah di rute publik.'
+    }[currentLang()] || '';
     return '<form class="bali-professional-form" id="bali-professional-form" novalidate>' + stepMarkup(1) +
+      (extensions.length ? '<p class="bali-professional-status">' + esc(extensionHint) + '</p>' : '') +
       '<div class="bali-professional-form-heading"><p>' + esc(l.intro) + '</p><strong data-form-progress>' + fill(l.progress, { n:complete }) + '</strong></div>' +
       '<div class="bali-professional-form-shell"><div class="bali-professional-form-fields">' +
       '<fieldset class="bali-professional-form-section"><legend>' + esc(l.basics) + '</legend>' +
@@ -317,13 +330,33 @@
       var submitHtml = submit.innerHTML;
       submit.disabled = true; submit.innerHTML = '<span class="fa fa-circle-o-notch fa-spin"></span> ' + esc(l.loading); setStatus(l.loading, false, 'bali-professional-form-status');
       try {
+        var draftPlan={};
+        try { draftPlan=JSON.parse(localStorage.getItem('wm_bali_route_draft') || '{}'); } catch (_) {}
+        if (profile.dining_stops.length && draftPlan.route_id === (state.pendingRouteId || state.routeId) && Array.isArray(draftPlan.days)) {
+          var catalogs=await Promise.all(['bali-travel-data','bali-extensions','bali-food'].map(async function(name) {
+            var result=await fetch('assets/data/'+name+'.json?v=20260913p1');
+            if (!result.ok) throw new Error(l.error);
+            return result.json();
+          }));
+          var draftRoute=catalogs[0].routes.find(function(route){return route.id===draftPlan.route_id;});
+          var fitted=window.WMBaliItinerary.fitDining(Object.assign({},draftPlan,{extension_ids:profile.extension_ids}),draftRoute,catalogs[1],profile.days);
+          var diningCopy=window.WMBaliFoodCopy[currentLang()] || window.WMBaliFoodCopy.en;
+          if (fitted.unplaced.length) { setStatus(diningCopy.unplacedDining,true,'bali-professional-form-status'); return; }
+          if (fitted.moved.length && !window.confirm(diningCopy.reviewDining+'\n'+fitted.moved.map(function(item) {
+            var restaurant=catalogs[2].restaurants.find(function(value){return value.id===item.restaurant_id;});
+            return (restaurant ? restaurant.name : item.restaurant_id)+': '+item.from+' → '+item.to;
+          }).join('\n'))) return;
+          profile.dining_stops=fitted.stops;
+        }
         if (adjusting) await adjustRoute(profile);
         else {
           state.userMatchPending = true;
           trackMatch('bali_professional_route_match_submit', state.routeId || 'auto');
           state.editing = false;
-          await loadRoute(profile, state.routeId);
+          await loadRoute(profile, state.pendingRouteId || state.routeId);
         }
+      } catch (error) {
+        setStatus(error.message || l.error,true,'bali-professional-form-status');
       } finally {
         if (submit.isConnected) { submit.disabled = false; submit.innerHTML = submitHtml; }
       }
@@ -351,6 +384,8 @@
   function routeText(route) {
     return (route.days_plan || []).map(function (day) {
       var places = (day.places || []).map(function (place) { return place.name; }).join('、');
+      var dining = (day.restaurants || []).map(function (item) { return item.meal + ': ' + item.name; }).join(' → ');
+      if (dining) places += (places ? ' → ' : '') + dining;
       return 'Day ' + day.day + ' · ' + day.region_name + ' · ' + day.theme + (places ? ' · ' + places : '');
     }).join('\n');
   }
@@ -454,6 +489,7 @@
     var dayHtml = days.map(function (day) {
       var locked = !!day.locked;
       var places = (day.places || []).map(function (place) { return '<a class="bali-professional-place" href="' + esc(place.maps_url || place.official_url || '#') + '" target="_blank" rel="noopener noreferrer" title="' + esc(l.liveCheck) + '">' + esc(place.name) + ' <span class="fa fa-external-link" aria-hidden="true"></span></a>'; }).join('');
+      places += (day.restaurants || []).map(function(item){return '<a class="bali-professional-place" href="'+esc(item.maps_url)+'" target="_blank" rel="noopener noreferrer">'+esc(item.name)+'</a>';}).join('');
       var transfer = day.transfer_estimate ? '<p class="bali-professional-transfer"><span class="fa fa-road" aria-hidden="true"></span><strong>' + esc(l.transferEstimate) + '</strong> · ' + esc(day.transfer_estimate) + '</p>' : '';
       return '<article class="bali-professional-day' + (locked ? ' is-locked' : '') + '"><span class="bali-professional-day-number">' + esc(day.day) + '</span><div class="bali-professional-day-head"><strong>' + esc(fill(l.day, { n:day.day })) + ' · ' + esc(day.region_name) + '</strong>' + (locked ? '<span>' + esc(l.locked) + '</span>' : (unlocked ? '' : '<span>' + esc(l.preview) + '</span>')) + '</div><p>' + esc(day.theme) + '</p>' + (locked ? '<div class="bali-professional-lock-note"><span class="fa fa-lock"></span> ' + esc(l.lockedNote) + '</div>' : transfer + '<div class="bali-professional-places">' + (places || '<span class="bali-professional-place">' + esc(l.routeBasis) + '</span>') + '</div><p class="bali-professional-live-note">' + esc(day.route_note || l.routeBasis) + '</p>') + '</article>';
     }).join('');
@@ -624,6 +660,13 @@
     loadPayPalConfig();
     state.profile = readProfile();
     if (state.profile) loadRoute(state.profile, state.routeId); else renderEmpty();
+    window.addEventListener('wm:bali-extension-selection', function (event) {
+      state.pendingExtensions = Array.isArray(event.detail.extensionIds) ? event.detail.extensionIds.slice(0,3) : [];
+      state.pendingRouteId = event.detail.routeId;
+      // Selection is a draft. Never mutate an unlocked entitlement or spend an adjustment here.
+      if (!state.response) { state.routeId = event.detail.routeId; renderEmpty(); }
+      else { state.editing = true; renderResult(); }
+    });
     window.addEventListener('wm:bali-route-selected', function (event) {
       var routeId = String(event.detail && event.detail.routeId || '').toUpperCase();
       if (!/^R[1-6]$/.test(routeId)) return;

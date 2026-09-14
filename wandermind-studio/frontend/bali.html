@@ -676,6 +676,15 @@
       .footer-contact-line .fa { color: #fcbf1e !important; width: 18px; text-align: center; flex-shrink: 0; font-size: 15px; }
       .footer-contact-line a { color: #ddd; }
       .footer-contact-line a:hover { color: #fcbf1e; }
+      .bali-extension-section { margin:24px 0; padding:20px; border:1px solid var(--border-color, #d8e4df); border-radius:16px; }
+      .bali-extension-section h4 { font-size:20px; margin-bottom:8px; }
+      .bali-extension-section > p { font-size:14px; line-height:1.6; }
+      .bali-extension-card { padding:16px 0; border-bottom:1px solid var(--border-color, #d8e4df); }
+      .bali-extension-card p { margin:6px 0 12px; font-size:14px; }
+      .bali-extension-card img { display:block; width:100%; height:180px; object-fit:cover; border-radius:10px; margin:0 0 12px; }
+      .bali-extension-card button { min-height:44px; white-space:normal; }
+      .bali-extension-card button:focus-visible { outline:3px solid #be9000; outline-offset:3px; }
+      @media(max-width:575px) { .bali-extension-section { padding:16px; } .bali-extension-card button { width:100%; } }
     </style>
     <link rel="stylesheet" href="assets/css/wm-ambient-hero.css?v=20260827a1">
   </head>
@@ -696,6 +705,7 @@
             <li class="nav-item"><a class="nav-link" href="about.html" data-i18n="navAbout">About</a></li>
             <li class="nav-item"><a class="nav-link" href="services.html" data-i18n="navExplore">Explore</a></li>
             <li class="nav-item active"><a class="nav-link bali-link" href="bali.html" data-i18n="navBali">Bali</a></li>
+            <li class="nav-item"><a class="nav-link" id="bali-food-nav" href="dining.html">Food &amp; Dining</a></li>
             <li class="nav-item"><a class="nav-link ai-tool-link" href="ai-tool.html" data-i18n="navAITool">AI Tool</a></li>
             <li class="nav-item"><a class="nav-link" href="contact.html" data-i18n="navContact">Contact</a></li>
           </ul>
@@ -854,6 +864,7 @@
             <button class="bali-filter" type="button" data-filter-kind="tag" data-filter="golden-hour" aria-pressed="false" data-i18n="baliTagGoldenHour">Golden hour</button>
             <button class="bali-filter" type="button" data-filter-kind="tag" data-filter="adventure" aria-pressed="false" data-i18n="baliTagAdventure">Adventure</button>
             <button class="bali-filter" type="button" data-filter-kind="tag" data-filter="documentary" aria-pressed="false" data-i18n="baliTagDocumentary">Documentary</button>
+            <button class="bali-filter" type="button" data-filter-kind="tag" data-filter="food-dining" aria-pressed="false" data-food-album-label>Food & Dining</button>
           </div>
         </div>
         <div class="bali-filter-sheet-actions">
@@ -1116,6 +1127,8 @@
   applyResponsiveState(false);
 })();
 </script>
+<script src="assets/js/bali-itinerary.js?v=20260913p2"></script>
+<script src="assets/js/bali-food-copy.js?v=20260913p2"></script>
 <script>
 (function () {
   var grid = document.getElementById('bali-route-grid');
@@ -1123,6 +1136,9 @@
   var regions = {};
   var routes = [];
   var pois = [];
+  var extensionCatalog = { extensions:[], pois:[] };
+  var foodCatalog = [];
+  var itineraryEngine = window.WMBaliItinerary;
   var poiMedia = {};
   var poiMediaState = 'loading';
   var activeId = 'R1';
@@ -1322,7 +1338,7 @@
 
   function openPoiPicker(route, plan, dayIndex, trigger) {
     var usedPoiIds = new Set(plan.days.flatMap(function (day) { return day.place_ids || []; }));
-    var candidates = pois.filter(function (poi) { return poiIsAvailable(poi) && poi.region_id === plan.days[dayIndex].region_id && !usedPoiIds.has(poi.id); });
+    var candidates = itineraryEngine.candidates(plan.days[dayIndex], pois, Array.from(usedPoiIds), extensionCatalog);
     if (!candidates.length || !routePicker) return;
     activePickerContext = { route:route, plan:plan, dayIndex:dayIndex, trigger:trigger, candidates:candidates, selectedPoiId:null };
     window.clearTimeout(routePickerHideTimer);
@@ -1479,7 +1495,10 @@
 
   function routePlan(route) {
     var saved = routePlans[route.id];
-    var outline = route.free_outline || [];
+    var selectedExtensions = itineraryEngine.selected(extensionCatalog, route.id, saved && saved.extension_ids);
+    var outline = (route.free_outline || []).concat(selectedExtensions.map(function (item) {
+      return { region_id:item.region_id, theme:item.name, extension_id:item.id };
+    }));
     if (!saved || saved.route_id !== route.id ||
         !Array.isArray(saved.days) || saved.days.length !== outline.length ||
         !saved.days.every(function (day) {
@@ -1512,7 +1531,8 @@
     var cleanDays = saved.days.map(function (day, index) {
       var fallback = outline[index] || {};
       var regionId = day.region_id;
-      return {
+      var extension = selectedExtensions.find(function (item) { return item.id === day.extension_id; });
+      var cleanDay = {
         region_id: regionId,
         theme: day.theme || fallback.theme,
         place_ids: Array.from(new Set((day.place_ids || []).filter(function (id) {
@@ -1522,8 +1542,21 @@
           return true;
         })))
       };
+      if (extension) {
+        cleanDay.extension_id = extension.id;
+        cleanDay.node_id = extension.node_id;
+        var allowed = extension.poi_ids.concat(extension.candidate_poi_ids || []);
+        cleanDay.place_ids = cleanDay.place_ids.filter(function (id) { return allowed.indexOf(id) >= 0; });
+      }
+      cleanDay.food_stops = (Array.isArray(day.food_stops) ? day.food_stops : []).filter(function (stop) {
+        if(!foodCatalog.length) return true; // Do not erase saved choices when the optional catalog fails to load.
+        var restaurant = foodCatalog.find(function (item) { return item.id === stop.restaurant_id; });
+        return restaurant && itineraryEngine.foodCandidates(cleanDay, [restaurant], {meal:stop.meal}).length;
+      }).slice(0, 3);
+      return cleanDay;
     });
     var cleanPlan = { route_id: route.id, days: cleanDays };
+    if (selectedExtensions.length) cleanPlan.extension_ids = selectedExtensions.map(function (item) { return item.id; });
     if (JSON.stringify(saved) !== JSON.stringify(cleanPlan)) {
       routePlans[route.id] = cleanPlan;
       try { localStorage.setItem(planStorageKey, JSON.stringify(routePlans)); } catch (_) {}
@@ -1547,6 +1580,10 @@
         var poi = poiById(id);
         return poi ? poiCanonicalName(poi) : '';
       }).filter(Boolean);
+      (day.food_stops || []).forEach(function (stop) {
+        var item = foodCatalog.find(function (food) { return food.id === stop.restaurant_id; });
+        if (item) names.push((window.WMBaliFoodCopy[language()] || window.WMBaliFoodCopy.en)[stop.meal] + ': ' + item.name);
+      });
       return ui.day(index + 1) +
         ' · ' + day.region_id + ' · ' + text(day.theme) + (names.length ? ' · ' + names.join(' → ') : '');
     });
@@ -1580,6 +1617,8 @@
       route_name: text(route.name),
       destination: 'bali',
       days: plan.days,
+      extension_ids: plan.extension_ids || [],
+      dining_stops: itineraryEngine.diningStops(plan),
       place_verification: placeVerification,
       verification_summary: verificationSummary,
       updated_at: new Date().toISOString()
@@ -1696,6 +1735,7 @@
     var relevantIds = Array.from(new Set(coreIds.concat(optionalIds)));
     var coreLatLngs = coreIds.map(regionLatLng).filter(Boolean);
     var allLatLngs = relevantIds.map(regionLatLng).filter(Boolean);
+    var modulePoints = itineraryEngine.selected(extensionCatalog,route.id,plan.extension_ids).filter(function(item){return item.map_reference;});
     if (!coreLatLngs.length || allLatLngs.length !== relevantIds.length) { loadRouteMapFallback(canvas); return; }
 
     var reducedMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -1754,6 +1794,19 @@
       marker.addTo(map);
       activeLeafletMarkers[id] = marker;
     });
+    modulePoints.forEach(function (item) {
+      var geo=item.map_reference, point=[geo.lat,geo.lng]; allLatLngs.push(point);
+      var referenceLabels={zh:'观景参考点，虚线非导航路线',en:'Viewpoint reference; dashed line is not navigation',ja:'展望の参考点。破線はナビ経路ではありません',ko:'전망 참고점. 점선은 내비게이션 경로가 아닙니다',id:'Titik referensi panorama; garis putus bukan navigasi'};
+      var label=text(item.name)+' · '+referenceLabels[language()];
+      var shortLabels={zh:['西','东'],en:['W','E'],ja:['西','東'],ko:['서','동'],id:['B','T']};
+      var shortLabel=shortLabels[language()][item.id==='penida-west'?0:1];
+      var icon=window.L.divIcon({className:'wm-leaflet-marker-shell',html:'<span class="wm-leaflet-marker optional">'+shortLabel+'</span>',iconSize:[44,44],iconAnchor:[22,22]});
+      var marker=window.L.marker(point,{icon:icon,keyboard:true,title:label,alt:label}).bindTooltip(escapeHtml(label));
+      marker.on('click',function(){var index=plan.days.findIndex(function(day){return day.extension_id===item.id;});if(index>=0)setActiveDay(plan,index);});
+      marker.addTo(map); activeLeafletMarkers[item.id]=marker;
+      var sanur=regionLatLng('G3');
+      if(sanur)window.L.polyline([sanur,point],{color:'#167ea1',weight:3,dashArray:'6 8',opacity:.8}).addTo(map);
+    });
     map.fitBounds(window.L.latLngBounds(allLatLngs), { padding:[8,8], maxZoom:9 });
     syncLeafletActiveMarker((plan.days[activeDayIndex] || {}).region_id);
     tiles.once('load', function () {
@@ -1787,9 +1840,7 @@
           (statusLabel ? '<span class="bali-poi-status" data-status="' + escapeHtml(statusKey) + '">' + escapeHtml(statusLabel) + '</span>' : '') +
           '<button type="button" data-remove-place="' + escapeHtml(id) + '" data-day-index="' + index + '" aria-label="' + escapeHtml(removeLabel) + '">×</button></span>';
       }).join('');
-      var candidates = pois.filter(function (poi) {
-        return poiIsAvailable(poi) && poi.region_id === day.region_id && !usedPoiIds.has(poi.id);
-      });
+      var candidates = itineraryEngine.candidates(day, pois, Array.from(usedPoiIds), extensionCatalog);
       var labels = {
         en:{none:'No more places are available in this area yet',browse:function(count){return 'Browse ' + count + ' places in this area';},empty:'No specific place selected',up:'Move one day earlier',down:'Move one day later',aria:'Browse places to add',day:function(number){ return 'Day ' + number; }},
         zh:{none:'此区域暂时没有更多可添加地点',browse:function(count){return '查看同区域 ' + count + ' 个地点';},empty:'尚未选择具体地点',up:'前移一天',down:'后移一天',aria:'浏览可加入的地点',day:function(number){ return '第 ' + number + ' 天'; }},
@@ -1809,7 +1860,12 @@
           '<button class="bali-day-icon-btn" type="button" data-move-day="1" data-day-index="' + index + '" aria-label="' + labels.down + '"' + (index === plan.days.length - 1 ? ' disabled' : '') + '><span class="fa fa-arrow-down"></span></button>' +
         '</div>' +
         '<div class="bali-day-places">' + (placeChips || '<span class="bali-day-empty">' + labels.empty + '</span>') + '</div>' +
+        '<div class="bali-day-places">' + (day.food_stops || []).map(function (stop) {
+          var restaurant = foodCatalog.find(function (item) { return item.id === stop.restaurant_id; });
+          return restaurant ? '<span class="bali-day-place">' + escapeHtml((window.WMBaliFoodCopy[language()] || window.WMBaliFoodCopy.en)[stop.meal] + ' · ' + restaurant.name) + '</span>' : '';
+        }).join('') + '</div>' +
         '<div class="bali-day-add">' +
+          '<a class="bali-day-select" href="dining.html?route=' + encodeURIComponent(route.id) + '&day=' + index + '&lang=' + language() + '">' + escapeHtml((window.WMBaliFoodCopy[language()] || window.WMBaliFoodCopy.en).add) + '</a>' +
           '<button class="bali-day-select bali-place-picker-trigger" type="button" data-open-place-picker="' + index + '" aria-label="' + escapeHtml(labels.aria) + '" aria-describedby="' + feedbackId + '"' + (!candidates.length ? ' disabled' : '') + '><span>' + escapeHtml(candidates.length ? labels.browse(candidates.length) : labels.none) + '</span><span class="fa fa-picture-o" aria-hidden="true"></span></button>' +
         '</div>' +
         '<p class="bali-day-feedback' + (feedback && feedback.tone === 'error' ? ' is-error' : '') + '" id="' + feedbackId + '" role="status" aria-live="polite">' + (feedback ? escapeHtml(feedback.message) : '') + '</p>' +
@@ -1832,10 +1888,23 @@
     detail.querySelectorAll('.bali-map-region').forEach(function (point) {
       point.classList.toggle('day-active', point.dataset.regionId === activeRegionId);
     });
-    syncLeafletActiveMarker(activeRegionId);
+    syncLeafletActiveMarker((plan.days[activeDayIndex] || {}).extension_id || activeRegionId);
   }
 
   function attachRouteEditor(route, plan) {
+    detail.querySelectorAll('[data-extension-add]').forEach(function (button) {
+      button.addEventListener('click', function () {
+        var next = itineraryEngine.append(plan, extensionCatalog, button.dataset.extensionAdd);
+        activeDayIndex = next.days.length - 1;
+        saveRoutePlan(route, next); persistRouteHandoff(route, next); renderDetail();
+      });
+    });
+    detail.querySelectorAll('[data-extension-remove]').forEach(function (button) {
+      button.addEventListener('click', function () {
+        var next = itineraryEngine.remove(plan, button.dataset.extensionRemove);
+        saveRoutePlan(route, next); persistRouteHandoff(route, next); renderDetail();
+      });
+    });
     detail.querySelectorAll('[data-select-day]').forEach(function (button) {
       button.addEventListener('click', function () { setActiveDay(plan, Number(button.dataset.selectDay)); });
     });
@@ -1888,9 +1957,38 @@
     detail.querySelectorAll('[data-route-handoff]').forEach(function (link) {
       link.addEventListener('click', function () { persistRouteHandoff(route, plan); });
     });
+    detail.querySelectorAll('[data-professional-route]').forEach(function (link) {
+      link.addEventListener('click', function () {
+        persistRouteHandoff(route, plan);
+        window.dispatchEvent(new CustomEvent('wm:bali-extension-selection', {
+          detail:{routeId:route.id, extensionIds:plan.extension_ids || []}
+        }));
+      });
+    });
   }
 
+  function renderExtensions(route, plan) {
+    var copy = {
+      zh:['佩妮达扩展','每个模块增加独立一天。西线、东线与浮潜不自动挤在同一天。','加入一天','移除此扩展','Sanur 出发；船班、到达码头与海况出发前确认。'],
+      en:['Penida extensions','Each module adds a separate day. West, east and snorkeling are not packed into one day.','Add a day','Remove extension','Depart from Sanur; confirm sailing, arrival port and sea conditions before travel.'],
+      ja:['ペニダ追加プラン','各プランに別日を追加。西部・東部・海の体験を1日に詰め込みません。','1日追加','追加を削除','Sanur発。船便・到着港・海況は出発前に確認。'],
+      ko:['페니다 추가 일정','모듈마다 별도 하루를 추가합니다. 서부·동부·스노클링을 하루에 몰아넣지 않습니다.','하루 추가','추가 일정 삭제','Sanur 출발. 운항·도착 항구·해황은 출발 전 확인하세요.'],
+      id:['Tambahan Penida','Setiap modul menambah satu hari tersendiri. Barat, timur dan snorkeling tidak dipadatkan dalam sehari.','Tambah sehari','Hapus tambahan','Berangkat dari Sanur; konfirmasi jadwal, pelabuhan tujuan dan kondisi laut sebelum berangkat.']
+    }[language()];
+    var modules = itineraryEngine.extensions(extensionCatalog, route.id);
+    if (!modules.length) return '';
+    return '<section class="bali-extension-section"><h4>' + escapeHtml(copy[0]) + '</h4><p>' + escapeHtml(copy[1]) + '</p>' +
+      modules.map(function (item) {
+        var chosen = (plan.extension_ids || []).indexOf(item.id) >= 0;
+        var poi=poiById(item.poi_ids[0]), media=poi && poiMedia[poi.id];
+        return '<article class="bali-extension-card">'+(media?pickerMediaMarkup(media,poi,pickerUiCopy(),'thumbnail')+pickerAttributionMarkup(media,pickerUiCopy()):'')+'<strong>' + escapeHtml(text(item.name)) + '</strong><p>' + escapeHtml(text(item.summary)) +
+          '</p><button type="button" class="bali-btn bali-route-secondary" data-extension-' + (chosen ? 'remove' : 'add') + '="' + item.id + '">' +
+          escapeHtml(copy[chosen ? 3 : 2]) + '</button></article>';
+      }).join('') + '<p class="bali-editor-note">' + escapeHtml(copy[4]) + '</p></section>';
+  }
   function renderDetail() {
+    var foodNav=document.getElementById('bali-food-nav');
+    if(foodNav) {foodNav.textContent=(window.WMBaliFoodCopy[language()] || window.WMBaliFoodCopy.en).title; foodNav.href='dining.html?lang='+language();}
     var route = routes.find(function (item) { return item.id === activeId; }) || routes[0];
     if (!route) return;
     var shouldAnimateRouteChange = lastRenderedRouteId !== null && lastRenderedRouteId !== route.id;
@@ -1922,11 +2020,12 @@
           '<div class="bali-region-path" aria-label="' + escapeHtml(words.path) + '">' + path + '</div>' +
           '<div class="bali-poi-notice" role="note"><span class="fa fa-info-circle" aria-hidden="true"></span><span>' + ui.poiNotice + '</span></div>' +
           '<div class="bali-day-outline" aria-label="' + words.days + '">' + outline + '</div>' +
+          renderExtensions(route, plan) +
           '<div class="bali-editor-note"><span><span class="fa fa-check-circle"></span> ' + words.note + '</span>' +
             '<button class="bali-day-reset" type="button" data-reset-route>' + words.reset + '</button></div>' +
           '<div class="bali-route-detail-actions">' +
             '<a class="bali-btn bali-btn-primary" data-route-handoff href="ai-tool.html?' + params.toString() + '">' + words.adjust + '</a>' +
-             '<a class="bali-btn bali-route-secondary" href="bali.html?route=' + encodeURIComponent(route.id) + '#professional-planner" data-professional-route="' + escapeHtml(route.id) + '">' + words.professional + '</a>' +
+             '<a class="bali-btn bali-route-secondary" href="#professional-planner" data-professional-route="' + escapeHtml(route.id) + '">' + words.professional + '</a>' +
             '<a class="bali-btn bali-route-secondary" data-route-handoff href="find-driver.html?route=' + encodeURIComponent(route.id) + '">' + words.driver + '</a>' +
           '</div>' +
         '</div>' +
@@ -1961,7 +2060,7 @@
 
   function useData(data) {
     routes = data.routes || [];
-    pois = data.pois || [];
+    pois = (data.pois || []).concat(extensionCatalog.pois || []);
     loadRoutePlans();
     (data.regions || []).forEach(function (region) { regions[region.id] = region; });
     var requestedRoute = new URLSearchParams(window.location.search).get('route');
@@ -2015,9 +2114,11 @@
   Promise.all([
     fetch('assets/data/bali-travel-data.json?v=20260911p2').then(function (response) { if (!response.ok) throw new Error('HTTP ' + response.status); return response.json(); }),
     fetch('assets/data/image-publish-manifest.json?v=20260911p2').then(function (response) { if (!response.ok) throw new Error('HTTP ' + response.status); return response.json(); }).catch(function () { poiMediaState = 'failed'; return {images:[]}; }),
-    fetch('assets/data/poi-media-catalog.json?v=20260911p1').then(function (response) { if (!response.ok) throw new Error('HTTP ' + response.status); return response.json(); }).catch(function () { poiMediaState = 'failed'; return {images:[]}; })
+    fetch('assets/data/poi-media-catalog.json?v=20260911p1').then(function (response) { if (!response.ok) throw new Error('HTTP ' + response.status); return response.json(); }).catch(function () { poiMediaState = 'failed'; return {images:[]}; }),
+    fetch('assets/data/bali-extensions.json?v=20260913p1').then(function (response) { if (!response.ok) throw new Error('HTTP ' + response.status); return response.json(); }),
+    fetch('assets/data/bali-food.json?v=20260913p1').then(function (response) { if (!response.ok) throw new Error('HTTP ' + response.status); return response.json(); }).catch(function () { return {restaurants:[]}; })
   ])
-    .then(function (result) { buildPoiMedia([result[1], result[2]]); if (poiMediaState !== 'failed') poiMediaState = 'ready'; useData(result[0]); })
+    .then(function (result) { extensionCatalog = result[3]; foodCatalog = result[4].restaurants || []; buildPoiMedia([result[1], result[2]]); if (poiMediaState !== 'failed') poiMediaState = 'ready'; useData(result[0]); })
     .catch(function () {
       detail.innerHTML = '<p>' + routeUiCopy().loadError + '</p>';
     });
@@ -2201,7 +2302,7 @@
   }
   Promise.all([
     fetch('assets/data/bali-travel-data.json?v=20260911p2').then(function(response) { if (!response.ok) throw new Error('HTTP ' + response.status); return response.json(); }),
-    fetch('assets/data/image-publish-manifest.json?v=20260911p2').then(function(response) { if (!response.ok) throw new Error('HTTP ' + response.status); return response.json(); })
+    fetch('assets/data/image-publish-manifest.json?v=20260913p2').then(function(response) { if (!response.ok) throw new Error('HTTP ' + response.status); return response.json(); })
   ])
     .then(function(result) {
       var data = result[0];
@@ -2227,6 +2328,8 @@
   };
   function galleryFilterCopy() { return GALLERY_FILTER_COPY[lang()] || GALLERY_FILTER_COPY.en; }
   function updateGalleryFilterSheetCopy() {
+    var albumLabels={zh:'美食专辑',en:'Food & Dining',ja:'食のアルバム',ko:'맛집 앨범',id:'Album kuliner'};
+    document.querySelectorAll('[data-food-album-label]').forEach(function(button){button.textContent=albumLabels[lang()] || albumLabels.en;});
     var copy = galleryFilterCopy();
     var count = galleryFilters.tag === 'all' ? 0 : 1;
     var openLabel = document.querySelector('[data-gallery-filter-open-label]');
@@ -2382,6 +2485,11 @@
     ko:{'nature-walk':'자연 산책','ocean-beach':'해안과 해변','rice-terrace-countryside':'계단식 논과 전원','market-craft':'시장과 공예','heritage-architecture':'문화유산과 건축'},
     id:{'nature-walk':'Jalan alam','ocean-beach':'Pesisir & pantai','rice-terrace-countryside':'Sawah terasering','market-craft':'Pasar & kerajinan','heritage-architecture':'Warisan & arsitektur'}
   };
+  Object.keys(PORTFOLIO_SUBCATEGORY_LABELS).forEach(function(language){
+    var copy={zh:['海上体验','美食'],en:['Marine experience','Food & Dining'],ja:['海上体験','食'],ko:['해양 체험','음식'],id:['Pengalaman laut','Kuliner']}[language];
+    PORTFOLIO_SUBCATEGORY_LABELS[language]['marine-experience']=copy[0];
+    PORTFOLIO_SUBCATEGORY_LABELS[language]['food-dining']=copy[1];
+  });
   function localizedPortfolioValue(value) {
     value = value || {};
     return value[lang()] || value.en || value.zh || Object.keys(value).map(function(key){return value[key];})[0] || '';
@@ -2456,7 +2564,7 @@
       document.getElementById('bali-gallery-grid').prepend(fragment);
       applyGalleryFilters();
     })
-    .catch(function(){ dynamicGalleryCopy = {}; dynamicGalleryShots = []; });
+    .catch(function(){ /* Keep the approved static library when the optional live Portfolio API fails. */ });
   document.addEventListener('wm:language-change', function() {
     dynamicGalleryShots.forEach(refreshDynamicGalleryShot);
     applyGalleryFilters();
@@ -2467,7 +2575,7 @@
   document.addEventListener('wm:language-change', function(){ if (activeShot) renderModal(); });
 })();
 </script>
-<script src="assets/js/bali-professional.js?v=preupload20260911"></script>
+<script src="assets/js/bali-professional.js?v=20260913p2"></script>
 <script src="assets/js/marketing-events.js?v=20260831p3"></script>
 <script src="assets/js/global-auth.js?v=p53"></script>
 </body>

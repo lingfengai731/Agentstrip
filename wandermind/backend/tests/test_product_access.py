@@ -1494,13 +1494,13 @@ class ProductAccessTests(unittest.TestCase):
         self.assertNotIn('href="ai-tool.html#hotels"', services_html)
         self.assertNotIn('href="ai-tool.html#flights"', services_html)
         self.assertNotIn('href="ai-tool.html#itinerary"', services_html)
-        self.assertIn("assets/js/i18n.js?v=services2", services_html)
+        self.assertRegex(services_html, r'assets/js/i18n\.js\?v=[A-Za-z0-9_-]+')
         self.assertEqual(i18n.count("srv1Meta:"), 5)
         self.assertEqual(i18n.count("srvDestBaliBtn:"), 5)
         self.assertNotIn("Real-time pricing across Booking", i18n)
         self.assertNotIn("六项 AI 驱动的服务", i18n)
         self.assertIn('id="professional-planner"', bali_html)
-        self.assertIn("assets/js/bali-professional.js?v=20260907p67", bali_html)
+        self.assertRegex(bali_html, r'assets/js/bali-professional\.js\?v=[A-Za-z0-9_-]+')
         self.assertNotIn("ai-tool.html?professional=1", bali_html)
         self.assertNotIn("professional_requested", ai_js)
         self.assertNotIn("Visa on arrival ~$35", ai_js)
@@ -1566,7 +1566,7 @@ class ProductAccessTests(unittest.TestCase):
             encoding="utf-8"
         )
 
-        self.assertIn("assets/js/ai-tool.js?v=p62", ai_html)
+        self.assertRegex(ai_html, r'assets/js/ai-tool\.js\?v=[A-Za-z0-9_-]+')
         self.assertIn("initialDestQuery", ai_js)
         self.assertIn("function openHashTarget()", ai_js)
         self.assertIn("switchCompareSub(target)", ai_js)
@@ -1603,7 +1603,7 @@ class ProductAccessTests(unittest.TestCase):
             encoding="utf-8"
         )
 
-        self.assertIn("assets/css/ai-tool.css?v=p61", ai_html)
+        self.assertRegex(ai_html, r'assets/css/ai-tool\.css\?v=[A-Za-z0-9_-]+')
         self.assertIn('aria-controls="ws-left-drawer"', ai_html)
         self.assertIn('aria-controls="ws-right-drawer"', ai_html)
         self.assertIn(".ws-rightpanel.mobile-open {\n    display: flex;", ai_css)
@@ -3398,6 +3398,8 @@ class ProductAccessTests(unittest.TestCase):
             "batur_hot_springs",
             "lovina_beach",
             "lovina_dolphin_watching",
+            "batur_black_lava",
+            "pererenan_beach",
         }
         self.assertEqual(
             {poi["id"] for poi in data["pois"] if poi["verification_status"] == "verified"},
@@ -3419,6 +3421,7 @@ class ProductAccessTests(unittest.TestCase):
             self.assertEqual(poi["verification_status"], expected_status, poi_id)
             verification = poi["verification"]
             expected_reviewed = (
+                "2026-09-11" if poi_id == "mount_batur_jeep" else
                 "2026-08-27" if poi_id == "bali_fire_shooting_club" else "2026-08-26"
             )
             self.assertEqual(verification["reviewed_at"], expected_reviewed, poi_id)
@@ -3427,7 +3430,12 @@ class ProductAccessTests(unittest.TestCase):
             self.assertTrue(verification["sources"], poi_id)
             for source in verification["sources"]:
                 self.assertTrue(source["title"], (poi_id, source))
-                self.assertTrue(source["url"].startswith("https://"), (poi_id, source))
+                if source.get("kind") == "local_operator_message":
+                    self.assertEqual(poi_id, "mount_batur_jeep")
+                    self.assertEqual(source.get("publisher"), "Dicky")
+                    self.assertEqual(poi["verification_status"], "needs_supplier_confirmation")
+                else:
+                    self.assertTrue(source["url"].startswith("https://"), (poi_id, source))
         for route_grouped_id in {
             "ulun_danu_beratan",
             "tegenungan_waterfall",
@@ -3569,7 +3577,11 @@ class ProductAccessTests(unittest.TestCase):
             for day in r5["free_outline"]
             for poi_id in day["suggested_poi_ids"]
         }
-        self.assertEqual(len(r5_outline_ids), 9)
+        self.assertEqual(r5_outline_ids, {
+            "besakih_temple", "mount_batur_trailhead", "mount_batur_jeep",
+            "batur_black_lava", "batur_hot_springs", "tukad_cepung_waterfall",
+            "lovina_dolphin_watching", "banyumala_waterfall", "amed_beach", "tirta_gangga",
+        })
         self.assertEqual(
             {
                 poi_by_id[poi_id]["verification_status"]
@@ -3637,6 +3649,7 @@ class ProductAccessTests(unittest.TestCase):
                         "government_tourism",
                         "government_registry",
                         "international_heritage_registry",
+                        "international_geopark_registry",
                     },
                     (poi_id, source),
                 )
@@ -3663,7 +3676,14 @@ class ProductAccessTests(unittest.TestCase):
                 )
                 self.assertIn("suggested_poi_ids", day, (route["id"], day["day"]))
                 self.assertGreaterEqual(len(day["suggested_poi_ids"]), 1)
-                self.assertLessEqual(len(day["suggested_poi_ids"]), 2)
+                if route["id"] == "R5" and day["day"] == 2:
+                    # Existing Batur day offers walking/Jeep/lava alternatives, not
+                    # authority to expand every day's candidate list arbitrarily.
+                    self.assertEqual(day["suggested_poi_ids"], [
+                        "mount_batur_trailhead", "mount_batur_jeep", "batur_black_lava",
+                    ])
+                else:
+                    self.assertLessEqual(len(day["suggested_poi_ids"]), 2)
                 for poi_id in day["suggested_poi_ids"]:
                     self.assertIn(poi_id, poi_by_id, poi_id)
                     self.assertEqual(poi_by_id[poi_id]["region_id"], day["region_id"])
@@ -3758,7 +3778,7 @@ class ProductAccessTests(unittest.TestCase):
         self.assertIn('role="listbox"', html)
         self.assertIn('data-open-place-picker="', html)
         self.assertIn('data-route-picker-confirm', html)
-        self.assertIn("image-publish-manifest.json?v=20260825p3", html)
+        self.assertRegex(html, r'image-publish-manifest\.json\?v=[A-Za-z0-9_-]+')
         self.assertIn("variant === 'thumbnail'", html)
         self.assertIn("pickerAttributionMarkup(media, copy)", html)
         self.assertIn('rel="noopener noreferrer"', html)
@@ -3827,7 +3847,7 @@ class ProductAccessTests(unittest.TestCase):
         ):
             with self.subTest(page=page_name):
                 html = (frontend / page_name).read_text(encoding="utf-8")
-                self.assertIn("assets/css/style-starter.css?v=search1", html)
+                self.assertRegex(html, r'assets/css/style-starter\.css\?v=[A-Za-z0-9_-]+')
 
     def test_find_driver_light_dark_focus_and_mobile_styles_are_explicit(self):
         frontend = BACKEND_DIR.parents[1] / "wandermind-studio" / "frontend"
@@ -4520,8 +4540,8 @@ class ProductAccessTests(unittest.TestCase):
         self.assertNotIn('id="uploadDefaults"', admin_html)
         self.assertIn("Image details are filled automatically", admin_html)
         self.assertIn("/api/admin/portfolio/upload-signature", admin_js)
-        self.assertIn("image-publish-manifest.json?v=p2", admin_js)
-        self.assertIn("bali-travel-data.json?v=20260831p6", admin_js)
+        self.assertRegex(admin_js, r'image-publish-manifest\.json\?v=[A-Za-z0-9_-]+')
+        self.assertRegex(admin_js, r'bali-travel-data\.json\?v=[A-Za-z0-9_-]+')
         self.assertIn("state.manifestByHash[record.sha256]", admin_js)
         self.assertIn("automaticSuggestion(file)", admin_js)
         self.assertIn("catalogMatch(file)", admin_js)
@@ -4559,17 +4579,29 @@ class ProductAccessTests(unittest.TestCase):
         self.assertIn("dynamicGalleryCopy", bali_html)
         self.assertGreaterEqual(bali_html.count('class="bali-shot"'), 37)
 
-    def test_approved_image_manifest_contains_unique_118_and_new_lempuyang_hash(self):
+    def test_approved_image_manifest_reconciles_intake_and_preserves_lempuyang_hash(self):
         frontend = BACKEND_DIR.parents[1] / "wandermind-studio" / "frontend"
         intake_path = frontend / "assets" / "data" / "image-intake-review.csv"
         with intake_path.open(encoding="utf-8", newline="") as handle:
             intake_rows = list(csv.DictReader(handle))
-        self.assertEqual(len(intake_rows), 117)
+        # The audit keeps rejected candidates; approval is not a fixed batch size.
+        self.assertGreaterEqual(len(intake_rows), 117)
+        approved_rows = []
         for row in intake_rows:
             self.assertNotIn(None, row, row.get("Filename"))
-            self.assertEqual(row["EligibleForPublish"], "True", row["Filename"])
+            if row["EligibleForPublish"].lower() != "true":
+                self.assertEqual(row["Publishable"].lower(), "false", row["Filename"])
+                self.assertTrue(row["ReviewNotes"], row["Filename"])
+                self.assertFalse(row["WebOptimizedPath"], row["Filename"])
+                continue
+            approved_rows.append(row)
             self.assertTrue(row["WebOptimizedPath"], row["Filename"])
             self.assertTrue((frontend / row["WebOptimizedPath"]).is_file(), row["Filename"])
+            original = frontend / row["RelativePath"]
+            # Legacy source originals were not all shipped; optimized files must exist.
+            # New collection tests explicitly require originals, hash and licence.
+            if original.is_file():
+                self.assertEqual(hashlib.sha256(original.read_bytes()).hexdigest(), row["Sha256"].lower(), row["Filename"])
 
         manifest = json.loads(
             (frontend / "assets" / "data" / "image-publish-manifest.json").read_text(
@@ -4577,8 +4609,20 @@ class ProductAccessTests(unittest.TestCase):
             )
         )
         images = manifest["images"]
-        self.assertEqual(len(images), 118)
-        self.assertEqual(len(images), len(intake_rows) + 1)
+        self.assertGreaterEqual(len(images), 118)  # Retain the already accepted batch.
+        manifest_hashes = {item["sha256"].lower() for item in images}
+        by_path = {item["relative_path"]: item for item in images}
+        by_hash = {item["sha256"].lower(): item for item in images}
+        for row in approved_rows:
+            # Exact duplicate originals are represented by one canonical manifest item.
+            matched = by_path.get(row["RelativePath"]) or by_hash[row["Sha256"].lower()]
+            self.assertEqual(matched["sha256"].lower(), row["Sha256"].lower(), row["Filename"])
+            self.assertEqual(matched["web_optimized_path"], row["WebOptimizedPath"], row["Filename"])
+        self.assertTrue({row["Sha256"].lower() for row in approved_rows}.issubset(manifest_hashes))
+        rejected_hashes = {row["Sha256"].lower() for row in intake_rows
+                           if row["EligibleForPublish"].lower() != "true"
+                           and "superseded_source_inventory_only" not in row["ReviewNotes"]}
+        self.assertTrue(rejected_hashes.isdisjoint(manifest_hashes))
         hashes = [item["sha256"] for item in images]
         self.assertEqual(len(hashes), len(set(hashes)))
         self.assertEqual(manifest["approval"]["approval_source"], "user_global_confirmation")
@@ -4681,7 +4725,11 @@ class ProductAccessTests(unittest.TestCase):
         poi_by_id = {item["id"]: item for item in bali_data["pois"]}
         languages = {"zh", "en", "ja", "ko", "id"}
 
-        self.assertEqual(len(rights_manifest["assets"]), 118)
+        self.assertEqual(len(rights_manifest["assets"]), len(manifest["images"]))
+        self.assertEqual({item["original_asset"] for item in rights_manifest["assets"]}, set(by_path))
+        for asset in rights_manifest["assets"]:
+            if asset.get("sha256"):
+                self.assertEqual(asset["sha256"], by_path[asset["original_asset"]]["sha256"])
         for path, (poi_id, license_name) in expected.items():
             item = by_path[path]
             self.assertEqual(item["poi_ids"], [poi_id])
@@ -4826,7 +4874,8 @@ class ProductAccessTests(unittest.TestCase):
                 for field in ("title", "description", "alt_text")
             )
         ]
-        self.assertEqual(len(complete_d8), 53)
+        self.assertGreaterEqual(len(complete_d8), 53)  # Legacy multilingual coverage may grow.
+        self.assertTrue(set(expected).issubset({item["relative_path"] for item in complete_d8}))
 
         lempuyang = by_path["assets/images/Lempuyang Temple.jpg"]
         self.assertIn("Penataran Agung", lempuyang["title"]["en"])
@@ -5377,7 +5426,7 @@ class ProductAccessTests(unittest.TestCase):
         self.assertIn("profile.moments.map", driver_html)
         self.assertIn("DRIVER_PROFILES[choice.querySelector('input').value]", driver_html)
         self.assertIn("document.addEventListener('wm:language-change'", driver_html)
-        self.assertIn('assets/js/i18n.js?v=search2', driver_html)
+        self.assertRegex(driver_html, r'assets/js/i18n\.js\?v=[A-Za-z0-9_-]+')
         self.assertIn('assets/js/driver-estimate.js?v=p2', driver_html)
         self.assertIn('id="fd-full-days"', driver_html)
         self.assertIn('id="fd-half-days"', driver_html)

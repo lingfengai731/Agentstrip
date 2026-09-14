@@ -1,0 +1,399 @@
+{
+  "schema_version": 1,
+  "evidence_id": "ev-20260913T130613Z-bali-food-media-callbacks",
+  "task_ref": "bali-extensions-food-20260913",
+  "claim": "Code68ff437 and test repair ea6863c pushed;31 local deterministic browser callbacks,380 Mini contracts and123 backend tests accepted. Native matrix empty after bounded SDK timeout; no expansion production claim.",
+  "source": {
+    "kind": "mixed",
+    "reference": "git:68ff437b3ada7a36982d21d3a70c26281d7d6a58; git:ea6863c4b9ab42648d673e2346d7310d039bf9d0; research/bali-food-official-checks-20260913.json"
+  },
+  "captured_at": "2026-09-13T13:06:13Z",
+  "owner": "codex-main",
+  "status": "verified",
+  "implementation_commit": "68ff437b3ada7a36982d21d3a70c26281d7d6a58",
+  "test_repair_commit": "ea6863c4b9ab42648d673e2346d7310d039bf9d0",
+  "implementation_push_verified": true,
+  "main_last_fetched": "88fc0256868d6491683299a2bf4011331c63c568",
+  "release_state": "task_branch_not_merged_not_deployed",
+  "counts": {
+    "canonical_pois": 66,
+    "new_canonical_pois": 1,
+    "extension_activity_pois": 4,
+    "extensions": 3,
+    "food_records": 50,
+    "eligible_editorial_records": 40,
+    "drafts": 10,
+    "directly_checked_branch_identities": 18,
+    "new_images": 2,
+    "new_images_approved": 2,
+    "new_images_contextually_verified": 2,
+    "new_images_production_published": 0,
+    "manifest_images": 127,
+    "new_storefront_photos": 0
+  },
+  "checks": [
+    {
+      "command": "node tools/test_bali_food_browser.cjs",
+      "result": "31 passed",
+      "surface": "local deterministic Chromium",
+      "matrix": [
+        {
+          "width": 320,
+          "lang": "zh",
+          "count": 12,
+          "overflow": 0,
+          "minControl": 44,
+          "pageErrors": 0
+        },
+        {
+          "width": 320,
+          "lang": "en",
+          "count": 12,
+          "overflow": 0,
+          "minControl": 44,
+          "pageErrors": 0
+        },
+        {
+          "width": 320,
+          "lang": "ja",
+          "count": 12,
+          "overflow": 0,
+          "minControl": 44,
+          "pageErrors": 0
+        },
+        {
+          "width": 320,
+          "lang": "ko",
+          "count": 12,
+          "overflow": 0,
+          "minControl": 44,
+          "pageErrors": 0
+        },
+        {
+          "width": 320,
+          "lang": "id",
+          "count": 12,
+          "overflow": 0,
+          "minControl": 44,
+          "pageErrors": 0
+        },
+        {
+          "width": 390,
+          "lang": "zh",
+          "count": 12,
+          "overflow": 0,
+          "minControl": 44,
+          "pageErrors": 0
+        },
+        {
+          "width": 390,
+          "lang": "en",
+          "count": 12,
+          "overflow": 0,
+          "minControl": 44,
+          "pageErrors": 0
+        },
+        {
+          "width": 390,
+          "lang": "ja",
+          "count": 12,
+          "overflow": 0,
+          "minControl": 44,
+          "pageErrors": 0
+        },
+        {
+          "width": 390,
+          "lang": "ko",
+          "count": 12,
+          "overflow": 0,
+          "minControl": 44,
+          "pageErrors": 0
+        },
+        {
+          "width": 390,
+          "lang": "id",
+          "count": 12,
+          "overflow": 0,
+          "minControl": 44,
+          "pageErrors": 0
+        },
+        {
+          "width": 768,
+          "lang": "zh",
+          "count": 12,
+          "overflow": 0,
+          "minControl": 44,
+          "pageErrors": 0
+        },
+        {
+          "width": 768,
+          "lang": "en",
+          "count": 12,
+          "overflow": 0,
+          "minControl": 44,
+          "pageErrors": 0
+        },
+        {
+          "width": 768,
+          "lang": "ja",
+          "count": 12,
+          "overflow": 0,
+          "minControl": 44,
+          "pageErrors": 0
+        },
+        {
+          "width": 768,
+          "lang": "ko",
+          "count": 12,
+          "overflow": 0,
+          "minControl": 44,
+          "pageErrors": 0
+        },
+        {
+          "width": 768,
+          "lang": "id",
+          "count": 12,
+          "overflow": 0,
+          "minControl": 44,
+          "pageErrors": 0
+        },
+        {
+          "width": 1440,
+          "lang": "zh",
+          "count": 12,
+          "overflow": 0,
+          "minControl": 44,
+          "pageErrors": 0
+        },
+        {
+          "width": 1440,
+          "lang": "en",
+          "count": 12,
+          "overflow": 0,
+          "minControl": 44,
+          "pageErrors": 0
+        },
+        {
+          "width": 1440,
+          "lang": "ja",
+          "count": 12,
+          "overflow": 0,
+          "minControl": 44,
+          "pageErrors": 0
+        },
+        {
+          "width": 1440,
+          "lang": "ko",
+          "count": 12,
+          "overflow": 0,
+          "minControl": 44,
+          "pageErrors": 0
+        },
+        {
+          "width": 1440,
+          "lang": "id",
+          "count": 12,
+          "overflow": 0,
+          "minControl": 44,
+          "pageErrors": 0
+        },
+        {
+          "page": "bali.html",
+          "width": 320,
+          "modules": [
+            "penida-west",
+            "penida-east"
+          ],
+          "days": 10,
+          "overflow": 0,
+          "pageErrors": 0
+        },
+        {
+          "page": "bali.html",
+          "width": 390,
+          "modules": [
+            "penida-west",
+            "penida-east"
+          ],
+          "days": 10,
+          "overflow": 0,
+          "pageErrors": 0
+        },
+        {
+          "page": "bali.html",
+          "width": 768,
+          "modules": [
+            "penida-west",
+            "penida-east"
+          ],
+          "days": 10,
+          "overflow": 0,
+          "pageErrors": 0
+        },
+        {
+          "page": "bali.html",
+          "width": 1440,
+          "modules": [
+            "penida-west",
+            "penida-east"
+          ],
+          "days": 10,
+          "overflow": 0,
+          "pageErrors": 0
+        },
+        {
+          "page": "bali.html",
+          "width": 390,
+          "lang": "zh",
+          "album": "Food & Dining",
+          "visiblePhotos": 1,
+          "decode": true,
+          "credit": "CC BY-SA 3.0",
+          "overflow": 0,
+          "pageErrors": 0
+        },
+        {
+          "page": "bali.html",
+          "width": 390,
+          "lang": "en",
+          "album": "Food & Dining",
+          "visiblePhotos": 1,
+          "decode": true,
+          "credit": "CC BY-SA 3.0",
+          "overflow": 0,
+          "pageErrors": 0
+        },
+        {
+          "page": "bali.html",
+          "width": 390,
+          "lang": "ja",
+          "album": "Food & Dining",
+          "visiblePhotos": 1,
+          "decode": true,
+          "credit": "CC BY-SA 3.0",
+          "overflow": 0,
+          "pageErrors": 0
+        },
+        {
+          "page": "bali.html",
+          "width": 390,
+          "lang": "ko",
+          "album": "Food & Dining",
+          "visiblePhotos": 1,
+          "decode": true,
+          "credit": "CC BY-SA 3.0",
+          "overflow": 0,
+          "pageErrors": 0
+        },
+        {
+          "page": "bali.html",
+          "width": 390,
+          "lang": "id",
+          "album": "Food & Dining",
+          "visiblePhotos": 1,
+          "decode": true,
+          "credit": "CC BY-SA 3.0",
+          "overflow": 0,
+          "pageErrors": 0
+        },
+        {
+          "page": "bali.html",
+          "width": 390,
+          "callback": "dining review/cancel/failure/retry",
+          "from": 9,
+          "to": 7,
+          "cancelRequests": 0,
+          "retryRequests": 2,
+          "inputRetained": true,
+          "sourceDraftDay": 9,
+          "overflow": 0,
+          "pageErrors": 0
+        },
+        {
+          "page": "bali.html",
+          "width": 1440,
+          "callback": "dining review/cancel/failure/retry",
+          "from": 9,
+          "to": 7,
+          "cancelRequests": 0,
+          "retryRequests": 2,
+          "inputRetained": true,
+          "sourceDraftDay": 9,
+          "overflow": 0,
+          "pageErrors": 0
+        }
+      ]
+    },
+    {
+      "command": "Get-ChildItem tools -Filter test_miniprogram_*.cjs | ForEach-Object { node $_.FullName }",
+      "result": "380 contracts and offline suites passed; native QA explicitly skipped in offline lane"
+    },
+    {
+      "command": "python -m unittest wandermind.backend.tests.test_product_access wandermind.backend.tests.test_bali_dining",
+      "result": "123 passed,zero failures"
+    },
+    {
+      "command": "node tools/test_bali_food.cjs; node tools/test_bali_extensions.cjs",
+      "result": "passed"
+    },
+    {
+      "command": "node tools/test_miniprogram_food_native.cjs with external SDK and WS9421",
+      "result": "failed: timeout waiting for automator response",
+      "matrix": [],
+      "accepted_visual": false
+    },
+    {
+      "command": "git diff --check",
+      "result": "passed"
+    }
+  ],
+  "behavior_fixes": [
+    "Public professional link changed to in-page anchor so selected modules survive the transition",
+    "Professional submit uses pending route selection",
+    "Web and Mini review day9 to7 with human restaurant names; cancel creates zero requests; failure retains inputs",
+    "Shared engine blocks unplaced meals instead of silently dropping them",
+    "Mini public route to AI only fills editable draft; no auto send; per-account persistence",
+    "Mini Food to appropriate route selection consumed once with per-account isolation",
+    "Late Food/itinerary failures after account/language switch cannot overwrite new UI",
+    "Static licensed gallery survives optional live Portfolio API failure",
+    "Offline CI does not import native SDK until native QA explicitly enabled"
+  ],
+  "media": [
+    {
+      "file": "assets/images/sources/penida-snorkeling-coast.jpg",
+      "sha256": "b2ee0270143abf3010ed1dcce416fcb880a1bbd15fab648f3c20e74545a33ad9",
+      "license": "CC BY 2.0",
+      "scope": "experience_context",
+      "approved": true,
+      "context_verified": true,
+      "production_published": false
+    },
+    {
+      "file": "assets/images/sources/bali-nasi-campur.jpg",
+      "sha256": "e673ee591d5a8d23d821707097d8796fc899a2518e3d8653c620128c86361a0d",
+      "license": "CC BY-SA 3.0",
+      "scope": "destination_context",
+      "approved": true,
+      "context_verified": true,
+      "production_published": false
+    }
+  ],
+  "test_repair_rationale": [
+    "Cache keys change across releases; keep required versioned asset references and all behavioral assertions",
+    "Keep legacy batch lower bounds and specific historical assets; verify approved intake hashes/paths and canonical duplicates",
+    "Exclude inappropriate new candidates; preserve superseded hero raw inventory separately without changing original file",
+    "Rights reconciled by original asset identity; optional recorded hashes must match",
+    "Batur lava/Pererenan added explicitly to verified IDs; specific Batur alternatives exception only for R5 day2",
+    "Local Dicky lead is not a URL-verified supplier and remains needs_supplier_confirmation"
+  ],
+  "unresolved": [
+    "Native visual and full Mini receiver acceptance",
+    "Expansion draft PR/CI pending at capture; merge/deploy not performed",
+    "Fresh native Browser/Render admin access unavailable; production not inspected this slice",
+    "32 restaurant identities not directly checked by branch,all operational facts need reconfirmation",
+    "Cuisine/scene UI currently5 broad categories,not full requested taxonomy",
+    "Licensed storefront and expanded West/East batch remain future work",
+    "Legacy hero original and newer homepage derivative must not be conflated; PR81 provenance retained"
+  ],
+  "safety": "Original E:/Agentstrip untouched; no order/payment/mail/database/environment/global instructions/Mini Upload/review/public release writes."
+}

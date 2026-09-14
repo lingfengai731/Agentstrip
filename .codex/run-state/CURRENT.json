@@ -1,55 +1,127 @@
 {
   "schema_version": 1,
-  "checkpoint_revision": 28,
-  "previous_checkpoint_sha256": "C4095BC69AEF81D75BDD678B28CB1B8CCDFABA29EF673C5144F9B49807FD3B49",
-  "run_id": "20260912-mini-native-acceptance",
-  "objective": "Accept merged PR82 navigation/icons in WeChat native rendering and generate Preview; reconcile stale continuation pointer.",
+  "checkpoint_revision": 39,
+  "previous_checkpoint_sha256": "EF06610BD7B7DEDC848B59C9F16365E32F14BC25E57F23A36BD27D1C3FB45B4A",
+  "run_id": "20260913-bali-extensions-food",
+  "objective": "Preserve accepted Mini release candidate; research and implement Penida extension/food/portfolio shared itinerary integration without unverified publishing.",
   "status": "active",
-  "phase": "integrated_preview_pending_owner_acceptance",
+  "phase": "pr86_fixed_head_release",
   "baseline": {
-    "cwd": "E:\\Agentstrip-worktrees\\active\\account1\\bali-focus-media-audit-20260911",
-    "worktree": "E:\\Agentstrip-worktrees\\active\\account1\\bali-focus-media-audit-20260911",
-    "branch": "codex/mini-native-handoff-20260912",
-    "head": "3229812e0dc368b411304cc3da3f3809b95cee86",
-    "dirty_allowlist": []
+    "cwd": "E:\\Agentstrip-worktrees\\active\\account1\\bali-extensions-food-20260913",
+    "worktree": "E:\\Agentstrip-worktrees\\active\\account1\\bali-extensions-food-20260913",
+    "branch": "codex/bali-extensions-food-20260913",
+    "head": "83d7e9e35a4366e4e11974c6aed792b51d42001e",
+    "dirty_allowlist": [
+      ".codex/run-state/CURRENT.json",
+      ".codex/role-windows.md",
+      "PROJECT_CONTEXT.md",
+      ".codex/project-memory/current-state.json",
+      ".codex/project-memory/evidence/2026/09/20260914T013402Z-food-taxonomy-native-release.json",
+      ".codex/project-memory/handoffs/2026/09/20260914T013402Z-food-taxonomy-native-release.md",
+      "output/"
+    ]
   },
   "completed": [
-    "Reconciled PR82 and PR83 against fetched origin/main; clean content matches.",
-    "Official DevTools islogin reports true; auto enabled on WS9421 via HTTP9420.",
-    "Native five-language matrix:20screenshots,200targets>=44px; English follow-up passed.",
-    "Nine offline suites356contracts; official Preview1678176bytes.",
-    "PR84 merged after validate and contracts-and-recovery passed; fixed and merged trees identical."
+    "User accepted existing Mini Preview on2026-09-13.",
+    "Fresh origin/main88fc025; original dirty E:/Agentstrip and accepted Preview worktree preserved.",
+    "Legacy ledger role/status enum normalization passes role-loop validator; registry resolved from installed source.",
+    "Existing65POIs include west/east Penida nodes but no top-level extensions.",
+    "Food50/40/10 normalization, regional selectors and strict dining receivers;379 offline Mini contracts,3new backend tests,24 deterministic Browser cases passed; code739be02pushed taskbranch",
+    "380 Mini contracts and all offline Mini suites passed; optional native suites explicitly skipped, not visual evidence",
+    "15 additional official restaurant identities independently accepted;18 total, no operational blanket verification",
+    "Two licensed real contextual photos decoded, hashes/licenses recorded;2 approved,0 production-published",
+    "Native dining review day9 to7/cancel/account isolation and AI editable transfer accepted",
+    "31 local browser cases passed; fixed professional page reload module loss; cancel0 requests and retry2 requests",
+    "123 backend tests passed including repaired17 baseline static assertions",
+    "Native Food to R2 selection once-only and stale account/language error tests accepted",
+    "68ff437 code and ea6863c test repair pushed; ls-remote matches",
+    "PR86 created as draft;cloud Mini,Project memory,PostgreSQL all success at d94d3cc",
+    "Fresh Computer Use native Food renders; DevTools zero compilation problems; documented SDK systemInfo390/currentPage responsive after reserved route field fix",
+    "Native5locale390px/min44px matrix accepted; module11days,diningday9,AI963char editable receiver,gueststorage restored; cloud3checks success03e672f",
+    "Luna taxonomy commit60f8b6f reviewed;9scoped files integrated8de85a9;Food taxonomy/recovery383 contracts passed.",
+    "Native professional cancel/503/retry/5+2/dining7 and Dicky/Gede private draft callbacks passed;0live requests;not physical-phone touch.",
+    "Fresh post-taxonomy nativeFood5locale390px/44px and11daymodules/dining9/AI963char passed;zero exceptions; screenshots localonly.",
+    "3required cloudCI success83d7e9e."
   ],
-  "current_step": "Synchronize final evidence, then owner physical Preview acceptance.",
-  "workers": [],
+  "current_step": "383offline/31web/nativeFood5locales and professional/DickyGede mockedcallbacks accepted;3CI83d7e9e successful; persistfacts and promote existingPR86.",
+  "workers": [
+    {
+      "agent_id": "01a09881-7139-7922-9a82-e1dd60b4ee9f",
+      "agent_name": "luna_worker",
+      "model": "gpt-5.6-luna",
+      "reasoning_effort": "max",
+      "goal": "30source-backed Bali restaurant candidates only",
+      "status": "errored",
+      "started_at_utc": "2026-09-13T02:04:36.245Z",
+      "evidence": "E:/Agentstrip-worktrees/active/account1/bali-food-research-20260913/research/bali-food-candidates-20260913.json"
+    },
+    {
+      "agent_id": "01a09a92-62af-7e03-adb7-5f5b0e082078",
+      "agent_name": "luna_worker",
+      "model": "gpt-5.6-luna",
+      "reasoning_effort": "max",
+      "goal": "15 immutable restaurant official source checks",
+      "status": "completed",
+      "evidence": "research/bali-food-worker-official-checks-20260913.md"
+    },
+    {
+      "agent_id": "01a09b03-38ee-7011-87d0-4f8b6ef22bfd",
+      "agent_name": "luna_worker",
+      "model": "gpt-5.6-luna",
+      "reasoning_effort": "max",
+      "goal": "Shared explicit cuisine/scene filters",
+      "status": "completed",
+      "evidence": "60f8b6f99b0567a67ca42132133b9aa2a9ce499f"
+    }
+  ],
   "accepted_evidence": [
-    ".codex/project-memory/evidence/2026/09/20260912T020817Z-miniprogram-navigation-integration-20260912.json",
-    ".codex/project-memory/evidence/2026/09/20260912T061700Z-mini-native-acceptance.json",
-    ".codex/project-memory/evidence/2026/09/20260912T062000Z-mini-native-integrated.json"
+    ".codex/project-memory/evidence/2026/09/20260912T062000Z-mini-native-integrated.json",
+    ".codex/project-memory/evidence/2026/09/20260913T080227Z-bali-extensions-food-draft.json",
+    ".codex/project-memory/evidence/2026/09/20260913T130613Z-bali-food-media-callbacks.json",
+    ".codex/project-memory/evidence/2026/09/20260913T131000Z-expansion-pr86-ci-receipt.json",
+    ".codex/project-memory/evidence/2026/09/20260913T132400Z-native-food-receivers.json",
+    ".codex/project-memory/evidence/2026/09/20260914T013402Z-food-taxonomy-native-release.json"
   ],
   "unverified": [
-    "Owner physical Preview acceptance pending.",
-    "No Mini Upload/review/public release.",
-    "Final evidence branch synchronization must be checked remotely on recovery."
+    "Render exact deployment/native production Browser acceptance",
+    "Physical-phone planner submit touch",
+    "32remaining direct restaurantidentity rechecks and all variableoperatingfields",
+    "Licensed storefront/expandedWestEastphotos;Shopping/Hotelmodels",
+    "NewMiniPreview/Upload/review/publicrelease"
   ],
   "do_not_repeat": [
     {
-      "action_id": "merge-pr82-pr83",
-      "reason": "Already integrated in fetched main.",
-      "evidence": ".codex/project-memory/handoffs/2026/09/20260912T020817Z-miniprogram-navigation-integration-20260912.md"
+      "action_id": "old-native-preview",
+      "reason": "Owner explicitly accepted; do not let next-version food block existing release preparation.",
+      "evidence": ".codex/project-memory/handoffs/2026/09/20260912T062000Z-mini-native-integrated.md"
     },
     {
-      "action_id": "integrate-native-price-correction",
-      "reason": "PR84 already merged and tree compared.",
-      "evidence": ".codex/project-memory/evidence/2026/09/20260912T062000Z-mini-native-integrated.json"
+      "action_id": "native-ai-context-receiver",
+      "reason": "Implemented and verified offline; native screenshots remain separately gated",
+      "evidence": "tools/test_miniprogram_itinerary_handoff.cjs"
+    },
+    {
+      "action_id": "web-professional-dining-cancel-retry",
+      "reason": "31 matrix accepted against frozen frontend; repeat only after new frontend change",
+      "evidence": ".codex/project-memory/evidence/2026/09/20260913T130613Z-bali-food-media-callbacks.json"
+    },
+    {
+      "action_id": "create-expansion-draft-pr",
+      "reason": "PR86 exists;do not duplicate",
+      "evidence": ".codex/project-memory/evidence/2026/09/20260913T131000Z-expansion-pr86-ci-receipt.json"
+    },
+    {
+      "action_id": "native-food-final-acceptance",
+      "reason": "Food5locale and public module/dining/AI receivers accepted against unchanged app tree; no repetition without sourcechange/newgap",
+      "evidence": ".codex/project-memory/evidence/2026/09/20260913T132400Z-native-food-receivers.json"
     }
   ],
   "next_action": {
-    "action_id": "owner-native-preview-acceptance",
-    "description": "Owner scans fresh Preview to confirm native navigation/icons and price controls; regenerate only if expired.",
-    "external_effect": false,
-    "effect_key": null,
-    "authority_confirmed": false
+    "action_id": "pr86-final-facts-ci-and-merge",
+    "description": "Push authorizedfact-only commit,check3requiredCIonfixedHEAD then promote/merge existingPR86;separateRender metadata/nativeBrowser acceptance.",
+    "external_effect": true,
+    "effect_key": "github:lingfengai731/Agentstrip:pr86:merge",
+    "authority_confirmed": true
   },
-  "updated_at_utc": "2026-09-12T06:20:40.0607958Z"
+  "updated_at_utc": "2026-09-14T01:34:58.0876539Z"
 }

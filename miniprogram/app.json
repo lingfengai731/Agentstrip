@@ -11,7 +11,8 @@
     "pages/planner/planner",
     "pages/history/history",
     "pages/language/language",
-    "pages/driver/driver"
+    "pages/driver/driver",
+    "pages/food/food"
   ],
   "window": {
     "backgroundTextStyle": "dark",

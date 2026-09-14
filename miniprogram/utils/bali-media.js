@@ -69,6 +69,9 @@ function normalizeStaticImage(item, source, lang) {
     region: item.region || array(item.region_ids)[0] || '',
     area: item.area || '',
     routeIds: array(item.route_ids),
+    extensionIds: array(item.extension_ids),
+    album: item.album || '',
+    tags: array(item.tags).concat(array(item.secondaryTags)),
     poiIds: array(item.poi_ids),
     fullUrl: absoluteUrl(item.web_url || item.web_optimized_path || item.image_url),
     thumbUrl: absoluteUrl(item.thumbnail_url || item.thumbnail_path || item.web_optimized_path || item.image_url),
@@ -92,6 +95,9 @@ function normalizePortfolioImage(item, lang) {
     region: item.region || '',
     area: item.area || '',
     routeIds: array(item.route_ids),
+    extensionIds: array(item.extension_ids),
+    album: item.album || '',
+    tags: array(item.tags).concat(array(item.secondaryTags)),
     poiIds: array(item.poi_ids),
     fullUrl: absoluteUrl(item.web_url),
     thumbUrl: absoluteUrl(item.thumbnail_url || item.web_url),
@@ -130,10 +136,11 @@ async function loadBaliMedia(lang = 'zh', refresh = false) {
       safeLoad(api.baliMediaCatalog, { images: [] }),
       safeLoad(api.imagePublishManifest, { images: [] }),
       safeLoad(() => api.publicPortfolio('bali'), { assets: [] }),
+      safeLoad(api.baliExtensions, {pois:[]}),
     ]);
   }
-  const [travel, catalog, manifest, portfolio] = await cachedPromise;
-  const pois = array(travel.pois);
+  const [travel, catalog, manifest, portfolio, extensions] = await cachedPromise;
+  const pois = array(travel.pois).concat(array(extensions.pois));
   const routes = array(travel.routes);
   const poiById = {};
   pois.forEach(poi => {

@@ -274,7 +274,11 @@ function Show-Brief {
     Write-Host "HEAD       : $($facts.commit)"
     Write-Host "Dirty      : $($facts.dirty)"
     Write-Host "Snapshot   : $($state.snapshot.status) at $($state.snapshot.captured_at)"
-    Write-Host "Production : $($state.snapshot.production.status)"
+    Write-Host "Historical production snapshot : $($state.snapshot.production.status) at $($state.snapshot.captured_at)"
+    if (Test-JsonProperty -Object $state -Name 'latest_task') {
+        Write-Host "Latest task : $($state.latest_task.status) at $($state.latest_task.captured_at)"
+        Write-Host "Next action : $($state.latest_task.next_action)"
+    }
     if ($facts.status.Count -gt 0) {
         Write-Host 'Working-tree changes:'
         $facts.status | ForEach-Object { Write-Host "  $_" }

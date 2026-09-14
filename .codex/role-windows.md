@@ -9,8 +9,8 @@
 
 | 角色 | 状态 | thread id | 来源窗口 | 当前职责 | 下一步 | 循环状态 |
 | --- | --- | --- | --- | --- | --- | --- |
-| 总控 | 活跃 | 019fcbe4-146b-72a1-a3e6-9fac972a37d6 | 用户 | 接续跨账号主线、维护发布门禁与项目事实 | 发布最终司机印尼语手册与克制首屏动效；随后由站长完成 PayPal 个人卖家账户验证 | L3 发布中 |
-| 总控 / 前主线 | 已停用并保持闲置 | 01a00b05-e145-7ae3-844b-f0cf62b78e6f | 用户 | 历史主线内容来源 | 不再派发；仅保留可审计记录 | 路由关闭 |
+| 总控 | 接续中 | 019fcbe4-146b-72a1-a3e6-9fac972a37d6 | 用户 | 已验收版本上架准备与下一版佩妮达/美食分轨 | 研究后按 P0/P1 接入共享数据与 handoff；未核验内容不发布 | L2 开发；发布单独验收 |
+| 总控2号 | 误开/废弃 | 01a00b05-e145-7ae3-844b-f0cf62b78e6f | 用户 | 前主线，原状态：已停用并保持闲置 | 不再派发；仅保留可审计记录 | 路由关闭 |
 | 架构 | 未建立 | 无 | 总控 | 定位 `/api/dest_info` 失败根因并限定最小修复 | 已回调总控：主模型余额不足，采用诚实前端降级 | 本地降级已完成 |
 | 内容主编 | 未建立 | 无 | 总控 | 阶段 2 文案与预算范围核对 | 无新增内容裁决 | 本地降级已完成 |
 | 开发 | 未建立 | 无 | 架构 | 增量图片扫描、审核保留、唯一哈希改名与发布清单 | 实现及本地回归已完成 | 本地降级已完成 |
@@ -19,9 +19,9 @@
 | QA | 未建立 | 无 | 架构 | 图片发布边界、匹配准确性与暂存范围审查 | Sol 最终 GO，P0/P1 为 0；唯一 P2 已补测试 | 本地降级已完成 |
 | 安全 | 待确认 | 待确认 | 架构 | 授权安全审计和低影响验证 | 无新增安全范围 | 待确认 |
 | DBA | 待确认 | 待确认 | 架构 | 数据库实例风险和只读诊断 | 本阶段不涉及 | 待确认 |
-| 运维 / Render Work | 已退役，待用户侧归档 | 6a81da9a-1998-83e8-b2ca-34e1f6eb526d | 当前主线 | 历史 ChatGPT Work Browser 探针 | Cloud Work 无法承担已登录 Render；Codex 归档接口不支持该 ChatGPT 对话，需用户在其菜单中归档或删除 | 禁止继续派发 |
-| 运维 / 仓库回流 | 已归档 | 01a00b3a-b62f-7c60-ae73-f9e74ae7879d | 当前主线 | 历史仓库上下文与 Render 能力探针 | 已归档；Browser 探针为 BROWSER_CONTROL_UNAVAILABLE，零生产写入 | 已退役 |
-| 运维 / 本机 Browser runtime | 永久降级为非阻断限制 | 未建立 | 当前主线 | 保留历史证据，不再继续插件排障 | 使用 CLI、GitHub、可用的 Render connector/API、公共 HTTP 与确定性 Playwright；生产写入仍需独立门禁 | 新任务实测 callable control tools = 0，停止条件已满足 |
+| 运维1号 | 误开/废弃 | 6a81da9a-1998-83e8-b2ca-34e1f6eb526d | 当前主线 | Render Work 历史探针；原状态：已退役，待用户侧归档 | Cloud Work 无法承担已登录 Render；Codex 归档接口不支持该 ChatGPT 对话，需用户在其菜单中归档或删除 | 禁止继续派发 |
+| 运维2号 | 已关闭 | 01a00b3a-b62f-7c60-ae73-f9e74ae7879d | 当前主线 | 仓库回流历史探针；原状态：已归档 | 已归档；Browser 探针为 BROWSER_CONTROL_UNAVAILABLE，零生产写入 | 已退役 |
+| 运维3号 | 未建立 | 未建立 | 当前主线 | 本机 Browser runtime 历史限制；原状态：永久降级为非阻断限制 | 保留历史证据，不继续插件排障；当前 Browser 能力另行只读核验 | 历史探针 callable control tools = 0，不作为今日实测结果 |
 | 公众号发布 | 待确认 | 待确认 | 内容主编 | 微信公众号草稿、预览、发布准备 | 本阶段不涉及 | 待确认 |
 | 小红书 | 待确认 | 待确认 | 内容主编 | 小红书内容实验、发布包、评论研究 | 本阶段不涉及 | 待确认 |
 | 视频 | 待确认 | 待确认 | 内容主编 | 视频脚本、分镜、素材和渲染计划 | 本阶段不涉及 | 待确认 |
@@ -663,3 +663,18 @@
 
 - PR #74 fixed head `b7624a1` passed both required checks and squash merged as `main@56196ff`; Git trees are identical.
 - Mini Program-only integration requires no Render deployment. The 1,669,670-byte Preview remains pending owner acceptance before Upload.
+
+## 2026-09-13 Penida/Food source and callback acceptance
+
+- Owner: current main task, isolated codex/bali-extensions-food-20260913; original E:/Agentstrip unchanged.
+- Formal Luna Boyle `01a09a92-62af-7e03-adb7-5f5b0e082078`: completed immutable15-restaurant official-page checks. Parent accepted identity/area/listing fields and re-read4 critical sources; Masonry independent Chop House was not applied as the main restaurant cuisine. No worker UI writes or publication.
+- Main callback:31 deterministic Chromium cases,380 Mini contracts/offline callbacks and123 backend tests accepted;2 licensed contextual photos locally integrated. Native retry matrix remains empty after SDK timeout; no native visual/production acceptance.
+- Release: code68ff437 and test repair ea6863c pushed to task branch; no merge/Render Live/new Mini Preview/Upload/review/public release claimed. New handoff20260913T130613Z-bali-food-media-callbacks supersedes earlier draft counts.
+
+## 2026-09-14 Food taxonomy bounded-worker callback
+
+- Formal Luna Kierkegaard `01a09b03-38ee-7011-87d0-4f8b6ef22bfd` completed shared cuisine/scene selectors in isolated `codex/bali-food-taxonomy-20260913`. Source callback received in this task; no new durable role window created.
+- Parent reviewed exact nine-file commit `60f8b6f`, integrated as `8de85a9`, and independently passed taxonomy, Food, recovery and 383-contract checks. Canonical restaurant facts, dietary suitability and itinerary engine unchanged.
+- Parent repaired dining entry cache version; fresh deterministic 31-case matrix passed. Native professional cancel/503/retry/5+2 and Dicky/Gede draft callbacks passed against intercepted local requests, with zero live network writes. SDK event dispatch is not physical-phone touch or screenshot acceptance.
+- Skills that affected output: UI implementation workflow constrained existing list/mobile structure and 44px controls; Luna worker isolated writes; browser router distinguished CLI evidence from native Browser/Render. Native Edge plugin bootstrap remains blocked by the runtime, not a Render credential conclusion.
+- Release/Preview remain separate; exact current Git/CI/deployment facts follow the new evidence and handoff, not this pre-push note.
