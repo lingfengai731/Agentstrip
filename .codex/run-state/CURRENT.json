@@ -1,23 +1,18 @@
 {
   "schema_version": 1,
-  "checkpoint_revision": 41,
-  "previous_checkpoint_sha256": "9E1170009B60167B873E8BC227721B70EF8C9ED128018340226A697D2337EA55",
+  "checkpoint_revision": 42,
+  "previous_checkpoint_sha256": "E3B4E007A4CBD8C6087D18FE3FEFFBB955BBFFEB7D5F754C13548F0D0C2CD09F",
   "run_id": "20260913-bali-extensions-food",
   "objective": "Preserve accepted Mini release candidate; research and implement Penida extension/food/portfolio shared itinerary integration without unverified publishing.",
-  "status": "active",
-  "phase": "release_receipt_sync",
+  "status": "paused",
+  "phase": "published_content_handoff_ready",
   "baseline": {
     "cwd": "E:\\Agentstrip-worktrees\\active\\account1\\bali-extensions-food-20260913",
     "worktree": "E:\\Agentstrip-worktrees\\active\\account1\\bali-extensions-food-20260913",
     "branch": "codex/bali-food-release-receipt-20260914",
-    "head": "bce613be4969a9529dbe178c4525b5cab01077dc",
+    "head": "16f567dd7d1110928d15ece4f2b29308d9184f1c",
     "dirty_allowlist": [
       ".codex/run-state/CURRENT.json",
-      "PROJECT_CONTEXT.md",
-      ".codex/project-memory/current-state.json",
-      ".codex/project-memory/evidence/2026/09/20260914T014307Z-pr86-merge-preview-public.json",
-      ".codex/project-memory/handoffs/2026/09/20260914T014307Z-pr86-merge-preview-public.md",
-      "tools/test_bali_public_release.cjs",
       "output/"
     ]
   },
@@ -44,9 +39,11 @@
     "3required cloudCI success83d7e9e.",
     "PR86fixed ab0a22d cloud3CI success34796417429/34796417439/34796417449;mergedbce613b,wholeGit tree324e449 identical.",
     "OfficialMiniPreview1716399bytes generated;noUpload/review/publicrelease.",
-    "Production anonymousdeterministic20Foodcases5locales4widths passed;shareddata/taxonomy parity;2newcreditedPortfolio photos decoded/displayed;0forwardedwrites;NOT Render/nativeEdge."
+    "Production anonymousdeterministic20Foodcases5locales4widths passed;shareddata/taxonomy parity;2newcreditedPortfolio photos decoded/displayed;0forwardedwrites;NOT Render/nativeEdge.",
+    "Public fullmodalfood/marine image decode waited beforecapture;focused2photoQA rerunpassed;no appchange.",
+    "PR87fixed16f567d requiredProjectmemoryCI34796956040 success;mergedmain3248f2b,wholeGit treecf5f737 identical;businesssubtrees unchanged."
   ],
-  "current_step": "PublicFood20cases and2decodedcreditedphotos accepted;3sharedsources LF parity,2WebPs exact;Preview1716399bytes;persist mergedrelease receipt.",
+  "current_step": "PR87fixed16f567d ProjectmemoryCI34796956040 success;merged3248f2b,trees cf5f737 identical;businessfiles unchangedfrombce613b;finalpointercommit push pending (onlyCURRENT).",
   "workers": [
     {
       "agent_id": "01a09881-7139-7922-9a82-e1dd60b4ee9f",
@@ -128,14 +125,19 @@
       "action_id": "public-deploy-content-parity",
       "reason": "20Foodcases+2crediteddecodedphoto lane accepted;repeatonlynewsource/drift/relevantfailure",
       "evidence": ".codex/project-memory/evidence/2026/09/20260914T014307Z-pr86-merge-preview-public.json"
+    },
+    {
+      "action_id": "release-receipt-pr-sync",
+      "reason": "PR87 is merged3248f2b;projectfacts+publichelper sharedmain,do not create another receiptPR.",
+      "evidence": ".codex/project-memory/evidence/2026/09/20260914T014307Z-pr86-merge-preview-public.json"
     }
   ],
   "next_action": {
-    "action_id": "release-receipt-pr-sync",
-    "description": "Commit/push authorizedfacts+opt-in publictesthelper;createuniquereceiptPR frommergedmain;requiredProjectmemoryCI thenfixedheadmerge.",
-    "external_effect": true,
-    "effect_key": "github:lingfengai731/Agentstrip:codex/bali-food-release-receipt-20260914:integration",
+    "action_id": "licensed-restaurant-storefront-source-audit",
+    "description": "FreshGit confirmsPR86/87 merged;reconcile expectedCURRENT-only finalcommit,then licensedrealrestaurantstorefront sourcing/remaining32identitychecks;no unchanged tests/browser policy debugging or MiniUpload.",
+    "external_effect": false,
+    "effect_key": null,
     "authority_confirmed": true
   },
-  "updated_at_utc": "2026-09-14T01:43:34.1595544Z"
+  "updated_at_utc": "2026-09-14T01:47:35.0850485Z"
 }
