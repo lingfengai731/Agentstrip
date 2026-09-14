@@ -670,3 +670,11 @@
 - Formal Luna Boyle `01a09a92-62af-7e03-adb7-5f5b0e082078`: completed immutable15-restaurant official-page checks. Parent accepted identity/area/listing fields and re-read4 critical sources; Masonry independent Chop House was not applied as the main restaurant cuisine. No worker UI writes or publication.
 - Main callback:31 deterministic Chromium cases,380 Mini contracts/offline callbacks and123 backend tests accepted;2 licensed contextual photos locally integrated. Native retry matrix remains empty after SDK timeout; no native visual/production acceptance.
 - Release: code68ff437 and test repair ea6863c pushed to task branch; no merge/Render Live/new Mini Preview/Upload/review/public release claimed. New handoff20260913T130613Z-bali-food-media-callbacks supersedes earlier draft counts.
+
+## 2026-09-14 Food taxonomy bounded-worker callback
+
+- Formal Luna Kierkegaard `01a09b03-38ee-7011-87d0-4f8b6ef22bfd` completed shared cuisine/scene selectors in isolated `codex/bali-food-taxonomy-20260913`. Source callback received in this task; no new durable role window created.
+- Parent reviewed exact nine-file commit `60f8b6f`, integrated as `8de85a9`, and independently passed taxonomy, Food, recovery and 383-contract checks. Canonical restaurant facts, dietary suitability and itinerary engine unchanged.
+- Parent repaired dining entry cache version; fresh deterministic 31-case matrix passed. Native professional cancel/503/retry/5+2 and Dicky/Gede draft callbacks passed against intercepted local requests, with zero live network writes. SDK event dispatch is not physical-phone touch or screenshot acceptance.
+- Skills that affected output: UI implementation workflow constrained existing list/mobile structure and 44px controls; Luna worker isolated writes; browser router distinguished CLI evidence from native Browser/Render. Native Edge plugin bootstrap remains blocked by the runtime, not a Render credential conclusion.
+- Release/Preview remain separate; exact current Git/CI/deployment facts follow the new evidence and handoff, not this pre-push note.

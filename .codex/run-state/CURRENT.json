@@ -1,56 +1,24 @@
 {
   "schema_version": 1,
-  "checkpoint_revision": 37,
-  "previous_checkpoint_sha256": "919C6014E6CAC3080D17A5838548CCDDB5C8EBB67013322BDDB6A90FB24AF37C",
+  "checkpoint_revision": 39,
+  "previous_checkpoint_sha256": "EF06610BD7B7DEDC848B59C9F16365E32F14BC25E57F23A36BD27D1C3FB45B4A",
   "run_id": "20260913-bali-extensions-food",
   "objective": "Preserve accepted Mini release candidate; research and implement Penida extension/food/portfolio shared itinerary integration without unverified publishing.",
-  "status": "paused",
-  "phase": "native_professional_driver_acceptance",
+  "status": "active",
+  "phase": "pr86_fixed_head_release",
   "baseline": {
     "cwd": "E:\\Agentstrip-worktrees\\active\\account1\\bali-extensions-food-20260913",
     "worktree": "E:\\Agentstrip-worktrees\\active\\account1\\bali-extensions-food-20260913",
     "branch": "codex/bali-extensions-food-20260913",
-    "head": "03e672fc8689ae51ef9ade95cc837dbb15a1a47b",
+    "head": "83d7e9e35a4366e4e11974c6aed792b51d42001e",
     "dirty_allowlist": [
-      ".codex/project-memory/current-state.json",
       ".codex/run-state/CURRENT.json",
+      ".codex/role-windows.md",
       "PROJECT_CONTEXT.md",
-      ".codex/project-memory/evidence/2026/09/20260913T132400Z-native-food-receivers.json",
-      ".codex/project-memory/handoffs/2026/09/20260913T132400Z-native-food-receivers.md",
-      "output/checkpoint32.json",
-      "output/checkpoint33.json",
-      "output/checkpoint34.json",
-      "output/checkpoint35.json",
-      "output/checkpoint36.json",
-      "output/food-source-worker-prompt.md",
-      "output/native-current.png",
-      "output/native-food-compiled/native-food.json",
-      "output/native-food-final/native-food.json",
-      "output/native-food-receiver-focus/chat-dining-draft.png",
-      "output/native-food-receiver-focus/itinerary-extensions.png",
-      "output/native-food-receiver-focus/native-food.json",
-      "output/native-food-receivers/food-en.png",
-      "output/native-food-receivers/food-id.png",
-      "output/native-food-receivers/food-ja.png",
-      "output/native-food-receivers/food-ko.png",
-      "output/native-food-receivers/food-zh.png",
-      "output/native-food-receivers/itinerary-extensions.png",
-      "output/native-food-receivers/native-food.json",
-      "output/native-food-refreshed/native-food.json",
-      "output/native-food-routefixed/food-en.png",
-      "output/native-food-routefixed/food-id.png",
-      "output/native-food-routefixed/food-ja.png",
-      "output/native-food-routefixed/food-ko.png",
-      "output/native-food-routefixed/food-zh.png",
-      "output/native-food-routefixed/native-food.json",
-      "output/native-probe.cjs",
-      "output/rejected-media/bali-dining-thumb.webp",
-      "output/rejected-media/bali-dining.jpg",
-      "output/rejected-media/bali-dining.webp",
-      "output/rejected-media/penida-marine-thumb.webp",
-      "output/rejected-media/penida-marine.jpg",
-      "output/rejected-media/penida-marine.webp",
-      "output/checkpoint37.json"
+      ".codex/project-memory/current-state.json",
+      ".codex/project-memory/evidence/2026/09/20260914T013402Z-food-taxonomy-native-release.json",
+      ".codex/project-memory/handoffs/2026/09/20260914T013402Z-food-taxonomy-native-release.md",
+      "output/"
     ]
   },
   "completed": [
@@ -69,9 +37,13 @@
     "68ff437 code and ea6863c test repair pushed; ls-remote matches",
     "PR86 created as draft;cloud Mini,Project memory,PostgreSQL all success at d94d3cc",
     "Fresh Computer Use native Food renders; DevTools zero compilation problems; documented SDK systemInfo390/currentPage responsive after reserved route field fix",
-    "Native5locale390px/min44px matrix accepted; module11days,diningday9,AI963char editable receiver,gueststorage restored; cloud3checks success03e672f"
+    "Native5locale390px/min44px matrix accepted; module11days,diningday9,AI963char editable receiver,gueststorage restored; cloud3checks success03e672f",
+    "Luna taxonomy commit60f8b6f reviewed;9scoped files integrated8de85a9;Food taxonomy/recovery383 contracts passed.",
+    "Native professional cancel/503/retry/5+2/dining7 and Dicky/Gede private draft callbacks passed;0live requests;not physical-phone touch.",
+    "Fresh post-taxonomy nativeFood5locale390px/44px and11daymodules/dining9/AI963char passed;zero exceptions; screenshots localonly.",
+    "3required cloudCI success83d7e9e."
   ],
-  "current_step": "Food5locale/native public modules+dining+AI draft callbacks accepted; code+test heads pushed,3CI success at03e672f; persist final facts",
+  "current_step": "383offline/31web/nativeFood5locales and professional/DickyGede mockedcallbacks accepted;3CI83d7e9e successful; persistfacts and promote existingPR86.",
   "workers": [
     {
       "agent_id": "01a09881-7139-7922-9a82-e1dd60b4ee9f",
@@ -91,6 +63,15 @@
       "goal": "15 immutable restaurant official source checks",
       "status": "completed",
       "evidence": "research/bali-food-worker-official-checks-20260913.md"
+    },
+    {
+      "agent_id": "01a09b03-38ee-7011-87d0-4f8b6ef22bfd",
+      "agent_name": "luna_worker",
+      "model": "gpt-5.6-luna",
+      "reasoning_effort": "max",
+      "goal": "Shared explicit cuisine/scene filters",
+      "status": "completed",
+      "evidence": "60f8b6f99b0567a67ca42132133b9aa2a9ce499f"
     }
   ],
   "accepted_evidence": [
@@ -98,14 +79,15 @@
     ".codex/project-memory/evidence/2026/09/20260913T080227Z-bali-extensions-food-draft.json",
     ".codex/project-memory/evidence/2026/09/20260913T130613Z-bali-food-media-callbacks.json",
     ".codex/project-memory/evidence/2026/09/20260913T131000Z-expansion-pr86-ci-receipt.json",
-    ".codex/project-memory/evidence/2026/09/20260913T132400Z-native-food-receivers.json"
+    ".codex/project-memory/evidence/2026/09/20260913T132400Z-native-food-receivers.json",
+    ".codex/project-memory/evidence/2026/09/20260914T013402Z-food-taxonomy-native-release.json"
   ],
   "unverified": [
-    "Expansion merge/Render Live",
-    "Fresh production native Browser audit",
-    "All50 restaurant operational fields",
-    "Richer cuisine/scene filters; licensed storefront/expanded west-east images;Shopping/Hotels models",
-    "Native professional Planner/private-driver receiver acceptance; new Preview/Upload/review/publicrelease"
+    "Render exact deployment/native production Browser acceptance",
+    "Physical-phone planner submit touch",
+    "32remaining direct restaurantidentity rechecks and all variableoperatingfields",
+    "Licensed storefront/expandedWestEastphotos;Shopping/Hotelmodels",
+    "NewMiniPreview/Upload/review/publicrelease"
   ],
   "do_not_repeat": [
     {
@@ -135,11 +117,11 @@
     }
   ],
   "next_action": {
-    "action_id": "native-professional-driver-receiver-acceptance",
-    "description": "Now-working local SDK9421: verify mocked Planner module/dining and Dicky/Gede private draft receivers, cancelled/failed input retained; no privileged/live API",
-    "external_effect": false,
-    "effect_key": null,
+    "action_id": "pr86-final-facts-ci-and-merge",
+    "description": "Push authorizedfact-only commit,check3requiredCIonfixedHEAD then promote/merge existingPR86;separateRender metadata/nativeBrowser acceptance.",
+    "external_effect": true,
+    "effect_key": "github:lingfengai731/Agentstrip:pr86:merge",
     "authority_confirmed": true
   },
-  "updated_at_utc": "2026-09-13T13:25:26.9352515Z"
+  "updated_at_utc": "2026-09-14T01:34:58.0876539Z"
 }

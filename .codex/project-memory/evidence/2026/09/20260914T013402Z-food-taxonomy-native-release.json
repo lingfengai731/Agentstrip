@@ -1,0 +1,213 @@
+{
+  "schema_version": 1,
+  "task_ref": "019fcbe4-146b-72a1-a3e6-9fac972a37d6",
+  "status": "verified",
+  "claim": "Shared Food taxonomy and native mocked professional/private-driver receivers accepted; no production mutation or Mini upload.",
+  "source": {"kind":"local_native_and_github","reference":"git:83d7e9e35a4366e4e11974c6aed792b51d42001e; https://github.com/lingfengai731/Agentstrip/pull/86"},
+  "evidence_id": "ev-20260914T013402Z-food-taxonomy-native-release",
+  "captured_at": "2026-09-14T01:34:02.829Z",
+  "project": "Agentstrip / WanderMind",
+  "scope": "Shared fine Food filters and native professional/private-driver callbacks before PR86 merge",
+  "owner": "current main task",
+  "worktree": "E:\\Agentstrip-worktrees\\active\\account1\\bali-extensions-food-20260913",
+  "branch": "codex/bali-extensions-food-20260913",
+  "checked_head": "83d7e9e35a4366e4e11974c6aed792b51d42001e",
+  "parent_main": "88fc0256868d6491683299a2bf4011331c63c568",
+  "worker": {
+    "agent_id": "01a09b03-38ee-7011-87d0-4f8b6ef22bfd",
+    "commit": "60f8b6f99b0567a67ca42132133b9aa2a9ce499f",
+    "integrated_commit": "8de85a9",
+    "accepted": "Exact nine-file diff;4targeted parent suites; source facts/engine unchanged"
+  },
+  "checks": [
+    {
+      "command": "node tools/test_bali_food_taxonomy.cjs; node tools/test_bali_food.cjs; node tools/test_miniprogram_food_recovery.cjs; node tools/test_miniprogram_contract.cjs",
+      "result": "passed;383contract checks"
+    },
+    {
+      "command": "All tools/test_miniprogram_*.cjs offline suites",
+      "result": "passed;native optional lanes explicitly skipped"
+    },
+    {
+      "command": "node tools/test_bali_food_browser.cjs",
+      "result": "31passed;320/390/768/1440×5locale;zero page errors/overflow; local deterministic Playwright,NOT Render/nativeBrowser"
+    },
+    {
+      "command": "WM_PRO_DRIVER_OUTPUT=output/native-professional-driver node tools/test_miniprogram_professional_driver_native.cjs",
+      "result": "passed;local intercepted API",
+      "cases": [
+        {
+          "case": "cancel dining relocation",
+          "requests": 0,
+          "days": 7,
+          "inputsRetained": true
+        },
+        {
+          "case": "mock503",
+          "errorShown": true,
+          "inputRetained": true
+        },
+        {
+          "case": "retry matches route",
+          "modules": [
+            "penida-west"
+          ],
+          "diningDay": 7,
+          "previewOpen": 5,
+          "previewLocked": 2,
+          "requests": 2
+        },
+        {
+          "case": "private driver draft",
+          "driverId": "dicky",
+          "routeId": "R1",
+          "people": 2,
+          "dateRange": [
+            "2026-10-01",
+            "2026-10-08"
+          ],
+          "budget": "10000-20000",
+          "hasDining": true,
+          "hasIsland": true,
+          "submitted": false
+        },
+        {
+          "case": "private driver draft",
+          "driverId": "gede",
+          "routeId": "R1",
+          "people": 2,
+          "dateRange": [
+            "2026-10-01",
+            "2026-10-08"
+          ],
+          "budget": "10000-20000",
+          "hasDining": true,
+          "hasIsland": true,
+          "submitted": false
+        }
+      ],
+      "live_network_requests": 0,
+      "input_mechanism": "Planner official SDK WXML event dispatch; driver selector SDK taps;not physical-phone touch"
+    },
+    {
+      "command": "WM_FOOD_NATIVE_OUTPUT=output/native-food-taxonomy node tools/test_miniprogram_food_native.cjs",
+      "result": "passed;five390px locale screenshots and module/dining/AI callbacks;guest storage restored",
+      "native_summary": {
+        "scope": "Guest native simulator using local catalog snapshots; no payment, account, message or production writes",
+        "matrix": [
+          {
+            "lang": "zh",
+            "width": 390,
+            "candidates": 12,
+            "buttons": 37,
+            "minHeight": 44
+          },
+          {
+            "lang": "en",
+            "width": 390,
+            "candidates": 12,
+            "buttons": 37,
+            "minHeight": 44
+          },
+          {
+            "lang": "ja",
+            "width": 390,
+            "candidates": 12,
+            "buttons": 37,
+            "minHeight": 44
+          },
+          {
+            "lang": "ko",
+            "width": 390,
+            "candidates": 12,
+            "buttons": 37,
+            "minHeight": 44
+          },
+          {
+            "lang": "id",
+            "width": 390,
+            "candidates": 12,
+            "buttons": 37,
+            "minHeight": 44
+          }
+        ],
+        "errors": [],
+        "width": 390,
+        "receivers": {
+          "modules": 3,
+          "days": 11,
+          "diningDay": 9,
+          "restaurant": "Penida Colada",
+          "storageRestoredOnFinish": true,
+          "aiDraft": true,
+          "autoSend": false
+        },
+        "aiProbe": {
+          "path": "pages/chat/chat",
+          "inputLength": 963,
+          "hasRestaurant": true,
+          "hasIsland": true
+        },
+        "storageRestoreFailed": false
+      }
+    },
+    {
+      "command": "git diff --check; tools/project-memory.ps1 validate",
+      "result": "passed;145historical evidence records;1stale historicalsnapshot warning,not overwritten"
+    }
+  ],
+  "ci": {
+    "head": "83d7e9e35a4366e4e11974c6aed792b51d42001e",
+    "runs": [
+      {
+        "id": 34796259496,
+        "name": "Mini Program checks",
+        "conclusion": "success"
+      },
+      {
+        "id": 34796259523,
+        "name": "Project memory validation",
+        "conclusion": "success"
+      },
+      {
+        "id": 34796259499,
+        "name": "PostgreSQL integration",
+        "conclusion": "success"
+      }
+    ]
+  },
+  "inventory": {
+    "canonical_pois": 66,
+    "extensions": 3,
+    "extension_activity_pois": 4,
+    "restaurants": 50,
+    "editorial_eligible": 40,
+    "draft": 10,
+    "official_identity_checks": 18,
+    "new_photos_approved": 2,
+    "new_photos_context_verified": 2,
+    "new_photos_production_published": 0,
+    "new_storefronts": 0
+  },
+  "artifacts": {
+    "local_only": [
+      "output/native-professional-driver/professional-driver.json",
+      "output/native-food-taxonomy/native-food.json",
+      "output/native-food-taxonomy/food-{zh,en,ja,ko,id}.png",
+      "output/playwright/bali-food/food-{width}-{lang}.png"
+    ]
+  },
+  "release": {
+    "pr": 86,
+    "url": "https://github.com/lingfengai731/Agentstrip/pull/86",
+    "status": "fixed-code CI accepted;fact-only final commit and fixed-head merge pending",
+    "render": "Native Edge bootstrap rejected node:process import; no Render backend read/current deployment claim",
+    "mini": "Previous accepted first-release Preview independent; no new Preview/Upload/review/publicrelease"
+  },
+  "limitations": [
+    "SDK planner physical tap not accepted; event binding and handlers accepted. Separate physical-device touch check remains.",
+    "Earlier screenshots during async navigation timed out;callback lane deliberately excludes screenshot claim.",
+    "All operating prices/hours/weather/schedule/restaurantcoordinates remain confirmation-bound;18identities≠50fully verified venues.",
+    "Native Browser/Render administrative acceptance unavailable;never substituted public HTTP or Playwright as Render admin."
+  ]
+}
