@@ -248,3 +248,17 @@ rejected aspects: 不接受聊天和比价界面继续使用大量颜文字或�
 reason in reviewer words: 许多颜表情符号还是相当之 AI 的；设计一些好看的图标或者网上学习一下成熟的旅游网站是怎么做的替换掉
 scope: this project
 recorded at: 2026-09-12
+## 2026-09-14 Food filter interaction feedback
+
+workflow: ui-implementation-workflow-v2
+status: raw
+task: 修复小程序美食六项筛选无响应
+page/surface: 小程序 pages/food/food
+screenshot or artifact: 用户当前手机 Preview 使用反馈
+reviewer: 用户
+decision: rejected
+accepted aspects: 未新增审美偏好；此前已接受的品牌与导航继续保留
+rejected aspects: 美食标题下六项下拉选择点击没有反应
+reason in reviewer words: 点击都还没有反应，可能是不是还没有做到补齐啊？
+scope: this surface
+recorded at: 2026-09-14

@@ -3,6 +3,8 @@ const engine = require('../../utils/bali-itinerary.js');
 const COPY = require('../../utils/bali-food-copy.js');
 const TAXONOMY = require('../../utils/bali-food-taxonomy.js');
 const app = getApp();
+const FILTER_FIELDS = {regionIndex:['regions','region'],categoryIndex:['categories','category'],cuisineIndex:['cuisines','cuisine'],sceneIndex:['scenes','scene'],budgetIndex:['budgets','budget'],mealIndex:['meals','meal']};
+const CLOSE_LABEL = {zh:'关闭',en:'Close',ja:'閉じる',ko:'닫기',id:'Tutup'};
 const localized = (value, lang) => typeof value === 'string' ? value : (value || {})[lang] || (value || {}).en || '';
 const dayLabel = (copy, index, theme, lang) => copy.day + ' ' + (index + 1) + (copy.daySuffix || '') + ' · ' + localized(theme, lang);
 Page({
@@ -12,7 +14,7 @@ Page({
   async load() {
     const lang = app.globalData.currentLang || 'zh', owner = app.privateStorageKey('wm_public_route_plans');
     const copy = COPY[lang] || COPY.zh;
-    this.setData({copy,loading:true,error:''}); wx.setNavigationBarTitle({title:copy.title});
+    this.setData({copy,loading:true,error:'',filterOpen:false,closeLabel:CLOSE_LABEL[lang] || CLOSE_LABEL.en}); wx.setNavigationBarTitle({title:copy.title});
     try {
       const [travel,catalog,food] = await Promise.all([api.baliRouteData(),api.baliExtensions(),api.baliFood()]);
       if (owner !== app.privateStorageKey('wm_public_route_plans') || lang !== (app.globalData.currentLang || 'zh')) return;
@@ -31,7 +33,21 @@ Page({
       this.setData({loading:false,error:copy.failed});
     }
   },
-  change(e) { const key = e.currentTarget.dataset.key; if (!['regionIndex','categoryIndex','cuisineIndex','sceneIndex','budgetIndex','mealIndex','dayIndex'].includes(key)) return; this.setData({[key]:Number(e.detail.value)}); this.filter(); },
+  openFilter(e) {
+    const key = e.currentTarget.dataset.key, field = FILTER_FIELDS[key];
+    if (!field || this.data.loading || this.data.error) return;
+    const options = this.data[field[0]];
+    if (!options || !options.length) return;
+    this.setData({filterOpen:true,filterKey:key,filterTitle:this.data.copy[field[1]],filterOptions:options,filterSelected:this.data[key]});
+  },
+  closeFilter() { this.setData({filterOpen:false}); },
+  selectFilter(e) {
+    if (!this.data.filterOpen || this.owner !== app.privateStorageKey('wm_public_route_plans')) { this.closeFilter(); return; }
+    const key = this.data.filterKey, field = FILTER_FIELDS[key], index = Number(e.currentTarget.dataset.index);
+    if (!field || !Number.isInteger(index) || index < 0 || index >= this.data[field[0]].length) return;
+    this.setData({[key]:index,filterOpen:false}); this.filter();
+  },
+  change(e) { const key = e.currentTarget.dataset.key, index = Number(e.detail.value); const list = key === 'dayIndex' ? this.data.days : FILTER_FIELDS[key] && this.data[FILTER_FIELDS[key][0]]; if (!list || !Number.isInteger(index) || index < 0 || index >= list.length) return; this.setData({[key]:index}); this.filter(); },
   filter() {
     const d = this.data, lang = app.globalData.currentLang || 'zh';
     const category = d.categories[d.categoryIndex] || {id:''}, cuisine = d.cuisines[d.cuisineIndex] || {id:''}, scene = d.scenes[d.sceneIndex] || {id:''}, budget = d.budgets[d.budgetIndex] || {id:''}, meal = d.meals[d.mealIndex] || {id:''};

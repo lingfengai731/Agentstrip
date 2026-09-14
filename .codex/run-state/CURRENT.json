@@ -1,24 +1,30 @@
 {
   "schema_version": 1,
-  "checkpoint_revision": 41,
-  "previous_checkpoint_sha256": "9E1170009B60167B873E8BC227721B70EF8C9ED128018340226A697D2337EA55",
-  "run_id": "20260913-bali-extensions-food",
-  "objective": "Preserve accepted Mini release candidate; research and implement Penida extension/food/portfolio shared itinerary integration without unverified publishing.",
+  "checkpoint_revision": 43,
+  "previous_checkpoint_sha256": "4BF837DCF7310DF9466919206C0CACA29E13CCF74BA40ADC149008F8E6CFB18E",
+  "run_id": "20260914-mini-food-filter-release",
+  "objective": "Repair six unresponsive Mini dining filters, audit supplied media, deliver verified release candidate without unlicensed imagery or premature review claims.",
   "status": "active",
-  "phase": "release_receipt_sync",
+  "phase": "fixed_head_release_gate",
   "baseline": {
     "cwd": "E:\\Agentstrip-worktrees\\active\\account1\\bali-extensions-food-20260913",
     "worktree": "E:\\Agentstrip-worktrees\\active\\account1\\bali-extensions-food-20260913",
-    "branch": "codex/bali-food-release-receipt-20260914",
-    "head": "bce613be4969a9529dbe178c4525b5cab01077dc",
+    "branch": "codex/mini-food-filter-release-20260914",
+    "head": "3248f2bbcff577cbf7d70bc70d3130d15eb40624",
     "dirty_allowlist": [
+      "output/",
+      "restaurant-media/",
+      "miniprogram/pages/food/food.js",
+      "miniprogram/pages/food/food.wxml",
+      "miniprogram/pages/food/food.wxss",
+      "tools/test_miniprogram_food_recovery.cjs",
+      "tools/test_miniprogram_food_filters_native.cjs",
       ".codex/run-state/CURRENT.json",
+      ".codex/ui-visual-review-signals.md",
       "PROJECT_CONTEXT.md",
-      ".codex/project-memory/current-state.json",
-      ".codex/project-memory/evidence/2026/09/20260914T014307Z-pr86-merge-preview-public.json",
-      ".codex/project-memory/handoffs/2026/09/20260914T014307Z-pr86-merge-preview-public.md",
-      "tools/test_bali_public_release.cjs",
-      "output/"
+      ".codex/project-memory/evidence/2026/09/20260914T034930Z-mini-food-filter-release.json",
+      ".codex/project-memory/handoffs/2026/09/20260914T034930Z-mini-food-filter-release.md",
+      "wandermind-studio/operations/MINI_FOOD_FILTER_RELEASE_2026-09-14.md"
     ]
   },
   "completed": [
@@ -44,9 +50,11 @@
     "3required cloudCI success83d7e9e.",
     "PR86fixed ab0a22d cloud3CI success34796417429/34796417439/34796417449;mergedbce613b,wholeGit tree324e449 identical.",
     "OfficialMiniPreview1716399bytes generated;noUpload/review/publicrelease.",
-    "Production anonymousdeterministic20Foodcases5locales4widths passed;shareddata/taxonomy parity;2newcreditedPortfolio photos decoded/displayed;0forwardedwrites;NOT Render/nativeEdge."
+    "Production anonymousdeterministic20Foodcases5locales4widths passed;shareddata/taxonomy parity;2newcreditedPortfolio photos decoded/displayed;0forwardedwrites;NOT Render/nativeEdge.",
+    "FreshGit PR87main3248f2b and task checkpoint2bc push verified;onlyCURRENT differs;newuserdelivered restaurant-media accepted untracked preserved.",
+    "30native6filter5localeactualtapcallbacks44px/0exceptions;separate36optionlast35/backdropcancelpassed;officialPreview1719880bytes"
   ],
-  "current_step": "PublicFood20cases and2decodedcreditedphotos accepted;3sharedsources LF parity,2WebPs exact;Preview1716399bytes;persist mergedrelease receipt.",
+  "current_step": "30nativeSDKactualfiltertaps+separatelonglist+386contracts accepted;officialPreview1719880bytes;mediaauditrunning;fixedheadCIandmerge next.",
   "workers": [
     {
       "agent_id": "01a09881-7139-7922-9a82-e1dd60b4ee9f",
@@ -75,6 +83,16 @@
       "goal": "Shared explicit cuisine/scene filters",
       "status": "completed",
       "evidence": "60f8b6f99b0567a67ca42132133b9aa2a9ce499f"
+    },
+    {
+      "agent_id": "01a09e01-bfb1-7062-87e7-eeeab1c8910e",
+      "agent_name": "luna_worker",
+      "model": "gpt-5.6-luna",
+      "reasoning_effort": "max",
+      "goal": "Read-only supplied restaurant-media hashes, identity and permission audit",
+      "status": "running",
+      "started_at_utc": "2026-09-14T03:44:22.585Z",
+      "evidence": "output/restaurant-media-audit.json"
     }
   ],
   "accepted_evidence": [
@@ -84,14 +102,15 @@
     ".codex/project-memory/evidence/2026/09/20260913T131000Z-expansion-pr86-ci-receipt.json",
     ".codex/project-memory/evidence/2026/09/20260913T132400Z-native-food-receivers.json",
     ".codex/project-memory/evidence/2026/09/20260914T013402Z-food-taxonomy-native-release.json",
-    ".codex/project-memory/evidence/2026/09/20260914T014307Z-pr86-merge-preview-public.json"
+    ".codex/project-memory/evidence/2026/09/20260914T014307Z-pr86-merge-preview-public.json",
+    ".codex/project-memory/evidence/2026/09/20260914T034930Z-mini-food-filter-release.json"
   ],
   "unverified": [
     "Render exact deployment/nativeEdgeBrowser administrative acceptance (runtimeblocked)",
     "Ownerphysical-phone latestPreview andplanner touch",
     "32remainingdirectrestaurantidentity/liveoperatingfieldchecks",
     "Licensedstorefront/expandedWestEastbatch,ShoppingHotelmodels",
-    "MiniUpload/review/publicrelease;noauthority"
+    "DeveloperUpload/review/publicrelease notyetexecuted;currentrequestauthorizes申报workflowdeveloperUpload,notautomaticpublicrelease."
   ],
   "do_not_repeat": [
     {
@@ -128,14 +147,19 @@
       "action_id": "public-deploy-content-parity",
       "reason": "20Foodcases+2crediteddecodedphoto lane accepted;repeatonlynewsource/drift/relevantfailure",
       "evidence": ".codex/project-memory/evidence/2026/09/20260914T014307Z-pr86-merge-preview-public.json"
+    },
+    {
+      "action_id": "native-six-filter-tap-acceptance",
+      "reason": "30actualnativeSDKtapcallbacks andseparatelonglist passed onfrozenMini source;repeatonlynewrelevantchange/failure",
+      "evidence": ".codex/project-memory/evidence/2026/09/20260914T034930Z-mini-food-filter-release.json"
     }
   ],
   "next_action": {
-    "action_id": "release-receipt-pr-sync",
-    "description": "Commit/push authorizedfacts+opt-in publictesthelper;createuniquereceiptPR frommergedmain;requiredProjectmemoryCI thenfixedheadmerge.",
+    "action_id": "mini-filter-fixedhead-integrate",
+    "description": "Pushreviewednarrowpatch,requiredMini/ProjectmemoryCI,fixedheadmerge;thenofficialdeveloperUploadas requested,notautomaticreview/publicrelease.",
     "external_effect": true,
-    "effect_key": "github:lingfengai731/Agentstrip:codex/bali-food-release-receipt-20260914:integration",
+    "effect_key": "github:lingfengai731/Agentstrip:codex/mini-food-filter-release-20260914",
     "authority_confirmed": true
   },
-  "updated_at_utc": "2026-09-14T01:43:34.1595544Z"
+  "updated_at_utc": "2026-09-14T03:50:19.4597744Z"
 }
