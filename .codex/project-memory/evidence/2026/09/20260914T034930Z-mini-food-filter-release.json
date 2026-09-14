@@ -1,0 +1,90 @@
+{
+  "schema_version": 1,
+  "evidence_id": "ev-20260914T034930Z-mini-food-filter-release",
+  "task_ref": "mini-food-filter-release-20260914",
+  "captured_at": "2026-09-14T03:50:14.014Z",
+  "owner": "codex-main",
+  "status": "verified",
+  "claim": "Six Mini dining selectors replaced with explicit in-page choice sheets;30 native SDK tap callbacks plus separate long-list lane passed; official Preview generated. No merge/upload/publicrelease claimed by this precommit receipt.",
+  "source": {
+    "kind": "local_source_offline_and_native_sdk",
+    "reference": "git:3248f2bbcff577cbf7d70bc70d3130d15eb40624; tools/test_miniprogram_food_filters_native.cjs"
+  },
+  "verification": {
+    "contracts": 386,
+    "offline_mini": "all suites pass; optional native scripts without flags explicitly skip",
+    "native_fields": [
+      "regionIndex",
+      "categoryIndex",
+      "cuisineIndex",
+      "sceneIndex",
+      "budgetIndex",
+      "mealIndex"
+    ],
+    "native_languages": [
+      "zh",
+      "en",
+      "ja",
+      "ko",
+      "id"
+    ],
+    "native_cases": 30,
+    "minimum_control_height_px": 44,
+    "native_exceptions": 0,
+    "native_requests_forwarded": 0,
+    "long_list": {
+      "separate_lane": true,
+      "cuisine_options": 36,
+      "last_index": 35,
+      "scroll_and_select": true,
+      "backdrop_cancel_preserved": true
+    },
+    "visual_review": [
+      "food-zh.png",
+      "cuisine-sheet-en.png",
+      "long-list-bottom.png"
+    ],
+    "reports": [
+      "output/native-filter-fix/native-filter-taps.json",
+      "output/native-filter-fix/native-filter-scroll.json"
+    ],
+    "source_assertions": [
+      "selection,cancel,indexbounds,staleaccount",
+      "sharedFood/taxonomy50records40publicunchanged",
+      "gitdiffcheck"
+    ]
+  },
+  "preview": {
+    "bytes": 1719880,
+    "qr": "output/food-filters-preview.jpg",
+    "info": "output/food-filters-preview-info.json",
+    "qr_sha256": "b759b7a008e558085c64bde9ed8b78e9c6d5d142663442fc343a2f0439448830",
+    "upload": false,
+    "review": false,
+    "public_release": false
+  },
+  "media": {
+    "input": "restaurant-media",
+    "status": "preserved_candidate_audit_pending",
+    "claimed_images": 68,
+    "claimed_restaurants": 34,
+    "claimed_owner_authorized": 63,
+    "commons_candidates": 5,
+    "publication_changes": 0,
+    "permission_assertion_is_not_proof": true
+  },
+  "boundary": {
+    "original_checkout_changes": 0,
+    "website_backend_changes": 0,
+    "production_environment_changes": 0,
+    "payments": 0,
+    "driver_submissions": 0
+  },
+  "remaining": [
+    "FixedheadCIandmerge",
+    "Developer-versionUpload percurrentuserrequesttoexpediteMiniapplication;notreview/publicrelease",
+    "Reviewconsole category/privacy/domain/testaccess actualconfigurationunverified",
+    "Suppliedmediahash/identity/rights auditandproof; photosdonotblockMini release",
+    "Underlying nativepicker/devicecause notdiagnosed;explicitin-pagebuttonsrepairthe user-visiblefailure"
+  ]
+}

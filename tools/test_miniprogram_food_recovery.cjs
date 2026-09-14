@@ -16,6 +16,23 @@ function load(name,api) {
 (async()=>{
   const api={baliRouteData:async()=>travel,baliExtensions:async()=>catalog,baliFood:async()=>food};
   const dining=load('food',api);dining.onLoad({});await dining.load();
+  for (const key of ['regionIndex','categoryIndex','cuisineIndex','sceneIndex','budgetIndex','mealIndex']) {
+    const before=dining.data[key];
+    dining.openFilter({currentTarget:{dataset:{key}}});
+    assert.equal(dining.data.filterOpen,true,key+' opens visible choices');
+    assert.ok(dining.data.filterOptions.length>1);
+    dining.closeFilter(); assert.equal(dining.data[key],before,'cancel preserves '+key);
+    dining.openFilter({currentTarget:{dataset:{key}}});
+    dining.selectFilter({currentTarget:{dataset:{index:1}}});
+    assert.equal(dining.data[key],1);assert.equal(dining.data.filterOpen,false);
+    dining.openFilter({currentTarget:{dataset:{key}}});
+    dining.selectFilter({currentTarget:{dataset:{index:-1}}});assert.equal(dining.data[key],1,'invalid index rejected');dining.closeFilter();
+    dining.change({currentTarget:{dataset:{key}},detail:{value:0}});
+  }
+  dining.openFilter({currentTarget:{dataset:{key:'regionIndex'}}});identity=2;
+  dining.selectFilter({currentTarget:{dataset:{index:1}}});assert.equal(dining.data.regionIndex,0,'stale owner cannot commit selection');identity=1;
+  assert.equal((foodWxml.match(/bindtap="openFilter"/g)||[]).length,6,'six real filter buttons');
+  assert.ok(!foodWxml.includes('<picker range='),'filter controls do not depend on native picker opening');
   const routed=load('food',api);routed.route='pages/food/food';routed.onLoad({routeId:'R1'});await routed.load();
   assert.equal(routed.route,'pages/food/food','framework page route must remain a path string');
   assert.equal(routed.routeFamily.id,'R1');
