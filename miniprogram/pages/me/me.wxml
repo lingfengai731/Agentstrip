@@ -55,6 +55,13 @@
       </view>
     </view>
 
+    <view class="me-card">
+      <button class="me-row food-row" bindtap="openFood" aria-label="{{copy.food}}">
+        <view class="me-row-icon"><view class="dining-icon"><view class="dining-fork"></view><view class="dining-plate"></view></view></view>
+        <view class="me-row-label">{{copy.food}}</view>
+        <view class="me-row-arrow">›</view>
+      </button>
+    </view>
     <button class="btn-ghost logout-btn" bindtap="doLogout">{{copy.logout}}</button>
 
     <view class="me-footer">WanderMind · 智旅 v1.0.0</view>

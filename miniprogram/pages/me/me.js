@@ -85,6 +85,12 @@ Page({
     });
   },
 
+  openFood() {
+    wx.navigateTo({ url: '/pages/food/food', fail: () => {
+      wx.showToast({ title: this.data.copy.openFailed, icon: 'none' });
+    } });
+  },
+
   about() {
     wx.showModal({
       title: this.data.copy.about,

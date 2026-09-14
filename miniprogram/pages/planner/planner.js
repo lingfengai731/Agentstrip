@@ -26,7 +26,7 @@ Page({
 
   onShow() {
     const copy = COPY[app.globalData.currentLang] || COPY.zh;
-    this.setData({ copy, error: '', goalOptions: this.data.goalOptions.map(item => ({ ...item, label: copy[item.id] })) });
+    this.setData({ copy, goalOptions: this.data.goalOptions.map(item => ({ ...item, label: copy[item.id] })) });
     wx.setNavigationBarTitle({ title: copy.submit });
   },
 
@@ -122,8 +122,11 @@ Page({
       if (!isCurrent()) return;
       app.setProfessionalRoute(payload);
       wx.showToast({ title: this.data.copy.success, icon: 'success' });
-      setTimeout(() => { if (isCurrent()) wx.navigateBack({ delta: 1 }); }, 500);
+      // Deep links and alternate entries must land on the result, not elsewhere.
+      wx.switchTab({ url: '/pages/itinerary/itinerary', fail: () => {
+        if (isCurrent()) this.setData({ error: this.data.copy.failed });
+      } });
     } catch (err) { if (isCurrent()) this.setData({ error: err.message || this.data.copy.failed }); }
-    finally { if (isCurrent()) this.setData({ busy: false }); }
+    finally { this.setData({ busy: false }); }
   },
 });

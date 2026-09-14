@@ -87,10 +87,13 @@ Page({
     try {
       const payload = await api.recentUnlockedProfessionalRoute(app.globalData.currentLang || 'zh');
       if (app.globalData.token !== token) return;
+      if (app.globalData.professionalRoute !== cached) return;
+      // Restore only this trip: another paid trip must not replace a new preview.
+      if (cached && cached.trip_id && cached.trip_id !== payload.trip_id) return;
       app.setProfessionalRoute(payload);
       this.setData({ professional: payload });
     } catch (err) {
-      if (!cached && !/not_found|404/i.test(err.message || '')) this.setData({ error: err.message });
+      if (app.globalData.token === token && !app.globalData.professionalRoute && !/not_found|404/i.test(err.message || '')) this.setData({ error: err.message });
     }
   },
 
