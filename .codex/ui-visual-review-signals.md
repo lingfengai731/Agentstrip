@@ -2,6 +2,18 @@
 
 workflow: ui-implementation-workflow-v2
 status: raw
+task: mini-match-recovery-20260914
+page/surface: Mini Me and professional planner
+reviewer: user
+decision: mixed
+accepted aspects: existing primary navigation retained
+rejected aspects: Dining location; matching prolonged wait
+reason in reviewer words: 美食栏不应该放在退出登录上吗；点击匹配路线加载很久都不出来
+scope: this surface
+recorded at: 2026-09-14T06:33:07.006Z
+
+workflow: ui-implementation-workflow-v2
+status: raw
 task: 阶段 1 首页服务定位实施
 page/surface: WanderMind 首页
 screenshot or artifact: 当前生产首页与本次待实现版本
