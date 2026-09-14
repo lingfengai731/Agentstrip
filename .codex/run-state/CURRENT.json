@@ -1,23 +1,23 @@
 {
   "schema_version": 1,
-  "checkpoint_revision": 39,
-  "previous_checkpoint_sha256": "EF06610BD7B7DEDC848B59C9F16365E32F14BC25E57F23A36BD27D1C3FB45B4A",
+  "checkpoint_revision": 41,
+  "previous_checkpoint_sha256": "9E1170009B60167B873E8BC227721B70EF8C9ED128018340226A697D2337EA55",
   "run_id": "20260913-bali-extensions-food",
   "objective": "Preserve accepted Mini release candidate; research and implement Penida extension/food/portfolio shared itinerary integration without unverified publishing.",
   "status": "active",
-  "phase": "pr86_fixed_head_release",
+  "phase": "release_receipt_sync",
   "baseline": {
     "cwd": "E:\\Agentstrip-worktrees\\active\\account1\\bali-extensions-food-20260913",
     "worktree": "E:\\Agentstrip-worktrees\\active\\account1\\bali-extensions-food-20260913",
-    "branch": "codex/bali-extensions-food-20260913",
-    "head": "83d7e9e35a4366e4e11974c6aed792b51d42001e",
+    "branch": "codex/bali-food-release-receipt-20260914",
+    "head": "bce613be4969a9529dbe178c4525b5cab01077dc",
     "dirty_allowlist": [
       ".codex/run-state/CURRENT.json",
-      ".codex/role-windows.md",
       "PROJECT_CONTEXT.md",
       ".codex/project-memory/current-state.json",
-      ".codex/project-memory/evidence/2026/09/20260914T013402Z-food-taxonomy-native-release.json",
-      ".codex/project-memory/handoffs/2026/09/20260914T013402Z-food-taxonomy-native-release.md",
+      ".codex/project-memory/evidence/2026/09/20260914T014307Z-pr86-merge-preview-public.json",
+      ".codex/project-memory/handoffs/2026/09/20260914T014307Z-pr86-merge-preview-public.md",
+      "tools/test_bali_public_release.cjs",
       "output/"
     ]
   },
@@ -41,9 +41,12 @@
     "Luna taxonomy commit60f8b6f reviewed;9scoped files integrated8de85a9;Food taxonomy/recovery383 contracts passed.",
     "Native professional cancel/503/retry/5+2/dining7 and Dicky/Gede private draft callbacks passed;0live requests;not physical-phone touch.",
     "Fresh post-taxonomy nativeFood5locale390px/44px and11daymodules/dining9/AI963char passed;zero exceptions; screenshots localonly.",
-    "3required cloudCI success83d7e9e."
+    "3required cloudCI success83d7e9e.",
+    "PR86fixed ab0a22d cloud3CI success34796417429/34796417439/34796417449;mergedbce613b,wholeGit tree324e449 identical.",
+    "OfficialMiniPreview1716399bytes generated;noUpload/review/publicrelease.",
+    "Production anonymousdeterministic20Foodcases5locales4widths passed;shareddata/taxonomy parity;2newcreditedPortfolio photos decoded/displayed;0forwardedwrites;NOT Render/nativeEdge."
   ],
-  "current_step": "383offline/31web/nativeFood5locales and professional/DickyGede mockedcallbacks accepted;3CI83d7e9e successful; persistfacts and promote existingPR86.",
+  "current_step": "PublicFood20cases and2decodedcreditedphotos accepted;3sharedsources LF parity,2WebPs exact;Preview1716399bytes;persist mergedrelease receipt.",
   "workers": [
     {
       "agent_id": "01a09881-7139-7922-9a82-e1dd60b4ee9f",
@@ -80,14 +83,15 @@
     ".codex/project-memory/evidence/2026/09/20260913T130613Z-bali-food-media-callbacks.json",
     ".codex/project-memory/evidence/2026/09/20260913T131000Z-expansion-pr86-ci-receipt.json",
     ".codex/project-memory/evidence/2026/09/20260913T132400Z-native-food-receivers.json",
-    ".codex/project-memory/evidence/2026/09/20260914T013402Z-food-taxonomy-native-release.json"
+    ".codex/project-memory/evidence/2026/09/20260914T013402Z-food-taxonomy-native-release.json",
+    ".codex/project-memory/evidence/2026/09/20260914T014307Z-pr86-merge-preview-public.json"
   ],
   "unverified": [
-    "Render exact deployment/native production Browser acceptance",
-    "Physical-phone planner submit touch",
-    "32remaining direct restaurantidentity rechecks and all variableoperatingfields",
-    "Licensed storefront/expandedWestEastphotos;Shopping/Hotelmodels",
-    "NewMiniPreview/Upload/review/publicrelease"
+    "Render exact deployment/nativeEdgeBrowser administrative acceptance (runtimeblocked)",
+    "Ownerphysical-phone latestPreview andplanner touch",
+    "32remainingdirectrestaurantidentity/liveoperatingfieldchecks",
+    "Licensedstorefront/expandedWestEastbatch,ShoppingHotelmodels",
+    "MiniUpload/review/publicrelease;noauthority"
   ],
   "do_not_repeat": [
     {
@@ -114,14 +118,24 @@
       "action_id": "native-food-final-acceptance",
       "reason": "Food5locale and public module/dining/AI receivers accepted against unchanged app tree; no repetition without sourcechange/newgap",
       "evidence": ".codex/project-memory/evidence/2026/09/20260913T132400Z-native-food-receivers.json"
+    },
+    {
+      "action_id": "pr86-merge",
+      "reason": "Fixedab0a22d required3CI success;mergedbce613b,trees identical;no duplicate merge.",
+      "evidence": ".codex/project-memory/evidence/2026/09/20260914T014307Z-pr86-merge-preview-public.json"
+    },
+    {
+      "action_id": "public-deploy-content-parity",
+      "reason": "20Foodcases+2crediteddecodedphoto lane accepted;repeatonlynewsource/drift/relevantfailure",
+      "evidence": ".codex/project-memory/evidence/2026/09/20260914T014307Z-pr86-merge-preview-public.json"
     }
   ],
   "next_action": {
-    "action_id": "pr86-final-facts-ci-and-merge",
-    "description": "Push authorizedfact-only commit,check3requiredCIonfixedHEAD then promote/merge existingPR86;separateRender metadata/nativeBrowser acceptance.",
+    "action_id": "release-receipt-pr-sync",
+    "description": "Commit/push authorizedfacts+opt-in publictesthelper;createuniquereceiptPR frommergedmain;requiredProjectmemoryCI thenfixedheadmerge.",
     "external_effect": true,
-    "effect_key": "github:lingfengai731/Agentstrip:pr86:merge",
+    "effect_key": "github:lingfengai731/Agentstrip:codex/bali-food-release-receipt-20260914:integration",
     "authority_confirmed": true
   },
-  "updated_at_utc": "2026-09-14T01:34:58.0876539Z"
+  "updated_at_utc": "2026-09-14T01:43:34.1595544Z"
 }
