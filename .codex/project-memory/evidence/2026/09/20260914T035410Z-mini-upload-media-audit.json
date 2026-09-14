@@ -1,0 +1,109 @@
+{
+  "schema_version": 1,
+  "evidence_id": "ev-20260914T035410Z-mini-upload-media-audit",
+  "task_ref": "mini-food-filter-release-20260914",
+  "captured_at": "2026-09-14T03:54:33.395Z",
+  "owner": "codex-main",
+  "status": "verified",
+  "claim": "PR88fixedheadrequired2CI/merge/tree equality verified; officialWeChatCLI developerUpload0.1.0 succeeded at matchingMini source1719880bytes. Supplied68media integrity audited; noimageapproval/publication, noMini review/publicrelease.",
+  "source": {
+    "kind": "github_git_official_wechat_cli_and_local_media_audit",
+    "reference": "https://github.com/lingfengai731/Agentstrip/pull/88; cli:upload0.1.0; output/restaurant-media-audit.json"
+  },
+  "fixed_head": "c4a388febb1bd9b5ccdea4b37bcc63c884d9bb96",
+  "merge_commit": "2ec5319784f079a4249514f25752dfbe61b07184",
+  "whole_tree_fixed_and_merged": "8cedd17a3d8e8d941956daf282ec7efeec30fa02",
+  "mini_tree": "c087c61daba0122cd24a9828b9fa1e34aade0468",
+  "ci": [
+    {
+      "name": "Mini Program checks",
+      "id": 34803973836,
+      "conclusion": "success"
+    },
+    {
+      "name": "Project memory validation",
+      "id": 34803973814,
+      "conclusion": "success"
+    }
+  ],
+  "accepted_tests": {
+    "contracts": 386,
+    "native_filter_taps": 30,
+    "native_filter_min_height_px": 44,
+    "languages": 5,
+    "exceptions": 0,
+    "forwarded_requests": 0,
+    "long_scroll_lane": "36cuisineoptions,lastindex35,backdropcancel preserves",
+    "earlier_receipt": ".codex/project-memory/evidence/2026/09/20260914T034930Z-mini-food-filter-release.json"
+  },
+  "wechat_upload": {
+    "authority": "CurrentuserrequesttoexpediteMini申报; normaldeveloperUploadstep,notautomaticpublicrelease",
+    "appid": "wx26bfe1e0c37a54b6",
+    "version": "0.1.0",
+    "bytes": 1719880,
+    "command": "cli.bat upload --project activeWorktree/miniprogram --version0.1.0 --port9420",
+    "exit_code": 0,
+    "terminal_signal": "√ upload",
+    "info": "output/mini-upload-0.1.0-info.json",
+    "info_sha256": "d78d457591111b88252b7d979a713d3f0ec8946699ea6b8fcaef8e760d026e95",
+    "console_independently_read": false,
+    "review_submitted": false,
+    "public_release": false,
+    "preview": "output/food-filters-preview.jpg"
+  },
+  "media_audit": {
+    "worker": "01a09e01-bfb1-7062-87e7-eeeab1c8910e",
+    "model": "gpt-5.6-luna",
+    "effort": "max",
+    "state": "completed_parent_accepted",
+    "input_preserved": true,
+    "input_snapshot_file_count": 141,
+    "input_digest": "a583839a499ff467580316f4ada510ab7c8a5ce2f8f4a830bc187c72b4c667d2",
+    "originals": 68,
+    "web": 68,
+    "rows": 68,
+    "covered_public_restaurants": 34,
+    "original_hash_matches": 68,
+    "duplicates": 0,
+    "unknown_restaurant_ids": 0,
+    "canonical_name_area_mismatches": 0,
+    "claimed_official_authorized": 63,
+    "official_authorization_proof_missing": 63,
+    "commons_licensed_candidates": 5,
+    "local_license_and_source_label_supported_candidates": 4,
+    "exact_branch_pending": 1,
+    "approved_by_this_task": 0,
+    "published_by_this_task": 0,
+    "parent_checks": [
+      "Canonicalcountmetadata68andSHA sampleSunSunnasicampurcca42...",
+      "Readpermissionindex:all63ownerassertionsonlynoindependentattachments",
+      "CommonsNuri2013pagestatesbrandbutnotSeminyakbranch;correctedworkerMDoverstatement",
+      "CommonsSunSunUbud2filesexplicitCCBYSA4.0"
+    ],
+    "raw_reports": [
+      "output/restaurant-media-audit.json",
+      "output/restaurant-media-audit.md"
+    ],
+    "limitations": [
+      "Not68image-by-imagevisualqualityapproval",
+      "Mozaic2012classimages source-supportedbutnotcurrentrestaurantambiencepromise",
+      "Inputpack/rawreports/QR/screenshotslocaluntrackednotremotesynced"
+    ]
+  },
+  "boundaries": {
+    "website_business_changes": 0,
+    "backend_changes": 0,
+    "render_environment_changes": 0,
+    "production_db_changes": 0,
+    "real_payments": 0,
+    "driver_submissions": 0,
+    "original_user_checkout_changes": 0
+  },
+  "remaining": [
+    "OwnercurrentPreviewphone6filterscallback",
+    "WeChatconsole0.1.0/category/privacy/domain/testaccess review readiness;notreadbynativeBrowser inthistask",
+    "ActualWeChatReviewandPublicRelease notperformed",
+    "63officialpermissionproof/1preciseNuriSeminyakidentity;4licensedcandidates stillnotpublished",
+    "Earlierwebsite publicdeliveryunchanged;noRenderdeployrequired forMini-onlypatch"
+  ]
+}

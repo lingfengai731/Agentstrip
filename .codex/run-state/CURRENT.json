@@ -1,30 +1,26 @@
 {
   "schema_version": 1,
-  "checkpoint_revision": 43,
-  "previous_checkpoint_sha256": "4BF837DCF7310DF9466919206C0CACA29E13CCF74BA40ADC149008F8E6CFB18E",
+  "checkpoint_revision": 45,
+  "previous_checkpoint_sha256": "8A21099F6E6CBAA688512895C5732532AE52751A090487D3F406AF25E25D1BDD",
   "run_id": "20260914-mini-food-filter-release",
   "objective": "Repair six unresponsive Mini dining filters, audit supplied media, deliver verified release candidate without unlicensed imagery or premature review claims.",
-  "status": "active",
-  "phase": "fixed_head_release_gate",
+  "status": "paused",
+  "phase": "wechat_review_readiness_handoff",
   "baseline": {
     "cwd": "E:\\Agentstrip-worktrees\\active\\account1\\bali-extensions-food-20260913",
     "worktree": "E:\\Agentstrip-worktrees\\active\\account1\\bali-extensions-food-20260913",
-    "branch": "codex/mini-food-filter-release-20260914",
-    "head": "3248f2bbcff577cbf7d70bc70d3130d15eb40624",
+    "branch": "codex/mini-food-upload-receipt-20260914",
+    "head": "2ec5319784f079a4249514f25752dfbe61b07184",
     "dirty_allowlist": [
       "output/",
       "restaurant-media/",
-      "miniprogram/pages/food/food.js",
-      "miniprogram/pages/food/food.wxml",
-      "miniprogram/pages/food/food.wxss",
-      "tools/test_miniprogram_food_recovery.cjs",
-      "tools/test_miniprogram_food_filters_native.cjs",
       ".codex/run-state/CURRENT.json",
-      ".codex/ui-visual-review-signals.md",
       "PROJECT_CONTEXT.md",
-      ".codex/project-memory/evidence/2026/09/20260914T034930Z-mini-food-filter-release.json",
-      ".codex/project-memory/handoffs/2026/09/20260914T034930Z-mini-food-filter-release.md",
-      "wandermind-studio/operations/MINI_FOOD_FILTER_RELEASE_2026-09-14.md"
+      ".codex/role-windows.md",
+      ".codex/project-memory/current-state.json",
+      ".codex/project-memory/evidence/2026/09/20260914T035410Z-mini-upload-media-audit.json",
+      ".codex/project-memory/handoffs/2026/09/20260914T035410Z-mini-upload-media-audit.md",
+      ".codex/project-memory/decisions/ADR-20260914-mini-filter-release-before-images.md"
     ]
   },
   "completed": [
@@ -52,9 +48,12 @@
     "OfficialMiniPreview1716399bytes generated;noUpload/review/publicrelease.",
     "Production anonymousdeterministic20Foodcases5locales4widths passed;shareddata/taxonomy parity;2newcreditedPortfolio photos decoded/displayed;0forwardedwrites;NOT Render/nativeEdge.",
     "FreshGit PR87main3248f2b and task checkpoint2bc push verified;onlyCURRENT differs;newuserdelivered restaurant-media accepted untracked preserved.",
-    "30native6filter5localeactualtapcallbacks44px/0exceptions;separate36optionlast35/backdropcancelpassed;officialPreview1719880bytes"
+    "30native6filter5localeactualtapcallbacks44px/0exceptions;separate36optionlast35/backdropcancelpassed;officialPreview1719880bytes",
+    "PR88fixedc4a388f MiniandProjectmemoryCI success;merge2ec5319 wholeGit tree8cedd17 equal;Mini sourcefrozen c087c61",
+    "Luna finalsupplied68 originals/68 web inventoryhashesaccepted;parentcanonical+hashsample+permissionindexreviewandCommonsSeminyak correction;63authorizationunproven,4license/source-supportedcandidates,1exactbranchpending;0publication",
+    "OfficialWeChatCLIdeveloperUpload0.1.0exit0/√upload1719880bytes;infohashd78d457;PreviewsameMini c087c61;notreview/publicrelease"
   ],
-  "current_step": "30nativeSDKactualfiltertaps+separatelonglist+386contracts accepted;officialPreview1719880bytes;mediaauditrunning;fixedheadCIandmerge next.",
+  "current_step": "OfficialdeveloperUpload0.1.0wx26bfe1e0c37a54b6 succeeded1719880bytes onPR88mergedtreec087c61;review/publicrelease andconsolefacts unverified;prepare/push scopedreceiptfacts only.",
   "workers": [
     {
       "agent_id": "01a09881-7139-7922-9a82-e1dd60b4ee9f",
@@ -90,9 +89,10 @@
       "model": "gpt-5.6-luna",
       "reasoning_effort": "max",
       "goal": "Read-only supplied restaurant-media hashes, identity and permission audit",
-      "status": "running",
+      "status": "completed",
       "started_at_utc": "2026-09-14T03:44:22.585Z",
-      "evidence": "output/restaurant-media-audit.json"
+      "evidence": "output/restaurant-media-audit.json",
+      "last_observed_at_utc": "2026-09-14T03:52:34.221Z"
     }
   ],
   "accepted_evidence": [
@@ -103,14 +103,15 @@
     ".codex/project-memory/evidence/2026/09/20260913T132400Z-native-food-receivers.json",
     ".codex/project-memory/evidence/2026/09/20260914T013402Z-food-taxonomy-native-release.json",
     ".codex/project-memory/evidence/2026/09/20260914T014307Z-pr86-merge-preview-public.json",
-    ".codex/project-memory/evidence/2026/09/20260914T034930Z-mini-food-filter-release.json"
+    ".codex/project-memory/evidence/2026/09/20260914T034930Z-mini-food-filter-release.json",
+    ".codex/project-memory/evidence/2026/09/20260914T035410Z-mini-upload-media-audit.json"
   ],
   "unverified": [
-    "Render exact deployment/nativeEdgeBrowser administrative acceptance (runtimeblocked)",
-    "Ownerphysical-phone latestPreview andplanner touch",
-    "32remainingdirectrestaurantidentity/liveoperatingfieldchecks",
-    "Licensedstorefront/expandedWestEastbatch,ShoppingHotelmodels",
-    "DeveloperUpload/review/publicrelease notyetexecuted;currentrequestauthorizes申报workflowdeveloperUpload,notautomaticpublicrelease."
+    "Ownerphysical-phone newPreview6filtercallbacks",
+    "WeChatconsoleuploaded0.1.0/category/privacy/requestdomain/testaccess actualstate andReview/PublicRelease",
+    "63thirdpartyofficialpermissionproof/1exactSeminyakidentity;4licensedcandidatesnotpublished;inputpackrawoutputlocalonly",
+    "32remainingrestaurantofficialoperatingfieldchecks,licensedfullWestEastbatch,futureShoppingHotel",
+    "ExactRendermetadata/nativeBrowser unchanged;websitebusinessnotchangedbyMini patch"
   ],
   "do_not_repeat": [
     {
@@ -152,14 +153,19 @@
       "action_id": "native-six-filter-tap-acceptance",
       "reason": "30actualnativeSDKtapcallbacks andseparatelonglist passed onfrozenMini source;repeatonlynewrelevantchange/failure",
       "evidence": ".codex/project-memory/evidence/2026/09/20260914T034930Z-mini-food-filter-release.json"
+    },
+    {
+      "action_id": "mini-food-filter-developer-upload-0.1.0",
+      "reason": "OfficialCLIuploadexit0/√upload atMini c087c61;do notreplaydeveloperUploadexceptnewsource oractualneed",
+      "evidence": ".codex/project-memory/evidence/2026/09/20260914T035410Z-mini-upload-media-audit.json"
     }
   ],
   "next_action": {
-    "action_id": "mini-filter-fixedhead-integrate",
-    "description": "Pushreviewednarrowpatch,requiredMini/ProjectmemoryCI,fixedheadmerge;thenofficialdeveloperUploadas requested,notautomaticreview/publicrelease.",
-    "external_effect": true,
-    "effect_key": "github:lingfengai731/Agentstrip:codex/mini-food-filter-release-20260914",
+    "action_id": "wechat-console-review-readiness",
+    "description": "VerifycorrectWeChatAppIDconsoledeveloper0.1.0,category/privacy/requestdomain/testaccess andownerphonefiltercallback before review;nativeplugin onlyifcapabilityavailable,otherwiseownerprovidesnonsecret screenshots;no imageexpansiondelay or repeatedUpload.",
+    "external_effect": false,
+    "effect_key": null,
     "authority_confirmed": true
   },
-  "updated_at_utc": "2026-09-14T03:50:19.4597744Z"
+  "updated_at_utc": "2026-09-14T03:55:54.5544409Z"
 }

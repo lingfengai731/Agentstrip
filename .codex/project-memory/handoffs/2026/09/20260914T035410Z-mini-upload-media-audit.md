@@ -1,0 +1,25 @@
+# Mini developer Upload / restaurant media audit handoff
+
+Captured2026-09-14. Currentuserrequests expeditedMini申报. Parentownsrelease;nohiddenchat/credentialsrecorded.
+
+## Verified baseline and release
+- ActiveWT E:/Agentstrip-worktrees/active/account1/bali-extensions-food-20260913;receiptbranchcodex/mini-food-upload-receipt-20260914 basedonmain2ec5319;originaldirty E:/Agentstrip preserved.
+- PR88fixedc4a388f MiniCI34803973836 and ProjectmemoryCI34803973814 bothsuccess;squashmerge2ec5319784f079a4249514f25752dfbe61b07184;wholeGittree8cedd17 identical;Mini c087c61 equalsPreview/uploadsource.
+-6nativepickers→explicitbuttonbottomsheet.386contracts/allofflineMini plus30nativeSDK actualtap6×5locales44px/0exceptions;separate36optionlongscroll/last35/backdropcancelpass. UnderlyingnativepickerOS/devicecauseunproven;daypickerunchanged.
+- OfficialCLIUploaddeveloper0.1.0/AppIDwx26bfe1e0c37a54b6 succeeded(exit0,√upload),1719880bytes. NOTMiniReview orPublicRelease. Consoleversionindependentreadnotperformed. Preview output/food-filters-preview.jpg remainslocalonly.
+- Website/backendbusinessunchanged;noRenderdeploymentneeded. Existingacceptedproductioncontentreceipt retained,NOTnewRenderexactcommitclaim.
+
+## Input media audited, not published
+- FormalLunaVolta/ID01a09e01-bfb1-7062-87e7-eeeab1c8910e completedreadonlypackaudit;parentacceptedreport,canonical/hashsample/permissionindexand3Commonspagerechecks.
+-68originals+68web+68rows map34of40publiccanonicalIDs;68hashmatches,0duplicates,0unknownIDs/nameareamismatches. Input141filedigest a583839a...667d2 unchanged.
+-63officialsourceimages haveonlyowner-authorizationassertions,noindependentproof.5Commonslicensedcandidates:4local-license/source-supported(SunSun2/Mozaic2),1NuriSeminyakbranchunproven. ParentpageconfirmsNuri brandBali2013,butnotSeminyak. Nothingnewapproved/published.
+-restaurant-mediaandrawoutputpreservedUNTRACKED;notremotesynced. Sharedreceiptcontainscounts/digest/risks only. Do notbulkstageorcleanuserpack.
+
+## Exact next action: wechat-console-review-readiness
+1. OwneropensWeChatMini managementconsoleforaboveAppID:verifydeveloper0.1.0,optionallysetasexperienceversionandtest6filterswithnewPreview/experiencepackage.
+2. Inspectactualservicecategory,privacydeclarations,legalrequestdomainandneededtestaccess. Nativebrowserruntimewasnotchanged;noad-hocprofile/cookie/APIaccessorpolicybypass. Officialdocsfetchblocked;donotclaimcurrentpoliciesreviewedorconsoleconfigured.
+3. Prepare/submitreview onlyfromactualcorrectaccount/category/privacyfacts. Do notpublishpublicversionbeforeactualreviewstatus. Noautomaticlivepayments/driveremails.
+4. Photographyisnonblocking:obtain63merchantpermissionproof;exclude1unprovenexactbranch;review4licensedcandidateswithdates/attributionbeforeintegration. Foodscenesalready50records40public;noemptyplaceholderpublication.
+
+## Do not repeat
+PR86/87/88merge,accepted6filtermatrixorunchangedfullwebsuite,developerUpload0.1.0 unlessactualfactualneed. NoRenderenv/DBdeletes/payments/privatecontacts,userfilecleanuporfalseapproved=publishedclaims.
