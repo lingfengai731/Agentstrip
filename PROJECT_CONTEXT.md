@@ -5,6 +5,8 @@ It stores verifiable project facts, not hidden chain-of-thought or complete chat
 
 ## Active expansion pointer — 2026-09-16
 
+Release follow-up: PR91 passed2CI and merged `main@478e326`; whole treeb461b98/Mini83e2ae6e match. Official WeChat developerUpload`0.1.1` succeeded,2053242bytes; Preview also succeeds. NOTreviewed/publicreleased/phoneaccepted. Read `.codex/project-memory/handoffs/2026/09/20260916T102733Z-public-load-release.md`. Next owner-phone-0.1.1-and-wechat-review-prerequisites; do not repeat0.1.1Upload. Earlier pending-merge capture below is history.
+
 Current public-loading fix: source `9089e7d` is committed/pushed on `codex/mini-public-load-20260914`, Mini tree `83e2ae6e`. Native30filter callbacks(5languages,44px) pass;6injected public-data GET failures still render6routes/33lunch candidates/59gallery cards.389contracts/all offline suites pass. OfficialPreview2053242bytes. No phone acceptance/newUpload/publicrelease or Render admin verification is claimed. Read `.codex/project-memory/handoffs/2026/09/20260916-mini-public-load.md`; next fixed-headCI/merge, developer-version/phone and submission readiness. Earlier entries are dated history, not current blockers or new deployment claims.
 
 ## Previous incident pointer — 2026-09-14

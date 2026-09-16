@@ -1,33 +1,24 @@
 {
   "schema_version": 1,
-  "checkpoint_revision": 49,
-  "previous_checkpoint_sha256": "0447F80E4C7D367C89CDDE168BE18113FD52D7D13029EFBFE4D6A0E9BE494801",
+  "checkpoint_revision": 51,
+  "previous_checkpoint_sha256": "D66B1D8CACE88B29AF86CB73828EE89E5CBFE16EF0F051F02C4B9B5A3663BB43",
   "run_id": "20260914-mini-public-load",
   "objective": "Fix public itinerary, food filters and gallery loading; verify native live and failure behavior before release.",
-  "status": "active",
-  "phase": "native_controls_acceptance",
+  "status": "paused",
+  "phase": "owner_phone_and_submission_readiness",
   "baseline": {
     "cwd": "E:\\Agentstrip-worktrees\\active\\account1\\bali-extensions-food-20260913",
     "worktree": "E:\\Agentstrip-worktrees\\active\\account1\\bali-extensions-food-20260913",
-    "branch": "codex/mini-public-load-20260914",
-    "head": "77e0922c0b3921d4f3fe074052f9b6ffb11d919a",
+    "branch": "codex/mini-public-load-release-20260916",
+    "head": "478e32613c6c396599aedf30337855bab4c04a0e",
     "dirty_allowlist": [
       "output/",
       "restaurant-media/",
       ".codex/run-state/CURRENT.json",
-      "miniprogram/pages/food/food.js",
-      "miniprogram/pages/gallery/gallery.js",
-      "miniprogram/pages/itinerary/itinerary.js",
-      "miniprogram/pages/itinerary/itinerary.wxml",
-      "miniprogram/pages/place/place.js",
-      "miniprogram/utils/api.js",
-      "miniprogram/utils/bali-media.js",
-      "miniprogram/utils/public-catalog-seed.js",
-      "tools/build_miniprogram_catalog.cjs",
-      "tools/test_miniprogram_public_load.cjs",
-      "tools/test_miniprogram_match_recovery.cjs",
-      "tools/test_miniprogram_food_filters_native.cjs",
-      ".github/workflows/miniprogram-checks.yml"
+      "PROJECT_CONTEXT.md",
+      ".codex/project-memory/current-state.json",
+      ".codex/project-memory/evidence/2026/09/20260916T102733Z-public-load-release.json",
+      ".codex/project-memory/handoffs/2026/09/20260916T102733Z-public-load-release.md"
     ]
   },
   "completed": [
@@ -35,9 +26,13 @@
     "Native unmocked public endpoints200; 6routes/33food/64gallery before fix; phone failure not reproduced",
     "Luna immutable five-finding audit accepted; fixes plus public snapshot regression passed",
     "Official previous Preview info2053242bytes; current source app unchanged since that compilation",
-    "Fresh native public endpoints200; UI food33 visible; no mock data"
+    "Fresh native public endpoints200; UI food33 visible; no mock data",
+    "Native30filters five locales44px and6request fault lane passed;0exceptions",
+    "PR91 fixed20dfff64 passed2CI and merged478e326; full treeb461b98 equal, Mini83e2ae6e",
+    "Official freshPreview2053242bytes from sameMini tree",
+    "Official developerUpload0.1.1 succeeded exit0;2053242bytes; unchanged Mini83e2ae6e"
   ],
-  "current_step": "2026-09-16 reconciled authored pending diff; native live filter taps running (zh six passed). SDK screenshot timeout isolated, Computer Use actual Food rendering observed.",
+  "current_step": "Code PR91 merged and developer0.1.1 uploaded; finalize receipt publication. Next owner physical-phone callback and WeChat review prerequisite verification.",
   "workers": [
     {
       "agent_id": "01a09eab-8c44-73d3-8832-686e1c3b1712",
@@ -53,11 +48,15 @@
     "output/probe-public-pages.cjs",
     "output/public-itinerary-before.png",
     "output/public-food-before.png",
-    "output/public-gallery-before.png"
+    "output/public-gallery-before.png",
+    ".codex/project-memory/evidence/2026/09/20260916-mini-public-load.json",
+    "https://github.com/lingfengai731/Agentstrip/pull/91",
+    ".codex/project-memory/evidence/2026/09/20260916T102733Z-public-load-release.json"
   ],
   "unverified": [
-    "Native full5locale matrix still running",
-    "Phone network failure not reproduced; newPreview/Upload and Git publication pending"
+    "Physical-phone acceptance and exact original network failure root cause",
+    "WeChat console domains/category/privacy/test access and Review/PublicRelease",
+    "Receipt PR/CI/merge after this capture; verify live"
   ],
   "do_not_repeat": [
     {
@@ -69,14 +68,19 @@
       "action_id": "public-load-immutable-luna-audit",
       "reason": "Completed; do not repeat baseline audit",
       "evidence": "output/public-load-worker.md"
+    },
+    {
+      "action_id": "mini-public-load-upload-0.1.1",
+      "reason": "Official developer version uploaded once successfully; no duplicate Upload",
+      "evidence": ".codex/project-memory/evidence/2026/09/20260916T102733Z-public-load-release.json"
     }
   ],
   "next_action": {
-    "action_id": "finish-native-public-control-and-fault",
-    "description": "Finish running native 30filter callback matrix, then separate injected public network failure and scoped publish.",
+    "action_id": "owner-phone-0.1.1-and-wechat-review-prerequisites",
+    "description": "Owner uses current Preview to verify formerly failing phone; then authorized WeChat console domain/category/privacy/test access readiness. Do not upload0.1.1 again or submit review/public release without prerequisites.",
     "external_effect": false,
     "effect_key": null,
     "authority_confirmed": true
   },
-  "updated_at_utc": "2026-09-16T10:18:03.6099641Z"
+  "updated_at_utc": "2026-09-16T10:28:26.2247012Z"
 }

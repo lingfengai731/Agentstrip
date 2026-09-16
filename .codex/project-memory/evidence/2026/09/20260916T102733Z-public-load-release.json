@@ -1,0 +1,52 @@
+{
+  "schema_version": 1,
+  "evidence_id": "ev-20260916T102733Z-public-load-release",
+  "task_ref": "mini-public-load-release",
+  "captured_at": "2026-09-16T10:27:33Z",
+  "owner": "codex-main",
+  "status": "verified",
+  "claim": "PR91 merged after both CI successes; identical Mini tree uploaded once as developer0.1.1 with official CLI exit0. Not review/publicrelease or physical-phone acceptance.",
+  "source": {
+    "kind": "github_fixed_head_merge_and_official_devtools_upload",
+    "reference": "https://github.com/lingfengai731/Agentstrip/pull/91"
+  },
+  "code_commit": "9089e7d7366f29b5a4cb5b8c4cc4db86d1817290",
+  "fixed_pr_head": "20dfff64a22a3ae4698f47975ee42438fce7a436",
+  "merge_commit": "478e32613c6c396599aedf30337855bab4c04a0e",
+  "whole_tree": "b461b98e6a8f8dacd47e39fa09b09d7525662589",
+  "mini_tree": "83e2ae6e0d0c907f864fbf034903ee7f587a72cf",
+  "ci": [
+    {
+      "run": 35084775652,
+      "name": "Mini Program checks",
+      "conclusion": "success"
+    },
+    {
+      "run": 35084775607,
+      "name": "Project memory validation",
+      "conclusion": "success"
+    }
+  ],
+  "developer_upload": {
+    "version": "0.1.1",
+    "appid": "wx26bfe1e0c37a54b6",
+    "bytes": 2053242,
+    "result": "OfficialCLI upload success exit0",
+    "info_sha256": "027E95B82065AA94FCCA56841AFD11F59CDC119F9DF0266AC81ACCB94D3BF077",
+    "local_artifact": "output/public-load-upload-0.1.1-info.json"
+  },
+  "preview": {
+    "bytes": 2053242,
+    "local_qr": "output/public-load-preview-20260916.jpg",
+    "published": false
+  },
+  "accepted_evidence": ".codex/project-memory/evidence/2026/09/20260916-mini-public-load.json",
+  "next_action": "owner-phone-0.1.1-and-wechat-review-prerequisites",
+  "not_claimed": [
+    "Review submission",
+    "Public Mini release",
+    "Physical-phone network root cause or acceptance",
+    "Render administrative verification"
+  ],
+  "sync_boundary": "This release receipt captured after code merge/upload; receipt commit/push/CI must be checked separately."
+}
