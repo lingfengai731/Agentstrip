@@ -1,0 +1,462 @@
+{
+  "schema_version": 1,
+  "evidence_id": "ev-20260916-mini-public-load",
+  "task_ref": "mini-public-load-20260914",
+  "captured_at": "2026-09-16T10:25:00Z",
+  "owner": "codex-main",
+  "status": "verified",
+  "claim": "Public loading resilience implemented and pushed. 30 real native filter callbacks, injected public-data failure, offline regression and official Preview accepted. Physical-phone incident cause remains unconfirmed; no upload/review/publicrelease at this capture.",
+  "source": {
+    "kind": "fixed_code_official_devtools_native_and_regression",
+    "reference": "9089e7d7366f29b5a4cb5b8c4cc4db86d1817290; tools/test_miniprogram_public_load.cjs; tools/test_miniprogram_public_native.cjs"
+  },
+  "implementation_commit": "9089e7d7366f29b5a4cb5b8c4cc4db86d1817290",
+  "mini_tree": "83e2ae6e0d0c907f864fbf034903ee7f587a72cf",
+  "native_filter_callbacks": {
+    "surface": "DevTools native SDK actual button.tap; not physical phone",
+    "catalogMode": "real public network + shipped snapshot",
+    "matrix": [
+      {
+        "lang": "zh",
+        "key": "regionIndex",
+        "options": 8,
+        "height": 44,
+        "opened": true,
+        "selected": true,
+        "cancelPreserved": true,
+        "reset": true,
+        "candidates": 33
+      },
+      {
+        "lang": "zh",
+        "key": "categoryIndex",
+        "options": 6,
+        "height": 44,
+        "opened": true,
+        "selected": true,
+        "cancelPreserved": true,
+        "reset": true,
+        "candidates": 33
+      },
+      {
+        "lang": "zh",
+        "key": "cuisineIndex",
+        "options": 36,
+        "height": 44,
+        "opened": true,
+        "selected": true,
+        "cancelPreserved": true,
+        "reset": true,
+        "candidates": 33
+      },
+      {
+        "lang": "zh",
+        "key": "sceneIndex",
+        "options": 47,
+        "height": 44,
+        "opened": true,
+        "selected": true,
+        "cancelPreserved": true,
+        "reset": true,
+        "candidates": 33
+      },
+      {
+        "lang": "zh",
+        "key": "budgetIndex",
+        "options": 4,
+        "height": 44,
+        "opened": true,
+        "selected": true,
+        "cancelPreserved": true,
+        "reset": true,
+        "candidates": 33
+      },
+      {
+        "lang": "zh",
+        "key": "mealIndex",
+        "options": 6,
+        "height": 44,
+        "opened": true,
+        "selected": true,
+        "cancelPreserved": true,
+        "reset": true,
+        "candidates": 40
+      },
+      {
+        "lang": "en",
+        "key": "regionIndex",
+        "options": 8,
+        "height": 44,
+        "opened": true,
+        "selected": true,
+        "cancelPreserved": true,
+        "reset": true,
+        "candidates": 33
+      },
+      {
+        "lang": "en",
+        "key": "categoryIndex",
+        "options": 6,
+        "height": 44,
+        "opened": true,
+        "selected": true,
+        "cancelPreserved": true,
+        "reset": true,
+        "candidates": 33
+      },
+      {
+        "lang": "en",
+        "key": "cuisineIndex",
+        "options": 36,
+        "height": 44,
+        "opened": true,
+        "selected": true,
+        "cancelPreserved": true,
+        "reset": true,
+        "candidates": 33
+      },
+      {
+        "lang": "en",
+        "key": "sceneIndex",
+        "options": 47,
+        "height": 44,
+        "opened": true,
+        "selected": true,
+        "cancelPreserved": true,
+        "reset": true,
+        "candidates": 33
+      },
+      {
+        "lang": "en",
+        "key": "budgetIndex",
+        "options": 4,
+        "height": 44,
+        "opened": true,
+        "selected": true,
+        "cancelPreserved": true,
+        "reset": true,
+        "candidates": 33
+      },
+      {
+        "lang": "en",
+        "key": "mealIndex",
+        "options": 6,
+        "height": 44,
+        "opened": true,
+        "selected": true,
+        "cancelPreserved": true,
+        "reset": true,
+        "candidates": 40
+      },
+      {
+        "lang": "ja",
+        "key": "regionIndex",
+        "options": 8,
+        "height": 44,
+        "opened": true,
+        "selected": true,
+        "cancelPreserved": true,
+        "reset": true,
+        "candidates": 33
+      },
+      {
+        "lang": "ja",
+        "key": "categoryIndex",
+        "options": 6,
+        "height": 44,
+        "opened": true,
+        "selected": true,
+        "cancelPreserved": true,
+        "reset": true,
+        "candidates": 33
+      },
+      {
+        "lang": "ja",
+        "key": "cuisineIndex",
+        "options": 36,
+        "height": 44,
+        "opened": true,
+        "selected": true,
+        "cancelPreserved": true,
+        "reset": true,
+        "candidates": 33
+      },
+      {
+        "lang": "ja",
+        "key": "sceneIndex",
+        "options": 47,
+        "height": 44,
+        "opened": true,
+        "selected": true,
+        "cancelPreserved": true,
+        "reset": true,
+        "candidates": 33
+      },
+      {
+        "lang": "ja",
+        "key": "budgetIndex",
+        "options": 4,
+        "height": 44,
+        "opened": true,
+        "selected": true,
+        "cancelPreserved": true,
+        "reset": true,
+        "candidates": 33
+      },
+      {
+        "lang": "ja",
+        "key": "mealIndex",
+        "options": 6,
+        "height": 44,
+        "opened": true,
+        "selected": true,
+        "cancelPreserved": true,
+        "reset": true,
+        "candidates": 40
+      },
+      {
+        "lang": "ko",
+        "key": "regionIndex",
+        "options": 8,
+        "height": 44,
+        "opened": true,
+        "selected": true,
+        "cancelPreserved": true,
+        "reset": true,
+        "candidates": 33
+      },
+      {
+        "lang": "ko",
+        "key": "categoryIndex",
+        "options": 6,
+        "height": 44,
+        "opened": true,
+        "selected": true,
+        "cancelPreserved": true,
+        "reset": true,
+        "candidates": 33
+      },
+      {
+        "lang": "ko",
+        "key": "cuisineIndex",
+        "options": 36,
+        "height": 44,
+        "opened": true,
+        "selected": true,
+        "cancelPreserved": true,
+        "reset": true,
+        "candidates": 33
+      },
+      {
+        "lang": "ko",
+        "key": "sceneIndex",
+        "options": 47,
+        "height": 44,
+        "opened": true,
+        "selected": true,
+        "cancelPreserved": true,
+        "reset": true,
+        "candidates": 33
+      },
+      {
+        "lang": "ko",
+        "key": "budgetIndex",
+        "options": 4,
+        "height": 44,
+        "opened": true,
+        "selected": true,
+        "cancelPreserved": true,
+        "reset": true,
+        "candidates": 33
+      },
+      {
+        "lang": "ko",
+        "key": "mealIndex",
+        "options": 6,
+        "height": 44,
+        "opened": true,
+        "selected": true,
+        "cancelPreserved": true,
+        "reset": true,
+        "candidates": 40
+      },
+      {
+        "lang": "id",
+        "key": "regionIndex",
+        "options": 8,
+        "height": 44,
+        "opened": true,
+        "selected": true,
+        "cancelPreserved": true,
+        "reset": true,
+        "candidates": 33
+      },
+      {
+        "lang": "id",
+        "key": "categoryIndex",
+        "options": 6,
+        "height": 44,
+        "opened": true,
+        "selected": true,
+        "cancelPreserved": true,
+        "reset": true,
+        "candidates": 33
+      },
+      {
+        "lang": "id",
+        "key": "cuisineIndex",
+        "options": 36,
+        "height": 44,
+        "opened": true,
+        "selected": true,
+        "cancelPreserved": true,
+        "reset": true,
+        "candidates": 33
+      },
+      {
+        "lang": "id",
+        "key": "sceneIndex",
+        "options": 47,
+        "height": 44,
+        "opened": true,
+        "selected": true,
+        "cancelPreserved": true,
+        "reset": true,
+        "candidates": 33
+      },
+      {
+        "lang": "id",
+        "key": "budgetIndex",
+        "options": 4,
+        "height": 44,
+        "opened": true,
+        "selected": true,
+        "cancelPreserved": true,
+        "reset": true,
+        "candidates": 33
+      },
+      {
+        "lang": "id",
+        "key": "mealIndex",
+        "options": 6,
+        "height": 44,
+        "opened": true,
+        "selected": true,
+        "cancelPreserved": true,
+        "reset": true,
+        "candidates": 40
+      }
+    ],
+    "errors": [],
+    "step": "id mealIndex",
+    "screenshots": "SDK capture unavailable; independent Computer Use inspection",
+    "longList": {
+      "options": 36,
+      "lastSelection": 35,
+      "scrollable": true,
+      "backdropCancelPreserved": true
+    }
+  },
+  "native_public_data_fault": {
+    "scope": "DevTools native with public JSON/Portfolio GET failures injected; images and private API are not mocked. Not physical-phone offline acceptance.",
+    "pages": [
+      {
+        "name": "itinerary",
+        "count": 6,
+        "loading": false,
+        "firstObservedMs": 5339,
+        "error": "",
+        "note": "Host duration includes SDK navigation/poll overhead; not network request latency"
+      },
+      {
+        "name": "food",
+        "count": 33,
+        "loading": false,
+        "firstObservedMs": 5553,
+        "error": "",
+        "note": "Host duration includes SDK navigation/poll overhead; not network request latency"
+      },
+      {
+        "name": "gallery",
+        "count": 59,
+        "loading": false,
+        "firstObservedMs": 5182,
+        "error": "新增作品暂未更新，已显示可用图库。",
+        "note": "Host duration includes SDK navigation/poll overhead; not network request latency"
+      }
+    ],
+    "exceptions": [],
+    "injectedRequests": 6
+  },
+  "preview": {
+    "bytes": 2053242,
+    "info_sha256": "027E95B82065AA94FCCA56841AFD11F59CDC119F9DF0266AC81ACCB94D3BF077",
+    "result": "Official CLI preview success exit0; QR local output/public-load-preview-20260916.jpg, excluded from Git."
+  },
+  "offline": {
+    "contracts": 389,
+    "bindings": 136,
+    "pages": 13,
+    "result": "All tools/test_miniprogram_*.cjs pass; opt-in native skips are not counted as native success.",
+    "checks": [
+      "Source snapshot parity enforced in CI",
+      "Five public catalogs usable before network settles",
+      "Invalid200 does not overwrite snapshot",
+      "No caching of private match/account/entitlement response",
+      "Optional Portfolio failure preserves static gallery; retry fetches new assets",
+      "Six filter handlers, professionalError separate from public error",
+      "15s professional match timeout/input retention and no automatic POST retry"
+    ]
+  },
+  "luna": {
+    "agent_id": "01a09eab-8c44-73d3-8832-686e1c3b1712",
+    "status": "completed",
+    "baseline": "77e0922",
+    "accepted_findings": [
+      "food and extension hard dependencies",
+      "shared professional/public error",
+      "swallowed media errors",
+      "cached partial/empty media result and ineffective retry",
+      "unvalidated200 public cache"
+    ],
+    "boundary": "Immutable baseline audit; implementation independently verified by main. No current code worker review claimed."
+  },
+  "production_diagnostic": {
+    "surface": "Native wx.request real public network, not Browser/Render admin",
+    "results": [
+      [
+        "healthz",
+        200,
+        4315
+      ],
+      [
+        "bali-travel-data",
+        200,
+        4499
+      ],
+      [
+        "bali-food",
+        200,
+        1232
+      ],
+      [
+        "image-publish-manifest",
+        200,
+        4313
+      ],
+      [
+        "portfolio",
+        200,
+        4298
+      ]
+    ]
+  },
+  "limitations": [
+    "Actual phone failure not reproduced; DevTools request allowlist is not phone configuration acceptance",
+    "SDK screenshot capture timed out; separate Computer Use observed actual Food rendering; no new full screenshot matrix claimed",
+    "Fault injection affects public data GETs only, not image downloads or physical-phone connectivity",
+    "No new restaurant images admitted; supplied pack remains untracked candidates",
+    "Mini-only application change; no Render backend/environment change needed",
+    "Pending PR/CI/merge, developer Upload and owner-phone callback at capture"
+  ]
+}
