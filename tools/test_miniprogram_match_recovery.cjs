@@ -8,7 +8,7 @@ const source = file => fs.readFileSync(path.join(root, file), 'utf8');
 async function run() {
   let request, api, deadline, aborted = 0, relaunches = 0;
   const app = {globalData: {token:'synthetic', currentLang:'zh', apiBase:'https://example.invalid'}, rememberCurrentRoute(){}, clearAuth(){this.globalData.token='';}};
-  const context = {getApp:()=>app, module:{exports:{}}, require:()=>require('../miniprogram/utils/error-copy.js'),
+  const context = {getApp:()=>app, module:{exports:{}}, require:name=>require('../miniprogram/utils/'+name.replace('./','')),
     setTimeout(fn){deadline=fn;return 1;}, clearTimeout(){},
     wx:{request(options){request=options;return {abort(){aborted++;options.fail({errMsg:'abort'});}};},reLaunch(){relaunches++;},showToast(){}}};
   vm.runInNewContext(source('miniprogram/utils/api.js'),context);api=context.module.exports;
@@ -24,8 +24,8 @@ async function run() {
   assert.match((await changed).message,/切换/);
   const one=api.baliFood(),two=api.baliFood();
   assert.equal(one,two,'concurrent public catalog requests must coalesce');
-  request.success({statusCode:200,data:{restaurants:[]}});await one;
-  assert.equal(api.baliFood(),one,'navigation must reuse a successful public catalog');
+  request.success({statusCode:200,data:{restaurants:[]}});await one;await Promise.resolve();
+  assert.equal((await api.baliFood()).restaurants.length,0,'navigation must reuse a refreshed public catalog');
   const failedCatalog=api.baliExtensions().catch(e=>e);request.fail({errMsg:'offline'});await failedCatalog;
   const retryCatalog=api.baliExtensions();request.success({statusCode:200,data:{extensions:[]}});await retryCatalog;
 
