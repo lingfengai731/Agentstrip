@@ -1,4 +1,4 @@
-const { loadBaliMedia } = require('../../utils/bali-media.js');
+const { loadBaliMedia, clearCache } = require('../../utils/bali-media.js');
 const app = getApp();
 
 const COPY = require('../../utils/browse-copy.js');
@@ -22,9 +22,10 @@ Page({
   async loadPlace() {
     this.setData({ loading: true, error: '' });
     try {
-      const media = await loadBaliMedia(app.globalData.currentLang || 'zh');
+      let media = await loadBaliMedia(app.globalData.currentLang || 'zh');
       const id = this.options.id || '';
       const assetKey = this.options.asset || '';
+      if (assetKey && !media.allImages.some(image => image.key === assetKey)) media = await loadBaliMedia(app.globalData.currentLang || 'zh', false, true);
       const selectedAsset = media.allImages.find(image => image.key === assetKey);
       const poi = id ? media.poiById[id] : null;
       let images = poi ? (media.imagesByPoi[id] || []) : [];
@@ -83,5 +84,5 @@ Page({
   },
 
   backToTrips() { wx.switchTab({ url: '/pages/itinerary/itinerary' }); },
-  retry() { this.loadPlace(); },
+  retry() { clearCache(); this.loadPlace(); },
 });

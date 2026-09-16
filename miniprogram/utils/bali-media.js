@@ -16,6 +16,8 @@ const EXISTING_WEBSITE_GALLERY = new Set([
   '5edfe367fc23ca02',
 ]);
 let cachedPromise = null;
+let portfolioPromise = null;
+let publishedPortfolio = { assets: [] };
 
 function localized(value, lang = 'zh', fallback = '') {
   if (!value) return fallback;
@@ -125,21 +127,21 @@ function matchesPoiByName(image, poi) {
     .some(value => normalizeKey(value) === placeKey);
 }
 
-async function safeLoad(loader, fallback) {
-  try { return await loader(); } catch (_) { return fallback; }
-}
-
-async function loadBaliMedia(lang = 'zh', refresh = false) {
+async function loadBaliMedia(lang = 'zh', refresh = false, updatePortfolio = false) {
   if (!cachedPromise || refresh) {
     cachedPromise = Promise.all([
-      safeLoad(api.baliRouteData, { pois: [], routes: [] }),
-      safeLoad(api.baliMediaCatalog, { images: [] }),
-      safeLoad(api.imagePublishManifest, { images: [] }),
-      safeLoad(() => api.publicPortfolio('bali'), { assets: [] }),
-      safeLoad(api.baliExtensions, {pois:[]}),
-    ]);
+      api.baliRouteData(), api.baliMediaCatalog(), api.imagePublishManifest(), api.baliExtensions(),
+    ]).catch(error => { cachedPromise = null; throw error; });
   }
-  const [travel, catalog, manifest, portfolio, extensions] = await cachedPromise;
+  const [travel, catalog, manifest, extensions] = await cachedPromise;
+  if (updatePortfolio) {
+    if (!portfolioPromise || refresh) portfolioPromise = api.publicPortfolio('bali').then(value => {
+      if (!value || !Array.isArray(value.assets)) throw new Error('Invalid Portfolio response');
+      publishedPortfolio = value;
+    }).catch(error => { portfolioPromise = null; throw error; });
+    await portfolioPromise;
+  }
+  const portfolio = publishedPortfolio;
   const pois = array(travel.pois).concat(array(extensions.pois));
   const routes = array(travel.routes);
   const poiById = {};
@@ -181,6 +183,7 @@ async function loadBaliMedia(lang = 'zh', refresh = false) {
 
 function clearCache() {
   cachedPromise = null;
+  portfolioPromise = null;
 }
 
 module.exports = { absoluteUrl, localized, loadBaliMedia, clearCache };

@@ -19,6 +19,7 @@
     </view>
   </view>
 
+  <view wx:if="{{professionalError}}" class="state-card error"><text>{{copy.personal}} · {{professionalError}}</text><button bindtap="retryProfessional">{{copy.retry}}</button></view>
   <view wx:if="{{professional}}" class="pro-card">
     <view class="pro-top">
       <view class="pro-heading"><view class="pro-label">{{copy.personal}}</view><view class="pro-title">{{professional.route.route_name}}</view></view>

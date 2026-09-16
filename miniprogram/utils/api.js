@@ -52,7 +52,14 @@ function _request({ url, method = 'GET', data, auth = true, timeout = 30000 }) {
           settle(new Error(msg));
         }
       },
-      fail: (err) => settle(new Error(/timeout/i.test(err && err.errMsg || '') ? copy.timeout : copy.network)),
+      fail: (err) => {
+        const message = String(err && err.errMsg || '');
+        const code = /timeout/i.test(message) ? 'WX_TIMEOUT' : /url not in domain|合法域名/i.test(message) ? 'WX_DOMAIN'
+          : /ssl|certificate|tls/i.test(message) ? 'WX_TLS' : /name.not.resolved|dns/i.test(message) ? 'WX_DNS' : 'WX_NETWORK';
+        const error = new Error(code === 'WX_TIMEOUT' ? copy.timeout : copy.network + (code === 'WX_NETWORK' ? '' : ' [' + code + ']'));
+        error.code = code;
+        settle(error);
+      },
     });
   });
 }
@@ -150,19 +157,22 @@ const chatOnce = (messages, system, destination, mode = 'fast') =>
     timeout: 130000,
     data: { messages, system, agent: 'planner', destination, mode, search: true } });
 
-// Public static catalogs only: coalesce simultaneous requests and reuse for five
-// minutes across pages. Never cache account, entitlement or order responses.
+// Render the shipped public snapshot immediately. Background refresh is bounded
+// and never holds a screen hostage. No account/entitlement response uses this cache.
 const catalogCache = new Map();
 function publicCatalog(url) {
   const cached = catalogCache.get(url);
   if (cached && (cached.pending || Date.now() < cached.expires)) return cached.promise;
-  const entry = { pending: true, expires: 0 };
-  entry.promise = _request({ url, auth: false }).then(data => {
+  const name = url.split('/').pop().split('.json')[0];
+  const seed = require('./public-catalog-seed.js').catalogs[name];
+  const entry = { pending: true, expires: 0, promise: cached ? cached.promise : Promise.resolve(seed) };
+  _request({ url, auth: false, timeout: 8000 }).then(data => {
+    const field = name === 'bali-travel-data' ? 'routes' : name === 'bali-extensions' ? 'extensions' : name === 'bali-food' ? 'restaurants' : 'images';
+    if (!data || !Array.isArray(data[field])) throw new Error('Invalid public catalog');
+    entry.promise = Promise.resolve(data);
     entry.pending = false; entry.expires = Date.now() + 300000;
-    return data;
-  }, error => {
-    if (catalogCache.get(url) === entry) catalogCache.delete(url);
-    throw error;
+  }).catch(() => {
+    entry.pending = false; entry.expires = Date.now() + 15000;
   });
   catalogCache.set(url, entry);
   return entry.promise;
@@ -174,11 +184,11 @@ const baliRouteData = () =>
 const baliExtensions = () => publicCatalog('/assets/data/bali-extensions.json?v=20260913p1');
 const baliFood = () => publicCatalog('/assets/data/bali-food.json?v=20260913p1');
 const baliMediaCatalog = () =>
-  _request({ url: '/assets/data/poi-media-catalog.json?v=20260901p1', auth: false });
+  publicCatalog('/assets/data/poi-media-catalog.json?v=20260901p1');
 const imagePublishManifest = () =>
-    _request({ url: '/assets/data/image-publish-manifest.json?v=20260913p2', auth: false });
+  publicCatalog('/assets/data/image-publish-manifest.json?v=20260913p2');
 const publicPortfolio = (destination = 'bali') =>
-  _request({ url: `/api/portfolio?destination=${encodeURIComponent(destination)}`, auth: false });
+  _request({ url: `/api/portfolio?destination=${encodeURIComponent(destination)}`, auth: false, timeout: 8000 });
 const createProfessionalRoute = (tripProfile, routeId = '', lang = 'zh', tripId = '') =>
   _request({ url: '/api/bali/professional-route', method: 'POST', timeout: 15000,
     data: { trip_profile: tripProfile, route_id: routeId, lang, trip_id: tripId } });

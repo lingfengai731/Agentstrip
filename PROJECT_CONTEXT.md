@@ -3,7 +3,11 @@
 This file is the account-independent entry point for work on Agentstrip and WanderMind.
 It stores verifiable project facts, not hidden chain-of-thought or complete chat transcripts.
 
-## Active expansion pointer — 2026-09-14
+## Active expansion pointer — 2026-09-16
+
+Current public-loading fix: source `9089e7d` is committed/pushed on `codex/mini-public-load-20260914`, Mini tree `83e2ae6e`. Native30filter callbacks(5languages,44px) pass;6injected public-data GET failures still render6routes/33lunch candidates/59gallery cards.389contracts/all offline suites pass. OfficialPreview2053242bytes. No phone acceptance/newUpload/publicrelease or Render admin verification is claimed. Read `.codex/project-memory/handoffs/2026/09/20260916-mini-public-load.md`; next fixed-headCI/merge, developer-version/phone and submission readiness. Earlier entries are dated history, not current blockers or new deployment claims.
+
+## Previous incident pointer — 2026-09-14
 
 Current incident supersedes console-readiness: Me Dining above logout plus bounded matching/result recovery implemented at `b45e8f7`, Mini tree `6435d036`. All offline Mini suites/387contracts/135 declaration bindings pass; official Preview1,722,186bytes. Anonymous warm production match200/2925ms/7days5+2 and health200 are API diagnostics, NOT authenticated buyer/nativeBrowser/Render acceptance. SDK tap/event stayed on Me; further diagnostic timed out before matching. Actual buyer wait cause and physical touch remain unverified; new source is NOT uploaded/reviewed/released. Read `.codex/project-memory/handoffs/2026/09/20260914T063307Z-mini-match-recovery.md`. Next: owner-phone-fresh-match-preview, then targeted buyer/log verification; no repeated0.1.0Upload or unsafe entitlement changes. Earlier dated records below remain history.
 

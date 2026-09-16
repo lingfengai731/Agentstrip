@@ -21,7 +21,7 @@ Page({
       ? (app.globalData.customDestName || copy.otherDestination)
       : (copy[destination] || destination);
     const isBali = destination === 'bali';
-    this.setData({ copy, loggedIn: !!app.globalData.token, isBali, destinationName });
+    this.setData({ copy, loggedIn: !!app.globalData.token, isBali, destinationName, professionalError: '' });
     wx.setNavigationBarTitle({ title: copy.match });
     app.updateTabBarLanguage();
     if (!isBali) {
@@ -93,7 +93,7 @@ Page({
       app.setProfessionalRoute(payload);
       this.setData({ professional: payload });
     } catch (err) {
-      if (app.globalData.token === token && !app.globalData.professionalRoute && !/not_found|404/i.test(err.message || '')) this.setData({ error: err.message });
+      if (app.globalData.token === token && !app.globalData.professionalRoute && !/not_found|404/i.test(err.message || '')) this.setData({ professionalError: err.message });
     }
   },
 
@@ -126,6 +126,7 @@ Page({
       const plans={...this.plans,[routeId]:next}; wx.setStorageSync(this.owner,plans); this.plans=plans; this.loadRoutes();
     } catch (_) { wx.showToast({title:this.data.foodCopy.failed,icon:'none'}); }
   },
+  retryProfessional() { this.setData({professionalError:''}); this.loadProfessionalRoute(); },
   openPlace(e) {
     const id = e.currentTarget.dataset.id;
     if (!id) return;

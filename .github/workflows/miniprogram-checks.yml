@@ -5,12 +5,16 @@ on:
     paths:
       - miniprogram/**
       - tools/test_miniprogram_*.cjs
+      - tools/build_miniprogram_catalog.cjs
+      - wandermind-studio/frontend/assets/data/*.json
       - .github/workflows/miniprogram-checks.yml
   push:
     branches: [main]
     paths:
       - miniprogram/**
       - tools/test_miniprogram_*.cjs
+      - tools/build_miniprogram_catalog.cjs
+      - wandermind-studio/frontend/assets/data/*.json
       - .github/workflows/miniprogram-checks.yml
 
 permissions:

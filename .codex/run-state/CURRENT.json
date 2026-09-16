@@ -1,64 +1,82 @@
 {
   "schema_version": 1,
-  "checkpoint_revision": 47,
-  "previous_checkpoint_sha256": "00408A15AE053202DA6BE714D4FF72F38FE34CA2C2EC794841B633B9709A26C0",
-  "run_id": "20260914-mini-match-recovery",
-  "objective": "Deliver scoped matching recovery and Me dining entry; authenticated buyer latency and native/phone interaction remain gated.",
-  "status": "paused",
-  "phase": "phone_preview_acceptance_required",
+  "checkpoint_revision": 49,
+  "previous_checkpoint_sha256": "0447F80E4C7D367C89CDDE168BE18113FD52D7D13029EFBFE4D6A0E9BE494801",
+  "run_id": "20260914-mini-public-load",
+  "objective": "Fix public itinerary, food filters and gallery loading; verify native live and failure behavior before release.",
+  "status": "active",
+  "phase": "native_controls_acceptance",
   "baseline": {
     "cwd": "E:\\Agentstrip-worktrees\\active\\account1\\bali-extensions-food-20260913",
     "worktree": "E:\\Agentstrip-worktrees\\active\\account1\\bali-extensions-food-20260913",
-    "branch": "codex/mini-match-recovery-20260914",
-    "head": "b45e8f75c3d9121d22d8a00360aeae01f9bb2db4",
+    "branch": "codex/mini-public-load-20260914",
+    "head": "77e0922c0b3921d4f3fe074052f9b6ffb11d919a",
     "dirty_allowlist": [
       "output/",
       "restaurant-media/",
       ".codex/run-state/CURRENT.json",
-      "PROJECT_CONTEXT.md",
-      ".codex/project-memory/current-state.json",
-      ".codex/ui-visual-review-signals.md",
-      ".codex/project-memory/evidence/2026/09/20260914T063307Z-mini-match-recovery.json",
-      ".codex/project-memory/handoffs/2026/09/20260914T063307Z-mini-match-recovery.md"
+      "miniprogram/pages/food/food.js",
+      "miniprogram/pages/gallery/gallery.js",
+      "miniprogram/pages/itinerary/itinerary.js",
+      "miniprogram/pages/itinerary/itinerary.wxml",
+      "miniprogram/pages/place/place.js",
+      "miniprogram/utils/api.js",
+      "miniprogram/utils/bali-media.js",
+      "miniprogram/utils/public-catalog-seed.js",
+      "tools/build_miniprogram_catalog.cjs",
+      "tools/test_miniprogram_public_load.cjs",
+      "tools/test_miniprogram_match_recovery.cjs",
+      "tools/test_miniprogram_food_filters_native.cjs",
+      ".github/workflows/miniprogram-checks.yml"
     ]
   },
   "completed": [
-    "Scoped11file source commit b45e8f7; Mini tree6435d036",
-    "AllofflineMini suites387contracts/135declarations accepted; timeout/abort/late401/account/preview/cache/five-language result/error recovery",
-    "OfficialCLI Preview1722186bytes; newUpload/review/publicrelease not performed",
-    "Warm anonymous production matching200/2925ms/7days5+2; health200/1483ms; not authenticated buyer/nativeBrowser"
+    "Recovered PR90 merged77e; separate new scoped branch; original dirty checkout untouched",
+    "Native unmocked public endpoints200; 6routes/33food/64gallery before fix; phone failure not reproduced",
+    "Luna immutable five-finding audit accepted; fixes plus public snapshot regression passed",
+    "Official previous Preview info2053242bytes; current source app unchanged since that compilation",
+    "Fresh native public endpoints200; UI food33 visible; no mock data"
   ],
-  "current_step": "Preserve failed native runs truthfully and publish scoped facts/source; owner phone newPreview is next acceptance gate. Pre-push capture must not be described as synchronized until actual push verified.",
-  "workers": [],
+  "current_step": "2026-09-16 reconciled authored pending diff; native live filter taps running (zh six passed). SDK screenshot timeout isolated, Computer Use actual Food rendering observed.",
+  "workers": [
+    {
+      "agent_id": "01a09eab-8c44-73d3-8832-686e1c3b1712",
+      "agent_name": "luna_worker",
+      "goal": "Immutable77e public loader audit",
+      "status": "completed",
+      "evidence": "output/public-load-worker.md"
+    }
+  ],
   "accepted_evidence": [
-    ".codex/project-memory/evidence/2026/09/20260914T063307Z-mini-match-recovery.json",
+    "tools/test_miniprogram_public_load.cjs",
     "tools/test_miniprogram_match_recovery.cjs",
-    "tools/test_miniprogram_button_bindings.cjs"
+    "output/probe-public-pages.cjs",
+    "output/public-itinerary-before.png",
+    "output/public-food-before.png",
+    "output/public-gallery-before.png"
   ],
   "unverified": [
-    "Native SDK tap/event did not navigate Me; diagnostic timeout at init; no live matching attempt reached",
-    "Actual authenticated buyer long wait root cause unknown; phone/newPreview callback needed",
-    "This receipt and source publication/CI/merge must be checked live; captured before push",
-    "New source notdeveloperUploaded/reviewed/released; noRenderbackend change"
+    "Native full5locale matrix still running",
+    "Phone network failure not reproduced; newPreview/Upload and Git publication pending"
   ],
   "do_not_repeat": [
     {
       "action_id": "mini-food-filter-developer-upload-0.1.0",
-      "reason": "Prior source already uploaded; do not replay oldUpload while verifying new source",
+      "reason": "Old source already uploaded; do not duplicate old version",
       "evidence": ".codex/project-memory/evidence/2026/09/20260914T035410Z-mini-upload-media-audit.json"
     },
     {
-      "action_id": "repeated-native-sdk-me-diagnostic",
-      "reason": "Repeated runtime/event failures recorded. Do not repeat unchanged setup or claim touch passed; owner actual newPreview is next.",
-      "evidence": ".codex/project-memory/evidence/2026/09/20260914T063307Z-mini-match-recovery.json"
+      "action_id": "public-load-immutable-luna-audit",
+      "reason": "Completed; do not repeat baseline audit",
+      "evidence": "output/public-load-worker.md"
     }
   ],
   "next_action": {
-    "action_id": "owner-phone-fresh-match-preview",
-    "description": "Owner ordinary non-admin buyer scans latestPreview; Me Dining→route planner7days→match5open2locked; measure latency and check explicit timeout/input recovery. Provide nonsecret failure screenshot/network/elapsed if still hanging. No newUpload/review before callback gates.",
+    "action_id": "finish-native-public-control-and-fault",
+    "description": "Finish running native 30filter callback matrix, then separate injected public network failure and scoped publish.",
     "external_effect": false,
     "effect_key": null,
     "authority_confirmed": true
   },
-  "updated_at_utc": "2026-09-14T06:34:09.2384229Z"
+  "updated_at_utc": "2026-09-16T10:18:03.6099641Z"
 }

@@ -16,9 +16,9 @@ Page({
     const copy = COPY[lang] || COPY.zh;
     this.setData({copy,loading:true,error:'',filterOpen:false,closeLabel:CLOSE_LABEL[lang] || CLOSE_LABEL.en}); wx.setNavigationBarTitle({title:copy.title});
     try {
-      const [travel,catalog,food] = await Promise.all([api.baliRouteData(),api.baliExtensions(),api.baliFood()]);
+      const [travel,food] = await Promise.all([api.baliRouteData(),api.baliFood()]);
       if (owner !== app.privateStorageKey('wm_public_route_plans') || lang !== (app.globalData.currentLang || 'zh')) return;
-      this.travel = travel; this.catalog = catalog; this.food = food.restaurants; this.owner = owner;
+      this.travel = travel; this.food = food.restaurants; this.owner = owner;
       this.plans = wx.getStorageSync(owner) || {};
       const route = travel.routes.find(item => item.id === this.routeId);
       this.routeFamily = route;
@@ -30,7 +30,7 @@ Page({
       this.filter();
     } catch (err) {
       if (owner !== app.privateStorageKey('wm_public_route_plans') || lang !== (app.globalData.currentLang || 'zh')) return;
-      this.setData({loading:false,error:copy.failed});
+      this.setData({loading:false,error:err.message || copy.failed});
     }
   },
   openFilter(e) {
