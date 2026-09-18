@@ -5,6 +5,8 @@ It stores verifiable project facts, not hidden chain-of-thought or complete chat
 
 ## Active expansion pointer — 2026-09-16
 
+2026-09-18 native follow-up supersedes the TLS blocker below: DevTools works; native390px gallery64/64 image loads,0failures, route/day9dining/place callbacks pass. Product73d9c39 corrects184px heading override to full width. PR93 remains draft and new-headCI/merge/deploy/Preview are pending. ComputerUse stopped this turn on Edge URL-confidence policy. One detail type (`marine_activity`) still needs localized display. See `.codex/project-memory/handoffs/2026/09/20260918T063313Z-clarity-native.md`; uploaded0.1.1 must not be repeated.
+
 2026-09-18 clarity recovery supersedes the old next-action pointer: branch `codex/itinerary-clarity-20260916` from `af77f5e` holds Web CTA/day-candidate/picker selection fixes and Mini daily accordion/WebP changes. Local20Web clarity +31integration cases and391Mini contracts/offline suites pass. DevTools CLI and observed GUI import both fail at existing-AppID TLS connection; final Mini visuals/full-gallery/Preview remain pending. See `.codex/project-memory/handoffs/2026/09/20260918-clarity-recovery.md`. Remote draft/release status must be checked in Git; no new production or Mini release is implied.
 
 Release follow-up: PR91 passed2CI and merged `main@478e326`; whole treeb461b98/Mini83e2ae6e match. Official WeChat developerUpload`0.1.1` succeeded,2053242bytes; Preview also succeeds. NOTreviewed/publicreleased/phoneaccepted. Read `.codex/project-memory/handoffs/2026/09/20260916T102733Z-public-load-release.md`. Next owner-phone-0.1.1-and-wechat-review-prerequisites; do not repeat0.1.1Upload. Earlier pending-merge capture below is history.
