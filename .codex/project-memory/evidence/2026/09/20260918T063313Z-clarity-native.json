@@ -1,0 +1,45 @@
+{
+  "schema_version": 1,
+  "evidence_id": "20260918T063313Z-clarity-native",
+  "task_ref": "itinerary-clarity-20260916",
+  "owner": "Codex account1",
+  "captured_at": "2026-09-18T06:33:13.960Z",
+  "status": "verified",
+  "claim": "Native simulator clarity and gallery callbacks passed after fixing default WeChat button width; not phone or production release acceptance.",
+  "source": "output/clarity-native.cjs final successful run; committed equivalent opt-in harness tools/test_miniprogram_clarity_native.cjs; screenshots reviewed locally",
+  "baseline": "ecbac9f5ea0e900617fe9cad5872eb0b7da8ed9e",
+  "product_delta": "Two selector-specificity corrections in miniprogram/pages/itinerary/itinerary.wxss; no backend or entitlement changes",
+  "tests": {
+    "contracts": 391,
+    "native_width": 390,
+    "control_count": 12,
+    "minimum_control_height": 44,
+    "day_heading_width_before": 184,
+    "day_heading_width_after": 341.333,
+    "day_heading_margins_after": 0,
+    "gallery_count": 64,
+    "gallery_positive_dimension_loads": 64,
+    "gallery_failures": 0,
+    "detail_image_dimensions": [1280, 960],
+    "exceptions": 0,
+    "guest_state_restored": true,
+    "callbacks": ["Day3 accordion", "Uluwatu detail", "optional modules disclosure", "Penida west appended as Day9", "Day9 dining navigation and target label", "gallery detail"],
+    "languages_rendered": ["zh", "en"],
+    "network": "real public requests, no catalog injection",
+    "writes": "isolated guest route storage restored; no order, payment, message, account or production writes",
+    "harness_correction": "Immediate currentPage assertions sampled navigation too early. Bounded page-path polling passed using actual SDK taps, with no explicit-event fallback in final run."
+  },
+  "screenshots": [
+    {"path":"output/clarity-native/itinerary-day3.png","sha256":"11CA3EBACF8837BADD977FAE601AF90EDD5853EA94FAF33594520B559A4AE3DD"},
+    {"path":"output/clarity-native/itinerary-en.png","sha256":"9CFA50EDA49BA0DF05A6A9DE38EE73BDF6A0D0B9831712181653EA1693504128"},
+    {"path":"output/clarity-native/gallery-top.png","sha256":"A6E11CE418CE1E21AB1884C2175EA5162909D280543E7415F1E59EDA4868EC7F"},
+    {"path":"output/clarity-native/gallery-bottom.png","sha256":"FD63A0FC3A1751427A0AB13B39246A910AA27441BA50042CE04CCF07C749D4C7"},
+    {"path":"output/clarity-native/gallery-detail.png","sha256":"9E417AC7F0DE974D68AAAD93CF747C64E4739D62A5A3F913BF74D1673E44A6D8"}
+  ],
+  "residual": [
+    "Place detail still displays raw marine_activity type; localize before final release polish.",
+    "Browser runtime import rejected node:process. Computer Use then stopped on Edge URL-confidence policy; no further app input issued.",
+    "PR93 remains draft; latest added patch needs new CI. No merge, Render verification, fresh Preview/Upload, review or public release in this run.",
+    "Native full matrix for ja/ko/id and physical-phone acceptance not rerun; older five-language offline/Web evidence is separately scoped."
+  ]
+}

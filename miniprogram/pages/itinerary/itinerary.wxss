@@ -64,7 +64,7 @@
 .swipe-hint { margin:8rpx 4rpx; color:#65716D; font-size:22rpx; }
 .public-card { padding:26rpx 22rpx; }
 .public-day { display:block; padding:0; overflow:hidden; }
-.day-toggle, .extension-toggle { display:flex; width:100%; min-height:44px; margin:0; padding:24rpx; gap:18rpx; background:transparent; color:#24332F; border-radius:0; text-align:left; justify-content:space-between; }
+.route-page .day-toggle, .route-page .extension-toggle { display:flex; width:100%; min-height:44px; margin:0; padding:24rpx; gap:18rpx; background:transparent; color:#24332F; border-radius:0; text-align:left; justify-content:space-between; }
 .day-heading { flex:1; min-width:0; }
 .day-title { line-height:1.5; overflow-wrap:break-word; }
 .day-disclosure { margin-top:4rpx; color:#65716D; font-size:21rpx; font-weight:400; }
@@ -75,7 +75,7 @@
 .public-day .place-photo-label { flex-shrink:0; font-size:20rpx; }
 .route-page .btn.secondary { width:100%; height:auto; min-height:44px; padding:18rpx 24rpx; border:1rpx solid #C7D8D1; border-radius:14rpx; background:#F1F6F3; color:#285B50; line-height:1.5; }
 .extensions { margin-top:30rpx; border-top:1rpx solid #E6E0D5; }
-.extension-toggle { padding:24rpx 0; gap:18rpx; font-size:25rpx; }
+.route-page .extension-toggle { padding:24rpx 0; gap:18rpx; font-size:25rpx; }
 .extension-toggle text:first-child { flex:1; }
 .extension-hint, .extension-summary { text-align:left; color:#65716D; font-size:23rpx; line-height:1.65; }
 .extension-card { margin-top:20rpx; padding:24rpx; border:1rpx solid #E6E0D5; border-radius:16rpx; background:#FAFAF7; }
