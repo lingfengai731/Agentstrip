@@ -69,6 +69,7 @@ Page({
     this.setData({ assets });
     this.applyFilter(this.data.filter);
   },
+  markImageLoaded(e) { const key=e.currentTarget.dataset.key; if (key) { this.loadedImages=this.loadedImages || {}; this.loadedImages[key]={width:e.detail.width,height:e.detail.height}; } },
 
   retry() { clearCache(); this.loadGallery(true); },
 });

@@ -87,7 +87,7 @@
         var poi=data.pois.find(function(p){return p.id===id;});
         if(poi)links.appendChild(link(c.near+' · '+localized(poi.name_i18n || poi.localized_name || poi.name),'https://www.google.com/maps/search/?api=1&query='+encodeURIComponent(poi.name+', Bali')));
       });
-      var button = element('button',plan ? c.add : c.choose); button.type = 'button';
+      var button = element('button',plan ? c.add.replace('{day}',selectedDay + 1) : c.choose); button.type = 'button';
       button.addEventListener('click',function () {
         if (!plan) { location.assign('bali.html?route=' + (matches[0] || 'R1') + '#route-families'); return; }
         try {
@@ -97,7 +97,7 @@
           card.classList.add('food-added'); $('food-status').textContent = c.saved + ' · ' + item.name;
         } catch (_) { $('food-status').textContent = c.failed; }
       });
-      card.appendChild(button); $('food-results').appendChild(card);
+      card.appendChild(button); if (plan) card.appendChild(element('p',c.notBooking)); $('food-results').appendChild(card);
     });
   }
   function loadTaxonomy() {

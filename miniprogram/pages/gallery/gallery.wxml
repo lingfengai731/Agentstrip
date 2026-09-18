@@ -18,7 +18,7 @@
 
   <view wx:if="{{visibleAssets.length}}" class="gallery-grid">
     <view wx:for="{{visibleAssets}}" wx:key="key" class="gallery-card" data-index="{{index}}" bindtap="openAsset" hover-class="card-pressed" hover-stay-time="90">
-      <image wx:if="{{!item.imageFailed}}" class="gallery-image" src="{{item.thumbUrl}}" mode="aspectFill" lazy-load show-menu-by-longpress="{{true}}" data-key="{{item.key}}" binderror="markImageFailed" />
+      <image wx:if="{{!item.imageFailed}}" class="gallery-image" src="{{item.thumbUrl}}" webp="{{true}}" mode="aspectFill" lazy-load show-menu-by-longpress="{{true}}" data-key="{{item.key}}" bindload="markImageLoaded" binderror="markImageFailed" />
       <view wx:else class="gallery-image image-fallback">{{copy.imageFailed}}</view>
       <view class="gallery-copy">
         <view class="gallery-place">{{item.placeName || item.region || 'Bali'}}</view>

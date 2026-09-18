@@ -1,24 +1,42 @@
 {
   "schema_version": 1,
-  "checkpoint_revision": 51,
-  "previous_checkpoint_sha256": "D66B1D8CACE88B29AF86CB73828EE89E5CBFE16EF0F051F02C4B9B5A3663BB43",
+  "checkpoint_revision": 53,
+  "previous_checkpoint_sha256": "5A55C58F7EE63250E9469CA2DF01C712049CA56C25512B987A6F3E4D17CC63F4",
   "run_id": "20260914-mini-public-load",
-  "objective": "Fix public itinerary, food filters and gallery loading; verify native live and failure behavior before release.",
-  "status": "paused",
-  "phase": "owner_phone_and_submission_readiness",
+  "objective": "Repair Web/Mini itinerary clarity, actual image rendering and day-specific POI placement after owner rejection of developer0.1.1",
+  "status": "active",
+  "phase": "clarity_web_verified_native_blocked",
   "baseline": {
     "cwd": "E:\\Agentstrip-worktrees\\active\\account1\\bali-extensions-food-20260913",
     "worktree": "E:\\Agentstrip-worktrees\\active\\account1\\bali-extensions-food-20260913",
-    "branch": "codex/mini-public-load-release-20260916",
-    "head": "478e32613c6c396599aedf30337855bab4c04a0e",
+    "branch": "codex/itinerary-clarity-20260916",
+    "head": "af77f5e68007aad7d11bbc77a461fdf5f0d2006a",
     "dirty_allowlist": [
       "output/",
       "restaurant-media/",
       ".codex/run-state/CURRENT.json",
-      "PROJECT_CONTEXT.md",
-      ".codex/project-memory/current-state.json",
-      ".codex/project-memory/evidence/2026/09/20260916T102733Z-public-load-release.json",
-      ".codex/project-memory/handoffs/2026/09/20260916T102733Z-public-load-release.md"
+      ".codex/ui-visual-review-signals.md",
+      "miniprogram/pages/food/food.js",
+      "miniprogram/pages/food/food.wxml",
+      "miniprogram/pages/gallery/gallery.js",
+      "miniprogram/pages/gallery/gallery.wxml",
+      "miniprogram/pages/itinerary/itinerary.js",
+      "miniprogram/pages/itinerary/itinerary.wxml",
+      "miniprogram/pages/itinerary/itinerary.wxss",
+      "miniprogram/pages/place/place.js",
+      "miniprogram/pages/place/place.wxml",
+      "miniprogram/utils/bali-food-copy.js",
+      "wandermind-studio/frontend/assets/js/bali-food-copy.js",
+      "wandermind-studio/frontend/assets/js/bali-food.js",
+      "wandermind-studio/frontend/bali.html",
+      ".codex/project-memory/handoffs/2026/09/20260916-itinerary-clarity-partial.md",
+      ".codex/project-memory/evidence/2026/09/20260916-itinerary-clarity-partial.json",
+      "miniprogram/utils/bali-itinerary.js",
+      "miniprogram/utils/public-catalog-seed.js",
+      "tools/test_bali_extensions.cjs",
+      "wandermind-studio/frontend/assets/data/bali-travel-data.json",
+      "wandermind-studio/frontend/assets/js/bali-itinerary.js",
+      "tools/test_bali_clarity_browser.cjs"
     ]
   },
   "completed": [
@@ -30,9 +48,14 @@
     "Native30filters five locales44px and6request fault lane passed;0exceptions",
     "PR91 fixed20dfff64 passed2CI and merged478e326; full treeb461b98 equal, Mini83e2ae6e",
     "Official freshPreview2053242bytes from sameMini tree",
-    "Official developerUpload0.1.1 succeeded exit0;2053242bytes; unchanged Mini83e2ae6e"
+    "Official developerUpload0.1.1 succeeded exit0;2053242bytes; unchanged Mini83e2ae6e",
+    "Fresh branch from origin/main af77, original checkout untouched; local Web CTA and Mini day/extension hierarchy changes",
+    "Local Food deterministic Browser31 cases passed; Mini391contracts and Food recovery passed",
+    "Real native gallery bindload12photos positive dimensions0failed after enablingWebP; no phone claim",
+    "Accepted Tesla final in prior turn: R1 defaults unique and Uluwatu day3; root candidate pool shared by region. No worker writes.",
+    "20 local explicit selection/preview/save/reload cases passed at4 widths and5 languages;391 Mini contracts and all offline suites passed."
   ],
-  "current_step": "Code PR91 merged and developer0.1.1 uploaded; finalize receipt publication. Next owner physical-phone callback and WeChat review prerequisite verification.",
+  "current_step": "20 explicit Web selection/preview/save/reload cases passed. Final selected visual rerun after removing crossfade. DevTools open/auto TLS ECONNRESET; GUI import under inspection.",
   "workers": [
     {
       "agent_id": "01a09eab-8c44-73d3-8832-686e1c3b1712",
@@ -40,6 +63,15 @@
       "goal": "Immutable77e public loader audit",
       "status": "completed",
       "evidence": "output/public-load-worker.md"
+    },
+    {
+      "agent_id": "01a0a9f9-5efa-7480-bd4e-fc56ac5f0f4d",
+      "agent_name": "luna_worker",
+      "model": "gpt-5.6-luna",
+      "reasoning_effort": "max",
+      "goal": "Fixed af77 route/day POI duplicate audit",
+      "status": "completed",
+      "evidence": ".codex/project-memory/evidence/2026/09/20260918-clarity-recovery.json"
     }
   ],
   "accepted_evidence": [
@@ -51,12 +83,13 @@
     "output/public-gallery-before.png",
     ".codex/project-memory/evidence/2026/09/20260916-mini-public-load.json",
     "https://github.com/lingfengai731/Agentstrip/pull/91",
-    ".codex/project-memory/evidence/2026/09/20260916T102733Z-public-load-release.json"
+    ".codex/project-memory/evidence/2026/09/20260916T102733Z-public-load-release.json",
+    ".codex/project-memory/evidence/2026/09/20260916-itinerary-clarity-partial.json"
   ],
   "unverified": [
-    "Physical-phone acceptance and exact original network failure root cause",
-    "WeChat console domains/category/privacy/test access and Review/PublicRelease",
-    "Receipt PR/CI/merge after this capture; verify live"
+    "Native final itinerary/gallery-scroll/detail; DevTools TLS ECONNRESET prevents opening current project",
+    "Current source not committed/pushed/merged/deployed; no new Preview or Upload",
+    "Physical-phone acceptance and WeChat review/public release"
   ],
   "do_not_repeat": [
     {
@@ -76,11 +109,11 @@
     }
   ],
   "next_action": {
-    "action_id": "owner-phone-0.1.1-and-wechat-review-prerequisites",
-    "description": "Owner uses current Preview to verify formerly failing phone; then authorized WeChat console domain/category/privacy/test access readiness. Do not upload0.1.1 again or submit review/public release without prerequisites.",
+    "action_id": "clarity-final-native-or-draft-handoff",
+    "description": "Finish bounded GUI import attempt; run final browser matrix and save reviewable changes plus evidence to remote draft PR. Native verification remains required before Mini release.",
     "external_effect": false,
     "effect_key": null,
     "authority_confirmed": true
   },
-  "updated_at_utc": "2026-09-16T10:28:26.2247012Z"
+  "updated_at_utc": "2026-09-18T00:13:24.5317552Z"
 }

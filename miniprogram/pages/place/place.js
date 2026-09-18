@@ -69,6 +69,7 @@ Page({
   },
 
   onSlide(e) { this.setData({ current: e.detail.current }); },
+  markImageLoaded(e) { this.loadedImages=this.loadedImages || {}; this.loadedImages[e.currentTarget.dataset.index]={width:e.detail.width,height:e.detail.height}; },
 
   markImageFailed(e) {
     const index = Number(e.currentTarget.dataset.index);

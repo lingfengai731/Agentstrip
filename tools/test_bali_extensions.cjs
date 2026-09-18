@@ -17,6 +17,19 @@ assert.ok(mainland.length);
 assert.ok(mainland.every(p => p.node_id === 'sanur'));
 const west = engine.candidates({region_id:'G3',place_ids:['kelingking_beach']}, pois, [], catalog);
 assert.ok(west.every(p => p.node_id === 'nusa_penida_west'));
+const r1 = data.routes.find(route => route.id === 'R1');
+const r1Used = r1.free_outline.flatMap(day => day.suggested_poi_ids);
+assert.deepEqual(
+  engine.candidates(r1.free_outline[0], pois, r1Used, catalog).slice(0, 4).map(p => p.id),
+  ['batu_bolong_beach', 'echo_beach', 'petitenget_temple', 'taman_ayun'],
+  'Day 1 should prioritize southwest-coast alternatives'
+);
+assert.deepEqual(
+  engine.candidates(r1.free_outline[2], pois, r1Used, catalog).slice(0, 4).map(p => p.id),
+  ['suluban_beach', 'bingin_beach', 'padang_padang_beach', 'sundays_beach_club'],
+  'Day 3 should prioritize cliff-coast alternatives'
+);
+assert.ok(r1.free_outline[2].suggested_poi_ids.includes('uluwatu_temple'), 'Uluwatu temple stays on R1 Day 3');
 let plan = {route_id:'R1',days:[{region_id:'G1',place_ids:[]}]};
 plan = engine.append(plan, catalog, 'penida-west');
 plan = engine.append(plan, catalog, 'penida-west');

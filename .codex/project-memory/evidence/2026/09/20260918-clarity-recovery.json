@@ -1,0 +1,116 @@
+{
+  "schema_version": 1,
+  "evidence_id": "20260918-clarity-recovery",
+  "task_ref": "itinerary-clarity-20260916",
+  "owner": "Codex account1",
+  "captured_at": "2026-09-18T00:17:00Z",
+  "status": "verified",
+  "claim": "Local Web clarity repair and offline Mini validation only; native final visuals blocked by DevTools TLS error.",
+  "source": "Current source diff; tools/test_bali_clarity_browser.cjs; tools/test_bali_food_browser.cjs; all offline tools/test_miniprogram_*.cjs; observed DevTools import UI.",
+  "baseline": "af77f5e68007aad7d11bbc77a461fdf5f0d2006a",
+  "branch": "codex/itinerary-clarity-20260916",
+  "design_goals": [
+    "Daily route before optional Penida modules; one expanded day at a time in Mini",
+    "Differentiate browsing restaurants from saving a dining stop; target day explicit",
+    "One selected POI highlight/checkmark matches preview; keep selected POI after late media refresh",
+    "Use existing cream/teal tokens; 44px controls; no new dependency or global redesign"
+  ],
+  "findings": {
+    "r1": "Default16POIs unique; Uluwatu temple already Day3. Same-region candidate pools shared. New optional preference ordering changes presentation only.",
+    "preview": "Previous mismatch inference corrected: actual selected id and preview matched. Pointer hover changed preview, and global CSS crossfade briefly kept old row highlighted. Added instantaneous selection and checkmark, independent focus outline.",
+    "gallery": "WebP enabled in gallery and place images. Prior 20260916 native bindload12 positive dimensions/0fail is historical; no fresh native full-scroll claim.",
+    "checkpoint": "Revision52 missed5 known files from interrupted edits. Diff reconciled; no unexplained files."
+  },
+  "tests": {
+    "webClarity": {
+      "command": "node tools/test_bali_clarity_browser.cjs",
+      "cases": 20,
+      "widths": [
+        320,
+        390,
+        768,
+        1440
+      ],
+      "languages": [
+        "zh",
+        "en",
+        "ja",
+        "ko",
+        "id"
+      ],
+      "verified": [
+        "explicit selected/preview identity",
+        "add day3 and reload persistence",
+        "Uluwatu remains day3",
+        "selected POI excluded from add candidates",
+        "CTA flex center and44px",
+        "zero overflow and page errors"
+      ]
+    },
+    "webIntegration": {
+      "command": "node tools/test_bali_food_browser.cjs",
+      "cases": 31,
+      "result": "pass,0pageErrors/overflow"
+    },
+    "mini": {
+      "command": "all tools/test_miniprogram_*.cjs",
+      "contracts": 391,
+      "result": "offline suites pass; opt-in native suites explicitly skipped"
+    },
+    "data": "test_bali_extensions.cjs and test_bali_food.cjs pass; public seed source parity"
+  },
+  "screenshots": [
+    {
+      "width": 320,
+      "path": "output/clarity-browser/picker-320.png",
+      "sha256": "DF10B0B4AB2E24862917BBEBE5B13BFD3B52C0E1388352E40FEBD8743EAD5E95"
+    },
+    {
+      "width": 390,
+      "path": "output/clarity-browser/picker-390.png",
+      "sha256": "9EAF028BF657AF1B7D4E0EF06358174CD0EF8D480201278B96CB078185F1889F"
+    },
+    {
+      "width": 768,
+      "path": "output/clarity-browser/picker-768.png",
+      "sha256": "71E5BA8DE77742C4A80A4C4260223BD0B0E329B1FF2A8B2A5B784D095EBC3A86"
+    },
+    {
+      "width": 1440,
+      "path": "output/clarity-browser/picker-1440.png",
+      "sha256": "CCC31A00176A04A23762614479CDB7667A69C95916C3DD57EACF32558718AA9E"
+    }
+  ],
+  "native_blocker": {
+    "cli": "open and auto return Client network socket disconnected before secure TLS connection was established; wrapper exit0 despite error payload",
+    "computer_use": "Existing AppID wx26bfe1e0c37a54b6 shown red with identical TLS error in current worktree import. Cancel attempt was interrupted by detected user input; no further app input. No AppID/security/proxy change.",
+    "result": "No fresh native screenshot/Preview/Upload/review/public release"
+  },
+  "worker": {
+    "id": "01a0a9f9-5efa-7480-bd4e-fc56ac5f0f4d",
+    "name": "Tesla/luna_worker",
+    "result": "Completed and independently accepted prior-turn immutable af77 audit; no writes. Current continuation uses accepted result, not a new worker run."
+  },
+  "skills": [
+    "cross-account-project-memory",
+    "quota-safe-project-continuation",
+    "ui-implementation-workflow",
+    "ponytail",
+    "browser-automation-router",
+    "computer-use",
+    "codex-luna-worker (route decision; prior result reused)"
+  ],
+  "release": {
+    "local": "verified as above",
+    "remote": "pending at capture",
+    "production": "not deployed",
+    "mini": "native final acceptance pending"
+  },
+  "next_action": "Push draft PR with current fixes; complete native itinerary/gallery scroll and detail after DevTools AppID network recovers; then merge/deploy and generate new Preview.",
+  "preserved": [
+    "Original dirty E:/Agentstrip",
+    "restaurant-media candidate pack",
+    "saved/paid route places and entitlements",
+    "prior uploaded0.1.1, no replay"
+  ]
+}

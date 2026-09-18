@@ -50,6 +50,7 @@ Page({
   change(e) { const key = e.currentTarget.dataset.key, index = Number(e.detail.value); const list = key === 'dayIndex' ? this.data.days : FILTER_FIELDS[key] && this.data[FILTER_FIELDS[key][0]]; if (!list || !Number.isInteger(index) || index < 0 || index >= list.length) return; this.setData({[key]:index}); this.filter(); },
   filter() {
     const d = this.data, lang = app.globalData.currentLang || 'zh';
+    this.setData({addLabel:d.copy.add.replace('{day}',d.dayIndex + 1)});
     const category = d.categories[d.categoryIndex] || {id:''}, cuisine = d.cuisines[d.cuisineIndex] || {id:''}, scene = d.scenes[d.sceneIndex] || {id:''}, budget = d.budgets[d.budgetIndex] || {id:''}, meal = d.meals[d.mealIndex] || {id:''};
     const filters = {category:category.id,cuisine:cuisine.id,scene:scene.id,price:budget.id,meal:meal.id};
     const baseFilters = {category:filters.category,price:filters.price,meal:filters.meal};

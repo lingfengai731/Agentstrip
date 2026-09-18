@@ -245,7 +245,7 @@
       .bali-day-place button { flex:0 0 36px; width:36px; height:36px; padding:0; border:0; border-radius:50%; background:rgba(14,124,107,.12); color:#0f6258; cursor:pointer; }
       .bali-day-place button:hover, .bali-day-place button:focus-visible { background:#b91c1c; outline:none; }
       .bali-day-empty { color:#64748b; font-size:11px; }
-      .bali-day-select { min-width:0; flex:1 1 190px; height:34px; border:1px solid #cfc9bc; border-radius:9px; padding:0 9px; background:#fff; color:#1e293b; font-size:11px; }
+      .bali-day-select { display:flex; align-items:center; justify-content:center; gap:8px; text-align:center; text-decoration:none; min-width:0; flex:1 1 190px; min-height:44px; height:auto; border:1px solid #cfc9bc; border-radius:9px; padding:10px 12px; background:#fff; color:#1e293b; font-size:13px; line-height:1.4; }
       .bali-day-select option { background:#fff; color:#1e293b; }
       .bali-day-select[aria-invalid="true"] { border-color:#fb923c; box-shadow:0 0 0 2px rgba(251,146,60,.2); }
       .bali-day-add-btn, .bali-day-reset { min-height:44px; border:1px solid #0e7c6b; border-radius:10px; padding:8px 12px; background:#fff; color:#0f6258; font-size:11px; font-weight:700; cursor:pointer; }
@@ -294,7 +294,10 @@
       .bali-route-picker-hint { margin:0 0 12px; color:#64748b; font-size:12px; line-height:1.5; }
       .bali-route-picker-list { display:grid; gap:8px; }
       .bali-route-picker-option { display:grid; grid-template-columns:64px minmax(0,1fr); gap:11px; align-items:center; width:100%; min-height:72px; padding:7px; border:1px solid transparent; border-radius:12px; background:transparent; color:#1e293b; text-align:left; cursor:pointer; }
-      .bali-route-picker-option:hover, .bali-route-picker-option:focus-visible, .bali-route-picker-option[aria-selected="true"] { border-color:#8fb9ae; background:#edf6f3; outline:none; }
+      .bali-route-picker-option { position:relative; padding-right:26px; transition:none; }
+      .bali-route-picker-option[aria-selected="true"] { border-color:#8fb9ae; background:#edf6f3; }
+      .bali-route-picker-option[aria-selected="true"]::after { content:'✓'; position:absolute; right:8px; color:#0f6258; font-weight:700; }
+      .bali-route-picker-option:focus-visible { outline:2px solid #0f6258; outline-offset:2px; }
       .bali-route-picker-thumb { display:grid; place-items:center; width:64px; height:56px; overflow:hidden; border-radius:9px; background:#dce8e5; color:#0f6258; }
       .bali-route-picker-thumb img { width:100%; height:100%; object-fit:cover; }
       .bali-route-picker-option strong { display:block; font-size:13px; line-height:1.35; }
@@ -325,7 +328,8 @@
       body.dark .bali-route-picker-booking { border-color:rgba(94,234,212,.2); background:rgba(45,212,191,.06); }
       body.dark .bali-route-picker-booking a { color:#99f6e4; }
       body.dark .bali-route-picker-booking small { color:#cbd5e1; }
-      body.dark .bali-route-picker-option:hover, body.dark .bali-route-picker-option:focus-visible, body.dark .bali-route-picker-option[aria-selected="true"] { border-color:#4b766d; background:#1f302b; }
+      body.dark .bali-route-picker-option[aria-selected="true"] { border-color:#4b766d; background:#1f302b; }
+      body.dark .bali-route-picker-option[aria-selected="true"]::after { color:#99f6e4; }
       .bali-driver-band { background:#153238; background-image:radial-gradient(circle at 12% 18%,rgba(252,191,30,.13),transparent 25%),linear-gradient(135deg,#153238,#0e272b); color:#fff; padding:64px 0; }
       .bali-driver-inner { max-width: 960px; margin: 0 auto; text-align: center; }
       .bali-driver-inner h2 { font-size: clamp(26px, 4vw, 38px); font-weight: 800; margin: 0 0 14px; }
@@ -1127,7 +1131,7 @@
   applyResponsiveState(false);
 })();
 </script>
-<script src="assets/js/bali-itinerary.js?v=20260913p2"></script>
+<script src="assets/js/bali-itinerary.js?v=20260918p1"></script>
 <script src="assets/js/bali-food-copy.js?v=20260913p2"></script>
 <script>
 (function () {
@@ -1244,7 +1248,7 @@
   }
 
   function pickerMediaMarkup(media, poi, copy, variant) {
-    if (!media) return '<div class="bali-route-picker-placeholder"><span><span class="fa fa-map-marker" aria-hidden="true"></span><strong>' + escapeHtml(poiMediaState === 'failed' ? copy.mediaError : copy.noPhoto) + '</strong></span></div>';
+    if (!media) return '<div class="bali-route-picker-placeholder"><span><span class="fa fa-map-marker" aria-hidden="true"></span><strong>' + escapeHtml(poiMediaState === 'failed' ? copy.mediaError : ({zh:'实景照片待补充',en:'Photo coming soon',ja:'写真は準備中です',ko:'사진 준비 중',id:'Foto belum tersedia'}[language()] || 'Photo coming soon')) + '</strong></span></div>';
     var alt = text(media.alt_text) || poiDisplayName(poi);
     var source = variant === 'thumbnail' ? (media.thumbnail_url || media.thumbnail_path || media.web_optimized_path || media.image_url || media.relative_path) : (media.image_url || media.web_optimized_path || media.relative_path);
     return '<img src="' + escapeHtml(source) + '" alt="' + escapeHtml(alt) + '" loading="lazy" decoding="async">';
@@ -1302,9 +1306,10 @@
     if (!activePickerContext) return;
     var copy = pickerUiCopy();
     var context = activePickerContext;
-    var region = regions[context.plan.days[context.dayIndex].region_id] || {};
+    var day = context.plan.days[context.dayIndex] || {};
+    var region = regions[day.region_id] || {};
     document.getElementById('bali-route-picker-title').textContent = copy.title(context.dayIndex + 1);
-    document.getElementById('bali-route-picker-subtitle').textContent = text(region.name) || context.plan.days[context.dayIndex].region_id;
+    document.getElementById('bali-route-picker-subtitle').textContent = [text(day.theme), text(region.name) || day.region_id].filter(Boolean).join(' · ');
     document.getElementById('bali-route-picker-hint').textContent = copy.hint;
     routePicker.querySelectorAll('[data-route-picker-close]').forEach(function (button) { button.setAttribute('aria-label', copy.close); });
     routePicker.querySelector('[data-route-picker-back]').setAttribute('aria-label', copy.back);
@@ -1333,12 +1338,14 @@
     });
     var preview = document.getElementById('bali-route-picker-preview');
     preview.innerHTML = '<div class="bali-route-picker-placeholder"><span><span class="fa fa-picture-o" aria-hidden="true"></span><strong>' + escapeHtml(copy.preview) + '</strong></span></div>';
-    if (!window.matchMedia('(max-width:575px)').matches && context.candidates[0]) selectPoiInPicker(context.candidates[0].id, false);
+    var selectedPoi = context.candidates.find(function (poi) { return poi.id === context.selectedPoiId; });
+    if (selectedPoi) selectPoiInPicker(selectedPoi.id, false);
+    else if (!window.matchMedia('(max-width:575px)').matches && context.candidates[0]) selectPoiInPicker(context.candidates[0].id, false);
   }
 
   function openPoiPicker(route, plan, dayIndex, trigger) {
     var usedPoiIds = new Set(plan.days.flatMap(function (day) { return day.place_ids || []; }));
-    var candidates = itineraryEngine.candidates(plan.days[dayIndex], pois, Array.from(usedPoiIds), extensionCatalog);
+    var candidates = itineraryEngine.candidates(candidateDayForRoute(route, plan.days[dayIndex], dayIndex), pois, Array.from(usedPoiIds), extensionCatalog);
     if (!candidates.length || !routePicker) return;
     activePickerContext = { route:route, plan:plan, dayIndex:dayIndex, trigger:trigger, candidates:candidates, selectedPoiId:null };
     window.clearTimeout(routePickerHideTimer);
@@ -1485,6 +1492,15 @@
       };
     });
     return { route_id: route.id, days: days };
+  }
+
+  function candidateDayForRoute(route, day, index) {
+    if (day.extension_id || day.candidate_poi_ids) return day;
+    var fallback = (route.free_outline || [])[index] || {};
+    var matched = (route.free_outline || []).find(function (item) {
+      return item.region_id === day.region_id && JSON.stringify(item.theme) === JSON.stringify(day.theme);
+    }) || fallback;
+    return Object.assign({}, day, { candidate_poi_ids: matched.candidate_poi_ids || [] });
   }
 
   function discardSavedRoutePlan(route) {
@@ -1840,13 +1856,13 @@
           (statusLabel ? '<span class="bali-poi-status" data-status="' + escapeHtml(statusKey) + '">' + escapeHtml(statusLabel) + '</span>' : '') +
           '<button type="button" data-remove-place="' + escapeHtml(id) + '" data-day-index="' + index + '" aria-label="' + escapeHtml(removeLabel) + '">×</button></span>';
       }).join('');
-      var candidates = itineraryEngine.candidates(day, pois, Array.from(usedPoiIds), extensionCatalog);
+      var candidates = itineraryEngine.candidates(candidateDayForRoute(route, day, index), pois, Array.from(usedPoiIds), extensionCatalog);
       var labels = {
-        en:{none:'No more places are available in this area yet',browse:function(count){return 'Browse ' + count + ' places in this area';},empty:'No specific place selected',up:'Move one day earlier',down:'Move one day later',aria:'Browse places to add',day:function(number){ return 'Day ' + number; }},
-        zh:{none:'此区域暂时没有更多可添加地点',browse:function(count){return '查看同区域 ' + count + ' 个地点';},empty:'尚未选择具体地点',up:'前移一天',down:'后移一天',aria:'浏览可加入的地点',day:function(number){ return '第 ' + number + ' 天'; }},
-        ja:{none:'このエリアには追加できる場所がありません',browse:function(count){return '同じエリアの' + count + 'か所を見る';},empty:'具体的な場所は未選択',up:'1日前へ移動',down:'1日後へ移動',aria:'追加できる場所を見る',day:function(number){ return number + '日目'; }},
-        ko:{none:'이 지역에 추가할 장소가 없습니다',browse:function(count){return '같은 지역 장소 ' + count + '곳 보기';},empty:'구체적인 장소가 선택되지 않았습니다',up:'하루 앞당기기',down:'하루 늦추기',aria:'추가할 장소 둘러보기',day:function(number){ return number + '일차'; }},
-        id:{none:'Belum ada tempat lain yang dapat ditambahkan di area ini',browse:function(count){return 'Lihat ' + count + ' tempat di area ini';},empty:'Belum ada tempat spesifik yang dipilih',up:'Pindah satu hari lebih awal',down:'Pindah satu hari lebih lambat',aria:'Lihat tempat yang dapat ditambahkan',day:function(number){ return 'Hari ' + number; }}
+        en:{none:'No more places are available for this day yet',browse:function(day,count){return 'See ' + count + ' places that fit Day ' + day;},empty:'No specific place selected',up:'Move one day earlier',down:'Move one day later',aria:'Browse places that fit this day',day:function(number){ return 'Day ' + number; }},
+        zh:{none:'这一天暂时没有更多可添加地点',browse:function(day,count){return '查看适合第 ' + day + ' 天的 ' + count + ' 个地点';},empty:'尚未选择具体地点',up:'前移一天',down:'后移一天',aria:'浏览适合这一天的地点',day:function(number){ return '第 ' + number + ' 天'; }},
+        ja:{none:'この日に追加できる場所はまだありません',browse:function(day,count){return day + '日目に合う場所を' + count + 'か所見る';},empty:'具体的な場所は未選択',up:'1日前へ移動',down:'1日後へ移動',aria:'この日に合う場所を見る',day:function(number){ return number + '日目'; }},
+        ko:{none:'이 날짜에 추가할 장소가 아직 없습니다',browse:function(day,count){return day + '일차에 맞는 장소 ' + count + '곳 보기';},empty:'구체적인 장소가 선택되지 않았습니다',up:'하루 앞당기기',down:'하루 늦추기',aria:'이 날짜에 맞는 장소 둘러보기',day:function(number){ return number + '일차'; }},
+        id:{none:'Belum ada tempat lain yang cocok untuk hari ini',browse:function(day,count){return 'Lihat ' + count + ' tempat yang cocok untuk Hari ' + day;},empty:'Belum ada tempat spesifik yang dipilih',up:'Pindah satu hari lebih awal',down:'Pindah satu hari lebih lambat',aria:'Lihat tempat yang cocok untuk hari ini',day:function(number){ return 'Hari ' + number; }}
       }[language()] || {};
       var feedback = routeEditorFeedback && routeEditorFeedback.routeId === route.id && routeEditorFeedback.dayIndex === index ? routeEditorFeedback : null;
       var feedbackId = 'bali-day-feedback-' + index;
@@ -1865,8 +1881,8 @@
           return restaurant ? '<span class="bali-day-place">' + escapeHtml((window.WMBaliFoodCopy[language()] || window.WMBaliFoodCopy.en)[stop.meal] + ' · ' + restaurant.name) + '</span>' : '';
         }).join('') + '</div>' +
         '<div class="bali-day-add">' +
-          '<a class="bali-day-select" href="dining.html?route=' + encodeURIComponent(route.id) + '&day=' + index + '&lang=' + language() + '">' + escapeHtml((window.WMBaliFoodCopy[language()] || window.WMBaliFoodCopy.en).add) + '</a>' +
-          '<button class="bali-day-select bali-place-picker-trigger" type="button" data-open-place-picker="' + index + '" aria-label="' + escapeHtml(labels.aria) + '" aria-describedby="' + feedbackId + '"' + (!candidates.length ? ' disabled' : '') + '><span>' + escapeHtml(candidates.length ? labels.browse(candidates.length) : labels.none) + '</span><span class="fa fa-picture-o" aria-hidden="true"></span></button>' +
+          '<a class="bali-day-select" href="dining.html?route=' + encodeURIComponent(route.id) + '&day=' + index + '&lang=' + language() + '">' + escapeHtml((window.WMBaliFoodCopy[language()] || window.WMBaliFoodCopy.en).findFood) + '</a>' +
+          '<button class="bali-day-select bali-place-picker-trigger" type="button" data-open-place-picker="' + index + '" aria-label="' + escapeHtml(labels.aria) + '" aria-describedby="' + feedbackId + '"' + (!candidates.length ? ' disabled' : '') + '><span>' + escapeHtml(candidates.length ? labels.browse(index + 1, candidates.length) : labels.none) + '</span><span class="fa fa-picture-o" aria-hidden="true"></span></button>' +
         '</div>' +
         '<p class="bali-day-feedback' + (feedback && feedback.tone === 'error' ? ' is-error' : '') + '" id="' + feedbackId + '" role="status" aria-live="polite">' + (feedback ? escapeHtml(feedback.message) : '') + '</p>' +
       '</div>';
@@ -2112,7 +2128,7 @@
   }
 
   Promise.all([
-    fetch('assets/data/bali-travel-data.json?v=20260911p2').then(function (response) { if (!response.ok) throw new Error('HTTP ' + response.status); return response.json(); }),
+    fetch('assets/data/bali-travel-data.json?v=20260916p1').then(function (response) { if (!response.ok) throw new Error('HTTP ' + response.status); return response.json(); }),
     fetch('assets/data/image-publish-manifest.json?v=20260911p2').then(function (response) { if (!response.ok) throw new Error('HTTP ' + response.status); return response.json(); }).catch(function () { poiMediaState = 'failed'; return {images:[]}; }),
     fetch('assets/data/poi-media-catalog.json?v=20260911p1').then(function (response) { if (!response.ok) throw new Error('HTTP ' + response.status); return response.json(); }).catch(function () { poiMediaState = 'failed'; return {images:[]}; }),
     fetch('assets/data/bali-extensions.json?v=20260913p1').then(function (response) { if (!response.ok) throw new Error('HTTP ' + response.status); return response.json(); }),
@@ -2301,7 +2317,7 @@
     applyGalleryFilters();
   }
   Promise.all([
-    fetch('assets/data/bali-travel-data.json?v=20260911p2').then(function(response) { if (!response.ok) throw new Error('HTTP ' + response.status); return response.json(); }),
+    fetch('assets/data/bali-travel-data.json?v=20260916p1').then(function(response) { if (!response.ok) throw new Error('HTTP ' + response.status); return response.json(); }),
     fetch('assets/data/image-publish-manifest.json?v=20260913p2').then(function(response) { if (!response.ok) throw new Error('HTTP ' + response.status); return response.json(); })
   ])
     .then(function(result) {

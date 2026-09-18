@@ -59,3 +59,24 @@
 .route-page .place-link, .route-page .gallery-link, .route-page .text-btn { width: auto; min-height: 44px; max-width: 100%; padding-top: 12rpx; padding-bottom: 12rpx; white-space: normal; overflow-wrap: break-word; }
 .route-page .place-link { flex-wrap: wrap; justify-content: flex-start; }
 .route-page .hero-actions .btn { width: auto; max-width: 100%; padding-top: 14rpx; padding-bottom: 14rpx; }
+
+/* Daily plans are the primary task; optional island days stay below them. */
+.swipe-hint { margin:8rpx 4rpx; color:#65716D; font-size:22rpx; }
+.public-card { padding:26rpx 22rpx; }
+.public-day { display:block; padding:0; overflow:hidden; }
+.day-toggle, .extension-toggle { display:flex; width:100%; min-height:44px; margin:0; padding:24rpx; gap:18rpx; background:transparent; color:#24332F; border-radius:0; text-align:left; justify-content:space-between; }
+.day-heading { flex:1; min-width:0; }
+.day-title { line-height:1.5; overflow-wrap:break-word; }
+.day-disclosure { margin-top:4rpx; color:#65716D; font-size:21rpx; font-weight:400; }
+.public-day .day-body { padding:0 22rpx 24rpx; }
+.public-day .place-links { display:flex; flex-direction:column; gap:10rpx; }
+.public-day .place-link { width:100%; padding:18rpx; border-radius:12rpx; justify-content:space-between; flex-wrap:nowrap; }
+.public-day .place-name { flex:1; min-width:0; font-size:24rpx; line-height:1.5; color:#285B50; font-weight:500; }
+.public-day .place-photo-label { flex-shrink:0; font-size:20rpx; }
+.route-page .btn.secondary { width:100%; height:auto; min-height:44px; padding:18rpx 24rpx; border:1rpx solid #C7D8D1; border-radius:14rpx; background:#F1F6F3; color:#285B50; line-height:1.5; }
+.extensions { margin-top:30rpx; border-top:1rpx solid #E6E0D5; }
+.extension-toggle { padding:24rpx 0; gap:18rpx; font-size:25rpx; }
+.extension-toggle text:first-child { flex:1; }
+.extension-hint, .extension-summary { text-align:left; color:#65716D; font-size:23rpx; line-height:1.65; }
+.extension-card { margin-top:20rpx; padding:24rpx; border:1rpx solid #E6E0D5; border-radius:16rpx; background:#FAFAF7; }
+.extension-summary { margin:12rpx 0 20rpx; }
