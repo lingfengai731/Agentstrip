@@ -6,7 +6,7 @@
     <view class="photo-stage">
       <swiper wx:if="{{images.length}}" class="photo-swiper" current="{{current}}" indicator-dots="{{images.length > 1}}" indicator-color="rgba(255,255,255,.55)" indicator-active-color="#FCBF1E" bindchange="onSlide">
         <swiper-item wx:for="{{images}}" wx:key="key">
-          <image wx:if="{{!item.imageFailed}}" class="place-image" src="{{item.fullUrl}}" mode="aspectFill" show-menu-by-longpress="{{true}}" data-index="{{index}}" binderror="markImageFailed" />
+          <image wx:if="{{!item.imageFailed}}" class="place-image" src="{{item.fullUrl}}" webp="{{true}}" mode="aspectFill" show-menu-by-longpress="{{true}}" data-index="{{index}}" bindload="markImageLoaded" binderror="markImageFailed" />
           <view wx:else class="place-image place-image-fallback">{{copy.imageFailed}}</view>
         </swiper-item>
       </swiper>

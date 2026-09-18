@@ -1,0 +1,38 @@
+{
+  "schema_version": 1,
+  "evidence_id": "20260916-itinerary-clarity-partial",
+  "task_ref": "itinerary-clarity-20260916",
+  "owner": "Codex account1",
+  "claim": "Historical local partial results only; see later recovery evidence for current status.",
+  "baseline": "af77f5e68007aad7d11bbc77a461fdf5f0d2006a",
+  "branch": "codex/itinerary-clarity-20260916",
+  "status": "verified",
+  "delivery_status": "local_partial_uncommitted_at_capture",
+  "checks": {
+    "web": "tools/test_bali_food_browser.cjs exit0:31cases,0pageErrors/overflow",
+    "mini": "tools/test_miniprogram_contract.cjs391checks; test_miniprogram_food_recovery.cjs passed",
+    "gallery": "output/check-gallery-load-events.cjs:12distinct real bindload with positive dimensions,0failed,64records; images200 via wx.request/download; wx.getImageInfo webp invalid is not image component acceptance",
+    "diff": "git diff --check exit0"
+  },
+  "limitations": [
+    "Native itinerary final visuals; user stopped Computer Use",
+    "Full gallery lazy-scroll/detail rendering and owner physical phone",
+    "Luna route/day duplicate audit result and safe daily POI correction",
+    "Current code commit/push/merge/deploy/newPreview not performed",
+    "No WeChat review or public release"
+  ],
+  "skills": [
+    "cross-account-project-memory",
+    "quota-safe-project-continuation",
+    "ui-implementation-workflow",
+    "agent-role-orchestrator",
+    "codex-luna-worker",
+    "ponytail",
+    "browser-automation-router",
+    "playwright",
+    "computer-use"
+  ],
+  "browser": "Native Browser boot node:process prohibited; used deterministic Playwright. Computer Use stopped by physical Escape; no further CU calls.",
+  "source": "https://github.com/Tencent/tdesign-miniprogram/blob/develop/packages/components/image/README.md",
+  "captured_at": "2026-09-16T11:38:13.990Z"
+}

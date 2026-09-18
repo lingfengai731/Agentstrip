@@ -13,7 +13,7 @@
   <view wx:if="{{!loading && !error && !items.length}}" class="state">{{copy.empty}}</view>
   <view wx:for="{{items}}" wx:key="id" class="food-card">
     <view class="eyebrow">{{item.area}} · {{item.categoryLabel}}</view><view class="name">{{item.name}}</view><view class="intro">{{item.address || item.area}}</view><view class="intro">{{item.budgetLabel}} · {{item.mealLabel}}</view><view wx:if="{{item.spend}}" class="intro">{{copy.reference}}: {{item.spend}}</view><view class="date">{{item.dateLabel}}</view>
-    <view class="links"><button bindtap="source" data-id="{{item.id}}" data-kind="map">{{copy.map}}</button><button bindtap="source" data-id="{{item.id}}" data-kind="source">{{copy.source}}</button></view><button class="add" bindtap="add" data-id="{{item.id}}">{{hasPlan ? copy.add : copy.choose}}</button>
+    <view class="links"><button bindtap="source" data-id="{{item.id}}" data-kind="map">{{copy.map}}</button><button bindtap="source" data-id="{{item.id}}" data-kind="source">{{copy.source}}</button></view><button class="add" bindtap="add" data-id="{{item.id}}">{{hasPlan ? addLabel : copy.choose}}</button><view wx:if="{{hasPlan}}" class="date">{{copy.notBooking}}</view>
   </view>
   <view wx:if="{{filterOpen}}" class="filter-overlay">
     <view class="filter-backdrop" bindtap="closeFilter"></view>

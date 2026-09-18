@@ -274,3 +274,17 @@ rejected aspects: 美食标题下六项下拉选择点击没有反应
 reason in reviewer words: 点击都还没有反应，可能是不是还没有做到补齐啊？
 scope: this surface
 recorded at: 2026-09-14
+
+## ui-implementation-workflow-v2
+workflow: ui-implementation-workflow-v2
+status: raw
+task: Itinerary clarity and actual gallery image loading
+page/surface: Web Bali/Dining; Mini itinerary/gallery
+screenshot or artifact: current owner feedback
+reviewer: 用户
+decision: rejected
+accepted aspects: none stated in this review
+rejected aspects: 加入这一天含义不清且未居中；行程上方扩展模块拥挤；图库不可用；重复候选图片没有说明区别
+reason in reviewer words: 现在已经乱套了我觉得
+scope: this surface
+recorded at: 2026-09-16

@@ -80,12 +80,20 @@
       var first = pois.find(function (poi) { return (day.place_ids || []).indexOf(poi.id) >= 0; });
       node = first && first.node_id || 'sanur';
     }
-    return pois.filter(function (poi) {
+    var matches = pois.filter(function (poi) {
       if (used.indexOf(poi.id) >= 0 || poi.region_id !== day.region_id) return false;
       if (poi.verification_status === 'retired') return false;
       if (allowed) return allowed.indexOf(poi.id) >= 0;
       // G3 contains a mainland gateway and two island clusters: region alone is insufficient.
       return day.region_id !== 'G3' || poi.node_id === node;
+    });
+    var preferred = Array.isArray(day.candidate_poi_ids) ? day.candidate_poi_ids : [];
+    return matches.sort(function (left, right) {
+      var leftIndex = preferred.indexOf(left.id), rightIndex = preferred.indexOf(right.id);
+      if (leftIndex < 0 && rightIndex < 0) return 0;
+      if (leftIndex < 0) return 1;
+      if (rightIndex < 0) return -1;
+      return leftIndex - rightIndex;
     });
   }
   function append(plan, catalog, id) {

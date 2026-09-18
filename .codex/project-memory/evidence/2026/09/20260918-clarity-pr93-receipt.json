@@ -1,0 +1,19 @@
+{
+  "schema_version": 1,
+  "evidence_id": "20260918-clarity-pr93-receipt",
+  "task_ref": "itinerary-clarity-20260916",
+  "owner": "Codex account1",
+  "captured_at": "2026-09-18T00:19:57Z",
+  "status": "verified",
+  "claim": "Source committed/pushed; draftPR93 twoCI success. Not merged/deployed/native-accepted.",
+  "source": "git push; GitHub PR/check-runs authenticated API using existing credential helper",
+  "implementation_commit": "4132d28bc506666686667d0ebb0abbc3a7f146de",
+  "pr": "https://github.com/lingfengai731/Agentstrip/pull/93",
+  "draft": true,
+  "ci": {"contracts-and-recovery":"success","validate":"success"},
+  "merged": false,
+  "production": "unchanged by this branch",
+  "native_blocker": "DevTools currentAppID permissions request fails TLS ECONNRESET in CLI and GUI. No security/proxy/identity changes.",
+  "next_action": "pr93-native-clarity-acceptance",
+  "checkpoint_baseline": "4132d28 is implementation baseline; subsequent receipt-only commit is expected. Confirm frontend/miniprogram trees match before resuming."
+}

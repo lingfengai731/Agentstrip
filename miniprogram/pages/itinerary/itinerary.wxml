@@ -54,19 +54,24 @@
   <view wx:if="{{loading}}" class="state-card">{{copy.loading}}</view>
   <view wx:if="{{error}}" class="state-card error"><view>{{error}}</view><button class="text-btn" bindtap="retry">{{copy.retry}}</button></view>
   <scroll-view wx:if="{{routes.length}}" class="route-tabs" scroll-x enhanced show-scrollbar="{{false}}"><view class="route-tabs-inner"><view wx:for="{{routes}}" wx:key="id" class="route-tab {{selected.id === item.id ? 'active' : ''}}" bindtap="selectRoute" data-id="{{item.id}}" role="button" aria-label="{{item.name}}"><text>{{item.name}}</text></view></view></scroll-view>
+  <view wx:if="{{routes.length}}" class="swipe-hint">{{layoutCopy.swipe}}</view>
   <view wx:if="{{selected}}" class="public-card">
     <view class="public-title">{{selected.name}}</view>
     <view class="public-promise">{{selected.promise}}</view>
     <view class="route-facts"><text>{{copy.recommended}}{{selected.idealDays}}</text><text>{{selected.regionPath}}</text></view>
-    <view wx:for="{{selected.modules}}" wx:key="id" class="extension-card"><button class="btn secondary" data-id="{{item.id}}" bindtap="toggleExtension">{{item.selected ? '−' : '+'}} {{item.name}}</button><view class="section-note">{{item.summary}}</view></view>
     <view class="day-list public-days">
       <view wx:for="{{selected.days}}" wx:for-item="day" wx:key="day" class="public-day">
-        <view class="day-number">{{day.day}}</view><view class="day-body"><view class="day-title">{{day.theme}}</view>
-          <view class="places place-links"><button wx:for="{{day.places}}" wx:key="id" class="place-link" data-id="{{item.id}}" data-route="{{selected.id}}" bindtap="openPlace">{{item.name}}<text>{{copy.photos}}</text></button></view>
+        <button class="day-toggle" data-day="{{day.index}}" bindtap="toggleDay" aria-expanded="{{openDay === day.index}}"><view class="day-number">{{day.day}}</view><view class="day-heading"><view class="day-title">{{day.theme}}</view><view class="day-disclosure">{{openDay === day.index ? layoutCopy.collapse : layoutCopy.expand}}</view></view><text>{{openDay === day.index ? '−' : '+'}}</text></button>
+        <view wx:if="{{openDay === day.index}}" class="day-body">
+          <view class="places place-links"><button wx:for="{{day.places}}" wx:key="id" class="place-link" data-id="{{item.id}}" data-route="{{selected.id}}" bindtap="openPlace"><text class="place-name">{{item.name}}</text><text class="place-photo-label">{{copy.photos}}</text></button></view>
           <view wx:for="{{day.food}}" wx:key="id" class="day-theme">{{item.meal}} · {{item.name}}</view>
-          <button class="btn secondary full" bindtap="openFood" data-day="{{day.index}}">{{foodCopy.add}}</button>
+          <button class="btn secondary full" bindtap="openFood" data-day="{{day.index}}">{{foodCopy.findFood}}</button>
         </view>
       </view>
+    </view>
+    <view wx:if="{{selected.modules.length}}" class="extensions">
+      <button class="extension-toggle" bindtap="toggleModules" aria-expanded="{{extensionsOpen}}"><text>{{layoutCopy.extensions}}</text><text>{{extensionsOpen ? '−' : '+'}}</text></button>
+      <block wx:if="{{extensionsOpen}}"><view class="extension-hint">{{layoutCopy.extensionHint}}</view><view wx:for="{{selected.modules}}" wx:key="id" class="extension-card"><view class="day-title">{{item.name}}</view><view class="extension-summary">{{item.summary}}</view><button class="btn secondary" data-id="{{item.id}}" bindtap="toggleExtension">{{item.selected ? layoutCopy.remove : layoutCopy.add}}</button></view></block>
     </view>
     <button class="btn primary full" bindtap="openPlanner">{{copy.use}}</button>
   </view>

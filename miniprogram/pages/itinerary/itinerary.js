@@ -4,6 +4,13 @@ const app = getApp();
 const COPY = require('./copy.js');
 const engine = require('../../utils/bali-itinerary.js');
 const FOOD_COPY = require('../../utils/bali-food-copy.js');
+const LAYOUT_COPY = {
+  zh:{extensions:'可选：佩妮达与海上体验',extensionHint:'按需增加独立一天，不挤进原有安排。',add:'增加一天',remove:'移除扩展',expand:'展开安排',collapse:'收起',swipe:'左右滑动比较 6 条路线'},
+  en:{extensions:'Optional: Penida & the sea',extensionHint:'Add a separate day without crowding the existing plan.',add:'Add a day',remove:'Remove extension',expand:'View day',collapse:'Close',swipe:'Swipe to compare 6 routes'},
+  ja:{extensions:'追加プラン：ペニダ島・海の体験',extensionHint:'元の予定を詰め込まず、別の日を追加します。',add:'1日追加',remove:'追加分を削除',expand:'予定を見る',collapse:'閉じる',swipe:'横にスワイプして6ルートを比較'},
+  ko:{extensions:'선택: 페니다와 바다 체험',extensionHint:'기존 일정에 끼워 넣지 않고 하루를 추가합니다.',add:'하루 추가',remove:'추가 일정 삭제',expand:'일정 보기',collapse:'접기',swipe:'옆으로 밀어 6개 경로 비교'},
+  id:{extensions:'Opsional: Penida & laut',extensionHint:'Tambah hari terpisah tanpa memadatkan rencana awal.',add:'Tambah sehari',remove:'Hapus tambahan',expand:'Lihat hari',collapse:'Tutup',swipe:'Geser untuk membandingkan 6 rute'}
+};
 
 function localized(value, lang, fallback = '') {
   if (!value) return fallback;
@@ -12,7 +19,7 @@ function localized(value, lang, fallback = '') {
 }
 
 Page({
-  data: { copy: COPY.zh, loading: true, error: '', routes: [], selected: null, professional: null, loggedIn: false, isBali: true, destinationName: '' },
+  data: { copy: COPY.zh, layoutCopy: LAYOUT_COPY.zh, openDay:0, extensionsOpen:false, loading: true, error: '', routes: [], selected: null, professional: null, loggedIn: false, isBali: true, destinationName: '' },
 
   onShow() {
     const copy = COPY[app.globalData.currentLang] || COPY.zh;
@@ -21,7 +28,7 @@ Page({
       ? (app.globalData.customDestName || copy.otherDestination)
       : (copy[destination] || destination);
     const isBali = destination === 'bali';
-    this.setData({ copy, loggedIn: !!app.globalData.token, isBali, destinationName, professionalError: '' });
+    this.setData({ copy, layoutCopy:LAYOUT_COPY[app.globalData.currentLang] || LAYOUT_COPY.en, loggedIn: !!app.globalData.token, isBali, destinationName, professionalError: '' });
     wx.setNavigationBarTitle({ title: copy.match });
     app.updateTabBarLanguage();
     if (!isBali) {
@@ -99,8 +106,10 @@ Page({
 
   selectRoute(e) {
     const route = this.data.routes.find(item => item.id === e.currentTarget.dataset.id);
-    if (route) this.setData({ selected: route });
+    if (route) this.setData({ selected: route,openDay:0,extensionsOpen:false });
   },
+  toggleDay(e) { const index=Number(e.currentTarget.dataset.day); if (this.data.selected && this.data.selected.days[index]) this.setData({openDay:this.data.openDay===index ? -1 : index}); },
+  toggleModules() { this.setData({extensionsOpen:!this.data.extensionsOpen}); },
 
   openPlanner() {
     if (!app.globalData.token) {
