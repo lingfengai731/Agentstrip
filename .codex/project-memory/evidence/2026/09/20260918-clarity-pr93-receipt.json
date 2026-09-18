@@ -3,7 +3,7 @@
   "evidence_id": "20260918-clarity-pr93-receipt",
   "task_ref": "itinerary-clarity-20260916",
   "owner": "Codex account1",
-  "captured_at": "2026-09-18T00:23:00Z",
+  "captured_at": "2026-09-18T00:19:57Z",
   "status": "verified",
   "claim": "Source committed/pushed; draftPR93 twoCI success. Not merged/deployed/native-accepted.",
   "source": "git push; GitHub PR/check-runs authenticated API using existing credential helper",
