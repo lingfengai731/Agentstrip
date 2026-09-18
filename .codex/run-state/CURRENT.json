@@ -1,42 +1,23 @@
 {
   "schema_version": 1,
-  "checkpoint_revision": 53,
-  "previous_checkpoint_sha256": "5A55C58F7EE63250E9469CA2DF01C712049CA56C25512B987A6F3E4D17CC63F4",
+  "checkpoint_revision": 54,
+  "previous_checkpoint_sha256": "887FAD79025545326B068A85AF6BD60EA3768DAF61722B28DA44A1C8199A27DF",
   "run_id": "20260914-mini-public-load",
   "objective": "Repair Web/Mini itinerary clarity, actual image rendering and day-specific POI placement after owner rejection of developer0.1.1",
-  "status": "active",
-  "phase": "clarity_web_verified_native_blocked",
+  "status": "paused",
+  "phase": "pr93_draft_ci_passed_native_tls_blocked",
   "baseline": {
     "cwd": "E:\\Agentstrip-worktrees\\active\\account1\\bali-extensions-food-20260913",
     "worktree": "E:\\Agentstrip-worktrees\\active\\account1\\bali-extensions-food-20260913",
     "branch": "codex/itinerary-clarity-20260916",
-    "head": "af77f5e68007aad7d11bbc77a461fdf5f0d2006a",
+    "head": "4132d28bc506666686667d0ebb0abbc3a7f146de",
     "dirty_allowlist": [
       "output/",
       "restaurant-media/",
       ".codex/run-state/CURRENT.json",
-      ".codex/ui-visual-review-signals.md",
-      "miniprogram/pages/food/food.js",
-      "miniprogram/pages/food/food.wxml",
-      "miniprogram/pages/gallery/gallery.js",
-      "miniprogram/pages/gallery/gallery.wxml",
-      "miniprogram/pages/itinerary/itinerary.js",
-      "miniprogram/pages/itinerary/itinerary.wxml",
-      "miniprogram/pages/itinerary/itinerary.wxss",
-      "miniprogram/pages/place/place.js",
-      "miniprogram/pages/place/place.wxml",
-      "miniprogram/utils/bali-food-copy.js",
-      "wandermind-studio/frontend/assets/js/bali-food-copy.js",
-      "wandermind-studio/frontend/assets/js/bali-food.js",
-      "wandermind-studio/frontend/bali.html",
-      ".codex/project-memory/handoffs/2026/09/20260916-itinerary-clarity-partial.md",
-      ".codex/project-memory/evidence/2026/09/20260916-itinerary-clarity-partial.json",
-      "miniprogram/utils/bali-itinerary.js",
-      "miniprogram/utils/public-catalog-seed.js",
-      "tools/test_bali_extensions.cjs",
-      "wandermind-studio/frontend/assets/data/bali-travel-data.json",
-      "wandermind-studio/frontend/assets/js/bali-itinerary.js",
-      "tools/test_bali_clarity_browser.cjs"
+      ".codex/project-memory/current-state.json",
+      ".codex/project-memory/handoffs/2026/09/20260918-clarity-recovery.md",
+      ".codex/project-memory/evidence/2026/09/20260918-clarity-pr93-receipt.json"
     ]
   },
   "completed": [
@@ -53,9 +34,11 @@
     "Local Food deterministic Browser31 cases passed; Mini391contracts and Food recovery passed",
     "Real native gallery bindload12photos positive dimensions0failed after enablingWebP; no phone claim",
     "Accepted Tesla final in prior turn: R1 defaults unique and Uluwatu day3; root candidate pool shared by region. No worker writes.",
-    "20 local explicit selection/preview/save/reload cases passed at4 widths and5 languages;391 Mini contracts and all offline suites passed."
+    "20 local explicit selection/preview/save/reload cases passed at4 widths and5 languages;391 Mini contracts and all offline suites passed.",
+    "Final Web20clarity+31integration and4width screenshots accepted; no overflow/page errors; immediate selected checkmark",
+    "Source4132d28 committed/pushed, PR93 draft; contracts-and-recovery and validate bothsuccess"
   ],
-  "current_step": "20 explicit Web selection/preview/save/reload cases passed. Final selected visual rerun after removing crossfade. DevTools open/auto TLS ECONNRESET; GUI import under inspection.",
+  "current_step": "Source4132d28 pushed; draftPR93 twoCI success. Native final validation blocked by observed DevTools AppID TLS failure. Next commit is evidence-only receipt; reconcile HEAD via code tree equality rather than restarting.",
   "workers": [
     {
       "agent_id": "01a09eab-8c44-73d3-8832-686e1c3b1712",
@@ -84,12 +67,14 @@
     ".codex/project-memory/evidence/2026/09/20260916-mini-public-load.json",
     "https://github.com/lingfengai731/Agentstrip/pull/91",
     ".codex/project-memory/evidence/2026/09/20260916T102733Z-public-load-release.json",
-    ".codex/project-memory/evidence/2026/09/20260916-itinerary-clarity-partial.json"
+    ".codex/project-memory/evidence/2026/09/20260916-itinerary-clarity-partial.json",
+    ".codex/project-memory/evidence/2026/09/20260918-clarity-recovery.json",
+    ".codex/project-memory/evidence/2026/09/20260918-clarity-pr93-receipt.json"
   ],
   "unverified": [
-    "Native final itinerary/gallery-scroll/detail; DevTools TLS ECONNRESET prevents opening current project",
-    "Current source not committed/pushed/merged/deployed; no new Preview or Upload",
-    "Physical-phone acceptance and WeChat review/public release"
+    "Final native itinerary layout and full gallery lazy-scroll/detail on current source",
+    "New Preview/Upload/phone acceptance, merge, Render deployment and production verification",
+    "WeChat review and public release"
   ],
   "do_not_repeat": [
     {
@@ -109,11 +94,11 @@
     }
   ],
   "next_action": {
-    "action_id": "clarity-final-native-or-draft-handoff",
-    "description": "Finish bounded GUI import attempt; run final browser matrix and save reviewable changes plus evidence to remote draft PR. Native verification remains required before Mini release.",
+    "action_id": "pr93-native-clarity-acceptance",
+    "description": "When DevTools can validate existingAppID/open current worktree, run native day accordion/extension/place/food callbacks and gallery-scroll/detail screenshots. Resume PR93 from fixed source4132d28, then merge/deploy/newPreview if accepted. Prior0.1.1 upload must not be replayed.",
     "external_effect": false,
     "effect_key": null,
     "authority_confirmed": true
   },
-  "updated_at_utc": "2026-09-18T00:13:24.5317552Z"
+  "updated_at_utc": "2026-09-18T00:19:57.3710738Z"
 }

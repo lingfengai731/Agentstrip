@@ -6,13 +6,17 @@
     "scope": "Web and Mini itinerary clarity and gallery correction",
     "branch": "codex/itinerary-clarity-20260916",
     "baseline_commit": "af77f5e68007aad7d11bbc77a461fdf5f0d2006a",
-    "status": "local_verified_native_tls_blocked_draft_pending",
+    "status": "source_pushed_draft_pr93_ci_success_native_tls_blocked",
     "evidence": ".codex/project-memory/evidence/2026/09/20260918-clarity-recovery.json",
     "handoff": ".codex/project-memory/handoffs/2026/09/20260918-clarity-recovery.md",
     "accepted": "20 Web clarity +31integration;391Mini contracts/alloffline suites; no fresh native",
-    "next_action": "Finish native itinerary/gallery visual acceptance after DevTools AppID TLS connection recovers, then release",
-    "not_claimed": "Current source remote/merge/deploy/newPreview/Upload/phone acceptance; draft receipt follows",
-    "previous_developer_version": "0.1.1"
+    "next_action": "pr93-native-clarity-acceptance",
+    "not_claimed": "Merge/deploy/newPreview/Upload/phone acceptance; final native visuals blocked by DevTools TLS",
+    "previous_developer_version": "0.1.1",
+    "implementation_commit": "4132d28bc506666686667d0ebb0abbc3a7f146de",
+    "implementation_push_verified": true,
+    "pr_url": "https://github.com/lingfengai731/Agentstrip/pull/93",
+    "ci": "contracts-and-recovery success; validate success at source4132d28"
   },
   "authority": {
     "repository": "https://github.com/lingfengai731/Agentstrip.git",

@@ -15,6 +15,8 @@ Branch: codex/itinerary-clarity-20260916. Baseline: af77f5e68007aad7d11bbc77a461
 WeChat CLI open/auto and Computer Use import UI both show TLS ECONNRESET while fetching existing AppID permissions. UI confirms exact current worktree. Cancel attempt was interrupted by detected user input; no further app input. No settings or identity changed. Final Mini layout, full gallery scroll/detail, fresh Preview/Upload still unverified. No production deploy claim.
 
 ## Next action
-Preserve fixes in remote draft PR. Once DevTools can open current worktree, run native itinerary accordion/place/extension callbacks and gallery load/scroll/detail screenshots. Then complete release checks, merge/deploy Web and generate fresh Mini Preview; do not repeat uploaded0.1.1.
+Source `4132d28bc506666686667d0ebb0abbc3a7f146de` is pushed in draft PR https://github.com/lingfengai731/Agentstrip/pull/93. Both CI checks succeeded at this source. The following receipt-only commit is expected: checkpoint baseline remains implementation4132d28; confirm unchanged frontend/Mini trees when reconciling HEAD.
+
+Once DevTools can open current worktree, run native itinerary accordion/place/extension callbacks and gallery load/scroll/detail screenshots. Then complete release checks, merge/deploy Web and generate fresh Mini Preview; do not repeat uploaded0.1.1. No merge, deployment or fresh Preview yet.
 
 Evidence: .codex/project-memory/evidence/2026/09/20260918-clarity-recovery.json. Original dirty checkout, output and restaurant-media untouched by cleanup and excluded from commit.
