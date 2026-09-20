@@ -1,0 +1,22 @@
+{
+  "schema_version": 1,
+  "evidence_id": "ev-20260920T024221Z-mini-0.1.1-review-readiness-20260920",
+  "task_ref": "mini-0.1.1-review-readiness-20260920",
+  "owner": "current-account-codex",
+  "captured_at": "2026-09-20T02:42:21Z",
+  "status": "verified",
+  "claim": "Fresh recovery on clean worktree at origin/main af77f5e. Render exact af77f5e live; public health/catalog/portfolio endpoints 200. Mini tree 83e2ae6e matches uploaded 0.1.1 evidence. Fresh DevTools Preview and open project both failed before compile on TLS ECONNRESET; no QR, new Upload, Review or release. Portfolio has five Cloudinary assets; first image HEAD 200.",
+  "source": {
+    "kind": "git",
+    "repository": "https://github.com/lingfengai731/Agentstrip.git",
+    "commit": "af77f5e68007aad7d11bbc77a461fdf5f0d2006a",
+    "branch": "codex/continue-mini-review-20260920",
+    "worktree": "E:\\Agentstrip-worktrees\\active\\account_current\\mini-review-20260920",
+    "dirty": false
+  },
+  "verification": {
+    "command": "git rev-parse HEAD: miniprogram; render deploys list; public HTTP GET/HEAD; node tools/test_miniprogram_contract.cjs; normalized-line-ending public-load test; WeChat CLI islogin/open/preview",
+    "result": "Git tree and Render exact commit verified; public HTTP 200; contract 389 pass; public-load pass after Windows CRLF normalization; CLI logged in but project open/Preview error 10 ECONNRESET; owner phone and console declarations unverified."
+  },
+  "notes": "No secrets or payment/user-data writes. Original E:\\Agentstrip remains dirty and untouched. WeChat CLI exit code 0 on open despite embedded error; use error payload, not exit code. Do not repeat 0.1.1 Upload. Need fresh QR once network/tool recovers; verify Cloudinary images on phone. No review/public release."
+}

@@ -5,6 +5,10 @@ It stores verifiable project facts, not hidden chain-of-thought or complete chat
 
 ## Active expansion pointer — 2026-09-16
 
+### 2026-09-20 review-readiness follow-up
+
+On a clean isolated worktree, `origin/main@af77f5e` was verified against Render's exact Live commit. The Mini Program subtree remains `83e2ae6e`, matching the already uploaded developer version `0.1.1`; it has **not** been submitted for review or publicly released. Public health/catalog/portfolio endpoints returned HTTP 200; the five live Portfolio assets use `res.cloudinary.com` (one image HEAD returned 200). A fresh WeChat Preview was **not** generated: the logged-in DevTools failed before compilation with TLS `ECONNRESET` on both Preview and project open. Owner physical-phone acceptance and current WeChat console domain/category/privacy/test-access settings remain unverified. Read `.codex/project-memory/handoffs/2026/09/20260920T024235Z-mini-0.1.1-review-readiness-20260920.md`; do not repeat the `0.1.1` Upload.
+
 Release follow-up: PR91 passed2CI and merged `main@478e326`; whole treeb461b98/Mini83e2ae6e match. Official WeChat developerUpload`0.1.1` succeeded,2053242bytes; Preview also succeeds. NOTreviewed/publicreleased/phoneaccepted. Read `.codex/project-memory/handoffs/2026/09/20260916T102733Z-public-load-release.md`. Next owner-phone-0.1.1-and-wechat-review-prerequisites; do not repeat0.1.1Upload. Earlier pending-merge capture below is history.
 
 Current public-loading fix: source `9089e7d` is committed/pushed on `codex/mini-public-load-20260914`, Mini tree `83e2ae6e`. Native30filter callbacks(5languages,44px) pass;6injected public-data GET failures still render6routes/33lunch candidates/59gallery cards.389contracts/all offline suites pass. OfficialPreview2053242bytes. No phone acceptance/newUpload/publicrelease or Render admin verification is claimed. Read `.codex/project-memory/handoffs/2026/09/20260916-mini-public-load.md`; next fixed-headCI/merge, developer-version/phone and submission readiness. Earlier entries are dated history, not current blockers or new deployment claims.
