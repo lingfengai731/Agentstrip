@@ -1,0 +1,22 @@
+{
+  "schema_version": 1,
+  "evidence_id": "ev-20260920T031118Z-wechat-devtools-direct-preview-recovery",
+  "task_ref": "wechat-devtools-direct-preview-recovery",
+  "owner": "current-account-codex",
+  "captured_at": "2026-09-20T03:11:18Z",
+  "status": "verified",
+  "claim": "WeChat DevTools Preview recovered by changing only its two local proxy settings from SYSTEM to DIRECT after backup. Current WanderMind 智旅 project opens; official Preview succeeds, 2062230 bytes, QR exists. Mini tree83e2ae6e unchanged; Windows/FlClash global proxy remains enabled at127.0.0.1:7890.",
+  "source": {
+    "kind": "git",
+    "repository": "https://github.com/lingfengai731/Agentstrip.git",
+    "commit": "2fa5ec8d6fb6ec27466dbbeaa0a0988ac43d408f",
+    "branch": "codex/fix-devtools-preview-20260920",
+    "worktree": "E:\\Agentstrip-worktrees\\active\\account_current\\mini-review-20260920",
+    "dirty": false
+  },
+  "verification": {
+    "command": "WeChat CLI open and preview; Git clean/Mini tree; QR file inspection; Windows proxy registry read",
+    "result": "open success; preview success; QR46871bytes generated2026-09-20T03:10:15Z; source tree unchanged and clean. Earlier TLS blocker resolved."
+  },
+  "notes": "Local app config only; backups in E:\\Agentstrip-artifacts\\2026-09-20\\mini-review\\devtools-proxy-backup. Direct proxy enum confirmed in installed DevTools code. Preview2062230bytes differs from old build size despite unchanged source tree; no duplicate developer Upload, review or public release. Owner phone acceptance still pending."
+}

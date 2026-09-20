@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
-  "checkpoint_revision": 52,
-  "previous_checkpoint_sha256": "8F6E803E8080F8CF241B9DA659764C69FC1737E89E5203EC8C23CB15432D4BCD",
+  "checkpoint_revision": 53,
+  "previous_checkpoint_sha256": "06DC1C8C6E1CCBFC2576226E610C7007729174DF8AF1A8B582CB41C772D88840",
   "run_id": "20260914-mini-public-load",
   "objective": "Complete owner physical-phone acceptance and WeChat review prerequisites for the already uploaded Mini Program 0.1.1 without duplicate Upload.",
   "status": "active",
@@ -9,12 +9,12 @@
   "baseline": {
     "cwd": "E:\\Agentstrip-worktrees\\active\\account_current\\mini-review-20260920",
     "worktree": "E:\\Agentstrip-worktrees\\active\\account_current\\mini-review-20260920",
-    "branch": "codex/continue-mini-review-20260920",
-    "head": "af77f5e68007aad7d11bbc77a461fdf5f0d2006a",
+    "branch": "codex/fix-devtools-preview-20260920",
+    "head": "2fa5ec8d6fb6ec27466dbbeaa0a0988ac43d408f",
     "dirty_allowlist": [
       "PROJECT_CONTEXT.md",
-      ".codex/project-memory/evidence/2026/09/20260920T024221Z-mini-0.1.1-review-readiness-20260920.json",
-      ".codex/project-memory/handoffs/2026/09/20260920T024235Z-mini-0.1.1-review-readiness-20260920.md",
+      ".codex/project-memory/evidence/2026/09/20260920T031118Z-wechat-devtools-direct-preview-recovery.json",
+      ".codex/project-memory/handoffs/2026/09/20260920T031149Z-wechat-devtools-direct-preview-recovery.md",
       ".codex/run-state/CURRENT.json"
     ]
   },
@@ -23,16 +23,17 @@
     "Official developer Upload0.1.1 succeeded before this turn; no repeat Upload",
     "Recovered clean isolated origin/main af77f5e; Render exact af77f5e Live",
     "Public health/catalog/portfolio HTTP200; five Portfolio assets use Cloudinary and one image HEAD200",
-    "389 Mini contracts pass; public-load regression passes after Windows CRLF-only normalization"
+    "389 Mini contracts pass; public-load regression passes after Windows CRLF-only normalization",
+    "DevTools-local proxy DIRECT resolves project open and Preview; official Preview2062230bytes and QR generated; Mini source tree unchanged"
   ],
-  "current_step": "Fresh WeChat Preview failed before compilation with TLS ECONNRESET despite DevTools login; restore Preview access, then owner phone callback.",
+  "current_step": "Fresh Preview generated successfully after DevTools-local proxy repair; awaiting owner phone callback.",
   "workers": [],
   "accepted_evidence": [
     ".codex/project-memory/evidence/2026/09/20260916T102733Z-public-load-release.json",
-    ".codex/project-memory/evidence/2026/09/20260920T024221Z-mini-0.1.1-review-readiness-20260920.json"
+    ".codex/project-memory/evidence/2026/09/20260920T024221Z-mini-0.1.1-review-readiness-20260920.json",
+    ".codex/project-memory/evidence/2026/09/20260920T031118Z-wechat-devtools-direct-preview-recovery.json"
   ],
   "unverified": [
-    "Exact DevTools TLS reset cause and a new unexpired Preview QR",
     "Physical-phone acceptance including Cloudinary photo rendering and private matching",
     "Current WeChat console request/image domains, service category, privacy statement and test access",
     "Review submission and public release"
@@ -55,11 +56,11 @@
     }
   ],
   "next_action": {
-    "action_id": "restore-wechat-preview-0.1.1-network",
-    "description": "Diagnose the DevTools TLS reset without repeating Upload; generate a fresh Preview for unchanged Mini subtree, then request owner physical-phone callback and check current WeChat console declarations before review.",
+    "action_id": "owner-phone-0.1.1-and-wechat-review-prerequisites",
+    "description": "Owner scans the fresh Preview to test public routes, six Dining filters, gallery/Cloudinary and one ordinary-account matching submission; then verify current WeChat console declarations before review. Do not repeat Upload0.1.1.",
     "external_effect": false,
     "effect_key": null,
     "authority_confirmed": true
   },
-  "updated_at_utc": "2026-09-20T02:43:36.9535907Z"
+  "updated_at_utc": "2026-09-20T03:12:34.5695504Z"
 }
