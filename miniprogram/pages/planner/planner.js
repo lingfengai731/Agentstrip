@@ -3,6 +3,7 @@ const COPY = require('./copy.js');
 const app = getApp();
 const itinerary = require('../../utils/bali-itinerary.js');
 const FOOD_COPY = require('../../utils/bali-food-copy.js');
+const network = require('../../utils/network-check.js');
 
 function isoDate(offset) {
   const date = new Date(Date.now() + offset * 86400000);
@@ -26,7 +27,7 @@ Page({
 
   onShow() {
     const copy = COPY[app.globalData.currentLang] || COPY.zh;
-    this.setData({ copy, goalOptions: this.data.goalOptions.map(item => ({ ...item, label: copy[item.id] })) });
+    this.setData({ copy, networkCopy:network.COPY[app.globalData.currentLang]||network.COPY.zh, goalOptions: this.data.goalOptions.map(item => ({ ...item, label: copy[item.id] })) });
     wx.setNavigationBarTitle({ title: copy.submit });
   },
 
@@ -82,7 +83,8 @@ Page({
   async submit() {
     if (this.data.busy) return;
     const owner = app.privateStorageKey('wm_public_route_plans');
-    const isCurrent = () => owner === app.privateStorageKey('wm_public_route_plans');
+    const submission=this.submission=(this.submission||0)+1;
+    const isCurrent = () => !this.unloaded && submission===this.submission && owner === app.privateStorageKey('wm_public_route_plans');
     this.updateDays();
     if (!this.data.departureDate || !this.data.returnDate || this.data.days < 1) {
       this.setData({ error: this.data.copy.invalidDates }); return;
@@ -126,7 +128,14 @@ Page({
       wx.switchTab({ url: '/pages/itinerary/itinerary', fail: () => {
         if (isCurrent()) this.setData({ error: this.data.copy.failed });
       } });
-    } catch (err) { if (isCurrent()) this.setData({ error: err.message || this.data.copy.failed }); }
-    finally { this.setData({ busy: false }); }
+    } catch (err) { if (isCurrent()) this.setData({ error: (err.message || this.data.copy.failed)+(err.code?' ['+err.code+']':'') }); }
+    finally { if(isCurrent())this.setData({ busy: false }); }
+  },
+  onUnload(){this.unloaded=true;},
+  async checkNetwork() {
+    if(this.data.networkBusy)return;
+    this.setData({networkBusy:true});
+    try {await network.checkConnection();}
+    finally {if(!this.unloaded)this.setData({networkBusy:false});}
   },
 });

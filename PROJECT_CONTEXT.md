@@ -5,6 +5,10 @@ It stores verifiable project facts, not hidden chain-of-thought or complete chat
 
 ## Active expansion pointer — 2026-09-16
 
+### 2026-09-20 phone failure follow-up — latest owner feedback
+
+Owner reports actual phone route timeout/gallery errors after prior simulator pass. New Mini-only recovery candidate adds retained slow-image DOM/WebP/retry, gallery→food→logout order,45s bounded POST and credential-free connection diagnostics; both DevTools URL checks true. All offline suites/397contracts pass; native SYSTEM-proxy health/image200 is NOT phone acceptance. Official Preview2068703bytes generated; no Upload/review/public release. Local direct healthz15s timeout vs proxy200; owner's network and console request/downloadFile domains pending. Read .codex/project-memory/handoffs/2026/09/20260920T053800Z-mini-phone-network.md. Do not claim phone fixed or trigger unnecessary Render deploy for this Mini-only change. Git/PR state outranks this pre-commit capture.
+
 ### 2026-09-20 exact repair release — authoritative latest
 
 PR96 passed both fixed-head checks and merged as main@d9e2c6aa; entire Git tree matches head4f35d835. Render dep-danlg67f3r2c73e56r0g is Live at that exact product commit; public health/content checks pass. Official new Mini Preview2061100bytes (tree d230fc8b), NOT Upload/review/public release. Native64/64gallery images loaded including5Cloudinary; extra6WebKit route/viewport checks pass. Owner phone acceptance of new QR remains pending; uploaded0.1.1 is OLD source. Follow .codex/project-memory/handoffs/2026/09/20260920T035700Z-itinerary-gallery-live.md. Older dated entries are historical, including pending-release and DIRECT-only claims.

@@ -21,15 +21,15 @@ assert.ok(view.indexOf('public-days')<view.indexOf('class="extensions"'));
 assert.ok(view.includes('foodCopy.chooseRestaurant'));
 let page;const callbacks=[];
 vm.runInNewContext(fs.readFileSync('miniprogram/pages/gallery/gallery.js','utf8'),{
- require:p=>p.includes('bali-media')?{}:{zh:{}},getApp:()=>({globalData:{currentLang:'zh'}}),Page:p=>page=p,
+ require:p=>p.includes('network-check')?require('../miniprogram/utils/network-check.js'):p.includes('bali-media')?{}:{zh:{}},getApp:()=>({globalData:{currentLang:'zh'}}),Page:p=>page=p,
  setTimeout:f=>{callbacks.push(f);return callbacks.length;},clearTimeout(){},Set,Map,wx:{}
 });
-page.data={...page.data,assets:Array.from({length:30},(_,i)=>({key:String(i),theme:'landscapes',fullUrl:'full'+i}))};
+page.data={...page.data,assets:Array.from({length:30},(_,i)=>({key:String(i),theme:'landscapes',fullUrl:'full'+i,thumbUrl:'thumb'+i}))};
 page.setData=function(d){Object.assign(this.data,d);};
 page.applyFilter('all');assert.equal(page.data.visibleAssets.length,12);assert.equal(page.data.visibleCount,30);
 page.markImageLoaded({currentTarget:{dataset:{key:'0'}}});
 callbacks.at(-1)();assert.equal(page.data.visibleAssets[0].imageFailed,false);assert.equal(page.data.visibleAssets[1].imageFailed,true);
-page.retryImage({currentTarget:{dataset:{key:'1'}}});assert.equal(page.data.visibleAssets[1].thumbUrl,'full1');assert.equal(page.data.visibleAssets[1].imageFailed,false);
+page.retryImage({currentTarget:{dataset:{key:'1'}}});assert.equal(page.data.visibleAssets[1].thumbUrl,'thumb1?wm_retry=1');assert.equal(page.data.visibleAssets[1].imageFailed,false);
 page.onReachBottom();assert.equal(page.data.visibleAssets.length,24);
 page.applyFilter('culture');assert.equal(page.data.visibleAssets.length,0);
 let routePage,modal,owner='u1',saved={R1:{days:[]},R2:{days:['keep']}};

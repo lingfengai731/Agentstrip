@@ -1,5 +1,18 @@
 ## ui-implementation-workflow-v2
 
+### 2026-09-20 phone network rejection
+
+workflow: ui-implementation-workflow-v2
+status: raw
+task: phone route generation and image recovery
+page/surface: Mini planner/gallery/place/index
+reviewer: user
+decision: rejected
+reason in reviewer words: “请求超时，请稍后重试”“图片暂时无法加载”；美食应紧接岛屿上的真实瞬间、位于退出登录前。
+scope: this surface
+response: preserve slow image DOM, WebP decode and retry, bounded match wait and credential-free diagnostics, strict simulator domain checks. Native proxy success is explicitly not phone acceptance.
+recorded at: 2026-09-20
+
 workflow: ui-implementation-workflow-v2
 status: raw
 task: mini-match-recovery-20260914

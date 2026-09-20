@@ -1,5 +1,6 @@
 const { loadBaliMedia, clearCache } = require('../../utils/bali-media.js');
 const app = getApp();
+const network = require('../../utils/network-check.js');
 
 const FILTERS = [
   { id: 'all', label: '全部' },
@@ -15,7 +16,7 @@ const UPDATE_COPY = {zh:'新增作品暂未更新，已显示可用图库。',en
 Page({
   data: { copy: COPY.zh, loading: true, error: '', updateNotice: '', filter: 'all', filters: FILTERS, assets: [], visibleAssets: [], totalCount: 0, visibleCount: 0, shownCount: 0 },
 
-  onLoad() { const copy = COPY[app.globalData.currentLang] || COPY.zh; this.setData({copy, filters: FILTERS.map(item => ({...item,label:copy[item.id]}))}); wx.setNavigationBarTitle({title:copy.galleryTitle}); this.loadGallery(); },
+  onLoad() { const copy = COPY[app.globalData.currentLang] || COPY.zh; this.setData({copy, networkCopy:network.COPY[app.globalData.currentLang]||network.COPY.zh, filters: FILTERS.map(item => ({...item,label:copy[item.id]}))}); wx.setNavigationBarTitle({title:copy.galleryTitle}); this.loadGallery(); },
 
   onPullDownRefresh() {
     clearCache();
@@ -34,7 +35,10 @@ Page({
       loadBaliMedia(app.globalData.currentLang || 'zh', false, true).then(updated => {
         if (request !== this.loadRequest) return;
         const previous = new Map(this.data.assets.map(item => [item.key, item]));
-        this.setData({assets:updated.gallery.map(item => ({...item, imageLoaded:!!(previous.get(item.key) || {}).imageLoaded})),totalCount:updated.gallery.length}); this.applyFilter(this.data.filter, true);
+        this.setData({assets:updated.gallery.map(item => {
+          const old=previous.get(item.key);
+          return old && old.fullUrl===item.fullUrl ? {...item,thumbUrl:old.thumbUrl,imageLoaded:old.imageLoaded,imageFailed:old.imageFailed} : item;
+        }),totalCount:updated.gallery.length}); this.applyFilter(this.data.filter, true);
       }).catch(() => {
         if (request === this.loadRequest) this.setData({updateNotice:UPDATE_COPY[app.globalData.currentLang] || UPDATE_COPY.zh});
       });
@@ -43,7 +47,7 @@ Page({
       this.setData({ loading: false, error: error.message || this.data.copy.galleryFailed });
     }
   },
-  onUnload() { this.loadRequest = (this.loadRequest || 0) + 1; clearTimeout(this.imageTimer); },
+  onUnload() { this.unloaded=true; this.loadRequest = (this.loadRequest || 0) + 1; clearTimeout(this.imageTimer); },
   onReachBottom() { this.pageSize = (this.pageSize || 12) + 12; this.applyFilter(this.data.filter, true); },
 
   applyFilter(filter, keepPage = false) {
@@ -60,7 +64,7 @@ Page({
       if (!pending.size) return;
       const assets = this.data.assets.map(item => pending.has(item.key) ? {...item,imageFailed:true} : item);
       this.setData({assets, visibleAssets:this.data.visibleAssets.map(item=>pending.has(item.key)?{...item,imageFailed:true}:item)});
-    }, 15000);
+    }, 45000);
   },
 
   chooseFilter(e) { this.applyFilter(e.currentTarget.dataset.id); },
@@ -88,8 +92,15 @@ Page({
   },
   retryImage(e) {
     const key = e.currentTarget.dataset.key;
-    const update = item => item.key === key ? {...item,imageFailed:false,imageLoaded:false,thumbUrl:item.fullUrl} : item;
+    this.retryCount=(this.retryCount||0)+1;
+    const update = item => item.key === key ? {...item,imageFailed:false,imageLoaded:false,thumbUrl:network.retryUrl(item.thumbUrl,this.retryCount)} : item;
     this.setData({assets:this.data.assets.map(update)}); this.applyFilter(this.data.filter, true);
+  },
+  async checkNetwork() {
+    if(this.data.networkBusy)return;
+    this.setData({networkBusy:true});
+    try {const item=this.data.visibleAssets.find(x=>x.imageFailed)||this.data.visibleAssets[0];await network.checkConnection(item&&item.thumbUrl);}
+    finally {if(!this.unloaded)this.setData({networkBusy:false});}
   },
 
   retry() { clearCache(); this.loadGallery(true); },

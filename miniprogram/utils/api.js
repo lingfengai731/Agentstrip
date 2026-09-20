@@ -18,7 +18,9 @@ function _request({ url, method = 'GET', data, auth = true, timeout = 30000 }) {
     };
     // Settle even if a platform callback is lost; never automatically retry POST.
     if (typeof setTimeout === 'function') timer = setTimeout(() => {
-      settle(new Error(copy.timeout));
+      const error = new Error(copy.timeout);
+      error.code = 'WX_TIMEOUT';
+      settle(error);
       if (task && task.abort) task.abort();
     }, timeout);
     const header = { 'Content-Type': 'application/json' };
@@ -190,7 +192,7 @@ const imagePublishManifest = () =>
 const publicPortfolio = (destination = 'bali') =>
   _request({ url: `/api/portfolio?destination=${encodeURIComponent(destination)}`, auth: false, timeout: 8000 });
 const createProfessionalRoute = (tripProfile, routeId = '', lang = 'zh', tripId = '') =>
-  _request({ url: '/api/bali/professional-route', method: 'POST', timeout: 15000,
+  _request({ url: '/api/bali/professional-route', method: 'POST', timeout: 45000,
     data: { trip_profile: tripProfile, route_id: routeId, lang, trip_id: tripId } });
 const recentUnlockedProfessionalRoute = (lang = 'zh') =>
   _request({ url: `/api/bali/professional-route/recent-unlocked?lang=${encodeURIComponent(lang)}` });

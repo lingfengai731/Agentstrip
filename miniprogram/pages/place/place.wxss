@@ -29,3 +29,4 @@
 
 .place-page .retry, .place-page .link-btn { width: auto; max-width: 100%; min-height: 44px; height: auto; white-space: normal; box-sizing: border-box; }
 .place-page .action { width: 100%; min-height: 44px; height: auto; padding: 10px 12px; white-space: normal; box-sizing: border-box; }
+.image-error-overlay { position:absolute; inset:0; flex-direction:column; background:#E6E0D5; }

@@ -1,5 +1,6 @@
 const { loadBaliMedia, clearCache } = require('../../utils/bali-media.js');
 const app = getApp();
+const network = require('../../utils/network-check.js');
 
 const COPY = require('../../utils/browse-copy.js');
 
@@ -75,6 +76,15 @@ Page({
     if (!Number.isInteger(index) || !this.data.images[index]) return;
     const images = this.data.images.map((item, itemIndex) => itemIndex === index ? { ...item, imageFailed: true } : item);
     this.setData({ images });
+  },
+  markImageLoaded(e) {
+    const index=Number(e.currentTarget.dataset.index);
+    this.setData({images:this.data.images.map((item,i)=>i===index?{...item,imageFailed:false}:item)});
+  },
+  retryImage(e) {
+    const index=Number(e.currentTarget.dataset.index);
+    this.retryCount=(this.retryCount||0)+1;
+    this.setData({images:this.data.images.map((item,i)=>i===index?{...item,imageFailed:false,fullUrl:network.retryUrl(item.fullUrl,this.retryCount)}:item)});
   },
 
   copyLink(e) {

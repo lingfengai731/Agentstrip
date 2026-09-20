@@ -42,3 +42,4 @@
 }
 
 .planner-page .submit { width: 100%; }
+.connection-check { min-height:44px; display:flex; align-items:center; justify-content:center; color:#0E7362; background:#FFF; font-size:26rpx; margin:16rpx 0; }

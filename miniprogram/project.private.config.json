@@ -2,7 +2,7 @@
   "libVersion": "3.16.1",
   "projectname": "WanderMind%20%E6%99%BA%E6%97%85%E5%B0%8F%E7%A8%8B%E5%BA%8F",
   "setting": {
-    "urlCheck": false,
+    "urlCheck": true,
     "coverView": true,
     "lazyloadPlaceholderEnable": false,
     "skylineRenderEnable": false,

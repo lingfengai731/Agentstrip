@@ -44,6 +44,7 @@
   </view>
 
   <view wx:if="{{error}}" class="error">{{error}}</view>
+  <button wx:if="{{error}}" class="connection-check" bindtap="checkNetwork" loading="{{networkBusy}}" disabled="{{networkBusy}}">{{networkCopy.check}}</button>
   <view class="sticky-action">
     <view class="summary">{{days}} {{copy.days}} · {{travellers}} {{copy.guests}} · {{goals.length}} {{copy.selected}}</view>
     <button class="submit" bindtap="submit" loading="{{busy}}" disabled="{{busy}}">{{busy ? copy.busy : copy.submit}}</button>

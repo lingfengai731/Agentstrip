@@ -2,6 +2,21 @@
   "schema_version": 1,
   "project": "Agentstrip / WanderMind",
   "latest_task": {
+    "captured_at": "2026-09-20T05:38:00Z",
+    "scope": "Mini phone route timeout and image failure follow-up",
+    "branch": "codex/mini-network-recovery-20260920",
+    "baseline_commit": "00edb39f0ccc2cfbf11acacdba53303f78ed54bc",
+    "status": "local_fixes_preview_verified_phone_network_unresolved",
+    "evidence": ".codex/project-memory/evidence/2026/09/20260920T053800Z-mini-phone-network.json",
+    "handoff": ".codex/project-memory/handoffs/2026/09/20260920T053800Z-mini-phone-network.md",
+    "preview_bytes": 2068703,
+    "accepted": "397contracts,143bindings,offline suites,5native locale home order,late image recovery,strict-domain simulator request/download200",
+    "not_claimed": "Phone timeout/image cause solved; real phone acceptance; new Upload/review/public release; PR/merge pending at capture",
+    "next_action": "owner-phone-network-diagnostic-20260920",
+    "render": "No website or backend code changed; no deployment required",
+    "previous_developer_version": "0.1.1 older source"
+  },
+  "previous_task": {
     "captured_at": "2026-09-20T03:57:00Z",
     "scope": "Web/Mini itinerary, dining controls and gallery recovery",
     "branch": "codex/itinerary-gallery-release-receipt-20260920",
