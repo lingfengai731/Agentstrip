@@ -1,60 +1,43 @@
 {
   "schema_version": 1,
-  "checkpoint_revision": 56,
-  "previous_checkpoint_sha256": "D1C1F7B6B4E54183DEA2A20569497A9C0F15849C46F3DB27AD65FEF8507686CD",
+  "checkpoint_revision": 57,
+  "previous_checkpoint_sha256": "9F5219A903B19DC9C4F57FDEAA559A6FADC686800D2CAFCA4A7807A1DFDFC27A",
   "run_id": "20260914-mini-public-load",
   "objective": "Debug owner phone route timeouts and gallery failures; preserve rights and collect real phone network evidence.",
   "status": "active",
-  "phase": "owner_phone_network_diagnostic",
+  "phase": "regional_tcp_timeout_confirmed_dns_access_pending",
   "baseline": {
     "cwd": "E:/Agentstrip-worktrees/active/account_current/mini-review-20260920",
     "worktree": "E:/Agentstrip-worktrees/active/account_current/mini-review-20260920",
-    "branch": "codex/mini-network-recovery-20260920",
-    "head": "00edb39f0ccc2cfbf11acacdba53303f78ed54bc",
+    "branch": "codex/phone-reachability-evidence-20260920",
+    "head": "de8c978316619ac5a9519dc7ddfa1e8b24ba65ea",
     "dirty_allowlist": [
-      ".codex/project-memory/current-state.json",
-      ".codex/ui-visual-review-signals.md",
       "PROJECT_CONTEXT.md",
-      "README.md",
-      "miniprogram/pages/gallery/gallery.js",
-      "miniprogram/pages/gallery/gallery.wxml",
-      "miniprogram/pages/gallery/gallery.wxss",
-      "miniprogram/pages/index/index.wxml",
-      "miniprogram/pages/place/place.js",
-      "miniprogram/pages/place/place.wxml",
-      "miniprogram/pages/place/place.wxss",
-      "miniprogram/pages/planner/planner.js",
-      "miniprogram/pages/planner/planner.wxml",
-      "miniprogram/pages/planner/planner.wxss",
-      "miniprogram/project.config.json",
-      "miniprogram/project.private.config.json",
-      "miniprogram/utils/api.js",
-      "tools/test_itinerary_gallery_repair.cjs",
-      "tools/test_miniprogram_match_recovery.cjs",
-      "tools/test_miniprogram_planner_languages.cjs",
-      ".codex/mini-network-recovery-plan.md",
-      ".codex/project-memory/evidence/2026/09/20260920T053800Z-mini-phone-network.json",
-      ".codex/project-memory/handoffs/2026/09/20260920T053800Z-mini-phone-network.md",
-      "miniprogram/utils/network-check.js",
-      "tools/test_miniprogram_phone_network.cjs"
+      ".codex/project-memory/current-state.json",
+      ".codex/run-state/CURRENT.json",
+      ".codex/project-memory/handoffs/2026/09/20260920T141800Z-phone-reachability.md",
+      ".codex/project-memory/evidence/2026/09/20260920T141800Z-phone-reachability.json"
     ]
   },
   "completed": [
     "397contracts/143bindings/offline suites pass",
     "Five-language native home ordering passes; reviewed screenshots",
     "Native SYSTEM-proxy urlCheck true request200/image download200 andlate image recovery pass",
-    "Official Preview2068703bytes; no Upload"
+    "Official Preview2068703bytes; no Upload",
+    "PR98 mergedde8c978; identical treea7e8caec to d36f9fc. New evidence branch from mergedmain.",
+    "Globalping2i2FsfZUSRrC5zKbc00021Ade:Changsha/NanningTCPtimeout15s,SG200627msTLSvalid; proxy success contrasted with local pinnedIP failure."
   ],
-  "current_step": "Local targeted fixes verified; preparing shared commit. Phone cause remains unresolved pending real network diagnostic.",
+  "current_step": "Owner n1 TIMEOUT received. Independent CN2TCPtimeouts vs SG200 established. No product/infrastructure changes; waiting authenticated DNS settings / phone browser comparison.",
   "workers": [],
   "accepted_evidence": [
-    ".codex/project-memory/evidence/2026/09/20260920T053800Z-mini-phone-network.json"
+    ".codex/project-memory/evidence/2026/09/20260920T053800Z-mini-phone-network.json",
+    ".codex/project-memory/evidence/2026/09/20260920T141800Z-phone-reachability.json"
   ],
   "unverified": [
-    "Owner phone Wi-Fi/mobile reachability and actual request/download diagnostic",
-    "WeChat console request/downloadFile domain configuration",
-    "Authenticated production route generation success",
-    "PR/CI/merge pending at checkpoint; no new Upload/review/public release"
+    "Owner phone /healthz Wi-Fi/mobile browser comparison",
+    "Authenticated Cloudflare own-zone DNS/proxy record and exact Render target",
+    "WeChat request/downloadFile domain settings",
+    "Reachability fix/phone acceptance; new Upload/review/publicrelease"
   ],
   "do_not_repeat": [
     {
@@ -71,14 +54,19 @@
       "action_id": "mini-public-load-upload-0.1.1",
       "reason": "Official developer version already uploaded successfully",
       "evidence": ".codex/project-memory/evidence/2026/09/20260916T102733Z-public-load-release.json"
+    },
+    {
+      "action_id": "owner-phone-network-diagnostic-20260920",
+      "reason": "Owner supplied n1 request/downloadFile TIMEOUT in current turn; result recorded.",
+      "evidence": ".codex/project-memory/evidence/2026/09/20260920T141800Z-phone-reachability.json"
     }
   ],
   "next_action": {
-    "action_id": "owner-phone-network-diagnostic-20260920",
-    "description": "Owner scan new Preview and copy Check connection result; verify phone healthz and WeChat domains before hosting changes.",
+    "action_id": "inspect-cloudflare-render-reachability-20260920",
+    "description": "Inspect authenticated Cloudflare DNS Records and verified Render custom domain target, or owner screenshot. Decide reversible route test only after config evidence; no security downgrade, billable migration or fake route results.",
     "external_effect": false,
     "effect_key": null,
     "authority_confirmed": true
   },
-  "updated_at_utc": "2026-09-20T05:40:23.5373478Z"
+  "updated_at_utc": "2026-09-20T14:21:08.5754106Z"
 }

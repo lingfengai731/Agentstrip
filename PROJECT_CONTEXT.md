@@ -5,6 +5,10 @@ It stores verifiable project facts, not hidden chain-of-thought or complete chat
 
 ## Active expansion pointer — 2026-09-16
 
+### 2026-09-20 14:18 UTC — phone incident now reproduced outside WeChat
+
+Owner supplied n1 request/downloadFile TIMEOUT. PR98 is merged as main de8c978 (same tree as d36f9fc). Independent Changsha/Nanning Unicom probes time out establishing TCP to216.24.57.1; Singapore returns200 in627ms with valid TLS. Local direct pinnedIP fails; existing-proxy health/static succeed. This is regional connectivity evidence, NOT universal blocking or a solved phone issue. No product/DNS/hosting changes this turn. Next: authenticated Cloudflare DNS/Render domain inspection and phone browser Wi-Fi/mobile comparison; do not ask for the already supplied n1 result again. See `.codex/project-memory/handoffs/2026/09/20260920T141800Z-phone-reachability.md`.
+
 ### 2026-09-20 phone failure follow-up — latest owner feedback
 
 Owner reports actual phone route timeout/gallery errors after prior simulator pass. New Mini-only recovery candidate adds retained slow-image DOM/WebP/retry, gallery→food→logout order,45s bounded POST and credential-free connection diagnostics; both DevTools URL checks true. All offline suites/397contracts pass; native SYSTEM-proxy health/image200 is NOT phone acceptance. Official Preview2068703bytes generated; no Upload/review/public release. Local direct healthz15s timeout vs proxy200; owner's network and console request/downloadFile domains pending. Read .codex/project-memory/handoffs/2026/09/20260920T053800Z-mini-phone-network.md. Do not claim phone fixed or trigger unnecessary Render deploy for this Mini-only change. Git/PR state outranks this pre-commit capture.
