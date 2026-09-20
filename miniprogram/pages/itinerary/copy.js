@@ -185,3 +185,13 @@ module.exports = {
     "switchToBali": "Lihat rute Bali"
   }
 };
+Object.assign(module.exports.zh,{reset:'恢复推荐安排',resetHint:'将清除这条路线在本机的加游和用餐调整，重新载入推荐安排。其他路线不受影响。'});
+Object.assign(module.exports.en,{reset:'Restore recommended itinerary',resetHint:'Replace local extra days and dining edits for this route with the recommendations? Other routes are kept.'});
+Object.assign(module.exports.ja,{reset:'おすすめの日程に戻す',resetHint:'このルートの追加日程と食事の変更を消して、おすすめに戻します。他のルートは変わりません。'});
+Object.assign(module.exports.ko,{reset:'추천 일정으로 복원',resetHint:'이 경로의 추가 날짜와 식사 변경을 지우고 추천 일정으로 복원합니다. 다른 경로는 유지됩니다.'});
+Object.assign(module.exports.id,{reset:'Pulihkan itinerary rekomendasi',resetHint:'Hapus perubahan hari tambahan dan makan untuk rute ini lalu pulihkan rekomendasi? Rute lain tetap disimpan.'});
+Object.assign(module.exports.zh, {"extensions":"佩妮达加游 · 可选","extensionHint":"每项另加一天，选好后会排在行程末尾。","addExtension":"另加一天","removeExtension":"移除此加游"});
+Object.assign(module.exports.en, {"extensions":"Optional Penida days","extensionHint":"Each option adds a separate day at the end of your trip.","addExtension":"Add a separate day","removeExtension":"Remove this option"});
+Object.assign(module.exports.ja, {"extensions":"ペニダ追加日程（任意）","extensionHint":"選択ごとに旅程の最後に1日追加します。","addExtension":"別日を追加","removeExtension":"追加日程を削除"});
+Object.assign(module.exports.ko, {"extensions":"페니다 추가 일정 · 선택","extensionHint":"선택한 체험마다 여행 마지막에 하루를 추가합니다.","addExtension":"별도 하루 추가","removeExtension":"추가 일정 삭제"});
+Object.assign(module.exports.id, {"extensions":"Hari tambahan Penida · opsional","extensionHint":"Setiap pilihan menambah satu hari di akhir perjalanan.","addExtension":"Tambah satu hari terpisah","removeExtension":"Hapus tambahan ini"});

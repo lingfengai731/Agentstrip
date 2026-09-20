@@ -1,0 +1,50 @@
+{
+  "schema_version": 1,
+  "evidence_id": "ev-20260920T034700Z-itinerary-gallery-repair",
+  "task_ref": "itinerary-gallery-repair-20260920",
+  "owner": "current-account-codex",
+  "captured_at": "2026-09-20T03:47:00Z",
+  "status": "verified",
+  "claim": "Local Web/Mini route-to-gallery/dining repair verified; not yet merged/deployed at this capture. Physical-phone acceptance, Upload and review not claimed.",
+  "source": {
+    "kind": "working_tree",
+    "repository": "https://github.com/lingfengai731/Agentstrip.git",
+    "commit": "f2f91e5662b673c3463404b02004aeb667113af7",
+    "branch": "codex/repair-itinerary-gallery-20260920",
+    "dirty": true
+  },
+  "verification": {
+    "commands": [
+      "node tools/test_itinerary_gallery_repair.cjs",
+      "node tools/test_bali_food.cjs",
+      "node tools/test_miniprogram_*.cjs (each; opt-in native suites explicitly skip without environment)",
+      "node tools/test_bali_food_browser.cjs",
+      "node tools/test_route_repair_browser.cjs",
+      "WM_REPAIR_NATIVE_OUTPUT=... node tools/test_route_gallery_native.cjs"
+    ],
+    "results": [
+      "393 Mini contracts and 140 declared bindings pass; offline suites pass",
+      "31 deterministic browser cases pass;18 route/viewport combinations pass (390/768/1440)",
+      "30 native route layouts and5 language gallery/filter/detail SDK callback flows pass; zero exceptions;64 gallery records,first12 actual image loads12/12 each locale",
+      "Single actual SDK tap gallery-to-place probe succeeds; broader native matrix uses event callbacks,not physical touch",
+      "Screenshots reviewed:zh/en day cards,zh/ja Penida sections,zh gallery,Web1440/390",
+      "R1 Uluwatu remains day3; nearby candidates now follow current stop nodes,not broad region alone",
+      "Old saved plans are preserved; explicit reset confirmation and late-account guard tested"
+    ],
+    "artifact_root": "E:/Agentstrip-artifacts/2026-09-20/mini-review"
+  },
+  "host_repair": {
+    "before": "DevTools DIRECT allowed Preview but wandermind.cc direct HTTPS timed out; proxy image HTTP200",
+    "after": "DevTools SYSTEM restored,only servicewechat.com and subdomains appended to Windows proxy bypass; existing proxy server and other bypasses retained",
+    "backup": "E:/Agentstrip-artifacts/2026-09-20/mini-review/proxy-before.clixml",
+    "app_backup": "E:/Agentstrip-artifacts/2026-09-20/mini-review/devtools-proxy-backup",
+    "production_config_changed": false
+  },
+  "limitations": [
+    "No physical phone acceptance",
+    "Current WeChat console domain declarations not independently inspected",
+    "No live payment,driver mail,production-data write,Upload,review or public Mini release",
+    "Not all unrelated website buttons audited",
+    "Previous DIRECT-only handoff is superseded by this selective routing evidence"
+  ]
+}

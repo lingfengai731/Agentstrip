@@ -39,6 +39,7 @@ const limit=(promise,label)=>Promise.race([promise,new Promise((_,reject)=>setTi
     }
     await mini.evaluate(function(){getApp().globalData.currentLang='en';});
     let route=await limit(mini.reLaunch('/pages/itinerary/itinerary'),'route receiver');await route.waitFor(600);
+    await route.callMethod('toggleExtensions');
     for(const id of ['penida-west','penida-east','penida-snorkeling']){
       const button=await route.$('.extension-card button[data-id="'+id+'"]');
       if(!button)throw Error('Missing native extension '+id);

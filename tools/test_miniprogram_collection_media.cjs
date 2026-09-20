@@ -19,7 +19,7 @@ vm.runInNewContext(fs.readFileSync(base+'/miniprogram/utils/bali-media.js','utf8
   const food=media.gallery.find(item=>item.album==='Food & Dining');assert.ok(food);assert.equal(food.theme,'experiences');assert.equal(food.primaryPoiId,'');assert.equal(food.scope,'destination_context');assert.ok(food.rights.licenseUrl);
   const marine=media.imagesByPoi.penida_snorkeling_session.find(item=>item.album==='Sea & Snorkeling');assert.ok(marine);assert.equal(marine.scope,'experience_context');assert.ok(marine.extensionIds.includes('penida-snorkeling'));
   let page;
-  vm.runInNewContext(fs.readFileSync(base+'/miniprogram/pages/gallery/gallery.js','utf8'),{Page:value=>{page=value;},getApp:()=>({globalData:{currentLang:'zh'}}),wx:{},require:name=>name.includes('bali-media')?{}:require(base+'/miniprogram/utils/browse-copy.js')});
+  vm.runInNewContext(fs.readFileSync(base+'/miniprogram/pages/gallery/gallery.js','utf8'),{setTimeout:()=>0,clearTimeout(){},Page:value=>{page=value;},getApp:()=>({globalData:{currentLang:'zh'}}),wx:{},require:name=>name.includes('bali-media')?{}:require(base+'/miniprogram/utils/browse-copy.js')});
   page.data.assets=media.gallery;page.setData=update=>Object.assign(page.data,update);page.applyFilter('foodDining');assert.equal(page.data.visibleAssets.length,1);
   console.log('Native collection media: originals/hash/license/thumbnail,3 themes,Food album,marine context and extension IDs passed; no production claim');
 })().catch(error=>{console.error(error);process.exitCode=1;});

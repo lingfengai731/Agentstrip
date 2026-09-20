@@ -16,7 +16,9 @@
 .gallery-card { overflow: hidden; border: 1rpx solid #E3DDD1; border-radius: 22rpx; background: #FFFFFF; box-shadow: 0 6rpx 18rpx rgba(55,46,32,.04); transition: transform .16s ease, opacity .16s ease; }
 .card-pressed { opacity: .82; transform: scale(.985); }
 .gallery-image { display: block; width: 100%; height: 250rpx; background: #EAE5DC; }
-.image-fallback { display: flex; align-items: center; justify-content: center; color: #6B756F; font-size: 22rpx; }
+.image-fallback { display: flex; flex-direction: column; align-items: center; justify-content: center; color: #6B756F; font-size: 22rpx; text-align: center; padding: 16rpx; box-sizing: border-box; }
+.update-notice { margin-bottom: 20rpx; padding: 16rpx; color: #68736F; font-size: 22rpx; line-height: 1.5; }
+.update-notice .retry { margin-top: 8rpx; }
 .gallery-copy { padding: 18rpx 18rpx 20rpx; }
 .gallery-place { overflow: hidden; color: #8A6A21; font-size: 19rpx; font-weight: 750; line-height: 1.4; text-overflow: ellipsis; white-space: nowrap; }
 .gallery-card-title { display: -webkit-box; overflow: hidden; min-height: 68rpx; margin-top: 7rpx; font-size: 25rpx; font-weight: 750; line-height: 1.38; -webkit-box-orient: vertical; -webkit-line-clamp: 2; }

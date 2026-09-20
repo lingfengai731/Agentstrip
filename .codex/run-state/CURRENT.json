@@ -1,42 +1,73 @@
 {
   "schema_version": 1,
-  "checkpoint_revision": 53,
-  "previous_checkpoint_sha256": "06DC1C8C6E1CCBFC2576226E610C7007729174DF8AF1A8B582CB41C772D88840",
+  "checkpoint_revision": 54,
+  "previous_checkpoint_sha256": "3FEA9C614BBDE8A62AF1F0B780433989A38BCDE26F7A9D56A766057C13D4A405",
   "run_id": "20260914-mini-public-load",
-  "objective": "Complete owner physical-phone acceptance and WeChat review prerequisites for the already uploaded Mini Program 0.1.1 without duplicate Upload.",
+  "objective": "Repair owner-reported Web/Mini itinerary and gallery UX; verify and deliver exact release plus Preview.",
   "status": "active",
-  "phase": "owner_phone_and_submission_readiness",
+  "phase": "fixed_head_release",
   "baseline": {
-    "cwd": "E:\\Agentstrip-worktrees\\active\\account_current\\mini-review-20260920",
-    "worktree": "E:\\Agentstrip-worktrees\\active\\account_current\\mini-review-20260920",
-    "branch": "codex/fix-devtools-preview-20260920",
-    "head": "2fa5ec8d6fb6ec27466dbbeaa0a0988ac43d408f",
+    "cwd": "E:/Agentstrip-worktrees/active/account_current/mini-review-20260920",
+    "worktree": "E:/Agentstrip-worktrees/active/account_current/mini-review-20260920",
+    "branch": "codex/repair-itinerary-gallery-20260920",
+    "head": "f2f91e5662b673c3463404b02004aeb667113af7",
     "dirty_allowlist": [
+      ".codex/role-windows.md",
+      ".codex/ui-visual-review-signals.md",
+      ".github/workflows/miniprogram-checks.yml",
       "PROJECT_CONTEXT.md",
-      ".codex/project-memory/evidence/2026/09/20260920T031118Z-wechat-devtools-direct-preview-recovery.json",
-      ".codex/project-memory/handoffs/2026/09/20260920T031149Z-wechat-devtools-direct-preview-recovery.md",
-      ".codex/run-state/CURRENT.json"
+      "README.md",
+      "miniprogram/pages/gallery/gallery.js",
+      "miniprogram/pages/gallery/gallery.wxml",
+      "miniprogram/pages/gallery/gallery.wxss",
+      "miniprogram/pages/index/index.js",
+      "miniprogram/pages/itinerary/copy.js",
+      "miniprogram/pages/itinerary/itinerary.js",
+      "miniprogram/pages/itinerary/itinerary.wxml",
+      "miniprogram/pages/itinerary/itinerary.wxss",
+      "miniprogram/utils/bali-food-copy.js",
+      "miniprogram/utils/bali-itinerary.js",
+      "tools/test_bali_food_browser.cjs",
+      "tools/test_miniprogram_collection_media.cjs",
+      "tools/test_miniprogram_food_native.cjs",
+      "tools/test_miniprogram_public_load.cjs",
+      "tools/test_miniprogram_support_languages.cjs",
+      "wandermind-studio/frontend/assets/js/bali-food-copy.js",
+      "wandermind-studio/frontend/assets/js/bali-itinerary.js",
+      "wandermind-studio/frontend/bali.html",
+      "wandermind-studio/frontend/dining.html",
+      ".codex/itinerary-gallery-repair-plan.md",
+      ".codex/project-memory/evidence/2026/09/20260920T034700Z-itinerary-gallery-repair.json",
+      ".codex/project-memory/handoffs/2026/09/20260920T034700Z-itinerary-gallery-repair.md",
+      "tools/test_itinerary_gallery_repair.cjs",
+      "tools/test_route_gallery_native.cjs",
+      "tools/test_route_repair_browser.cjs"
     ]
   },
   "completed": [
-    "PR91 fixed20dfff64 passed two CI checks, merged478e326; Mini tree83e2ae6e",
-    "Official developer Upload0.1.1 succeeded before this turn; no repeat Upload",
-    "Recovered clean isolated origin/main af77f5e; Render exact af77f5e Live",
-    "Public health/catalog/portfolio HTTP200; five Portfolio assets use Cloudinary and one image HEAD200",
-    "389 Mini contracts pass; public-load regression passes after Windows CRLF-only normalization",
-    "DevTools-local proxy DIRECT resolves project open and Preview; official Preview2062230bytes and QR generated; Mini source tree unchanged"
+    "393 contracts,140 bindings and all offline suites pass",
+    "31 browser cases and18 route viewport combinations pass",
+    "30 native route layouts and5 language gallery event flows pass;64 records andfirst12image loads each",
+    "Official Preview2061100bytes succeeds with selective proxy routing; no Upload"
   ],
-  "current_step": "Fresh Preview generated successfully after DevTools-local proxy repair; awaiting owner phone callback.",
-  "workers": [],
+  "current_step": "Local verification complete and official Preview2061100bytes generated; preparing fixed-head PR.",
+  "workers": [
+    {
+      "agent_name": "gallery_readonly",
+      "model": "gpt-5.6-luna",
+      "reasoning_effort": "max",
+      "goal": "Read-only gallery failure audit",
+      "status": "completed",
+      "evidence": ".codex/project-memory/evidence/2026/09/20260920T034700Z-itinerary-gallery-repair.json"
+    }
+  ],
   "accepted_evidence": [
-    ".codex/project-memory/evidence/2026/09/20260916T102733Z-public-load-release.json",
-    ".codex/project-memory/evidence/2026/09/20260920T024221Z-mini-0.1.1-review-readiness-20260920.json",
-    ".codex/project-memory/evidence/2026/09/20260920T031118Z-wechat-devtools-direct-preview-recovery.json"
+    ".codex/project-memory/evidence/2026/09/20260920T034700Z-itinerary-gallery-repair.json"
   ],
   "unverified": [
-    "Physical-phone acceptance including Cloudinary photo rendering and private matching",
-    "Current WeChat console request/image domains, service category, privacy statement and test access",
-    "Review submission and public release"
+    "Fixed-head PR/CI/merge/Render for this repair",
+    "Owner phone touch/network acceptance of fresh Preview",
+    "Upload of this new source,review submission andpublic release"
   ],
   "do_not_repeat": [
     {
@@ -56,11 +87,11 @@
     }
   ],
   "next_action": {
-    "action_id": "owner-phone-0.1.1-and-wechat-review-prerequisites",
-    "description": "Owner scans the fresh Preview to test public routes, six Dining filters, gallery/Cloudinary and one ordinary-account matching submission; then verify current WeChat console declarations before review. Do not repeat Upload0.1.1.",
-    "external_effect": false,
-    "effect_key": null,
+    "action_id": "release-itinerary-gallery-20260920",
+    "description": "Push fixed head,wait CI,squash merge and verify exact Render Live commit. Preview only; no Upload.",
+    "external_effect": true,
+    "effect_key": "Agentstrip:itinerary-gallery-repair:20260920",
     "authority_confirmed": true
   },
-  "updated_at_utc": "2026-09-20T03:12:34.5695504Z"
+  "updated_at_utc": "2026-09-20T03:49:00.4240361Z"
 }

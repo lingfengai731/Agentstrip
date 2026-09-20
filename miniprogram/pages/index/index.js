@@ -278,6 +278,6 @@ Page({
   goCompare()   { wx.switchTab({ url: '/pages/compare/compare' }); },
   goItinerary() { wx.switchTab({ url: '/pages/itinerary/itinerary' }); },
   goMe()        { wx.switchTab({ url: '/pages/me/me' }); },
-  openGallery() { wx.navigateTo({ url: '/pages/gallery/gallery' }); },
+  openGallery() { wx.navigateTo({ url: '/pages/gallery/gallery', fail: () => wx.showToast({title:(require('../../utils/browse-copy.js')[app.globalData.currentLang] || require('../../utils/browse-copy.js').zh).galleryFailed,icon:'none'}) }); },
   openFood() { wx.navigateTo({ url: '/pages/food/food' }); },
 });

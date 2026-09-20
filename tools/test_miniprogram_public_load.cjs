@@ -1,6 +1,6 @@
 const assert=require('node:assert/strict'),fs=require('node:fs'),vm=require('node:vm'),path=require('node:path');
 const root=path.resolve(__dirname,'..'),read=p=>fs.readFileSync(path.join(root,p),'utf8');
-assert.equal(read('miniprogram/utils/public-catalog-seed.js'),require('./build_miniprogram_catalog.cjs').build(),'Snapshot must match shared Web sources');
+assert.equal(read('miniprogram/utils/public-catalog-seed.js').replace(/\r\n/g,'\n'),require('./build_miniprogram_catalog.cjs').build().replace(/\r\n/g,'\n'),'Snapshot must match shared Web sources (ignoring checkout line endings only)');
 const seed=require('../miniprogram/utils/public-catalog-seed.js');
 let now=1,requests=[],timers=[];
 const app={globalData:{apiBase:'https://example.invalid',currentLang:'zh',token:''},privateStorageKey:k=>k+'_qa'};
