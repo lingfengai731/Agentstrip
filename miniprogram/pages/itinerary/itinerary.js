@@ -12,7 +12,7 @@ function localized(value, lang, fallback = '') {
 }
 
 Page({
-  data: { copy: COPY.zh, loading: true, error: '', routes: [], selected: null, professional: null, loggedIn: false, isBali: true, destinationName: '' },
+  data: { copy: COPY.zh, loading: true, error: '', routes: [], selected: null, professional: null, loggedIn: false, isBali: true, destinationName: '', extensionsOpen: false },
 
   onShow() {
     const copy = COPY[app.globalData.currentLang] || COPY.zh;
@@ -48,6 +48,7 @@ Page({
         this.plans[route.id] = plan;
         return {
         id: route.id,
+        saved: !!(wx.getStorageSync(owner) || {})[route.id],
         name: localized(route.name, lang, route.id),
         promise: localized(route.promise, lang),
         idealDays: route.recommended_days && route.recommended_days.ideal,
@@ -99,7 +100,17 @@ Page({
 
   selectRoute(e) {
     const route = this.data.routes.find(item => item.id === e.currentTarget.dataset.id);
-    if (route) this.setData({ selected: route });
+    if (route) this.setData({ selected: route, extensionsOpen: false });
+  },
+  toggleExtensions() { this.setData({ extensionsOpen: !this.data.extensionsOpen }); },
+  resetRoute() {
+    if (!this.data.selected || this.owner !== app.privateStorageKey('wm_public_route_plans')) return;
+    const owner=this.owner, id=this.data.selected.id;
+    wx.showModal({title:this.data.copy.reset,content:this.data.copy.resetHint,success:result=>{
+      if (!result.confirm || owner !== app.privateStorageKey('wm_public_route_plans')) return;
+      const plans={...(wx.getStorageSync(owner) || {})}; delete plans[id];
+      wx.setStorageSync(owner,plans); this.loadRoutes();
+    }});
   },
 
   openPlanner() {
@@ -116,7 +127,7 @@ Page({
   },
 
   openDriver() { if (this.data.professional) wx.navigateTo({ url: '/pages/driver/driver' }); },
-  openGallery() { wx.navigateTo({ url: '/pages/gallery/gallery' }); },
+  openGallery() { wx.navigateTo({ url: '/pages/gallery/gallery', fail: () => wx.showToast({title:this.data.copy.failed,icon:'none'}) }); },
   openFood(e) { wx.navigateTo({url:'/pages/food/food?routeId='+this.data.selected.id+'&day='+e.currentTarget.dataset.day}); },
   toggleExtension(e) {
     if (this.owner !== app.privateStorageKey('wm_public_route_plans') || !this.data.selected) return;

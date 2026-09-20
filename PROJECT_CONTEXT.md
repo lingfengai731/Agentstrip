@@ -5,6 +5,10 @@ It stores verifiable project facts, not hidden chain-of-thought or complete chat
 
 ## Active expansion pointer — 2026-09-16
 
+### 2026-09-20 itinerary/gallery repair (supersedes DIRECT-only workaround)
+
+User rejected ambiguous dining action, cramped Mini itinerary and blank gallery. Local repair on clean baseline f2f91e5: daily cards first; optional Penida after days; clear dining actions; nearby POIs by actual stop nodes; gallery batches/retry and navigation feedback. All offline suites/393 contracts pass;31 browser cases,18 route viewport checks,30 native route layouts and5 gallery event flows pass.64 gallery records,12/12 first images loaded per locale. SDK evidence is not phone acceptance. DevTools now uses SYSTEM with only servicewechat.com/subdomains bypassed; DIRECT broke access to WanderMind images. Read handoff .codex/project-memory/handoffs/2026/09/20260920T034700Z-itinerary-gallery-repair.md. Merge/Render/Preview pending at this capture; no new Upload/review/public release. Prior dated entries below are history.
+
 ### 2026-09-20 review-readiness follow-up
 
 **Preview recovered at 11:10 China time:** the DevTools-local proxy setting was changed from `SYSTEM` to `DIRECT` with backups; Windows/FlClash global proxy remains unchanged. The current 智旅 project opens and official Preview succeeds (2,062,230 bytes; Mini source tree `83e2ae6e` unchanged). New QR is local at `E:/Agentstrip-artifacts/2026-09-20/mini-review/preview-0.1.1.jpg`. The earlier TLS blocker below is resolved. Owner phone callback and WeChat review declarations remain pending; no new Upload/review/public release. Read `.codex/project-memory/handoffs/2026/09/20260920T031149Z-wechat-devtools-direct-preview-recovery.md`.

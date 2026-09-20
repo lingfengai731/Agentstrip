@@ -1,5 +1,7 @@
 # 角色窗口台账
 
+- 2026-09-20 itinerary/gallery repair: parent owns UI design/integration/native SDK/release. Formal luna_worker gallery_readonly completed bounded baseline f2f91e5 read-only audit; parent independently reproduced DIRECT network timeout versus proxied HTTP200, accepted route declarations and image pending/error gap. Worker did not edit or release. UIworkflow guided core-day-first layout and screenshot review; preflight used installed core registry and passed.30 native route layouts/5 gallery callback flows,18 Web route widths and31 dining/browser cases accepted locally. Phone touch and release remain separate gates; no independent Luna production approval claimed.
+
 > 本文件是角色路由 source of truth。状态未知写“待确认”，不要编造 thread id。
 
 - 2026-08-28 专业路线生产发布回调：PR #34 的 Project memory 与 PostgreSQL CI 通过并合并为 `f156cad`；首次生产矩阵发现语言初始化竞态，PR #36 的 PostgreSQL CI 通过并合并为 `fcec737`；第二次生产矩阵证明 hash 仍等待慢速 `/api/auth/me`，PR #37 增加 1.5 秒延迟认证回归、CI 通过并合并为 `17cb54b`。Render 已提供 `ai-tool.js?v=p59`，生产 320/390/768/1440 的 Bali、套餐、专业路线恢复模拟、调整焦点、Search/账号、AI `?dest=`/`#itinerary`/`#hotels` 与司机交接全部通过。没有再次付款、退款、写旅行豆或管理员数据；唯一剩余发布验收是站长使用原已购 Sandbox 账号刷新并确认不重复收费。

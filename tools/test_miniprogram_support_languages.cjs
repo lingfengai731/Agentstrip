@@ -8,7 +8,7 @@ function page(name,lang='en',api={}) {
   const app={globalData:{currentLang:lang,token:'test',user:{id:1},preferences:{notes:'kept'},professionalRoute:null},setPrefs(v){this.globalData.preferences=v;}};
   app.privateStorageKey=name=>name+'_'+(app.globalData.user?app.globalData.user.id:'guest');
   const wx={getStorageSync:k=>storage[k],setStorageSync:(k,v)=>storage[k]=v,removeStorageSync:k=>delete storage[k],setNavigationBarTitle:v=>nav.push(v),showToast:v=>toasts.push(v),showModal:v=>modals.push(v),navigateBack(){},switchTab(){},navigateTo:v=>nav.push(v),setClipboardData:v=>v.fail()};
-  vm.runInNewContext(fs.readFileSync(path.join(root,'miniprogram/pages',name,name+'.js'),'utf8'),{Page:v=>p=v,getApp:()=>app,wx,require:s=>s.includes('api.js')?api:s.includes('bali-media.js')?api:require(path.resolve(root,'miniprogram/pages',name,s)),setTimeout(){},Date});
+vm.runInNewContext(fs.readFileSync(path.join(root,'miniprogram/pages',name,name+'.js'),'utf8'),{Page:v=>p=v,getApp:()=>app,wx,require:s=>s.includes('api.js')?api:s.includes('bali-media.js')?api:require(path.resolve(root,'miniprogram/pages',name,s)),setTimeout(){},clearTimeout(){},Date});
   p.data=JSON.parse(JSON.stringify(p.data));p.setData=(v,cb)=>{Object.assign(p.data,v);if(cb)cb();};
   return {p,app,wx,storage,toasts,modals,nav};
 }

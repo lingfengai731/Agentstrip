@@ -14,12 +14,13 @@
 
   <view wx:if="{{loading}}" class="state-card">{{copy.galleryLoading}}</view>
   <view wx:if="{{error}}" class="state-card error"><text>{{error}}</text><button class="retry" bindtap="retry">{{copy.reload}}</button></view>
+  <view wx:if="{{updateNotice}}" class="update-notice"><text>{{updateNotice}}</text><button class="retry" bindtap="retry">{{copy.reload}}</button></view>
   <view wx:if="{{!loading && !error && !visibleAssets.length}}" class="state-card">{{copy.emptyGallery}}</view>
 
   <view wx:if="{{visibleAssets.length}}" class="gallery-grid">
     <view wx:for="{{visibleAssets}}" wx:key="key" class="gallery-card" data-index="{{index}}" bindtap="openAsset" hover-class="card-pressed" hover-stay-time="90">
-      <image wx:if="{{!item.imageFailed}}" class="gallery-image" src="{{item.thumbUrl}}" mode="aspectFill" lazy-load show-menu-by-longpress="{{true}}" data-key="{{item.key}}" binderror="markImageFailed" />
-      <view wx:else class="gallery-image image-fallback">{{copy.imageFailed}}</view>
+      <image wx:if="{{!item.imageFailed}}" class="gallery-image" src="{{item.thumbUrl}}" mode="aspectFill" show-menu-by-longpress="{{true}}" data-key="{{item.key}}" bindload="markImageLoaded" binderror="markImageFailed" />
+      <view wx:else class="gallery-image image-fallback"><text>{{copy.imageFailed}}</text><button class="retry" catchtap="retryImage" data-key="{{item.key}}">{{copy.reload}}</button></view>
       <view class="gallery-copy">
         <view class="gallery-place">{{item.placeName || item.region || 'Bali'}}</view>
         <view class="gallery-card-title">{{item.title}}</view>
@@ -27,5 +28,5 @@
       </view>
     </view>
   </view>
-  <view wx:if="{{visibleAssets.length}}" class="gallery-count">{{visibleCount}} {{copy.count}}</view>
+  <view wx:if="{{visibleAssets.length}}" class="gallery-count">{{shownCount}} / {{visibleCount}} {{copy.count}}</view>
 </view>

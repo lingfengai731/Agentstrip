@@ -59,3 +59,22 @@
 .route-page .place-link, .route-page .gallery-link, .route-page .text-btn { width: auto; min-height: 44px; max-width: 100%; padding-top: 12rpx; padding-bottom: 12rpx; white-space: normal; overflow-wrap: break-word; }
 .route-page .place-link { flex-wrap: wrap; justify-content: flex-start; }
 .route-page .hero-actions .btn { width: auto; max-width: 100%; padding-top: 14rpx; padding-bottom: 14rpx; }
+
+/* One clear column per day; optional island days never precede the core trip. */
+.section-head { align-items: flex-start; flex-direction: column; gap: 12rpx; }
+.section-note { max-width: none; text-align: left; font-size: 24rpx; line-height: 1.6; }
+.public-card { padding: 26rpx 22rpx; }
+.public-day { display: block; padding: 24rpx 20rpx; }
+.day-header { display: flex; align-items: flex-start; gap: 16rpx; margin-bottom: 18rpx; }
+.day-header .day-title { flex: 1; min-width: 0; font-size: 28rpx; line-height: 1.6; }
+.public-days .place-links { flex-direction: column; gap: 0; }
+.route-page .public-days .place-link { width: 100%; border: 0; border-bottom: 1rpx solid #E3E9E4; border-radius: 0; background: transparent; padding: 20rpx 0; display: flex; flex-wrap: nowrap; gap: 16rpx; text-align: left; }
+.public-days .place-link .place-name { flex: 1; min-width: 0; color: #285B50; font-size: 25rpx; font-weight: 600; line-height: 1.5; overflow-wrap: break-word; }
+.public-days .place-link .place-action { flex: 0 0 auto; color: #795D24; font-size: 22rpx; }
+.route-page .btn.secondary { min-height: 44px; height: auto; padding: 18rpx 24rpx; background: #EEF4F0; border: 1rpx solid #CFDFD5; color: #285B50; border-radius: 14rpx; line-height: 1.5; text-align: center; white-space: normal; }
+.extensions { margin-top: 30rpx; border-top: 1rpx solid #E3DDD1; padding-top: 12rpx; }
+.extensions-toggle { width: 100%; min-height: 48px; padding: 16rpx 0; display: flex; justify-content: space-between; gap: 16rpx; background: transparent; color: #285B50; text-align: left; font-size: 27rpx; }
+.extension-card { margin-top: 18rpx; padding: 24rpx; background: #F8F6EF; border-radius: 16rpx; }
+.extension-name { font-size: 28rpx; font-weight: 700; line-height: 1.5; }
+.extension-note { margin: 10rpx 0 18rpx; color: #65716D; font-size: 24rpx; line-height: 1.65; text-align: left; }
+.extension-card .btn { width: 100%; }

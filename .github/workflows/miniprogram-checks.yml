@@ -35,3 +35,5 @@ jobs:
           for test in tools/test_miniprogram_*.cjs; do
             node "$test" || exit 1
           done
+          node tools/test_itinerary_gallery_repair.cjs
+          node tools/test_bali_food.cjs

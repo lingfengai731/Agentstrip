@@ -274,3 +274,12 @@ rejected aspects: 美食标题下六项下拉选择点击没有反应
 reason in reviewer words: 点击都还没有反应，可能是不是还没有做到补齐啊？
 scope: this surface
 recorded at: 2026-09-14
+
+## 2026-09-20 — itinerary and gallery usability
+
+decision: rejected
+rejected aspects: “加入这一天”含义不清且PC不居中；小程序作品集看不了；佩妮达模块抢在每天行程前、文字拥挤；不同日期显示相同区域照片。
+reason in reviewer words: “现在已经乱套了我觉得”
+scope: Web public route editor, Mini Program itinerary/gallery/place/dining journey
+response: Separate restaurant selection from adding a meal; core days before collapsible optional island days; full-width place rows; node-based nearby suggestions; real native image loading and bounded retry. Preserve saved plans unless user confirms reset.
+acceptance: See itinerary-gallery-repair-plan.md and dated evidence; screenshots reviewed by parent, physical phone remains external acceptance.

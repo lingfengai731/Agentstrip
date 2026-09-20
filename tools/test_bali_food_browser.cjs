@@ -15,7 +15,7 @@ const server = http.createServer((req,res)=>{
   fs.mkdirSync(artifacts,{recursive:true});
   await new Promise(resolve=>server.listen(0,'127.0.0.1',resolve));
   const base='http://127.0.0.1:'+server.address().port;
-  const browser=await chromium.launch({headless:true});
+  const browser=await chromium.launch({headless:true,channel:process.env.WM_BROWSER_CHANNEL || undefined});
   const matrix=[];
   try {
     for (const width of (process.env.WM_FOOD_QA_ONLY?[]:[320,390,768,1440])) {

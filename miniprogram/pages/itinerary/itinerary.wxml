@@ -57,16 +57,26 @@
   <view wx:if="{{selected}}" class="public-card">
     <view class="public-title">{{selected.name}}</view>
     <view class="public-promise">{{selected.promise}}</view>
-    <view class="route-facts"><text>{{copy.recommended}}{{selected.idealDays}}</text><text>{{selected.regionPath}}</text></view>
-    <view wx:for="{{selected.modules}}" wx:key="id" class="extension-card"><button class="btn secondary" data-id="{{item.id}}" bindtap="toggleExtension">{{item.selected ? '−' : '+'}} {{item.name}}</button><view class="section-note">{{item.summary}}</view></view>
+    <view class="route-facts"><text>{{copy.recommended}}{{selected.days.length}}</text></view>
     <view class="day-list public-days">
       <view wx:for="{{selected.days}}" wx:for-item="day" wx:key="day" class="public-day">
-        <view class="day-number">{{day.day}}</view><view class="day-body"><view class="day-title">{{day.theme}}</view>
-          <view class="places place-links"><button wx:for="{{day.places}}" wx:key="id" class="place-link" data-id="{{item.id}}" data-route="{{selected.id}}" bindtap="openPlace">{{item.name}}<text>{{copy.photos}}</text></button></view>
+        <view class="day-header"><view class="day-number">{{day.day}}</view><view class="day-title">{{day.theme}}</view></view><view class="day-body">
+          <view class="places place-links"><button wx:for="{{day.places}}" wx:key="id" class="place-link" data-id="{{item.id}}" data-route="{{selected.id}}" bindtap="openPlace"><text class="place-name">{{item.name}}</text><text class="place-action">{{copy.photos}} ›</text></button></view>
           <view wx:for="{{day.food}}" wx:key="id" class="day-theme">{{item.meal}} · {{item.name}}</view>
-          <button class="btn secondary full" bindtap="openFood" data-day="{{day.index}}">{{foodCopy.add}}</button>
+          <button class="btn secondary full" bindtap="openFood" data-day="{{day.index}}">{{foodCopy.chooseRestaurant}}</button>
         </view>
       </view>
+    </view>
+    <button wx:if="{{selected.saved}}" class="text-btn" bindtap="resetRoute">{{copy.reset}}</button>
+    <view wx:if="{{selected.modules.length}}" class="extensions">
+      <button class="extensions-toggle" bindtap="toggleExtensions" aria-expanded="{{extensionsOpen}}"><text>{{copy.extensions}}</text><text>{{extensionsOpen ? '−' : '+'}}</text></button>
+      <block wx:if="{{extensionsOpen}}">
+        <view class="extension-note">{{copy.extensionHint}}</view>
+        <view wx:for="{{selected.modules}}" wx:key="id" class="extension-card">
+          <view class="extension-name">{{item.name}}</view><view class="extension-note">{{item.summary}}</view>
+          <button class="btn secondary" data-id="{{item.id}}" bindtap="toggleExtension">{{item.selected ? copy.removeExtension : copy.addExtension}}</button>
+        </view>
+      </block>
     </view>
     <button class="btn primary full" bindtap="openPlanner">{{copy.use}}</button>
   </view>
