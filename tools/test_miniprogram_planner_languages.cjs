@@ -13,7 +13,7 @@ const template = fs.readFileSync(path.join(__dirname, '../miniprogram/pages/plan
     const app = { globalData: { currentLang: lang }, privateStorageKey: name => name + '_guest', setProfessionalRoute() {} };
     vm.runInNewContext(source, {
       Page(value) { page = value; }, getApp: () => app, Date, setTimeout() {},
-      require: name => name === './copy.js' ? copy : { async createProfessionalRoute(profile, route, language) { sent = { profile, language }; return {}; } },
+      require: name => name.includes('network-check') ? require('../miniprogram/utils/network-check.js') : name === './copy.js' ? copy : { async createProfessionalRoute(profile, route, language) { sent = { profile, language }; return {}; } },
       wx: { getStorageSync() { return {}; }, setNavigationBarTitle() {}, showToast() {} },
     });
     page.setData = update => Object.assign(page.data, update);

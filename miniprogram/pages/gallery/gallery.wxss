@@ -28,3 +28,6 @@
 
 .gallery-page .filter-chip { width: auto; flex: 0 0 auto; min-height: 44px; }
 .gallery-page .retry { min-height: 44px; }
+.image-slot { position:relative; }
+.image-slot .image-fallback { position:absolute; inset:0; }
+.network-check { margin:0 0 20rpx; min-height:44px; display:flex; align-items:center; justify-content:center; background:transparent; color:#0E7362; font-size:24rpx; }

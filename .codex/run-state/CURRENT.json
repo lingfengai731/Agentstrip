@@ -1,51 +1,60 @@
 {
   "schema_version": 1,
-  "checkpoint_revision": 55,
-  "previous_checkpoint_sha256": "C7A63F6EA042D1A0A2700B4594F8710E0252D0F1CDAEAA844DBE208EF02CA19A",
+  "checkpoint_revision": 56,
+  "previous_checkpoint_sha256": "D1C1F7B6B4E54183DEA2A20569497A9C0F15849C46F3DB27AD65FEF8507686CD",
   "run_id": "20260914-mini-public-load",
-  "objective": "Repair owner-reported Web/Mini itinerary and gallery UX; verify and deliver exact release plus Preview.",
+  "objective": "Debug owner phone route timeouts and gallery failures; preserve rights and collect real phone network evidence.",
   "status": "active",
-  "phase": "owner_phone_acceptance",
+  "phase": "owner_phone_network_diagnostic",
   "baseline": {
     "cwd": "E:/Agentstrip-worktrees/active/account_current/mini-review-20260920",
     "worktree": "E:/Agentstrip-worktrees/active/account_current/mini-review-20260920",
-    "branch": "codex/itinerary-gallery-release-receipt-20260920",
-    "head": "d9e2c6aa647b38e7154ebf5cecfe9cb417d11523",
+    "branch": "codex/mini-network-recovery-20260920",
+    "head": "00edb39f0ccc2cfbf11acacdba53303f78ed54bc",
     "dirty_allowlist": [
-      "PROJECT_CONTEXT.md",
       ".codex/project-memory/current-state.json",
-      ".codex/run-state/CURRENT.json",
-      ".codex/project-memory/evidence/2026/09/20260920T035700Z-itinerary-gallery-live.json",
-      ".codex/project-memory/handoffs/2026/09/20260920T035700Z-itinerary-gallery-live.md"
+      ".codex/ui-visual-review-signals.md",
+      "PROJECT_CONTEXT.md",
+      "README.md",
+      "miniprogram/pages/gallery/gallery.js",
+      "miniprogram/pages/gallery/gallery.wxml",
+      "miniprogram/pages/gallery/gallery.wxss",
+      "miniprogram/pages/index/index.wxml",
+      "miniprogram/pages/place/place.js",
+      "miniprogram/pages/place/place.wxml",
+      "miniprogram/pages/place/place.wxss",
+      "miniprogram/pages/planner/planner.js",
+      "miniprogram/pages/planner/planner.wxml",
+      "miniprogram/pages/planner/planner.wxss",
+      "miniprogram/project.config.json",
+      "miniprogram/project.private.config.json",
+      "miniprogram/utils/api.js",
+      "tools/test_itinerary_gallery_repair.cjs",
+      "tools/test_miniprogram_match_recovery.cjs",
+      "tools/test_miniprogram_planner_languages.cjs",
+      ".codex/mini-network-recovery-plan.md",
+      ".codex/project-memory/evidence/2026/09/20260920T053800Z-mini-phone-network.json",
+      ".codex/project-memory/handoffs/2026/09/20260920T053800Z-mini-phone-network.md",
+      "miniprogram/utils/network-check.js",
+      "tools/test_miniprogram_phone_network.cjs"
     ]
   },
   "completed": [
-    "393 contracts,140 bindings and all offline suites pass",
-    "31 browser cases and18 route viewport combinations pass",
-    "30 native route layouts and5 language gallery event flows pass;64 records andfirst12image loads each",
-    "Official Preview2061100bytes succeeds with selective proxy routing; no Upload",
-    "PR96 fixed head CI success,squash tree match,exact Render d9e2c6a Live and public checks pass",
-    "All64 native gallery images loaded;6 WebKit route/viewport cases pass"
+    "397contracts/143bindings/offline suites pass",
+    "Five-language native home ordering passes; reviewed screenshots",
+    "Native SYSTEM-proxy urlCheck true request200/image download200 andlate image recovery pass",
+    "Official Preview2068703bytes; no Upload"
   ],
-  "current_step": "Product release verified; synchronizing receipt, then owner phone acceptance of new Preview",
-  "workers": [
-    {
-      "agent_name": "gallery_readonly",
-      "model": "gpt-5.6-luna",
-      "reasoning_effort": "max",
-      "goal": "Read-only gallery failure audit",
-      "status": "completed",
-      "evidence": ".codex/project-memory/evidence/2026/09/20260920T034700Z-itinerary-gallery-repair.json"
-    }
-  ],
+  "current_step": "Local targeted fixes verified; preparing shared commit. Phone cause remains unresolved pending real network diagnostic.",
+  "workers": [],
   "accepted_evidence": [
-    ".codex/project-memory/evidence/2026/09/20260920T034700Z-itinerary-gallery-repair.json",
-    ".codex/project-memory/evidence/2026/09/20260920T035700Z-itinerary-gallery-live.json"
+    ".codex/project-memory/evidence/2026/09/20260920T053800Z-mini-phone-network.json"
   ],
   "unverified": [
-    "Owner phone touch/network acceptance of fresh Preview",
-    "New-source Upload,review submission,public release",
-    "Documentation receipt push/merge pending at capture"
+    "Owner phone Wi-Fi/mobile reachability and actual request/download diagnostic",
+    "WeChat console request/downloadFile domain configuration",
+    "Authenticated production route generation success",
+    "PR/CI/merge pending at checkpoint; no new Upload/review/public release"
   ],
   "do_not_repeat": [
     {
@@ -65,11 +74,11 @@
     }
   ],
   "next_action": {
-    "action_id": "owner-check-fresh-itinerary-gallery-preview",
-    "description": "Owner verify new Preview gallery/days/dining. Preserve custom plans; reset only after confirmation. No automatic Upload/review.",
+    "action_id": "owner-phone-network-diagnostic-20260920",
+    "description": "Owner scan new Preview and copy Check connection result; verify phone healthz and WeChat domains before hosting changes.",
     "external_effect": false,
-    "effect_key": "Agentstrip:itinerary-gallery-preview-phone:20260920",
+    "effect_key": null,
     "authority_confirmed": true
   },
-  "updated_at_utc": "2026-09-20T03:59:07.4636418Z"
+  "updated_at_utc": "2026-09-20T05:40:23.5373478Z"
 }

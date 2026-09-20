@@ -1,0 +1,37 @@
+{
+  "schema_version": 1,
+  "evidence_id": "ev-20260920T053800Z-mini-phone-network",
+  "task_ref": "mini-phone-network-recovery-20260920",
+  "owner": "current-account-codex",
+  "captured_at": "2026-09-20T05:38:00Z",
+  "status": "verified",
+  "claim": "Bounded local Mini network/rendering fixes and official Preview verified. Owner phone route timeout/image root cause not yet closed.",
+  "source": {"kind":"working_tree","repository":"https://github.com/lingfengai731/Agentstrip.git","commit":"00edb39f0ccc2cfbf11acacdba53303f78ed54bc","branch":"codex/mini-network-recovery-20260920","dirty":true},
+  "findings": [
+    "Owner rejects prior simulator-only acceptance: phone route request times out and gallery images fail",
+    "Local no-proxy curl healthz times out at15s; system-proxy request HTTP200; not evidence of owner's specific phone ISP",
+    "DevTools private urlCheck was false; both project/private settings now true",
+    "Gallery15s deadline removed pending image DOM, preventing late success; retry escalated small thumbnail to large full image",
+    "Network WebP images omitted explicit WebP flag; now added to gallery/place",
+    "Private route POST was15s; now bounded45s with no automatic retry",
+    "Native downloadFile SDK wrapper timed out; separate bounded native evaluate using official callbacks returned200, so wrapper failure is not misreported as domain failure"
+  ],
+  "verification": [
+    "All tools/test_miniprogram_*.cjs pass (native opt-in suites explicitly skipped without environment)",
+    "397 Mini contracts;143 declared bindings; itinerary/gallery and shared food regression tests pass",
+    "Phone network regressions:5language copy,domain/TLS/timeout diagnostics,no auth or account payload,silent callback deadline,retained slow-image DOM,small-image retry,home ordering,stale-account/unload guard",
+    "Native urlCheck=true with SYSTEM proxy:health request200,image downloadFile200,12 actual images loaded,late image success clears error overlay",
+    "Native5locale index gallery-food-logout ordering passes; screenshots reviewed:gallery,zh/ja index ordering,planner error+diagnostic button; raw artifacts local",
+    "Official Preview2068703bytes generated; new source not uploaded"
+  ],
+  "artifact_root": "E:/Agentstrip-artifacts/2026-09-20/mini-review",
+  "preview": "E:/Agentstrip-artifacts/2026-09-20/mini-review/preview-network-recovery.jpg",
+  "limitations": [
+    "Phone Wi-Fi/mobile healthz and diagnostic result pending",
+    "WeChat console request/downloadFile domain declarations not independently inspected",
+    "No authenticated production route generation write; timeout not claimed solved merely by raising deadline",
+    "No DNS/hosting change,no payment,driver email,Upload,review or public release",
+    "Mini-only code; no website/backend Render deploy needed",
+    "PR/merge pending at capture; verify current Git before claiming shared merge"
+  ]
+}
