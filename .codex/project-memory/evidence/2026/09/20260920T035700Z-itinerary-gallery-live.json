@@ -1,0 +1,47 @@
+{
+  "schema_version": 1,
+  "evidence_id": "ev-20260920T035700Z-itinerary-gallery-live",
+  "task_ref": "itinerary-gallery-repair-20260920",
+  "owner": "current-account-codex",
+  "captured_at": "2026-09-20T03:57:00Z",
+  "status": "verified",
+  "claim": "PR96 fixed-head checks passed, squash content matches, exact product commit is Render Live. New Mini Preview generated, not uploaded or phone accepted.",
+  "source": {
+    "kind": "deployment",
+    "repository": "https://github.com/lingfengai731/Agentstrip.git",
+    "commit": "d9e2c6aa647b38e7154ebf5cecfe9cb417d11523",
+    "branch": "main",
+    "dirty": false
+  },
+  "release": {
+    "pr": "https://github.com/lingfengai731/Agentstrip/pull/96",
+    "head": "4f35d8359f4a5c3e7b9a51b7e2c93b39d9bb3c93",
+    "checks": ["contracts-and-recovery:success", "validate:success"],
+    "merge_tree_equals_head_tree": "fb0745e83cc7edda9d6d22213f740fb8472bf1c6",
+    "render_deploy": "dep-danlg67f3r2c73e56r0g",
+    "render_status": "live",
+    "public_checks": ["healthz:200", "bali.html:200,20260920p1", "bali-food-copy.js:Chinese chooseRestaurant copy", "bali-itinerary.js:dayNodes.indexOf"]
+  },
+  "additional_verification": [
+    "64/64 native gallery images loaded, including all5 live Cloudinary Portfolio assets; no failed images",
+    "WebKit R1/R3/R5 at390/1440:6 combinations pass,44px centered restaurant actions,nearby picker visible,zero overflow and pageerrors",
+    "Earlier evidence covers393 contracts,140 bindings,31 Chrome cases,18 route viewport combinations,30 native layouts/5locale callback flows"
+  ],
+  "mini": {
+    "tree": "d230fc8b8ece2a58b8ff16a1efabb0274abb01b5",
+    "preview_bytes": 2061100,
+    "qr_local": "E:/Agentstrip-artifacts/2026-09-20/mini-review/preview-itinerary-gallery.jpg",
+    "upload_this_source": false,
+    "phone_acceptance": "pending",
+    "previous_uploaded_version": "0.1.1 is older source"
+  },
+  "host": "DevTools SYSTEM proxy; only servicewechat.com/subdomains appended to existing Windows bypass. Preserve backups, no DIRECT-only workaround.",
+  "artifacts_local": "E:/Agentstrip-artifacts/2026-09-20/mini-review",
+  "limitations": [
+    "SDK callbacks and screenshots are not physical-phone acceptance",
+    "No new Upload,review submission or public Mini release",
+    "No payment,driver mail or production-data mutation",
+    "Unaffected website pages not exhaustively audited",
+    "Receipt itself awaiting commit/push/merge at capture"
+  ]
+}

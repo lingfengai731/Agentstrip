@@ -1,56 +1,33 @@
 {
   "schema_version": 1,
-  "checkpoint_revision": 54,
-  "previous_checkpoint_sha256": "3FEA9C614BBDE8A62AF1F0B780433989A38BCDE26F7A9D56A766057C13D4A405",
+  "checkpoint_revision": 55,
+  "previous_checkpoint_sha256": "C7A63F6EA042D1A0A2700B4594F8710E0252D0F1CDAEAA844DBE208EF02CA19A",
   "run_id": "20260914-mini-public-load",
   "objective": "Repair owner-reported Web/Mini itinerary and gallery UX; verify and deliver exact release plus Preview.",
   "status": "active",
-  "phase": "fixed_head_release",
+  "phase": "owner_phone_acceptance",
   "baseline": {
     "cwd": "E:/Agentstrip-worktrees/active/account_current/mini-review-20260920",
     "worktree": "E:/Agentstrip-worktrees/active/account_current/mini-review-20260920",
-    "branch": "codex/repair-itinerary-gallery-20260920",
-    "head": "f2f91e5662b673c3463404b02004aeb667113af7",
+    "branch": "codex/itinerary-gallery-release-receipt-20260920",
+    "head": "d9e2c6aa647b38e7154ebf5cecfe9cb417d11523",
     "dirty_allowlist": [
-      ".codex/role-windows.md",
-      ".codex/ui-visual-review-signals.md",
-      ".github/workflows/miniprogram-checks.yml",
       "PROJECT_CONTEXT.md",
-      "README.md",
-      "miniprogram/pages/gallery/gallery.js",
-      "miniprogram/pages/gallery/gallery.wxml",
-      "miniprogram/pages/gallery/gallery.wxss",
-      "miniprogram/pages/index/index.js",
-      "miniprogram/pages/itinerary/copy.js",
-      "miniprogram/pages/itinerary/itinerary.js",
-      "miniprogram/pages/itinerary/itinerary.wxml",
-      "miniprogram/pages/itinerary/itinerary.wxss",
-      "miniprogram/utils/bali-food-copy.js",
-      "miniprogram/utils/bali-itinerary.js",
-      "tools/test_bali_food_browser.cjs",
-      "tools/test_miniprogram_collection_media.cjs",
-      "tools/test_miniprogram_food_native.cjs",
-      "tools/test_miniprogram_public_load.cjs",
-      "tools/test_miniprogram_support_languages.cjs",
-      "wandermind-studio/frontend/assets/js/bali-food-copy.js",
-      "wandermind-studio/frontend/assets/js/bali-itinerary.js",
-      "wandermind-studio/frontend/bali.html",
-      "wandermind-studio/frontend/dining.html",
-      ".codex/itinerary-gallery-repair-plan.md",
-      ".codex/project-memory/evidence/2026/09/20260920T034700Z-itinerary-gallery-repair.json",
-      ".codex/project-memory/handoffs/2026/09/20260920T034700Z-itinerary-gallery-repair.md",
-      "tools/test_itinerary_gallery_repair.cjs",
-      "tools/test_route_gallery_native.cjs",
-      "tools/test_route_repair_browser.cjs"
+      ".codex/project-memory/current-state.json",
+      ".codex/run-state/CURRENT.json",
+      ".codex/project-memory/evidence/2026/09/20260920T035700Z-itinerary-gallery-live.json",
+      ".codex/project-memory/handoffs/2026/09/20260920T035700Z-itinerary-gallery-live.md"
     ]
   },
   "completed": [
     "393 contracts,140 bindings and all offline suites pass",
     "31 browser cases and18 route viewport combinations pass",
     "30 native route layouts and5 language gallery event flows pass;64 records andfirst12image loads each",
-    "Official Preview2061100bytes succeeds with selective proxy routing; no Upload"
+    "Official Preview2061100bytes succeeds with selective proxy routing; no Upload",
+    "PR96 fixed head CI success,squash tree match,exact Render d9e2c6a Live and public checks pass",
+    "All64 native gallery images loaded;6 WebKit route/viewport cases pass"
   ],
-  "current_step": "Local verification complete and official Preview2061100bytes generated; preparing fixed-head PR.",
+  "current_step": "Product release verified; synchronizing receipt, then owner phone acceptance of new Preview",
   "workers": [
     {
       "agent_name": "gallery_readonly",
@@ -62,12 +39,13 @@
     }
   ],
   "accepted_evidence": [
-    ".codex/project-memory/evidence/2026/09/20260920T034700Z-itinerary-gallery-repair.json"
+    ".codex/project-memory/evidence/2026/09/20260920T034700Z-itinerary-gallery-repair.json",
+    ".codex/project-memory/evidence/2026/09/20260920T035700Z-itinerary-gallery-live.json"
   ],
   "unverified": [
-    "Fixed-head PR/CI/merge/Render for this repair",
     "Owner phone touch/network acceptance of fresh Preview",
-    "Upload of this new source,review submission andpublic release"
+    "New-source Upload,review submission,public release",
+    "Documentation receipt push/merge pending at capture"
   ],
   "do_not_repeat": [
     {
@@ -87,11 +65,11 @@
     }
   ],
   "next_action": {
-    "action_id": "release-itinerary-gallery-20260920",
-    "description": "Push fixed head,wait CI,squash merge and verify exact Render Live commit. Preview only; no Upload.",
-    "external_effect": true,
-    "effect_key": "Agentstrip:itinerary-gallery-repair:20260920",
+    "action_id": "owner-check-fresh-itinerary-gallery-preview",
+    "description": "Owner verify new Preview gallery/days/dining. Preserve custom plans; reset only after confirmation. No automatic Upload/review.",
+    "external_effect": false,
+    "effect_key": "Agentstrip:itinerary-gallery-preview-phone:20260920",
     "authority_confirmed": true
   },
-  "updated_at_utc": "2026-09-20T03:49:00.4240361Z"
+  "updated_at_utc": "2026-09-20T03:59:07.4636418Z"
 }

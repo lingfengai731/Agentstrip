@@ -5,6 +5,10 @@ It stores verifiable project facts, not hidden chain-of-thought or complete chat
 
 ## Active expansion pointer — 2026-09-16
 
+### 2026-09-20 exact repair release — authoritative latest
+
+PR96 passed both fixed-head checks and merged as main@d9e2c6aa; entire Git tree matches head4f35d835. Render dep-danlg67f3r2c73e56r0g is Live at that exact product commit; public health/content checks pass. Official new Mini Preview2061100bytes (tree d230fc8b), NOT Upload/review/public release. Native64/64gallery images loaded including5Cloudinary; extra6WebKit route/viewport checks pass. Owner phone acceptance of new QR remains pending; uploaded0.1.1 is OLD source. Follow .codex/project-memory/handoffs/2026/09/20260920T035700Z-itinerary-gallery-live.md. Older dated entries are historical, including pending-release and DIRECT-only claims.
+
 ### 2026-09-20 itinerary/gallery repair (supersedes DIRECT-only workaround)
 
 User rejected ambiguous dining action, cramped Mini itinerary and blank gallery. Local repair on clean baseline f2f91e5: daily cards first; optional Penida after days; clear dining actions; nearby POIs by actual stop nodes; gallery batches/retry and navigation feedback. All offline suites/393 contracts pass;31 browser cases,18 route viewport checks,30 native route layouts and5 gallery event flows pass.64 gallery records,12/12 first images loaded per locale. SDK evidence is not phone acceptance. DevTools now uses SYSTEM with only servicewechat.com/subdomains bypassed; DIRECT broke access to WanderMind images. Read handoff .codex/project-memory/handoffs/2026/09/20260920T034700Z-itinerary-gallery-repair.md. Merge/Render/Preview pending at this capture; no new Upload/review/public release. Prior dated entries below are history.
