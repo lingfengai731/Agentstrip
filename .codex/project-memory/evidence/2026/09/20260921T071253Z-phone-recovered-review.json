@@ -1,0 +1,122 @@
+{
+  "schema_version": 1,
+  "evidence_id": "ev-20260921T071253Z-phone-recovered-review",
+  "task_ref": "phone-recovered-review-20260921",
+  "owner": "current-account-codex",
+  "captured_at": "2026-09-21T07:12:53Z",
+  "status": "verified",
+  "claim": "Owner phone health/images recovered; direct HTTP/native public verification passed; official developer Upload0.1.2 succeeded. Review/public release not performed.",
+  "source": {
+    "kind": "user_callback_and_targeted_verification",
+    "commit": "5a0639dfc89ec9573f6290b20a965d4c908381a5",
+    "branch": "codex/phone-reachability-evidence-20260920"
+  },
+  "product": {
+    "main": "de8c978316619ac5a9519dc7ddfa1e8b24ba65ea",
+    "mini_tree": "2fc6b9b14a2e10ff055e0147bd9f67a0d0df89fe",
+    "old_uploaded_0_1_1_tree": "83e2ae6e0d0c907f864fbf034903ee7f587a72cf",
+    "application_changes_this_turn": 0
+  },
+  "owner_confirmation": {
+    "dns_before": "Screenshot: apex A216.24.57.1 DNSonly; www CNAMEagentstrip.onrender.com DNSonly",
+    "change": "Owner reports switching DNSonly to Proxied and saving; assistant made no infrastructure change.",
+    "health": "Owner reports Wi-Fi and mobile both OK",
+    "mini_images": "Owner reports images all load",
+    "scope": "Not full authenticated match/payment/driver/console acceptance"
+  },
+  "direct_http": {
+    "transport": "Windows curl --noproxy '*'; no TLS bypass; public anonymous reads only",
+    "dns": [
+      "172.67.166.93",
+      "104.21.11.151"
+    ],
+    "results": [
+      {
+        "path": "/healthz",
+        "http": 200,
+        "seconds": 1.206833,
+        "cache": "DYNAMIC"
+      },
+      {
+        "path": "/assets/data/bali-travel-data.json",
+        "http": 200,
+        "seconds": 1.454934,
+        "cache": "DYNAMIC"
+      },
+      {
+        "path": "/assets/data/bali-food.json",
+        "http": 200,
+        "seconds": 1.184728,
+        "cache": "DYNAMIC"
+      },
+      {
+        "path": "/api/portfolio?destination=bali",
+        "http": 200,
+        "seconds": 1.715564,
+        "cache_control": "no-store",
+        "cache": "DYNAMIC"
+      },
+      {
+        "path": "/api/auth/me",
+        "http": 401,
+        "seconds": 1.249889,
+        "cache": "DYNAMIC"
+      },
+      {
+        "path": "/api/bali/professional-route/recent-unlocked",
+        "http": 401,
+        "seconds": 1.343885,
+        "cache": "DYNAMIC"
+      }
+    ],
+    "scope": "401 unauthenticated probes do not verify authenticated response caching. Not Render administrative/browser acceptance."
+  },
+  "local_tests": [
+    "test_miniprogram_contract.cjs:397 passed",
+    "test_miniprogram_phone_network.cjs:passed",
+    "test_miniprogram_api_sessions.cjs:passed",
+    "test_miniprogram_itinerary_handoff.cjs:passed",
+    "git diff --check:passed"
+  ],
+  "native": {
+    "scope": "Official DevTools SDK, no production mutations; not physical touch",
+    "health": 200,
+    "routes": 6,
+    "food_items": 33,
+    "filter_open_close": 6,
+    "gallery_total": 64,
+    "gallery_visible": 12,
+    "gallery_loaded": 12,
+    "gallery_failed": 0,
+    "exceptions": 0,
+    "artifacts_local": "E:/Agentstrip-artifacts/2026-09-21/release-readiness/public-native.json",
+    "artifact_sha256": "210E7A4116AC81CB09E2C185969A51CA1333C60A10B3104735B86C58B75E6245"
+  },
+  "browser": {
+    "status": "bootstrap_failed",
+    "error": "Importing module node:process is not allowed in node_repl",
+    "consequence": "No WeChat console/category/privacy/review claim; no repeated browser repair"
+  },
+  "upload": {
+    "status": "succeeded",
+    "version": "0.1.2",
+    "appid": "wx26bfe1e0c37a54b6",
+    "source_commit": "5a0639dfc89ec9573f6290b20a965d4c908381a5",
+    "product_main": "de8c978316619ac5a9519dc7ddfa1e8b24ba65ea",
+    "mini_tree": "2fc6b9b14a2e10ff055e0147bd9f67a0d0df89fe",
+    "bytes": 2068703,
+    "exit_code": 0,
+    "result": "Official CLI: expected AppID permissions, upload, TOTAL2068703, success",
+    "receipt_local": "E:/Agentstrip-artifacts/2026-09-21/release-readiness/upload-0.1.2-info.json",
+    "receipt_sha256": "2A6DA22E3391C024C3A80925C3609D9D4E9A96243EB02DFD0525847DD41004F7",
+    "review": false,
+    "public_release": false
+  },
+  "limits": [
+    "No live payment or driver request performed",
+    "No review/public release",
+    "Restaurant supplied official-photo permissions remain unproven; not published",
+    "No global DNS/SSL/environment change by assistant"
+  ],
+  "updated_at": "2026-09-21T07:15:11Z"
+}
