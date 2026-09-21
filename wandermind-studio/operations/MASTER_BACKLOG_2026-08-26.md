@@ -1,5 +1,7 @@
 # WanderMind unified backlog — updated 2026-08-31
 
+> Current execution overlay (2026-09-21): use [WeChat review and unified priorities](WECHAT_REVIEW_2026-09-21.md). The rows below are dated history, not an authoritative open-task list. In particular phone connectivity/images are owner-accepted and developer0.1.2 is uploaded; old locally-pending release, Portfolio E2E and Sandbox webhook gates must be reconciled with newer evidence/user confirmations before repeating work.
+
 Evidence order: fresh production checks > current Git/tests > project-memory evidence > handoff > old plans. Rank 1 is the highest priority. A gate is not a failure: it records the exact external fact or authorization required before a safe production action.
 
 | Rank | Item | Current truthful state | Next exact action | Gate / owner |

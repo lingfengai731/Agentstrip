@@ -5,6 +5,14 @@ It stores verifiable project facts, not hidden chain-of-thought or complete chat
 
 ## Active expansion pointer — 2026-09-16
 
+### 2026-09-21 — phone recovery accepted; developer 0.1.2 uploaded
+
+Owner enabled Cloudflare Proxied and confirms phone Wi-Fi/mobile healthz OK and Mini images loaded. Direct HTTP now200 for health/catalog/Portfolio; unauthenticated private401/DYNAMIC.397contracts and targeted tests pass; SDK6routes/33lunch-filtered food/6filter toggles/12of12visible images/zeroexceptions pass. Official developer Upload **0.1.2 succeeded**,2068703bytes, Mini tree2fc6b9b14a2e10ff055e0147bd9f67a0d0df89fe (PR98 product main de8c978). NOT review/publicrelease or complete signed-in phone acceptance. No application/infrastructure changes this turn. Do not replay old network troubleshooting or0.1.0/0.1.1/0.1.2Uploads. Next: current WeChat console category/privacy/domains/reviewer access + phone core-flow callback; Browser bootstrap unavailable, owner screenshots required. See `.codex/project-memory/handoffs/2026/09/20260921T071253Z-phone-recovered-review.md` and `wandermind-studio/operations/WECHAT_REVIEW_2026-09-21.md`. Prior dated sections below are history.
+
+### 2026-09-20 14:18 UTC — phone incident now reproduced outside WeChat
+
+Owner supplied n1 request/downloadFile TIMEOUT. PR98 is merged as main de8c978 (same tree as d36f9fc). Independent Changsha/Nanning Unicom probes time out establishing TCP to216.24.57.1; Singapore returns200 in627ms with valid TLS. Local direct pinnedIP fails; existing-proxy health/static succeed. This is regional connectivity evidence, NOT universal blocking or a solved phone issue. No product/DNS/hosting changes this turn. Next: authenticated Cloudflare DNS/Render domain inspection and phone browser Wi-Fi/mobile comparison; do not ask for the already supplied n1 result again. See `.codex/project-memory/handoffs/2026/09/20260920T141800Z-phone-reachability.md`.
+
 ### 2026-09-20 phone failure follow-up — latest owner feedback
 
 Owner reports actual phone route timeout/gallery errors after prior simulator pass. New Mini-only recovery candidate adds retained slow-image DOM/WebP/retry, gallery→food→logout order,45s bounded POST and credential-free connection diagnostics; both DevTools URL checks true. All offline suites/397contracts pass; native SYSTEM-proxy health/image200 is NOT phone acceptance. Official Preview2068703bytes generated; no Upload/review/public release. Local direct healthz15s timeout vs proxy200; owner's network and console request/downloadFile domains pending. Read .codex/project-memory/handoffs/2026/09/20260920T053800Z-mini-phone-network.md. Do not claim phone fixed or trigger unnecessary Render deploy for this Mini-only change. Git/PR state outranks this pre-commit capture.

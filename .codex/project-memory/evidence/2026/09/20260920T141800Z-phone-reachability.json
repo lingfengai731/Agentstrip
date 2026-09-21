@@ -1,0 +1,45 @@
+{
+  "schema_version": 1,
+  "evidence_id": "ev-20260920T141800Z-phone-reachability",
+  "task_ref": "phone-reachability-20260920",
+  "owner": "current-account-codex",
+  "captured_at": "2026-09-20T14:18:00.311Z",
+  "status": "verified",
+  "claim": "Regional connection failures reproduced outside WeChat; owner phone remains unusable. No infrastructure repair or phone acceptance claimed.",
+  "source": {"kind":"network_measurement","commit":"de8c978316619ac5a9519dc7ddfa1e8b24ba65ea","branch":"codex/phone-reachability-evidence-20260920"},
+  "recovery": {
+    "original_checkout":"E:/Agentstrip preserved dirty",
+    "active_worktree":"E:/Agentstrip-worktrees/active/account_current/mini-review-20260920",
+    "previous_head":"d36f9fcc96aa34e67416becda11f8d621a2074e8",
+    "merged_main":"de8c978316619ac5a9519dc7ddfa1e8b24ba65ea",
+    "pr":98,
+    "equal_tree":"a7e8caec2932c60a6af163581950b6dd690c0062",
+    "note":"Pre-commit checkpoint56 superseded by merged PR98 and new owner diagnostic. No return to obsolete PR93 pointer."
+  },
+  "owner_report":{"version":"20260920n1","request_host":"wandermind.cc","request_result":"TIMEOUT","download_host":"wandermind.cc","download_result":"TIMEOUT","wifi_mobile_comparison":"not yet supplied"},
+  "dns":{"A":"216.24.57.1","AAAA":"no answer","NS":["pam.ns.cloudflare.com","pablo.ns.cloudflare.com"],"source":"local Resolve-DnsName and public dns.google JSON via existing proxy","cloudflare_dashboard_proxy_setting":"not inspected; NS and Server header do not establish own-zone proxy settings"},
+  "local_probes":[
+    {"transport":"direct","target":"https://wandermind.cc/healthz","result":"curl28 resolving timeout","elapsed_seconds":8.002575},
+    {"transport":"direct with --resolve wandermind.cc:443:216.24.57.1","target":"https://wandermind.cc/healthz","result":"curl28 connection timeout before TCP/TLS","elapsed_seconds":6.008680},
+    {"transport":"direct with fixed DNS","target":"https://wandermind.cc/assets/data/bali-travel-data.json","result":"curl28 connection timeout before TCP/TLS","elapsed_seconds":6.005634},
+    {"transport":"existing local proxy","target":"https://wandermind.cc/healthz","status_code":200,"body":"ok","elapsed_seconds":1.145965},
+    {"transport":"existing local proxy","target":"https://wandermind.cc/assets/data/bali-travel-data.json","status_code":200,"bytes":122225,"elapsed_seconds":1.622910},
+    {"transport":"direct control","target":"https://www.qq.com","status_code":501,"tcp_seconds":0.068216,"tls_seconds":0.264144,"note":"Control proves a TCP/TLS/HTTP response was received, not that QQ page succeeded"}
+  ],
+  "independent_measurement":{
+    "provider":"Globalping public anonymous diagnostic, 3 probes, GET /healthz only; no personal data or credentials",
+    "id":"2i2FsfZUSRrC5zKbc00021Ade",
+    "url":"https://api.globalping.io/v1/measurements/2i2FsfZUSRrC5zKbc00021Ade",
+    "status":"finished",
+    "results":[
+      {"country":"CN","city":"Changsha","network":"CHINA UNICOM China169 Backbone","ip":"216.24.57.1","dns_ms":1343,"total_ms":14999,"result":"Request timed out while establishing the TCP connection."},
+      {"country":"CN","city":"Nanning","network":"CHINA UNICOM China169 Backbone","ip":"216.24.57.1","dns_ms":424,"total_ms":15000,"result":"Request timed out while establishing the TCP connection."},
+      {"country":"SG","city":"Singapore","network":"OVH","ip":"216.24.57.1","status_code":200,"body":"ok","total_ms":627,"tls_authorized":true,"tls_protocol":"TLSv1.3","certificate_expires":"2026-11-11T09:32:20Z"}
+    ]
+  },
+  "conclusion":"A real network-path failure exists for tested mainland nodes before TLS/HTTP, while service responds from Singapore. This is consistent with phone TIMEOUT, not definitive identification of the owner's ISP, universal China blocking, or the exact routing/filtering cause.",
+  "next_gate":"Inspect authenticated Cloudflare DNS and exact Render custom-domain target before any reversible change; request/downloadFile allowlists still need independent inspection. Do not change account, SSL security, existing environment variables, payments or user data.",
+  "browser":"Official Browser setup fails: Importing module node:process is not allowed in node_repl. No Cloudflare admin access or changes claimed; no CU repeated after prior safety-stop history.",
+  "official_references":["https://render.com/docs/configure-cloudflare-dns","https://developers.cloudflare.com/cloudflare-for-platforms/cloudflare-for-saas/saas-customers/provider-guides/render/"],
+  "not_done":["No application-code changes","No DNS/CDN/hosting changes","No new Preview or Upload","No authenticated route submission","No claim that increasing timeout fixes reachability"]
+}
